@@ -65,6 +65,11 @@ QList<int> minNDaysListOfMinDays[MAX_ACTIVITIES];
 QList<double> minNDaysListOfWeightPercentages[MAX_ACTIVITIES];
 QList<bool> minNDaysListOfConsecutiveIfSameDay[MAX_ACTIVITIES];
 
+//MIN GAPS BETWEEN ACTIVITIES
+QList<int> minGapsBetweenActivitiesListOfActivities[MAX_ACTIVITIES];
+QList<int> minGapsBetweenActivitiesListOfMinGaps[MAX_ACTIVITIES];
+QList<double> minGapsBetweenActivitiesListOfWeightPercentages[MAX_ACTIVITIES];
+
 //TCH & ST NOT AVAIL, BREAK, ACT(S) PREFERRED TIME(S)
 double notAllowedTimesPercentages[MAX_ACTIVITIES][MAX_HOURS_PER_WEEK];
 
@@ -179,6 +184,37 @@ QList<int> inverseConstr2ActivitiesOrderedActivities[MAX_ACTIVITIES];
 double activityEndsStudentsDayPercentages[MAX_ACTIVITIES];
 bool haveActivityEndsStudentsDay;
 
+
+///////BEGIN teachers interval max days per week
+double teachersIntervalMaxDaysPerWeekPercentages1[MAX_TEACHERS];
+int teachersIntervalMaxDaysPerWeekMaxDays1[MAX_TEACHERS];
+int teachersIntervalMaxDaysPerWeekIntervalStart1[MAX_TEACHERS];
+int teachersIntervalMaxDaysPerWeekIntervalEnd1[MAX_TEACHERS];
+
+double teachersIntervalMaxDaysPerWeekPercentages2[MAX_TEACHERS];
+int teachersIntervalMaxDaysPerWeekMaxDays2[MAX_TEACHERS];
+int teachersIntervalMaxDaysPerWeekIntervalStart2[MAX_TEACHERS];
+int teachersIntervalMaxDaysPerWeekIntervalEnd2[MAX_TEACHERS];
+
+bool computeTeachersIntervalMaxDaysPerWeek();
+///////END   teachers interval max days per week
+
+
+///////BEGIN students interval max days per week
+double subgroupsIntervalMaxDaysPerWeekPercentages1[MAX_TOTAL_SUBGROUPS];
+int subgroupsIntervalMaxDaysPerWeekMaxDays1[MAX_TOTAL_SUBGROUPS];
+int subgroupsIntervalMaxDaysPerWeekIntervalStart1[MAX_TOTAL_SUBGROUPS];
+int subgroupsIntervalMaxDaysPerWeekIntervalEnd1[MAX_TOTAL_SUBGROUPS];
+
+double subgroupsIntervalMaxDaysPerWeekPercentages2[MAX_TOTAL_SUBGROUPS];
+int subgroupsIntervalMaxDaysPerWeekMaxDays2[MAX_TOTAL_SUBGROUPS];
+int subgroupsIntervalMaxDaysPerWeekIntervalStart2[MAX_TOTAL_SUBGROUPS];
+int subgroupsIntervalMaxDaysPerWeekIntervalEnd2[MAX_TOTAL_SUBGROUPS];
+
+bool computeSubgroupsIntervalMaxDaysPerWeek();
+///////END   subgroups interval max days per week
+
+
 ////////rooms
 double notAllowedRoomTimePercentages[MAX_ROOMS][MAX_HOURS_PER_WEEK]; //-1 for available
 
@@ -231,7 +267,8 @@ extern QString initialOrderOfActivities;
 extern int initialOrderOfActivitiesIndices[MAX_ACTIVITIES];
 
 
-bool fixedActivity[MAX_ACTIVITIES];
+bool fixedTimeActivity[MAX_ACTIVITIES];
+bool fixedSpaceActivity[MAX_ACTIVITIES];
 
 
 #define max(x,y)		((x)>=(y)?(x):(y))
@@ -248,7 +285,15 @@ bool processTimeConstraints()
 	//////////////////////////////
 	
 	/////2. min n days between activities
-	computeMinNDays();
+	t=computeMinNDays();
+	if(!t)
+		return false;
+	/////////////////////////////////////
+	
+	/////2.5. min gaps between activities
+	t=computeMinGapsBetweenActivities();
+	if(!t)
+		return false;
 	/////////////////////////////////////
 	
 	/////3. st not avail, tch not avail, break, activity pref time,
@@ -336,7 +381,17 @@ bool processTimeConstraints()
 	t=checkMinNDaysConsecutiveIfSameDay();
 	if(!t)
 		return false;
-		
+	
+	//check teachers interval max days per week
+	t=computeTeachersIntervalMaxDaysPerWeek();
+	if(!t)
+		return false;
+	
+	//check subgroups interval max days per week
+	t=computeSubgroupsIntervalMaxDaysPerWeek();
+	if(!t)
+		return false;
+	
 	/////////////rooms	
 	t=computeBasicSpace();
 	if(!t)
@@ -408,8 +463,8 @@ bool computeSubgroupsMaxHoursDaily()
 
 			for(int sb=0; sb<gt.rules.nInternalSubgroups; sb++){
 				if(subgroupsMaxHoursDailyMaxHours1[sb]==-1 ||
-				 subgroupsMaxHoursDailyMaxHours1[sb] >= smd->maxHoursDaily &&
-				 subgroupsMaxHoursDailyPercentages1[sb] <= smd->weightPercentage){
+				 (subgroupsMaxHoursDailyMaxHours1[sb] >= smd->maxHoursDaily &&
+				 subgroupsMaxHoursDailyPercentages1[sb] <= smd->weightPercentage)){
 				 	subgroupsMaxHoursDailyMaxHours1[sb] = smd->maxHoursDaily;
 					subgroupsMaxHoursDailyPercentages1[sb] = smd->weightPercentage;
 					}
@@ -419,8 +474,8 @@ bool computeSubgroupsMaxHoursDaily()
 				}
 				else{
 					if(subgroupsMaxHoursDailyMaxHours2[sb]==-1 ||
-					 subgroupsMaxHoursDailyMaxHours2[sb] >= smd->maxHoursDaily &&
-					 subgroupsMaxHoursDailyPercentages2[sb] <= smd->weightPercentage){
+					 (subgroupsMaxHoursDailyMaxHours2[sb] >= smd->maxHoursDaily &&
+					 subgroupsMaxHoursDailyPercentages2[sb] <= smd->weightPercentage)){
 					 	subgroupsMaxHoursDailyMaxHours2[sb] = smd->maxHoursDaily;
 						subgroupsMaxHoursDailyPercentages2[sb] = smd->weightPercentage;
 						}
@@ -460,8 +515,8 @@ bool computeSubgroupsMaxHoursDaily()
 				int sb=smd->iSubgroupsList.at(q);
 			//for(int sb=0; sb<gt.rules.nInternalSubgroups; sb++){
 				if(subgroupsMaxHoursDailyMaxHours1[sb]==-1 ||
-				 subgroupsMaxHoursDailyMaxHours1[sb] >= smd->maxHoursDaily &&
-				 subgroupsMaxHoursDailyPercentages1[sb] <= smd->weightPercentage){
+				 (subgroupsMaxHoursDailyMaxHours1[sb] >= smd->maxHoursDaily &&
+				 subgroupsMaxHoursDailyPercentages1[sb] <= smd->weightPercentage)){
 				 	subgroupsMaxHoursDailyMaxHours1[sb] = smd->maxHoursDaily;
 					subgroupsMaxHoursDailyPercentages1[sb] = smd->weightPercentage;
 					}
@@ -471,8 +526,8 @@ bool computeSubgroupsMaxHoursDaily()
 				}
 				else{
 					if(subgroupsMaxHoursDailyMaxHours2[sb]==-1 ||
-					 subgroupsMaxHoursDailyMaxHours2[sb] >= smd->maxHoursDaily &&
-					 subgroupsMaxHoursDailyPercentages2[sb] <= smd->weightPercentage){
+					 (subgroupsMaxHoursDailyMaxHours2[sb] >= smd->maxHoursDaily &&
+					 subgroupsMaxHoursDailyPercentages2[sb] <= smd->weightPercentage)){
 					 	subgroupsMaxHoursDailyMaxHours2[sb] = smd->maxHoursDaily;
 						subgroupsMaxHoursDailyPercentages2[sb] = smd->weightPercentage;
 						}
@@ -606,8 +661,8 @@ bool computeStudentsMaxHoursContinuously()
 
 			for(int sb=0; sb<gt.rules.nInternalSubgroups; sb++){
 				if(subgroupsMaxHoursContinuouslyMaxHours1[sb]==-1 ||
-				 subgroupsMaxHoursContinuouslyMaxHours1[sb] >= smd->maxHoursContinuously &&
-				 subgroupsMaxHoursContinuouslyPercentages1[sb] <= smd->weightPercentage){
+				 (subgroupsMaxHoursContinuouslyMaxHours1[sb] >= smd->maxHoursContinuously &&
+				 subgroupsMaxHoursContinuouslyPercentages1[sb] <= smd->weightPercentage)){
 				 	subgroupsMaxHoursContinuouslyMaxHours1[sb] = smd->maxHoursContinuously;
 					subgroupsMaxHoursContinuouslyPercentages1[sb] = smd->weightPercentage;
 					}
@@ -617,8 +672,8 @@ bool computeStudentsMaxHoursContinuously()
 				}
 				else{
 					if(subgroupsMaxHoursContinuouslyMaxHours2[sb]==-1 ||
-					 subgroupsMaxHoursContinuouslyMaxHours2[sb] >= smd->maxHoursContinuously &&
-					 subgroupsMaxHoursContinuouslyPercentages2[sb] <= smd->weightPercentage){
+					 (subgroupsMaxHoursContinuouslyMaxHours2[sb] >= smd->maxHoursContinuously &&
+					 subgroupsMaxHoursContinuouslyPercentages2[sb] <= smd->weightPercentage)){
 					 	subgroupsMaxHoursContinuouslyMaxHours2[sb] = smd->maxHoursContinuously;
 						subgroupsMaxHoursContinuouslyPercentages2[sb] = smd->weightPercentage;
 						}
@@ -658,8 +713,8 @@ bool computeStudentsMaxHoursContinuously()
 				int sb=smd->iSubgroupsList.at(q);
 			//for(int sb=0; sb<gt.rules.nInternalSubgroups; sb++){
 				if(subgroupsMaxHoursContinuouslyMaxHours1[sb]==-1 ||
-				 subgroupsMaxHoursContinuouslyMaxHours1[sb] >= smd->maxHoursContinuously &&
-				 subgroupsMaxHoursContinuouslyPercentages1[sb] <= smd->weightPercentage){
+				 (subgroupsMaxHoursContinuouslyMaxHours1[sb] >= smd->maxHoursContinuously &&
+				 subgroupsMaxHoursContinuouslyPercentages1[sb] <= smd->weightPercentage)){
 				 	subgroupsMaxHoursContinuouslyMaxHours1[sb] = smd->maxHoursContinuously;
 					subgroupsMaxHoursContinuouslyPercentages1[sb] = smd->weightPercentage;
 					}
@@ -669,8 +724,8 @@ bool computeStudentsMaxHoursContinuously()
 				}
 				else{
 					if(subgroupsMaxHoursContinuouslyMaxHours2[sb]==-1 ||
-					 subgroupsMaxHoursContinuouslyMaxHours2[sb] >= smd->maxHoursContinuously &&
-					 subgroupsMaxHoursContinuouslyPercentages2[sb] <= smd->weightPercentage){
+					 (subgroupsMaxHoursContinuouslyMaxHours2[sb] >= smd->maxHoursContinuously &&
+					 subgroupsMaxHoursContinuouslyPercentages2[sb] <= smd->weightPercentage)){
 					 	subgroupsMaxHoursContinuouslyMaxHours2[sb] = smd->maxHoursContinuously;
 						subgroupsMaxHoursContinuouslyPercentages2[sb] = smd->weightPercentage;
 						}
@@ -813,8 +868,8 @@ bool computeSubgroupsMinHoursDaily()
 
 			for(int sb=0; sb<gt.rules.nInternalSubgroups; sb++){
 				if(subgroupsMinHoursDailyMinHours[sb]==-1 ||
-				 subgroupsMinHoursDailyMinHours[sb] <= smd->minHoursDaily &&
-				 subgroupsMinHoursDailyPercentages[sb] <= smd->weightPercentage){
+				 (subgroupsMinHoursDailyMinHours[sb] <= smd->minHoursDaily &&
+				 subgroupsMinHoursDailyPercentages[sb] <= smd->weightPercentage)){
 				 	subgroupsMinHoursDailyMinHours[sb] = smd->minHoursDaily;
 					subgroupsMinHoursDailyPercentages[sb] = smd->weightPercentage;
 					}
@@ -847,8 +902,8 @@ bool computeSubgroupsMinHoursDaily()
 			for(int q=0; q<smd->iSubgroupsList.count(); q++){
 				int sb=smd->iSubgroupsList.at(q);
 				if(subgroupsMinHoursDailyMinHours[sb]==-1 ||
-				 subgroupsMinHoursDailyMinHours[sb] <= smd->minHoursDaily &&
-				 subgroupsMinHoursDailyPercentages[sb] <= smd->weightPercentage){
+				 (subgroupsMinHoursDailyMinHours[sb] <= smd->minHoursDaily &&
+				 subgroupsMinHoursDailyPercentages[sb] <= smd->weightPercentage)){
 				 	subgroupsMinHoursDailyMinHours[sb] = smd->minHoursDaily;
 					subgroupsMinHoursDailyPercentages[sb] = smd->weightPercentage;
 					}
@@ -979,8 +1034,8 @@ bool computeTeachersMaxHoursDaily()
 			//////////
 
 			if(teachersMaxHoursDailyMaxHours1[tmd->teacher_ID]==-1 ||
-			 teachersMaxHoursDailyMaxHours1[tmd->teacher_ID] >= tmd->maxHoursDaily &&
-			 teachersMaxHoursDailyPercentages1[tmd->teacher_ID] <= tmd->weightPercentage){
+			 (teachersMaxHoursDailyMaxHours1[tmd->teacher_ID] >= tmd->maxHoursDaily &&
+			 teachersMaxHoursDailyPercentages1[tmd->teacher_ID] <= tmd->weightPercentage)){
 			 	teachersMaxHoursDailyMaxHours1[tmd->teacher_ID] = tmd->maxHoursDaily;
 				teachersMaxHoursDailyPercentages1[tmd->teacher_ID] = tmd->weightPercentage;
 			}
@@ -990,8 +1045,8 @@ bool computeTeachersMaxHoursDaily()
 			}
 			else{
 				if(teachersMaxHoursDailyMaxHours2[tmd->teacher_ID]==-1 ||
-				 teachersMaxHoursDailyMaxHours2[tmd->teacher_ID] >= tmd->maxHoursDaily &&
-				 teachersMaxHoursDailyPercentages2[tmd->teacher_ID] <= tmd->weightPercentage){
+				 (teachersMaxHoursDailyMaxHours2[tmd->teacher_ID] >= tmd->maxHoursDaily &&
+				 teachersMaxHoursDailyPercentages2[tmd->teacher_ID] <= tmd->weightPercentage)){
 				 	teachersMaxHoursDailyMaxHours2[tmd->teacher_ID] = tmd->maxHoursDaily;
 					teachersMaxHoursDailyPercentages2[tmd->teacher_ID] = tmd->weightPercentage;
 				}
@@ -1043,8 +1098,8 @@ bool computeTeachersMaxHoursDaily()
 
 			for(int tch=0; tch<gt.rules.nInternalTeachers; tch++){
 				if(teachersMaxHoursDailyMaxHours1[tch]==-1 ||
-				 teachersMaxHoursDailyMaxHours1[tch] >= tmd->maxHoursDaily &&
-				 teachersMaxHoursDailyPercentages1[tch] <= tmd->weightPercentage){
+				 (teachersMaxHoursDailyMaxHours1[tch] >= tmd->maxHoursDaily &&
+				 teachersMaxHoursDailyPercentages1[tch] <= tmd->weightPercentage)){
 				 	teachersMaxHoursDailyMaxHours1[tch] = tmd->maxHoursDaily;
 					teachersMaxHoursDailyPercentages1[tch] = tmd->weightPercentage;
 					}
@@ -1054,8 +1109,8 @@ bool computeTeachersMaxHoursDaily()
 				}
 				else{
 					if(teachersMaxHoursDailyMaxHours2[tch]==-1 ||
-					 teachersMaxHoursDailyMaxHours2[tch] >= tmd->maxHoursDaily &&
-					 teachersMaxHoursDailyPercentages2[tch] <= tmd->weightPercentage){
+					 (teachersMaxHoursDailyMaxHours2[tch] >= tmd->maxHoursDaily &&
+					 teachersMaxHoursDailyPercentages2[tch] <= tmd->weightPercentage)){
 					 	teachersMaxHoursDailyMaxHours2[tch] = tmd->maxHoursDaily;
 						teachersMaxHoursDailyPercentages2[tch] = tmd->weightPercentage;
 						}
@@ -1237,8 +1292,8 @@ bool computeTeachersMaxHoursContinuously()
 			ConstraintTeacherMaxHoursContinuously* tmd=(ConstraintTeacherMaxHoursContinuously*)gt.rules.internalTimeConstraintsList[i];
 
 			if(teachersMaxHoursContinuouslyMaxHours1[tmd->teacher_ID]==-1 ||
-			 teachersMaxHoursContinuouslyMaxHours1[tmd->teacher_ID] >= tmd->maxHoursContinuously &&
-			 teachersMaxHoursContinuouslyPercentages1[tmd->teacher_ID] <= tmd->weightPercentage){
+			 (teachersMaxHoursContinuouslyMaxHours1[tmd->teacher_ID] >= tmd->maxHoursContinuously &&
+			 teachersMaxHoursContinuouslyPercentages1[tmd->teacher_ID] <= tmd->weightPercentage)){
 			 	teachersMaxHoursContinuouslyMaxHours1[tmd->teacher_ID] = tmd->maxHoursContinuously;
 				teachersMaxHoursContinuouslyPercentages1[tmd->teacher_ID] = tmd->weightPercentage;
 			}
@@ -1248,8 +1303,8 @@ bool computeTeachersMaxHoursContinuously()
 			}
 			else{
 				if(teachersMaxHoursContinuouslyMaxHours2[tmd->teacher_ID]==-1 ||
-				 teachersMaxHoursContinuouslyMaxHours2[tmd->teacher_ID] >= tmd->maxHoursContinuously &&
-				 teachersMaxHoursContinuouslyPercentages2[tmd->teacher_ID] <= tmd->weightPercentage){
+				 (teachersMaxHoursContinuouslyMaxHours2[tmd->teacher_ID] >= tmd->maxHoursContinuously &&
+				 teachersMaxHoursContinuouslyPercentages2[tmd->teacher_ID] <= tmd->weightPercentage)){
 				 	teachersMaxHoursContinuouslyMaxHours2[tmd->teacher_ID] = tmd->maxHoursContinuously;
 					teachersMaxHoursContinuouslyPercentages2[tmd->teacher_ID] = tmd->weightPercentage;
 				}
@@ -1285,8 +1340,8 @@ bool computeTeachersMaxHoursContinuously()
 
 			for(int tch=0; tch<gt.rules.nInternalTeachers; tch++){
 				if(teachersMaxHoursContinuouslyMaxHours1[tch]==-1 ||
-				 teachersMaxHoursContinuouslyMaxHours1[tch] >= tmd->maxHoursContinuously &&
-				 teachersMaxHoursContinuouslyPercentages1[tch] <= tmd->weightPercentage){
+				 (teachersMaxHoursContinuouslyMaxHours1[tch] >= tmd->maxHoursContinuously &&
+				 teachersMaxHoursContinuouslyPercentages1[tch] <= tmd->weightPercentage)){
 				 	teachersMaxHoursContinuouslyMaxHours1[tch] = tmd->maxHoursContinuously;
 					teachersMaxHoursContinuouslyPercentages1[tch] = tmd->weightPercentage;
 					}
@@ -1296,8 +1351,8 @@ bool computeTeachersMaxHoursContinuously()
 				}
 				else{
 					if(teachersMaxHoursContinuouslyMaxHours2[tch]==-1 ||
-					 teachersMaxHoursContinuouslyMaxHours2[tch] >= tmd->maxHoursContinuously &&
-					 teachersMaxHoursContinuouslyPercentages2[tch] <= tmd->weightPercentage){
+					 (teachersMaxHoursContinuouslyMaxHours2[tch] >= tmd->maxHoursContinuously &&
+					 teachersMaxHoursContinuouslyPercentages2[tch] <= tmd->weightPercentage)){
 					 	teachersMaxHoursContinuouslyMaxHours2[tch] = tmd->maxHoursContinuously;
 						teachersMaxHoursContinuouslyPercentages2[tch] = tmd->weightPercentage;
 						}
@@ -1847,7 +1902,7 @@ bool computeTeachersMaxGapsPerWeekPercentage()
 			
 			for(int j=0; j<gt.rules.nInternalTeachers; j++){
 				if(teachersMaxGapsPerWeekMaxGaps[j]==-1 
-				 ||	teachersMaxGapsPerWeekMaxGaps[j]>=0 && teachersMaxGapsPerWeekMaxGaps[j]>=tg->maxGaps && teachersMaxGapsPerWeekPercentage[j]<=tg->weightPercentage){
+				 ||(teachersMaxGapsPerWeekMaxGaps[j]>=0 && teachersMaxGapsPerWeekMaxGaps[j]>=tg->maxGaps && teachersMaxGapsPerWeekPercentage[j]<=tg->weightPercentage)){
 					teachersMaxGapsPerWeekMaxGaps[j]=tg->maxGaps;
 					teachersMaxGapsPerWeekPercentage[j]=tg->weightPercentage;
 				}
@@ -1878,7 +1933,7 @@ bool computeTeachersMaxGapsPerWeekPercentage()
 		
 			int j=tg->teacherIndex;
 			if(teachersMaxGapsPerWeekMaxGaps[j]==-1 
-			 ||	teachersMaxGapsPerWeekMaxGaps[j]>=0 && teachersMaxGapsPerWeekMaxGaps[j]>=tg->maxGaps && teachersMaxGapsPerWeekPercentage[j]<=tg->weightPercentage){
+			 ||(teachersMaxGapsPerWeekMaxGaps[j]>=0 && teachersMaxGapsPerWeekMaxGaps[j]>=tg->maxGaps && teachersMaxGapsPerWeekPercentage[j]<=tg->weightPercentage)){
 				teachersMaxGapsPerWeekMaxGaps[j]=tg->maxGaps;
 				teachersMaxGapsPerWeekPercentage[j]=tg->weightPercentage;
 			}
@@ -1960,7 +2015,7 @@ bool computeTeachersMaxGapsPerDayPercentage()
 			
 			for(int j=0; j<gt.rules.nInternalTeachers; j++){
 				if(teachersMaxGapsPerDayMaxGaps[j]==-1 
-				 ||	teachersMaxGapsPerDayMaxGaps[j]>=0 && teachersMaxGapsPerDayMaxGaps[j]>=tg->maxGaps && teachersMaxGapsPerDayPercentage[j]<=tg->weightPercentage){
+				 ||(teachersMaxGapsPerDayMaxGaps[j]>=0 && teachersMaxGapsPerDayMaxGaps[j]>=tg->maxGaps && teachersMaxGapsPerDayPercentage[j]<=tg->weightPercentage)){
 					teachersMaxGapsPerDayMaxGaps[j]=tg->maxGaps;
 					teachersMaxGapsPerDayPercentage[j]=tg->weightPercentage;
 				}
@@ -1991,7 +2046,7 @@ bool computeTeachersMaxGapsPerDayPercentage()
 		
 			int j=tg->teacherIndex;
 			if(teachersMaxGapsPerDayMaxGaps[j]==-1 
-			 ||	teachersMaxGapsPerDayMaxGaps[j]>=0 && teachersMaxGapsPerDayMaxGaps[j]>=tg->maxGaps && teachersMaxGapsPerDayPercentage[j]<=tg->weightPercentage){
+			 ||(teachersMaxGapsPerDayMaxGaps[j]>=0 && teachersMaxGapsPerDayMaxGaps[j]>=tg->maxGaps && teachersMaxGapsPerDayPercentage[j]<=tg->weightPercentage)){
 				teachersMaxGapsPerDayMaxGaps[j]=tg->maxGaps;
 				teachersMaxGapsPerDayPercentage[j]=tg->weightPercentage;
 			}
@@ -2213,15 +2268,15 @@ bool computeSubgroupsEarlyAndMaxGapsPercentages() //st no gaps & early - part 2
 	
 	bool ok=true;
 	for(int i=0; i<gt.rules.nInternalSubgroups; i++){
-		assert(subgroupsEarlyMaxBeginningsAtSecondHourPercentage[i]==-1 &&
-		 subgroupsEarlyMaxBeginningsAtSecondHourMaxBeginnings[i]==-1 ||
-		 subgroupsEarlyMaxBeginningsAtSecondHourPercentage[i]>=0 &&
-		 subgroupsEarlyMaxBeginningsAtSecondHourMaxBeginnings[i]>=0);
+		assert((subgroupsEarlyMaxBeginningsAtSecondHourPercentage[i]==-1 &&
+		 subgroupsEarlyMaxBeginningsAtSecondHourMaxBeginnings[i]==-1) ||
+		 (subgroupsEarlyMaxBeginningsAtSecondHourPercentage[i]>=0 &&
+		 subgroupsEarlyMaxBeginningsAtSecondHourMaxBeginnings[i]>=0));
 
-		assert(subgroupsMaxGapsPerWeekPercentage[i]==-1 &&
-		 subgroupsMaxGapsPerWeekMaxGaps[i]==-1 ||
-		 subgroupsMaxGapsPerWeekPercentage[i]>=0 &&
-		 subgroupsMaxGapsPerWeekMaxGaps[i]>=0);
+		assert((subgroupsMaxGapsPerWeekPercentage[i]==-1 &&
+		 subgroupsMaxGapsPerWeekMaxGaps[i]==-1) ||
+		 (subgroupsMaxGapsPerWeekPercentage[i]>=0 &&
+		 subgroupsMaxGapsPerWeekMaxGaps[i]>=0));
 	
 		bool oksubgroup=true;
 		/*if(subgroupsNoGapsPercentage[i]== -1 && subgroupsEarlyMaxBeginningsAtSecondHourPercentage[i]==-1 ||
@@ -2491,9 +2546,9 @@ bool computeNotAllowedTimesPercentages()
 				}
 			}
 
-			//ACTIVITY preferred time
-			if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_ACTIVITY_PREFERRED_TIME){
-				ConstraintActivityPreferredTime* ap=(ConstraintActivityPreferredTime*)gt.rules.internalTimeConstraintsList[i];
+			//ACTIVITY preferred starting time
+			if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_ACTIVITY_PREFERRED_STARTING_TIME){
+				ConstraintActivityPreferredStartingTime* ap=(ConstraintActivityPreferredStartingTime*)gt.rules.internalTimeConstraintsList[i];
 				
 				if(ap->day>=0 && ap->hour>=0){
 					for(int d=0; d<gt.rules.nDaysPerWeek; d++)
@@ -2521,7 +2576,7 @@ bool computeNotAllowedTimesPercentages()
 
 					int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
 					 QObject::tr("Cannot optimize, because you have constraints of type "
-					 "activity preferred time with no day nor hour selected (for activity with id==%1). "
+					 "activity preferred starting time with no day nor hour selected (for activity with id==%1). "
 					 "Please modify your data accordingly (remove or edit constraint) and try again.")
 					 .arg(gt.rules.internalActivitiesList[ap->activityIndex].id),
 					 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
@@ -2533,9 +2588,9 @@ bool computeNotAllowedTimesPercentages()
 				}
 			}	
 
-			//ACTIVITY preferred times
-			if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_ACTIVITY_PREFERRED_TIMES){
-				ConstraintActivityPreferredTimes* ap=(ConstraintActivityPreferredTimes*)gt.rules.internalTimeConstraintsList[i];
+			//ACTIVITY preferred starting times
+			if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_ACTIVITY_PREFERRED_STARTING_TIMES){
+				ConstraintActivityPreferredStartingTimes* ap=(ConstraintActivityPreferredStartingTimes*)gt.rules.internalTimeConstraintsList[i];
 				
 				int ai=ap->activityIndex;
 				
@@ -2543,7 +2598,7 @@ bool computeNotAllowedTimesPercentages()
 				for(int k=0; k<gt.rules.nHoursPerWeek; k++)
 					allowed[k]=false;
 						
-				for(int m=0; m<ap->nPreferredTimes; m++){
+				for(int m=0; m<ap->nPreferredStartingTimes; m++){
 					int d=ap->days[m];
 					int h=ap->hours[m];
 					
@@ -2567,9 +2622,9 @@ bool computeNotAllowedTimesPercentages()
 							notAllowedTimesPercentages[ai][k] = ap->weightPercentage;
 			}
 			
-			//ACTIVITIES preferred times
-			if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_ACTIVITIES_PREFERRED_TIMES){
-				ConstraintActivitiesPreferredTimes* ap=(ConstraintActivitiesPreferredTimes*)gt.rules.internalTimeConstraintsList[i];
+			//ACTIVITIES preferred starting times
+			if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_ACTIVITIES_PREFERRED_STARTING_TIMES){
+				ConstraintActivitiesPreferredStartingTimes* ap=(ConstraintActivitiesPreferredStartingTimes*)gt.rules.internalTimeConstraintsList[i];
 				
 				for(int j=0; j<ap->nActivities; j++){
 					int ai=ap->activitiesIndices[j];
@@ -2578,7 +2633,7 @@ bool computeNotAllowedTimesPercentages()
 					for(int k=0; k<gt.rules.nHoursPerWeek; k++)
 						allowed[k]=false;
 						
-					for(int m=0; m<ap->nPreferredTimes; m++){
+					for(int m=0; m<ap->nPreferredStartingTimes; m++){
 						int d=ap->days[m];
 						int h=ap->hours[m];
 						assert(d>=0 && h>=0);
@@ -2591,13 +2646,165 @@ bool computeNotAllowedTimesPercentages()
 								notAllowedTimesPercentages[ai][k] = ap->weightPercentage;
 				}
 			}
+			//subactivities preferred starting times
+			if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_SUBACTIVITIES_PREFERRED_STARTING_TIMES){
+				ConstraintSubactivitiesPreferredStartingTimes* ap=(ConstraintSubactivitiesPreferredStartingTimes*)gt.rules.internalTimeConstraintsList[i];
+				
+				for(int j=0; j<ap->nActivities; j++){
+					int ai=ap->activitiesIndices[j];
+					
+					bool allowed[MAX_HOURS_PER_WEEK];
+					for(int k=0; k<gt.rules.nHoursPerWeek; k++)
+						allowed[k]=false;
+						
+					for(int m=0; m<ap->nPreferredStartingTimes; m++){
+						int d=ap->days[m];
+						int h=ap->hours[m];
+						assert(d>=0 && h>=0);
+						allowed[d+h*gt.rules.nDaysPerWeek]=true;
+					}
+					
+					for(int k=0; k<gt.rules.nHoursPerWeek; k++)
+						if(!allowed[k])
+							if(notAllowedTimesPercentages[ai][k] < ap->weightPercentage)
+								notAllowedTimesPercentages[ai][k] = ap->weightPercentage;
+				}
+			}
+			//ACTIVITY preferred time slots
+			if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_ACTIVITY_PREFERRED_TIME_SLOTS){
+				ConstraintActivityPreferredTimeSlots* ap=(ConstraintActivityPreferredTimeSlots*)gt.rules.internalTimeConstraintsList[i];
+				
+				int ai=ap->p_activityIndex;
+				
+				bool allowed[MAX_HOURS_PER_WEEK];
+				for(int k=0; k<gt.rules.nHoursPerWeek; k++)
+					allowed[k]=false;
+						
+				for(int m=0; m<ap->p_nPreferredTimeSlots; m++){
+					int d=ap->p_days[m];
+					int h=ap->p_hours[m];
+					
+					if(d>=0 && h>=0){
+						assert(d>=0 && h>=0);
+						allowed[d+h*gt.rules.nDaysPerWeek]=true;
+					}
+					else if(d>=0){
+						for(int hh=0; hh<gt.rules.nHoursPerDay; hh++)
+							allowed[d+hh*gt.rules.nDaysPerWeek]=true;
+					}
+					else if(h>=0){
+						for(int dd=0; dd<gt.rules.nDaysPerWeek; dd++)
+							allowed[dd+h*gt.rules.nDaysPerWeek]=true;
+					}
+				}
+				
+				for(int k=0; k<gt.rules.nHoursPerWeek; k++){
+					int d=k%gt.rules.nDaysPerWeek;
+					int h=k/gt.rules.nDaysPerWeek;
+					
+					bool ok=true;
+					
+					for(int dur=0; dur<gt.rules.internalActivitiesList[ai].duration && h+dur<gt.rules.nHoursPerDay; dur++){
+						assert(d+(h+dur)*gt.rules.nDaysPerWeek<gt.rules.nDaysPerWeek*gt.rules.nHoursPerDay);
+						if(!allowed[d+(h+dur)*gt.rules.nDaysPerWeek]){
+							ok=false;
+							break;
+						}
+					}
+				
+					if(!ok)
+						if(notAllowedTimesPercentages[ai][k] < ap->weightPercentage)
+							notAllowedTimesPercentages[ai][k] = ap->weightPercentage;
+				}
+			}
+			
+			//ACTIVITIES preferred time slots
+			if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_ACTIVITIES_PREFERRED_TIME_SLOTS){
+				ConstraintActivitiesPreferredTimeSlots* ap=(ConstraintActivitiesPreferredTimeSlots*)gt.rules.internalTimeConstraintsList[i];
+				
+				for(int j=0; j<ap->p_nActivities; j++){
+					int ai=ap->p_activitiesIndices[j];
+					
+					bool allowed[MAX_HOURS_PER_WEEK];
+					for(int k=0; k<gt.rules.nHoursPerWeek; k++)
+						allowed[k]=false;
+						
+					for(int m=0; m<ap->p_nPreferredTimeSlots; m++){
+						int d=ap->p_days[m];
+						int h=ap->p_hours[m];
+						assert(d>=0 && h>=0);
+						allowed[d+h*gt.rules.nDaysPerWeek]=true;
+					}
+					
+					for(int k=0; k<gt.rules.nHoursPerWeek; k++){
+						int d=k%gt.rules.nDaysPerWeek;
+						int h=k/gt.rules.nDaysPerWeek;
+						
+						bool ok=true;
+						
+						for(int dur=0; dur<gt.rules.internalActivitiesList[ai].duration && h+dur<gt.rules.nHoursPerDay; dur++){
+							assert(d+(h+dur)*gt.rules.nDaysPerWeek<gt.rules.nDaysPerWeek*gt.rules.nHoursPerDay);
+							if(!allowed[d+(h+dur)*gt.rules.nDaysPerWeek]){
+								ok=false;
+								break;
+							}
+						}
+				
+						if(!ok)
+							if(notAllowedTimesPercentages[ai][k] < ap->weightPercentage)
+								notAllowedTimesPercentages[ai][k] = ap->weightPercentage;
+					}
+				}
+			}
+			//subactivities preferred time slots 
+			if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_SUBACTIVITIES_PREFERRED_TIME_SLOTS){
+				ConstraintSubactivitiesPreferredTimeSlots* ap=(ConstraintSubactivitiesPreferredTimeSlots*)gt.rules.internalTimeConstraintsList[i];
+				
+				for(int j=0; j<ap->p_nActivities; j++){
+					int ai=ap->p_activitiesIndices[j];
+					
+					bool allowed[MAX_HOURS_PER_WEEK];
+					for(int k=0; k<gt.rules.nHoursPerWeek; k++)
+						allowed[k]=false;
+						
+					for(int m=0; m<ap->p_nPreferredTimeSlots; m++){
+						int d=ap->p_days[m];
+						int h=ap->p_hours[m];
+						assert(d>=0 && h>=0);
+						allowed[d+h*gt.rules.nDaysPerWeek]=true;
+					}
+					
+					for(int k=0; k<gt.rules.nHoursPerWeek; k++){
+						int d=k%gt.rules.nDaysPerWeek;
+						int h=k/gt.rules.nDaysPerWeek;
+						
+						bool ok=true;
+						
+						for(int dur=0; dur<gt.rules.internalActivitiesList[ai].duration && h+dur<gt.rules.nHoursPerDay; dur++){
+							assert(d+(h+dur)*gt.rules.nDaysPerWeek<gt.rules.nDaysPerWeek*gt.rules.nHoursPerDay);
+							if(!allowed[d+(h+dur)*gt.rules.nDaysPerWeek]){
+								ok=false;
+								break;
+							}
+						}
+				
+						if(!ok)
+							if(notAllowedTimesPercentages[ai][k] < ap->weightPercentage)
+								notAllowedTimesPercentages[ai][k] = ap->weightPercentage;
+					}
+				}
+			}
 	}
 	
 	return ok;
 }
 
-void computeMinNDays()
+bool computeMinNDays()
 {
+	QSet<ConstraintMinNDaysBetweenActivities*> mdset;
+
+	bool ok=true;
+
 	for(int j=0; j<gt.rules.nInternalActivities; j++){
 		minNDaysListOfActivities[j].clear();
 		minNDaysListOfMinDays[j].clear();
@@ -2619,6 +2826,22 @@ void computeMinNDays()
 				for(int k=0; k<md->_n_activities; k++)
 					if(j!=k){
 						int ai2=md->_activities[k];
+						if(ai1==ai2){						
+							ok=false;
+							
+							if(!mdset.contains(md)){
+								mdset.insert(md);
+						
+								int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
+								 QObject::tr("Cannot optimize, because you have a constraint min n days with duplicate activities. The constraint "
+								 "is: %1. Please correct that.").arg(md->getDetailedDescription(gt.rules)),
+								 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+								 1, 0 );
+					
+								if(t==0)
+									return ok;
+							}
+						}
 						int m=md->minDays;
 						/*if(m>minNDays[ai1][ai2])
 							minNDays[ai1][ai2]=minNDays[ai2][ai1]=m;*/
@@ -2639,6 +2862,65 @@ void computeMinNDays()
 				minNDaysListOfActivities[j].append(k);
 				minNDaysListOfMinDays[j].append(minNDays[j][k]);
 			}*/
+			
+	return ok;
+}
+
+bool computeMinGapsBetweenActivities()
+{
+	QSet<ConstraintMinGapsBetweenActivities*> mgset;
+
+	bool ok=true;
+
+	for(int j=0; j<gt.rules.nInternalActivities; j++){
+		minGapsBetweenActivitiesListOfActivities[j].clear();
+		minGapsBetweenActivitiesListOfMinGaps[j].clear();
+		minGapsBetweenActivitiesListOfWeightPercentages[j].clear();
+				
+		//for(int k=0; k<gt.rules.nInternalActivities; k++)
+		//	minNDays[j][k]=0;
+	}
+
+	for(int i=0; i<gt.rules.nInternalTimeConstraints; i++)
+		if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_MIN_GAPS_BETWEEN_ACTIVITIES
+		 /*&&gt.rules.internalTimeConstraintsList[i]->compulsory==true*/){
+			ConstraintMinGapsBetweenActivities* mg=
+			 (ConstraintMinGapsBetweenActivities*)gt.rules.internalTimeConstraintsList[i];
+			 
+			assert(mg->_n_activities==mg->_activities.count());
+			
+			for(int j=0; j<mg->_n_activities; j++){
+				int ai1=mg->_activities[j];
+				for(int k=0; k<mg->_n_activities; k++)
+					if(j!=k){
+						int ai2=mg->_activities[k];
+						if(ai1==ai2){						
+							ok=false;
+							
+							if(!mgset.contains(mg)){
+								mgset.insert(mg);
+						
+								int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
+								 QObject::tr("Cannot optimize, because you have a constraint min gaps between activities with duplicate activities. The constraint "
+								 "is: %1. Please correct that.").arg(mg->getDetailedDescription(gt.rules)),
+								 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+								 1, 0 );
+					
+								if(t==0)
+									return ok;
+							}
+						}
+						int m=mg->minGaps;
+						
+						minGapsBetweenActivitiesListOfActivities[ai1].append(ai2);
+						minGapsBetweenActivitiesListOfMinGaps[ai1].append(m);
+						assert(mg->weightPercentage >=0 && mg->weightPercentage<=100);
+						minGapsBetweenActivitiesListOfWeightPercentages[ai1].append(mg->weightPercentage);
+					}
+			}
+		}
+
+	return ok;
 }
 
 bool computeActivitiesConflictingPercentage()
@@ -2667,7 +2949,7 @@ bool computeActivitiesConflictingPercentage()
 	assert(m>=0 && m<=100);
 	assert(m==100);
 
-	//compute conflictig
+	//compute conflicting
 	for(int i=0; i<gt.rules.nInternalActivities; i++)
 		for(int j=0; j<gt.rules.nInternalActivities; j++)
 			activitiesConflictingPercentage[i][j]=-1;
@@ -2711,6 +2993,8 @@ bool computeActivitiesConflictingPercentage()
 			foreach(int j, gt.rules.internalSubgroupsList[s]->activitiesForSubgroup)
 				activitiesConflictingPercentage[i][j]=100;
 	}
+
+	progress.setValue(gt.rules.nInternalTeachers+gt.rules.nInternalSubgroups);
 	
 	return true;
 }
@@ -2796,6 +3080,8 @@ bool computeActivitiesConflictingPercentage()
 				activitiesConflictingPercentage[i][j]=activitiesConflictingPercentage[j][i]=-1;
 		}
 	}
+
+	progress.setValue(gt.rules.nInternalActivities*(gt.rules.nInternalActivities-1)/2);
 		
 	return true;
 }
@@ -2889,7 +3175,7 @@ bool computeActivityEndsStudentsDayPercentages()
 		
 	haveActivityEndsStudentsDay=false;
 		
-	for(int i=0; i<gt.rules.nInternalTimeConstraints; i++)
+	for(int i=0; i<gt.rules.nInternalTimeConstraints; i++){
 		if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_ACTIVITY_ENDS_STUDENTS_DAY){
 			haveActivityEndsStudentsDay=true;
 		
@@ -2915,6 +3201,33 @@ bool computeActivityEndsStudentsDayPercentages()
 			if(activityEndsStudentsDayPercentages[ai] < cae->weightPercentage)
 				activityEndsStudentsDayPercentages[ai] = cae->weightPercentage;
 		}
+		else if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_ACTIVITIES_END_STUDENTS_DAY){
+			haveActivityEndsStudentsDay=true;
+		
+			ConstraintActivitiesEndStudentsDay* cae=(ConstraintActivitiesEndStudentsDay*)gt.rules.internalTimeConstraintsList[i];
+			
+			if(cae->weightPercentage!=100){
+				ok=false;
+
+				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
+				 QObject::tr("Cannot optimize, because you have constraints of type "
+				 "activity activities end students day with weight percentage under 100%. "
+				 "Constraint activities end students day can only have weight percentage 100%. "
+				 "Please modify your data accordingly (remove or edit constraint) and try again."),
+				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				1, 0 );
+				
+				if(t==0)
+					break;
+			}
+			
+			for(int i=0; i<cae->nActivities; i++){
+				int ai=cae->activitiesIndices[i];
+				if(activityEndsStudentsDayPercentages[ai] < cae->weightPercentage)
+					activityEndsStudentsDayPercentages[ai] = cae->weightPercentage;
+			}
+		}
+	}
 		
 	return ok;
 }
@@ -3357,6 +3670,236 @@ bool checkMinNDaysConsecutiveIfSameDay()
 		cout<<endl;
 	}
 }*/
+
+bool computeTeachersIntervalMaxDaysPerWeek()
+{
+	for(int i=0; i<gt.rules.nInternalTeachers; i++){
+		teachersIntervalMaxDaysPerWeekPercentages1[i]=-1.0;
+		teachersIntervalMaxDaysPerWeekMaxDays1[i]=-1;
+		teachersIntervalMaxDaysPerWeekIntervalStart1[i]=-1;
+		teachersIntervalMaxDaysPerWeekIntervalEnd1[i]=-1;
+
+		teachersIntervalMaxDaysPerWeekPercentages2[i]=-1.0;
+		teachersIntervalMaxDaysPerWeekMaxDays2[i]=-1;
+		teachersIntervalMaxDaysPerWeekIntervalStart2[i]=-1;
+		teachersIntervalMaxDaysPerWeekIntervalEnd2[i]=-1;
+	}
+	
+	bool ok=true;
+	for(int i=0; i<gt.rules.nInternalTimeConstraints; i++){
+		if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_TEACHER_INTERVAL_MAX_DAYS_PER_WEEK){
+			ConstraintTeacherIntervalMaxDaysPerWeek* tn=(ConstraintTeacherIntervalMaxDaysPerWeek*)gt.rules.internalTimeConstraintsList[i];
+
+			if(tn->weightPercentage!=100){
+				ok=false;
+
+				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
+				 QObject::tr("Cannot optimize, because you have constraint teacher interval max days per week with"
+				 " weight (percentage) below 100 for teacher %1. Starting with FET version 5.6.2 it is only possible"
+				 " to use 100% weight for such constraints. Please make weight 100% and try again")
+				 .arg(tn->teacherName),
+				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 1, 0 );
+			 	
+				if(t==0)
+					return false;
+			}
+
+			if(teachersIntervalMaxDaysPerWeekPercentages1[tn->teacher_ID]==-1){
+				teachersIntervalMaxDaysPerWeekPercentages1[tn->teacher_ID]=tn->weightPercentage;
+				teachersIntervalMaxDaysPerWeekMaxDays1[tn->teacher_ID]=tn->maxDaysPerWeek;
+				teachersIntervalMaxDaysPerWeekIntervalStart1[tn->teacher_ID]=tn->startHour;
+				teachersIntervalMaxDaysPerWeekIntervalEnd1[tn->teacher_ID]=tn->endHour;
+			}
+			else if(teachersIntervalMaxDaysPerWeekPercentages2[tn->teacher_ID]==-1){
+				teachersIntervalMaxDaysPerWeekPercentages2[tn->teacher_ID]=tn->weightPercentage;
+				teachersIntervalMaxDaysPerWeekMaxDays2[tn->teacher_ID]=tn->maxDaysPerWeek;
+				teachersIntervalMaxDaysPerWeekIntervalStart2[tn->teacher_ID]=tn->startHour;
+				teachersIntervalMaxDaysPerWeekIntervalEnd2[tn->teacher_ID]=tn->endHour;
+			}
+			else{
+				ok=false;
+				
+				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
+				 QObject::tr("Cannot optimize for teacher %1, because it has more than two constraints interval max days per week"
+				 ". Please modify your data correspondingly (leave maximum two constraint of type"
+				 " constraint teacher(s) interval max days per week for each teacher) and try again")
+				 .arg(gt.rules.internalTeachersList[tn->teacher_ID]->name),
+				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 1, 0 );
+			 
+				if(t==0)
+					break;
+			}
+		}
+		else if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_TEACHERS_INTERVAL_MAX_DAYS_PER_WEEK){
+			ConstraintTeachersIntervalMaxDaysPerWeek* tn=(ConstraintTeachersIntervalMaxDaysPerWeek*)gt.rules.internalTimeConstraintsList[i];
+
+			if(tn->weightPercentage!=100){
+				ok=false;
+
+				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
+				 QObject::tr("Cannot optimize, because you have constraint teachers interval max days per week with"
+				 " weight (percentage) below 100. Starting with FET version 5.6.2 it is only possible"
+				 " to use 100% weight for such constraints. Please make weight 100% and try again"),
+				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 1, 0 );
+			 	
+				if(t==0)
+					return false;
+			}
+
+			for(int tch=0; tch<gt.rules.nInternalTeachers; tch++){
+				if(teachersIntervalMaxDaysPerWeekPercentages1[tch]==-1){
+					teachersIntervalMaxDaysPerWeekPercentages1[tch]=tn->weightPercentage;
+					teachersIntervalMaxDaysPerWeekMaxDays1[tch]=tn->maxDaysPerWeek;
+					teachersIntervalMaxDaysPerWeekIntervalStart1[tch]=tn->startHour;
+					teachersIntervalMaxDaysPerWeekIntervalEnd1[tch]=tn->endHour;
+				}
+				else if(teachersIntervalMaxDaysPerWeekPercentages2[tch]==-1){
+					teachersIntervalMaxDaysPerWeekPercentages2[tch]=tn->weightPercentage;
+					teachersIntervalMaxDaysPerWeekMaxDays2[tch]=tn->maxDaysPerWeek;
+					teachersIntervalMaxDaysPerWeekIntervalStart2[tch]=tn->startHour;
+					teachersIntervalMaxDaysPerWeekIntervalEnd2[tch]=tn->endHour;
+				}
+				else{
+					ok=false;
+					
+					int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
+					 QObject::tr("Cannot optimize for teacher %1, because it has more than two constraints interval max days per week"
+					 ". Please modify your data correspondingly (leave maximum two constraint of type"
+					 " constraint teacher(s) interval max days per week for each teacher) and try again")
+					 .arg(gt.rules.internalTeachersList[tch]->name),
+					 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+					 1, 0 );
+				 
+					if(t==0)
+						break;
+				}
+			}
+		}
+	}
+	
+	return ok;
+}
+
+bool computeSubgroupsIntervalMaxDaysPerWeek()
+{
+	for(int i=0; i<gt.rules.nInternalSubgroups; i++){
+		subgroupsIntervalMaxDaysPerWeekPercentages1[i]=-1.0;
+		subgroupsIntervalMaxDaysPerWeekMaxDays1[i]=-1;
+		subgroupsIntervalMaxDaysPerWeekIntervalStart1[i]=-1;
+		subgroupsIntervalMaxDaysPerWeekIntervalEnd1[i]=-1;
+
+		subgroupsIntervalMaxDaysPerWeekPercentages2[i]=-1.0;
+		subgroupsIntervalMaxDaysPerWeekMaxDays2[i]=-1;
+		subgroupsIntervalMaxDaysPerWeekIntervalStart2[i]=-1;
+		subgroupsIntervalMaxDaysPerWeekIntervalEnd2[i]=-1;
+	}
+	
+	bool ok=true;
+
+	for(int i=0; i<gt.rules.nInternalTimeConstraints; i++){
+		if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_STUDENTS_SET_INTERVAL_MAX_DAYS_PER_WEEK){
+			ConstraintStudentsSetIntervalMaxDaysPerWeek* cn=(ConstraintStudentsSetIntervalMaxDaysPerWeek*)gt.rules.internalTimeConstraintsList[i];
+
+			if(cn->weightPercentage!=100){
+				ok=false;
+
+				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
+				 QObject::tr("Cannot optimize, because you have constraint students set interval max days per week with"
+				 " weight (percentage) below 100 for students set %1. Starting with FET version 5.6.2 it is only possible"
+				 " to use 100% weight for such constraints. Please make weight 100% and try again")
+				 .arg(cn->students),
+				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 1, 0 );
+			 	
+				if(t==0)
+					return false;
+			}
+			
+			foreach(int sbg, cn->iSubgroupsList){
+				if(subgroupsIntervalMaxDaysPerWeekPercentages1[sbg]==-1){
+					subgroupsIntervalMaxDaysPerWeekPercentages1[sbg]=cn->weightPercentage;
+					subgroupsIntervalMaxDaysPerWeekMaxDays1[sbg]=cn->maxDaysPerWeek;
+					subgroupsIntervalMaxDaysPerWeekIntervalStart1[sbg]=cn->startHour;
+					subgroupsIntervalMaxDaysPerWeekIntervalEnd1[sbg]=cn->endHour;
+				}
+				else if(subgroupsIntervalMaxDaysPerWeekPercentages2[sbg]==-1){
+					subgroupsIntervalMaxDaysPerWeekPercentages2[sbg]=cn->weightPercentage;
+					subgroupsIntervalMaxDaysPerWeekMaxDays2[sbg]=cn->maxDaysPerWeek;
+					subgroupsIntervalMaxDaysPerWeekIntervalStart2[sbg]=cn->startHour;
+					subgroupsIntervalMaxDaysPerWeekIntervalEnd2[sbg]=cn->endHour;
+				}
+				else{
+					ok=false;
+					
+					int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
+					 QObject::tr("Cannot optimize for subgroup %1, because it has more than two constraints interval max days per week"
+					 ". Please modify your data correspondingly (leave maximum two constraint of type"
+					 " constraint students (set) interval max days per week for each subgroup) and try again")
+					 .arg(gt.rules.internalSubgroupsList[sbg]->name),
+					 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+					 1, 0 );
+				 
+					if(t==0)
+						break;
+				}
+			}
+		}
+		else if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_STUDENTS_INTERVAL_MAX_DAYS_PER_WEEK){
+			ConstraintStudentsIntervalMaxDaysPerWeek* cn=(ConstraintStudentsIntervalMaxDaysPerWeek*)gt.rules.internalTimeConstraintsList[i];
+
+			if(cn->weightPercentage!=100){
+				ok=false;
+
+				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
+				 QObject::tr("Cannot optimize, because you have constraint students interval max days per week with"
+				 " weight (percentage) below 100. Starting with FET version 5.6.2 it is only possible"
+				 " to use 100% weight for such constraints. Please make weight 100% and try again")
+				 //.arg(cn->students),
+				 ,
+				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 1, 0 );
+			 	
+				if(t==0)
+					return false;
+			}
+			
+			for(int sbg=0; sbg<gt.rules.nInternalSubgroups; sbg++){
+			//foreach(int sbg, cn->iSubgroupsList){
+				if(subgroupsIntervalMaxDaysPerWeekPercentages1[sbg]==-1){
+					subgroupsIntervalMaxDaysPerWeekPercentages1[sbg]=cn->weightPercentage;
+					subgroupsIntervalMaxDaysPerWeekMaxDays1[sbg]=cn->maxDaysPerWeek;
+					subgroupsIntervalMaxDaysPerWeekIntervalStart1[sbg]=cn->startHour;
+					subgroupsIntervalMaxDaysPerWeekIntervalEnd1[sbg]=cn->endHour;
+				}
+				else if(subgroupsIntervalMaxDaysPerWeekPercentages2[sbg]==-1){
+					subgroupsIntervalMaxDaysPerWeekPercentages2[sbg]=cn->weightPercentage;
+					subgroupsIntervalMaxDaysPerWeekMaxDays2[sbg]=cn->maxDaysPerWeek;
+					subgroupsIntervalMaxDaysPerWeekIntervalStart2[sbg]=cn->startHour;
+					subgroupsIntervalMaxDaysPerWeekIntervalEnd2[sbg]=cn->endHour;
+				}
+				else{
+					ok=false;
+					
+					int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
+					 QObject::tr("Cannot optimize for subgroup %1, because it has more than two constraints interval max days per week"
+					 ". Please modify your data correspondingly (leave maximum two constraint of type"
+					 " constraint students (set) interval max days per week for each subgroup) and try again")
+					 .arg(gt.rules.internalSubgroupsList[sbg]->name),
+					 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+					 1, 0 );
+				 
+					if(t==0)
+						break;
+				}
+			}
+		}
+	}
+
+	return ok;
+}
 
 bool computeBasicSpace()
 {
@@ -4425,6 +4968,9 @@ void computeMustComputeTimetableSubgroups()
 			  subgroupsMaxHoursContinuouslyPercentages2[sbg]>=0 ||
 			  subgroupsMinHoursDailyPercentages[sbg]>=0 ||
 			  
+			  subgroupsIntervalMaxDaysPerWeekPercentages1[sbg]>=0 ||
+			  subgroupsIntervalMaxDaysPerWeekPercentages2[sbg]>=0 ||
+			  
 			  maxBuildingChangesPerDayForStudentsPercentages[sbg]>=0 ||
 			  maxBuildingChangesPerWeekForStudentsPercentages[sbg]>=0 ||
 			  minGapsBetweenBuildingChangesForStudentsPercentages[sbg]>=0){
@@ -4453,6 +4999,9 @@ void computeMustComputeTimetableTeachers()
 			  teachersMaxHoursContinuouslyPercentages1[tch]>=0 ||
 			  teachersMaxHoursContinuouslyPercentages2[tch]>=0 ||
 			  teachersMinHoursDailyPercentages[tch]>=0 ||
+			  
+			  teachersIntervalMaxDaysPerWeekPercentages1[tch]>=0 ||
+			  teachersIntervalMaxDaysPerWeekPercentages2[tch]>=0 ||
 			  
 			  maxBuildingChangesPerDayForTeachersPercentages[tch]>=0 ||
 			  maxBuildingChangesPerWeekForTeachersPercentages[tch]>=0 ||
@@ -4487,9 +5036,17 @@ bool computeFixedActivities()
 				return false;
 		}
 		else if(notAllowedSlots==gt.rules.nHoursPerWeek-1)
-			fixedActivity[ai]=true;
+			fixedTimeActivity[ai]=true;
 		else
-			fixedActivity[ai]=false;
+			fixedTimeActivity[ai]=false;
+			
+		//space
+		fixedSpaceActivity[ai]=false;
+		foreach(PreferredRoomsItem it, activitiesPreferredRoomsList[ai])
+			if(it.percentage==100.0 && it.preferredRooms.count()==1){
+				fixedSpaceActivity[ai]=true;
+				break;
+			}
 	}
 	
 	return ok;
@@ -4658,7 +5215,8 @@ bool homeRoomsAreOk()
 
 void sortActivities()
 {
-	const int INF=2000000000;
+	const int INF  = 2000000000;
+	const int INF2 = 2000000001;
 	
 	//I should take care of home rooms, but I don't want to change the routine below which works well
 
@@ -4690,7 +5248,7 @@ void sortActivities()
 		double maxPercentage=-1;
 		double minNRooms=INF;
 		foreach(PreferredRoomsItem it, activitiesPreferredRoomsList[j])
-			if(maxPercentage<it.percentage || maxPercentage==it.percentage && minNRooms>it.preferredRooms.count()){
+			if(maxPercentage<it.percentage || (maxPercentage==it.percentage && minNRooms>it.preferredRooms.count())){
 				maxPercentage=it.percentage;
 				minNRooms=it.preferredRooms.count();
 				maxPercentagePrefRooms[j]=it;
@@ -4751,8 +5309,12 @@ void sortActivities()
 
 		nIncompatible[i]*=gt.rules.internalActivitiesList[i].duration;
 		
-		if(fixedActivity[i])
+		if(fixedTimeActivity[i]){
 			nIncompatible[i]=INF;
+			
+			if(fixedSpaceActivity[i])
+				nIncompatible[i]=INF2;
+		}
 	}
 
 	//same starting time - not computing, the algo takes care even without correct sorting

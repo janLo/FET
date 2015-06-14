@@ -28,12 +28,13 @@
 AddConstraintActivitiesSameStartingTimeForm::AddConstraintActivitiesSameStartingTimeForm()
 {
 	//setWindowFlags(Qt::Window);
-	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	/*setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 	QDesktopWidget* desktop=QApplication::desktop();
 	int xx=desktop->width()/2 - frameGeometry().width()/2;
 	int yy=desktop->height()/2 - frameGeometry().height()/2;
-	move(xx, yy);
-						
+	move(xx, yy);*/
+	centerWidgetOnScreen(this);
+							
 	teachersComboBox->insertItem("");
 	for(int i=0; i<gt.rules.teachersList.size(); i++){
 		Teacher* tch=gt.rules.teachersList[i];
@@ -291,6 +292,10 @@ if(blockCheckBox->isChecked()){ //block constraints
 			QString s=QObject::tr("Constraint added:");
 			s+="\n";
 			s+=ctr->getDetailedDescription(gt.rules);
+			s+="\n";
+			s+=tr("IMPORTANT: when adding this constraint, it is necessary (otherwise generation might be impossible) to remove redundant constraints"
+			" min n days between activities. Only if after adding this constraint you will have redundant min n days constraints."
+			" Please read Help/Important tips - tip number 2 for details");
 			QMessageBox::information(this, QObject::tr("FET information"), s);
 		}
 		else{
@@ -316,6 +321,10 @@ else{
 		QString s=QObject::tr("Constraint added:");
 		s+="\n";
 		s+=ctr->getDetailedDescription(gt.rules);
+		s+="\n";
+		s+=tr("IMPORTANT: when adding this constraint, it is necessary (otherwise generation might be impossible) to remove redundant constraints"
+		" min n days between activities. Only if after adding this constraint you will have redundant min n days constraints."
+		" Please read Help/Important tips - tip number 2 for details");
 		QMessageBox::information(this, QObject::tr("FET information"), s);
 	}
 	else{

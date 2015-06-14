@@ -76,16 +76,28 @@ const int CONSTRAINT_STUDENTS_MIN_HOURS_DAILY							=24;
 const int CONSTRAINT_STUDENTS_SET_MIN_HOURS_DAILY						=25;
 
 const int CONSTRAINT_ACTIVITY_ENDS_STUDENTS_DAY							=26;
-const int CONSTRAINT_ACTIVITY_PREFERRED_TIME							=27;
+const int CONSTRAINT_ACTIVITY_PREFERRED_STARTING_TIME					=27;
 const int CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME						=28;
 const int CONSTRAINT_ACTIVITIES_NOT_OVERLAPPING							=29;
 const int CONSTRAINT_MIN_N_DAYS_BETWEEN_ACTIVITIES						=30;
-const int CONSTRAINT_ACTIVITY_PREFERRED_TIMES							=31;
-const int CONSTRAINT_ACTIVITIES_PREFERRED_TIMES							=32;
-const int CONSTRAINT_ACTIVITIES_SAME_STARTING_HOUR						=33;
-const int CONSTRAINT_ACTIVITIES_SAME_STARTING_DAY						=34;
-const int CONSTRAINT_2_ACTIVITIES_CONSECUTIVE							=35;
-const int CONSTRAINT_2_ACTIVITIES_ORDERED								=36;
+const int CONSTRAINT_ACTIVITY_PREFERRED_TIME_SLOTS						=31;
+const int CONSTRAINT_ACTIVITIES_PREFERRED_TIME_SLOTS					=32;
+const int CONSTRAINT_ACTIVITY_PREFERRED_STARTING_TIMES					=33;
+const int CONSTRAINT_ACTIVITIES_PREFERRED_STARTING_TIMES				=34;
+const int CONSTRAINT_ACTIVITIES_SAME_STARTING_HOUR						=35;
+const int CONSTRAINT_ACTIVITIES_SAME_STARTING_DAY						=36;
+const int CONSTRAINT_2_ACTIVITIES_CONSECUTIVE							=37;
+const int CONSTRAINT_2_ACTIVITIES_ORDERED								=38;
+const int CONSTRAINT_MIN_GAPS_BETWEEN_ACTIVITIES						=39;
+const int CONSTRAINT_SUBACTIVITIES_PREFERRED_TIME_SLOTS					=40;
+const int CONSTRAINT_SUBACTIVITIES_PREFERRED_STARTING_TIMES				=41;
+
+const int CONSTRAINT_TEACHER_INTERVAL_MAX_DAYS_PER_WEEK					=42;
+const int CONSTRAINT_TEACHERS_INTERVAL_MAX_DAYS_PER_WEEK				=43;
+const int CONSTRAINT_STUDENTS_SET_INTERVAL_MAX_DAYS_PER_WEEK			=44;
+const int CONSTRAINT_STUDENTS_INTERVAL_MAX_DAYS_PER_WEEK				=45;
+
+const int CONSTRAINT_ACTIVITIES_END_STUDENTS_DAY						=46;
 
 /**
 This class represents a time constraint
@@ -144,6 +156,8 @@ public:
 	one and it depends on only inactive activities.
 	*/
 	virtual bool computeInternalStructure(Rules& r)=0;
+	
+	virtual bool hasInactiveActivities(Rules& r)=0;
 
 	/**
 	Returns a small description string for this constraint
@@ -158,7 +172,7 @@ public:
 	/**
 	Returns true if this constraint is related to this activity
 	*/
-	virtual bool isRelatedToActivity(Activity* a)=0;
+	virtual bool isRelatedToActivity(Rules& r, Activity* a)=0;
 
 	/**
 	Returns true if this constraint is related to this teacher
@@ -192,6 +206,8 @@ public:
 	ConstraintBasicCompulsoryTime(double wp);
 
 	bool computeInternalStructure(Rules& r);
+	
+	bool hasInactiveActivities(Rules& r);
 
 	QString getXmlDescription(Rules& r);
 
@@ -201,7 +217,7 @@ public:
 
 	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
-	bool isRelatedToActivity(Activity* a);
+	bool isRelatedToActivity(Rules& r, Activity* a);
 	
 	bool isRelatedToTeacher(Teacher* t);
 
@@ -233,6 +249,8 @@ public:
 
 	bool computeInternalStructure(Rules& r);
 
+	bool hasInactiveActivities(Rules& r);
+
 	QString getXmlDescription(Rules& r);
 
 	QString getDescription(Rules& r);
@@ -241,7 +259,7 @@ public:
 
 	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
-	bool isRelatedToActivity(Activity* a);
+	bool isRelatedToActivity(Rules& r, Activity* a);
 	
 	bool isRelatedToTeacher(Teacher* t);
 
@@ -273,6 +291,8 @@ public:
 
 	bool computeInternalStructure(Rules& r);
 
+	bool hasInactiveActivities(Rules& r);
+
 	QString getXmlDescription(Rules& r);
 
 	QString getDescription(Rules& r);
@@ -281,7 +301,7 @@ public:
 
 	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
-	bool isRelatedToActivity(Activity* a);
+	bool isRelatedToActivity(Rules& r, Activity* a);
 	
 	bool isRelatedToTeacher(Teacher* t);
 
@@ -338,6 +358,8 @@ public:
 
 	bool computeInternalStructure(Rules& r);
 
+	bool hasInactiveActivities(Rules& r);
+
 	QString getXmlDescription(Rules& r);
 
 	QString getDescription(Rules& r);
@@ -351,7 +373,7 @@ public:
 	*/
 	void removeUseless(Rules& r);
 
-	bool isRelatedToActivity(Activity* a);
+	bool isRelatedToActivity(Rules& r, Activity* a);
 	
 	bool isRelatedToTeacher(Teacher* t);
 
@@ -400,6 +422,8 @@ public:
 
 	bool computeInternalStructure(Rules& r);
 
+	bool hasInactiveActivities(Rules& r);
+
 	QString getXmlDescription(Rules& r);
 
 	QString getDescription(Rules& r);
@@ -413,7 +437,7 @@ public:
 	*/
 	void removeUseless(Rules &r);
 
-	bool isRelatedToActivity(Activity* a);
+	bool isRelatedToActivity(Rules& r, Activity* a);
 	
 	bool isRelatedToTeacher(Teacher* t);
 
@@ -475,6 +499,8 @@ public:
 
 	bool computeInternalStructure(Rules& r);
 
+	bool hasInactiveActivities(Rules& r);
+
 	QString getXmlDescription(Rules& r);
 
 	QString getDescription(Rules& r);
@@ -488,7 +514,72 @@ public:
 	*/
 	void removeUseless(Rules &r);
 
-	bool isRelatedToActivity(Activity* a);
+	bool isRelatedToActivity(Rules& r, Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToActivityTag(ActivityTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+};
+
+class ConstraintMinGapsBetweenActivities: public TimeConstraint{
+public:
+	/**
+	The number of activities involved in this constraint
+	*/
+	int n_activities;
+
+	/**
+	The activities involved in this constraint (id)
+	*/
+	QList<int> activitiesId;
+
+	/**
+	The number of minimum gaps between each 2 activities, if on the same day
+	*/
+	int minGaps;
+
+	//internal structure (redundant)
+
+	/**
+	The number of activities involved in this constraint - internal structure
+	*/
+	int _n_activities;
+
+	/**
+	The activities involved in this constraint (index in the rules) - internal structure
+	*/
+	QList<int> _activities;
+
+	ConstraintMinGapsBetweenActivities();
+
+	/**
+	Constructor, using:
+	the weight, the number of activities and the list of activities.
+	*/
+	ConstraintMinGapsBetweenActivities(double wp, int n_act, const int act[], int ngaps);
+
+	bool computeInternalStructure(Rules& r);
+
+	bool hasInactiveActivities(Rules& r);
+
+	QString getXmlDescription(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
+
+	/**
+	Removes useless activities from the activitiesId array
+	*/
+	void removeUseless(Rules &r);
+
+	bool isRelatedToActivity(Rules& r, Activity* a);
 	
 	bool isRelatedToTeacher(Teacher* t);
 
@@ -518,13 +609,15 @@ public:
 
 	bool computeInternalStructure(Rules& r);
 
+	bool hasInactiveActivities(Rules& r);
+
 	QString getDescription(Rules& r);
 
 	QString getDetailedDescription(Rules& r);
 
 	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
-	bool isRelatedToActivity(Activity* a);
+	bool isRelatedToActivity(Rules& r, Activity* a);
 	
 	bool isRelatedToTeacher(Teacher* t);
 
@@ -554,13 +647,15 @@ public:
 
 	bool computeInternalStructure(Rules& r);
 
+	bool hasInactiveActivities(Rules& r);
+
 	QString getDescription(Rules& r);
 
 	QString getDetailedDescription(Rules& r);
 
 	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
-	bool isRelatedToActivity(Activity* a);
+	bool isRelatedToActivity(Rules& r, Activity* a);
 	
 	bool isRelatedToTeacher(Teacher* t);
 
@@ -590,13 +685,15 @@ public:
 
 	bool computeInternalStructure(Rules& r);
 
+	bool hasInactiveActivities(Rules& r);
+
 	QString getDescription(Rules& r);
 
 	QString getDetailedDescription(Rules& r);
 
 	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
-	bool isRelatedToActivity(Activity* a);
+	bool isRelatedToActivity(Rules& r, Activity* a);
 	
 	bool isRelatedToTeacher(Teacher* t);
 
@@ -626,13 +723,15 @@ public:
 
 	bool computeInternalStructure(Rules& r);
 
+	bool hasInactiveActivities(Rules& r);
+
 	QString getDescription(Rules& r);
 
 	QString getDetailedDescription(Rules& r);
 
 	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
-	bool isRelatedToActivity(Activity* a);
+	bool isRelatedToActivity(Rules& r, Activity* a);
 	
 	bool isRelatedToTeacher(Teacher* t);
 
@@ -672,6 +771,8 @@ public:
 
 	bool computeInternalStructure(Rules& r);
 
+	bool hasInactiveActivities(Rules& r);
+
 	QString getXmlDescription(Rules& r);
 
 	QString getDescription(Rules& r);
@@ -680,7 +781,7 @@ public:
 
 	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
-	bool isRelatedToActivity(Activity* a);
+	bool isRelatedToActivity(Rules& r, Activity* a);
 	
 	bool isRelatedToTeacher(Teacher* t);
 
@@ -707,6 +808,8 @@ public:
 
 	bool computeInternalStructure(Rules& r);
 
+	bool hasInactiveActivities(Rules& r);
+
 	QString getXmlDescription(Rules& r);
 
 	QString getDescription(Rules& r);
@@ -715,7 +818,7 @@ public:
 
 	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
-	bool isRelatedToActivity(Activity* a);
+	bool isRelatedToActivity(Rules& r, Activity* a);
 	
 	bool isRelatedToTeacher(Teacher* t);
 
@@ -742,6 +845,8 @@ public:
 
 	bool computeInternalStructure(Rules& r);
 
+	bool hasInactiveActivities(Rules& r);
+
 	QString getXmlDescription(Rules& r);
 
 	QString getDescription(Rules& r);
@@ -750,7 +855,7 @@ public:
 
 	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
-	bool isRelatedToActivity(Activity* a);
+	bool isRelatedToActivity(Rules& r, Activity* a);
 	
 	bool isRelatedToTeacher(Teacher* t);
 
@@ -780,7 +885,7 @@ public:
 	/**
 	The number of subgroups
 	*/
-	int nSubgroups;
+	//int nSubgroups;
 
 	/**
 	The subgroups
@@ -793,6 +898,8 @@ public:
 
 	bool computeInternalStructure(Rules& r);
 
+	bool hasInactiveActivities(Rules& r);
+
 	QString getXmlDescription(Rules& r);
 
 	QString getDescription(Rules& r);
@@ -801,7 +908,7 @@ public:
 
 	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
-	bool isRelatedToActivity(Activity* a);
+	bool isRelatedToActivity(Rules& r, Activity* a);
 	
 	bool isRelatedToTeacher(Teacher* t);
 
@@ -822,6 +929,8 @@ public:
 
 	bool computeInternalStructure(Rules& r);
 
+	bool hasInactiveActivities(Rules& r);
+
 	QString getXmlDescription(Rules& r);
 
 	QString getDescription(Rules& r);
@@ -830,7 +939,7 @@ public:
 
 	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
-	bool isRelatedToActivity(Activity* a);
+	bool isRelatedToActivity(Rules& r, Activity* a);
 	
 	bool isRelatedToTeacher(Teacher* t);
 
@@ -855,6 +964,8 @@ public:
 
 	bool computeInternalStructure(Rules& r);
 
+	bool hasInactiveActivities(Rules& r);
+
 	QString getXmlDescription(Rules& r);
 
 	QString getDescription(Rules& r);
@@ -863,7 +974,7 @@ public:
 
 	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
-	bool isRelatedToActivity(Activity* a);
+	bool isRelatedToActivity(Rules& r, Activity* a);
 	
 	bool isRelatedToTeacher(Teacher* t);
 
@@ -884,6 +995,8 @@ public:
 
 	bool computeInternalStructure(Rules& r);
 
+	bool hasInactiveActivities(Rules& r);
+
 	QString getXmlDescription(Rules& r);
 
 	QString getDescription(Rules& r);
@@ -892,7 +1005,7 @@ public:
 
 	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
-	bool isRelatedToActivity(Activity* a);
+	bool isRelatedToActivity(Rules& r, Activity* a);
 	
 	bool isRelatedToTeacher(Teacher* t);
 
@@ -917,6 +1030,8 @@ public:
 
 	bool computeInternalStructure(Rules& r);
 
+	bool hasInactiveActivities(Rules& r);
+
 	QString getXmlDescription(Rules& r);
 
 	QString getDescription(Rules& r);
@@ -925,7 +1040,7 @@ public:
 
 	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
-	bool isRelatedToActivity(Activity* a);
+	bool isRelatedToActivity(Rules& r, Activity* a);
 	
 	bool isRelatedToTeacher(Teacher* t);
 
@@ -955,6 +1070,8 @@ public:
 
 	bool computeInternalStructure(Rules& r);
 
+	bool hasInactiveActivities(Rules& r);
+
 	QString getXmlDescription(Rules& r);
 
 	QString getDescription(Rules& r);
@@ -963,7 +1080,7 @@ public:
 
 	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
-	bool isRelatedToActivity(Activity* a);
+	bool isRelatedToActivity(Rules& r, Activity* a);
 	
 	bool isRelatedToTeacher(Teacher* t);
 
@@ -986,7 +1103,7 @@ public:
 	/**
 	The number of subgroups involved in this restriction
 	*/
-	int nSubgroups;
+	//int nSubgroups;
 
 	/**
 	The subgroups involved in this restriction
@@ -1000,6 +1117,8 @@ public:
 
 	bool computeInternalStructure(Rules& r);
 
+	bool hasInactiveActivities(Rules& r);
+
 	QString getXmlDescription(Rules& r);
 
 	QString getDescription(Rules& r);
@@ -1008,7 +1127,7 @@ public:
 
 	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
-	bool isRelatedToActivity(Activity* a);
+	bool isRelatedToActivity(Rules& r, Activity* a);
 	
 	bool isRelatedToTeacher(Teacher* t);
 
@@ -1029,6 +1148,8 @@ public:
 
 	bool computeInternalStructure(Rules& r);
 
+	bool hasInactiveActivities(Rules& r);
+
 	QString getXmlDescription(Rules& r);
 
 	QString getDescription(Rules& r);
@@ -1037,7 +1158,7 @@ public:
 
 	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
-	bool isRelatedToActivity(Activity* a);
+	bool isRelatedToActivity(Rules& r, Activity* a);
 	
 	bool isRelatedToTeacher(Teacher* t);
 
@@ -1062,7 +1183,7 @@ public:
 	/**
 	The number of subgroups
 	*/
-	int nSubgroups;
+	//int nSubgroups;
 
 	/**
 	The subgroups
@@ -1076,6 +1197,8 @@ public:
 
 	bool computeInternalStructure(Rules& r);
 
+	bool hasInactiveActivities(Rules& r);
+
 	QString getXmlDescription(Rules& r);
 
 	QString getDescription(Rules& r);
@@ -1084,7 +1207,7 @@ public:
 
 	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
-	bool isRelatedToActivity(Activity* a);
+	bool isRelatedToActivity(Rules& r, Activity* a);
 	
 	bool isRelatedToTeacher(Teacher* t);
 
@@ -1105,6 +1228,8 @@ public:
 
 	bool computeInternalStructure(Rules& r);
 
+	bool hasInactiveActivities(Rules& r);
+
 	QString getXmlDescription(Rules& r);
 
 	QString getDescription(Rules& r);
@@ -1113,7 +1238,7 @@ public:
 
 	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
-	bool isRelatedToActivity(Activity* a);
+	bool isRelatedToActivity(Rules& r, Activity* a);
 	
 	bool isRelatedToTeacher(Teacher* t);
 
@@ -1138,7 +1263,7 @@ public:
 	/**
 	The number of subgroups
 	*/
-	int nSubgroups;
+	//int nSubgroups;
 
 	/**
 	The subgroups
@@ -1152,6 +1277,8 @@ public:
 
 	bool computeInternalStructure(Rules& r);
 
+	bool hasInactiveActivities(Rules& r);
+
 	QString getXmlDescription(Rules& r);
 
 	QString getDescription(Rules& r);
@@ -1160,7 +1287,7 @@ public:
 
 	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
-	bool isRelatedToActivity(Activity* a);
+	bool isRelatedToActivity(Rules& r, Activity* a);
 	
 	bool isRelatedToTeacher(Teacher* t);
 
@@ -1181,6 +1308,8 @@ public:
 
 	bool computeInternalStructure(Rules& r);
 
+	bool hasInactiveActivities(Rules& r);
+
 	QString getXmlDescription(Rules& r);
 
 	QString getDescription(Rules& r);
@@ -1189,7 +1318,7 @@ public:
 
 	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
-	bool isRelatedToActivity(Activity* a);
+	bool isRelatedToActivity(Rules& r, Activity* a);
 	
 	bool isRelatedToTeacher(Teacher* t);
 
@@ -1214,7 +1343,7 @@ public:
 	/**
 	The number of subgroups
 	*/
-	int nSubgroups;
+	//int nSubgroups;
 
 	/**
 	The subgroups
@@ -1228,6 +1357,8 @@ public:
 
 	bool computeInternalStructure(Rules& r);
 
+	bool hasInactiveActivities(Rules& r);
+
 	QString getXmlDescription(Rules& r);
 
 	QString getDescription(Rules& r);
@@ -1236,7 +1367,7 @@ public:
 
 	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
-	bool isRelatedToActivity(Activity* a);
+	bool isRelatedToActivity(Rules& r, Activity* a);
 	
 	bool isRelatedToTeacher(Teacher* t);
 
@@ -1254,7 +1385,7 @@ grows as the activity is scheduled farther from the wanted time
 For the moment, fitness factor increases with one unit for every hour
 and one unit for every day.
 */
-class ConstraintActivityPreferredTime: public TimeConstraint{
+class ConstraintActivityPreferredStartingTime: public TimeConstraint{
 public:
 	/**
 	Activity id
@@ -1277,16 +1408,18 @@ public:
 	*/
 	int activityIndex;
 
-	ConstraintActivityPreferredTime();
+	ConstraintActivityPreferredStartingTime();
 
-	ConstraintActivityPreferredTime(double wp, int actId, int d, int h);
+	ConstraintActivityPreferredStartingTime(double wp, int actId, int d, int h);
 
 	/**
 	Comparison operator - to be sure that we do not introduce duplicates
 	*/
-	bool operator==(ConstraintActivityPreferredTime& c);
+	bool operator==(ConstraintActivityPreferredStartingTime& c);
 
 	bool computeInternalStructure(Rules& r);
+
+	bool hasInactiveActivities(Rules& r);
 
 	QString getXmlDescription(Rules& r);
 
@@ -1296,7 +1429,7 @@ public:
 
 	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
-	bool isRelatedToActivity(Activity* a);
+	bool isRelatedToActivity(Rules& r, Activity* a);
 	
 	bool isRelatedToTeacher(Teacher* t);
 
@@ -1312,39 +1445,41 @@ This is a constraint.
 It returns conflicts if the activity is scheduled in another interval
 than the preferred set of times.
 */
-class ConstraintActivityPreferredTimes: public TimeConstraint{
+class ConstraintActivityPreferredTimeSlots: public TimeConstraint{
 public:
 	/**
 	Activity id
 	*/
-	int activityId;
+	int p_activityId;
 
 	/**
 	The number of preferred times
 	*/
-	int nPreferredTimes;
+	int p_nPreferredTimeSlots;
 
 	/**
 	The preferred days. If -1, then the user does not care about the day.
 	*/
-	int days[MAX_N_CONSTRAINT_ACTIVITY_PREFERRED_TIMES];
+	int p_days[MAX_N_CONSTRAINT_ACTIVITY_PREFERRED_TIME_SLOTS];
 
 	/**
 	The preferred hour. If -1, then the user does not care about the hour.
 	*/
-	int hours[MAX_N_CONSTRAINT_ACTIVITY_PREFERRED_TIMES];
+	int p_hours[MAX_N_CONSTRAINT_ACTIVITY_PREFERRED_TIME_SLOTS];
 
 	//internal variables
 	/**
 	The index of the activity in the rules (from 0 to rules.nActivities-1) - it is not the id of the activity
 	*/
-	int activityIndex;
+	int p_activityIndex;
 
-	ConstraintActivityPreferredTimes();
+	ConstraintActivityPreferredTimeSlots();
 
-	ConstraintActivityPreferredTimes(double wp, int actId, int nPT, int d[], int h[]);
+	ConstraintActivityPreferredTimeSlots(double wp, int actId, int nPT, int d[], int h[]);
 
 	bool computeInternalStructure(Rules& r);
+
+	bool hasInactiveActivities(Rules& r);
 
 	QString getXmlDescription(Rules& r);
 
@@ -1354,7 +1489,62 @@ public:
 
 	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
-	bool isRelatedToActivity(Activity* a);
+	bool isRelatedToActivity(Rules& r, Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToActivityTag(ActivityTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+};
+
+class ConstraintActivityPreferredStartingTimes: public TimeConstraint{
+public:
+	/**
+	Activity id
+	*/
+	int activityId;
+
+	/**
+	The number of preferred times
+	*/
+	int nPreferredStartingTimes;
+
+	/**
+	The preferred days. If -1, then the user does not care about the day.
+	*/
+	int days[MAX_N_CONSTRAINT_ACTIVITY_PREFERRED_STARTING_TIMES];
+
+	/**
+	The preferred hour. If -1, then the user does not care about the hour.
+	*/
+	int hours[MAX_N_CONSTRAINT_ACTIVITY_PREFERRED_STARTING_TIMES];
+
+	//internal variables
+	/**
+	The index of the activity in the rules (from 0 to rules.nActivities-1) - it is not the id of the activity
+	*/
+	int activityIndex;
+
+	ConstraintActivityPreferredStartingTimes();
+
+	ConstraintActivityPreferredStartingTimes(double wp, int actId, int nPT, int d[], int h[]);
+
+	bool computeInternalStructure(Rules& r);
+
+	bool hasInactiveActivities(Rules& r);
+
+	QString getXmlDescription(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
+
+	bool isRelatedToActivity(Rules& r, Activity* a);
 	
 	bool isRelatedToTeacher(Teacher* t);
 
@@ -1372,7 +1562,165 @@ than the preferred set of times.
 The set of activities is specified by a subject, teacher, students or a combination
 of these.
 */
-class ConstraintActivitiesPreferredTimes: public TimeConstraint{
+class ConstraintActivitiesPreferredTimeSlots: public TimeConstraint{
+public:
+	/**
+	The teacher. If void, all teachers.
+	*/
+	QString p_teacherName;
+
+	/**
+	The students. If void, all students.
+	*/
+	QString p_studentsName;
+
+	/**
+	The subject. If void, all subjects.
+	*/
+	QString p_subjectName;
+
+	/**
+	The activity tag. If void, all activity tags.
+	*/
+	QString p_activityTagName;
+
+	/**
+	The number of preferred times
+	*/
+	int p_nPreferredTimeSlots;
+
+	/**
+	The preferred days. If -1, then the user does not care about the day.
+	*/
+	int p_days[MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_TIME_SLOTS];
+
+	/**
+	The preferred hours. If -1, then the user does not care about the hour.
+	*/
+	int p_hours[MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_TIME_SLOTS];
+
+	//internal variables
+	
+	/**
+	The number of activities which are represented by the subject, teacher and students requirements.
+	*/
+	int p_nActivities;
+	
+	/**
+	The indices of the activities in the rules (from 0 to rules.nActivities-1)
+	These are indices in the internal list -> Rules::internalActivitiesList
+	*/
+	int p_activitiesIndices[MAX_ACTIVITIES];
+
+	ConstraintActivitiesPreferredTimeSlots();
+
+	ConstraintActivitiesPreferredTimeSlots(double wp, QString te,
+		QString st, QString su, QString sut, int nPT, int d[], int h[]);
+
+	bool computeInternalStructure(Rules& r);
+
+	bool hasInactiveActivities(Rules& r);
+
+	QString getXmlDescription(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
+
+	bool isRelatedToActivity(Rules& r, Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToActivityTag(ActivityTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+};
+
+class ConstraintSubactivitiesPreferredTimeSlots: public TimeConstraint{
+public:
+	int componentNumber;
+
+	/**
+	The teacher. If void, all teachers.
+	*/
+	QString p_teacherName;
+
+	/**
+	The students. If void, all students.
+	*/
+	QString p_studentsName;
+
+	/**
+	The subject. If void, all subjects.
+	*/
+	QString p_subjectName;
+
+	/**
+	The activity tag. If void, all activity tags.
+	*/
+	QString p_activityTagName;
+
+	/**
+	The number of preferred times
+	*/
+	int p_nPreferredTimeSlots;
+
+	/**
+	The preferred days. If -1, then the user does not care about the day.
+	*/
+	int p_days[MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_TIME_SLOTS];
+
+	/**
+	The preferred hours. If -1, then the user does not care about the hour.
+	*/
+	int p_hours[MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_TIME_SLOTS];
+
+	//internal variables
+	
+	/**
+	The number of activities which are represented by the subject, teacher and students requirements.
+	*/
+	int p_nActivities;
+	
+	/**
+	The indices of the activities in the rules (from 0 to rules.nActivities-1)
+	These are indices in the internal list -> Rules::internalActivitiesList
+	*/
+	int p_activitiesIndices[MAX_ACTIVITIES];
+
+	ConstraintSubactivitiesPreferredTimeSlots();
+
+	ConstraintSubactivitiesPreferredTimeSlots(double wp, int compNo, QString te,
+		QString st, QString su, QString sut, int nPT, int d[], int h[]);
+
+	bool computeInternalStructure(Rules& r);
+
+	bool hasInactiveActivities(Rules& r);
+
+	QString getXmlDescription(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
+
+	bool isRelatedToActivity(Rules& r, Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToActivityTag(ActivityTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+};
+
+class ConstraintActivitiesPreferredStartingTimes: public TimeConstraint{
 public:
 	/**
 	The teacher. If void, all teachers.
@@ -1397,17 +1745,17 @@ public:
 	/**
 	The number of preferred times
 	*/
-	int nPreferredTimes;
+	int nPreferredStartingTimes;
 
 	/**
 	The preferred days. If -1, then the user does not care about the day.
 	*/
-	int days[MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_TIMES];
+	int days[MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_STARTING_TIMES];
 
 	/**
 	The preferred hours. If -1, then the user does not care about the hour.
 	*/
-	int hours[MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_TIMES];
+	int hours[MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_STARTING_TIMES];
 
 	//internal variables
 	
@@ -1422,12 +1770,14 @@ public:
 	*/
 	int activitiesIndices[MAX_ACTIVITIES];
 
-	ConstraintActivitiesPreferredTimes();
+	ConstraintActivitiesPreferredStartingTimes();
 
-	ConstraintActivitiesPreferredTimes(double wp, QString te,
+	ConstraintActivitiesPreferredStartingTimes(double wp, QString te,
 		QString st, QString su, QString sut, int nPT, int d[], int h[]);
 
 	bool computeInternalStructure(Rules& r);
+
+	bool hasInactiveActivities(Rules& r);
 
 	QString getXmlDescription(Rules& r);
 
@@ -1437,7 +1787,87 @@ public:
 
 	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
-	bool isRelatedToActivity(Activity* a);
+	bool isRelatedToActivity(Rules& r, Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToActivityTag(ActivityTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+};
+
+class ConstraintSubactivitiesPreferredStartingTimes: public TimeConstraint{
+public:
+	int componentNumber;
+
+	/**
+	The teacher. If void, all teachers.
+	*/
+	QString teacherName;
+
+	/**
+	The students. If void, all students.
+	*/
+	QString studentsName;
+
+	/**
+	The subject. If void, all subjects.
+	*/
+	QString subjectName;
+
+	/**
+	The activity tag. If void, all activity tags.
+	*/
+	QString activityTagName;
+
+	/**
+	The number of preferred times
+	*/
+	int nPreferredStartingTimes;
+
+	/**
+	The preferred days. If -1, then the user does not care about the day.
+	*/
+	int days[MAX_N_CONSTRAINT_SUBACTIVITIES_PREFERRED_STARTING_TIMES];
+
+	/**
+	The preferred hours. If -1, then the user does not care about the hour.
+	*/
+	int hours[MAX_N_CONSTRAINT_SUBACTIVITIES_PREFERRED_STARTING_TIMES];
+
+	//internal variables
+	
+	/**
+	The number of activities which are represented by the subject, teacher and students requirements.
+	*/
+	int nActivities;
+	
+	/**
+	The indices of the activities in the rules (from 0 to rules.nActivities-1)
+	These are indices in the internal list -> Rules::internalActivitiesList
+	*/
+	int activitiesIndices[MAX_ACTIVITIES];
+
+	ConstraintSubactivitiesPreferredStartingTimes();
+
+	ConstraintSubactivitiesPreferredStartingTimes(double wp, int compNo, QString te,
+		QString st, QString su, QString sut, int nPT, int d[], int h[]);
+
+	bool computeInternalStructure(Rules& r);
+
+	bool hasInactiveActivities(Rules& r);
+
+	QString getXmlDescription(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
+
+	bool isRelatedToActivity(Rules& r, Activity* a);
 	
 	bool isRelatedToTeacher(Teacher* t);
 
@@ -1492,6 +1922,8 @@ public:
 
 	bool computeInternalStructure(Rules& r);
 
+	bool hasInactiveActivities(Rules& r);
+
 	QString getXmlDescription(Rules& r);
 
 	QString getDescription(Rules& r);
@@ -1505,7 +1937,7 @@ public:
 	*/
 	void removeUseless(Rules& r);
 
-	bool isRelatedToActivity(Activity* a);
+	bool isRelatedToActivity(Rules& r, Activity* a);
 	
 	bool isRelatedToTeacher(Teacher* t);
 
@@ -1548,6 +1980,8 @@ public:
 
 	bool computeInternalStructure(Rules& r);
 
+	bool hasInactiveActivities(Rules& r);
+
 	QString getXmlDescription(Rules& r);
 
 	QString getDescription(Rules& r);
@@ -1561,7 +1995,7 @@ public:
 	*/
 	void removeUseless(Rules& r);
 
-	bool isRelatedToActivity(Activity* a);
+	bool isRelatedToActivity(Rules& r, Activity* a);
 	
 	bool isRelatedToTeacher(Teacher* t);
 
@@ -1601,6 +2035,8 @@ public:
 
 	bool computeInternalStructure(Rules& r);
 
+	bool hasInactiveActivities(Rules& r);
+
 	QString getXmlDescription(Rules& r);
 
 	QString getDescription(Rules& r);
@@ -1609,7 +2045,7 @@ public:
 
 	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
-	bool isRelatedToActivity(Activity* a);
+	bool isRelatedToActivity(Rules& r, Activity* a);
 	
 	bool isRelatedToTeacher(Teacher* t);
 
@@ -1649,6 +2085,8 @@ public:
 
 	bool computeInternalStructure(Rules& r);
 
+	bool hasInactiveActivities(Rules& r);
+
 	QString getXmlDescription(Rules& r);
 
 	QString getDescription(Rules& r);
@@ -1657,7 +2095,7 @@ public:
 
 	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
-	bool isRelatedToActivity(Activity* a);
+	bool isRelatedToActivity(Rules& r, Activity* a);
 	
 	bool isRelatedToTeacher(Teacher* t);
 
@@ -1687,6 +2125,8 @@ public:
 
 	bool computeInternalStructure(Rules& r);
 
+	bool hasInactiveActivities(Rules& r);
+
 	QString getXmlDescription(Rules& r);
 
 	QString getDescription(Rules& r);
@@ -1695,7 +2135,7 @@ public:
 
 	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
-	bool isRelatedToActivity(Activity* a);
+	bool isRelatedToActivity(Rules& r, Activity* a);
 	
 	bool isRelatedToTeacher(Teacher* t);
 
@@ -1721,13 +2161,15 @@ public:
 
 	bool computeInternalStructure(Rules& r);
 
+	bool hasInactiveActivities(Rules& r);
+
 	QString getDescription(Rules& r);
 
 	QString getDetailedDescription(Rules& r);
 
 	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
-	bool isRelatedToActivity(Activity* a);
+	bool isRelatedToActivity(Rules& r, Activity* a);
 	
 	bool isRelatedToTeacher(Teacher* t);
 
@@ -1757,13 +2199,15 @@ public:
 
 	bool computeInternalStructure(Rules& r);
 
+	bool hasInactiveActivities(Rules& r);
+
 	QString getDescription(Rules& r);
 
 	QString getDetailedDescription(Rules& r);
 
 	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
-	bool isRelatedToActivity(Activity* a);
+	bool isRelatedToActivity(Rules& r, Activity* a);
 	
 	bool isRelatedToTeacher(Teacher* t);
 
@@ -1773,6 +2217,252 @@ public:
 	
 	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
 };
+
+class ConstraintTeacherIntervalMaxDaysPerWeek: public TimeConstraint{
+public:
+	/**
+	The number of maximum allowed working days per week
+	*/
+	int maxDaysPerWeek;
+	
+	int startHour;
+
+	int endHour; //might be = to gt.rules.nHoursPerDay
+
+	/**
+	The teacher's name
+	*/
+	QString teacherName;
+
+	/**
+	The teacher's id, or index in the rules
+	*/
+	int teacher_ID;
+
+	ConstraintTeacherIntervalMaxDaysPerWeek();
+
+	ConstraintTeacherIntervalMaxDaysPerWeek(double wp, int maxnd, QString tn, int sh, int eh);
+
+	bool computeInternalStructure(Rules& r);
+
+	bool hasInactiveActivities(Rules& r);
+
+	QString getXmlDescription(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
+
+	bool isRelatedToActivity(Rules& r, Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToActivityTag(ActivityTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+};
+
+class ConstraintTeachersIntervalMaxDaysPerWeek: public TimeConstraint{
+public:
+	/**
+	The number of maximum allowed working days per week
+	*/
+	int maxDaysPerWeek;
+	
+	int startHour;
+
+	int endHour; //might be = to gt.rules.nHoursPerDay
+
+
+	ConstraintTeachersIntervalMaxDaysPerWeek();
+
+	ConstraintTeachersIntervalMaxDaysPerWeek(double wp, int maxnd, int sh, int eh);
+
+	bool computeInternalStructure(Rules& r);
+
+	bool hasInactiveActivities(Rules& r);
+
+	QString getXmlDescription(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
+
+	bool isRelatedToActivity(Rules& r, Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToActivityTag(ActivityTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+};
+
+
+class ConstraintStudentsSetIntervalMaxDaysPerWeek: public TimeConstraint{
+public:
+	/**
+	The number of maximum allowed working days per week
+	*/
+	int maxDaysPerWeek;
+	
+	int startHour;
+
+	int endHour; //might be = to gt.rules.nHoursPerDay
+
+	/**
+	The name of the students set for this constraint
+	*/
+	QString students;
+
+	//internal redundant data
+
+	/**
+	The number of subgroups
+	*/
+	//int nSubgroups;
+
+	/**
+	The subgroups
+	*/
+	QList<int> iSubgroupsList;
+
+	ConstraintStudentsSetIntervalMaxDaysPerWeek();
+
+	ConstraintStudentsSetIntervalMaxDaysPerWeek(double wp, int maxnd, QString sn, int sh, int eh);
+
+	bool computeInternalStructure(Rules& r);
+
+	bool hasInactiveActivities(Rules& r);
+
+	QString getXmlDescription(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
+
+	bool isRelatedToActivity(Rules& r, Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToActivityTag(ActivityTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+};
+
+class ConstraintStudentsIntervalMaxDaysPerWeek: public TimeConstraint{
+public:
+	/**
+	The number of maximum allowed working days per week
+	*/
+	int maxDaysPerWeek;
+	
+	int startHour;
+
+	int endHour; //might be = to gt.rules.nHoursPerDay
+
+
+	ConstraintStudentsIntervalMaxDaysPerWeek();
+
+	ConstraintStudentsIntervalMaxDaysPerWeek(double wp, int maxnd, int sh, int eh);
+
+	bool computeInternalStructure(Rules& r);
+
+	bool hasInactiveActivities(Rules& r);
+
+	QString getXmlDescription(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
+
+	bool isRelatedToActivity(Rules& r, Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToActivityTag(ActivityTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+};
+
+class ConstraintActivitiesEndStudentsDay: public TimeConstraint{
+public:
+	/**
+	The teacher. If void, all teachers.
+	*/
+	QString teacherName;
+
+	/**
+	The students. If void, all students.
+	*/
+	QString studentsName;
+
+	/**
+	The subject. If void, all subjects.
+	*/
+	QString subjectName;
+
+	/**
+	The activity tag. If void, all activity tags.
+	*/
+	QString activityTagName;
+	
+	
+	//internal data
+
+	/**
+	The number of activities which are represented by the subject, teacher and students requirements.
+	*/
+	int nActivities;
+	
+	/**
+	The indices of the activities in the rules (from 0 to rules.nActivities-1)
+	These are indices in the internal list -> Rules::internalActivitiesList
+	*/
+	int activitiesIndices[MAX_ACTIVITIES];
+
+	ConstraintActivitiesEndStudentsDay();
+
+	ConstraintActivitiesEndStudentsDay(double wp, QString te, QString st, QString su, QString sut);
+
+	bool computeInternalStructure(Rules& r);
+
+	bool hasInactiveActivities(Rules& r);
+
+	QString getXmlDescription(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
+
+	bool isRelatedToActivity(Rules& r, Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToActivityTag(ActivityTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+};
+
 
 
 #endif

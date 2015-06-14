@@ -78,6 +78,12 @@ The working directory
 QString WORKING_DIRECTORY;
 
 
+/**
+The import directory
+*/
+QString IMPORT_DIRECTORY;
+
+
 qint16 teachers_timetable_weekly[MAX_TEACHERS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
 qint16 students_timetable_weekly[MAX_TOTAL_SUBGROUPS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
 qint16 rooms_timetable_weekly[MAX_ROOMS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
@@ -105,14 +111,23 @@ void readSimulationParameters(){
 	QSettings settings("FET free software", "FET");
 	FET_LANGUAGE=settings.value("language", "en_GB").toString();
 	WORKING_DIRECTORY=settings.value("working-directory", "sample_inputs").toString();
+	IMPORT_DIRECTORY=settings.value("import-directory", OUTPUT_DIR).toString();
 	
 	QDir d(WORKING_DIRECTORY);
 	if(!d.exists())
 		WORKING_DIRECTORY="sample_inputs";
 	
+	QDir i(IMPORT_DIRECTORY);
+	if(!i.exists())
+		IMPORT_DIRECTORY=OUTPUT_DIR;	// IMPORT_DIRECTORY="import";
+	
 	checkForUpdates=settings.value("check-for-updates", "-1").toInt();
 	QString ver=settings.value("version", "-1").toString();
 	TIMETABLE_HTML_LEVEL=settings.value("timetable-html-level", "2").toInt();
+	
+	int tmp=settings.value("print-not-available", "1").toInt();
+	PRINT_NOT_AVAILABLE_TIME_SLOTS=tmp;
+	
 	cout<<"Settings read"<<endl;
 }
 
@@ -120,9 +135,15 @@ void writeSimulationParameters(){
 	QSettings settings("FET free software", "FET");
 	settings.setValue("language", FET_LANGUAGE);
 	settings.setValue("working-directory", WORKING_DIRECTORY);
+	settings.setValue("import-directory", IMPORT_DIRECTORY);
 	settings.setValue("version", FET_VERSION);
 	settings.setValue("check-for-updates", checkForUpdates);
 	settings.setValue("timetable-html-level", TIMETABLE_HTML_LEVEL);
+	
+	int tmp=1;
+	if(!PRINT_NOT_AVAILABLE_TIME_SLOTS)
+		tmp=0;
+	settings.setValue("print-not-available", tmp);
 }
 
 void setLanguage(QApplication& qapplication)
@@ -130,15 +151,18 @@ void setLanguage(QApplication& qapplication)
 	//translator stuff
 	QDir d("/usr/share/fet/translations");
 	
-	bool translation_loaded;
+	bool translation_loaded=false;
 	
 	if(FET_LANGUAGE=="ar" || FET_LANGUAGE=="ca" || FET_LANGUAGE=="de" || FET_LANGUAGE=="es" || FET_LANGUAGE=="el" || FET_LANGUAGE=="fr"
 	 || FET_LANGUAGE=="hu" || FET_LANGUAGE=="mk" || FET_LANGUAGE=="ms" || FET_LANGUAGE=="nl" || FET_LANGUAGE=="pl" || FET_LANGUAGE=="ro"
-	 || FET_LANGUAGE=="tr" || FET_LANGUAGE=="id" || FET_LANGUAGE=="it"){
+	 || FET_LANGUAGE=="tr" || FET_LANGUAGE=="id" || FET_LANGUAGE=="it" || FET_LANGUAGE=="lt"){
 		if(d.exists())
 			translation_loaded=translator.load("fet_"+FET_LANGUAGE, "/usr/share/fet/translations");
-		else
+		if(!d.exists() || !translation_loaded){
 			translation_loaded=translator.load("fet_"+FET_LANGUAGE, qapplication.applicationDirPath()+"/translations");
+			if(!translation_loaded)
+				translation_loaded=translator.load("fet_"+FET_LANGUAGE, qapplication.applicationDirPath());
+		}
 	}
 	else{
 		if(FET_LANGUAGE!="en_GB"){
@@ -154,11 +178,18 @@ void setLanguage(QApplication& qapplication)
 	
 	if(!translation_loaded){
 		QMessageBox::warning(NULL, QObject::tr("FET warning"), 
-		 QObject::tr("Translation for specified language not loaded - this is an error, maybe translation file is missing - making language en_GB (English)"));
+		 QObject::tr("Translation for specified language not loaded - this is an error, maybe translation file is missing - making language en_GB (English)")
+		+"\n\n"+
+		QObject::tr("FET searched for translation file %1 in directories %2 (on UNIX like systems), %3 and %4 and could not find it.")
+		 .arg("fet_"+FET_LANGUAGE+".qm")
+		 .arg("/usr/share/fet/translations")
+		 .arg(qapplication.applicationDirPath()+"/translations")
+		 .arg(qapplication.applicationDirPath())
+		 );
 		FET_LANGUAGE="en_GB";
 	}
 	
-	if(FET_LANGUAGE=="ar" || FET_LANGUAGE=="he" /* or others??? */){
+	if(FET_LANGUAGE=="ar" || FET_LANGUAGE=="he" || FET_LANGUAGE=="fa" || FET_LANGUAGE=="ur" /* or others??? */){
 		LANGUAGE_STYLE_RIGHT_TO_LEFT=true;
 	}
 	else{
@@ -248,6 +279,8 @@ int main(int argc, char **argv)
 	/////////////////////////////////////////////////
 	//begin command line
 	if(argc>1){
+		ofstream out("result.txt");
+		
 		/*if(argc>=5){
 			cout<<"Usage: fet inputfile.fet [timelimitseconds] [timetablehtmllevel (0..5)]"<<endl;
 			return 1;
@@ -262,6 +295,8 @@ int main(int argc, char **argv)
 		TIMETABLE_HTML_LEVEL=2;
 		
 		FET_LANGUAGE="en_GB";
+		
+		PRINT_NOT_AVAILABLE_TIME_SLOTS=true;
 
 		for(int i=1; i<argc; i++){
 			QString s=argv[i];
@@ -274,10 +309,19 @@ int main(int argc, char **argv)
 				TIMETABLE_HTML_LEVEL=s.right(s.length()-21).toInt();
 			else if(s.left(11)=="--language=")
 				FET_LANGUAGE=s.right(s.length()-11);
+			else if(s.left(20)=="--printnotavailable="){
+				if(s.right(5)=="false")
+					PRINT_NOT_AVAILABLE_TIME_SLOTS=false;
+				else
+					PRINT_NOT_AVAILABLE_TIME_SLOTS=true;
+			}
 		}
 		
 		if(filename==""){
 			cout<<"Incorrect parameters (input file not specified). Please see README for usage (basically,\n"
+			 "fet --inputfile=x [--timelimitseconds=y] [--timetablehtmllevel=z] [--language=t]\n"
+			 "where z is from 0 to 5 and language is en_GB, de, ro or other implemented language in FET)"<<endl;
+			out<<"Incorrect parameters (input file not specified). Please see README for usage (basically,\n"
 			 "fet --inputfile=x [--timelimitseconds=y] [--timetablehtmllevel=z] [--language=t]\n"
 			 "where z is from 0 to 5 and language is en_GB, de, ro or other implemented language in FET)"<<endl;
 			return 1;
@@ -286,10 +330,16 @@ int main(int argc, char **argv)
 			cout<<"Incorrect parameters (time limit is 0 seconds). Please see README for usage (basically,\n"
 			 "fet --inputfile=x [--timelimitseconds=y] [--timetablehtmllevel=z] [--language=t]\n"
 			 "where z is from 0 to 5 and language is en_GB, de, ro or other implemented language in FET)"<<endl;
+			out<<"Incorrect parameters (time limit is 0 seconds). Please see README for usage (basically,\n"
+			 "fet --inputfile=x [--timelimitseconds=y] [--timetablehtmllevel=z] [--language=t]\n"
+			 "where z is from 0 to 5 and language is en_GB, de, ro or other implemented language in FET)"<<endl;
 			return 1;
 		}	
 		if(TIMETABLE_HTML_LEVEL>5 || TIMETABLE_HTML_LEVEL<0){
 			cout<<"Incorrect parameters (timetable html level 0, 1, 2, 3, 4 or 5). Please see README for usage (basically,\n"
+			 "fet --inputfile=x [--timelimitseconds=y] [--timetablehtmllevel=z] [--language=t]\n"
+			 "where z is from 0 to 5 and language is en_GB, de, ro or other implemented language in FET)"<<endl;
+			out<<"Incorrect parameters (timetable html level 0, 1, 2, 3, 4 or 5). Please see README for usage (basically,\n"
 			 "fet --inputfile=x [--timelimitseconds=y] [--timetablehtmllevel=z] [--language=t]\n"
 			 "where z is from 0 to 5 and language is en_GB, de, ro or other implemented language in FET)"<<endl;
 			return 1;
@@ -303,12 +353,14 @@ int main(int argc, char **argv)
 		bool t=gt.rules.read(filename, true);
 		if(!t){
 			cout<<"Cannot read file - aborting"<<endl;
+			out<<"Cannot read file - aborting"<<endl;
 			return 1;
 		}
 		
 		t=gt.rules.computeInternalStructure();
 		if(!t){
 			cout<<"Cannot compute internal structure - aborting"<<endl;
+			out<<"Cannot compute internal structure - aborting"<<endl;
 			return 1;
 		}
 	
@@ -319,22 +371,29 @@ int main(int argc, char **argv)
 		
 		if(!ok){
 			cout<<"Cannot precompute - data is wrong - aborting"<<endl;
+			out<<"Cannot precompute - data is wrong - aborting"<<endl;
 			return 1;
 		}
 	
 		bool impossible, timeExceeded;
 		
 		cout<<"secondsLimit=="<<secondsLimit<<endl;
+		//out<<"secondsLimit=="<<secondsLimit<<endl;
 				
 		gen.generate(secondsLimit, impossible, timeExceeded, false); //false means no thread
 	
 		if(impossible){
 			cout<<"Impossible"<<endl;
+			out<<"Impossible"<<endl;
 		}
 		else if(timeExceeded){
 			cout<<"Time exceeded"<<endl;
+			out<<"Time exceeded"<<endl;
 		}
 		else{
+			cout<<"Simulation successful"<<endl;
+			out<<"Simulation successful"<<endl;
+		
 			Solution& c=gen.c;
 
 			//needed to find the conflicts strings

@@ -5,24 +5,34 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>507</width>
-    <height>264</height>
+    <width>557</width>
+    <height>282</height>
    </rect>
   </property>
   <property name="windowTitle" >
    <string>FET - a free timetabling program</string>
   </property>
   <property name="windowIcon" >
-   <iconset>fet-5.4.2/src/interface</iconset>
+   <iconset>
+    <normaloff>fet-5.4.2/src/interface</normaloff>fet-5.4.2/src/interface</iconset>
   </property>
-  <widget class="QWidget" name="widget" />
+  <widget class="QWidget" name="widget" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>30</y>
+     <width>557</width>
+     <height>252</height>
+    </rect>
+   </property>
+  </widget>
   <widget class="QMenuBar" name="menubar" >
    <property name="geometry" >
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>507</width>
-     <height>29</height>
+     <width>557</width>
+     <height>30</height>
     </rect>
    </property>
    <widget class="QMenu" name="helpMenu" >
@@ -30,9 +40,12 @@
      <string>&amp;Help</string>
     </property>
     <addaction name="helpInstructionsAction" />
+    <addaction name="helpTipsAction" />
     <addaction name="helpFAQAction" />
     <addaction name="separator" />
     <addaction name="helpInOtherLanguagesAction" />
+    <addaction name="separator" />
+    <addaction name="helpForumAction" />
     <addaction name="separator" />
     <addaction name="helpAboutAction" />
    </widget>
@@ -40,10 +53,36 @@
     <property name="title" >
      <string>&amp;File</string>
     </property>
+    <widget class="QMenu" name="menuExport" >
+     <property name="title" >
+      <string>Export</string>
+     </property>
+     <addaction name="fileExportCSVAction" />
+    </widget>
+    <widget class="QMenu" name="menuImport" >
+     <property name="title" >
+      <string>Import</string>
+     </property>
+     <widget class="QMenu" name="menuImport_CSV" >
+      <property name="title" >
+       <string>Import comma separated values (text)</string>
+      </property>
+      <addaction name="fileImportCSVSubjectsAction" />
+      <addaction name="fileImportCSVActivityTagsAction" />
+      <addaction name="fileImportCSVTeachersAction" />
+      <addaction name="fileImportCSVYearsGroupsSubgroupsAction" />
+      <addaction name="fileImportCSVRoomsBuildingsAction" />
+      <addaction name="fileImportCSVActivitiesAction" />
+     </widget>
+     <addaction name="menuImport_CSV" />
+    </widget>
     <addaction name="fileNewAction" />
     <addaction name="fileOpenAction" />
     <addaction name="fileSaveAction" />
     <addaction name="fileSaveAsAction" />
+    <addaction name="separator" />
+    <addaction name="menuImport" />
+    <addaction name="menuExport" />
     <addaction name="separator" />
     <addaction name="fileExitAction" />
    </widget>
@@ -79,64 +118,92 @@
      <property name="title" >
       <string>Time constraints</string>
      </property>
-     <widget class="QMenu" name="menuMisc" >
+     <widget class="QMenu" name="menuMisc_time_constraints" >
       <property name="title" >
        <string>Misc time constraints</string>
       </property>
       <addaction name="dataTimeConstraintsBasicCompulsoryTimeAction" />
       <addaction name="dataTimeConstraintsBreakTimesAction" />
      </widget>
-     <widget class="QMenu" name="menuTeachers" >
+     <widget class="QMenu" name="menuTeachers_time_constraints" >
       <property name="title" >
        <string>Teachers time constraints</string>
       </property>
       <addaction name="dataTimeConstraintsTeacherNotAvailableTimesAction" />
+      <addaction name="separator" />
       <addaction name="dataTimeConstraintsTeacherMaxDaysPerWeekAction" />
+      <addaction name="separator" />
       <addaction name="dataTimeConstraintsTeacherMaxGapsPerWeekAction" />
       <addaction name="dataTimeConstraintsTeachersMaxGapsPerWeekAction" />
       <addaction name="dataTimeConstraintsTeacherMaxGapsPerDayAction" />
       <addaction name="dataTimeConstraintsTeachersMaxGapsPerDayAction" />
+      <addaction name="separator" />
       <addaction name="dataTimeConstraintsTeacherMaxHoursDailyAction" />
       <addaction name="dataTimeConstraintsTeachersMaxHoursDailyAction" />
       <addaction name="dataTimeConstraintsTeacherMinHoursDailyAction" />
       <addaction name="dataTimeConstraintsTeachersMinHoursDailyAction" />
+      <addaction name="separator" />
       <addaction name="dataTimeConstraintsTeacherMaxHoursContinuouslyAction" />
       <addaction name="dataTimeConstraintsTeachersMaxHoursContinuouslyAction" />
+      <addaction name="separator" />
+      <addaction name="dataTimeConstraintsTeacherIntervalMaxDaysPerWeekAction" />
+      <addaction name="dataTimeConstraintsTeachersIntervalMaxDaysPerWeekAction" />
      </widget>
      <widget class="QMenu" name="menuStudents_time_constraints" >
       <property name="title" >
        <string>Students time constraints</string>
       </property>
       <addaction name="dataTimeConstraintsStudentsSetNotAvailableTimesAction" />
+      <addaction name="separator" />
       <addaction name="dataTimeConstraintsStudentsSetMaxGapsPerWeekAction" />
       <addaction name="dataTimeConstraintsStudentsMaxGapsPerWeekAction" />
       <addaction name="dataTimeConstraintsStudentsSetEarlyMaxBeginningsAtSecondHourAction" />
       <addaction name="dataTimeConstraintsStudentsEarlyMaxBeginningsAtSecondHourAction" />
+      <addaction name="separator" />
       <addaction name="dataTimeConstraintsStudentsSetMaxHoursDailyAction" />
       <addaction name="dataTimeConstraintsStudentsMaxHoursDailyAction" />
       <addaction name="dataTimeConstraintsStudentsSetMinHoursDailyAction" />
       <addaction name="dataTimeConstraintsStudentsMinHoursDailyAction" />
+      <addaction name="separator" />
       <addaction name="dataTimeConstraintsStudentsSetMaxHoursContinuouslyAction" />
       <addaction name="dataTimeConstraintsStudentsMaxHoursContinuouslyAction" />
+      <addaction name="separator" />
+      <addaction name="dataTimeConstraintsStudentsSetIntervalMaxDaysPerWeekAction" />
+      <addaction name="dataTimeConstraintsStudentsIntervalMaxDaysPerWeekAction" />
      </widget>
      <widget class="QMenu" name="menuActivities_time_constraints" >
       <property name="title" >
        <string>Activities time constraints</string>
       </property>
-      <addaction name="dataTimeConstraintsActivityPreferredTimeAction" />
-      <addaction name="dataTimeConstraintsActivityPreferredTimesAction" />
-      <addaction name="dataTimeConstraintsActivitiesPreferredTimesAction" />
+      <addaction name="dataTimeConstraintsActivityPreferredStartingTimeAction" />
+      <addaction name="separator" />
+      <addaction name="dataTimeConstraintsActivityPreferredTimeSlotsAction" />
+      <addaction name="dataTimeConstraintsActivitiesPreferredTimeSlotsAction" />
+      <addaction name="dataTimeConstraintsSubactivitiesPreferredTimeSlotsAction" />
+      <addaction name="separator" />
+      <addaction name="dataTimeConstraintsActivityPreferredStartingTimesAction" />
+      <addaction name="dataTimeConstraintsActivitiesPreferredStartingTimesAction" />
+      <addaction name="dataTimeConstraintsSubactivitiesPreferredStartingTimesAction" />
+      <addaction name="separator" />
       <addaction name="dataTimeConstraintsMinNDaysBetweenActivitiesAction" />
+      <addaction name="separator" />
       <addaction name="dataTimeConstraintsActivityEndsStudentsDayAction" />
+      <addaction name="dataTimeConstraintsActivitiesEndStudentsDayAction" />
+      <addaction name="separator" />
       <addaction name="dataTimeConstraintsActivitiesSameStartingTimeAction" />
       <addaction name="dataTimeConstraintsActivitiesSameStartingDayAction" />
       <addaction name="dataTimeConstraintsActivitiesSameStartingHourAction" />
+      <addaction name="separator" />
       <addaction name="dataTimeConstraints2ActivitiesOrderedAction" />
+      <addaction name="separator" />
       <addaction name="dataTimeConstraints2ActivitiesConsecutiveAction" />
+      <addaction name="separator" />
       <addaction name="dataTimeConstraintsActivitiesNotOverlappingAction" />
+      <addaction name="separator" />
+      <addaction name="dataTimeConstraintsMinGapsBetweenActivitiesAction" />
      </widget>
-     <addaction name="menuMisc" />
-     <addaction name="menuTeachers" />
+     <addaction name="menuMisc_time_constraints" />
+     <addaction name="menuTeachers_time_constraints" />
      <addaction name="menuStudents_time_constraints" />
      <addaction name="menuActivities_time_constraints" />
     </widget>
@@ -183,6 +250,7 @@
       </property>
       <addaction name="dataSpaceConstraintsStudentsSetHomeRoomAction" />
       <addaction name="dataSpaceConstraintsStudentsSetHomeRoomsAction" />
+      <addaction name="separator" />
       <addaction name="dataSpaceConstraintsStudentsSetMaxBuildingChangesPerDayAction" />
       <addaction name="dataSpaceConstraintsStudentsMaxBuildingChangesPerDayAction" />
       <addaction name="dataSpaceConstraintsStudentsSetMaxBuildingChangesPerWeekAction" />
@@ -196,6 +264,7 @@
       </property>
       <addaction name="dataSpaceConstraintsTeacherHomeRoomAction" />
       <addaction name="dataSpaceConstraintsTeacherHomeRoomsAction" />
+      <addaction name="separator" />
       <addaction name="dataSpaceConstraintsTeacherMaxBuildingChangesPerDayAction" />
       <addaction name="dataSpaceConstraintsTeachersMaxBuildingChangesPerDayAction" />
       <addaction name="dataSpaceConstraintsTeacherMaxBuildingChangesPerWeekAction" />
@@ -256,6 +325,7 @@
      <addaction name="languageHungarianAction" />
      <addaction name="languageIndonesianAction" />
      <addaction name="languageItalianAction" />
+     <addaction name="languageLithuanianAction" />
      <addaction name="languageMacedonianAction" />
      <addaction name="languageMalayAction" />
      <addaction name="languageDutchAction" />
@@ -265,12 +335,21 @@
     </widget>
     <addaction name="checkForUpdatesAction" />
     <addaction name="languageMenu" />
+    <addaction name="separator" />
+    <addaction name="settingsPrintNotAvailableSlotsAction" />
     <addaction name="settingsTimetableHtmlLevelAction" />
     <addaction name="separator" />
     <addaction name="settingsRestoreDefaultsAction" />
    </widget>
+   <widget class="QMenu" name="menuWizards" >
+    <property name="title" >
+     <string>Advanced</string>
+    </property>
+    <addaction name="spreadActivitiesAction" />
+   </widget>
    <addaction name="fileMenu" />
    <addaction name="dataMenu" />
+   <addaction name="menuWizards" />
    <addaction name="menuStatistics" />
    <addaction name="timetableMenu" />
    <addaction name="menuSettings" />
@@ -430,7 +509,7 @@
     <string>Show soft conflicts</string>
    </property>
    <property name="iconText" >
-    <string>Show conflicts (time)</string>
+    <string>Show soft conflicts</string>
    </property>
   </action>
   <action name="dataDaysAction" >
@@ -501,12 +580,12 @@
     <string>Time constraints</string>
    </property>
   </action>
-  <action name="dataTimeConstraintsActivitiesPreferredTimesAction" >
+  <action name="dataTimeConstraintsActivitiesPreferredTimeSlotsAction" >
    <property name="text" >
-    <string>A set of activities has a set of preferred times</string>
+    <string>A set of activities has a set of preferred time slots</string>
    </property>
    <property name="iconText" >
-    <string>A set of activities has a set of preferred times</string>
+    <string>A set of activities has a set of preferred time slots</string>
    </property>
   </action>
   <action name="languageFrenchAction" >
@@ -627,12 +706,12 @@
     <string>Max hours daily for all teachers</string>
    </property>
   </action>
-  <action name="dataTimeConstraintsActivityPreferredTimeAction" >
+  <action name="dataTimeConstraintsActivityPreferredStartingTimeAction" >
    <property name="text" >
-    <string>An activity has a preferred time</string>
+    <string>An activity has a preferred starting time</string>
    </property>
    <property name="iconText" >
-    <string>An activity has a preferred time</string>
+    <string>An activity has a preferred starting time</string>
    </property>
   </action>
   <action name="dataTimeConstraintsStudentsSetMaxGapsPerWeekAction" >
@@ -640,7 +719,7 @@
     <string>Max gaps per week for a students set</string>
    </property>
    <property name="iconText" >
-    <string>No gaps for a students set</string>
+    <string>Max gaps per week for a students set</string>
    </property>
   </action>
   <action name="dataTimeConstraintsStudentsMaxGapsPerWeekAction" >
@@ -648,7 +727,7 @@
     <string>Max gaps per week for all students</string>
    </property>
    <property name="iconText" >
-    <string>No gaps for all students</string>
+    <string>Max gaps per week for all students</string>
    </property>
   </action>
   <action name="dataTimeConstraintsStudentsEarlyMaxBeginningsAtSecondHourAction" >
@@ -656,7 +735,7 @@
     <string>All students begin early (max beginnings at second hour)</string>
    </property>
    <property name="iconText" >
-    <string>All students begin early</string>
+    <string>All students begin early (max beginnings at second hour)</string>
    </property>
   </action>
   <action name="dataTimeConstraintsActivitiesNotOverlappingAction" >
@@ -673,14 +752,6 @@
    </property>
    <property name="iconText" >
     <string>Min n days between a set of activities</string>
-   </property>
-  </action>
-  <action name="dataTimeConstraintsActivityPreferredTimesAction" >
-   <property name="text" >
-    <string>An activity has a set of preferred times</string>
-   </property>
-   <property name="iconText" >
-    <string>An activity has a set of preferred times</string>
    </property>
   </action>
   <action name="dataAllSpaceConstraintsAction" >
@@ -808,16 +879,10 @@
    <property name="text" >
     <string>A set of students has a home room</string>
    </property>
-   <property name="iconText" >
-    <string>A subject has a preferred room</string>
-   </property>
   </action>
   <action name="dataSpaceConstraintsStudentsSetHomeRoomsAction" >
    <property name="text" >
     <string>A set of students has a set of home rooms</string>
-   </property>
-   <property name="iconText" >
-    <string>A subject has a set of preferred rooms</string>
    </property>
   </action>
   <action name="languagePolishAction" >
@@ -1191,6 +1256,133 @@
   <action name="dataTimeConstraintsStudentsMaxHoursContinuouslyAction" >
    <property name="text" >
     <string>Max hours continuously for all students</string>
+   </property>
+  </action>
+  <action name="helpTipsAction" >
+   <property name="text" >
+    <string>Important tips</string>
+   </property>
+  </action>
+  <action name="dataTimeConstraintsActivitiesPreferredStartingTimesAction" >
+   <property name="text" >
+    <string>A set of activities has a set of preferred starting times</string>
+   </property>
+  </action>
+  <action name="dataTimeConstraintsActivityPreferredTimeSlotsAction" >
+   <property name="text" >
+    <string>An activity has a set of preferred time slots</string>
+   </property>
+   <property name="iconText" >
+    <string>An activity has a set of preferred time slots</string>
+   </property>
+  </action>
+  <action name="dataTimeConstraintsActivityPreferredStartingTimesAction" >
+   <property name="text" >
+    <string>An activity has a set of preferred starting times</string>
+   </property>
+  </action>
+  <action name="dataTimeConstraintsMinGapsBetweenActivitiesAction" >
+   <property name="text" >
+    <string>Min gaps (hours) between a set of activities</string>
+   </property>
+  </action>
+  <action name="fileExportCSVAction" >
+   <property name="text" >
+    <string>Export comma separated values (text)</string>
+   </property>
+  </action>
+  <action name="fileImportCSVActivitiesAction" >
+   <property name="text" >
+    <string>Import activities from CSV file</string>
+   </property>
+  </action>
+  <action name="fileImportCSVActivityTagsAction" >
+   <property name="text" >
+    <string>Import activity tags from CSV file</string>
+   </property>
+  </action>
+  <action name="fileImportCSVRoomsBuildingsAction" >
+   <property name="text" >
+    <string>Import rooms and buildings from CSV file</string>
+   </property>
+  </action>
+  <action name="fileImportCSVSubjectsAction" >
+   <property name="text" >
+    <string>Import subjects from CSV file</string>
+   </property>
+  </action>
+  <action name="fileImportCSVTeachersAction" >
+   <property name="text" >
+    <string>Import teachers from CSV file</string>
+   </property>
+  </action>
+  <action name="fileImportCSVYearsGroupsSubgroupsAction" >
+   <property name="text" >
+    <string>Import years, groups and subgroups from CSV file</string>
+   </property>
+  </action>
+  <action name="dataTimeConstraintsSubactivitiesPreferredTimeSlotsAction" >
+   <property name="text" >
+    <string>A set of subactivities has a set of preferred time slots</string>
+   </property>
+  </action>
+  <action name="dataTimeConstraintsSubactivitiesPreferredStartingTimesAction" >
+   <property name="text" >
+    <string>A set of subactivities has a set of preferred starting times</string>
+   </property>
+  </action>
+  <action name="dataTimeConstraintsTeacherIntervalMaxDaysPerWeekAction" >
+   <property name="text" >
+    <string>A teacher works in an hourly interval max days per week</string>
+   </property>
+  </action>
+  <action name="dataTimeConstraintsTeachersIntervalMaxDaysPerWeekAction" >
+   <property name="text" >
+    <string>All teachers work in an hourly interval max days per week</string>
+   </property>
+  </action>
+  <action name="dataTimeConstraintsStudentsSetIntervalMaxDaysPerWeekAction" >
+   <property name="text" >
+    <string>A students set works in an hourly interval max days per week</string>
+   </property>
+  </action>
+  <action name="dataTimeConstraintsStudentsIntervalMaxDaysPerWeekAction" >
+   <property name="text" >
+    <string>All students work in an hourly interval max days per week</string>
+   </property>
+  </action>
+  <action name="dataTimeConstraintsActivitiesEndStudentsDayAction" >
+   <property name="text" >
+    <string>A set of activities end students day</string>
+   </property>
+  </action>
+  <action name="languageLithuanianAction" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="text" >
+    <string>lt (Lithuanian)</string>
+   </property>
+  </action>
+  <action name="helpForumAction" >
+   <property name="text" >
+    <string>Forum webpage</string>
+   </property>
+  </action>
+  <action name="settingsPrintNotAvailableSlotsAction" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="checked" >
+    <bool>true</bool>
+   </property>
+   <property name="text" >
+    <string>Mark not available slots with -x- in timetables</string>
+   </property>
+  </action>
+  <action name="spreadActivitiesAction" >
+   <property name="text" >
+    <string>Spread the activities evenly over the week</string>
    </property>
   </action>
  </widget>

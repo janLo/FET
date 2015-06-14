@@ -27,7 +27,7 @@ QString internetVersion;
 /**
 FET version
 */
-const QString FET_VERSION="5.5.5";
+const QString FET_VERSION="5.7.0";
 
 /**
 FET language
@@ -42,6 +42,8 @@ QString LANGUAGE_FOR_HTML;
 Timetable html css javaScript Level, by Volker Dirr
 */
 int TIMETABLE_HTML_LEVEL;
+
+bool PRINT_NOT_AVAILABLE_TIME_SLOTS;
 
 QString protect(const QString& str) //used for xml
 {
@@ -98,6 +100,22 @@ QString protect2id(const QString& str) //used for html
 	p.replace(">", "&gt;");
 	p.replace("<", "&lt;");
 	//p.replace("'", "&apos;");
+	p.replace(" ", "_");		// id must be a single token
+	p.replace(",", "_");		// looks like this makes trouble
+	return p;
+}
+
+//protect2java is very similar to protect2
+//protect2java code contributed by Volker Dirr
+
+QString protect2java(const QString& str) //used for java-script function call (NOT the class id!)
+{
+	QString p=str;
+	p.replace("&", "&amp;");
+	p.replace("\"", "&quot;");
+	p.replace(">", "&gt;");
+	p.replace("<", "&lt;");
+	p.replace("'", "\\'");
 	p.replace(" ", "_");		// id must be a single token
 	p.replace(",", "_");		// looks like this makes trouble
 	return p;
@@ -302,6 +320,8 @@ void initRandomKnuth()
 	
 int randomKnuth()
 {
+	assert(XX!=0);
+
 	XX=AA*(XX%QQ)-RR*(XX/QQ);
 	if(XX<0)
 		XX+=MM;

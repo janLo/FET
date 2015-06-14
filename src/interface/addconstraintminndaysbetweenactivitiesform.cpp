@@ -28,12 +28,13 @@
 AddConstraintMinNDaysBetweenActivitiesForm::AddConstraintMinNDaysBetweenActivitiesForm()
 {
 	//setWindowFlags(Qt::Window);
-	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	/*setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 	QDesktopWidget* desktop=QApplication::desktop();
 	int xx=desktop->width()/2 - frameGeometry().width()/2;
 	int yy=desktop->height()/2 - frameGeometry().height()/2;
-	move(xx, yy);
-	
+	move(xx, yy);*/
+	centerWidgetOnScreen(this);
+		
 	updateActivitiesListBox();
 	
 	minDaysSpinBox->setMinValue(1);
@@ -163,7 +164,7 @@ void AddConstraintMinNDaysBetweenActivitiesForm::addConstraint()
 	double weight;
 	QString tmp=weightLineEdit->text();
 	sscanf(tmp, "%lf", &weight);
-	if(weight<0.0 | weight>100){
+	if(weight<0.0 || weight>100){
 		QMessageBox::warning(this, QObject::tr("FET information"),
 			QObject::tr("Invalid weight (percentage)"));
 		return;

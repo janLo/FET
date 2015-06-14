@@ -62,6 +62,8 @@ Timetable html css javaScript Level, added by Volker Dirr
 */
 extern int TIMETABLE_HTML_LEVEL;
 
+extern bool PRINT_NOT_AVAILABLE_TIME_SLOTS;
+
 /**
 The maximum number of different years of students
 */
@@ -181,13 +183,19 @@ const int MAX_SPACE_CONSTRAINTS = 10000;
 The maximum number of preferred times that can be considered
 in this kind of constraint
 */
-const int MAX_N_CONSTRAINT_ACTIVITY_PREFERRED_TIMES = MAX_HOURS_PER_WEEK;
+const int MAX_N_CONSTRAINT_ACTIVITY_PREFERRED_TIME_SLOTS = MAX_HOURS_PER_WEEK;
 
 /**
 The maximum number of preferred times that can be considered
 in this kind of constraint
 */
-const int MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_TIMES = MAX_HOURS_PER_WEEK;
+const int MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_TIME_SLOTS = MAX_HOURS_PER_WEEK;
+
+const int MAX_N_CONSTRAINT_ACTIVITY_PREFERRED_STARTING_TIMES = MAX_HOURS_PER_WEEK;
+const int MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_STARTING_TIMES = MAX_HOURS_PER_WEEK;
+
+const int MAX_N_CONSTRAINT_SUBACTIVITIES_PREFERRED_TIME_SLOTS = MAX_HOURS_PER_WEEK;
+const int MAX_N_CONSTRAINT_SUBACTIVITIES_PREFERRED_STARTING_TIMES = MAX_HOURS_PER_WEEK;
 
 /**
 The maximum number of activities that can be put in
@@ -267,6 +275,11 @@ The working directory
 extern QString WORKING_DIRECTORY;
 
 /**
+The import directory
+*/
+extern QString IMPORT_DIRECTORY;
+
+/**
 The initialization file for timetable program
 */
 /*#ifdef WIN32
@@ -311,6 +324,11 @@ const QString ROOMS_TIMETABLE_FILENAME_XML="rooms_timetable.xml";
 An output file containing the css stylesheet for each html-file
 */
 const QString STYLESHEET_CSS="stylesheet.css";
+
+/**
+An output file containing the index html file
+*/
+const QString INDEX_HTML="index.html";
 
 /**
 An output file containing the timetable for each subgroup, arranged in html format.
@@ -457,6 +475,33 @@ Time vertical version.
 const QString SUBJECTS_TIMETABLE_TIME_VERTICAL_FILENAME_HTML="subjects_timetable_time_vertical.html";
 
 /**
+An output file containing the timetable for all activities, arranged in html format.
+Days horizontal version.
+*/
+const QString ALL_ACTIVITIES_TIMETABLE_DAYS_HORIZONTAL_FILENAME_HTML="all_activities_timetable_days_horizontal.html";
+
+/**
+An output file containing the timetable for all activities, arranged in html format.
+Days vertical version.
+*/
+const QString ALL_ACTIVITIES_TIMETABLE_DAYS_VERTICAL_FILENAME_HTML="all_activities_timetable_days_vertical.html";
+
+
+/**
+An output file containing the timetable for all activities, arranged in html format.
+Time horizontal version.
+*/
+const QString ALL_ACTIVITIES_TIMETABLE_TIME_HORIZONTAL_FILENAME_HTML="all_activities_timetable_time_horizontal.html";
+
+/**
+An output file containing the timetable for all activities, arranged in html format.
+Time vertical version.
+*/
+const QString ALL_ACTIVITIES_TIMETABLE_TIME_VERTICAL_FILENAME_HTML="all_activities_timetable_time_vertical.html";
+
+
+
+/**
 A log file explaining how the xml input file was parsed
 */
 const QString XML_PARSING_LOG_FILENAME="xml_reading_log.txt";
@@ -486,6 +531,11 @@ QString protect2vert(const QString& str);
 A function used in html saving
 */
 QString protect2id(const QString& str);
+
+/**
+A function used in html saving
+*/
+QString protect2java(const QString& str);
 
 /**
 A function used in iCal saving
@@ -543,11 +593,14 @@ extern int checkForUpdates;
 
 extern QString internetVersion;
 
+//class Widget;
+void centerWidgetOnScreen(QWidget* widget);
+
 
 //for random Knuth - from Knuth TAOCP Vol. 2 Seminumerical Algorithms section 3.6
 //these numbers are really important - please do not change them, NEVER!!!
 //if you want, write a new random number generator routine, with other name
-extern int X;
+//extern int X;
 const int MM=2147483647;
 const int AA=48271;
 const int QQ=44488;

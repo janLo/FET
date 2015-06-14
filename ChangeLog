@@ -1148,7 +1148,7 @@ Versions 5.4.0 - 5.4.18
 	instead of 1000
 	- Teachers free periods timetable by Volker Dirr
 ---------------------------------------------------------------------------------
-Versions 5.5.0 - 5.5.x
+Versions 5.5.0 - 5.5.9
 - Version 5.5.0
 	- Modified the algorithm (better or (hopefully not) worse)
 	- Command line FET
@@ -1191,4 +1191,75 @@ Versions 5.5.0 - 5.5.x
 	- Very small bug fix (very unlikely to happen, also the effect is almost null)	
 	- Indonesian, Spanish and Arabic translation updates
 	- Added an additional check for inconsistency
-	
+- Version 5.5.6
+	- Arabic, Romanian, Spanish, Italian translations update.
+	- Added an option to select all slots available or not available for constraints break, not available and preferred times
+	(suggested by didit).
+	- Added another Arabic sample by Hatim Alahmadi
+- Version 5.5.7
+	- Added 2 samples from Namibia (by Bobby Wise).
+	- Added 1 sample from Namibia (by Willy Henckert).
+	- Arabic and Greek translations updates.
+	- Bug fix - now inactivating some activities allows to generate the timetable, because constraints referring to
+	these activities are ignored (suggested by Yush Yuen).
+	- Improvement - activating/deactivating activities for a year/group considers also the activities of included groups/subgroups
+	(suggested by Yush Yuen).
+- Version 5.5.8
+	- Bug fix - when saving a timetable, regenerating it might give an impossible timetable - reported by Yush Yuen.
+	This bug solved other possible important bug (I doubt someone observed this bug. What happens: if an
+	activity has a fixed time, then when FET allocates it it fixes a room for this activity and consequent
+	changes are not possible to reschedule this activity to another room - might give impossible timetable in extreme cases).
+	Now it is possible to reallocate the room to another slot.
+	- Improved add activity dialog - if min days is x (greater than 1) and weight is lower than 100.0%, user can add
+	a second constraint with x-1 min days, to ensure activities are better separated.
+	- Added advice to remove redundant min n days constraints when adding same starting time constraints.
+	- Added another sample by Yush Yuen.
+- Version 5.5.9
+	- Added constraint activity(ies) preferred STARTING times, the old preferred times constraints are renamed preferred time slots
+	and are more correct now, taking into consideration the duration of each activity (reported by Volker Dirr).
+	- Allowing more constraint activity preferred starting times (or preferred time slots) for same activity id,
+	which was restricted by a bug to only one. You can add more constraints with different weights.
+---------------------------------------------------------------------------------
+Versions 5.6.0 - 5.6.4
+- Version 5.6.0
+	- Added import/export CSV (text with comma separated values) filters by Volker Dirr.
+	- Added constraint min gaps between activities (suggested by several users).
+	- Add activity dialog, checking/unchecking show years/groups/subgroups does not erase inserted sets (suggested by Zsolt Udvari).
+	- Small bug fix when importing activities, consecutive if same day is not correctly imported (reported by daviodan).
+	- Added Romanian help for export/import by daviodan.
+- Version 5.6.1
+	- Crash bug fix (probably very rare).
+	- Added possibility to change easier more constraints min n days between activities
+	- Added constraints subactivities preferred time slots and subactivities preferred starting times
+	(suggested by Volker Dirr). You can specify the component number for subactivities, useful for constraining courses,
+	say only the first or the last components of a split activity to be placed earlier.
+	- Switched to Qt 4.4.0 and gcc 4.3.1
+	- Indonesian, Romanian, Italian, German translations updates.
+- Version 5.6.2
+	- Added constraint teacher(s) and students (set) interval max days per week, to specify an hourly interval
+	and the maximum number of days per week for teachers (students) to work in this interval (suggested by Hatim Alahmadi).
+	This constraint is very useful, for instance specify that teachers and students must not work more than 2
+	times per week in the last hour of the day.
+	- Added constraint a set of activities end students day - to specify for a group of activities that they
+	should end the day for students (for instance for meetings with the class master) - suggested by Zsolt Udvari.
+	- Bug fix - when modifying a constraints (sub)activities preferred starting times or time slots, the activity tag
+	is now correctly updated.
+- Version 5.6.3
+	- Crash bug fix (probably rare)
+	- Added an -x- in the not available slots in teachers', students' and rooms' timetables
+	(suggested by George Miliotis [Ionio]), added by Volker Dirr.
+	- Added Lithuanian translation by Darius Staigys (incomplete yet).
+- Version 5.6.4
+	- Improved Arabic, Lithuanian and Italian translations.
+	- Improved a very very rare situation (raised the maximum number of retries for a single activity from 100,000 to 200,000.
+	This way, some saved timetables which contain constraints with weights close to 100% and below 100% (like 99.995%) are possible.
+	Probably this situation is unnoticed by anybody). The possible problem is not perfectly solved, but it is a compromise.
+	- Added possibility to mark or not -x- in the not available slots in timetables (suggested by Silvia, done by Volker Dirr).
+	- Added all activities timetables by Volker Dirr (suggested by kdsayang)
+	- Added exporting of timetable in csv form by Volker Dirr
+---------------------------------------------------------------------------------
+Versions 5.7.0 - 5.7.x
+- Version 5.7.0
+	- Added an advanced command to spread better the splitted activities in a week - very useful for schools, probably.
+	- Minor interface improvement (in report duplicate activities routine)
+	- Added status bar for File -> new, open, save and save as menus

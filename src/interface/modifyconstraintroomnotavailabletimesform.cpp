@@ -31,12 +31,13 @@
 ModifyConstraintRoomNotAvailableTimesForm::ModifyConstraintRoomNotAvailableTimesForm(ConstraintRoomNotAvailableTimes* ctr)
 {
 	//setWindowFlags(Qt::Window);
-	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	/*setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 	QDesktopWidget* desktop=QApplication::desktop();
 	int xx=desktop->width()/2 - frameGeometry().width()/2;
 	int yy=desktop->height()/2 - frameGeometry().height()/2;
-	move(xx, yy);
-
+	move(xx, yy);*/
+	centerWidgetOnScreen(this);
+	
 	this->_ctr=ctr;
 	
 	weightLineEdit->setText(QString::number(ctr->weightPercentage));
@@ -74,6 +75,20 @@ ModifyConstraintRoomNotAvailableTimesForm::ModifyConstraintRoomNotAvailableTimes
 
 ModifyConstraintRoomNotAvailableTimesForm::~ModifyConstraintRoomNotAvailableTimesForm()
 {
+}
+
+void ModifyConstraintRoomNotAvailableTimesForm::setAllAvailable()
+{
+	for(int i=0; i<gt.rules.nHoursPerDay; i++)
+		for(int j=0; j<gt.rules.nDaysPerWeek; j++)
+			notAllowedTimesTable->setText(i, j, NO);
+}
+
+void ModifyConstraintRoomNotAvailableTimesForm::setAllNotAvailable()
+{
+	for(int i=0; i<gt.rules.nHoursPerDay; i++)
+		for(int j=0; j<gt.rules.nDaysPerWeek; j++)
+			notAllowedTimesTable->setText(i, j, YES);
 }
 
 void ModifyConstraintRoomNotAvailableTimesForm::updateRoomsComboBox()

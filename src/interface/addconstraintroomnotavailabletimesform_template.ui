@@ -9,7 +9,7 @@
             <x>0</x>
             <y>0</y>
             <width>593</width>
-            <height>536</height>
+            <height>557</height>
         </rect>
     </property>
     <property name="caption">
@@ -100,32 +100,6 @@
                 </widget>
             </vbox>
         </widget>
-        <widget class="QLayoutWidget" row="2" column="0" rowspan="1" colspan="2">
-            <property name="name">
-                <cstring>layout7</cstring>
-            </property>
-            <hbox>
-                <property name="name">
-                    <cstring>unnamed</cstring>
-                </property>
-                <widget class="QPushButton">
-                    <property name="name">
-                        <cstring>addConstraintPushButton</cstring>
-                    </property>
-                    <property name="text">
-                        <string>Add constraint</string>
-                    </property>
-                </widget>
-                <widget class="QPushButton">
-                    <property name="name">
-                        <cstring>closePushButton</cstring>
-                    </property>
-                    <property name="text">
-                        <string>Close</string>
-                    </property>
-                </widget>
-            </hbox>
-        </widget>
         <widget class="QTable" row="1" column="0" rowspan="1" colspan="2">
             <property name="name">
                 <cstring>notAllowedTimesTable</cstring>
@@ -139,6 +113,48 @@
             <property name="readOnly">
                 <bool>true</bool>
             </property>
+        </widget>
+        <widget class="QLayoutWidget" row="2" column="0" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>layout35</cstring>
+            </property>
+            <grid>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QPushButton" row="0" column="0">
+                    <property name="name">
+                        <cstring>setAllAvailablePushButton</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Set all slots available</string>
+                    </property>
+                </widget>
+                <widget class="QPushButton" row="0" column="1">
+                    <property name="name">
+                        <cstring>addConstraintPushButton</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Add constraint</string>
+                    </property>
+                </widget>
+                <widget class="QPushButton" row="1" column="0">
+                    <property name="name">
+                        <cstring>setAllNotAvailablePushButton</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Set all slots not available</string>
+                    </property>
+                </widget>
+                <widget class="QPushButton" row="0" column="2">
+                    <property name="name">
+                        <cstring>closePushButton</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Close</string>
+                    </property>
+                </widget>
+            </grid>
         </widget>
     </grid>
 </widget>
@@ -161,16 +177,33 @@
         <receiver>AddConstraintRoomNotAvailableTimesForm_template</receiver>
         <slot>tableClicked(int,int,int,const QPoint&amp;)</slot>
     </connection>
+    <connection>
+        <sender>setAllAvailablePushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>AddConstraintRoomNotAvailableTimesForm_template</receiver>
+        <slot>setAllAvailable()</slot>
+    </connection>
+    <connection>
+        <sender>setAllNotAvailablePushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>AddConstraintRoomNotAvailableTimesForm_template</receiver>
+        <slot>setAllNotAvailable()</slot>
+    </connection>
 </connections>
 <tabstops>
     <tabstop>roomsComboBox</tabstop>
     <tabstop>weightLineEdit</tabstop>
+    <tabstop>notAllowedTimesTable</tabstop>
+    <tabstop>setAllAvailablePushButton</tabstop>
+    <tabstop>setAllNotAvailablePushButton</tabstop>
     <tabstop>addConstraintPushButton</tabstop>
     <tabstop>closePushButton</tabstop>
 </tabstops>
 <slots>
     <slot>addConstraint()</slot>
     <slot>tableClicked(int,int,int,const QPoint&amp;)</slot>
+    <slot>setAllAvailable()</slot>
+    <slot>setAllNotAvailable()</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

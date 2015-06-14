@@ -47,15 +47,19 @@ extern Solution best_solution;
 
 extern bool simulation_running;
 
+extern bool teacherNotAvailableDayHour[MAX_TEACHERS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
+extern bool breakDayHour[MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
+
 TimetableViewTeachersForm::TimetableViewTeachersForm()
 {
 	//setWindowFlags(Qt::Window);
-	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	/*setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 	QDesktopWidget* desktop=QApplication::desktop();
 	int xx=desktop->width()/2 - frameGeometry().width()/2;
 	int yy=desktop->height()/2 - frameGeometry().height()/2;
-	move(xx, yy);
-
+	move(xx, yy);*/
+	centerWidgetOnScreen(this);
+	
 	teachersListBox->clear();
 	for(int i=0; i<gt.rules.nInternalTeachers; i++)
 		teachersListBox->insertItem(gt.rules.internalTeachersList[i]->name);
@@ -126,6 +130,10 @@ void TimetableViewTeachersForm::updateTeachersTimetableTable(){
 						s+=QObject::tr("R:")+gt.rules.internalRoomsList[r]->name;
 					}
 				}
+				else{
+					if((teacherNotAvailableDayHour[teacher][k][j] || breakDayHour[k][j]) && PRINT_NOT_AVAILABLE_TIME_SLOTS)
+						s+="-x-";
+				}
 				teachersTimetableTable->setText(j, k, s);
 			}
 		}
@@ -172,6 +180,16 @@ void TimetableViewTeachersForm::detailActivity(int row, int col){
 				if(r!=UNALLOCATED_SPACE && r!=UNSPECIFIED_ROOM){
 					s+="\n";
 					s+=QObject::tr("Room: ")+gt.rules.internalRoomsList[r]->name;
+					s+="\n";
+				}
+			}
+			else{
+				if(teacherNotAvailableDayHour[teacher][k][j]){
+					s+=tr("Teacher is not available 100% in this slot");
+					s+="\n";
+				}
+				if(breakDayHour[k][j]){
+					s+=tr("Break with weight 100% in this slot");
 					s+="\n";
 				}
 			}
@@ -231,7 +249,7 @@ void TimetableViewTeachersForm::lock(bool lockTime, bool lockSpace)
 					Activity* act=&gt.rules.internalActivitiesList[ai];
 
 					if(lockTime){
-						ConstraintActivityPreferredTime* ctr=new ConstraintActivityPreferredTime(100.0, act->id, day, hour);
+						ConstraintActivityPreferredStartingTime* ctr=new ConstraintActivityPreferredStartingTime(100.0, act->id, day, hour);
 						bool t=gt.rules.addTimeConstraint(ctr);
 						
 						if(t)

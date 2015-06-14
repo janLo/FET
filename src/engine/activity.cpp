@@ -85,8 +85,10 @@ bool Activity::operator==(Activity& a)
 		return false;
 	if(this->studentsNames != a.studentsNames)
 		return false;
-	if(this->duration != a.duration)
-	    return false;
+	//if(this->duration != a.duration)
+	  //  return false;
+	if((this->activityGroupId==0 && a.activityGroupId!=0) || (this->activityGroupId!=0 && a.activityGroupId==0))
+		return false;
 	return true;
 }
 
@@ -631,7 +633,7 @@ QString Activity::getDetailedDescriptionWithConstraints(Rules &r)
 	s+="\n";
 	for(int i=0; i<r.timeConstraintsList.size(); i++){
 		TimeConstraint* c=r.timeConstraintsList[i];
-		if(c->isRelatedToActivity(this)){
+		if(c->isRelatedToActivity(r, this)){
 			s+="\n";
 			s+=c->getDetailedDescription(r);
 		}
@@ -655,4 +657,15 @@ QString Activity::getDetailedDescriptionWithConstraints(Rules &r)
 bool Activity::isSplit()
 {
 	return this->totalDuration != this->duration;
+}
+
+bool Activity::representsComponentNumber(int index)
+{
+	if(this->activityGroupId==0)
+		return index==1;
+		//return false;
+		
+	//assert(this->activityGroupId>0);
+	
+	return index == (this->id - this->activityGroupId + 1);
 }

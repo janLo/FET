@@ -9,7 +9,7 @@
             <x>0</x>
             <y>0</y>
             <width>605</width>
-            <height>546</height>
+            <height>562</height>
         </rect>
     </property>
     <property name="caption">
@@ -60,32 +60,6 @@ gaps for teachers or students</string>
                 </widget>
             </hbox>
         </widget>
-        <widget class="QLayoutWidget" row="3" column="0">
-            <property name="name">
-                <cstring>layout7</cstring>
-            </property>
-            <hbox>
-                <property name="name">
-                    <cstring>unnamed</cstring>
-                </property>
-                <widget class="QPushButton">
-                    <property name="name">
-                        <cstring>okPushButton</cstring>
-                    </property>
-                    <property name="text">
-                        <string>Ok</string>
-                    </property>
-                </widget>
-                <widget class="QPushButton">
-                    <property name="name">
-                        <cstring>cancelPushButton</cstring>
-                    </property>
-                    <property name="text">
-                        <string>Cancel</string>
-                    </property>
-                </widget>
-            </hbox>
-        </widget>
         <widget class="QTable" row="2" column="0">
             <property name="name">
                 <cstring>notAllowedTimesTable</cstring>
@@ -99,6 +73,48 @@ gaps for teachers or students</string>
             <property name="readOnly">
                 <bool>true</bool>
             </property>
+        </widget>
+        <widget class="QLayoutWidget" row="3" column="0">
+            <property name="name">
+                <cstring>layout96</cstring>
+            </property>
+            <grid>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QPushButton" row="1" column="0">
+                    <property name="name">
+                        <cstring>setAllBreakPushButton</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Set all slots break</string>
+                    </property>
+                </widget>
+                <widget class="QPushButton" row="0" column="1">
+                    <property name="name">
+                        <cstring>okPushButton</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Ok</string>
+                    </property>
+                </widget>
+                <widget class="QPushButton" row="0" column="2">
+                    <property name="name">
+                        <cstring>cancelPushButton</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Cancel</string>
+                    </property>
+                </widget>
+                <widget class="QPushButton" row="0" column="0">
+                    <property name="name">
+                        <cstring>setAllAllowedPushButton</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Set all slots allowed</string>
+                    </property>
+                </widget>
+            </grid>
         </widget>
     </grid>
 </widget>
@@ -121,9 +137,24 @@ gaps for teachers or students</string>
         <receiver>ModifyConstraintBreakTimesForm_template</receiver>
         <slot>tableClicked(int,int,int,const QPoint&amp;)</slot>
     </connection>
+    <connection>
+        <sender>setAllAllowedPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>ModifyConstraintBreakTimesForm_template</receiver>
+        <slot>setAllAllowed()</slot>
+    </connection>
+    <connection>
+        <sender>setAllBreakPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>ModifyConstraintBreakTimesForm_template</receiver>
+        <slot>setAllBreak()</slot>
+    </connection>
 </connections>
 <tabstops>
     <tabstop>weightLineEdit</tabstop>
+    <tabstop>notAllowedTimesTable</tabstop>
+    <tabstop>setAllAllowedPushButton</tabstop>
+    <tabstop>setAllBreakPushButton</tabstop>
     <tabstop>okPushButton</tabstop>
     <tabstop>cancelPushButton</tabstop>
 </tabstops>
@@ -131,6 +162,8 @@ gaps for teachers or students</string>
     <slot>ok()</slot>
     <slot>tableClicked(int,int,int,const QPoint&amp;)</slot>
     <slot>cancel()</slot>
+    <slot>setAllAllowed()</slot>
+    <slot>setAllBreak()</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

@@ -54,8 +54,17 @@ extern QList<int> minNDaysListOfMinDays[MAX_ACTIVITIES];
 extern QList<double> minNDaysListOfWeightPercentages[MAX_ACTIVITIES];
 extern QList<bool> minNDaysListOfConsecutiveIfSameDay[MAX_ACTIVITIES];
 
-void computeMinNDays();
+bool computeMinNDays();
 ////////END   MIN N DAYS TIME CONSTRAINTS
+
+
+////////BEGIN MIN GAPS between activities TIME CONSTRAINTS
+extern QList<int> minGapsBetweenActivitiesListOfActivities[MAX_ACTIVITIES];
+extern QList<int> minGapsBetweenActivitiesListOfMinGaps[MAX_ACTIVITIES];
+extern QList<double> minGapsBetweenActivitiesListOfWeightPercentages[MAX_ACTIVITIES];
+
+bool computeMinGapsBetweenActivities();
+////////END	 MIN GAPS between activities TIME CONSTRAINTS
 
 
 ////////BEGIN st. not available, tch not avail., break, activity preferred time,
@@ -252,6 +261,36 @@ bool checkMinNDays100Percent();
 bool checkMinNDaysConsecutiveIfSameDay();
 
 
+///////BEGIN teachers interval max days per week
+extern double teachersIntervalMaxDaysPerWeekPercentages1[MAX_TEACHERS];
+extern int teachersIntervalMaxDaysPerWeekMaxDays1[MAX_TEACHERS];
+extern int teachersIntervalMaxDaysPerWeekIntervalStart1[MAX_TEACHERS];
+extern int teachersIntervalMaxDaysPerWeekIntervalEnd1[MAX_TEACHERS];
+
+extern double teachersIntervalMaxDaysPerWeekPercentages2[MAX_TEACHERS];
+extern int teachersIntervalMaxDaysPerWeekMaxDays2[MAX_TEACHERS];
+extern int teachersIntervalMaxDaysPerWeekIntervalStart2[MAX_TEACHERS];
+extern int teachersIntervalMaxDaysPerWeekIntervalEnd2[MAX_TEACHERS];
+
+bool computeTeachersIntervalMaxDaysPerWeek();
+///////END   teachers interval max days per week
+
+
+///////BEGIN subgroups interval max days per week
+extern double subgroupsIntervalMaxDaysPerWeekPercentages1[MAX_TOTAL_SUBGROUPS];
+extern int subgroupsIntervalMaxDaysPerWeekMaxDays1[MAX_TOTAL_SUBGROUPS];
+extern int subgroupsIntervalMaxDaysPerWeekIntervalStart1[MAX_TOTAL_SUBGROUPS];
+extern int subgroupsIntervalMaxDaysPerWeekIntervalEnd1[MAX_TOTAL_SUBGROUPS];
+
+extern double subgroupsIntervalMaxDaysPerWeekPercentages2[MAX_TOTAL_SUBGROUPS];
+extern int subgroupsIntervalMaxDaysPerWeekMaxDays2[MAX_TOTAL_SUBGROUPS];
+extern int subgroupsIntervalMaxDaysPerWeekIntervalStart2[MAX_TOTAL_SUBGROUPS];
+extern int subgroupsIntervalMaxDaysPerWeekIntervalEnd2[MAX_TOTAL_SUBGROUPS];
+
+bool computeSubgroupsIntervalMaxDaysPerWeek();
+///////END   subgroups interval max days per week
+
+
 ////////BEGIN rooms
 bool computeBasicSpace();
 
@@ -311,7 +350,8 @@ extern bool mustComputeTimetableTeacher[MAX_TEACHERS];
 bool homeRoomsAreOk();
 
 
-extern bool fixedActivity[MAX_ACTIVITIES];
+extern bool fixedTimeActivity[MAX_ACTIVITIES]; //this is in fact time fixed, not both time and space
+extern bool fixedSpaceActivity[MAX_ACTIVITIES];
 bool computeFixedActivities();
 
 

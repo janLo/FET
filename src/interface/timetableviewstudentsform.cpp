@@ -47,15 +47,19 @@ extern bool simulation_running;
 
 extern Solution best_solution;
 
+extern bool subgroupNotAvailableDayHour[MAX_TOTAL_SUBGROUPS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
+extern bool breakDayHour[MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
+
 TimetableViewStudentsForm::TimetableViewStudentsForm()
 {
 	//setWindowFlags(Qt::Window);
-	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	/*setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 	QDesktopWidget* desktop=QApplication::desktop();
 	int xx=desktop->width()/2 - frameGeometry().width()/2;
 	int yy=desktop->height()/2 - frameGeometry().height()/2;
-	move(xx, yy);
-
+	move(xx, yy);*/
+	centerWidgetOnScreen(this);
+	
 	yearsListBox->clear();
 	for(int i=0; i<gt.rules.augmentedYearsList.size(); i++){
 		StudentsYear* sty=gt.rules.augmentedYearsList[i];
@@ -190,6 +194,10 @@ void TimetableViewStudentsForm::updateStudentsTimetableTable(){
 					s+=QObject::tr("R:")+gt.rules.internalRoomsList[r]->name;
 				}
 			}
+			else{
+				if((subgroupNotAvailableDayHour[i][k][j] || breakDayHour[k][j]) && PRINT_NOT_AVAILABLE_TIME_SLOTS)
+					s+="-x-";
+			}
 			studentsTimetableTable->setText(j, k, s);
 		}
 	}
@@ -241,6 +249,16 @@ void TimetableViewStudentsForm::detailActivity(int row, int col)
 			if(r!=UNALLOCATED_SPACE && r!=UNSPECIFIED_ROOM){
 				s+="\n";
 				s+=QObject::tr("Room: ")+gt.rules.internalRoomsList[r]->name;
+				s+="\n";
+			}
+		}
+		else{
+			if(subgroupNotAvailableDayHour[i][k][j]){
+				s+=tr("Students subgroup is not available 100% in this slot");
+				s+="\n";
+			}
+			if(breakDayHour[k][j]){
+				s+=tr("Break with weight 100% in this slot");
 				s+="\n";
 			}
 		}
@@ -316,7 +334,7 @@ void TimetableViewStudentsForm::lock(bool lockTime, bool lockSpace)
 					Activity* act=&gt.rules.internalActivitiesList[ai];
 					
 					if(lockTime){
-						ConstraintActivityPreferredTime* ctr=new ConstraintActivityPreferredTime(100.0, act->id, day, hour);
+						ConstraintActivityPreferredStartingTime* ctr=new ConstraintActivityPreferredStartingTime(100.0, act->id, day, hour);
 						bool t=gt.rules.addTimeConstraint(ctr);
 						
 						if(t)
