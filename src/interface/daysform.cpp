@@ -10,8 +10,8 @@
 // Copyright: See COPYING file that comes with this distribution
 //
 //
-#include "genetictimetable_defs.h"
-#include "genetictimetable.h"
+#include "timetable_defs.h"
+#include "timetable.h"
 #include "fet.h"
 
 #include "daysform.h"
@@ -22,7 +22,7 @@
 
 #include <QDesktopWidget>
 
-extern GeneticTimetable gt;
+extern Timetable gt;
 
 QLineEdit* daysNames[14];
 int nDays;
@@ -106,6 +106,9 @@ void DaysForm::ok()
 	gt.rules.nDaysPerWeek=nDays;
 	for(int i=0; i<nDays; i++)
 		gt.rules.daysOfTheWeek[i]=daysNames[i]->text();
+		
+	gt.rules.nHoursPerWeek=gt.rules.nDaysPerWeek*gt.rules.nHoursPerDay; //not needed
+	gt.rules.internalStructureComputed=false;
 
 	this->close();
 }

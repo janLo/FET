@@ -1,43 +1,184 @@
+- To schedule firstly the activities which have fixed time?
 
-test other selection algorithm:
- - stochastic universal sampling (work in progress by Volker Dirr)
+----------------------------------------------------------------------------------
 
-code better mutation algorithm:
- - chromosome need "don´t care" flag for "activity prefered time" (work in progress by Volker Dirr)
+Let FET automatically generate x timetables (suggested by Volker Dirr):
+
+> Yes, I thought of this also. But here is what I think: run x times and
+> choose
+> the best, considering the conflicts factor. Only print this timetable. Or
+> save them on the hard disk, internal structure, small file, and let user
+> browse them in the interface.
+
+no, please save x timetables and let manualy choose.
+sometimes itÂ´s very difficult to say what is better.
+
+----------------------------------------------------------------------------------
+
+From Volker Dirr, regarding translation:
+
+1. maybe itÂ´s better to be more exact. example: phrases "min hour" better "min hour per day"
+
+2. sometimes it is "Weight percentage (necessary: 100%)" sometimes it is "Weight percentage (needed: 100%)"
+
+3. sometimes the english version isnÂ´t always the same.
+
+sometimes you wrote "add current activity"
+sometimes you wrote "add activity"
+sometimes you wrote "add current"
+sometimes you wrote "add"
+i think it should always be the same.
+
+also sentence like: "You have to know that a this constaint ..."
+should only be: "This contraint ..."
+
+4. also in the QObject are some "strange" transations.
+
+example:
+". This [...]" mabye better "This [...]"
+", S:" i think ", " and ":" should not be enterd into the QObject::tr
+
+we have also change phrases like ",
+S:%1".
+
+5. maybe "start" should be "generate" in the generateform.
+
+6. more TODO for english phrases:
+- if you wrote one or more sentences, please always end with ., ! or ?.
+- the head of a dialoge always start with "FET - ..." but sometimes you
+wrote "... dialoge".
+- sometimes you wrote "students subgroups", i think you just need to write
+"subgroups", because teachers have no subgroups.
+- all "add", "modify", and "remove", "close" phrases should only contain
+this word. no more words like "current" or "group". maybe wrote them with
+QObject, because nearly every dialoge have this 4 phrases.
+
+7. phrases like that are not very good:
+"NEW: Divide year automatically by selecting categories"
+
+i think we should remove NEW:
+
+and some phrases starts with a new line.
+
+sometimes you write a sentences, then do a new line and then (in the new
+line) close the sentence with "."
+
+8. one time you wrote "abort". all other times you wrote "cancel".
+
+9. i think we should think and write a small definition note for english
+phrases.
+
+it looks like in a few times this terms are not always used same/correct:
+hour
+duration
+periode
+lesson
+activity
+
+when we write a small definition note, then we have to care about this:
+words must also be correct for schools that donÂ´t use "hours" as one time
+hour.
+in germany one schoolhour is 45 minutes. but thatÂ´s no problem. we use the
+same words for that.
+but i remember a letter in the maillinglist. that guy wrote that he has 60
+minutes hours and 90 minutes hours. so he defined 30 minutes "hours" and
+set duration == 2 or duration == 3 to the activities.
+so the definiton and use of hour, duration, periode and lesson must also
+match to this.
+
+please let us friste a small definistion not for this terms:
+hour, duration, periode, lesson, activity
+this will help if we add new or modify old english phrases and it will
+also help translaters.
+
+10. maybe TODO: no brackets in "view (students)", "view (teachers)", and "view
+(rooms)".
+
+11. and it looks like we shouldnÂ´t use the word "lesson".
+in the most phases itÂ´s better to replace "lessons" by "subactivities"
+
+12. maybe:
+"invalid activity" is better "no activity selected"
+
+13. very low priority maybe:
+in mainform->data is this order:
+1) instutionname and comment
+2) days and hours
+3) a) teachers
+Â  Â b) subjects and subject tag
+Â  Â c) years/groups/subgroups
+4) ...
+
+maybe change order 3 a) with 3 b)
+so first subject and sunject tag.
+then teachers.
+resason: every activity have a subject. so subject is more importent,
+because not every activity has a techer or subgroup.
+
+14. that is also why i already asked you to change english translations,
+because some phrases can be shorten.
+for example all sentences with "you", "current" or "that mean" can be
+shorten (in english and german).
+example:
+"If you insert current group to current year, that means that some years
+share the same group (overlap)"
+
+shorten version:
+"Some years share this group if itÂ´s inserted."
+
+15. and a maye other thing. example:
+view in fet-mainform.
+there is "Time contraints (techers)".
+and in this folder is for example "Teachers max gaps per Week".
+i recommend to write just "Max gaps per Week".
+Reason:
+- itÂ´s shorter
+- itÂ´s clear that it "teachers" contraint, because itÂ´s in that folder
+
+the english version looks fine, because you are always possible to write
+first "teachers". (except on time view (Min days between activities. You
+are not able to write Activities first.)
+In german translation it is much more difficult the write "teacher" always
+first. even including the word teacher is a much longer phrases than in
+english. it will be much easyer and nice, if we donÂ´t write teacher here.
+maybe the same porblem in other languages.
+
+----------------------------------------------------------------------------------
+
+From Volker Dirr:
+
+how about this:
+if you go to data->activities
+the you have 4 different filters where you can choose something.
+
+for example i choose filter subject "DE". now can see all "DE" activities
+at the left side. so it is ok like it is, or i see a missing one. if i see
+a missing one, then of course i want to add a subject "DE". so this
+subject should be default if i press add.
+
+so the function should have four parameters (the four filters),
+defaultsetting in the data->activities->add screen should have be the
+filters of data->activities.
+
+
+
+For multiple generation:
+
+> and maybe add a checkbox "shutdown after job is done". some software also
+> has this feature, like "noro burning rom".
+> so you "just" need to do a "shutdown -h now" (i think that was the linux
+> command, but i will check tomorrow)
+
+----------------------------------------------------------------------------------
+
 
 
 long time goals:
 
 code cover planning (open)
 
-code lesson planning (open)  
+code lesson planning (open)
 
-
-GENERAL:
--The population size must somehow be great enough so that the screen will not freeze 
-when allocating (this happens to too little population size). I do not know for sure 
-what this number is. Also, the population size must be greater than 2, so that FET
-does not crash. Implement this minimum number, so that FET does not crash.
-- Change "Equipments" into "Equipment"
-- Check the memory leaks. In Valgrind it shows some leakage, I don't know where from
-- Add translation in other languages
-- Command line options.
-- Add make install. Where should I place the executable?
-- Proper help files.
-- CVS support?
-- Compare this program with proprietary (non-free) applications.
-I saw that the only applications which use a text input file are "Mimosa" and,
-more recently, "Lantiv".
-- Collect results obtained by people worldwide. More input files required.
-
-
-TECHNICAL:
-- ConstraintActivitiesSameEndingTime
-- ConstraintActivitiesNotConsecutive
-- ConstraintActivityRejectedTime ?
-- ConstraintStudentsNoGaps: is it better to consider the importance of
-a gap as 1 or as its length? Currently, it is considered 1.
-- ConstraintStudentsMaxGapsDaily
 
 
 WISHLIST:
@@ -49,9 +190,6 @@ WISHLIST:
 From Michael Towers:
 
 "
-** Why are such configuration values set as constants which are then compiled into the 
-program? Wouldn't it be better to put these into a resource file, loaded at run time?
-
 ** What about a rewrite of the front end in a scripting language - e.g. Python? It might speed 
 development and help debugging. It could also make maintenance of the code easier.
 
@@ -119,14 +257,6 @@ repository (using client-server model) in a database that can be input/view
 by several users simultaneously.
 
 5---------------------------------------------------------
-From Yush Yuen:
-
-Anyway, what i meant was, our teachers may have lunch at EITHER 5th or
-6th period. so, i can't just use a break.
-
-Do timetable of just selected teachers.
-
-6---------------------------------------------------------
 From Scott Sweeting:
 I have come up with another idea for FET.  You currently have a timetable - both 
 individual and compiled - for rooms, students and teachers.  How about have another 
@@ -136,36 +266,13 @@ you to see when a subject is being taught, which is handy for school and univers
 environments.  This would allow you to cover all four areas - rooms, students, 
 teachers and subjects.
 
-7---------------------------------------------------------
-From Daniel S.:
-I think it might be a good idea to make the rate of mutation a runtime 
-variable rather than a compile-time variable.  According to your thesis, it 
-seems like the mutation rate is 80%, though I could not find any reference 
-to that in your code.  However, near the end of a simulation, once the 
-fitness curve has become flat and the number of conflicts is only rarely 
-decreasing, it seems like the gene pool is too uniform and only some major 
-change will allow any improvement.  If the rate of mutation is changed to 
-something like 99%, then the likelihood of a better schedule should 
-increase, because the schedules become more diverse.  While this is a bad 
-way to function at the beginning because there will not be enough simple 
-propagation, at the end, when all the chromosomes are similar, mutation 
-becomes more valuable.  At least this might be a solution to a situation 
-where a simulation has stalled with over 60 conflicts.
-(Liviu: the mutation rate is stored in the fet.ini file).
-
-8----------------------------------------------------------
-From Paulo Carrasco:
-Also it will be interesting to have some graphical output of the
-simulation of the GA (ex. Constraint violation per evolution step, mean of
-population fitness, etc.)
-
-9----------------------------------------------------------
+6----------------------------------------------------------
 From Patrick Fox:
 I was wondering if a discreet Fet graphic in the background of the
 window program, would be better than having nothing when you start the
 software ?
 
-10---------------------------------------------------------
+7---------------------------------------------------------
 From Volker Dirr:
 If you think that other people don´t like this default constaint how about
 making a menu "default settings". there you can add "langurage" and my
@@ -184,14 +291,7 @@ because it isn´t not to bad if it happen (having a lesson twice a day" only a fe
 or do something like "time constraints (activities) - max n activities with same subject per day"
 or "time constraints (activities) - max n (grouped) activities with same subject per day". (but he have to differ between activities and subactivities. is´t nonsens to subactivities, it has just sense with activities.)
 
-11---------------------------------------------------------
-From Jehanzeb Qayyum:
-Your answer to my first question worked but there is a problem, in the 
-time table view (html file) i get the name of the subject repeated 'n' 
-times if the subject takes 'n' slots for a period. Is there anyway i 
-make the subject name appear once for all consecutive slots.
-
-12---------------------------------------------------------
+8---------------------------------------------------------
 From Joseph M Fontana:
 
 Yesterday I was doing some testing and I was able to create some
@@ -204,7 +304,7 @@ created the previous day and I went to view teachers-with rooms. To my
 surprise FET asked me to allocate the rooms again (message saying:
 "please allocate the rooms, firstly").
 
-13---------------------------------------------------------
+9---------------------------------------------------------
 From Volker Dirr:
 > > so the current "problem" is:
 > > if you allocate a timetable and stop or interrupt allocatation, 
@@ -232,7 +332,7 @@ an other timetable have 5 teachers with 1 gap-time per teacher.
 so this timetabels are as good as the other, but of course we prefer 
 the second one.
 
-14---------------------------------------------------------
+10---------------------------------------------------------
 From Joshua N. Pritikin
 Can we have an option on the "add new activity dialog" to make the 
 preferred day & hour compulsory? Compulsory constraints are MUCH faster 
@@ -250,14 +350,14 @@ When viewing the timetable, you can only lock the activities you can
 select on the screen. I'd like the option to lock all activities in the 
 current timetable.
 
-15---------------------------------------------------------
+11---------------------------------------------------------
 From fsh_felix
 I hope you can enhance the software with an IMPORT utility to read 
 text files for (in the order of:)
 (a)  Subjects
 (b)  Teachers
 (c)  Class groups and subgroups
-(d)  Equipment, Buildings and Rooms
+(d)  Rooms
 (e)  Activities in the form of
      Subject1
      Teacher1, Class groups1 or subgroups1, hours of lesson

@@ -19,10 +19,10 @@
 #define ADDCONSTRAINTMINNDAYSBETWEENACTIVITIESFORM_H
 
 #include "addconstraintminndaysbetweenactivitiesform_template.h"
-#include "genetictimetable_defs.h"
-#include "genetictimetable.h"
+#include "timetable_defs.h"
+#include "timetable.h"
 #include "fet.h"
-#include "fetmainform.h"
+//#include "fetmainform.h"
 
 #include <q3combobox.h>
 #include <q3listbox.h>
@@ -47,6 +47,9 @@ public:
 	void removeActivity();
 
 	void addConstraint();
+
+	bool filterOk(Activity* a);
+	void filterChanged();	
 	
 private:
 	//the id's of the activities listed in the activities list

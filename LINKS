@@ -1,26 +1,47 @@
-Free software for school administration/timetabling:
+LINKS (Free software for school administration/timetabling):
 
-TABLIX:
-	http://www.tablix.org/
-	
-orario_elettronico:
-	http://orarelettr.sourceforge.net/
 
-SchoolTool:
-	http://www.schooltool.org/
-	
-intime
-	http://intime.sourceforge.net/
-	
-G-Tablix
-	http://gtablix.homelinux.org/wordpress/
-	
-FET in French
-	http://fetfr.free.fr/
+Tools for FET:
+--------------
 
-and, of course, FET :-)
+FET:
 	http://lalescu.ro/liviu/fet/
 
+Alternative timetabling algorithms and German FET support available at
+	http://www.timetabling.de/
+	
+Tutorial and help for FET in Romanian:	
+	Tutorial (in Romanian, by Constantin Romulus): http://scoalalanurile.xhost.ro/index.php?ind=downloads
+	Topic about FET (in Romanian, started by Constantin Romulus): http://scoalalanurile.xhost.ro/smf/index.php
 
+Orario_Elettronico - a graphical front/back-end / manual editor
+	http://orarelettr.sourceforge.net/
 
-Please send in other useful links!
+A link to the translation of FET into French.
+	http://fetfr.free.fr/
+	
+	
+Other free software for school administration/timetabling:
+----------------------------------------------------------
+
+TABLIX - a free software kernel for solving general timetabling problems
+	http://www.tablix.org/
+
+SchoolTool - a project to develop a common global school administration infrastructure 
+that is freely available under an Open Source licence
+	http://www.schooltool.org/
+
+intime - a free, open source program for editing school time tables
+	http://intime.sourceforge.net/
+
+G-Tablix - a graphical user interface (GUI) for Tablix
+	http://gtablix.homelinux.org/
+
+Open Admin for Schools - a web based school administration program written in perl and released under the GNU GPL
+	http://richtech.ca/openadmin/
+
+G-stpl - The Swing Timetable PLatform
+	http://gstpl.sourceforge.net/
+
+Open Course Timetabler - a free and open source application for university and school course timetabling
+	http://www.openctt.org/

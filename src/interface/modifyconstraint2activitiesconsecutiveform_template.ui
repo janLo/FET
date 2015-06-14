@@ -8,29 +8,52 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>465</width>
-            <height>410</height>
+            <width>585</width>
+            <height>447</height>
         </rect>
     </property>
     <property name="caption">
-        <string>FET - Modify Constraint2ActivitiesConsecutive dialog</string>
+        <string>FET - Modify constraint 2 activities consecutive dialog</string>
     </property>
     <grid>
         <property name="name">
             <cstring>unnamed</cstring>
         </property>
-        <widget class="QCheckBox" row="1" column="0">
+        <widget class="QLayoutWidget" row="5" column="0" rowspan="1" colspan="2">
             <property name="name">
-                <cstring>compulsoryCheckBox</cstring>
+                <cstring>layout7</cstring>
             </property>
-            <property name="text">
-                <string>Compulsory constraint</string>
+            <hbox>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QPushButton">
+                    <property name="name">
+                        <cstring>okPushButton</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Ok</string>
+                    </property>
+                </widget>
+                <widget class="QPushButton">
+                    <property name="name">
+                        <cstring>cancelPushButton</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Cancel</string>
+                    </property>
+                </widget>
+            </hbox>
+        </widget>
+        <widget class="QTextEdit" row="3" column="1" rowspan="2" colspan="1">
+            <property name="name">
+                <cstring>currentConstraintTextEdit</cstring>
             </property>
-            <property name="checked">
+            <property name="readOnly">
                 <bool>true</bool>
             </property>
         </widget>
-        <widget class="QLabel" row="3" column="0">
+        <widget class="QLabel" row="2" column="1">
             <property name="name">
                 <cstring>currentConstraintTextLabel</cstring>
             </property>
@@ -44,63 +67,9 @@
                 <string>Current constraint</string>
             </property>
         </widget>
-        <widget class="QPushButton" row="6" column="0">
+        <widget class="QLayoutWidget" row="4" column="0">
             <property name="name">
-                <cstring>cancelPushButton</cstring>
-            </property>
-            <property name="text">
-                <string>Cancel</string>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="5" column="0">
-            <property name="name">
-                <cstring>okPushButton</cstring>
-            </property>
-            <property name="text">
-                <string>Ok</string>
-            </property>
-        </widget>
-        <widget class="QTextEdit" row="4" column="0">
-            <property name="name">
-                <cstring>currentConstraintTextEdit</cstring>
-            </property>
-            <property name="readOnly">
-                <bool>true</bool>
-            </property>
-        </widget>
-        <widget class="QLayoutWidget" row="2" column="0">
-            <property name="name">
-                <cstring>layout13</cstring>
-            </property>
-            <vbox>
-                <property name="name">
-                    <cstring>unnamed</cstring>
-                </property>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>activitiesIdsTextLabel</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>true</bool>
-                    </property>
-                    <property name="text">
-                        <string>Please input here the id's of the 2 activities,
-in order, separated by commas.</string>
-                    </property>
-                </widget>
-                <widget class="QLineEdit">
-                    <property name="name">
-                        <cstring>activitiesIdsLineEdit</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>true</bool>
-                    </property>
-                </widget>
-            </vbox>
-        </widget>
-        <widget class="QLayoutWidget" row="0" column="0">
-            <property name="name">
-                <cstring>layout14</cstring>
+                <cstring>layout8</cstring>
             </property>
             <hbox>
                 <property name="name">
@@ -117,7 +86,8 @@ in order, separated by commas.</string>
                         <enum>Plain</enum>
                     </property>
                     <property name="text">
-                        <string>Weight (recommended: 1.0)</string>
+                        <string>Weight percentage
+(recommended: 0%-100%)</string>
                     </property>
                 </widget>
                 <widget class="QLineEdit">
@@ -125,10 +95,109 @@ in order, separated by commas.</string>
                         <cstring>weightLineEdit</cstring>
                     </property>
                     <property name="text">
-                        <string>1.0</string>
+                        <string>100</string>
                     </property>
                 </widget>
             </hbox>
+        </widget>
+        <spacer row="3" column="0">
+            <property name="name">
+                <cstring>spacer2</cstring>
+            </property>
+            <property name="orientation">
+                <enum>Vertical</enum>
+            </property>
+            <property name="sizeType">
+                <enum>Expanding</enum>
+            </property>
+            <property name="sizeHint">
+                <size>
+                    <width>20</width>
+                    <height>61</height>
+                </size>
+            </property>
+        </spacer>
+        <widget class="QLayoutWidget" row="0" column="0" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>layout6</cstring>
+            </property>
+            <vbox>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>activityTextLabel</cstring>
+                    </property>
+                    <property name="frameShape">
+                        <enum>NoFrame</enum>
+                    </property>
+                    <property name="frameShadow">
+                        <enum>Plain</enum>
+                    </property>
+                    <property name="text">
+                        <string>First activity</string>
+                    </property>
+                </widget>
+                <widget class="QComboBox">
+                    <property name="name">
+                        <cstring>firstActivitiesComboBox</cstring>
+                    </property>
+                    <property name="editable">
+                        <bool>false</bool>
+                    </property>
+                    <property name="insertionPolicy">
+                        <enum>NoInsertion</enum>
+                    </property>
+                    <property name="autoCompletion">
+                        <bool>false</bool>
+                    </property>
+                    <property name="duplicatesEnabled">
+                        <bool>false</bool>
+                    </property>
+                </widget>
+            </vbox>
+        </widget>
+        <widget class="QLayoutWidget" row="1" column="0" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>layout6_2</cstring>
+            </property>
+            <vbox>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>activityTextLabel_2</cstring>
+                    </property>
+                    <property name="frameShape">
+                        <enum>NoFrame</enum>
+                    </property>
+                    <property name="frameShadow">
+                        <enum>Plain</enum>
+                    </property>
+                    <property name="text">
+                        <string>Second activity</string>
+                    </property>
+                </widget>
+                <widget class="QComboBox">
+                    <property name="name">
+                        <cstring>secondActivitiesComboBox</cstring>
+                    </property>
+                    <property name="editable">
+                        <bool>false</bool>
+                    </property>
+                    <property name="insertionPolicy">
+                        <enum>NoInsertion</enum>
+                    </property>
+                    <property name="autoCompletion">
+                        <bool>false</bool>
+                    </property>
+                    <property name="duplicatesEnabled">
+                        <bool>false</bool>
+                    </property>
+                </widget>
+            </vbox>
         </widget>
     </grid>
 </widget>
@@ -146,22 +215,22 @@ in order, separated by commas.</string>
         <slot>ok()</slot>
     </connection>
     <connection>
-        <sender>activitiesIdsLineEdit</sender>
-        <signal>textChanged(const QString&amp;)</signal>
-        <receiver>ModifyConstraint2ActivitiesConsecutiveForm_template</receiver>
-        <slot>constraintChanged()</slot>
-    </connection>
-    <connection>
-        <sender>compulsoryCheckBox</sender>
-        <signal>toggled(bool)</signal>
-        <receiver>ModifyConstraint2ActivitiesConsecutiveForm_template</receiver>
-        <slot>constraintChanged()</slot>
-    </connection>
-    <connection>
         <sender>cancelPushButton</sender>
         <signal>clicked()</signal>
         <receiver>ModifyConstraint2ActivitiesConsecutiveForm_template</receiver>
         <slot>cancel()</slot>
+    </connection>
+    <connection>
+        <sender>firstActivitiesComboBox</sender>
+        <signal>activated(const QString&amp;)</signal>
+        <receiver>ModifyConstraint2ActivitiesConsecutiveForm_template</receiver>
+        <slot>constraintChanged()</slot>
+    </connection>
+    <connection>
+        <sender>secondActivitiesComboBox</sender>
+        <signal>activated(const QString&amp;)</signal>
+        <receiver>ModifyConstraint2ActivitiesConsecutiveForm_template</receiver>
+        <slot>constraintChanged()</slot>
     </connection>
 </connections>
 <slots>

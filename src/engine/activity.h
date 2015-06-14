@@ -25,7 +25,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #ifndef ACTIVITY_H
 #define ACTIVITY_H
 
-#include "genetictimetable_defs.h"
+#include "timetable_defs.h"
 
 #include <qfile.h>
 
@@ -41,17 +41,17 @@ typedef QList<Activity*> ActivitiesList;
 /**
 Used for an activity's parity, if it was not yet initialized.
 */
-const int PARITY_NOT_INITIALIZED=-1;
+//const int PARITY_NOT_INITIALIZED=-1;
 
 /**
 Used for an activity, if it is weekly.
 */
-const int PARITY_WEEKLY=0;
+//const int PARITY_WEEKLY=0;
 
 /**
 Used for an activity, if it is occuring once at two weeks.
 */
-const int PARITY_FORTNIGHTLY=1;
+//const int PARITY_FORTNIGHTLY=1;
 
 /**
 This class represents an activity.
@@ -89,7 +89,7 @@ public:
 	/**
 	The parity: weekly (PARITY_WEEKLY) or once at two weeks (PARITY_FORTNIGHTLY).
 	*/
-	int parity;
+	//int parity;
 
 	/**
 	This value is used only for split activities (for high-schools).
@@ -194,7 +194,7 @@ public:
 		const QStringList& _studentsNames,
 		int _duration,
 		int _totalDuration,
-		int _parity,
+		//int _parity,
 		bool _active,
 		bool _computeNTotalStudents,
 		int _nTotalStudents);

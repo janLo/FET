@@ -10,11 +10,11 @@
 // Copyright: See COPYING file that comes with this distribution
 //
 //
-#include "genetictimetable_defs.h"
-#include "genetictimetable.h"
+#include "timetable_defs.h"
+#include "timetable.h"
 #include "fet.h"
 #include "subjecttagsform.h"
-#include "fetmainform.h"
+//#include "fetmainform.h"
 #include "studentsset.h"
 #include "teacher.h"
 #include "subject.h"
@@ -25,6 +25,8 @@
 #include <q3textedit.h>
 
 #include <QDesktopWidget>
+
+#include <QMessageBox>
 
 SubjectTagsForm::SubjectTagsForm()
  : SubjectTagsForm_template()

@@ -13,10 +13,10 @@
 #include "addstudentsgroupform.h"
 #include "modifystudentsgroupform.h"
 #include "groupsform.h"
-#include "genetictimetable_defs.h"
-#include "genetictimetable.h"
+#include "timetable_defs.h"
+#include "timetable.h"
 #include "fet.h"
-#include "fetmainform.h"
+//#include "fetmainform.h"
 #include "studentsset.h"
 
 #include <q3listbox.h>
@@ -24,6 +24,8 @@
 #include <qstring.h>
 
 #include <QDesktopWidget>
+
+#include <QMessageBox>
 
 GroupsForm::GroupsForm()
  : GroupsForm_template()

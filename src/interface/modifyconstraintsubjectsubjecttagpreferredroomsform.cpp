@@ -1,8 +1,8 @@
 /***************************************************************************
                           modifyconstraintsubjectsubjecttagpreferredroomsform.cpp  -  description
                              -------------------
-    begin                : April 8, 2005
-    copyright            : (C) 2005 by Lalescu Liviu
+    begin                : Aug 18, 2007
+    copyright            : (C) 2007 by Lalescu Liviu
     email                : Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)
  ***************************************************************************/
 
@@ -48,12 +48,13 @@ ModifyConstraintSubjectSubjectTagPreferredRoomsForm::ModifyConstraintSubjectSubj
 	}
 	assert(j>=0);
 	subjectsComboBox->setCurrentItem(j);
-	
+
+	////////////////
 	i=0, j=-1;
 	for(int k=0; k<gt.rules.subjectTagsList.size(); k++){
-		SubjectTag* st=gt.rules.subjectTagsList[k];
-		subjectTagsComboBox->insertItem(st->name);
-		if(ctr->subjectTagName==st->name){
+		SubjectTag* sb=gt.rules.subjectTagsList[k];
+		subjectTagsComboBox->insertItem(sb->name);
+		if(ctr->subjectTagName==sb->name){
 			assert(j==-1);
 			j=i;
 		}
@@ -61,11 +62,12 @@ ModifyConstraintSubjectSubjectTagPreferredRoomsForm::ModifyConstraintSubjectSubj
 	}
 	assert(j>=0);
 	subjectTagsComboBox->setCurrentItem(j);
+	/////////////////
 	
 	this->_ctr=ctr;
 	
-	weightLineEdit->setText(QString::number(ctr->weight));
-	compulsoryCheckBox->setChecked(ctr->compulsory);
+	weightLineEdit->setText(QString::number(ctr->weightPercentage));
+	//compulsoryCheckBox->setChecked(ctr->compulsory);
 	
 	for(QStringList::Iterator it=ctr->roomsNames.begin(); it!=ctr->roomsNames.end(); it++)
 		selectedRoomsListBox->insertItem(*it);
@@ -91,15 +93,15 @@ void ModifyConstraintSubjectSubjectTagPreferredRoomsForm::ok()
 	double weight;
 	QString tmp=weightLineEdit->text();
 	sscanf(tmp, "%lf", &weight);
-	if(weight<0.0){
+	if(weight<0.0 || weight>100){
 		QMessageBox::warning(this, QObject::tr("FET information"),
 			QObject::tr("Invalid weight"));
 		return;
 	}
 
-	bool compulsory=false;
+/*	bool compulsory=false;
 	if(compulsoryCheckBox->isChecked())
-		compulsory=true;
+		compulsory=true;*/
 
 	if(selectedRoomsListBox->count()==0){
 		QMessageBox::warning(this, QObject::tr("FET information"),
@@ -108,7 +110,7 @@ void ModifyConstraintSubjectSubjectTagPreferredRoomsForm::ok()
 	}
 	if(selectedRoomsListBox->count()==1){
 		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Only one selected room"));
+			QObject::tr("Only one selected room - please use constraint subject preferred room if you want a single room"));
 		return;
 	}
 	if(selectedRoomsListBox->count()>(uint)(MAX_CONSTRAINT_SUBJECT_PREFERRED_ROOMS)){
@@ -135,8 +137,8 @@ void ModifyConstraintSubjectSubjectTagPreferredRoomsForm::ok()
 	for(uint i=0; i<selectedRoomsListBox->count(); i++)
 		roomsList.append(selectedRoomsListBox->text(i));
 	
-	this->_ctr->weight=weight;
-	this->_ctr->compulsory=compulsory;
+	this->_ctr->weightPercentage=weight;
+//	this->_ctr->compulsory=compulsory;
 	this->_ctr->subjectName=subject;
 	this->_ctr->subjectTagName=subjectTag;
 	this->_ctr->roomsNames=roomsList;

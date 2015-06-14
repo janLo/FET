@@ -102,14 +102,14 @@
                 <property name="name">
                     <cstring>unnamed</cstring>
                 </property>
-                <widget class="QComboBox" row="0" column="0">
-                    <property name="name">
-                        <cstring>roomsComboBox</cstring>
-                    </property>
-                </widget>
                 <widget class="QComboBox" row="1" column="0">
                     <property name="name">
                         <cstring>subjectsComboBox</cstring>
+                    </property>
+                </widget>
+                <widget class="QComboBox" row="0" column="0">
+                    <property name="name">
+                        <cstring>roomsComboBox</cstring>
                     </property>
                 </widget>
                 <widget class="QComboBox" row="2" column="0">
@@ -160,6 +160,18 @@
     </connection>
     <connection>
         <sender>subjectsComboBox</sender>
+        <signal>activated(const QString&amp;)</signal>
+        <receiver>ConstraintSubjectSubjectTagPreferredRoomForm_template</receiver>
+        <slot>filterChanged()</slot>
+    </connection>
+    <connection>
+        <sender>constraintsListBox</sender>
+        <signal>selected(const QString&amp;)</signal>
+        <receiver>ConstraintSubjectSubjectTagPreferredRoomForm_template</receiver>
+        <slot>modifyConstraint()</slot>
+    </connection>
+    <connection>
+        <sender>subjectTagsComboBox</sender>
         <signal>activated(const QString&amp;)</signal>
         <receiver>ConstraintSubjectSubjectTagPreferredRoomForm_template</receiver>
         <slot>filterChanged()</slot>

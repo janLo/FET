@@ -25,14 +25,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #ifndef TIMECONSTRAINT_H
 #define TIMECONSTRAINT_H
 
-#include "genetictimetable_defs.h"
+#include "timetable_defs.h"
 
 #include <QString>
 #include <QList>
 #include <QStringList>
 
 class Rules;
-class TimeChromosome;
+class Solution;
 class TimeConstraint;
 class Activity;
 class Teacher;
@@ -45,40 +45,34 @@ typedef QList<TimeConstraint*> TimeConstraintsList;
 const int CONSTRAINT_GENERIC_TIME										=0;
 
 const int CONSTRAINT_BASIC_COMPULSORY_TIME								=1;
+const int CONSTRAINT_BREAK												=2;
 
-const int CONSTRAINT_TEACHER_NOT_AVAILABLE								=2;
-const int CONSTRAINT_TEACHERS_MAX_HOURS_CONTINUOUSLY					=3;
-const int CONSTRAINT_TEACHERS_SUBGROUPS_MAX_HOURS_DAILY					=4;
-const int CONSTRAINT_TEACHERS_NO_GAPS									=5;
-const int CONSTRAINT_TEACHERS_MAX_HOURS_DAILY							=6;
-const int CONSTRAINT_TEACHERS_MIN_HOURS_DAILY							=7;
-const int CONSTRAINT_TEACHER_MAX_DAYS_PER_WEEK							=8;
-const int CONSTRAINT_TEACHER_INTERVAL_MAX_DAYS_PER_WEEK					=9;
+const int CONSTRAINT_TEACHER_NOT_AVAILABLE								=3;
+const int CONSTRAINT_TEACHERS_MAX_HOURS_DAILY							=4;
+const int CONSTRAINT_TEACHER_MAX_DAYS_PER_WEEK							=5;
+const int CONSTRAINT_TEACHERS_MAX_GAPS_PER_WEEK							=6;
+const int CONSTRAINT_TEACHER_MAX_GAPS_PER_WEEK							=7;
+const int CONSTRAINT_TEACHER_MAX_HOURS_DAILY							=8;
 
-const int CONSTRAINT_BREAK												=10;
-
-const int CONSTRAINT_STUDENTS_EARLY										=11;
-const int CONSTRAINT_STUDENTS_SET_NOT_AVAILABLE							=12;
-const int CONSTRAINT_STUDENTS_N_HOURS_DAILY								=13;
-const int CONSTRAINT_STUDENTS_SET_N_HOURS_DAILY							=14;
-const int CONSTRAINT_STUDENTS_NO_GAPS									=15;
-const int CONSTRAINT_STUDENTS_SET_NO_GAPS								=16;
-const int CONSTRAINT_STUDENTS_SET_INTERVAL_MAX_DAYS_PER_WEEK			=17;
+const int CONSTRAINT_STUDENTS_EARLY										=9;
+const int CONSTRAINT_STUDENTS_SET_NOT_AVAILABLE							=10;
+const int CONSTRAINT_STUDENTS_NO_GAPS									=11;
+const int CONSTRAINT_STUDENTS_SET_NO_GAPS								=12;
+const int CONSTRAINT_STUDENTS_SET_EARLY									=13;
+const int CONSTRAINT_STUDENTS_MAX_HOURS_DAILY							=14;
+const int CONSTRAINT_STUDENTS_SET_MAX_HOURS_DAILY						=15;
+const int CONSTRAINT_STUDENTS_MIN_HOURS_DAILY							=16;
+const int CONSTRAINT_STUDENTS_SET_MIN_HOURS_DAILY						=17;
 
 const int CONSTRAINT_ACTIVITY_PREFERRED_TIME							=18;
 const int CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME						=19;
 const int CONSTRAINT_ACTIVITIES_NOT_OVERLAPPING							=20;
 const int CONSTRAINT_MIN_N_DAYS_BETWEEN_ACTIVITIES						=21;
 const int CONSTRAINT_ACTIVITY_PREFERRED_TIMES							=22;
-const int CONSTRAINT_ACTIVITY_ENDS_DAY									=23;
-const int CONSTRAINT_2_ACTIVITIES_CONSECUTIVE							=24;
-const int CONSTRAINT_2_ACTIVITIES_ORDERED								=25;
-const int CONSTRAINT_2_ACTIVITIES_GROUPED								=26;
-const int CONSTRAINT_ACTIVITIES_PREFERRED_TIMES							=27;
-const int CONSTRAINT_ACTIVITIES_SAME_STARTING_HOUR						=28;
+const int CONSTRAINT_ACTIVITIES_PREFERRED_TIMES							=23;
+const int CONSTRAINT_ACTIVITIES_SAME_STARTING_HOUR						=24;
+const int CONSTRAINT_2_ACTIVITIES_CONSECUTIVE							=25;
 
-const int CONSTRAINT_TEACHERS_SUBJECT_TAGS_MAX_HOURS_CONTINUOUSLY		=29;
-const int CONSTRAINT_TEACHERS_SUBJECT_TAG_MAX_HOURS_CONTINUOUSLY		=30;
 
 /**
 This class represents a time constraint
@@ -86,9 +80,9 @@ This class represents a time constraint
 class TimeConstraint{
 public:
 	/**
-	The weight of this constraint
+	The percentage weight of this constraint, 100% compulsory, 0% non-compulsory
 	*/
-	double weight;
+	double weightPercentage;
 
 	/**
 	Specifies the type of this constraint (using the above constants).
@@ -98,7 +92,7 @@ public:
 	/**
 	True for mandatory constraints, false for non-mandatory constraints.
 	*/
-	bool compulsory;
+	//bool compulsory;
 
 	/**
 	Dummy constructor - needed for the static array of constraints.
@@ -109,13 +103,13 @@ public:
 	virtual ~TimeConstraint()=0;
 
 	/**
+	DEPRECATED COMMENT
 	Constructor - please note that the maximum allowed weight is 100.0
 	The reason: unallocated activities must have very big conflict weight,
 	and any other restrictions must have much more lower weight,
 	so that the timetable can evolve when starting with uninitialized activities.
-	Also, it is preferred that you use integer weights for the moment.
 	*/
-	TimeConstraint(double w, bool c);
+	TimeConstraint(double wp);
 
 	/**
 	The function that calculates the fitness of a chromosome, according to this
@@ -123,7 +117,7 @@ public:
 	If conflictsString!=NULL,
 	it will be initialized with a text explaining where this restriction is broken.
 	*/
-	virtual int fitness(TimeChromosome& c, Rules& r, QString* conflictsString=NULL)=0;
+	virtual double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>& dl, QString* conflictsString=NULL)=0;
 
 	/**
 	Returns an XML description of this constraint
@@ -182,7 +176,7 @@ class ConstraintBasicCompulsoryTime: public TimeConstraint{
 public:
 	ConstraintBasicCompulsoryTime();
 
-	ConstraintBasicCompulsoryTime(double w);
+	ConstraintBasicCompulsoryTime(double wp);
 
 	bool computeInternalStructure(Rules& r);
 
@@ -192,7 +186,7 @@ public:
 
 	QString getDetailedDescription(Rules& r);
 
-	int fitness(TimeChromosome& c, Rules& r, QString* conflictsString=NULL);
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
 	bool isRelatedToActivity(Activity* a);
 	
@@ -244,7 +238,7 @@ public:
 
 	ConstraintTeacherNotAvailable();
 
-	ConstraintTeacherNotAvailable(double w, bool c, const QString& tn, int day, int start_hour, int end_hour);
+	ConstraintTeacherNotAvailable(double wp, const QString& tn, int day, int start_hour, int end_hour);
 
 	bool computeInternalStructure(Rules& r);
 
@@ -254,7 +248,7 @@ public:
 
 	QString getDetailedDescription(Rules& r);
 
-	int fitness(TimeChromosome& c, Rules& r, QString* conflictsString=NULL);
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
 	bool isRelatedToActivity(Activity* a);
 	
@@ -308,7 +302,7 @@ public:
 
 	ConstraintStudentsSetNotAvailable();
 
-	ConstraintStudentsSetNotAvailable(double w, bool c, const QString& sn, int day, int start_hour, int end_hour);
+	ConstraintStudentsSetNotAvailable(double wp, const QString& sn, int day, int start_hour, int end_hour);
 
 	bool computeInternalStructure(Rules& r);
 
@@ -318,7 +312,7 @@ public:
 
 	QString getDetailedDescription(Rules& r);
 
-	int fitness(TimeChromosome& c, Rules& r, QString* conflictsString=NULL);
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
 	bool isRelatedToActivity(Activity* a);
 	
@@ -332,6 +326,7 @@ public:
 };
 
 /**
+DEPRECATED COMMENT
 This is a constraint.
 It aims at scheduling a set of activities at the same starting time.
 The number of conflicts is considered the sum of differences
@@ -372,7 +367,7 @@ public:
 	Constructor, using:
 	the weight, the number of activities and the list of activities' id-s.
 	*/
-	ConstraintActivitiesSameStartingTime(double w, bool c, int n_act, const int act[]);
+	ConstraintActivitiesSameStartingTime(double wp, int n_act, const int act[]);
 
 	bool computeInternalStructure(Rules& r);
 
@@ -382,7 +377,7 @@ public:
 
 	QString getDetailedDescription(Rules& r);
 
-	int fitness(TimeChromosome& c, Rules& r, QString* conflictsString=NULL);
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
 	/**
 	Removes useless activities from the _activities and activitiesId array
@@ -434,7 +429,7 @@ public:
 	Constructor, using:
 	the weight, the number of activities and the list of activities.
 	*/
-	ConstraintActivitiesNotOverlapping(double w, bool c, int n_act, const int act[]);
+	ConstraintActivitiesNotOverlapping(double wp, int n_act, const int act[]);
 
 	bool computeInternalStructure(Rules& r);
 
@@ -444,7 +439,7 @@ public:
 
 	QString getDetailedDescription(Rules& r);
 
-	int fitness(TimeChromosome& c, Rules& r, QString* conflictsString=NULL);
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
 	/**
 	Removes useless activities from the _activities array
@@ -469,6 +464,8 @@ have a minimum of N days between any two of them.
 */
 class ConstraintMinNDaysBetweenActivities: public TimeConstraint{
 public:
+	bool consecutiveIfSameDay;
+
 	/**
 	The number of activities involved in this constraint
 	*/
@@ -502,7 +499,7 @@ public:
 	Constructor, using:
 	the weight, the number of activities and the list of activities.
 	*/
-	ConstraintMinNDaysBetweenActivities(double w, bool c, int n_act, const int act[], int n);
+	ConstraintMinNDaysBetweenActivities(double wp, bool adjacentIfBroken, int n_act, const int act[], int n);
 
 	/**
 	Comparison operator - to be sure that we do not introduce duplicates
@@ -517,48 +514,12 @@ public:
 
 	QString getDetailedDescription(Rules& r);
 
-	int fitness(TimeChromosome& c, Rules& r, QString* conflictsString=NULL);
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
 	/**
 	Removes useless activities from the _activities array
 	*/
 	void removeUseless(Rules &r);
-
-	bool isRelatedToActivity(Activity* a);
-	
-	bool isRelatedToTeacher(Teacher* t);
-
-	bool isRelatedToSubject(Subject* s);
-
-	bool isRelatedToSubjectTag(SubjectTag* s);
-	
-	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
-};
-
-/**
-This is a constraint, aimed at obtaining timetables
-which do not allow more than X hours in a row for any teacher
-*/
-class ConstraintTeachersMaxHoursContinuously: public TimeConstraint{
-public:
-	/**
-	The maximum hours continuously
-	*/
-	int maxHoursContinuously;
-
-	ConstraintTeachersMaxHoursContinuously();
-
-	ConstraintTeachersMaxHoursContinuously(double w, bool c, int maxhours);
-
-	QString getXmlDescription(Rules& r);
-
-	bool computeInternalStructure(Rules& r);
-
-	QString getDescription(Rules& r);
-
-	QString getDetailedDescription(Rules& r);
-
-	int fitness(TimeChromosome& c, Rules& r, QString* conflictsString=NULL);
 
 	bool isRelatedToActivity(Activity* a);
 	
@@ -584,7 +545,7 @@ public:
 
 	ConstraintTeachersMaxHoursDaily();
 
-	ConstraintTeachersMaxHoursDaily(double w, bool c, int maxhours);
+	ConstraintTeachersMaxHoursDaily(double wp, int maxhours);
 
 	QString getXmlDescription(Rules& r);
 
@@ -594,7 +555,7 @@ public:
 
 	QString getDetailedDescription(Rules& r);
 
-	int fitness(TimeChromosome& c, Rules& r, QString* conflictsString=NULL);
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
 	bool isRelatedToActivity(Activity* a);
 	
@@ -607,67 +568,30 @@ public:
 	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
 };
 
-/**
-This is a constraint, aimed at obtaining timetables
-which do not allow less than X hours in a day for any teacher
-*/
-class ConstraintTeachersMinHoursDaily: public TimeConstraint{
+class ConstraintTeacherMaxHoursDaily: public TimeConstraint{
 public:
 	/**
-	The minimum hours daily
-	*/
-	int minHoursDaily;
-
-	ConstraintTeachersMinHoursDaily();
-
-	ConstraintTeachersMinHoursDaily(double w, bool c, int minhours);
-
-	QString getXmlDescription(Rules& r);
-
-	bool computeInternalStructure(Rules& r);
-
-	QString getDescription(Rules& r);
-
-	QString getDetailedDescription(Rules& r);
-
-	int fitness(TimeChromosome& c, Rules& r, QString* conflictsString=NULL);
-
-	bool isRelatedToActivity(Activity* a);
-	
-	bool isRelatedToTeacher(Teacher* t);
-
-	bool isRelatedToSubject(Subject* s);
-
-	bool isRelatedToSubjectTag(SubjectTag* s);
-	
-	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
-};
-
-/**
-A constraint aimed at obtaining timetables
-which do not allow for a certain teacher and a certain
-subgroup more than X hours per day
-*/
-class ConstraintTeachersSubgroupsMaxHoursDaily: public TimeConstraint{
-public:
-	/**
-	The maximum allowed hours daily
+	The maximum hours daily
 	*/
 	int maxHoursDaily;
+	
+	QString teacherName;
+	
+	int teacher_ID;
 
-	ConstraintTeachersSubgroupsMaxHoursDaily();
+	ConstraintTeacherMaxHoursDaily();
 
-	ConstraintTeachersSubgroupsMaxHoursDaily(double w, bool c, int maxhours);
-
-	bool computeInternalStructure(Rules& r);
+	ConstraintTeacherMaxHoursDaily(double wp, int maxhours, const QString& teacher);
 
 	QString getXmlDescription(Rules& r);
+
+	bool computeInternalStructure(Rules& r);
 
 	QString getDescription(Rules& r);
 
 	QString getDetailedDescription(Rules& r);
 
-	int fitness(TimeChromosome& c, Rules& r, QString* conflictsString=NULL);
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
 	bool isRelatedToActivity(Activity* a);
 	
@@ -705,7 +629,7 @@ public:
 
 	ConstraintTeacherMaxDaysPerWeek();
 
-	ConstraintTeacherMaxDaysPerWeek(double w, bool c, int maxnd, QString t);
+	ConstraintTeacherMaxDaysPerWeek(double wp, int maxnd, QString t);
 
 	bool computeInternalStructure(Rules& r);
 
@@ -715,7 +639,7 @@ public:
 
 	QString getDetailedDescription(Rules& r);
 
-	int fitness(TimeChromosome& c, Rules& r, QString* conflictsString=NULL);
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
 	bool isRelatedToActivity(Activity* a);
 	
@@ -752,7 +676,7 @@ public:
 
 	ConstraintBreak();
 
-	ConstraintBreak(double w, bool c, int day, int start_hour, int end_hour);
+	ConstraintBreak(double wp, int day, int start_hour, int end_hour);
 
 	bool computeInternalStructure(Rules& r);
 
@@ -762,7 +686,7 @@ public:
 
 	QString getDetailedDescription(Rules& r);
 
-	int fitness(TimeChromosome& c, Rules& r, QString* conflictsString=NULL);
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
 	bool isRelatedToActivity(Activity* a);
 	
@@ -785,7 +709,7 @@ class ConstraintStudentsNoGaps: public TimeConstraint{
 public:
 	ConstraintStudentsNoGaps();
 
-	ConstraintStudentsNoGaps(double w, bool c);
+	ConstraintStudentsNoGaps(double wp);
 
 	bool computeInternalStructure(Rules& r);
 
@@ -795,7 +719,7 @@ public:
 
 	QString getDetailedDescription(Rules& r);
 
-	int fitness(TimeChromosome& c, Rules& r, QString* conflictsString=NULL);
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
 	bool isRelatedToActivity(Activity* a);
 	
@@ -834,7 +758,7 @@ public:
 
 	ConstraintStudentsSetNoGaps();
 
-	ConstraintStudentsSetNoGaps(double w, bool c, const QString& st );
+	ConstraintStudentsSetNoGaps(double wp, const QString& st );
 
 	bool computeInternalStructure(Rules& r);
 
@@ -844,7 +768,7 @@ public:
 
 	QString getDetailedDescription(Rules& r);
 
-	int fitness(TimeChromosome& c, Rules& r, QString* conflictsString=NULL);
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
 	bool isRelatedToActivity(Activity* a);
 	
@@ -857,18 +781,13 @@ public:
 	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
 };
 
-/**
-This is a constraint. It adds, to the fitness of the chromosome, a
-conflicts factor computed from the gaps existing in the timetable
-(regarding the teachers). The overall result is a timetable having
-less gaps for the teachers.
-*/
-class ConstraintTeachersNoGaps: public TimeConstraint{
+class ConstraintTeachersMaxGapsPerWeek: public TimeConstraint{
 public:
+	int maxGaps;	
 
-	ConstraintTeachersNoGaps();
+	ConstraintTeachersMaxGapsPerWeek();
 
-	ConstraintTeachersNoGaps(double w, bool c);
+	ConstraintTeachersMaxGapsPerWeek(double wp, int maxGaps);
 
 	bool computeInternalStructure(Rules& r);
 
@@ -878,7 +797,40 @@ public:
 
 	QString getDetailedDescription(Rules& r);
 
-	int fitness(TimeChromosome& c, Rules& r, QString* conflictsString=NULL);
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
+
+	bool isRelatedToActivity(Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToSubjectTag(SubjectTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+};
+
+class ConstraintTeacherMaxGapsPerWeek: public TimeConstraint{
+public:
+	int maxGaps;
+	
+	QString teacherName;
+	
+	int teacherIndex;
+
+	ConstraintTeacherMaxGapsPerWeek();
+
+	ConstraintTeacherMaxGapsPerWeek(double wp, QString tn, int maxGaps);
+
+	bool computeInternalStructure(Rules& r);
+
+	QString getXmlDescription(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
 	bool isRelatedToActivity(Activity* a);
 	
@@ -904,7 +856,7 @@ public:
 
 	ConstraintStudentsEarly();
 
-	ConstraintStudentsEarly(double w, bool compulsory);
+	ConstraintStudentsEarly(double wp);
 
 	bool computeInternalStructure(Rules& r);
 
@@ -914,7 +866,7 @@ public:
 
 	QString getDetailedDescription(Rules& r);
 
-	int fitness(TimeChromosome& c, Rules& r, QString* conflictsString=NULL);
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
 	bool isRelatedToActivity(Activity* a);
 	
@@ -927,26 +879,130 @@ public:
 	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
 };
 
-/**
-This is a constraint. 
-The result is a timetable respecting the condition that the students
-must not have too little or too much hours in a day.
-*/
-class ConstraintStudentsNHoursDaily: public TimeConstraint{
+class ConstraintStudentsSetEarly: public TimeConstraint{
 public:
 	/**
-	The number of maximum allowed hours per day (-1 for don't care)
+	The name of the students
 	*/
+	QString students;
+
+	/**
+	The number of subgroups involved in this restriction
+	*/
+	int nSubgroups;
+
+	/**
+	The subgroups involved in this restriction
+	*/
+	int subgroups[MAX_SUBGROUPS_PER_CONSTRAINT];
+
+	ConstraintStudentsSetEarly();
+
+	ConstraintStudentsSetEarly(double wp, const QString& students);
+
+	bool computeInternalStructure(Rules& r);
+
+	QString getXmlDescription(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
+
+	bool isRelatedToActivity(Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToSubjectTag(SubjectTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+};
+
+class ConstraintStudentsMaxHoursDaily: public TimeConstraint{
+public:
+	int maxHoursDaily;
+
+	ConstraintStudentsMaxHoursDaily();
+
+	ConstraintStudentsMaxHoursDaily(double wp, int maxnh);
+
+	bool computeInternalStructure(Rules& r);
+
+	QString getXmlDescription(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
+
+	bool isRelatedToActivity(Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToSubjectTag(SubjectTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+};
+
+class ConstraintStudentsSetMaxHoursDaily: public TimeConstraint{
+public:
 	int maxHoursDaily;
 
 	/**
-	The number of minimum allowed hours per day (-1 for don't care)
+	The students set name
 	*/
+	QString students;
+
+	//internal variables
+
+	/**
+	The number of subgroups
+	*/
+	int nSubgroups;
+
+	/**
+	The subgroups
+	*/
+	int subgroups[MAX_SUBGROUPS_PER_CONSTRAINT];
+
+	ConstraintStudentsSetMaxHoursDaily();
+
+	ConstraintStudentsSetMaxHoursDaily(double wp, int maxnh, QString s);
+
+	bool computeInternalStructure(Rules& r);
+
+	QString getXmlDescription(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
+
+	bool isRelatedToActivity(Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToSubjectTag(SubjectTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+};
+
+class ConstraintStudentsMinHoursDaily: public TimeConstraint{
+public:
 	int minHoursDaily;
 
-	ConstraintStudentsNHoursDaily();
+	ConstraintStudentsMinHoursDaily();
 
-	ConstraintStudentsNHoursDaily(double w, bool c, int maxnh, int minnh);
+	ConstraintStudentsMinHoursDaily(double wp, int minnh);
 
 	bool computeInternalStructure(Rules& r);
 
@@ -956,7 +1012,7 @@ public:
 
 	QString getDetailedDescription(Rules& r);
 
-	int fitness(TimeChromosome& c, Rules& r, QString* conflictsString=NULL);
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
 	bool isRelatedToActivity(Activity* a);
 	
@@ -969,21 +1025,8 @@ public:
 	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
 };
 
-/**
-This is a constraint. 
-The result is a timetable respecting the condition that this students set
-must not have too little or too much hours in a day.
-*/
-class ConstraintStudentsSetNHoursDaily: public TimeConstraint{
+class ConstraintStudentsSetMinHoursDaily: public TimeConstraint{
 public:
-	/**
-	The number of maximum allowed hours per day (-1 for don't care)
-	*/
-	int maxHoursDaily;
-
-	/**
-	The number of minimum allowed hours per day (-1 for don't care)
-	*/
 	int minHoursDaily;
 
 	/**
@@ -1003,75 +1046,9 @@ public:
 	*/
 	int subgroups[MAX_SUBGROUPS_PER_CONSTRAINT];
 
-	ConstraintStudentsSetNHoursDaily();
+	ConstraintStudentsSetMinHoursDaily();
 
-	ConstraintStudentsSetNHoursDaily(double w, bool c, int maxnh, int minnh, QString s);
-
-	bool computeInternalStructure(Rules& r);
-
-	QString getXmlDescription(Rules& r);
-
-	QString getDescription(Rules& r);
-
-	QString getDetailedDescription(Rules& r);
-
-	int fitness(TimeChromosome& c, Rules& r, QString* conflictsString=NULL);
-
-	bool isRelatedToActivity(Activity* a);
-	
-	bool isRelatedToTeacher(Teacher* t);
-
-	bool isRelatedToSubject(Subject* s);
-
-	bool isRelatedToSubjectTag(SubjectTag* s);
-	
-	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
-};
-
-/**
-This is a custom constraint.
-For a certain students set:
-The purpose is that a certain interval not be scheduled more than n times in a week
-(for example, there must be only 2 occupied intervals between hours 3 and 6,
-which might be on Monday and on Tuesday.
-*/
-class ConstraintStudentsSetIntervalMaxDaysPerWeek: public TimeConstraint{
-public:
-	/**
-	The start hour
-	*/
-	int h1;
-
-	/**
-	The end hour
-	*/
-	int h2;
-
-	/**
-	The name of the students
-	*/
-	QString students;
-
-	/**
-	The max. number of intervals
-	*/
-	int n;
-
-	//internal variables
-
-	/**
-	The number of subgroups involved in this restriction
-	*/
-	int nSubgroups;
-
-	/**
-	The subgroups involved in this restriction
-	*/
-	int subgroups[MAX_SUBGROUPS_PER_CONSTRAINT];
-
-	ConstraintStudentsSetIntervalMaxDaysPerWeek();
-
-	ConstraintStudentsSetIntervalMaxDaysPerWeek(double w, bool c, const QString& sn, int start_hour, int end_hour, int n_intervals);
+	ConstraintStudentsSetMinHoursDaily(double wp, int minnh, QString s);
 
 	bool computeInternalStructure(Rules& r);
 
@@ -1081,68 +1058,7 @@ public:
 
 	QString getDetailedDescription(Rules& r);
 
-	int fitness(TimeChromosome& c, Rules& r, QString* conflictsString=NULL);
-
-	bool isRelatedToActivity(Activity* a);
-	
-	bool isRelatedToTeacher(Teacher* t);
-
-	bool isRelatedToSubject(Subject* s);
-
-	bool isRelatedToSubjectTag(SubjectTag* s);
-	
-	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
-};
-
-/**
-This is a custom constraint.
-For a certain teacher:
-The purpose is that a certain interval not be scheduled more than n times in a week
-(for example, there must be only 2 occupied intervals between hours 3 and 6,
-which might be on Monday and on Tuesday.
-*/
-class ConstraintTeacherIntervalMaxDaysPerWeek: public TimeConstraint{
-public:
-	/**
-	The start hour
-	*/
-	int h1;
-
-	/**
-	The end hour
-	*/
-	int h2;
-
-	/**
-	The name of the teacher
-	*/
-	QString teacher;
-
-	/**
-	The max. number of intervals
-	*/
-	int n;
-
-	//internal variables
-	
-	/**
-	The index of the teacher
-	*/
-	int teacherIndex;
-
-	ConstraintTeacherIntervalMaxDaysPerWeek();
-
-	ConstraintTeacherIntervalMaxDaysPerWeek(double w, bool c, const QString& tn, int start_hour, int end_hour, int n_intervals);
-
-	bool computeInternalStructure(Rules& r);
-
-	QString getXmlDescription(Rules& r);
-
-	QString getDescription(Rules& r);
-
-	QString getDetailedDescription(Rules& r);
-
-	int fitness(TimeChromosome& c, Rules& r, QString* conflictsString=NULL);
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
 	bool isRelatedToActivity(Activity* a);
 	
@@ -1187,7 +1103,7 @@ public:
 
 	ConstraintActivityPreferredTime();
 
-	ConstraintActivityPreferredTime(double w, bool c, int actId, int d, int h);
+	ConstraintActivityPreferredTime(double wp, int actId, int d, int h);
 
 	/**
 	Comparison operator - to be sure that we do not introduce duplicates
@@ -1202,7 +1118,7 @@ public:
 
 	QString getDetailedDescription(Rules& r);
 
-	int fitness(TimeChromosome& c, Rules& r, QString* conflictsString=NULL);
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
 	bool isRelatedToActivity(Activity* a);
 	
@@ -1250,7 +1166,7 @@ public:
 
 	ConstraintActivityPreferredTimes();
 
-	ConstraintActivityPreferredTimes(double w, bool c, int actId, int nPT, int d[], int h[]);
+	ConstraintActivityPreferredTimes(double wp, int actId, int nPT, int d[], int h[]);
 
 	bool computeInternalStructure(Rules& r);
 
@@ -1260,225 +1176,7 @@ public:
 
 	QString getDetailedDescription(Rules& r);
 
-	int fitness(TimeChromosome& c, Rules& r, QString* conflictsString=NULL);
-
-	bool isRelatedToActivity(Activity* a);
-	
-	bool isRelatedToTeacher(Teacher* t);
-
-	bool isRelatedToSubject(Subject* s);
-
-	bool isRelatedToSubjectTag(SubjectTag* s);
-	
-	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
-};
-
-/**
-This is a constraint.
-It returns a conflicts factor that increases with the number of lessons
-that follow after this activity (in the same day).
-*/
-class ConstraintActivityEndsDay: public TimeConstraint{
-public:
-	/**
-	Activity id
-	*/
-	int activityId;
-
-	//internal variables
-	/**
-	The index of the activity in the rules (from 0 to rules.nActivities-1) - it is not the id of the activity
-	*/
-	int activityIndex;
-
-	ConstraintActivityEndsDay();
-
-	ConstraintActivityEndsDay(double w, bool c, int actId);
-
-	bool computeInternalStructure(Rules& r);
-
-	QString getXmlDescription(Rules& r);
-
-	QString getDescription(Rules& r);
-
-	QString getDetailedDescription(Rules& r);
-
-	int fitness(TimeChromosome& c, Rules& r, QString* conflictsString=NULL);
-
-	bool isRelatedToActivity(Activity* a);
-	
-	bool isRelatedToTeacher(Teacher* t);
-
-	bool isRelatedToSubject(Subject* s);
-
-	bool isRelatedToSubjectTag(SubjectTag* s);
-	
-	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
-};
-
-/**
-This is a time constraint.
-PURPOSE: you have two activities that you want to schedule one after
-the other, in the same day. Order is important.
-It adds, to the fitness of the chromosome, a value that
-grows as the 2 activities are scheduled farther one from each other.
-For the moment, fitness factor increases with one unit for every additional 
-hour and one unit for every day (the optimal being 0 - when the starting time
-of the second activity is the ending time of the first one).
-*/
-class Constraint2ActivitiesConsecutive: public TimeConstraint{
-public:
-	/**
-	First activity id
-	*/
-	int firstActivityId;
-
-	/**
-	Second activity id
-	*/
-	int secondActivityId;
-
-	//internal variables
-	/**
-	The index of the first activity in the rules (from 0 to rules.nActivities-1) - it is not the id of the activity
-	*/
-	int firstActivityIndex;
-
-	/**
-	The index of the second activity in the rules (from 0 to rules.nActivities-1) - it is not the id of the activity
-	*/
-	int secondActivityIndex;
-
-	Constraint2ActivitiesConsecutive();
-
-	Constraint2ActivitiesConsecutive(double w, bool c, int firstActId, int secondActId);
-
-	bool computeInternalStructure(Rules& r);
-
-	QString getXmlDescription(Rules& r);
-
-	QString getDescription(Rules& r);
-
-	QString getDetailedDescription(Rules& r);
-
-	int fitness(TimeChromosome& c, Rules& r, QString* conflictsString=NULL);
-
-	bool isRelatedToActivity(Activity* a);
-	
-	bool isRelatedToTeacher(Teacher* t);
-
-	bool isRelatedToSubject(Subject* s);
-
-	bool isRelatedToSubjectTag(SubjectTag* s);
-	
-	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
-};
-
-/**
-This is a time constraint.
-PURPOSE: you have two activities that you want to schedule one after
-the other, not necessarily in the same day or adjacent. Order is important.
-It adds, to the fitness of the chromosome, the weight multimplied with 2 if the first
-activity is weekly (not fortnightly) and with again with 2 if the second activity
-is weekly, if the condition is broken.
-*/
-class Constraint2ActivitiesOrdered: public TimeConstraint{
-public:
-	/**
-	First activity id
-	*/
-	int firstActivityId;
-
-	/**
-	Second activity id
-	*/
-	int secondActivityId;
-
-	//internal variables
-	/**
-	The index of the first activity in the rules (from 0 to rules.nActivities-1) - it is not the id of the activity
-	*/
-	int firstActivityIndex;
-
-	/**
-	The index of the second activity in the rules (from 0 to rules.nActivities-1) - it is not the id of the activity
-	*/
-	int secondActivityIndex;
-
-	Constraint2ActivitiesOrdered();
-
-	Constraint2ActivitiesOrdered(double w, bool c, int firstActId, int secondActId);
-
-	bool computeInternalStructure(Rules& r);
-
-	QString getXmlDescription(Rules& r);
-
-	QString getDescription(Rules& r);
-
-	QString getDetailedDescription(Rules& r);
-
-	int fitness(TimeChromosome& c, Rules& r, QString* conflictsString=NULL);
-
-	bool isRelatedToActivity(Activity* a);
-	
-	bool isRelatedToTeacher(Teacher* t);
-
-	bool isRelatedToSubject(Subject* s);
-
-	bool isRelatedToSubjectTag(SubjectTag* s);
-	
-	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
-};
-
-/**
-This is a time constraint.
-PURPOSE: you have two activities that you want to schedule one after
-the other, in the same day. Order is not important.
-It adds, to the fitness of the chromosome, a value that
-grows as the 2 activities are scheduled farther one from each other.
-For the moment, fitness factor increases with one unit for every additional
-hour and one unit for every day.
-(For hours, we have a 0 as minimum if the activities
-are OK, a positive constant value if they overlap and a positive
-increasing value if they are not touching.
-For days - we have a simple absolute difference).
-*/
-class Constraint2ActivitiesGrouped: public TimeConstraint{
-public:
-	/**
-	First activity id
-	*/
-	int firstActivityId;
-
-	/**
-	Second activity id
-	*/
-	int secondActivityId;
-
-	//internal variables
-	/**
-	The index of the first activity in the rules (from 0 to rules.nActivities-1) - it is not the id of the activity
-	*/
-	int firstActivityIndex;
-
-	/**
-	The index of the second activity in the rules (from 0 to rules.nActivities-1) - it is not the id of the activity
-	*/
-	int secondActivityIndex;
-
-	Constraint2ActivitiesGrouped();
-
-	Constraint2ActivitiesGrouped(double w, bool c, int firstActId, int secondActId);
-
-	bool computeInternalStructure(Rules& r);
-
-	QString getXmlDescription(Rules& r);
-
-	QString getDescription(Rules& r);
-
-	QString getDetailedDescription(Rules& r);
-
-	int fitness(TimeChromosome& c, Rules& r, QString* conflictsString=NULL);
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
 	bool isRelatedToActivity(Activity* a);
 	
@@ -1550,7 +1248,7 @@ public:
 
 	ConstraintActivitiesPreferredTimes();
 
-	ConstraintActivitiesPreferredTimes(double w, bool c, QString te,
+	ConstraintActivitiesPreferredTimes(double wp, QString te,
 		QString st, QString su, QString sut, int nPT, int d[], int h[]);
 
 	bool computeInternalStructure(Rules& r);
@@ -1561,7 +1259,7 @@ public:
 
 	QString getDetailedDescription(Rules& r);
 
-	int fitness(TimeChromosome& c, Rules& r, QString* conflictsString=NULL);
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
 	bool isRelatedToActivity(Activity* a);
 	
@@ -1614,7 +1312,7 @@ public:
 	Constructor, using:
 	the weight, the number of activities and the list of activities' id-s.
 	*/
-	ConstraintActivitiesSameStartingHour(double w, bool c, int n_act, const int act[]);
+	ConstraintActivitiesSameStartingHour(double wp, int n_act, const int act[]);
 
 	bool computeInternalStructure(Rules& r);
 
@@ -1624,7 +1322,7 @@ public:
 
 	QString getDetailedDescription(Rules& r);
 
-	int fitness(TimeChromosome& c, Rules& r, QString* conflictsString=NULL);
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
 	/**
 	Removes useless activities from the _activities array
@@ -1642,22 +1340,32 @@ public:
 	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
 };
 
-/**
-A constraint aimed at obtaining timetables
-which do not allow for a certain teacher (from all teachers) and 
-a certain subject tag (from all subject tags) more 
-than max hours countinuously
-*/
-class ConstraintTeachersSubjectTagsMaxHoursContinuously: public TimeConstraint{
+class Constraint2ActivitiesConsecutive: public TimeConstraint{
 public:
 	/**
-	The maximum allowed hours continuously
+	First activity id
 	*/
-	int maxHoursContinuously;
-	
-	ConstraintTeachersSubjectTagsMaxHoursContinuously();
+	int firstActivityId;
 
-	ConstraintTeachersSubjectTagsMaxHoursContinuously(double w, bool c, int maxhours);
+	/**
+	Second activity id
+	*/
+	int secondActivityId;
+
+	//internal variables
+	/**
+	The index of the first activity in the rules (from 0 to rules.nActivities-1) - it is not the id of the activity
+	*/
+	int firstActivityIndex;
+
+	/**
+	The index of the second activity in the rules (from 0 to rules.nActivities-1) - it is not the id of the activity
+	*/
+	int secondActivityIndex;
+
+	Constraint2ActivitiesConsecutive();
+
+	Constraint2ActivitiesConsecutive(double wp, int firstActId, int secondActId);
 
 	bool computeInternalStructure(Rules& r);
 
@@ -1667,7 +1375,7 @@ public:
 
 	QString getDetailedDescription(Rules& r);
 
-	int fitness(TimeChromosome& c, Rules& r, QString* conflictsString=NULL);
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
 
 	bool isRelatedToActivity(Activity* a);
 	
@@ -1680,51 +1388,5 @@ public:
 	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
 };
 
-/**
-A constraint aimed at obtaining timetables
-which do not allow for a certain teacher from all teachers and 
-a certain subject tag more than max hours countinuously
-*/
-class ConstraintTeachersSubjectTagMaxHoursContinuously: public TimeConstraint{
-public:
-	/**
-	The maximum allowed hours continuously
-	*/
-	int maxHoursContinuously;
-	
-	/**
-	The subject tag
-	*/
-	QString subjectTagName;
-	
-	/**
-	The subject tag index
-	*/
-	int subjectTagIndex;
-	
-	ConstraintTeachersSubjectTagMaxHoursContinuously();
-
-	ConstraintTeachersSubjectTagMaxHoursContinuously(double w, bool c, int maxhours, const QString& subjecttag);
-
-	bool computeInternalStructure(Rules& r);
-
-	QString getXmlDescription(Rules& r);
-
-	QString getDescription(Rules& r);
-
-	QString getDetailedDescription(Rules& r);
-
-	int fitness(TimeChromosome& c, Rules& r, QString* conflictsString=NULL);
-
-	bool isRelatedToActivity(Activity* a);
-	
-	bool isRelatedToTeacher(Teacher* t);
-
-	bool isRelatedToSubject(Subject* s);
-
-	bool isRelatedToSubjectTag(SubjectTag* s);
-	
-	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
-};
 
 #endif

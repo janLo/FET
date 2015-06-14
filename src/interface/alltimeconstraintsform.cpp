@@ -17,36 +17,34 @@
 
 #include "alltimeconstraintsform.h"
 
-#include "modifyconstraint2activitiesconsecutiveform.h"
-#include "modifyconstraint2activitiesorderedform.h"
-#include "modifyconstraint2activitiesgroupedform.h"
+#include "modifyconstraintbreakform.h"
+#include "modifyconstraintbasiccompulsorytimeform.h"
+
 #include "modifyconstraintactivitypreferredtimesform.h"
+#include "modifyconstraint2activitiesconsecutiveform.h"
 #include "modifyconstraintactivitiespreferredtimesform.h"
 #include "modifyconstraintactivitiessamestartingtimeform.h"
 #include "modifyconstraintactivitiessamestartinghourform.h"
-#include "modifyconstraintteachernotavailableform.h"
-#include "modifyconstraintbasiccompulsorytimeform.h"
-#include "modifyconstraintstudentssetnotavailableform.h"
-#include "modifyconstraintbreakform.h"
-#include "modifyconstraintteachermaxdaysperweekform.h"
-#include "modifyconstraintteachersmaxhourscontinuouslyform.h"
-#include "modifyconstraintteachersmaxhoursdailyform.h"
-#include "modifyconstraintteachersminhoursdailyform.h"
-#include "modifyconstraintteacherssubgroupsmaxhoursdailyform.h"
 #include "modifyconstraintactivitypreferredtimeform.h"
-#include "modifyconstraintstudentssetnogapsform.h"
-#include "modifyconstraintstudentsnogapsform.h"
-#include "modifyconstraintteachersnogapsform.h"
-#include "modifyconstraintstudentsearlyform.h"
-#include "modifyconstraintstudentssetintervalmaxdaysperweekform.h"
-#include "modifyconstraintteacherintervalmaxdaysperweekform.h"
-#include "modifyconstraintstudentssetnhoursdailyform.h"
-#include "modifyconstraintstudentsnhoursdailyform.h"
-#include "modifyconstraintactivityendsdayform.h"
 #include "modifyconstraintactivitiesnotoverlappingform.h"
 #include "modifyconstraintminndaysbetweenactivitiesform.h"
-#include "modifyconstraintteacherssubjecttagsmaxhourscontinuouslyform.h"
-#include "modifyconstraintteacherssubjecttagmaxhourscontinuouslyform.h"
+
+#include "modifyconstraintteachernotavailableform.h"
+#include "modifyconstraintteachersmaxgapsperweekform.h"
+#include "modifyconstraintteachermaxgapsperweekform.h"
+#include "modifyconstraintteachermaxdaysperweekform.h"
+#include "modifyconstraintteachersmaxhoursdailyform.h"
+#include "modifyconstraintteachermaxhoursdailyform.h"
+
+#include "modifyconstraintstudentssetnotavailableform.h"
+#include "modifyconstraintstudentssetnogapsform.h"
+#include "modifyconstraintstudentsnogapsform.h"
+#include "modifyconstraintstudentsearlyform.h"
+#include "modifyconstraintstudentssetearlyform.h"
+#include "modifyconstraintstudentssetmaxhoursdailyform.h"
+#include "modifyconstraintstudentsmaxhoursdailyform.h"
+#include "modifyconstraintstudentssetminhoursdailyform.h"
+#include "modifyconstraintstudentsminhoursdailyform.h"
 
 #include <QDesktopWidget>
 
@@ -136,16 +134,6 @@ void AllTimeConstraintsForm::modifyConstraint()
 		 new ModifyConstraint2ActivitiesConsecutiveForm((Constraint2ActivitiesConsecutive*)ctr);
 		form->exec();
 	}
-	else if(ctr->type==CONSTRAINT_2_ACTIVITIES_ORDERED){
-		ModifyConstraint2ActivitiesOrderedForm* form=
-		 new ModifyConstraint2ActivitiesOrderedForm((Constraint2ActivitiesOrdered*)ctr);
-		form->exec();
-	}
-	else if(ctr->type==CONSTRAINT_2_ACTIVITIES_GROUPED){
-		ModifyConstraint2ActivitiesGroupedForm* form=
-		 new ModifyConstraint2ActivitiesGroupedForm((Constraint2ActivitiesGrouped*)ctr);
-		form->exec();
-	}
 	else if(ctr->type==CONSTRAINT_ACTIVITY_PREFERRED_TIMES){
 		ModifyConstraintActivityPreferredTimesForm* form=
 		 new ModifyConstraintActivityPreferredTimesForm((ConstraintActivityPreferredTimes*)ctr);
@@ -186,24 +174,24 @@ void AllTimeConstraintsForm::modifyConstraint()
 		 new ModifyConstraintTeacherMaxDaysPerWeekForm((ConstraintTeacherMaxDaysPerWeek*)ctr);
 		form->exec();
 	}
-	else if(ctr->type==CONSTRAINT_TEACHERS_MAX_HOURS_CONTINUOUSLY){
-		ModifyConstraintTeachersMaxHoursContinuouslyForm* form=
-		 new ModifyConstraintTeachersMaxHoursContinuouslyForm((ConstraintTeachersMaxHoursContinuously*)ctr);
-		form->exec();
-	}
 	else if(ctr->type==CONSTRAINT_TEACHERS_MAX_HOURS_DAILY){
 		ModifyConstraintTeachersMaxHoursDailyForm* form=
 		 new ModifyConstraintTeachersMaxHoursDailyForm((ConstraintTeachersMaxHoursDaily*)ctr);
 		form->exec();
 	}
-	else if(ctr->type==CONSTRAINT_TEACHERS_MIN_HOURS_DAILY){
-		ModifyConstraintTeachersMinHoursDailyForm* form=
-		 new ModifyConstraintTeachersMinHoursDailyForm((ConstraintTeachersMinHoursDaily*)ctr);
+	else if(ctr->type==CONSTRAINT_TEACHER_MAX_HOURS_DAILY){
+		ModifyConstraintTeacherMaxHoursDailyForm* form=
+		 new ModifyConstraintTeacherMaxHoursDailyForm((ConstraintTeacherMaxHoursDaily*)ctr);
 		form->exec();
 	}
-	else if(ctr->type==CONSTRAINT_TEACHERS_SUBGROUPS_MAX_HOURS_DAILY){
-		ModifyConstraintTeachersSubgroupsMaxHoursDailyForm* form=
-		 new ModifyConstraintTeachersSubgroupsMaxHoursDailyForm((ConstraintTeachersSubgroupsMaxHoursDaily*)ctr);
+	else if(ctr->type==CONSTRAINT_TEACHERS_MAX_GAPS_PER_WEEK){
+		ModifyConstraintTeachersMaxGapsPerWeekForm* form=
+		 new ModifyConstraintTeachersMaxGapsPerWeekForm((ConstraintTeachersMaxGapsPerWeek*)ctr);
+		form->exec();
+	}
+	else if(ctr->type==CONSTRAINT_TEACHER_MAX_GAPS_PER_WEEK){
+		ModifyConstraintTeacherMaxGapsPerWeekForm* form=
+		 new ModifyConstraintTeacherMaxGapsPerWeekForm((ConstraintTeacherMaxGapsPerWeek*)ctr);
 		form->exec();
 	}
 	else if(ctr->type==CONSTRAINT_ACTIVITY_PREFERRED_TIME){
@@ -221,39 +209,34 @@ void AllTimeConstraintsForm::modifyConstraint()
 		 new ModifyConstraintStudentsNoGapsForm((ConstraintStudentsNoGaps*)ctr);
 		form->exec();
 	}
-	else if(ctr->type==CONSTRAINT_TEACHERS_NO_GAPS){
-		ModifyConstraintTeachersNoGapsForm* form=
-		 new ModifyConstraintTeachersNoGapsForm((ConstraintTeachersNoGaps*)ctr);
-		form->exec();
-	}
 	else if(ctr->type==CONSTRAINT_STUDENTS_EARLY){
 		ModifyConstraintStudentsEarlyForm* form=
 		 new ModifyConstraintStudentsEarlyForm((ConstraintStudentsEarly*)ctr);
 		form->exec();
 	}
-	else if(ctr->type==CONSTRAINT_STUDENTS_SET_INTERVAL_MAX_DAYS_PER_WEEK){
-		ModifyConstraintStudentsSetIntervalMaxDaysPerWeekForm* form=
-		 new ModifyConstraintStudentsSetIntervalMaxDaysPerWeekForm((ConstraintStudentsSetIntervalMaxDaysPerWeek*)ctr);
+	else if(ctr->type==CONSTRAINT_STUDENTS_SET_EARLY){
+		ModifyConstraintStudentsSetEarlyForm* form=
+		 new ModifyConstraintStudentsSetEarlyForm((ConstraintStudentsSetEarly*)ctr);
 		form->exec();
 	}
-	else if(ctr->type==CONSTRAINT_TEACHER_INTERVAL_MAX_DAYS_PER_WEEK){
-		ModifyConstraintTeacherIntervalMaxDaysPerWeekForm* form=
-		 new ModifyConstraintTeacherIntervalMaxDaysPerWeekForm((ConstraintTeacherIntervalMaxDaysPerWeek*)ctr);
+	else if(ctr->type==CONSTRAINT_STUDENTS_SET_MAX_HOURS_DAILY){
+		ModifyConstraintStudentsSetMaxHoursDailyForm* form=
+		 new ModifyConstraintStudentsSetMaxHoursDailyForm((ConstraintStudentsSetMaxHoursDaily*)ctr);
 		form->exec();
 	}
-	else if(ctr->type==CONSTRAINT_STUDENTS_SET_N_HOURS_DAILY){
-		ModifyConstraintStudentsSetNHoursDailyForm* form=
-		 new ModifyConstraintStudentsSetNHoursDailyForm((ConstraintStudentsSetNHoursDaily*)ctr);
+	else if(ctr->type==CONSTRAINT_STUDENTS_MAX_HOURS_DAILY){
+		ModifyConstraintStudentsMaxHoursDailyForm* form=
+		 new ModifyConstraintStudentsMaxHoursDailyForm((ConstraintStudentsMaxHoursDaily*)ctr);
 		form->exec();
 	}
-	else if(ctr->type==CONSTRAINT_STUDENTS_N_HOURS_DAILY){
-		ModifyConstraintStudentsNHoursDailyForm* form=
-		 new ModifyConstraintStudentsNHoursDailyForm((ConstraintStudentsNHoursDaily*)ctr);
+	else if(ctr->type==CONSTRAINT_STUDENTS_SET_MIN_HOURS_DAILY){
+		ModifyConstraintStudentsSetMinHoursDailyForm* form=
+		 new ModifyConstraintStudentsSetMinHoursDailyForm((ConstraintStudentsSetMinHoursDaily*)ctr);
 		form->exec();
 	}
-	else if(ctr->type==CONSTRAINT_ACTIVITY_ENDS_DAY){
-		ModifyConstraintActivityEndsDayForm* form=
-		 new ModifyConstraintActivityEndsDayForm((ConstraintActivityEndsDay*)ctr);
+	else if(ctr->type==CONSTRAINT_STUDENTS_MIN_HOURS_DAILY){
+		ModifyConstraintStudentsMinHoursDailyForm* form=
+		 new ModifyConstraintStudentsMinHoursDailyForm((ConstraintStudentsMinHoursDaily*)ctr);
 		form->exec();
 	}
 	else if(ctr->type==CONSTRAINT_ACTIVITIES_NOT_OVERLAPPING){
@@ -264,16 +247,6 @@ void AllTimeConstraintsForm::modifyConstraint()
 	else if(ctr->type==CONSTRAINT_MIN_N_DAYS_BETWEEN_ACTIVITIES){
 		ModifyConstraintMinNDaysBetweenActivitiesForm* form=
 		 new ModifyConstraintMinNDaysBetweenActivitiesForm((ConstraintMinNDaysBetweenActivities*)ctr);
-		form->exec();
-	}
-	else if(ctr->type==CONSTRAINT_TEACHERS_SUBJECT_TAGS_MAX_HOURS_CONTINUOUSLY){
-		ModifyConstraintTeachersSubjectTagsMaxHoursContinuouslyForm* form=
-		 new ModifyConstraintTeachersSubjectTagsMaxHoursContinuouslyForm((ConstraintTeachersSubjectTagsMaxHoursContinuously*)ctr);
-		form->exec();
-	}
-	else if(ctr->type==CONSTRAINT_TEACHERS_SUBJECT_TAG_MAX_HOURS_CONTINUOUSLY){
-		ModifyConstraintTeachersSubjectTagMaxHoursContinuouslyForm* form=
-		 new ModifyConstraintTeachersSubjectTagMaxHoursContinuouslyForm((ConstraintTeachersSubjectTagMaxHoursContinuously*)ctr);
 		form->exec();
 	}
 	else{

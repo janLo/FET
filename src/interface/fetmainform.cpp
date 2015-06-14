@@ -13,29 +13,20 @@
 #include <iostream>
 using namespace std;
 
-#include "genetictimetable_defs.h"
-#include "genetictimetable.h"
+#include "timetable_defs.h"
+#include "timetable.h"
+#include "solution.h"
+
 #include "fetmainform.h"
-#include "timetableallocatehoursform.h"
+
+#include "timetablegenerateform.h"
+#include "timetablegeneratemultipleform.h"
+
 #include "timetableviewstudentsform.h"
 #include "timetableviewteachersform.h"
-#include "timetableviewstudentswithroomsform.h"
-#include "timetableviewteacherswithroomsform.h"
-#include "timetableviewstudentswithrooms2form.h"
-#include "timetableviewteacherswithrooms2form.h"
-#include "timetableshowconflictstimeform.h"
-#include "timetableallocateroomsform.h"
-#include "timetableallocatehoursroomsform.h"
+#include "timetableshowconflictsform.h"
 #include "timetableviewroomsform.h"
-#include "timetableshowconflictsspaceform.h"
-#include "timetableviewrooms2form.h"
-#include "timetableshowconflictstimespaceform.h"
-#include "timetableexporticalteachersform.h"
-#include "timetableexporticalstudentsform.h"
-#include "timetableexporticalteacherswithrooms1form.h"
-#include "timetableexporticalstudentswithrooms1form.h"
-#include "timetableexporticalteacherswithrooms2form.h"
-#include "timetableexporticalstudentswithrooms2form.h"
+
 #include "institutionnameform.h"
 #include "commentsform.h"
 #include "daysform.h"
@@ -50,67 +41,48 @@ using namespace std;
 #include "subgroupsform.h"
 #include "studentsstatisticsform.h"
 #include "activitiesform.h"
-#include "equipmentsform.h"
-#include "buildingsform.h"
 #include "roomsform.h"
 #include "alltimeconstraintsform.h"
 #include "allspaceconstraintsform.h"
 #include "helpaboutform.h"
 #include "helpfaqform.h"
-#include "helptimeconstraintsform.h"
-#include "helptimeconstraintssubtagsform.h"
-#include "populationnumberform.h"
+#include "helpinstructionsform.h"
+
 #include "fet.h"
+
 #include "constraint2activitiesconsecutiveform.h"
-#include "constraint2activitiesorderedform.h"
-#include "constraint2activitiesgroupedform.h"
 #include "constraintactivitiespreferredtimesform.h"
 #include "constraintactivitiessamestartingtimeform.h"
 #include "constraintactivitiessamestartinghourform.h"
 #include "constraintteachernotavailableform.h"
 #include "constraintbasiccompulsorytimeform.h"
 #include "constraintbasiccompulsoryspaceform.h"
-#include "constraintteacherrequiresroomform.h"
-#include "constraintteachersubjectrequireroomform.h"
 #include "constraintroomnotavailableform.h"
 #include "constraintactivitypreferredroomform.h"
-#include "constraintminimizenumberofroomsforstudentsform.h"
-#include "constraintminimizenumberofroomsforteachersform.h"
-#include "constraintroomtypenotallowedsubjectsform.h"
-#include "constraintsubjectrequiresequipmentsform.h"
-#include "constraintsubjectsubjecttagrequireequipmentsform.h"
 #include "constraintstudentssetnotavailableform.h"
 #include "constraintbreakform.h"
 #include "constraintteachermaxdaysperweekform.h"
-#include "constraintteachersmaxhourscontinuouslyform.h"
+#include "constraintteachermaxhoursdailyform.h"
 #include "constraintteachersmaxhoursdailyform.h"
-#include "constraintteachersminhoursdailyform.h"
-#include "constraintteacherssubgroupsmaxhoursdailyform.h"
 #include "constraintactivitypreferredtimeform.h"
 #include "constraintstudentssetnogapsform.h"
 #include "constraintstudentsnogapsform.h"
-#include "constraintteachersnogapsform.h"
+#include "constraintteachersmaxgapsperweekform.h"
+#include "constraintteachermaxgapsperweekform.h"
 #include "constraintstudentsearlyform.h"
-#include "constraintstudentssetintervalmaxdaysperweekform.h"
-#include "constraintteacherintervalmaxdaysperweekform.h"
-#include "constraintstudentssetnhoursdailyform.h"
-#include "constraintstudentsnhoursdailyform.h"
-#include "constraintactivityendsdayform.h"
+#include "constraintstudentssetearlyform.h"
+#include "constraintstudentssetmaxhoursdailyform.h"
+#include "constraintstudentsmaxhoursdailyform.h"
+#include "constraintstudentssetminhoursdailyform.h"
+#include "constraintstudentsminhoursdailyform.h"
 #include "constraintactivitiesnotoverlappingform.h"
 #include "constraintminndaysbetweenactivitiesform.h"
 #include "constraintactivitypreferredtimesform.h"
-#include "constraintteacherssubjecttagsmaxhourscontinuouslyform.h"
-#include "constraintteacherssubjecttagmaxhourscontinuouslyform.h"
-#include "constraintactivitiessameroomform.h"
 #include "constraintactivitypreferredroomsform.h"
 #include "constraintsubjectpreferredroomform.h"
-#include "constraintsubjectsubjecttagpreferredroomform.h"
 #include "constraintsubjectpreferredroomsform.h"
+#include "constraintsubjectsubjecttagpreferredroomform.h"
 #include "constraintsubjectsubjecttagpreferredroomsform.h"
-#include "constraintmaxbuildingchangesperdayforteachersform.h"
-#include "constraintmaxbuildingchangesperdayforstudentsform.h"
-#include "constraintmaxroomchangesperdayforteachersform.h"
-#include "constraintmaxroomchangesperdayforstudentsform.h"
 
 #include <qmessagebox.h>
 #include <q3filedialog.h>
@@ -122,36 +94,49 @@ using namespace std;
 
 #include <QCloseEvent>
 
+#include "httpget.h"
+
 bool simulation_running; //true if the user started an allocation of the timetable
+
+bool simulation_running_multi;
 
 bool students_schedule_ready;
 bool teachers_schedule_ready;
 bool rooms_schedule_ready;
-bool students_schedule_ready2;
-bool teachers_schedule_ready2;
-bool rooms_schedule_ready2;
 
-SpaceChromosome best_space_chromosome;
-TimeChromosome best_time_chromosome;
-TimeSpaceChromosome best_time_space_chromosome;
+Solution best_solution;
 
-QString timeConflictsString; //the string that contains a log of the broken time constraints
-QString spaceConflictsString; //the string that contains a log of the broken space constraints
-QString timeSpaceConflictsString; //the string that contains a log of the broken time&space constraints
+QString conflictsString; //the string that contains a log of the broken constraints
 
 extern QApplication* pqapplication;
 
 #include <QDesktopWidget>
 
+#include <QSettings>
+
+static HttpGet getter;
+
+//static bool finishedSearchingForUpdates;
+
 FetMainForm::FetMainForm()
 {
 	setupUi(this);
 
-	/*setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
-	QDesktopWidget* desktop=QApplication::desktop();
-	int xx=desktop->width()/2 - frameGeometry().width()/2;
-	int yy=desktop->height()/2 - frameGeometry().height()/2;
-	move(xx, yy);*/
+	QSettings settings("FET free software", "FET");
+	QRect rect=settings.value("fetmainformgeometry", QRect(0,0,0,0)).toRect();
+	
+	if(!rect.isValid()){
+		//setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+		QDesktopWidget* desktop=QApplication::desktop();
+		int xx=desktop->width()/2 - frameGeometry().width()/2;
+		int yy=desktop->height()/2 - frameGeometry().height()/2;
+		move(xx, yy);
+	}
+	else{
+		move(rect.topLeft());
+		cout<<"read rect.x()=="<<rect.x()<<", rect.y()=="<<rect.y()<<endl;
+		resize(rect.size());
+	}
 
 	languageMenu->setItemChecked(languageMenu->idAt(0), false);
 	languageMenu->setItemChecked(languageMenu->idAt(1), false);
@@ -192,32 +177,79 @@ FetMainForm::FetMainForm()
 		gt.rules.kill();
 	gt.rules.init();
 
-	bool tmp=gt.rules.addTimeConstraint(new ConstraintBasicCompulsoryTime(1.0));
+	bool tmp=gt.rules.addTimeConstraint(new ConstraintBasicCompulsoryTime(100));
 	assert(tmp);
-	tmp=gt.rules.addSpaceConstraint(new ConstraintBasicCompulsorySpace(1.0));
+	tmp=gt.rules.addSpaceConstraint(new ConstraintBasicCompulsorySpace(100));
 	assert(tmp);
 
 	students_schedule_ready=false;
 	teachers_schedule_ready=false;
 	rooms_schedule_ready=false;
-	students_schedule_ready2=false;
-	teachers_schedule_ready2=false;
-	rooms_schedule_ready2=false;
 	
 	languageMenu->setCheckable(true);
+	
+	checkForUpdatesAction->setCheckable(true);
+	checkForUpdatesAction->setChecked(checkForUpdates);
+
+	QObject::connect(&getter, SIGNAL(done(bool)), this, SLOT(httpDone(bool)));
+	
+	if(checkForUpdates){
+		bool t=getter.getFile(QUrl("http://www.lalescu.ro/liviu/fet/crtversion/crtversion.txt"));
+		assert(t);
+	}
 }
 
-//#include <iostream>
-//using namespace std;
+void FetMainForm::on_checkForUpdatesAction_toggled()
+{
+	checkForUpdates=checkForUpdatesAction->isChecked();
+}
+
+void FetMainForm::httpDone(bool error)
+{
+	if(error){
+		QMessageBox::warning(this, QObject::tr("FET warning"), QObject::tr(
+		 "Could not search for possible updates on internet - error message is: %1. "
+		 "I am searching for the file http://www.lalescu.ro/liviu/fet/crtversion/crtversion.txt . "
+		 "Maybe the current structure on web page was changed. Please visit FET web page"
+		 " http://www.lalescu.ro/liviu/fet/ and get latest version or,"
+		 " if the web page does not work, try to search for the new FET page on the internet."
+		 " You can contact the author. Also, sometimes lalescu.ro might have temporary problems, try again later"
+		 "\n\nIf you want, you can turn off automatic search for updates in Settings menu"
+		 ).arg(getter.http.errorString()));
+	}
+	else{
+		QString s;
+		for(int c=0; c<internetVersion.count(); c++){
+			s+=internetVersion[c];
+			if((c+1)%64==0)
+				s+=" ";
+		}
+	
+		if(internetVersion!=FET_VERSION){
+			QMessageBox::information(this, QObject::tr("FET information"),
+			 QObject::tr("Another version: %1, is available on FET webpage: http://www.lalescu.ro/liviu/fet/\n\n"
+			 "You have to manually download and install (open the FET webpage in an internet browser). "
+			 "Please read the information on web page regarding the newer version and choose whether to keep you current version or upgrade."
+			 " You might need to hit Refresh in your web browser if links do not work"
+			 "\n\nYou can choose to disable automatic search for updates in the Settings menu")
+			 .arg(s));
+		}
+	}
+}
 
 void FetMainForm::closeEvent(QCloseEvent* event)
 {
+	QSettings settings("FET free software", "FET");
+	QRect rect(x(), y(), width(), height());
+	settings.setValue("fetmainformgeometry", rect);
+	cout<<"wrote x()=="<<x()<<", y()=="<<y()<<endl;
+	
 	if(event!=NULL)
 		;
 
 	switch(QMessageBox::information( this, QObject::tr("FET - exiting"),
 	 QObject::tr("File not saved - do you want to save it?"),
-	 QObject::tr("&Yes"), QObject::tr("&No"), QObject::tr("&Cancel"), 0 , 2 )){	 
+	 QObject::tr("&Yes"), QObject::tr("&No"), QObject::tr("&Cancel"), 0 , 2 )){
 	 	case 0: 
 			this->on_fileSaveAction_activated();
 			event->accept();
@@ -230,11 +262,12 @@ void FetMainForm::closeEvent(QCloseEvent* event)
 			break;
 	}
 
-	INPUT_FILENAME_XML = "";
+	//INPUT_FILENAME_XML = "";
 }
 
 FetMainForm::~FetMainForm()
 {
+	getter.http.abort();
 }
 
 void FetMainForm::on_fileExitAction_activated()
@@ -277,16 +310,14 @@ void FetMainForm::on_fileNewAction_activated()
 			gt.rules.kill();
 		gt.rules.init();
 
-		bool tmp=gt.rules.addTimeConstraint(new ConstraintBasicCompulsoryTime(1.0));
+		bool tmp=gt.rules.addTimeConstraint(new ConstraintBasicCompulsoryTime(100));
 		assert(tmp);
-		tmp=gt.rules.addSpaceConstraint(new ConstraintBasicCompulsorySpace(1.0));
+		tmp=gt.rules.addSpaceConstraint(new ConstraintBasicCompulsorySpace(100));
 		assert(tmp);
 
 		students_schedule_ready=false;
 		teachers_schedule_ready=false;
-		students_schedule_ready2=false;
-		teachers_schedule_ready2=false;
-		rooms_schedule_ready2=false;
+		rooms_schedule_ready=false;
 	}
 }
 
@@ -305,18 +336,22 @@ void FetMainForm::on_fileOpenAction_activated()
 			this, QObject::tr("open file dialog"), QObject::tr("Choose a file"));
 		if(s.isNull())
 			return;
-		
-		if(gt.rules.read(s)){
-			students_schedule_ready=false;
-			teachers_schedule_ready=false;
-			students_schedule_ready2=false;
-			teachers_schedule_ready2=false;
-			rooms_schedule_ready2=false;
-
-			INPUT_FILENAME_XML = s;
+			
+		if(s.indexOf("(") >= 0 || s.indexOf(")")>=0){
+			QMessageBox::information(this, QObject::tr("FET info"), QObject::tr("Please do not use parantheses () in filename, the html code does not work"));
+			return;
 		}
 		else{
-			QMessageBox::information(this, QObject::tr("FET info"), QObject::tr("Invalid file"), QObject::tr("&OK"));
+			if(gt.rules.read(s)){
+				students_schedule_ready=false;
+				teachers_schedule_ready=false;
+				rooms_schedule_ready=false;
+
+				INPUT_FILENAME_XML = s;
+			}
+			else{
+				QMessageBox::information(this, QObject::tr("FET info"), QObject::tr("Invalid file"), QObject::tr("&OK"));
+			}
 		}
 		//get the directory
 		int tmp=s.findRev("/");
@@ -333,6 +368,11 @@ void FetMainForm::on_fileSaveAsAction_activated()
 		this, QObject::tr("Save file dialog"), QObject::tr("Choose a filename to save under" ));
 	if(s==QString::null)
 		return;
+
+	if(s.indexOf("(") >= 0 || s.indexOf(")")>=0){
+		QMessageBox::information(this, QObject::tr("FET info"), QObject::tr("Please do not use parantheses () in filename, the html code does not work"));
+		return;
+	}
 		
 	if(s.right(4)!=".fet")
 		s+=".fet";
@@ -496,35 +536,6 @@ void FetMainForm::on_dataActivitiesAction_activated()
 	}
 
 	ActivitiesForm* form=new ActivitiesForm();
-	/*setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
-	int xx, yy;
-	xx=x() + frameGeometry().width()/2 - form->frameGeometry().width()/2;
-	yy=y() + frameGeometry().height()/2 - form->frameGeometry().height()/2;
-	form->move(xx, yy);*/
-	form->exec();
-}
-
-void FetMainForm::on_dataEquipmentsAction_activated()
-{
-	if(simulation_running){
-		QMessageBox::information(this, QObject::tr("FET information"),
-			QObject::tr("Allocation in course.\nPlease stop simulation before this."));
-		return;
-	}
-
-	EquipmentsForm* form=new EquipmentsForm();
-	form->exec();
-}
-
-void FetMainForm::on_dataBuildingsAction_activated()
-{
-	if(simulation_running){
-		QMessageBox::information(this, QObject::tr("FET information"),
-			QObject::tr("Allocation in course.\nPlease stop simulation before this."));
-		return;
-	}
-
-	BuildingsForm* form=new BuildingsForm();
 	form->exec();
 }
 
@@ -573,30 +584,6 @@ void FetMainForm::on_dataTimeConstraints2ActivitiesConsecutiveAction_activated()
 	}
 
 	Constraint2ActivitiesConsecutiveForm* form=new Constraint2ActivitiesConsecutiveForm();
-	form->exec();
-}
-
-void FetMainForm::on_dataTimeConstraints2ActivitiesOrderedAction_activated()
-{
-	if(simulation_running){
-		QMessageBox::information(this, QObject::tr("FET information"),
-			QObject::tr("Allocation in course.\nPlease stop simulation before this."));
-		return;
-	}
-
-	Constraint2ActivitiesOrderedForm* form=new Constraint2ActivitiesOrderedForm();
-	form->exec();
-}
-
-void FetMainForm::on_dataTimeConstraints2ActivitiesGroupedAction_activated()
-{
-	if(simulation_running){
-		QMessageBox::information(this, QObject::tr("FET information"),
-			QObject::tr("Allocation in course.\nPlease stop simulation before this."));
-		return;
-	}
-
-	Constraint2ActivitiesGroupedForm* form=new Constraint2ActivitiesGroupedForm();
 	form->exec();
 }
 
@@ -672,30 +659,6 @@ void FetMainForm::on_dataSpaceConstraintsBasicCompulsorySpaceAction_activated()
 	form->exec();
 }
 
-void FetMainForm::on_dataSpaceConstraintsTeacherRequiresRoomAction_activated()
-{
-	if(simulation_running){
-		QMessageBox::information(this, QObject::tr("FET information"),
-			QObject::tr("Allocation in course.\nPlease stop simulation before this."));
-		return;
-	}
-
-	ConstraintTeacherRequiresRoomForm* form=new ConstraintTeacherRequiresRoomForm();
-	form->exec();
-}
-
-void FetMainForm::on_dataSpaceConstraintsTeacherSubjectRequireRoomAction_activated()
-{
-	if(simulation_running){
-		QMessageBox::information(this, QObject::tr("FET information"),
-			QObject::tr("Allocation in course.\nPlease stop simulation before this."));
-		return;
-	}
-
-	ConstraintTeacherSubjectRequireRoomForm* form=new ConstraintTeacherSubjectRequireRoomForm();
-	form->exec();
-}
-
 void FetMainForm::on_dataSpaceConstraintsRoomNotAvailableAction_activated()
 {
 	if(simulation_running){
@@ -717,78 +680,6 @@ void FetMainForm::on_dataSpaceConstraintsActivityPreferredRoomAction_activated()
 	}
 
 	ConstraintActivityPreferredRoomForm* form=new ConstraintActivityPreferredRoomForm();
-	form->exec();
-}
-
-void FetMainForm::on_dataSpaceConstraintsMinimizeNumberOfRoomsForStudentsAction_activated()
-{
-	if(simulation_running){
-		QMessageBox::information(this, QObject::tr("FET information"),
-			QObject::tr("Allocation in course.\nPlease stop simulation before this."));
-		return;
-	}
-
-	ConstraintMinimizeNumberOfRoomsForStudentsForm* form=new ConstraintMinimizeNumberOfRoomsForStudentsForm();
-	form->exec();
-}
-
-void FetMainForm::on_dataSpaceConstraintsMinimizeNumberOfRoomsForTeachersAction_activated()
-{
-	if(simulation_running){
-		QMessageBox::information(this, QObject::tr("FET information"),
-			QObject::tr("Allocation in course.\nPlease stop simulation before this."));
-		return;
-	}
-
-	ConstraintMinimizeNumberOfRoomsForTeachersForm* form=new ConstraintMinimizeNumberOfRoomsForTeachersForm();
-	form->exec();
-}
-
-void FetMainForm::on_dataSpaceConstraintsRoomTypeNotAllowedSubjectsAction_activated()
-{
-	if(simulation_running){
-		QMessageBox::information(this, QObject::tr("FET information"),
-			QObject::tr("Allocation in course.\nPlease stop simulation before this."));
-		return;
-	}
-
-	ConstraintRoomTypeNotAllowedSubjectsForm* form=new ConstraintRoomTypeNotAllowedSubjectsForm();
-	form->exec();
-}
-
-void FetMainForm::on_dataSpaceConstraintsSubjectRequiresEquipmentsAction_activated()
-{
-	if(simulation_running){
-		QMessageBox::information(this, QObject::tr("FET information"),
-			QObject::tr("Allocation in course.\nPlease stop simulation before this."));
-		return;
-	}
-
-	ConstraintSubjectRequiresEquipmentsForm* form=new ConstraintSubjectRequiresEquipmentsForm();
-	form->exec();
-}
-
-void FetMainForm::on_dataSpaceConstraintsSubjectSubjectTagRequireEquipmentsAction_activated()
-{
-	if(simulation_running){
-		QMessageBox::information(this, QObject::tr("FET information"),
-			QObject::tr("Allocation in course.\nPlease stop simulation before this."));
-		return;
-	}
-
-	ConstraintSubjectSubjectTagRequireEquipmentsForm* form=new ConstraintSubjectSubjectTagRequireEquipmentsForm();
-	form->exec();
-}
-
-void FetMainForm::on_dataSpaceConstraintsActivitiesSameRoomAction_activated()
-{
-	if(simulation_running){
-		QMessageBox::information(this, QObject::tr("FET information"),
-			QObject::tr("Allocation in course.\nPlease stop simulation before this."));
-		return;
-	}
-
-	ConstraintActivitiesSameRoomForm* form=new ConstraintActivitiesSameRoomForm();
 	form->exec();
 }
 
@@ -816,18 +707,6 @@ void FetMainForm::on_dataSpaceConstraintsSubjectPreferredRoomAction_activated()
 	form->exec();
 }
 
-void FetMainForm::on_dataSpaceConstraintsSubjectSubjectTagPreferredRoomAction_activated()
-{
-	if(simulation_running){
-		QMessageBox::information(this, QObject::tr("FET information"),
-			QObject::tr("Allocation in course.\nPlease stop simulation before this."));
-		return;
-	}
-
-	ConstraintSubjectSubjectTagPreferredRoomForm* form=new ConstraintSubjectSubjectTagPreferredRoomForm();
-	form->exec();
-}
-
 void FetMainForm::on_dataSpaceConstraintsSubjectPreferredRoomsAction_activated()
 {
 	if(simulation_running){
@@ -840,6 +719,18 @@ void FetMainForm::on_dataSpaceConstraintsSubjectPreferredRoomsAction_activated()
 	form->exec();
 }
 
+void FetMainForm::on_dataSpaceConstraintsSubjectSubjectTagPreferredRoomAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, QObject::tr("FET information"),
+			QObject::tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	ConstraintSubjectSubjectTagPreferredRoomForm* form=new ConstraintSubjectSubjectTagPreferredRoomForm();
+	form->exec();
+}
+
 void FetMainForm::on_dataSpaceConstraintsSubjectSubjectTagPreferredRoomsAction_activated()
 {
 	if(simulation_running){
@@ -849,54 +740,6 @@ void FetMainForm::on_dataSpaceConstraintsSubjectSubjectTagPreferredRoomsAction_a
 	}
 
 	ConstraintSubjectSubjectTagPreferredRoomsForm* form=new ConstraintSubjectSubjectTagPreferredRoomsForm();
-	form->exec();
-}
-
-void FetMainForm::on_dataSpaceConstraintsMaxBuildingChangesPerDayForTeachersAction_activated()
-{
-	if(simulation_running){
-		QMessageBox::information(this, QObject::tr("FET information"),
-			QObject::tr("Allocation in course.\nPlease stop simulation before this."));
-		return;
-	}
-
-	ConstraintMaxBuildingChangesPerDayForTeachersForm* form=new ConstraintMaxBuildingChangesPerDayForTeachersForm();
-	form->exec();
-}
-
-void FetMainForm::on_dataSpaceConstraintsMaxBuildingChangesPerDayForStudentsAction_activated()
-{
-	if(simulation_running){
-		QMessageBox::information(this, QObject::tr("FET information"),
-			QObject::tr("Allocation in course.\nPlease stop simulation before this."));
-		return;
-	}
-
-	ConstraintMaxBuildingChangesPerDayForStudentsForm* form=new ConstraintMaxBuildingChangesPerDayForStudentsForm();
-	form->exec();
-}
-
-void FetMainForm::on_dataSpaceConstraintsMaxRoomChangesPerDayForTeachersAction_activated()
-{
-	if(simulation_running){
-		QMessageBox::information(this, QObject::tr("FET information"),
-			QObject::tr("Allocation in course.\nPlease stop simulation before this."));
-		return;
-	}
-
-	ConstraintMaxRoomChangesPerDayForTeachersForm* form=new ConstraintMaxRoomChangesPerDayForTeachersForm();
-	form->exec();
-}
-
-void FetMainForm::on_dataSpaceConstraintsMaxRoomChangesPerDayForStudentsAction_activated()
-{
-	if(simulation_running){
-		QMessageBox::information(this, QObject::tr("FET information"),
-			QObject::tr("Allocation in course.\nPlease stop simulation before this."));
-		return;
-	}
-
-	ConstraintMaxRoomChangesPerDayForStudentsForm* form=new ConstraintMaxRoomChangesPerDayForStudentsForm();
 	form->exec();
 }
 
@@ -936,18 +779,6 @@ void FetMainForm::on_dataTimeConstraintsTeacherMaxDaysPerWeekAction_activated()
 	form->exec();
 }
 
-void FetMainForm::on_dataTimeConstraintsTeachersMaxHoursContinuouslyAction_activated()
-{
-	if(simulation_running){
-		QMessageBox::information(this, QObject::tr("FET information"),
-			QObject::tr("Allocation in course.\nPlease stop simulation before this."));
-		return;
-	}
-
-	ConstraintTeachersMaxHoursContinuouslyForm* form=new ConstraintTeachersMaxHoursContinuouslyForm();
-	form->exec();
-}
-
 void FetMainForm::on_dataTimeConstraintsTeachersMaxHoursDailyAction_activated()
 {
 	if(simulation_running){
@@ -960,7 +791,7 @@ void FetMainForm::on_dataTimeConstraintsTeachersMaxHoursDailyAction_activated()
 	form->exec();
 }
 
-void FetMainForm::on_dataTimeConstraintsTeachersMinHoursDailyAction_activated()
+void FetMainForm::on_dataTimeConstraintsTeacherMaxHoursDailyAction_activated()
 {
 	if(simulation_running){
 		QMessageBox::information(this, QObject::tr("FET information"),
@@ -968,19 +799,7 @@ void FetMainForm::on_dataTimeConstraintsTeachersMinHoursDailyAction_activated()
 		return;
 	}
 
-	ConstraintTeachersMinHoursDailyForm* form=new ConstraintTeachersMinHoursDailyForm();
-	form->exec();
-}
-
-void FetMainForm::on_dataTimeConstraintsTeachersSubgroupsMaxHoursDailyAction_activated()
-{
-	if(simulation_running){
-		QMessageBox::information(this, QObject::tr("FET information"),
-			QObject::tr("Allocation in course.\nPlease stop simulation before this."));
-		return;
-	}
-
-	ConstraintTeachersSubgroupsMaxHoursDailyForm* form=new ConstraintTeachersSubgroupsMaxHoursDailyForm();
+	ConstraintTeacherMaxHoursDailyForm* form=new ConstraintTeacherMaxHoursDailyForm();
 	form->exec();
 }
 
@@ -1020,7 +839,7 @@ void FetMainForm::on_dataTimeConstraintsStudentsNoGapsAction_activated()
 	form->exec();
 }
 
-void FetMainForm::on_dataTimeConstraintsTeachersNoGapsAction_activated()
+void FetMainForm::on_dataTimeConstraintsTeachersMaxGapsPerWeekAction_activated()
 {
 	if(simulation_running){
 		QMessageBox::information(this, QObject::tr("FET information"),
@@ -1028,7 +847,19 @@ void FetMainForm::on_dataTimeConstraintsTeachersNoGapsAction_activated()
 		return;
 	}
 
-	ConstraintTeachersNoGapsForm* form=new ConstraintTeachersNoGapsForm();
+	ConstraintTeachersMaxGapsPerWeekForm* form=new ConstraintTeachersMaxGapsPerWeekForm();
+	form->exec();
+}
+
+void FetMainForm::on_dataTimeConstraintsTeacherMaxGapsPerWeekAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, QObject::tr("FET information"),
+			QObject::tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	ConstraintTeacherMaxGapsPerWeekForm* form=new ConstraintTeacherMaxGapsPerWeekForm();
 	form->exec();
 }
 
@@ -1044,7 +875,7 @@ void FetMainForm::on_dataTimeConstraintsStudentsEarlyAction_activated()
 	form->exec();
 }
 
-void FetMainForm::on_dataTimeConstraintsStudentsSetIntervalMaxDaysPerWeekAction_activated()
+void FetMainForm::on_dataTimeConstraintsStudentsSetEarlyAction_activated()
 {
 	if(simulation_running){
 		QMessageBox::information(this, QObject::tr("FET information"),
@@ -1052,11 +883,11 @@ void FetMainForm::on_dataTimeConstraintsStudentsSetIntervalMaxDaysPerWeekAction_
 		return;
 	}
 
-	ConstraintStudentsSetIntervalMaxDaysPerWeekForm* form=new ConstraintStudentsSetIntervalMaxDaysPerWeekForm();
+	ConstraintStudentsSetEarlyForm* form=new ConstraintStudentsSetEarlyForm();
 	form->exec();
 }
 
-void FetMainForm::on_dataTimeConstraintsTeacherIntervalMaxDaysPerWeekAction_activated()
+void FetMainForm::on_dataTimeConstraintsStudentsSetMaxHoursDailyAction_activated()
 {
 	if(simulation_running){
 		QMessageBox::information(this, QObject::tr("FET information"),
@@ -1064,11 +895,11 @@ void FetMainForm::on_dataTimeConstraintsTeacherIntervalMaxDaysPerWeekAction_acti
 		return;
 	}
 
-	ConstraintTeacherIntervalMaxDaysPerWeekForm* form=new ConstraintTeacherIntervalMaxDaysPerWeekForm();
+	ConstraintStudentsSetMaxHoursDailyForm* form=new ConstraintStudentsSetMaxHoursDailyForm();
 	form->exec();
 }
 
-void FetMainForm::on_dataTimeConstraintsStudentsSetNHoursDailyAction_activated()
+void FetMainForm::on_dataTimeConstraintsStudentsMaxHoursDailyAction_activated()
 {
 	if(simulation_running){
 		QMessageBox::information(this, QObject::tr("FET information"),
@@ -1076,11 +907,11 @@ void FetMainForm::on_dataTimeConstraintsStudentsSetNHoursDailyAction_activated()
 		return;
 	}
 
-	ConstraintStudentsSetNHoursDailyForm* form=new ConstraintStudentsSetNHoursDailyForm();
+	ConstraintStudentsMaxHoursDailyForm* form=new ConstraintStudentsMaxHoursDailyForm();
 	form->exec();
 }
 
-void FetMainForm::on_dataTimeConstraintsStudentsNHoursDailyAction_activated()
+void FetMainForm::on_dataTimeConstraintsStudentsSetMinHoursDailyAction_activated()
 {
 	if(simulation_running){
 		QMessageBox::information(this, QObject::tr("FET information"),
@@ -1088,11 +919,11 @@ void FetMainForm::on_dataTimeConstraintsStudentsNHoursDailyAction_activated()
 		return;
 	}
 
-	ConstraintStudentsNHoursDailyForm* form=new ConstraintStudentsNHoursDailyForm();
+	ConstraintStudentsSetMinHoursDailyForm* form=new ConstraintStudentsSetMinHoursDailyForm();
 	form->exec();
 }
 
-void FetMainForm::on_dataTimeConstraintsActivityEndsDayAction_activated()
+void FetMainForm::on_dataTimeConstraintsStudentsMinHoursDailyAction_activated()
 {
 	if(simulation_running){
 		QMessageBox::information(this, QObject::tr("FET information"),
@@ -1100,7 +931,7 @@ void FetMainForm::on_dataTimeConstraintsActivityEndsDayAction_activated()
 		return;
 	}
 
-	ConstraintActivityEndsDayForm* form=new ConstraintActivityEndsDayForm();
+	ConstraintStudentsMinHoursDailyForm* form=new ConstraintStudentsMinHoursDailyForm();
 	form->exec();
 }
 
@@ -1140,30 +971,6 @@ void FetMainForm::on_dataTimeConstraintsActivityPreferredTimesAction_activated()
 	form->exec();
 }
 
-void FetMainForm::on_dataTimeConstraintsTeachersSubjectTagsMaxHoursContinuouslyAction_activated()
-{
-	if(simulation_running){
-		QMessageBox::information(this, QObject::tr("FET information"),
-			QObject::tr("Allocation in course.\nPlease stop simulation before this."));
-		return;
-	}
-
-	ConstraintTeachersSubjectTagsMaxHoursContinuouslyForm* form=new ConstraintTeachersSubjectTagsMaxHoursContinuouslyForm();
-	form->exec();
-}
-
-void FetMainForm::on_dataTimeConstraintsTeachersSubjectTagMaxHoursContinuouslyAction_activated()
-{
-	if(simulation_running){
-		QMessageBox::information(this, QObject::tr("FET information"),
-			QObject::tr("Allocation in course.\nPlease stop simulation before this."));
-		return;
-	}
-
-	ConstraintTeachersSubjectTagMaxHoursContinuouslyForm* form=new ConstraintTeachersSubjectTagMaxHoursContinuouslyForm();
-	form->exec();
-}
-
 void FetMainForm::on_helpAboutAction_activated()
 {
 	HelpAboutForm* form=new HelpAboutForm();
@@ -1176,19 +983,13 @@ void FetMainForm::on_helpFAQAction_activated()
 	form->show();
 }
 
-void FetMainForm::on_helpTimeConstraintsAction_activated()
+void FetMainForm::on_helpInstructionsAction_activated()
 {
-	HelpTimeConstraintsForm* form=new HelpTimeConstraintsForm();
+	HelpInstructionsForm* form=new HelpInstructionsForm();
 	form->show();
 }
 
-void FetMainForm::on_helpTimeConstraintsSubtagsAction_activated()
-{
-	HelpTimeConstraintsSubtagsForm* form=new HelpTimeConstraintsSubtagsForm();
-	form->show();
-}
-
-void FetMainForm::on_timetableAllocateHoursAction_activated()
+void FetMainForm::on_timetableGenerateAction_activated()
 {
 	if(simulation_running){
 		QMessageBox::information(this, QObject::tr("FET information"),
@@ -1205,17 +1006,47 @@ void FetMainForm::on_timetableAllocateHoursAction_activated()
 		}
 	}
 	if(count<2){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Please input at least two active activities before allocating hours"));
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Please input at least two active activities before generating"));
 		return;
 	}
-	TimetableAllocateHoursForm *form=new TimetableAllocateHoursForm();
-	form->show();
+	TimetableGenerateForm *form=new TimetableGenerateForm();
+	form->exec();
+}
+
+void FetMainForm::on_timetableGenerateMultipleAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, QObject::tr("FET information"),
+			QObject::tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	if(INPUT_FILENAME_XML==""){
+		QMessageBox::information(this, QObject::tr("FET information"),
+			QObject::tr("Current file (data) has no name. Please save file under a certain name before proceeding"));
+		return;
+	}
+
+	int count=0;
+	for(int i=0; i<gt.rules.activitiesList.size(); i++){
+		Activity* act=gt.rules.activitiesList[i];
+		if(act->active){
+			//cout<<"here: i=="<<i<<endl;
+			count++;
+		}
+	}
+	if(count<2){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Please input at least two active activities before generating multiple"));
+		return;
+	}
+	TimetableGenerateMultipleForm *form=new TimetableGenerateMultipleForm();
+	form->exec();
 }
 
 void FetMainForm::on_timetableViewStudentsAction_activated()
 {
-	if(!(students_schedule_ready && teachers_schedule_ready)){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Please allocate the hours, firstly"));
+	if(!(students_schedule_ready && teachers_schedule_ready && rooms_schedule_ready)){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Please generate, firstly"));
 		return;
 	}
 
@@ -1225,8 +1056,8 @@ void FetMainForm::on_timetableViewStudentsAction_activated()
 
 void FetMainForm::on_timetableViewTeachersAction_activated()
 {
-	if(!(students_schedule_ready && teachers_schedule_ready)){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Please allocate the hours, firstly"));
+	if(!(students_schedule_ready && teachers_schedule_ready && rooms_schedule_ready)){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Please generate, firstly"));
 		return;
 	}
 
@@ -1234,228 +1065,26 @@ void FetMainForm::on_timetableViewTeachersAction_activated()
 	form->show();
 }
 
-void FetMainForm::on_timetableViewStudentsWithRoomsAction_activated()
+void FetMainForm::on_timetableShowConflictsAction_activated()
 {
-	if(!rooms_schedule_ready){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Please allocate the rooms, firstly"));
+	if(!(students_schedule_ready && teachers_schedule_ready && rooms_schedule_ready)){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Please generate, firstly"));
 		return;
 	}
 
-	TimetableViewStudentsWithRoomsForm *form=new TimetableViewStudentsWithRoomsForm();
-	form->show();
-}
-
-void FetMainForm::on_timetableViewTeachersWithRoomsAction_activated()
-{
-	if(!rooms_schedule_ready){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Please allocate the rooms, firstly"));
-		return;
-	}
-
-	TimetableViewTeachersWithRoomsForm *form=new TimetableViewTeachersWithRoomsForm();
-	form->show();
-}
-
-void FetMainForm::on_timetableViewStudentsWithRooms2Action_activated()
-{
-	if(!rooms_schedule_ready2){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Please allocate the hours and the rooms, firstly"));
-		return;
-	}
-
-	TimetableViewStudentsWithRooms2Form *form=new TimetableViewStudentsWithRooms2Form();
-	form->show();
-}
-
-void FetMainForm::on_timetableViewTeachersWithRooms2Action_activated()
-{
-	if(!rooms_schedule_ready2){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Please allocate the hours and the rooms, firstly"));
-		return;
-	}
-
-	TimetableViewTeachersWithRooms2Form *form=new TimetableViewTeachersWithRooms2Form();
-	form->show();
-}
-
-void FetMainForm::on_timetableShowConflictsTimeAction_activated()
-{
-	if(!(students_schedule_ready && teachers_schedule_ready)){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Please allocate the hours, firstly"));
-		return;
-	}
-
-	TimetableShowConflictsTimeForm *form=new TimetableShowConflictsTimeForm();
-	form->show();
-}
-
-void FetMainForm::on_timetableAllocateRoomsAction_activated()
-{
-	if(simulation_running){
-		QMessageBox::information(this, QObject::tr("FET information"),
-			QObject::tr("Allocation in course.\nPlease stop simulation before this."));
-		return;
-	}
-
-	if(!gt.rules.internalStructureComputed){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Please allocate the hours prior to allocating the rooms"));
-		return;
-	}
-	if(! (students_schedule_ready && teachers_schedule_ready)){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Please allocate the hours prior to allocating the rooms"));
-		return;
-	}
-	if(gt.rules.roomsList.count()<=0){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Please input at least one room before allocating the rooms"));
-		return;
-	}
-	TimetableAllocateRoomsForm *form=new TimetableAllocateRoomsForm();
+	TimetableShowConflictsForm *form=new TimetableShowConflictsForm();
 	form->show();
 }
 
 void FetMainForm::on_timetableViewRoomsAction_activated()
 {
 	if(!rooms_schedule_ready){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Please allocate the rooms, firstly"));
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Please generate, firstly"));
 		return;
 	}
 
 	TimetableViewRoomsForm* form=new TimetableViewRoomsForm();
 	form->show();
-}
-
-void FetMainForm::on_timetableViewRooms2Action_activated()
-{
-	if(!rooms_schedule_ready2){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Please allocate the hours and the rooms, firstly"));
-		return;
-	}
-
-	TimetableViewRooms2Form* form=new TimetableViewRooms2Form();
-	form->show();
-}
-
-void FetMainForm::on_timetableShowConflictsSpaceAction_activated()
-{
-	if(!rooms_schedule_ready){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Please allocate the rooms, firstly"));
-		return;
-	}
-
-	TimetableShowConflictsSpaceForm* form=new TimetableShowConflictsSpaceForm();
-	form->show();
-}
-
-void FetMainForm::on_timetableShowConflictsTimeSpaceAction_activated()
-{
-	if(!rooms_schedule_ready2){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Please allocate the hours and the rooms, firstly"));
-		return;
-	}
-
-	TimetableShowConflictsTimeSpaceForm* form=new TimetableShowConflictsTimeSpaceForm();
-	form->show();
-}
-
-void FetMainForm::on_timetableAllocateHoursRoomsAction_activated()
-{
-	if(simulation_running){
-		QMessageBox::information(this, QObject::tr("FET information"),
-			QObject::tr("Allocation in course.\nPlease stop simulation before this."));
-		return;
-	}
-
-	int count=0;
-	for(int i=0; i<gt.rules.activitiesList.size(); i++){
-		Activity* act=gt.rules.activitiesList[i];
-		if(act->active)
-			count++;
-	}
-	if(count<2 || gt.rules.roomsList.count()<=0){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Please input at least two active activities and a room before allocating hours and rooms"));
-		return;
-	}
-	TimetableAllocateHoursRoomsForm* form=new TimetableAllocateHoursRoomsForm();
-	form->show();
-}
-
-void FetMainForm::on_timetableExportXmlHtmlAction_activated()
-{
-	QMessageBox::information(this, QObject::tr("FET information"), 
-	  QObject::tr("Results are exported to xml and html\n"
-	  "automatically from the allocate menu.\n"
-	  "Please enter the directory \"%1\"\n"
-	  "and you will find the exported .xml and .html files.\n"
-	  "You can translate the .xml files into .tex or .html\n"
-	  "using the files \"fetxml2latex.py\" or \"students.xsl\", \n"
-	  " \"teachers.xsl\" and \"rooms.xsl\" "
-	  ).arg(OUTPUT_DIR));
-}
-
-void FetMainForm::on_timetableExportiCalTeachersAction_activated()
-{
-	if(!(students_schedule_ready && teachers_schedule_ready)){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Please allocate the hours, firstly"));
-		return;
-	}
-	
-	TimetableExportiCalTeachersForm* form=new TimetableExportiCalTeachersForm();
-	form->exec();
-}
-
-void FetMainForm::on_timetableExportiCalStudentsAction_activated()
-{
-	if(!(students_schedule_ready && teachers_schedule_ready)){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Please allocate the hours, firstly"));
-		return;
-	}
-	
-	TimetableExportiCalStudentsForm* form=new TimetableExportiCalStudentsForm();
-	form->exec();
-}
-
-void FetMainForm::on_timetableExportiCalTeachersWithRooms1Action_activated()
-{
-	if(!rooms_schedule_ready){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Please allocate the rooms, firstly"));
-		return;
-	}
-	
-	TimetableExportiCalTeachersWithRooms1Form* form=new TimetableExportiCalTeachersWithRooms1Form();
-	form->exec();
-}
-
-void FetMainForm::on_timetableExportiCalStudentsWithRooms1Action_activated()
-{
-	if(!rooms_schedule_ready){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Please allocate the rooms, firstly"));
-		return;
-	}
-
-	TimetableExportiCalStudentsWithRooms1Form* form=new TimetableExportiCalStudentsWithRooms1Form();
-	form->exec();
-}
-
-void FetMainForm::on_timetableExportiCalTeachersWithRooms2Action_activated()
-{
-	if(!rooms_schedule_ready2){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Please allocate the hours and the rooms, firstly"));
-		return;
-	}
-
-	TimetableExportiCalTeachersWithRooms2Form* form=new TimetableExportiCalTeachersWithRooms2Form();
-	form->exec();
-}
-
-void FetMainForm::on_timetableExportiCalStudentsWithRooms2Action_activated()
-{
-	if(!rooms_schedule_ready2){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Please allocate the hours and the rooms, firstly"));
-		return;
-	}
-
-	TimetableExportiCalStudentsWithRooms2Form* form=new TimetableExportiCalStudentsWithRooms2Form();
-	form->exec();
 }
 
 void FetMainForm::on_languageEnglishAction_activated()
@@ -1678,14 +1307,3 @@ void FetMainForm::on_languageMacedonianAction_activated()
 	languageMenu->setItemChecked(languageMenu->idAt(10), true);
 }
 
-void FetMainForm::on_parametersPopulationNumberAction_activated()
-{
-	if(simulation_running){
-		QMessageBox::information(this, QObject::tr("FET information"),
-			QObject::tr("Allocation in course.\nPlease stop simulation before this."));
-		return;
-	}
-
-	PopulationNumberForm* populationNumberForm=new PopulationNumberForm();
-	populationNumberForm->exec();
-}

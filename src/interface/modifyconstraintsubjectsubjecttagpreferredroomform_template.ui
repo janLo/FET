@@ -9,7 +9,7 @@
             <x>0</x>
             <y>0</y>
             <width>523</width>
-            <height>297</height>
+            <height>293</height>
         </rect>
     </property>
     <property name="caption">
@@ -19,22 +19,26 @@
         <property name="name">
             <cstring>unnamed</cstring>
         </property>
-        <widget class="QComboBox" row="1" column="0" rowspan="1" colspan="2">
+        <widget class="QLabel" row="0" column="0">
             <property name="name">
-                <cstring>subjectsComboBox</cstring>
+                <cstring>subjectsTextLabel</cstring>
             </property>
-        </widget>
-        <widget class="QComboBox" row="5" column="0" rowspan="1" colspan="2">
-            <property name="name">
+            <property name="frameShape">
+                <enum>NoFrame</enum>
+            </property>
+            <property name="frameShadow">
+                <enum>Plain</enum>
+            </property>
+            <property name="text">
+                <string>Subject</string>
+            </property>
+            <property name="buddy" stdset="0">
                 <cstring>roomsComboBox</cstring>
             </property>
         </widget>
-        <widget class="QPushButton" row="8" column="1">
+        <widget class="QComboBox" row="1" column="0" rowspan="1" colspan="2">
             <property name="name">
-                <cstring>cancelPushButton</cstring>
-            </property>
-            <property name="text">
-                <string>Cancel</string>
+                <cstring>subjectsComboBox</cstring>
             </property>
         </widget>
         <widget class="QLabel" row="4" column="0">
@@ -54,15 +58,7 @@
                 <cstring>roomsComboBox</cstring>
             </property>
         </widget>
-        <widget class="QPushButton" row="8" column="0">
-            <property name="name">
-                <cstring>okPushButton</cstring>
-            </property>
-            <property name="text">
-                <string>Ok</string>
-            </property>
-        </widget>
-        <widget class="QLabel" row="6" column="1">
+        <widget class="QLabel" row="6" column="0" rowspan="1" colspan="2">
             <property name="name">
                 <cstring>weightTextLabel</cstring>
             </property>
@@ -73,48 +69,46 @@
                 <enum>Plain</enum>
             </property>
             <property name="text">
-                <string>Weight (recommended: 1.0)</string>
+                <string>Weight percentage (recommended: 0%-100%)</string>
             </property>
         </widget>
-        <widget class="QCheckBox" row="6" column="0" rowspan="2" colspan="1">
+        <widget class="QComboBox" row="5" column="0" rowspan="1" colspan="2">
             <property name="name">
-                <cstring>compulsoryCheckBox</cstring>
+                <cstring>roomsComboBox</cstring>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="8" column="1">
+            <property name="name">
+                <cstring>cancelPushButton</cstring>
             </property>
             <property name="text">
-                <string>Compulsory</string>
-            </property>
-            <property name="checked">
-                <bool>true</bool>
+                <string>Cancel</string>
             </property>
         </widget>
-        <widget class="QLineEdit" row="7" column="1">
+        <widget class="QPushButton" row="8" column="0">
+            <property name="name">
+                <cstring>okPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Ok</string>
+            </property>
+        </widget>
+        <widget class="QLineEdit" row="7" column="0" rowspan="1" colspan="2">
             <property name="name">
                 <cstring>weightLineEdit</cstring>
             </property>
             <property name="text">
-                <string>1.0</string>
+                <string>-1</string>
             </property>
         </widget>
-        <widget class="QLabel" row="0" column="0">
+        <widget class="QComboBox" row="3" column="0" rowspan="1" colspan="2">
             <property name="name">
-                <cstring>subjectsTextLabel</cstring>
-            </property>
-            <property name="frameShape">
-                <enum>NoFrame</enum>
-            </property>
-            <property name="frameShadow">
-                <enum>Plain</enum>
-            </property>
-            <property name="text">
-                <string>Subject</string>
-            </property>
-            <property name="buddy" stdset="0">
-                <cstring>roomsComboBox</cstring>
+                <cstring>subjectTagsComboBox</cstring>
             </property>
         </widget>
         <widget class="QLabel" row="2" column="0">
             <property name="name">
-                <cstring>subjectTagsTextLabel</cstring>
+                <cstring>subjectsTextLabel_2</cstring>
             </property>
             <property name="frameShape">
                 <enum>NoFrame</enum>
@@ -127,11 +121,6 @@
             </property>
             <property name="buddy" stdset="0">
                 <cstring>roomsComboBox</cstring>
-            </property>
-        </widget>
-        <widget class="QComboBox" row="3" column="0" rowspan="1" colspan="2">
-            <property name="name">
-                <cstring>subjectTagsComboBox</cstring>
             </property>
         </widget>
     </grid>

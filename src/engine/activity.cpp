@@ -22,11 +22,15 @@ along with FET; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-#include "genetictimetable_defs.h"
+#include "timetable_defs.h"
 #include "activity.h"
 #include "rules.h"
 
 #include <qmessagebox.h>
+
+#include <iostream>
+
+using namespace std;
 
 Activity::Activity()
 {
@@ -42,7 +46,7 @@ Activity::Activity(
 	const QStringList& _studentsNames,
 	int _duration,
 	int _totalDuration,
-	int _parity,
+	//int _parity,
 	bool _active,
 	bool _computeNTotalStudents,
 	int _nTotalStudents)
@@ -55,7 +59,7 @@ Activity::Activity(
 	this->studentsNames = _studentsNames;
 	this->duration=_duration;
 	this->totalDuration=_totalDuration;
-	this->parity=_parity;
+	//this->parity=_parity;
 	this->active=_active;
 	this->computeNTotalStudents=_computeNTotalStudents;
 	
@@ -84,8 +88,8 @@ bool Activity::operator==(Activity& a)
 		return false;
 	if(this->duration != a.duration)
 	    return false;
-	if(this->parity != a.parity)
-	    return false;
+	//if(this->parity != a.parity)
+	  //  return false;
 	return true;
 }
 
@@ -117,6 +121,9 @@ bool Activity::searchStudents(const QString& studentsName)
 
 void Activity::removeStudents(Rules& r, const QString& studentsName, int nStudents)
 {
+	if(&r==NULL){	
+	}
+	
 	int t=this->studentsNames.remove(studentsName);
 
 	if(t>0 && this->computeNTotalStudents==true){
@@ -130,6 +137,9 @@ void Activity::removeStudents(Rules& r, const QString& studentsName, int nStuden
 
 void Activity::renameStudents(Rules& r, const QString& initialStudentsName, const QString& finalStudentsName)
 {
+	if(&r==NULL){	
+	}
+
 	int t=0;
 	for(QStringList::iterator it=this->studentsNames.begin(); it!=this->studentsNames.end(); it++)
 		if((*it)==initialStudentsName){
@@ -196,7 +206,8 @@ void Activity::computeInternalStructure(Rules& r)
 				QString s;
 				s=QObject::tr(QString("Warning: activity with id=%1\ncontains duplicated subgroups. Automatically correcting..."))
 					.arg(this->id);
-				QMessageBox::warning(NULL, QObject::tr("FET information"), s, QObject::tr("&Ok"));
+				//QMessageBox::warning(NULL, QObject::tr("FET information"), s, QObject::tr("&Ok"));
+				cout<<qPrintable(s)<<endl;
 			}
 			else
 				this->subgroups[this->nSubgroups++]=tmp;
@@ -220,7 +231,8 @@ void Activity::computeInternalStructure(Rules& r)
 					QString s;
 					s=QObject::tr(QString("Warning: activity with id=%1\ncontains duplicated subgroups. Automatically correcting..."))
 						.arg(this->id);
-					QMessageBox::warning(NULL, QObject::tr("FET information"), s, QObject::tr("&Ok"));
+					//QMessageBox::warning(NULL, QObject::tr("FET information"), s, QObject::tr("&Ok"));
+					cout<<qPrintable(s)<<endl;
 				}
 				else
 					this->subgroups[this->nSubgroups++]=tmp;
@@ -247,7 +259,8 @@ void Activity::computeInternalStructure(Rules& r)
 						QString s;
 						s=QObject::tr(QString("Warning: activity with id=%1\ncontains duplicated subgroups. Automatically correcting..."))
 							.arg(this->id);
-						QMessageBox::warning(NULL, QObject::tr("FET information"), s, QObject::tr("&Ok"));
+						//QMessageBox::warning(NULL, QObject::tr("FET information"), s, QObject::tr("&Ok"));
+						cout<<qPrintable(s)<<endl;
 					}
 					else{
 						this->subgroups[this->nSubgroups++]=tmp;
@@ -275,12 +288,12 @@ QString Activity::getXmlDescription(Rules& r)
 	s+="	<Total_Duration>"+QString::number(this->totalDuration)+"</Total_Duration>\n";
 	s+="	<Id>"+QString::number(this->id)+"</Id>\n";
 	s+="	<Activity_Group_Id>"+QString::number(this->activityGroupId)+"</Activity_Group_Id>\n";
-	if(this->parity==PARITY_WEEKLY)
+	/*if(this->parity==PARITY_WEEKLY)
 		s+="	<Weekly></Weekly>\n";
 	else{
 		assert(this->parity==PARITY_FORTNIGHTLY);
 		s+="	<Fortnightly></Fortnightly>\n";
-	}
+	}*/
 	if(this->active==true)
 		s+="	<Active>yes</Active>\n";
 	else
@@ -307,14 +320,20 @@ QString Activity::getDescription(Rules& r)
 	else
 		s=QObject::tr("Sub-activity: ");
 	s+=QObject::tr("T:");
-	for(QStringList::Iterator it=this->teachersNames.begin(); it!=this->teachersNames.end(); it++)
-		s += *it + ", ";
+	if(teachersNames.count()==0)
+		s+=QObject::tr(" no teachers, ");
+	else
+		for(QStringList::Iterator it=this->teachersNames.begin(); it!=this->teachersNames.end(); it++)
+			s += *it + ", ";
 	s+=QObject::tr("S:") + this->subjectName + ", ";
 	if(this->subjectTagName!="")
 		s+=QObject::tr("ST:") + this->subjectTagName + ", ";
 	s+=QObject::tr("St:");
-	for(QStringList::Iterator it=this->studentsNames.begin(); it!=this->studentsNames.end(); it++)
-		s += *it + ", ";
+	if(studentsNames.count()==0)
+		s+=QObject::tr(" no students, ");
+	else
+		for(QStringList::Iterator it=this->studentsNames.begin(); it!=this->studentsNames.end(); it++)
+			s += *it + ", ";
 
 	s += QObject::tr("Id:") + QString::number(id) + ", ";
 	if(this->isSplit())
@@ -324,8 +343,8 @@ QString Activity::getDescription(Rules& r)
 	if(this->isSplit())
 		s += QObject::tr("TD:") + QString::number(this->totalDuration) + ", ";
 
-	if(this->parity==PARITY_FORTNIGHTLY)
-		s+=QObject::tr("Fortnightly, ");
+	//if(this->parity==PARITY_FORTNIGHTLY)
+	//	s+=QObject::tr("Fortnightly, ");
 		
 	if(this->active==true)
 		s+=QObject::tr("A: yes")+", ";
@@ -345,13 +364,19 @@ QString Activity::getDetailedDescription(Rules &r)
 		s=QObject::tr("Activity:\n");
 	else
 		s=QObject::tr("Sub-activity:\n");
-	for(QStringList::Iterator it=this->teachersNames.begin(); it!=this->teachersNames.end(); it++)
-		s+=QObject::tr("Teacher=") + (*it) + "\n";
+	if(teachersNames.count()==0)
+		s+=QObject::tr("No teachers for this activity\n");
+	else
+		for(QStringList::Iterator it=this->teachersNames.begin(); it!=this->teachersNames.end(); it++)
+			s+=QObject::tr("Teacher=") + (*it) + "\n";
 	s+=QObject::tr("Subject=") + this->subjectName + "\n";
 	if(this->subjectTagName!="")
 		s+=QObject::tr("Subject tag=") + this->subjectTagName + "\n";
-	for(QStringList::Iterator it=this->studentsNames.begin(); it!=this->studentsNames.end(); it++)
-		s += QObject::tr("Students=")+ (*it) + "\n";
+	if(studentsNames.count()==0)
+		s+=QObject::tr("No students sets for this activity\n");
+	else
+		for(QStringList::Iterator it=this->studentsNames.begin(); it!=this->studentsNames.end(); it++)
+			s += QObject::tr("Students=")+ (*it) + "\n";
 
 	s += QObject::tr("Id=") + QString::number(id) + "\n";
 	if(this->isSplit())
@@ -361,10 +386,10 @@ QString Activity::getDetailedDescription(Rules &r)
 	if(this->isSplit())
 		s += QObject::tr("Total duration=") + QString::number(this->totalDuration) + "\n";
 
-	if(this->parity==PARITY_FORTNIGHTLY)
+	/*if(this->parity==PARITY_FORTNIGHTLY)
 		s+=QObject::tr("Fortnightly activity\n");
 	else
-		s+=QObject::tr("Weekly activity\n");
+		s+=QObject::tr("Weekly activity\n");*/
 		
 	if(this->active==true)
 		s+=QObject::tr("Active: yes\n");

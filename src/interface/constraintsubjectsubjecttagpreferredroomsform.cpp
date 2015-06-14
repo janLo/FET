@@ -1,8 +1,8 @@
 /***************************************************************************
                           constraintsubjectsubjecttagpreferredroomsform.cpp  -  description
                              -------------------
-    begin                : 8 April 2005
-    copyright            : (C) 2005 by Lalescu Liviu
+    begin                : 18 Aug 2007
+    copyright            : (C) 2007 by Lalescu Liviu
     email                : Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)
  ***************************************************************************/
 
@@ -38,8 +38,8 @@ ConstraintSubjectSubjectTagPreferredRoomsForm::ConstraintSubjectSubjectTagPrefer
 
 	subjectTagsComboBox->insertItem("");
 	for(int i=0; i<gt.rules.subjectTagsList.size(); i++){
-		SubjectTag* st=gt.rules.subjectTagsList[i];
-		subjectTagsComboBox->insertItem(st->name);
+		SubjectTag* sb=gt.rules.subjectTagsList[i];
+		subjectTagsComboBox->insertItem(sb->name);
 	}
 
 	this->refreshConstraintsListBox();
@@ -76,8 +76,8 @@ bool ConstraintSubjectSubjectTagPreferredRoomsForm::filterOk(SpaceConstraint* ct
 {
 	if(ctr->type==CONSTRAINT_SUBJECT_SUBJECT_TAG_PREFERRED_ROOMS){
 		ConstraintSubjectSubjectTagPreferredRooms* c=(ConstraintSubjectSubjectTagPreferredRooms*)ctr;
-		return (c->subjectName==subjectsComboBox->currentText() || subjectsComboBox->currentText()=="")
-		 &&(c->subjectTagName==subjectTagsComboBox->currentText() || subjectTagsComboBox->currentText()=="");
+		return (c->subjectName==subjectsComboBox->currentText() || subjectsComboBox->currentText()=="") &&
+		 (c->subjectTagName==subjectTagsComboBox->currentText() || subjectTagsComboBox->currentText()=="");
 	}
 	else
 		return false;

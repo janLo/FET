@@ -10,11 +10,11 @@
 // Copyright: See COPYING file that comes with this distribution
 //
 //
-#include "genetictimetable_defs.h"
-#include "genetictimetable.h"
+#include "timetable_defs.h"
+#include "timetable.h"
 #include "fet.h"
 #include "teachersform.h"
-#include "fetmainform.h"
+//#include "fetmainform.h"
 #include "teacher.h"
 
 #include <q3listbox.h>
@@ -22,6 +22,8 @@
 #include <q3textedit.h>
 
 #include <QDesktopWidget>
+
+#include <QMessageBox>
 
 TeachersForm::TeachersForm()
  : TeachersForm_template()

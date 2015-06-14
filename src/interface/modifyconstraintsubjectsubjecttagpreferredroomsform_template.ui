@@ -19,7 +19,7 @@
         <property name="name">
             <cstring>unnamed</cstring>
         </property>
-        <widget class="QLayoutWidget" row="5" column="2" rowspan="1" colspan="2">
+        <widget class="QLayoutWidget" row="5" column="0" rowspan="1" colspan="4">
             <property name="name">
                 <cstring>layout4</cstring>
             </property>
@@ -38,7 +38,7 @@
                         <enum>Plain</enum>
                     </property>
                     <property name="text">
-                        <string>Weight (recommended: 1.0)</string>
+                        <string>Weight percentage (recommended: 0%-100%)</string>
                     </property>
                 </widget>
                 <widget class="QLineEdit">
@@ -46,104 +46,7 @@
                         <cstring>weightLineEdit</cstring>
                     </property>
                     <property name="text">
-                        <string>1.0</string>
-                    </property>
-                </widget>
-            </vbox>
-        </widget>
-        <widget class="QCheckBox" row="5" column="0" rowspan="1" colspan="2">
-            <property name="name">
-                <cstring>compulsoryCheckBox</cstring>
-            </property>
-            <property name="text">
-                <string>Compulsory</string>
-            </property>
-            <property name="checked">
-                <bool>true</bool>
-            </property>
-        </widget>
-        <widget class="QLayoutWidget" row="6" column="0" rowspan="1" colspan="2">
-            <property name="name">
-                <cstring>layout2</cstring>
-            </property>
-            <hbox>
-                <property name="name">
-                    <cstring>unnamed</cstring>
-                </property>
-                <widget class="QPushButton">
-                    <property name="name">
-                        <cstring>okPushButton</cstring>
-                    </property>
-                    <property name="text">
-                        <string>Ok</string>
-                    </property>
-                </widget>
-                <widget class="QPushButton">
-                    <property name="name">
-                        <cstring>cancelPushButton</cstring>
-                    </property>
-                    <property name="text">
-                        <string>Cancel</string>
-                    </property>
-                </widget>
-            </hbox>
-        </widget>
-        <widget class="QComboBox" row="1" column="0" rowspan="1" colspan="4">
-            <property name="name">
-                <cstring>subjectsComboBox</cstring>
-            </property>
-        </widget>
-        <widget class="QLabel" row="0" column="0" rowspan="1" colspan="4">
-            <property name="name">
-                <cstring>subjectsTextLabel</cstring>
-            </property>
-            <property name="text">
-                <string>Subject</string>
-            </property>
-        </widget>
-        <widget class="QLayoutWidget" row="6" column="2">
-            <property name="name">
-                <cstring>layout6</cstring>
-            </property>
-            <grid>
-                <property name="name">
-                    <cstring>unnamed</cstring>
-                </property>
-            </grid>
-        </widget>
-        <widget class="QLayoutWidget" row="4" column="0">
-            <property name="name">
-                <cstring>layout10</cstring>
-            </property>
-            <vbox>
-                <property name="name">
-                    <cstring>unnamed</cstring>
-                </property>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>roomsTextLabel</cstring>
-                    </property>
-                    <property name="frameShape">
-                        <enum>NoFrame</enum>
-                    </property>
-                    <property name="frameShadow">
-                        <enum>Plain</enum>
-                    </property>
-                    <property name="text">
-                        <string>All rooms</string>
-                    </property>
-                    <property name="buddy" stdset="0">
-                        <cstring>roomsComboBox</cstring>
-                    </property>
-                </widget>
-                <widget class="QListBox">
-                    <item>
-                        <property name="text">
-                            <string>New Item</string>
-                        </property>
-                    </item>
-                    <property name="name">
-                        <cstring>roomsListBox</cstring>
+                        <string>-1</string>
                     </property>
                 </widget>
             </vbox>
@@ -174,6 +77,84 @@
                 </widget>
             </vbox>
         </widget>
+        <widget class="QLayoutWidget" row="6" column="0" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>layout2</cstring>
+            </property>
+            <hbox>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QPushButton">
+                    <property name="name">
+                        <cstring>okPushButton</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Ok</string>
+                    </property>
+                </widget>
+                <widget class="QPushButton">
+                    <property name="name">
+                        <cstring>cancelPushButton</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Cancel</string>
+                    </property>
+                </widget>
+            </hbox>
+        </widget>
+        <widget class="QLayoutWidget" row="6" column="2" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>layout6</cstring>
+            </property>
+            <grid>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+            </grid>
+        </widget>
+        <widget class="QLabel" row="0" column="0" rowspan="1" colspan="4">
+            <property name="name">
+                <cstring>subjectsTextLabel</cstring>
+            </property>
+            <property name="text">
+                <string>Subject</string>
+            </property>
+        </widget>
+        <widget class="QLayoutWidget" row="4" column="0">
+            <property name="name">
+                <cstring>layout10</cstring>
+            </property>
+            <vbox>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>roomsTextLabel</cstring>
+                    </property>
+                    <property name="frameShape">
+                        <enum>NoFrame</enum>
+                    </property>
+                    <property name="frameShadow">
+                        <enum>Plain</enum>
+                    </property>
+                    <property name="text">
+                        <string>All rooms (dbl. click adds)</string>
+                    </property>
+                </widget>
+                <widget class="QListBox">
+                    <item>
+                        <property name="text">
+                            <string>New Item</string>
+                        </property>
+                    </item>
+                    <property name="name">
+                        <cstring>roomsListBox</cstring>
+                    </property>
+                </widget>
+            </vbox>
+        </widget>
         <widget class="QLayoutWidget" row="4" column="3">
             <property name="name">
                 <cstring>layout9</cstring>
@@ -193,10 +174,7 @@
                         <enum>Plain</enum>
                     </property>
                     <property name="text">
-                        <string>Selected rooms</string>
-                    </property>
-                    <property name="buddy" stdset="0">
-                        <cstring>roomsComboBox</cstring>
+                        <string>Selected rooms (dbl. click removes)</string>
                     </property>
                 </widget>
                 <widget class="QListBox">
@@ -211,9 +189,14 @@
                 </widget>
             </vbox>
         </widget>
+        <widget class="QComboBox" row="1" column="0" rowspan="1" colspan="4">
+            <property name="name">
+                <cstring>subjectsComboBox</cstring>
+            </property>
+        </widget>
         <widget class="QLabel" row="2" column="0" rowspan="1" colspan="4">
             <property name="name">
-                <cstring>subjectTagsTextLabel</cstring>
+                <cstring>subjectsTextLabel_2</cstring>
             </property>
             <property name="text">
                 <string>Subject tag</string>
@@ -250,6 +233,18 @@
         <signal>clicked()</signal>
         <receiver>ModifyConstraintSubjectSubjectTagPreferredRoomsForm_template</receiver>
         <slot>ok()</slot>
+    </connection>
+    <connection>
+        <sender>roomsListBox</sender>
+        <signal>selected(const QString&amp;)</signal>
+        <receiver>ModifyConstraintSubjectSubjectTagPreferredRoomsForm_template</receiver>
+        <slot>addRoom()</slot>
+    </connection>
+    <connection>
+        <sender>selectedRoomsListBox</sender>
+        <signal>selected(const QString&amp;)</signal>
+        <receiver>ModifyConstraintSubjectSubjectTagPreferredRoomsForm_template</receiver>
+        <slot>removeRoom()</slot>
     </connection>
 </connections>
 <slots>

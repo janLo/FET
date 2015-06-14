@@ -1,8 +1,8 @@
 /***************************************************************************
                           constraintsubjectsubjecttagpreferredroomform.cpp  -  description
                              -------------------
-    begin                : Apr 8, 2005
-    copyright            : (C) 2005 by Lalescu Liviu
+    begin                : Aug 18, 2007
+    copyright            : (C) 2007 by Lalescu Liviu
     email                : Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)
  ***************************************************************************/
 
@@ -44,8 +44,8 @@ ConstraintSubjectSubjectTagPreferredRoomForm::ConstraintSubjectSubjectTagPreferr
 
 	subjectTagsComboBox->insertItem("");
 	for(int i=0; i<gt.rules.subjectTagsList.size(); i++){
-		SubjectTag* st=gt.rules.subjectTagsList[i];
-		subjectTagsComboBox->insertItem(st->name);
+		SubjectTag* sb=gt.rules.subjectTagsList[i];
+		subjectTagsComboBox->insertItem(sb->name);
 	}
 
 	this->filterChanged();

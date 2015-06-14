@@ -1,5 +1,5 @@
 /*
-File fet.cpp - program using the main engine "genetictimetable"
+File fet.cpp - program using the main engine "timetable"
 */
 
 /*
@@ -22,8 +22,8 @@ along with timetable; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-#include "genetictimetable_defs.h"
-#include "genetictimetable.h"
+#include "timetable_defs.h"
+#include "timetable.h"
 #include "fetmainform.h"
 
 #include <qapplication.h>
@@ -33,6 +33,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #include <QDir>
 #include <QTranslator>
+
+#include <QSettings>
 
 #include <fstream>
 #include <iostream>
@@ -49,7 +51,7 @@ QTranslator translator;
 /**
 The one and only instantiation of the main class.
 */
-GeneticTimetable gt;
+Timetable gt;
 
 /**
 Log file.
@@ -67,44 +69,13 @@ The working directory
 QString WORKING_DIRECTORY;
 
 
-/***The simulation parameters***/
-
-/**
-Simulation parameter, read from the fet.ini file
-*/
-time_t timelimit;
-
-/**
-Simulation parameter, read from the fet.ini file
-*/
-int population_number;
-
-/**
-Simulation parameter, read from the fet.ini file
-*/
-int evolution_method;
-
-/**
-Simulation parameter, read from the fet.ini file
-*/
-int init_method;
-
-/**
-Simulation parameter, read from the file "fet.ini"
-It represents the maximum allowed number of generations to iterate
-*/
-int max_generations;
-
-int16 teachers_timetable_week1[MAX_TEACHERS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
-int16 teachers_timetable_week2[MAX_TEACHERS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
-int16 students_timetable_week1[MAX_TOTAL_SUBGROUPS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
-int16 students_timetable_week2[MAX_TOTAL_SUBGROUPS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
-int16 rooms_timetable_week1[MAX_ROOMS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
-int16 rooms_timetable_week2[MAX_ROOMS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
+qint16 teachers_timetable_weekly[MAX_TEACHERS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
+qint16 students_timetable_weekly[MAX_TOTAL_SUBGROUPS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
+qint16 rooms_timetable_weekly[MAX_ROOMS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
 
 QApplication* pqapplication=NULL;
 
-static int fetch_line(ifstream& in, char *s){
+/*static int fetch_line(ifstream& in, char *s){
 	for(;;){
 		in.getline(s, 250);
 		if(in.eof())
@@ -118,245 +89,23 @@ static int fetch_line(ifstream& in, char *s){
 		if(isprint(s[i]))
 			return 1;
 	}
-}
+}*/
 
 void readSimulationParameters(){
-	if(!QFile::exists(INI_FILENAME)){
-		cout<<"File "<<(const char*)(INI_FILENAME)<<" not found...making a new one\n";
-		writeDefaultSimulationParameters();
-	}
-
-	ifstream in(INI_FILENAME);
-	char s[256];
-
-	cout<<"Initializing parameters...reading file "<<(const char*)(INI_FILENAME)<<endl;
-
-	//read main parameters of the simulation
-	int tmp=fetch_line(in, s);
-	assert(tmp==1);
-	WORKING_DIRECTORY=s;
-	cout<<"Read: working directory="<<s<<endl;
-
-	tmp=fetch_line(in, s);
-	assert(tmp==1);
-	int tmp2;
-	tmp=sscanf(s, "%d", &tmp2);
-	assert(tmp==1);
-	timelimit=tmp2;
-	cout<<"Read: timelimit="<<timelimit<<" seconds (the maximum time the simulation is allowed to run)"<<endl;
-
-	tmp=fetch_line(in, s);
-	assert(tmp==1);
-	tmp=sscanf(s, "%d", &tmp2);
-	assert(tmp==1);
-	max_generations=tmp2;
-	cout<<"Read: max_generations the simulation is allowed to run="<<max_generations<<endl;
-
-	tmp=fetch_line(in, s);
-	assert(tmp==1);
-	tmp=sscanf(s, "%d", &population_number);
-	assert(tmp==1);
-	if(population_number>MAX_POPULATION_SIZE){
-		population_number=MAX_POPULATION_SIZE;
-		cout<<"Population too large ("<<population_number<<"), making it MAX_POPULATION_SIZE="<<MAX_POPULATION_SIZE<<endl;
-	}
-	assert(population_number>0 && population_number<=MAX_POPULATION_SIZE);
-	cout<<"Read: population number for the simulation="<<population_number<<endl;
-
-	tmp=fetch_line(in, s);
-	assert(tmp==1);
-	tmp=sscanf(s, "%d", &evolution_method);
-	assert(evolution_method==1 || evolution_method==2);
-	cout<<"Read: simulation evolution method="<<evolution_method<<endl;
-
-	//method 1 probabilities
-	tmp=fetch_line(in, s);
-	assert(tmp==1);
-	tmp=sscanf(s, "%d", &METHOD1_MUTATION1_PROBABILITY);
-	cout<<"Read: method1 mutation1 probability="<<METHOD1_MUTATION1_PROBABILITY<<endl;
-
-	tmp=fetch_line(in, s);
-	assert(tmp==1);
-	tmp=sscanf(s, "%d", &METHOD1_MUTATION2_PROBABILITY);
-	cout<<"Read: method1 mutation2 probability="<<METHOD1_MUTATION2_PROBABILITY<<endl;
-
-	tmp=fetch_line(in, s);
-	assert(tmp==1);
-	tmp=sscanf(s, "%d", &METHOD1_CROSSOVER_PROBABILITY);
-	cout<<"Read: method1 crossover probability="<<METHOD1_CROSSOVER_PROBABILITY<<endl;
-
-	assert(METHOD1_MUTATION1_PROBABILITY+METHOD1_MUTATION2_PROBABILITY+METHOD1_CROSSOVER_PROBABILITY==100);
-
-	//method 2 probabilities
-	tmp=fetch_line(in, s);
-	assert(tmp==1);
-	tmp=sscanf(s, "%d", &METHOD2_MUTATION1_PROBABILITY);
-	cout<<"Read: method2 mutation1 probability="<<METHOD2_MUTATION1_PROBABILITY<<endl;
-
-	tmp=fetch_line(in, s);
-	assert(tmp==1);
-	tmp=sscanf(s, "%d", &METHOD2_MUTATION2_PROBABILITY);
-	cout<<"Read: method2 mutation2 probability="<<METHOD2_MUTATION2_PROBABILITY<<endl;
-
-	tmp=fetch_line(in, s);
-	assert(tmp==1);
-	tmp=sscanf(s, "%d", &METHOD2_CROSSOVER_PROBABILITY);
-	cout<<"Read: method2 crossover probability="<<METHOD2_CROSSOVER_PROBABILITY<<endl;
-
-	tmp=fetch_line(in, s);
-	assert(tmp==1);
-	tmp=sscanf(s, "%d", &METHOD2_PROPAGATION_PROBABILITY);
-	cout<<"Read: method2 propagation probability="<<METHOD2_PROPAGATION_PROBABILITY<<endl;
-
-	assert(METHOD2_MUTATION1_PROBABILITY+METHOD2_MUTATION2_PROBABILITY+METHOD2_CROSSOVER_PROBABILITY+METHOD2_PROPAGATION_PROBABILITY==100);
-	
-	tmp=fetch_line(in, s);
-	if(tmp!=1){
-		//older than version 3.12.21 - has no language saved
-		FET_LANGUAGE="en_GB";
-	}
-	else{
-		char ss[100];
-		sscanf(s, "%s", ss);
-		FET_LANGUAGE=ss;
-		cout<<"Read: language="<<(const char*)(FET_LANGUAGE)<<endl;
-		if(FET_LANGUAGE!="en_GB" && FET_LANGUAGE!="fr" 
-		 && FET_LANGUAGE!="ro" && FET_LANGUAGE!="ca" 
-		 && FET_LANGUAGE!="ms" && FET_LANGUAGE!="pl"
-		 && FET_LANGUAGE!="tr" && FET_LANGUAGE!="nl"
-		 && FET_LANGUAGE!="de" && FET_LANGUAGE!="hu"
-		 && FET_LANGUAGE!="mk"){
-			cout<<"Invalid language - making it english"<<endl;
-			FET_LANGUAGE="en_GB";
-		}
-	}
+	QSettings settings("FET free software", "FET");
+	FET_LANGUAGE=settings.value("language", "en_GB").toString();
+	WORKING_DIRECTORY=settings.value("working-directory", "sample_inputs").toString();
+	checkForUpdates=settings.value("check-for-updates", "-1").toInt();
+	QString ver=settings.value("version", "-1").toString();
+	cout<<"Settings read"<<endl;
 }
 
 void writeSimulationParameters(){
-	ofstream out(INI_FILENAME);
-	if(!out){
-		assert(0);
-		exit(1);
-	}
-
-	cout<<"Writing parameters to file "<<(const char*)(INI_FILENAME)<<endl;
-
-	//read main parameters of the simulation
-	out<<"# This is FET's configuration file (FET version="<<(const char*)(FET_VERSION)<<")"<<endl<<endl<<endl;
-
-	out<<"# This is the working directory (used in open/save as file dialog)"<<endl;
-	out<<(const char*)(WORKING_DIRECTORY)<<endl<<endl<<endl;
-
-	out<<"# The time limit that the program is allowed to search for the solution (in seconds). Minimum"<<endl;
-	out<<"# recommended value is 600"<<endl;
-	out<<timelimit<<endl<<endl<<endl;
-
-	out<<"# The maximum number of allowed generations"<<endl;
-	out<<max_generations<<endl<<endl<<endl;
-
-	out<<"# The population number (minimum recommended: 512, maximum: "<<MAX_POPULATION_SIZE<<")"<<endl;
-	out<<"# (variable MAX_POPULATION_SIZE in file genetictimetable_defs.h)"<<endl;
-	out<<"# (non-technical description: increasing this variable slows down the program,"<<endl;
-	out<<"# but gives better results)."<<endl;
-	out<<population_number<<endl<<endl<<endl;
-
-	out<<"# The evolution method:"<<endl;
-	out<<"# 1. Evolution1 - double the population, then select the best n/2 individuals (experimental)"<<endl;
-	out<<"# 2. Evolution2 - selection is based on 3 tournament (classical)"<<endl;
-	out<<"# (recommended: 2)"<<endl;
-	out<<evolution_method<<endl<<endl<<endl;
-
-	//method 1 probabilities
-	out<<"#Evolution 1 - Mutation 1 probability (random swap - classical)"<<endl;
-	out<<METHOD1_MUTATION1_PROBABILITY<<endl;
-
-	out<<"#Evolution 1 - Mutation 2 probability (randomization - experimental)"<<endl;
-	out<<METHOD1_MUTATION2_PROBABILITY<<endl;
-
-	out<<"#Evolution 1 - Crossover probability"<<endl;
-	out<<METHOD1_CROSSOVER_PROBABILITY<<endl<<endl<<endl;
-
-	assert(METHOD1_MUTATION1_PROBABILITY+METHOD1_MUTATION2_PROBABILITY+METHOD1_CROSSOVER_PROBABILITY==100);
-
-	//method 2 probabilities
-	out<<"#Evolution 2 - Mutation 1 probability (random swap - classical)"<<endl;
-	out<<METHOD2_MUTATION1_PROBABILITY<<endl;
-
-	out<<"#Evolution 2 - Mutation 2 probability (randomization - experimental)"<<endl;
-	out<<METHOD2_MUTATION2_PROBABILITY<<endl;
-
-	out<<"#Evolution 2 - Crossover probability"<<endl;
-	out<<METHOD2_CROSSOVER_PROBABILITY<<endl;
-
-	out<<"#Evolution 2 - Propagation probability"<<endl;
-	out<<METHOD2_PROPAGATION_PROBABILITY<<endl<<endl<<endl;
-
-	assert(METHOD2_MUTATION1_PROBABILITY+METHOD2_MUTATION2_PROBABILITY+METHOD2_CROSSOVER_PROBABILITY+METHOD2_PROPAGATION_PROBABILITY==100);
-	
-	out<<"#FET Language"<<endl;
-	out<<(const char*)(FET_LANGUAGE)<<endl;
-}
-
-void writeDefaultSimulationParameters(){
-	ofstream out(INI_FILENAME);
-	if(!out){
-		assert(0);
-		exit(1);
-	}
-
-	cout<<"Writing parameters to file "<<(const char*)(INI_FILENAME)<<endl;
-
-	//read main parameters of the simulation
-	out<<"# This is FET's configuration file (FET version="<<(const char*)(FET_VERSION)<<")"<<endl<<endl<<endl;
-
-	out<<"# This is the working directory (used in open/save as file dialog)"<<endl;
-	cout<<"Home dir path="<<(const char*)(QDir::homeDirPath())<<endl;
-	out<<"sample_inputs"<<endl<<endl<<endl;
-
-	out<<"# The time limit that the program is allowed to search for the solution (in seconds). Minimum"<<endl;
-	out<<"# recommended value is 600"<<endl;
-	out<<2000000000<<endl<<endl<<endl;
-
-	out<<"# The maximum number of allowed generations"<<endl;
-	out<<2000000000<<endl<<endl<<endl;
-
-	out<<"# The population number (minimum recommended: 512, maximum: "<<MAX_POPULATION_SIZE<<")"<<endl;
-	out<<"# (variable MAX_POPULATION_SIZE in file genetictimetable_defs.h)"<<endl;
-	out<<"# (non-technical description: increasing this variable slows down the program,"<<endl;
-	out<<"# but gives better results)."<<endl;
-	out<<MAX_POPULATION_SIZE<<endl<<endl<<endl;
-
-	out<<"# The evolution method:"<<endl;
-	out<<"# 1. Evolution1 - double the population, then select the best n/2 individuals (experimental)"<<endl;
-	out<<"# 2. Evolution2 - selection is based on 3 tournament (classical)"<<endl;
-	out<<"# (recommended: 2)"<<endl;
-	out<<2<<endl<<endl<<endl;
-
-	//method 1 probabilities
-	out<<"#Evolution 1 - Mutation 1 probability (random swap - classical)"<<endl;
-	out<<40<<endl;
-
-	out<<"#Evolution 1 - Mutation 2 probability (randomization - experimental)"<<endl;
-	out<<40<<endl;
-
-	out<<"#Evolution 1 - Crossover probability"<<endl;
-	out<<20<<endl<<endl<<endl;
-
-	//method 2 probabilities
-	out<<"#Evolution 2 - Mutation 1 probability (random swap - classical)"<<endl;
-	out<<35<<endl;
-
-	out<<"#Evolution 2 - Mutation 2 probability (randomization - experimental)"<<endl;
-	out<<35<<endl;
-
-	out<<"#Evolution 2 - Crossover probability"<<endl;
-	out<<20<<endl;
-
-	out<<"#Evolution 2 - Propagation probability"<<endl;
-	out<<10<<endl<<endl<<endl;
-
-	out<<"#FET Language"<<endl;
-	out<<(const char*)(FET_LANGUAGE)<<endl;
+	QSettings settings("FET free software", "FET");
+	settings.setValue("language", FET_LANGUAGE);
+	settings.setValue("working-directory", WORKING_DIRECTORY);
+	settings.setValue("version", FET_VERSION);
+	settings.setValue("check-for-updates", checkForUpdates);
 }
 
 /**
@@ -364,22 +113,12 @@ FET starts here
 */
 int main(int argc, char **argv){
 
-	srand(unsigned(time(NULL)));
+	//srand(unsigned(time(NULL)));
+	initRandomKnuth();
 
 	QDir dir;
 	
 	bool t=true;
-
-	//make sure that the input directory exists - only for GNU/Linux
-	//For Windows, I make a "fet.ini" in the current working directory
-#ifndef WIN32
-	if(!dir.exists(QDir::homeDirPath()+"/.fet"))
-		t=dir.mkdir(QDir::homeDirPath()+"/.fet");
-	if(!t){
-		assert(0);
-		exit(1);
-	}
-#endif
 
 	//make sure that the output directory exists
 	if(!dir.exists(OUTPUT_DIR))
@@ -466,8 +205,27 @@ int main(int argc, char **argv){
 	}
 		
 	qapplication.installTranslator(&translator);	
-	//end translator stuff
 	
+	if(checkForUpdates==-1){
+		/*int t=QMessageBox::question(NULL, QObject::tr("FET question"),
+		 QObject::tr("Would you like FET to inform you of available new version by checking the FET web page?\n\n"
+		 "This setting can be changed later from Settings menu\n\n"
+		 ""),
+		 QObject::tr("&Yes"), QObject::tr("&No"), QString(),
+		 0, 1 );
+		
+		if(t==0){ //yes
+			cout<<"Pressed yes"<<endl;
+			checkForUpdates=1;
+		}
+		else{
+			assert(t==1);
+			cout<<"Pressed no"<<endl;
+			checkForUpdates=0;
+		}*/
+		checkForUpdates=0;
+	}
+
 	pqapplication=&qapplication;
 	FetMainForm fetMainForm;
 	//qapplication.setMainWidget(&fetMainForm);
@@ -476,5 +234,8 @@ int main(int argc, char **argv){
 	int tmp2=qapplication.exec();
 	
 	writeSimulationParameters();
+	
+	cout<<"Settings saved"<<endl;
+	
 	return tmp2;
 }

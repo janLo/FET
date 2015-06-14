@@ -1,8 +1,8 @@
 /***************************************************************************
                           modifyconstraintsubjectsubjecttagpreferredroomform.cpp  -  description
                              -------------------
-    begin                : 8 Apr 2005
-    copyright            : (C) 2005 by Liviu Lalescu
+    begin                : 18 Aug 2007
+    copyright            : (C) 2007 by Liviu Lalescu
     email                : Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)
  ***************************************************************************/
 
@@ -36,8 +36,8 @@ ModifyConstraintSubjectSubjectTagPreferredRoomForm::ModifyConstraintSubjectSubje
 
 	this->_ctr=ctr;
 	
-	compulsoryCheckBox->setChecked(ctr->compulsory);
-	weightLineEdit->setText(QString::number(ctr->weight));
+	//compulsoryCheckBox->setChecked(ctr->compulsory);
+	weightLineEdit->setText(QString::number(ctr->weightPercentage));
 
 	updateSubjectsComboBox();
 	updateSubjectTagsComboBox();
@@ -68,9 +68,9 @@ void ModifyConstraintSubjectSubjectTagPreferredRoomForm::updateSubjectTagsComboB
 	int i=0, j=-1;
 	subjectTagsComboBox->clear();
 	for(int k=0; k<gt.rules.subjectTagsList.size(); k++){
-		SubjectTag* st=gt.rules.subjectTagsList[k];
-		subjectTagsComboBox->insertItem(st->name);
-		if(st->name==this->_ctr->subjectTagName)
+		SubjectTag* sb=gt.rules.subjectTagsList[k];
+		subjectTagsComboBox->insertItem(sb->name);
+		if(sb->name==this->_ctr->subjectTagName)
 			j=i;
 		i++;
 	}
@@ -103,15 +103,15 @@ void ModifyConstraintSubjectSubjectTagPreferredRoomForm::ok()
 	double weight;
 	QString tmp=weightLineEdit->text();
 	sscanf(tmp, "%lf", &weight);
-	if(weight<0.0){
+	if(weight<0.0 || weight>100){
 		QMessageBox::warning(this, QObject::tr("FET information"),
 			QObject::tr("Invalid weight"));
 		return;
 	}
 
-	bool compulsory=false;
+/*	bool compulsory=false;
 	if(compulsoryCheckBox->isChecked())
-		compulsory=true;
+		compulsory=true;*/
 
 	int i=subjectsComboBox->currentItem();
 	if(i<0 || subjectsComboBox->count()<=0){
@@ -137,8 +137,8 @@ void ModifyConstraintSubjectSubjectTagPreferredRoomForm::ok()
 	}
 	QString room=roomsComboBox->currentText();
 
-	this->_ctr->weight=weight;
-	this->_ctr->compulsory=compulsory;
+	this->_ctr->weightPercentage=weight;
+	//this->_ctr->compulsory=compulsory;
 	this->_ctr->roomName=room;
 	this->_ctr->subjectName=subject;
 	this->_ctr->subjectTagName=subjectTag;

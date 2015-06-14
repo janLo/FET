@@ -9,7 +9,7 @@
             <x>0</x>
             <y>0</y>
             <width>614</width>
-            <height>585</height>
+            <height>540</height>
         </rect>
     </property>
     <property name="caption">
@@ -19,46 +19,7 @@
         <property name="name">
             <cstring>unnamed</cstring>
         </property>
-        <widget class="QComboBox" row="1" column="0" rowspan="1" colspan="4">
-            <property name="name">
-                <cstring>subjectsComboBox</cstring>
-            </property>
-        </widget>
-        <widget class="QLabel" row="0" column="0" rowspan="1" colspan="4">
-            <property name="name">
-                <cstring>subjectsTextLabel</cstring>
-            </property>
-            <property name="text">
-                <string>Subject</string>
-            </property>
-        </widget>
-        <widget class="QLayoutWidget" row="4" column="1" rowspan="1" colspan="2">
-            <property name="name">
-                <cstring>layout12</cstring>
-            </property>
-            <vbox>
-                <property name="name">
-                    <cstring>unnamed</cstring>
-                </property>
-                <widget class="QPushButton">
-                    <property name="name">
-                        <cstring>addPushButton</cstring>
-                    </property>
-                    <property name="text">
-                        <string>Add</string>
-                    </property>
-                </widget>
-                <widget class="QPushButton">
-                    <property name="name">
-                        <cstring>removePushButton</cstring>
-                    </property>
-                    <property name="text">
-                        <string>Remove</string>
-                    </property>
-                </widget>
-            </vbox>
-        </widget>
-        <widget class="QLayoutWidget" row="5" column="2" rowspan="1" colspan="2">
+        <widget class="QLayoutWidget" row="5" column="0" rowspan="1" colspan="3">
             <property name="name">
                 <cstring>layout4</cstring>
             </property>
@@ -77,7 +38,7 @@
                         <enum>Plain</enum>
                     </property>
                     <property name="text">
-                        <string>Weight (recommended: 1.0)</string>
+                        <string>Weight percentage (recommended: 0%-100%)</string>
                     </property>
                 </widget>
                 <widget class="QLineEdit">
@@ -85,49 +46,12 @@
                         <cstring>weightLineEdit</cstring>
                     </property>
                     <property name="text">
-                        <string>1.0</string>
+                        <string>100</string>
                     </property>
                 </widget>
             </vbox>
         </widget>
-        <widget class="QLayoutWidget" row="4" column="3">
-            <property name="name">
-                <cstring>layout9</cstring>
-            </property>
-            <vbox>
-                <property name="name">
-                    <cstring>unnamed</cstring>
-                </property>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>selectedRoomsTextLabel</cstring>
-                    </property>
-                    <property name="frameShape">
-                        <enum>NoFrame</enum>
-                    </property>
-                    <property name="frameShadow">
-                        <enum>Plain</enum>
-                    </property>
-                    <property name="text">
-                        <string>Selected rooms</string>
-                    </property>
-                    <property name="buddy" stdset="0">
-                        <cstring>roomsComboBox</cstring>
-                    </property>
-                </widget>
-                <widget class="QListBox">
-                    <item>
-                        <property name="text">
-                            <string>New Item</string>
-                        </property>
-                    </item>
-                    <property name="name">
-                        <cstring>selectedRoomsListBox</cstring>
-                    </property>
-                </widget>
-            </vbox>
-        </widget>
-        <widget class="QLayoutWidget" row="6" column="0" rowspan="1" colspan="4">
+        <widget class="QLayoutWidget" row="6" column="0" rowspan="1" colspan="3">
             <property name="name">
                 <cstring>layout2</cstring>
             </property>
@@ -153,6 +77,19 @@
                 </widget>
             </hbox>
         </widget>
+        <widget class="QComboBox" row="1" column="0" rowspan="1" colspan="3">
+            <property name="name">
+                <cstring>subjectsComboBox</cstring>
+            </property>
+        </widget>
+        <widget class="QLabel" row="0" column="0" rowspan="1" colspan="3">
+            <property name="name">
+                <cstring>subjectsTextLabel</cstring>
+            </property>
+            <property name="text">
+                <string>Subject</string>
+            </property>
+        </widget>
         <widget class="QLayoutWidget" row="4" column="0">
             <property name="name">
                 <cstring>layout10</cstring>
@@ -172,10 +109,7 @@
                         <enum>Plain</enum>
                     </property>
                     <property name="text">
-                        <string>All rooms</string>
-                    </property>
-                    <property name="buddy" stdset="0">
-                        <cstring>roomsComboBox</cstring>
+                        <string>All rooms (dbl. click adds)</string>
                     </property>
                 </widget>
                 <widget class="QListBox">
@@ -190,28 +124,77 @@
                 </widget>
             </vbox>
         </widget>
-        <widget class="QCheckBox" row="5" column="0" rowspan="1" colspan="2">
+        <widget class="QLayoutWidget" row="4" column="1">
             <property name="name">
-                <cstring>compulsoryCheckBox</cstring>
+                <cstring>layout12</cstring>
             </property>
-            <property name="text">
-                <string>Compulsory</string>
-            </property>
-            <property name="checked">
-                <bool>true</bool>
-            </property>
+            <vbox>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QPushButton">
+                    <property name="name">
+                        <cstring>addPushButton</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Add</string>
+                    </property>
+                </widget>
+                <widget class="QPushButton">
+                    <property name="name">
+                        <cstring>removePushButton</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Remove</string>
+                    </property>
+                </widget>
+            </vbox>
         </widget>
-        <widget class="QComboBox" row="3" column="0" rowspan="1" colspan="4">
+        <widget class="QLayoutWidget" row="4" column="2">
             <property name="name">
-                <cstring>subjectTagsComboBox</cstring>
+                <cstring>layout9</cstring>
             </property>
+            <vbox>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>selectedRoomsTextLabel</cstring>
+                    </property>
+                    <property name="frameShape">
+                        <enum>NoFrame</enum>
+                    </property>
+                    <property name="frameShadow">
+                        <enum>Plain</enum>
+                    </property>
+                    <property name="text">
+                        <string>Selected rooms (dbl. click removes)</string>
+                    </property>
+                </widget>
+                <widget class="QListBox">
+                    <item>
+                        <property name="text">
+                            <string>New Item</string>
+                        </property>
+                    </item>
+                    <property name="name">
+                        <cstring>selectedRoomsListBox</cstring>
+                    </property>
+                </widget>
+            </vbox>
         </widget>
-        <widget class="QLabel" row="2" column="0" rowspan="1" colspan="4">
+        <widget class="QLabel" row="2" column="0" rowspan="1" colspan="3">
             <property name="name">
-                <cstring>subjectTagsTextLabel</cstring>
+                <cstring>subjectsTextLabel_2</cstring>
             </property>
             <property name="text">
                 <string>Subject tag</string>
+            </property>
+        </widget>
+        <widget class="QComboBox" row="3" column="0" rowspan="1" colspan="3">
+            <property name="name">
+                <cstring>subjectTagsComboBox</cstring>
             </property>
         </widget>
     </grid>
@@ -240,6 +223,18 @@
         <signal>clicked()</signal>
         <receiver>AddConstraintSubjectSubjectTagPreferredRoomsForm_template</receiver>
         <slot>addConstraint()</slot>
+    </connection>
+    <connection>
+        <sender>roomsListBox</sender>
+        <signal>selected(const QString&amp;)</signal>
+        <receiver>AddConstraintSubjectSubjectTagPreferredRoomsForm_template</receiver>
+        <slot>addRoom()</slot>
+    </connection>
+    <connection>
+        <sender>selectedRoomsListBox</sender>
+        <signal>selected(const QString&amp;)</signal>
+        <receiver>AddConstraintSubjectSubjectTagPreferredRoomsForm_template</receiver>
+        <slot>removeRoom()</slot>
     </connection>
 </connections>
 <slots>

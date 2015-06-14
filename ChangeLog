@@ -775,6 +775,7 @@ Versions 4.2.0 - 4.2.x
 	- 2-point and uniform crossover implemented and tested by Volker Dirr
 	- Turkish language update by Mahir Nacar
 	- French translation update by Patrick Fox
+	- Macedonian translation by Zoran Zdravkovski
 - Version 4.2.0
 	- Implemented 2-point and uniform crossover, by Mr. Volker Dirr.
 	The default crossover method is 2-point, which should give better results
@@ -805,3 +806,194 @@ Versions 4.2.0 - 4.2.x
 	including local characters (reported by Zoran Zdravkovski).
 - Version 4.2.8
 	- Added Macedonian translation (by Zoran Zdravkovski).
+- Version 4.2.9
+	- Small bug fix (reported by Volker Dirr).
+	- Bug fix - students n hours daily (observed by Liviu Lalescu).
+---------------------------------------------------------------------------------
+Versions 5.0.0 - 5.0.2
+	- Liviu Lalescu (http://lalescu.ro/liviu/);
+	- xhtml form of saving timetables by Volker Dirr (timetabling.de)
+- Version 5.0.0-preview1 
+	- new algorithm
+	- too many changes to mention
+- Version 5.0.0-preview2
+	- Added activities same starting time & hour constraints into time optimization
+- Version 5.0.0-preview3
+	- Added a warning that older files will be converted as follows: min n days
+	will have weight percentage 95% and adj if broken=true
+- Version 5.0.0-preview4
+	- The students gaps now are measured in hours (a 2 hour gap means 2 conflicts,
+	not just one as before).
+	- Improved saving xhtml timetables by Volker Dirr
+	- Removed the preferred time when adding an activity (useless)
+	- Removed not important time constraints which do not fit into new algorithm
+- Version 5.0.0-preview5
+	- Improvement in the optimization - optimizetime.cpp
+- Version 5.0.0-preview6
+	- Improvements in the optimization - optimizetime.cpp
+- Version 5.0.0-preview7
+	- Bug fix in ConstraintBreak
+- Version 5.0.0-preview8
+	- Made possible again ConstraintActivitiesNotOverlapping
+- Version 5.0.0-preview9
+	- Raised the limits of max number of activities, constraints,
+	max activities for each constraint activities not overlapping and others
+	- Improved the solving of activities not overlapping
+- Version 5.0.0-preview10
+- Version 5.0.0-preview11
+	- Improved the algorithm
+	- Fixed bug for constraint teachers max gaps per week
+- Version 5.0.0-preview12
+	- Crash bug fix
+- Version 5.0.0-preview13
+	- Students set early (suggested by Constantin Romulus)
+	- Cannot allocate now without basic time constraints (no more crashing otherwise)
+	(reported by Constantin Romulus)
+- Version 5.0.0-preview14
+	- Romanian language update by Constantin Romulus
+	- Teacher(s) max hours daily (suggested by Constantin Romulus)
+	- Students (set) max hours daily (suggested by Constantin Romulus)
+- Version 5.0.0-preview15
+	- Romanian language update by Constantin Romulus and Liviu Lalescu
+	- Improved html timetables (suggested by L. W. Johnstone)
+- Version 5.0.0-preview16
+	- Crash bug fix in teacher max days per week (reported by Constantin Romulus)
+- Version 5.0.0-preview17
+	- Improvements in add/modify activity dialogs (suggested by Constantin Romulus)
+	- Improvements in add/modify constraints not overlapping, same starting hour/time,
+	min n days between activities (suggested by Constantin Romulus).
+	- Bug fix - when pressing Esc in the allocation of hours.
+- Version 5.0.0-preview18
+	- Very small improvements.
+- Version 5.0.0-preview19
+	- Improments in Romanian translation by Liviu Lalescu.
+	- Small improvements in interface.
+- Version 5.0.0-preview20
+- Version 5.0.0-preview21
+	- Bugs fixed (not observable usually)
+	- Modified adj if broken to be consecutive if same day for min n days constraint
+- Version 5.0.0-preview22
+	- Bug fix when a single activity cannot be scheduled
+	- The break is not counted as a gap for teachers and students
+	- Improvement in optimization, for early and gaps - speed improvement in optimization
+	- Check for updates on startup
+- Version 5.0.0-preview23
+- Version 5.0.0-preview24
+	- Bug fix in saving ConstraintTeacherMaxHoursDaily
+- Version 5.0.0-preview25
+	- Improvement in the optimization algorithm.
+	- Possible bugs fixes (unlikely to happen bugs).
+	- Improved Romanian translation.
+- Version 5.0.0-preview26
+	- Improved documentation.
+- Version 5.0.0-preview27
+	- Possible improvement in the optimization algorithm
+	- Improved saving the xhtml of timetable by Volker Dirr
+	- Small bug fix
+- Version 5.0.0-preview28
+	- Small changes in saving the xhtml timetables on disk, by Volker Dirr
+	- Improved the algorithm (maybe speed improvements)
+- Version 5.0.0-preview29
+	- Geometry of main form now saved correctly (suggested by Volker Dirr).
+- Version 5.0.0-preview30
+	- Improvements in optimization algorithm.
+- Version 5.0.0
+	- Can have activities with no teacher or no students set (suggested by Volker Dirr).
+	- Rooms and space allocation.
+	- Improved the automatic generation.
+	- Bug fix in generation in Windows (faster now on newer processors?).
+	- Speed improvement in generation.
+	- Improved algorithm in minimizing broken constraints min n days between activities.
+	- Bug fix in constraint activities preferred times.
+- Version 5.0.1
+	- Improvement in generation.
+	- Weights can now be real numbers.
+	- Random generator improved (from Knuth).
+- Version 5.0.2
+	- Potential (very unlikely) bug fix in random.
+	- Changes in automatic generation (hope good changes).
+	- Small interface changes.
+	- Improvements in translation by Volker Dirr.
+---------------------------------------------------------------------------------
+Versions 5.1.0 - 5.1.12
+- Version 5.1.0
+	- Minor cosmetic changes in code by Volker Dirr.
+	- Constraint students (set) min hours daily (suggested by Zsolt Udvari).
+	- Improved automatic generation.
+- Version 5.1.1
+	- Bug fixes (students sets).
+	- Division of years automatically (suggested by more users).
+- Version 5.1.2
+	- Allow only one category for splitting a year.
+- Version 5.1.3
+	- Improvements in dividing year (suggested by Volker Dirr and Constantin Romulus).
+- Version 5.1.4
+	- Improvements in dividing year (suggested by Constantin Romulus and Volker Dirr).
+	- Improvements in Romanian translation.
+	- Improvements in German translation by Volker Dirr.
+	- Small improvements in interface.
+	- The user can now double click in any constraints dialog to modify.
+- Version 5.1.5
+	- Improvements in interface (double click in Teachers, Subjects, etc. now modifies).
+	- German translation update by Volker Dirr.
+- Version 5.1.6
+	- Students not available does not induce gaps or early unrespected
+	- Teachers not available does not induce gaps
+	- Improvement in automatic generation (cycles avoided better)
+- Version 5.1.7
+	- I hope improvements in automatic generation
+- Version 5.1.8
+	- Update in German translation by Volker Dirr
+	- Improvement: if activity contains duplicated subgroups, this is not reported to the user anymore
+	(suggested by Volker Dirr)
+	- Improvement in rooms allocation - if room free, activity is placed, even
+	if constraint subj (act) pref room(s) has low weight (suggested by Volker Dirr)
+	- Changes in automatic generation (I hope good ones)
+	- Improvement in adding constraint activities same starting time (filter change does
+	not remove activities any longer) (suggested by Volker Dirr)
+	- Improvement in adding constraint min n days between activities (filter) (suggested by
+	Volker Dirr)
+- Version 5.1.9
+	- Better initial sorting -> better automatic generation
+- Version 5.1.10
+	- Detailed constraint activity ... (min n days, preferred time(s), same starting time,
+	same starting hour, not overlapping) now contain the teacher, subj, subj tag and students)
+	(suggested by Volker Dirr).
+	- Better initial sorting - better automatic generation
+- Version 5.1.11
+	- Improvements in automatic generation
+	- Improved saving of x-html timetables by Volker Dirr
+- Version 5.1.12
+	- Changes in automatic generation (I hope improvements)
+	- Constraint subject subject tag preferred room(s) (suggested by Volker Dirr)
+---------------------------------------------------------------------------------
+Versions 5.2.0 - 5.2.
+- Version 5.2.0
+	- Various small improvements
+	- Multiple timetables generation (suggested by Volker Dirr)
+	- Constraint 2 activities consecutive (suggested by Felix FSH)
+- Version 5.2.1
+	- Bug fix in conflicts reporting in conflicts.txt for single timetable generation
+- Version 5.2.2
+	- Small bug fix (when aborting generation or generation is impossible, correct conflicts are
+	written on hard disk)
+- Version 5.2.3
+	- Small bug fix - when clicking cancel on exit, the filename is preserved correctly
+	- Small corrections
+- Version 5.2.4
+	- Small interface improvement (now the add activity dialog has default show subgroups unchecked)
+- Version 5.2.5
+	- Small instructions improvements
+- Version 5.2.6
+	- Minor interface improvements (the conflicts are now named soft conflicts, as they should)
+	- Small speed improvement, by changing the timetable generate dialog
+- Version 5.2.7
+	- Interface improvement
+	- Small bug fix (when modifying hours or days)
+	- Crash bugs fixed - reported by mantas
+- Version 5.2.8
+	- Added a test to see if teachers or students have enough slots, from not available constraints
+	- Small bug fixes
+- Version 5.2.9
+	- Small improvements in interface
+	

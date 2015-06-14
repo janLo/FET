@@ -26,14 +26,14 @@
 #include <QDesktopWidget>
 
 #define subTab(i)	subactivitiesTabWidget->page(i)
-#define par(i)		(i==0?parity1CheckBox:			\
+/*#define par(i)		(i==0?parity1CheckBox:			\
 			(i==1?parity2CheckBox:					\
 			(i==2?parity3CheckBox:					\
 			(i==3?parity4CheckBox:					\
 			(i==4?parity5CheckBox:					\
 			(i==5?parity6CheckBox:					\
 			(i==6?parity7CheckBox:					\
-			(parity8CheckBox))))))))
+			(parity8CheckBox))))))))*/
 #define dur(i)		(i==0?duration1SpinBox:			\
 			(i==1?duration2SpinBox:					\
 			(i==2?duration3SpinBox:					\
@@ -41,7 +41,9 @@
 			(i==4?duration5SpinBox:					\
 			(i==5?duration6SpinBox:					\
 			(i==6?duration7SpinBox:					\
-			(duration8SpinBox))))))))
+			(i==7?duration8SpinBox:					\
+			(i==8?duration9SpinBox:					\
+			(duration10SpinBox))))))))))
 #define activ(i)		(i==0?active1CheckBox:			\
 			(i==1?active2CheckBox:					\
 			(i==2?active3CheckBox:					\
@@ -49,7 +51,9 @@
 			(i==4?active5CheckBox:					\
 			(i==5?active6CheckBox:					\
 			(i==6?active7CheckBox:					\
-			(active8CheckBox))))))))
+			(i==7?active8CheckBox:					\
+			(i==8?active9CheckBox:					\
+			(active10CheckBox))))))))))
 
 ModifyActivityForm::ModifyActivityForm(int id, int activityGroupId)
 {
@@ -80,13 +84,13 @@ ModifyActivityForm::ModifyActivityForm(int id, int activityGroupId)
 		for(int i=0; i<gt.rules.activitiesList.size(); i++){
 			Activity* act=gt.rules.activitiesList[i];
 			if(act->activityGroupId==this->_activityGroupId){
-				if(nSplit>=8){
+				if(nSplit>=10){
 					assert(0);
 				}
 				else{
 					if(this->_id==act->id)
 						subactivitiesTabWidget->setCurrentPage(nSplit);
-					par(nSplit)->setChecked(act->parity==PARITY_FORTNIGHTLY);
+					//par(nSplit)->setChecked(act->parity==PARITY_FORTNIGHTLY);
 					dur(nSplit)->setValue(act->duration);
 					activ(nSplit)->setChecked(act->active);
 					nSplit++;
@@ -96,7 +100,7 @@ ModifyActivityForm::ModifyActivityForm(int id, int activityGroupId)
 	}
 	else{
 		nSplit=1;
-		par(0)->setChecked(this->_activity->parity==PARITY_FORTNIGHTLY);
+		//par(0)->setChecked(this->_activity->parity==PARITY_FORTNIGHTLY);
 		dur(0)->setValue(this->_activity->duration);
 		activ(0)->setChecked(this->_activity->active);
 	}
@@ -113,7 +117,7 @@ ModifyActivityForm::ModifyActivityForm(int id, int activityGroupId)
 	updateSubjectsComboBox();
 	updateSubjectTagsComboBox();
 
-	for(int i=0; i<8; i++)
+	for(int i=0; i<10; i++)
 		if(i<nSplit)
 			subTab(i)->setEnabled(true);
 		else
@@ -270,10 +274,13 @@ void ModifyActivityForm::activityChanged()
 	s+=QObject::tr("Current activity:");
 	s+="\n";
 	
-	for(uint i=0; i<selectedTeachersListBox->count(); i++){
-		s+=QObject::tr("Teacher=%1").arg(selectedTeachersListBox->text(i));
-		s+="\n";
-	}
+	if(selectedTeachersListBox->count()==0)
+		s+=QObject::tr("No teachers for this activity\n");
+	else
+		for(uint i=0; i<selectedTeachersListBox->count(); i++){
+			s+=QObject::tr("Teacher=%1").arg(selectedTeachersListBox->text(i));
+			s+="\n";
+		}
 
 	s+=QObject::tr("Subject=%1").arg(subjectsComboBox->currentText());
 	s+="\n";
@@ -281,10 +288,13 @@ void ModifyActivityForm::activityChanged()
 		s+=QObject::tr("Subject tag=%1").arg(subjectTagsComboBox->currentText());
 		s+="\n";
 	}
-	for(uint i=0; i<selectedStudentsListBox->count(); i++){
-		s+=QObject::tr("Students=%1").arg(selectedStudentsListBox->text(i));
-		s+="\n";
-	}
+	if(selectedStudentsListBox->count()==0)
+		s+=QObject::tr("No students for this activity\n");
+	else
+		for(uint i=0; i<selectedStudentsListBox->count(); i++){
+			s+=QObject::tr("Students=%1").arg(selectedStudentsListBox->text(i));
+			s+="\n";
+		}
 	
 	if(nStudentsSpinBox->value()==-1){
 		s+=QObject::tr("Number of students: computed from corresponding students sets");
@@ -298,10 +308,10 @@ void ModifyActivityForm::activityChanged()
 	if(splitSpinBox->value()==1){
 		s+=QObject::tr("Duration=%1").arg(dur(0)->value());
 		s+="\n";
-		if(par(0)->isChecked()){
+		/*if(par(0)->isChecked()){
 			s+=QObject::tr("Fortnightly activity");
 			s+="\n";
-		}
+		}*/
 		
 		if(activ(0)->isChecked()){
 			s+=QObject::tr("Active activity");
@@ -322,10 +332,10 @@ void ModifyActivityForm::activityChanged()
 			s+="\n";
 			s+=QObject::tr("Duration=%1").arg(dur(i)->value());
 			s+="\n";
-			if(par(i)->isChecked()){
+			/*if(par(i)->isChecked()){
 				s+=QObject::tr("Fortnightly activity");
 				s+="\n";
-			}
+			}*/
 			if(activ(i)->isChecked()){
 				s+=QObject::tr("Active activity");
 				s+="\n";
@@ -351,9 +361,12 @@ void ModifyActivityForm::ok()
 	//teachers
 	QStringList teachers_names;
 	if(selectedTeachersListBox->count()<=0){
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Invalid teacher(s)"));
-		return;
+		int t=QMessageBox::question(this, QObject::tr("FET question"),
+		 QObject::tr("Do you really want to have the activity with no teacher(s)?"),
+		 QMessageBox::Yes, QMessageBox::Cancel);
+
+		if(t==QMessageBox::Cancel)
+			return;
 	}
 	else if(selectedTeachersListBox->count()>(uint)(MAX_TEACHERS_PER_ACTIVITY)){
 		QMessageBox::warning(this, QObject::tr("FET information"),
@@ -390,9 +403,12 @@ void ModifyActivityForm::ok()
 	//students
 	QStringList students_names;
 	if(selectedStudentsListBox->count()<=0){
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Invalid students set(s)"));
-		return;
+		int t=QMessageBox::question(this, QObject::tr("FET question"),
+		 QObject::tr("Do you really want to have the activity with no student set(s)?"),
+		 QMessageBox::Yes, QMessageBox::Cancel);
+
+		if(t==QMessageBox::Cancel)
+			return;
 	}
 	else{
 		for(uint i=0; i<selectedStudentsListBox->count(); i++){
@@ -408,17 +424,17 @@ void ModifyActivityForm::ok()
 	}
 
 	int totalduration;
-	int durations[8];
-	int parities[8];
-	bool active[8];
+	int durations[10];
+	//int parities[8];
+	bool active[10];
 	int nsplit=splitSpinBox->value();
 
 	totalduration=0;
 	for(int i=0; i<nsplit; i++){
 		durations[i]=dur(i)->value();
-		parities[i]=PARITY_WEEKLY;
-		if(par(i)->isChecked())
-			parities[i]=PARITY_FORTNIGHTLY;
+		//parities[i]=PARITY_WEEKLY;
+		//if(par(i)->isChecked())
+		//	parities[i]=PARITY_FORTNIGHTLY;
 		active[i]=activ(i)->isChecked();
 
 		totalduration+=durations[i];
@@ -426,12 +442,12 @@ void ModifyActivityForm::ok()
 
 	if(nStudentsSpinBox->value()==-1){
 		gt.rules.modifyActivity(this->_id, this->_activityGroupId, teachers_names, subject_name,
-		 subject_tag_name,students_names, nsplit, totalduration, durations, parities, active,
+		 subject_tag_name,students_names, nsplit, totalduration, durations, /*parities,*/ active,
 		 (nStudentsSpinBox->value()==-1), total_number_of_students);
 	}
 	else{
 		gt.rules.modifyActivity(this->_id, this->_activityGroupId, teachers_names, subject_name,
-		 subject_tag_name,students_names, nsplit, totalduration, durations, parities, active,
+		 subject_tag_name,students_names, nsplit, totalduration, durations, /*parities,*/ active,
 		 (nStudentsSpinBox->value()==-1), nStudentsSpinBox->value());
 	}
 	
@@ -450,7 +466,8 @@ void ModifyActivityForm::clearStudents()
 	activityChanged();
 }
 
-#undef prefDay
-#undef prefHour
+//#undef prefDay
+//#undef prefHour
 #undef subTab
 #undef activ
+#undef dur

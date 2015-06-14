@@ -20,11 +20,11 @@
 
 #include "modifyroomform_template.h"
 
-#include "genetictimetable_defs.h"
-#include "genetictimetable.h"
+#include "timetable_defs.h"
+#include "timetable.h"
 #include "fet.h"
 
-#include "fetmainform.h"
+//#include "fetmainform.h"
 
 #include <qspinbox.h>
 #include <qlineedit.h>
@@ -37,7 +37,7 @@ class ModifyRoomForm : public ModifyRoomForm_template {
 	QString _initialRoomBuilding;
 	int _initialRoomCapacity;
 public: 
-	ModifyRoomForm(const QString& initialRoomName, const QString& initialRoomType, const QString& initialRoomBuilding, int initialRoomCapacity);
+	ModifyRoomForm(const QString& initialRoomName/*, const QString& initialRoomType, const QString& initialRoomBuilding*/, int initialRoomCapacity);
 	~ModifyRoomForm();
 
 	void ok();

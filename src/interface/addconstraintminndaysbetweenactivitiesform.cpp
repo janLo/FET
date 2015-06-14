@@ -37,25 +37,122 @@ AddConstraintMinNDaysBetweenActivitiesForm::AddConstraintMinNDaysBetweenActiviti
 	updateActivitiesListBox();
 	
 	minDaysSpinBox->setMinValue(1);
+	minDaysSpinBox->setValue(1);
 	minDaysSpinBox->setMaxValue(gt.rules.nDaysPerWeek-1);
+
+	teachersComboBox->insertItem("");
+	for(int i=0; i<gt.rules.teachersList.size(); i++){
+		Teacher* tch=gt.rules.teachersList[i];
+		teachersComboBox->insertItem(tch->name);
+	}
+	teachersComboBox->setCurrentItem(0);
+
+	subjectsComboBox->insertItem("");
+	for(int i=0; i<gt.rules.subjectsList.size(); i++){
+		Subject* sb=gt.rules.subjectsList[i];
+		subjectsComboBox->insertItem(sb->name);
+	}
+	subjectsComboBox->setCurrentItem(0);
+
+	subjectTagsComboBox->insertItem("");
+	for(int i=0; i<gt.rules.subjectTagsList.size(); i++){
+		SubjectTag* st=gt.rules.subjectTagsList[i];
+		subjectTagsComboBox->insertItem(st->name);
+	}
+	subjectTagsComboBox->setCurrentItem(0);
+
+	studentsComboBox->insertItem("");
+	for(int i=0; i<gt.rules.yearsList.size(); i++){
+		StudentsYear* sty=gt.rules.yearsList[i];
+		studentsComboBox->insertItem(sty->name);
+		for(int j=0; j<sty->groupsList.size(); j++){
+			StudentsGroup* stg=sty->groupsList[j];
+			studentsComboBox->insertItem(stg->name);
+			for(int k=0; k<stg->subgroupsList.size(); k++){
+				StudentsSubgroup* sts=stg->subgroupsList[k];
+				studentsComboBox->insertItem(sts->name);
+			}
+		}
+	}
+	studentsComboBox->setCurrentItem(0);
+
+	selectedActivitiesListBox->clear();
+	this->selectedActivitiesList.clear();
+
+	filterChanged();
 }
 
 AddConstraintMinNDaysBetweenActivitiesForm::~AddConstraintMinNDaysBetweenActivitiesForm()
 {
 }
 
+bool AddConstraintMinNDaysBetweenActivitiesForm::filterOk(Activity* act)
+{
+	QString tn=teachersComboBox->currentText();
+	QString stn=studentsComboBox->currentText();
+	QString sbn=subjectsComboBox->currentText();
+	QString sbtn=subjectTagsComboBox->currentText();
+	int ok=true;
+
+	//teacher
+	if(tn!=""){
+		bool ok2=false;
+		for(QStringList::Iterator it=act->teachersNames.begin(); it!=act->teachersNames.end(); it++)
+			if(*it == tn){
+				ok2=true;
+				break;
+			}
+		if(!ok2)
+			ok=false;
+	}
+
+	//subject
+	if(sbn!="" && sbn!=act->subjectName)
+		ok=false;
+		
+	//subject tag
+	if(sbtn!="" && sbtn!=act->subjectTagName)
+		ok=false;
+		
+	//students
+	if(stn!=""){
+		bool ok2=false;
+		for(QStringList::Iterator it=act->studentsNames.begin(); it!=act->studentsNames.end(); it++)
+			if(*it == stn){
+				ok2=true;
+				break;
+			}
+		if(!ok2)
+			ok=false;
+	}
+	
+	return ok;
+}
+
+void AddConstraintMinNDaysBetweenActivitiesForm::filterChanged()
+{
+	this->updateActivitiesListBox();
+}
+
 void AddConstraintMinNDaysBetweenActivitiesForm::updateActivitiesListBox()
 {
 	activitiesListBox->clear();
-	selectedActivitiesListBox->clear();
+	//selectedActivitiesListBox->clear();
 
 	this->activitiesList.clear();
-	this->selectedActivitiesList.clear();
+	//this->selectedActivitiesList.clear();
 
-	for(int i=0; i<gt.rules.activitiesList.size(); i++){
+	/*for(int i=0; i<gt.rules.activitiesList.size(); i++){
 		Activity* ac=gt.rules.activitiesList[i];
 		activitiesListBox->insertItem(ac->getDescription(gt.rules));
 		this->activitiesList.append(ac->id);
+	}*/
+	for(int i=0; i<gt.rules.activitiesList.size(); i++){
+		Activity* ac=gt.rules.activitiesList[i];
+		if(filterOk(ac)){
+			activitiesListBox->insertItem(ac->getDescription(gt.rules));
+			this->activitiesList.append(ac->id);
+		}
 	}
 }
 
@@ -66,15 +163,15 @@ void AddConstraintMinNDaysBetweenActivitiesForm::addConstraint()
 	double weight;
 	QString tmp=weightLineEdit->text();
 	sscanf(tmp, "%lf", &weight);
-	if(weight<0.0){
+	if(weight<0.0 | weight>100){
 		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Invalid weight"));
+			QObject::tr("Invalid weight (percentage)"));
 		return;
 	}
 
-	bool compulsory=false;
+	/*bool compulsory=false;
 	if(compulsoryCheckBox->isChecked())
-		compulsory=true;
+		compulsory=true;*/
 
 	if(this->selectedActivitiesList.count()==0){
 		QMessageBox::warning(this, QObject::tr("FET information"),
@@ -98,7 +195,7 @@ void AddConstraintMinNDaysBetweenActivitiesForm::addConstraint()
 	for(i=0, it=this->selectedActivitiesList.begin(); it!=this->selectedActivitiesList.end(); it++, i++)
 		ids[i]=*it;
 	
-	ctr=new ConstraintMinNDaysBetweenActivities(weight, compulsory, this->selectedActivitiesList.count(), ids, minDaysSpinBox->value());
+	ctr=new ConstraintMinNDaysBetweenActivities(weight, consecutiveIfSameDayCheckBox->isChecked(),/*compulsory,*/ this->selectedActivitiesList.count(), ids, minDaysSpinBox->value());
 	bool tmp2=gt.rules.addTimeConstraint(ctr);
 	
 	if(tmp2){
