@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.1" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
 <class>TimetableViewStudentsWithRoomsForm_template</class>
 <widget class="QDialog">
     <property name="name">
@@ -87,15 +87,7 @@
                 <cstring>groupsListBox</cstring>
             </property>
         </widget>
-        <widget class="QPushButton" row="2" column="3">
-            <property name="name">
-                <cstring>closePushButton</cstring>
-            </property>
-            <property name="text">
-                <string>Close</string>
-            </property>
-        </widget>
-        <widget class="QTable" row="4" column="0" rowspan="2" colspan="3">
+        <widget class="QTable" row="4" column="0" rowspan="4" colspan="3">
             <property name="name">
                 <cstring>studentsTimetableTable</cstring>
             </property>
@@ -109,15 +101,7 @@
                 <bool>true</bool>
             </property>
         </widget>
-        <widget class="QLabel" row="4" column="3">
-            <property name="name">
-                <cstring>detailsTextLabel</cstring>
-            </property>
-            <property name="text">
-                <string>Details</string>
-            </property>
-        </widget>
-        <widget class="QTextEdit" row="5" column="3">
+        <widget class="QTextEdit" row="7" column="3">
             <property name="name">
                 <cstring>detailsTextEdit</cstring>
             </property>
@@ -126,6 +110,46 @@
             </property>
             <property name="readOnly">
                 <bool>true</bool>
+            </property>
+        </widget>
+        <widget class="QLabel" row="6" column="3">
+            <property name="name">
+                <cstring>detailsTextLabel</cstring>
+            </property>
+            <property name="text">
+                <string>Details</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="5" column="3">
+            <property name="name">
+                <cstring>closePushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Close</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="1" column="3">
+            <property name="name">
+                <cstring>lockPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Lock selected activities</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="3" column="3" rowspan="2" colspan="1">
+            <property name="name">
+                <cstring>lockSpacePushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Lock (space)</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="2" column="3">
+            <property name="name">
+                <cstring>lockTimePushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Lock (time)</string>
             </property>
         </widget>
     </grid>
@@ -161,12 +185,33 @@
         <receiver>TimetableViewStudentsWithRoomsForm_template</receiver>
         <slot>detailActivity(int,int)</slot>
     </connection>
+    <connection>
+        <sender>lockPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>TimetableViewStudentsWithRoomsForm_template</receiver>
+        <slot>lock()</slot>
+    </connection>
+    <connection>
+        <sender>lockTimePushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>TimetableViewStudentsWithRoomsForm_template</receiver>
+        <slot>lockTime()</slot>
+    </connection>
+    <connection>
+        <sender>lockSpacePushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>TimetableViewStudentsWithRoomsForm_template</receiver>
+        <slot>lockSpace()</slot>
+    </connection>
 </connections>
 <slots>
     <slot>groupChanged(const QString&amp;)</slot>
     <slot>detailActivity(int, int)</slot>
     <slot>subgroupChanged(const QString&amp;)</slot>
     <slot>yearChanged(const QString&amp;)</slot>
+    <slot>lock()</slot>
+    <slot>lockTime()</slot>
+    <slot>lockSpace()</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

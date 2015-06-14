@@ -23,14 +23,24 @@ using namespace std;
 
 #include "modifyconstraintbasiccompulsoryspaceform.h"
 #include "modifyconstraintteacherrequiresroomform.h"
+#include "modifyconstraintteachersubjectrequireroomform.h"
 #include "modifyconstraintroomnotavailableform.h"
 #include "modifyconstraintactivitypreferredroomform.h"
 #include "modifyconstraintminimizenumberofroomsforstudentsform.h"
+#include "modifyconstraintminimizenumberofroomsforteachersform.h"
 #include "modifyconstraintroomtypenotallowedsubjectsform.h"
 #include "modifyconstraintsubjectrequiresequipmentsform.h"
 #include "modifyconstraintsubjectsubjecttagrequireequipmentsform.h"
 #include "modifyconstraintactivitiessameroomform.h"
 #include "modifyconstraintactivitypreferredroomsform.h"
+#include "modifyconstraintsubjectpreferredroomform.h"
+#include "modifyconstraintsubjectsubjecttagpreferredroomform.h"
+#include "modifyconstraintsubjectpreferredroomsform.h"
+#include "modifyconstraintsubjectsubjecttagpreferredroomsform.h"
+#include "modifyconstraintmaxbuildingchangesperdayforteachersform.h"
+#include "modifyconstraintmaxbuildingchangesperdayforstudentsform.h"
+#include "modifyconstraintmaxroomchangesperdayforteachersform.h"
+#include "modifyconstraintmaxroomchangesperdayforstudentsform.h"
 
 AllSpaceConstraintsForm::AllSpaceConstraintsForm()
 {
@@ -97,6 +107,11 @@ void AllSpaceConstraintsForm::modifyConstraint()
 		 new ModifyConstraintTeacherRequiresRoomForm((ConstraintTeacherRequiresRoom*)ctr);
 		form->exec();
 	}
+	else if(ctr->type==CONSTRAINT_TEACHER_SUBJECT_REQUIRE_ROOM){
+		ModifyConstraintTeacherSubjectRequireRoomForm* form=
+		 new ModifyConstraintTeacherSubjectRequireRoomForm((ConstraintTeacherSubjectRequireRoom*)ctr);
+		form->exec();
+	}
 	else if(ctr->type==CONSTRAINT_ROOM_NOT_AVAILABLE){
 		ModifyConstraintRoomNotAvailableForm* form=
 		 new ModifyConstraintRoomNotAvailableForm((ConstraintRoomNotAvailable*)ctr);
@@ -115,6 +130,11 @@ void AllSpaceConstraintsForm::modifyConstraint()
 	else if(ctr->type==CONSTRAINT_MINIMIZE_NUMBER_OF_ROOMS_FOR_STUDENTS){
 		ModifyConstraintMinimizeNumberOfRoomsForStudentsForm* form=
 		 new ModifyConstraintMinimizeNumberOfRoomsForStudentsForm((ConstraintMinimizeNumberOfRoomsForStudents*)ctr);
+		form->exec();
+	}
+	else if(ctr->type==CONSTRAINT_MINIMIZE_NUMBER_OF_ROOMS_FOR_TEACHERS){
+		ModifyConstraintMinimizeNumberOfRoomsForTeachersForm* form=
+		 new ModifyConstraintMinimizeNumberOfRoomsForTeachersForm((ConstraintMinimizeNumberOfRoomsForTeachers*)ctr);
 		form->exec();
 	}
 	else if(ctr->type==CONSTRAINT_ROOM_TYPE_NOT_ALLOWED_SUBJECTS){
@@ -140,6 +160,46 @@ void AllSpaceConstraintsForm::modifyConstraint()
 	else if(ctr->type==CONSTRAINT_ACTIVITY_PREFERRED_ROOMS){
 		ModifyConstraintActivityPreferredRoomsForm* form=
 		 new ModifyConstraintActivityPreferredRoomsForm((ConstraintActivityPreferredRooms*)ctr);
+		form->exec();
+	}
+	else if(ctr->type==CONSTRAINT_SUBJECT_PREFERRED_ROOM){
+		ModifyConstraintSubjectPreferredRoomForm* form=
+		 new ModifyConstraintSubjectPreferredRoomForm((ConstraintSubjectPreferredRoom*)ctr);
+		form->exec();
+	}
+	else if(ctr->type==CONSTRAINT_SUBJECT_SUBJECT_TAG_PREFERRED_ROOM){
+		ModifyConstraintSubjectSubjectTagPreferredRoomForm* form=
+		 new ModifyConstraintSubjectSubjectTagPreferredRoomForm((ConstraintSubjectSubjectTagPreferredRoom*)ctr);
+		form->exec();
+	}
+	else if(ctr->type==CONSTRAINT_SUBJECT_PREFERRED_ROOMS){
+		ModifyConstraintSubjectPreferredRoomsForm* form=
+		 new ModifyConstraintSubjectPreferredRoomsForm((ConstraintSubjectPreferredRooms*)ctr);
+		form->exec();
+	}
+	else if(ctr->type==CONSTRAINT_SUBJECT_SUBJECT_TAG_PREFERRED_ROOMS){
+		ModifyConstraintSubjectSubjectTagPreferredRoomsForm* form=
+		 new ModifyConstraintSubjectSubjectTagPreferredRoomsForm((ConstraintSubjectSubjectTagPreferredRooms*)ctr);
+		form->exec();
+	}
+	else if(ctr->type==CONSTRAINT_MAX_BUILDING_CHANGES_PER_DAY_FOR_TEACHERS){
+		ModifyConstraintMaxBuildingChangesPerDayForTeachersForm* form=
+		 new ModifyConstraintMaxBuildingChangesPerDayForTeachersForm((ConstraintMaxBuildingChangesPerDayForTeachers*)ctr);
+		form->exec();
+	}
+	else if(ctr->type==CONSTRAINT_MAX_BUILDING_CHANGES_PER_DAY_FOR_STUDENTS){
+		ModifyConstraintMaxBuildingChangesPerDayForStudentsForm* form=
+		 new ModifyConstraintMaxBuildingChangesPerDayForStudentsForm((ConstraintMaxBuildingChangesPerDayForStudents*)ctr);
+		form->exec();
+	}
+	else if(ctr->type==CONSTRAINT_MAX_ROOM_CHANGES_PER_DAY_FOR_TEACHERS){
+		ModifyConstraintMaxRoomChangesPerDayForTeachersForm* form=
+		 new ModifyConstraintMaxRoomChangesPerDayForTeachersForm((ConstraintMaxRoomChangesPerDayForTeachers*)ctr);
+		form->exec();
+	}
+	else if(ctr->type==CONSTRAINT_MAX_ROOM_CHANGES_PER_DAY_FOR_STUDENTS){
+		ModifyConstraintMaxRoomChangesPerDayForStudentsForm* form=
+		 new ModifyConstraintMaxRoomChangesPerDayForStudentsForm((ConstraintMaxRoomChangesPerDayForStudents*)ctr);
 		form->exec();
 	}
 	else{

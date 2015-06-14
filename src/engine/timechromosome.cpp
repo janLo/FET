@@ -375,18 +375,20 @@ void TimeChromosome::getTeachersTimetable(Rules& r, int16 a1[MAX_TEACHERS][MAX_D
 				a1[i][j][k]=a2[i][j][k]=UNALLOCATED_ACTIVITY;
 
 	Activity *act;
-	for(act=r.activitiesList.first(), i=0; act; act=r.activitiesList.next(), i++) if(this->times[i]!=UNALLOCATED_TIME) {
-		int hour=this->times[i]/r.nDaysPerWeek;
-		int day=this->times[i]%r.nDaysPerWeek;
-		for(int dd=0; dd < act->duration && hour+dd < r.nHoursPerDay; dd++)
-			for(int ti=0; ti<act->nTeachers; ti++){
-				int tch = act->teachers[ti]; //teacher index
-				if(a1[tch][day][hour+dd]==UNALLOCATED_ACTIVITY)
-					a1[tch][day][hour+dd]=i;
-				else
-					a2[tch][day][hour+dd]=i;
-			}
-	}
+	for(i=0; i<r.nInternalActivities; i++) 
+		if(this->times[i]!=UNALLOCATED_TIME) {
+			act=&r.internalActivitiesList[i];
+			int hour=this->times[i]/r.nDaysPerWeek;
+			int day=this->times[i]%r.nDaysPerWeek;
+			for(int dd=0; dd < act->duration && hour+dd < r.nHoursPerDay; dd++)
+				for(int ti=0; ti<act->nTeachers; ti++){
+					int tch = act->teachers[ti]; //teacher index
+					if(a1[tch][day][hour+dd]==UNALLOCATED_ACTIVITY)
+						a1[tch][day][hour+dd]=i;
+					else
+						a2[tch][day][hour+dd]=i;
+				}
+		}
 }
 
 void TimeChromosome::getSubgroupsTimetable(Rules& r, int16 a1[MAX_TOTAL_SUBGROUPS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY],int16 a2[MAX_TOTAL_SUBGROUPS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY]){
@@ -402,17 +404,19 @@ void TimeChromosome::getSubgroupsTimetable(Rules& r, int16 a1[MAX_TOTAL_SUBGROUP
 				a1[i][j][k]=a2[i][j][k]=UNALLOCATED_ACTIVITY;
 
 	Activity *act;
-	for(act=r.activitiesList.first(), i=0; act; act=r.activitiesList.next(), i++) if(this->times[i]!=UNALLOCATED_TIME) {
-		int hour=this->times[i]/r.nDaysPerWeek;
-		int day=this->times[i]%r.nDaysPerWeek;
-		for(int dd=0; dd < act->duration && hour+dd < r.nHoursPerDay; dd++){
-			for(int isg=0; isg < act->nSubgroups; isg++){ //isg -> index subgroup
-				int sg = act->subgroups[isg]; //sg -> subgroup
-				if(a1[sg][day][hour+dd]==UNALLOCATED_ACTIVITY)
-					a1[sg][day][hour+dd]=i;
-				else
-					a2[sg][day][hour+dd]=i;
+	for(i=0; i<r.nInternalActivities; i++)
+		if(this->times[i]!=UNALLOCATED_TIME) {
+			act=&r.internalActivitiesList[i];
+			int hour=this->times[i]/r.nDaysPerWeek;
+			int day=this->times[i]%r.nDaysPerWeek;
+			for(int dd=0; dd < act->duration && hour+dd < r.nHoursPerDay; dd++){
+				for(int isg=0; isg < act->nSubgroups; isg++){ //isg -> index subgroup
+					int sg = act->subgroups[isg]; //sg -> subgroup
+					if(a1[sg][day][hour+dd]==UNALLOCATED_ACTIVITY)
+						a1[sg][day][hour+dd]=i;
+					else
+						a2[sg][day][hour+dd]=i;
+				}
 			}
 		}
-	}
 }

@@ -220,6 +220,13 @@ int TimeSpaceChromosome::hardFitness(Rules& r, QString* conflictsString){
 	for(int i=0; i<r.nInternalActivities; i++)
 		if(r.fixedRoom[i]>=0)
 			this->rooms[i]=r.fixedRoom[i];
+			
+	for(int i=0; i<r.nInternalActivities; i++)
+		if(r.sameRoom[i]>=0 && this->rooms[r.sameRoom[i]]!=UNALLOCATED_SPACE){
+			this->rooms[i]=this->rooms[r.sameRoom[i]];
+			if(r.fixedRoom[i]>=0)
+				assert(r.fixedRoom[i]==this->rooms[i]);
+		}
 	
 	this->_hardFitness=0;
 	//here we must not have compulsory activity preferred time nor 
@@ -453,7 +460,8 @@ void TimeSpaceChromosome::getTeachersTimetable(Rules& r, int16 a1[MAX_TEACHERS][
 				a1[i][j][k]=a2[i][j][k]=UNALLOCATED_ACTIVITY;
 
 	Activity *act;
-	for(act=r.activitiesList.first(), i=0; act; act=r.activitiesList.next(), i++) if(this->times[i]!=UNALLOCATED_TIME) {
+	for(i=0; i<r.nInternalActivities; i++) if(this->times[i]!=UNALLOCATED_TIME) {
+		act=&r.internalActivitiesList[i];
 		int hour=this->times[i]/r.nDaysPerWeek;
 		int day=this->times[i]%r.nDaysPerWeek;
 		for(int dd=0; dd < act->duration && hour+dd < r.nHoursPerDay; dd++)
@@ -480,7 +488,8 @@ void TimeSpaceChromosome::getSubgroupsTimetable(Rules& r, int16 a1[MAX_TOTAL_SUB
 				a1[i][j][k]=a2[i][j][k]=UNALLOCATED_ACTIVITY;
 
 	Activity *act;
-	for(act=r.activitiesList.first(), i=0; act; act=r.activitiesList.next(), i++) if(this->times[i]!=UNALLOCATED_TIME) {
+	for(i=0; i<r.nInternalActivities; i++) if(this->times[i]!=UNALLOCATED_TIME) {
+		act=&r.internalActivitiesList[i];
 		int hour=this->times[i]/r.nDaysPerWeek;
 		int day=this->times[i]%r.nDaysPerWeek;
 		for(int dd=0; dd < act->duration && hour+dd < r.nHoursPerDay; dd++){
@@ -568,7 +577,8 @@ void TimeSpaceChromosome::getRoomsTimetable(Rules& r,int16 a1[MAX_ROOMS][MAX_DAY
 				a1[i][j][k]=a2[i][j][k]=UNALLOCATED_ACTIVITY;
 
 	Activity *act;
-	for(act=r.activitiesList.first(), i=0; act; act=r.activitiesList.next(), i++){
+	for(i=0; i<r.nInternalActivities; i++){
+		act=&r.internalActivitiesList[i];
 		int room=this->rooms[i];
 		int day=days[i];
 		int hour=hours[i];

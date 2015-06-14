@@ -33,7 +33,7 @@ ModifyConstraintRoomNotAvailableForm::ModifyConstraintRoomNotAvailableForm(Const
 	updateRoomsComboBox();
 
 	startHourComboBox->clear();
-	for(int i=0; i<=gt.rules.nHoursPerDay; i++)
+	for(int i=0; i<gt.rules.nHoursPerDay; i++)
 		startHourComboBox->insertItem(gt.rules.hoursOfTheDay[i]);
 	startHourComboBox->setCurrentItem(ctr->h1);
 

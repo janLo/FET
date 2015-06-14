@@ -42,6 +42,11 @@ ActivitiesForm::ActivitiesForm()
 		subjectsComboBox->insertItem(sb->name);
 	subjectsComboBox->setCurrentItem(0);
 
+	subjectTagsComboBox->insertItem("");
+	for(SubjectTag* st=gt.rules.subjectTagsList.first(); st; st=gt.rules.subjectTagsList.next())
+		subjectTagsComboBox->insertItem(st->name);
+	subjectTagsComboBox->setCurrentItem(0);
+
 	studentsComboBox->insertItem("");
 	for(StudentsYear* sty=gt.rules.yearsList.first(); sty; sty=gt.rules.yearsList.next()){
 		studentsComboBox->insertItem(sty->name);
@@ -65,6 +70,7 @@ bool ActivitiesForm::filterOk(Activity* act)
 	QString tn=teachersComboBox->currentText();
 	QString stn=studentsComboBox->currentText();
 	QString sbn=subjectsComboBox->currentText();
+	QString sbtn=subjectTagsComboBox->currentText();
 	int ok=true;
 
 	//teacher
@@ -81,6 +87,10 @@ bool ActivitiesForm::filterOk(Activity* act)
 
 	//subject
 	if(sbn!="" && sbn!=act->subjectName)
+		ok=false;
+		
+	//subject tag
+	if(sbtn!="" && sbtn!=act->subjectTagName)
 		ok=false;
 		
 	//students
@@ -173,6 +183,20 @@ void ActivitiesForm::modifyActivity()
 	Activity* act=visibleActivitiesList.at(ind);
 	assert(act!=NULL);
 	
+	if(act->isSplit()){
+		int nSplit=0;
+		for(Activity* act2=gt.rules.activitiesList.first(); act2; act2=gt.rules.activitiesList.next()){
+			if(act2->activityGroupId==act->activityGroupId)
+				nSplit++;
+			if(nSplit>8){
+				QMessageBox::warning(this, QObject::tr("FET information"),
+					QObject::tr("Cannot modify this activity, because it contains more than 8 subactivities.\n"
+					"If you really need that, please talk to the author\n"));
+				return;
+			}
+		}
+	}
+	
 	ModifyActivityForm* modifyActivityForm=new ModifyActivityForm(act->id, act->activityGroupId);
 	modifyActivityForm->exec();
 
@@ -192,6 +216,6 @@ void ActivitiesForm::activityChanged(int index)
 	Activity* act=visibleActivitiesList.at(index);
 
 	assert(act!=NULL);
-	s=act->getDetailedDescription(gt.rules);
+	s=act->getDetailedDescriptionWithConstraints(gt.rules);
 	currentActivityTextEdit->setText(s);
 }

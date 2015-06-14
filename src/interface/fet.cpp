@@ -97,7 +97,7 @@ int16 students_timetable_week2[MAX_TOTAL_SUBGROUPS][MAX_DAYS_PER_WEEK][MAX_HOURS
 int16 rooms_timetable_week1[MAX_ROOMS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
 int16 rooms_timetable_week2[MAX_ROOMS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
 
-QApplication *pqapplication=NULL;
+QApplication* pqapplication=NULL;
 
 static int fetch_line(ifstream& in, char *s){
 	for(;;){
@@ -215,7 +215,9 @@ void readSimulationParameters(){
 		sscanf(s, "%s", ss);
 		FET_LANGUAGE=ss;
 		cout<<"Read: language="<<FET_LANGUAGE<<endl;
-		if(FET_LANGUAGE!="EN" && FET_LANGUAGE!="FR" && FET_LANGUAGE!="RO" && FET_LANGUAGE!="CA"){
+		if(FET_LANGUAGE!="EN" && FET_LANGUAGE!="FR" 
+		 && FET_LANGUAGE!="RO" && FET_LANGUAGE!="CA" 
+		 && FET_LANGUAGE!="MY" && FET_LANGUAGE!="PL"){
 			cout<<"Invalid language - making it english"<<endl;
 			FET_LANGUAGE="EN";
 		}

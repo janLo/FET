@@ -42,7 +42,8 @@ Activity::Activity(
 	const QStringList& _studentsNames,
 	int _duration,
 	int _totalDuration,
-	int _parity)
+	int _parity,
+	bool _active)
 {
 	this->id=_id;
 	this->activityGroupId=_activityGroupId;
@@ -53,6 +54,7 @@ Activity::Activity(
 	this->duration=_duration;
 	this->totalDuration=_totalDuration;
 	this->parity=_parity;
+	this->active=_active;
 
 	this->nTotalStudents=0;
 	for(QStringList::Iterator it=this->studentsNames.begin(); it!=this->studentsNames.end(); it++){
@@ -78,6 +80,11 @@ bool Activity::operator==(Activity& a)
 	return true;
 }
 
+bool Activity::searchTeacher(const QString& teacherName)
+{
+	return this->teachersNames.find(teacherName)!=this->teachersNames.end();
+}
+
 void Activity::removeTeacher(const QString& teacherName)
 {
 	this->teachersNames.remove(teacherName);
@@ -92,6 +99,11 @@ void Activity::renameTeacher(const QString& initialTeacherName, const QString& f
 			t++;
 		}
 	assert(t<=1);
+}
+
+bool Activity::searchStudents(const QString& studentsName)
+{
+	return this->studentsNames.find(studentsName)!=this->studentsNames.end();
 }
 
 void Activity::removeStudents(const QString& studentsName)
@@ -130,6 +142,9 @@ void Activity::computeInternalStructure(Rules& r)
 	//subjects
 	this->subjectIndex = r.searchSubject(this->subjectName);
 	assert(this->subjectIndex>=0);
+
+	//subject tags
+	this->subjectTagIndex = r.searchSubjectTag(this->subjectTagName);
 
 	//students	
 	this->nSubgroups=0;
@@ -213,16 +228,16 @@ void Activity::computeInternalStructure(Rules& r)
 	}
 }
 
-QString Activity::getXMLDescription(Rules& r)
+QString Activity::getXmlDescription(Rules& r)
 {
 	if(&r==NULL){
 	}
 
 	QString s="<Activity>\n";
 	for(QStringList::Iterator it=this->teachersNames.begin(); it!=this->teachersNames.end(); it++)
-		s+="	<Teacher>" + (*it) + "</Teacher>\n";
-	s+="	<Subject>"+this->subjectName+"</Subject>\n";
-	s+="	<Subject_Tag>"+this->subjectTagName+"</Subject_Tag>\n";
+		s+="	<Teacher>" + protect(*it) + "</Teacher>\n";
+	s+="	<Subject>"+protect(this->subjectName)+"</Subject>\n";
+	s+="	<Subject_Tag>"+protect(this->subjectTagName)+"</Subject_Tag>\n";
 
 	s+="	<Duration>"+QString::number(this->duration)+"</Duration>\n";
 	s+="	<Total_Duration>"+QString::number(this->totalDuration)+"</Total_Duration>\n";
@@ -234,8 +249,12 @@ QString Activity::getXMLDescription(Rules& r)
 		assert(this->parity==PARITY_BIWEEKLY);
 		s+="	<Biweekly></Biweekly>\n";
 	}
+	if(this->active==true)
+		s+="	<Active>yes</Active>\n";
+	else
+		s+="	<Active>no</Active>\n";
 	for(QStringList::Iterator it=this->studentsNames.begin(); it!=this->studentsNames.end(); it++)
-		s+="	<Students>" + (*it) + "</Students>\n";
+		s+="	<Students>" + protect(*it) + "</Students>\n";
 
 	s+="</Activity>";
 
@@ -271,7 +290,12 @@ QString Activity::getDescription(Rules& r)
 		s += QObject::tr("TD:") + QString::number(this->totalDuration) + ", ";
 
 	if(this->parity==PARITY_BIWEEKLY)
-		s+=QObject::tr("Bi-weekly");
+		s+=QObject::tr("Bi-weekly, ");
+		
+	if(this->active==true)
+		s+=QObject::tr("A: yes");
+	else
+		s+=QObject::tr("A: no");
 
 	return s;
 }
@@ -304,6 +328,11 @@ QString Activity::getDetailedDescription(Rules &r)
 	else
 		s+=QObject::tr("Weekly activity\n");
 		
+	if(this->active==true)
+		s+=QObject::tr("Active: yes\n");
+	else
+		s+=QObject::tr("Active: no\n");
+		
 	int nStud=0;
 	for(QStringList::Iterator it=this->studentsNames.begin(); it!=this->studentsNames.end(); it++){
 		StudentsSet* ss=r.searchStudentsSet(*it);
@@ -311,6 +340,34 @@ QString Activity::getDetailedDescription(Rules &r)
 	}
 	s+=QObject::tr("Total number of students=%1").arg(this->nTotalStudents);
 	s+="\n";
+
+	return s;
+}
+
+QString Activity::getDetailedDescriptionWithConstraints(Rules &r)
+{
+	QString s=this->getDetailedDescription(r);
+
+	s+="--------------------------------------------------\n";
+	s+=QObject::tr("Time constraints directly related to this activity:");
+	s+="\n";
+	for(TimeConstraint* c=r.timeConstraintsList.first(); c; c=r.timeConstraintsList.next()){
+		if(c->isRelatedToActivity(this)){
+			s+="\n";
+			s+=c->getDetailedDescription(r);
+		}
+	}
+
+	s+="--------------------------------------------------\n";
+	s+=QObject::tr("Space constraints directly related to this activity:");
+	s+="\n";
+	for(SpaceConstraint* c=r.spaceConstraintsList.first(); c; c=r.spaceConstraintsList.next()){
+		if(c->isRelatedToActivity(this)){
+			s+="\n";
+			s+=c->getDetailedDescription(r);
+		}
+	}
+	s+="--------------------------------------------------\n";
 
 	return s;
 }

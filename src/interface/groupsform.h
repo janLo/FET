@@ -27,6 +27,9 @@ public:
 	void sortGroups();
 	void yearChanged(const QString &yearName);
 	void groupChanged(const QString &groupName);
+	
+	void activateStudents();
+	void deactivateStudents();
 };
 
 #endif

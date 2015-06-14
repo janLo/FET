@@ -18,9 +18,25 @@
 #include "addroomform.h"
 
 #include <qlineedit.h>
+#include <qcombobox.h>
 
 AddRoomForm::AddRoomForm()
 {
+	typesComboBox->clear();
+	typesComboBox->setDuplicatesEnabled(false);
+	for(Room* rm=gt.rules.roomsList.first(); rm; rm=gt.rules.roomsList.next()){
+		int i;
+		for(i=0; i<typesComboBox->count(); i++)
+			if(typesComboBox->text(i)==rm->type)
+				break;
+		if(i==typesComboBox->count())
+			typesComboBox->insertItem(rm->type);
+	}
+
+	buildingsComboBox->clear();
+	buildingsComboBox->insertItem("");
+	for(Building* bu=gt.rules.buildingsList.first(); bu; bu=gt.rules.buildingsList.next())
+		buildingsComboBox->insertItem(bu->name);
 }
 
 AddRoomForm::~AddRoomForm()
@@ -33,13 +49,18 @@ void AddRoomForm::addRoom()
 		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Incorrect name"));
 		return;
 	}
-	if(typeLineEdit->text().isEmpty()){
+	if(typesComboBox->currentText().isEmpty()){
 		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Incorrect type"));
+		return;
+	}
+	if(buildingsComboBox->currentItem()<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Incorrect building"));
 		return;
 	}
 	Room* rm=new Room();
 	rm->name=nameLineEdit->text();
-	rm->type=typeLineEdit->text();
+	rm->type=typesComboBox->currentText();
+	rm->building=buildingsComboBox->currentText();
 	rm->capacity=capacitySpinBox->value();
 	if(!gt.rules.addRoom(rm)){
 		QMessageBox::information(this, QObject::tr("Room insertion dialog"),
@@ -49,6 +70,8 @@ void AddRoomForm::addRoom()
 	else{
 		QMessageBox::information(this, QObject::tr("Room insertion dialog"),
 			QObject::tr("Room added"));
+			
+		typesComboBox->insertItem(rm->type);
 	}
 
 	nameLineEdit->selectAll();

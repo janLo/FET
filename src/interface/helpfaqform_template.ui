@@ -309,7 +309,10 @@ A: It will slow down the automatic allocation, so please don't.
 Q: What about the one phase and 2 phases automatic allocation?
 A: If FET fails to solve your timetable in 2 phases (it has many broken space constraints), try a single phase allocation
 	
-	-&gt; added - 14 February 2005.</string>
+	-&gt; added - 14 February 2005.
+
+
+this documentation by Liviu Lalescu</string>
             </property>
         </widget>
     </grid>

@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>343</width>
-            <height>228</height>
+            <width>380</width>
+            <height>363</height>
         </rect>
     </property>
     <property name="caption">
@@ -19,11 +19,6 @@
         <property name="name">
             <cstring>unnamed</cstring>
         </property>
-        <widget class="QLineEdit" row="1" column="1" rowspan="1" colspan="3">
-            <property name="name">
-                <cstring>typeLineEdit</cstring>
-            </property>
-        </widget>
         <widget class="QLabel" row="0" column="0">
             <property name="name">
                 <cstring>nameTextLabel</cstring>
@@ -40,7 +35,15 @@
                 <string>Type</string>
             </property>
         </widget>
-        <widget class="QLabel" row="2" column="0" rowspan="1" colspan="2">
+        <widget class="QPushButton" row="4" column="0" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>okPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Ok</string>
+            </property>
+        </widget>
+        <widget class="QLabel" row="3" column="0" rowspan="1" colspan="2">
             <property name="name">
                 <cstring>capacityTextLabel</cstring>
             </property>
@@ -48,12 +51,15 @@
                 <string>Capacity</string>
             </property>
         </widget>
-        <widget class="QLineEdit" row="0" column="1" rowspan="1" colspan="3">
+        <widget class="QPushButton" row="4" column="2">
             <property name="name">
-                <cstring>nameLineEdit</cstring>
+                <cstring>cancelPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Cancel</string>
             </property>
         </widget>
-        <widget class="QSpinBox" row="2" column="2">
+        <widget class="QSpinBox" row="3" column="2">
             <property name="name">
                 <cstring>capacitySpinBox</cstring>
             </property>
@@ -67,20 +73,30 @@
                 <number>1000</number>
             </property>
         </widget>
-        <widget class="QPushButton" row="3" column="0" rowspan="1" colspan="3">
+        <widget class="QLabel" row="2" column="0">
             <property name="name">
-                <cstring>okPushButton</cstring>
+                <cstring>buildingTextLabel</cstring>
             </property>
             <property name="text">
-                <string>Ok</string>
+                <string>Building</string>
             </property>
         </widget>
-        <widget class="QPushButton" row="3" column="3">
+        <widget class="QComboBox" row="2" column="1" rowspan="1" colspan="2">
             <property name="name">
-                <cstring>cancelPushButton</cstring>
+                <cstring>buildingsComboBox</cstring>
             </property>
-            <property name="text">
-                <string>Cancel</string>
+        </widget>
+        <widget class="QComboBox" row="1" column="1" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>typesComboBox</cstring>
+            </property>
+            <property name="editable">
+                <bool>true</bool>
+            </property>
+        </widget>
+        <widget class="QLineEdit" row="0" column="1" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>nameLineEdit</cstring>
             </property>
         </widget>
     </grid>
@@ -101,7 +117,6 @@
 </connections>
 <tabstops>
     <tabstop>nameLineEdit</tabstop>
-    <tabstop>typeLineEdit</tabstop>
     <tabstop>capacitySpinBox</tabstop>
     <tabstop>okPushButton</tabstop>
     <tabstop>cancelPushButton</tabstop>

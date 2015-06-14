@@ -19,6 +19,7 @@
 #include <qptrlist.h>
 
 class Teacher;
+class Rules;
 
 class TeachersList: public QPtrList<Teacher>
 {
@@ -36,7 +37,9 @@ public:
 	Teacher();
 	~Teacher();
 
-	QString getXMLDescription();
+	QString getXmlDescription();
+	QString getDetailedDescription();
+	QString getDetailedDescriptionWithConstraints(Rules& r);
 };
 
 #endif

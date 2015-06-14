@@ -44,10 +44,12 @@ void AddConstraintActivityPreferredTimeForm::updateActivitiesComboBox(){
 
 void AddConstraintActivityPreferredTimeForm::updatePeriodGroupBox(){
 	startHourComboBox->clear();
-	for(int i=0; i<=gt.rules.nHoursPerDay; i++)
+	startHourComboBox->insertItem(QObject::tr("Any"));
+	for(int i=0; i<gt.rules.nHoursPerDay; i++)
 		startHourComboBox->insertItem(gt.rules.hoursOfTheDay[i]);
 
 	dayComboBox->clear();
+	dayComboBox->insertItem(QObject::tr("Any"));
 	for(int i=0; i<gt.rules.nDaysPerWeek; i++)
 		dayComboBox->insertItem(gt.rules.daysOfTheWeek[i]);
 }
@@ -134,6 +136,12 @@ void AddConstraintActivityPreferredTimeForm::addCurrentConstraint()
 		return;
 	}
 
+	if(startHour==0 && day==0){
+		QMessageBox::warning(this, QObject::tr("FET information"),
+			QObject::tr("Please specify at least a day or an hour"));
+		return;
+	}
+
 	int id;
 	int tmp2=activitiesComboBox->currentItem();
 	if(tmp2<0 || (uint)(tmp2)>=gt.rules.activitiesList.count()){
@@ -144,7 +152,7 @@ void AddConstraintActivityPreferredTimeForm::addCurrentConstraint()
 	else
 		id=gt.rules.activitiesList.at(tmp2)->id;
 	
-	ctr=new ConstraintActivityPreferredTime(weight, compulsory, id, day, startHour);
+	ctr=new ConstraintActivityPreferredTime(weight, compulsory, id, day-1, startHour-1);
 
 	bool tmp3=gt.rules.addTimeConstraint(ctr);
 	if(tmp3)

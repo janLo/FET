@@ -41,23 +41,28 @@ public:
 	AddActivityForm();
 	~AddActivityForm();
 
-	void updateStudentsComboBox();
-	void updateTeachersComboBox();
+	void updateStudentsListBox();
+	void updateTeachersListBox();
 	void updateSubjectsComboBox();
 	void updateSubjectTagsComboBox();
 	void updatePreferredDaysComboBox();
 	void updatePreferredHoursComboBox();
 
-	void teacherChanged(const QString& dummy);
+	void addTeacher();
+	void removeTeacher();
+	void addStudents();
+	void removeStudents();
 	void subjectChanged(const QString& dummy);
 	void subjectTagChanged(const QString& dummy);
-	void studentsChanged(const QString& dummy);
 	void hourChanged();
 	void dayChanged();
 	void parityChanged();
 	void durationChanged();
 	void activityChanged();
 	void splitChanged();
+	
+	void clearTeachers();
+	void clearStudents();
 	
 	void showYearsChanged();
 	void showGroupsChanged();

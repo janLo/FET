@@ -22,6 +22,7 @@
 
 #include <qlistbox.h>
 #include <qinputdialog.h>
+#include <qtextedit.h>
 
 SubjectTagsForm::SubjectTagsForm()
  : SubjectTagsForm_template()
@@ -29,6 +30,11 @@ SubjectTagsForm::SubjectTagsForm()
 	subjectTagsListBox->clear();
 	for(SubjectTag* sbt=gt.rules.subjectTagsList.first(); sbt; sbt=gt.rules.subjectTagsList.next())
 		subjectTagsListBox->insertItem(sbt->name);
+		
+	if(subjectTagsListBox->count()>0){
+		subjectTagsListBox->setCurrentItem(0);
+		this->subjectTagChanged(0);
+	}
 }
 
 
@@ -52,6 +58,8 @@ void SubjectTagsForm::addSubjectTag()
 		}
 		else{
 			subjectTagsListBox->insertItem(sbt->name);
+			subjectTagsListBox->setCurrentItem(subjectTagsListBox->count()-1);
+			this->subjectTagChanged(subjectTagsListBox->count()-1);
 		}
 	}
 	else
@@ -60,6 +68,7 @@ void SubjectTagsForm::addSubjectTag()
 
 void SubjectTagsForm::removeSubjectTag()
 {
+	int i=subjectTagsListBox->currentItem();
 	if(subjectTagsListBox->currentItem()<0){
 		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected subject tag"));
 		return;
@@ -78,13 +87,18 @@ void SubjectTagsForm::removeSubjectTag()
 		return;
 
 	int tmp=gt.rules.removeSubjectTag(text);
-	if(tmp)
+	if(tmp){
 		subjectTagsListBox->removeItem(subjectTagsListBox->currentItem());
-	this->show();
+		if((uint)(i)>=subjectTagsListBox->count())
+			i=subjectTagsListBox->count()-1;
+		subjectTagsListBox->setCurrentItem(i);
+		this->subjectTagChanged(i);
+	}
 }
 
 void SubjectTagsForm::renameSubjectTag()
 {
+	int i=subjectTagsListBox->currentItem();
 	if(subjectTagsListBox->currentItem()<0){
 		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected subject tag"));
 		return;
@@ -101,7 +115,7 @@ void SubjectTagsForm::renameSubjectTag()
 	bool ok = FALSE;
 	QString finalSubjectTagName;
 	finalSubjectTagName = QInputDialog::getText( QObject::tr("User input"), QObject::tr("Please enter new subject tag's name") ,
-                    QLineEdit::Normal, QString::null, &ok, this );
+                    QLineEdit::Normal, initialSubjectTagName, &ok, this );
 
 	if ( ok && !(finalSubjectTagName.isEmpty()) ){
 		// user entered something and pressed OK
@@ -111,12 +125,9 @@ void SubjectTagsForm::renameSubjectTag()
 		}
 		else{
 			gt.rules.modifySubjectTag(initialSubjectTagName, finalSubjectTagName);
+			subjectTagsListBox->changeItem(finalSubjectTagName, i);
 		}
 	}
-
-	subjectTagsListBox->clear();
-	for(SubjectTag* sbt=gt.rules.subjectTagsList.first(); sbt; sbt=gt.rules.subjectTagsList.next())
-		subjectTagsListBox->insertItem(sbt->name);	
 }
 
 void SubjectTagsForm::sortSubjectTags()
@@ -126,4 +137,41 @@ void SubjectTagsForm::sortSubjectTags()
 	subjectTagsListBox->clear();
 	for(SubjectTag* sbt=gt.rules.subjectTagsList.first(); sbt; sbt=gt.rules.subjectTagsList.next())
 		subjectTagsListBox->insertItem(sbt->name);	
+}
+
+void SubjectTagsForm::subjectTagChanged(int index)
+{
+	if(index<0){
+		currentSubjectTagTextEdit->setText(QObject::tr("Invalid subject tag"));
+		return;
+	}
+	
+	SubjectTag* st=gt.rules.subjectTagsList.at(index);
+	assert(st);
+	QString s=st->getDetailedDescriptionWithConstraints(gt.rules);
+	currentSubjectTagTextEdit->setText(s);
+}
+
+void SubjectTagsForm::activateSubjectTag()
+{
+	if(subjectTagsListBox->currentItem()<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected subject tag"));
+		return;
+	}
+
+	QString text=subjectTagsListBox->currentText();
+	int count=gt.rules.activateSubjectTag(text);
+	QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Activated a number of %1 activities").arg(count));
+}
+
+void SubjectTagsForm::deactivateSubjectTag()
+{
+	if(subjectTagsListBox->currentItem()<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected subject tag"));
+		return;
+	}
+
+	QString text=subjectTagsListBox->currentText();
+	int count=gt.rules.deactivateSubjectTag(text);
+	QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("De-activated a number of %1 activities").arg(count));
 }

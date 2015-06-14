@@ -110,7 +110,7 @@ void GroupsForm::groupChanged(const QString &groupName)
 	if(ss==NULL)
 		return;
 	StudentsGroup* sg=(StudentsGroup*)ss;
-	groupTextEdit->setText(sg->getDetailedDescription());
+	groupTextEdit->setText(sg->getDetailedDescriptionWithConstraints(gt.rules));
 }
 
 void GroupsForm::sortGroups()
@@ -157,4 +157,42 @@ void GroupsForm::modifyGroup()
 	yearChanged(yearsListBox->currentText());
 	
 	groupsListBox->setCurrentItem(ci);
+}
+
+void GroupsForm::activateStudents()
+{
+	if(yearsListBox->currentItem()<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected year"));
+		return;
+	}
+	int yearIndex=gt.rules.searchYear(yearsListBox->currentText());
+	assert(yearIndex>=0);
+
+	if(groupsListBox->currentItem()<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected group"));
+		return;
+	}
+
+	QString groupName=groupsListBox->currentText();
+	int count=gt.rules.activateStudents(groupName);
+	QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Activated a number of %1 activities").arg(count));
+}
+
+void GroupsForm::deactivateStudents()
+{
+	if(yearsListBox->currentItem()<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected year"));
+		return;
+	}
+	int yearIndex=gt.rules.searchYear(yearsListBox->currentText());
+	assert(yearIndex>=0);
+
+	if(groupsListBox->currentItem()<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected group"));
+		return;
+	}
+
+	QString groupName=groupsListBox->currentText();
+	int count=gt.rules.deactivateStudents(groupName);
+	QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("De-activated a number of %1 activities").arg(count));
 }

@@ -37,15 +37,18 @@
 #include <qstring.h>
 
 
-extern bool students_schedule_ready2, teachers_schedule_ready2, rooms_schedule_ready2;
+extern bool students_schedule_ready2;
+extern bool teachers_schedule_ready2;
+extern bool rooms_schedule_ready2;
 
 extern GeneticTimetable gt;
 
+extern bool simulation_running;
+
+extern TimeSpaceChromosome best_time_space_chromosome;
 
 TimetableViewStudentsWithRooms2Form::TimetableViewStudentsWithRooms2Form()
 {
-	assert(gt.rules.internalStructureComputed);
-
 	yearsListBox->clear();
 	for(StudentsYear* sty=gt.rules.yearsList.first(); sty; sty=gt.rules.yearsList.next())
 		yearsListBox->insertItem(sty->name);
@@ -137,7 +140,7 @@ void TimetableViewStudentsWithRooms2Form::updateStudentsTimetableTable(){
 		studentsTimetableTable->setText(i+1, 0, gt.rules.hoursOfTheDay[i]);
 		
 	assert(rooms_schedule_ready2);
-	SpaceChromosome* c=(SpaceChromosome*)(&gt.timeSpacePopulation.bestChromosome(gt.rules));
+	SpaceChromosome* c=(SpaceChromosome*)(&best_time_space_chromosome);
 
 	StudentsSubgroup* sts=(StudentsSubgroup*)gt.rules.searchStudentsSet(subgroupname);
 	assert(sts);
@@ -150,33 +153,41 @@ void TimetableViewStudentsWithRooms2Form::updateStudentsTimetableTable(){
 		for(int k=0; k<gt.rules.nDaysPerWeek; k++){
 			s="";
 			int ai=students_timetable_week1[i][k][j]; //activity index
-			Activity* act=gt.rules.activitiesList.at(ai);
+			//Activity* act=gt.rules.activitiesList.at(ai);
 			if(ai!=UNALLOCATED_ACTIVITY){
+				Activity* act=&gt.rules.internalActivitiesList[ai];
 				assert(act!=NULL);
+				for(QStringList::Iterator it=act->teachersNames.begin(); it!=act->teachersNames.end(); it++)
+					s+=*it + " ";
+				s+="\n";
+					
 				s+=act->subjectName + " " + act->subjectTagName;
-				
 				s+="\n";
 				int ri=c->rooms[ai]; //room index;
 				QString roomName;
 				if(ri==UNALLOCATED_SPACE)
 					roomName="UNALLOCATED_SPACE";
 				else
-					roomName=gt.rules.roomsList.at(ri)->name;
+					roomName=gt.rules.internalRoomsList[ri]->name;
 				s+=roomName;
 			}
 			ai=students_timetable_week2[i][k][j]; //activity index
-			act=gt.rules.activitiesList.at(ai);
+			//act=gt.rules.activitiesList.at(ai);
 			if(ai!=UNALLOCATED_ACTIVITY){
+				Activity* act=&gt.rules.internalActivitiesList[ai];
 				assert(act!=NULL);
-				s += "\n/\n" + act->subjectName + " " + act->subjectTagName;
-
+				s += "\n/\n";
+				for(QStringList::Iterator it=act->teachersNames.begin(); it!=act->teachersNames.end(); it++)
+					s+=*it + " ";
+				s+="\n";				
+				s+=act->subjectName + " " + act->subjectTagName;
 				s+="\n";
 				int ri=c->rooms[ai]; //room index;
 				QString roomName;
 				if(ri==UNALLOCATED_SPACE)
 					roomName="UNALLOCATED_SPACE";
 				else
-					roomName=gt.rules.roomsList.at(ri)->name;
+					roomName=gt.rules.internalRoomsList[ri]->name;
 				s+=roomName;
 			}
 			studentsTimetableTable->setText(j+1, k+1, s);
@@ -207,7 +218,7 @@ void TimetableViewStudentsWithRooms2Form::detailActivity(int row, int col)
 	subgroupname = subgroupsListBox->currentText();
 
 	assert(rooms_schedule_ready2);
-	SpaceChromosome* c=(SpaceChromosome*)(&gt.timeSpacePopulation.bestChromosome(gt.rules));
+	SpaceChromosome* c=(SpaceChromosome*)(&best_time_space_chromosome);
 
 	StudentsSubgroup* sts=(StudentsSubgroup*)gt.rules.searchStudentsSet(subgroupname);
 	assert(sts);
@@ -221,36 +232,169 @@ void TimetableViewStudentsWithRooms2Form::detailActivity(int row, int col)
 	s="";
 	if(j>=0 && k>=0){
 		int ai=students_timetable_week1[i][k][j]; //activity index
-		Activity* act=gt.rules.activitiesList.at(ai);
+		//Activity* act=gt.rules.activitiesList.at(ai);
 		if(ai!=UNALLOCATED_ACTIVITY){
+			Activity* act=&gt.rules.internalActivitiesList[ai];
 			assert(act!=NULL);
-			s+=act->getDetailedDescription(gt.rules);
+			s+=act->getDetailedDescriptionWithConstraints(gt.rules);
 
 			int ri=c->rooms[ai]; //room index;
 			QString roomName;
 			if(ri==UNALLOCATED_SPACE)
 				roomName="UNALLOCATED_SPACE";
 			else
-				roomName=gt.rules.roomsList.at(ri)->name;
+				roomName=gt.rules.internalRoomsList[ri]->name;
 			s+=QObject::tr("Room=%1").arg(roomName);
 			s+="\n";
 		}
 		ai=students_timetable_week2[i][k][j]; //activity index
-		act=gt.rules.activitiesList.at(ai);
+		//act=gt.rules.activitiesList.at(ai);
 		if(ai!=UNALLOCATED_ACTIVITY){
+			Activity* act=&gt.rules.internalActivitiesList[ai];
 			assert(act!=NULL);
 			s+="/\n";
-			s+=act->getDetailedDescription(gt.rules);
+			s+=act->getDetailedDescriptionWithConstraints(gt.rules);
 
 			int ri=c->rooms[ai]; //room index;
 			QString roomName;
 			if(ri==UNALLOCATED_SPACE)
 				roomName="UNALLOCATED_SPACE";
 			else
-				roomName=gt.rules.roomsList.at(ri)->name;
+				roomName=gt.rules.internalRoomsList[ri]->name;
 			s+=QObject::tr("Room=%1").arg(roomName);
 			s+="\n";
 		}
 	}
 	detailsTextEdit->setText(s);
+}
+
+void TimetableViewStudentsWithRooms2Form::lockTime()
+{
+	this->lock(true, false);
+}
+
+void TimetableViewStudentsWithRooms2Form::lockSpace()
+{
+	this->lock(false, true);
+}
+
+void TimetableViewStudentsWithRooms2Form::lock()
+{
+	this->lock(true, true);
+}
+
+void TimetableViewStudentsWithRooms2Form::lock(bool lockTime, bool lockSpace)
+{
+	if(simulation_running){
+		QMessageBox::information(this, QObject::tr("FET information"),
+			QObject::tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	//find subgroup index
+	assert(students_schedule_ready2 && teachers_schedule_ready2 && rooms_schedule_ready2);
+
+	QString yearname;
+	QString groupname;
+	QString subgroupname;
+
+	if(yearsListBox->currentText()==NULL)
+		return;
+	if(groupsListBox->currentText()==NULL)
+		return;
+	if(subgroupsListBox->currentText()==NULL)
+		return;
+
+	yearname = yearsListBox->currentText();
+	groupname = groupsListBox->currentText();
+	subgroupname = subgroupsListBox->currentText();
+
+	assert(rooms_schedule_ready2);
+	SpaceChromosome* c=(SpaceChromosome*)(&best_time_space_chromosome);
+	TimeChromosome* tc=(TimeChromosome*)(&best_time_space_chromosome);
+
+	StudentsSubgroup* sts=(StudentsSubgroup*)gt.rules.searchStudentsSet(subgroupname);
+	assert(sts);
+	int i;
+	for(i=0; i<gt.rules.nInternalSubgroups; i++)
+		if(gt.rules.internalSubgroupsList[i]==sts)
+			break;
+	assert(i<gt.rules.nInternalSubgroups);
+
+	//lock selected activities
+	for(int j=0; j<gt.rules.nHoursPerDay; j++){
+		for(int k=0; k<gt.rules.nDaysPerWeek; k++){
+			if(studentsTimetableTable->isSelected(j+1, k+1)){
+				int ai=students_timetable_week1[i][k][j];
+				if(ai!=UNALLOCATED_ACTIVITY){
+					int time=tc->times[ai];
+					int hour=time/gt.rules.nDaysPerWeek;
+					int day=time%gt.rules.nDaysPerWeek;
+					//Activity* act=gt.rules.activitiesList.at(ai);
+					Activity* act=&gt.rules.internalActivitiesList[ai];
+					if(lockTime){
+						ConstraintActivityPreferredTime* ctr=new ConstraintActivityPreferredTime(1, true, act->id, day, hour);
+						bool t=gt.rules.addTimeConstraint(ctr);
+						if(t)
+							QMessageBox::information(this, QObject::tr("FET information"), 
+							 QObject::tr("Added the following constraint:\n"+ctr->getDetailedDescription(gt.rules)));
+						else{
+							QMessageBox::warning(this, QObject::tr("FET information"), 
+							 QObject::tr("Constraint\n%1 NOT added - duplicate").arg(ctr->getDetailedDescription(gt.rules)));
+							delete ctr;
+						}
+					}
+					
+					int ri=c->rooms[ai];
+					if(ri!=UNALLOCATED_SPACE && lockSpace){
+						ConstraintActivityPreferredRoom* ctr=new ConstraintActivityPreferredRoom(1, true, act->id, (gt.rules.internalRoomsList[ri])->name);
+						bool t=gt.rules.addSpaceConstraint(ctr);
+						if(t)
+							QMessageBox::information(this, QObject::tr("FET information"), 
+							 QObject::tr("Added the following constraint:\n"+ctr->getDetailedDescription(gt.rules)));
+						else{
+							QMessageBox::warning(this, QObject::tr("FET information"), 
+							 QObject::tr("Constraint\n%1 NOT added - duplicate").arg(ctr->getDetailedDescription(gt.rules)));
+							delete ctr;
+						}
+					}
+				}
+				
+				ai=students_timetable_week2[i][k][j];
+				if(ai!=UNALLOCATED_ACTIVITY){
+					int time=tc->times[ai];
+					int hour=time/gt.rules.nDaysPerWeek;
+					int day=time%gt.rules.nDaysPerWeek;
+					//Activity* act=gt.rules.activitiesList.at(ai);
+					Activity* act=&gt.rules.internalActivitiesList[ai];
+					if(lockTime){
+						ConstraintActivityPreferredTime* ctr=new ConstraintActivityPreferredTime(1, true, act->id, day, hour);
+						bool t=gt.rules.addTimeConstraint(ctr);
+						if(t)
+							QMessageBox::information(this, QObject::tr("FET information"), 
+							 QObject::tr("Added the following constraint:\n"+ctr->getDetailedDescription(gt.rules)));
+						else{
+							QMessageBox::warning(this, QObject::tr("FET information"), 
+							 QObject::tr("Constraint\n%1 NOT added - duplicate").arg(ctr->getDetailedDescription(gt.rules)));
+							delete ctr;
+						}
+					}
+					
+					int ri=c->rooms[ai];
+					if(ri!=UNALLOCATED_SPACE && lockSpace){
+						ConstraintActivityPreferredRoom* ctr=new ConstraintActivityPreferredRoom(1, true, act->id, (gt.rules.internalRoomsList[ri])->name);
+						bool t=gt.rules.addSpaceConstraint(ctr);
+						if(t)
+							QMessageBox::information(this, QObject::tr("FET information"), 
+							 QObject::tr("Added the following constraint:\n"+ctr->getDetailedDescription(gt.rules)));
+						else{
+							QMessageBox::warning(this, QObject::tr("FET information"), 
+							 QObject::tr("Constraint\n%1 NOT added - duplicate").arg(ctr->getDetailedDescription(gt.rules)));
+							delete ctr;
+						}
+					}
+				}
+			}
+		}
+	}
 }

@@ -115,6 +115,12 @@ public:
 	int nTotalStudents;
 	
 	/**
+	True if this activity is active, that is it will be taken into consideration
+	when generating the timetable.
+	*/
+	bool active;
+	
+	/**
 	If the teachers, subject, students, duration and parity are identical, returns true.
 	TODO: add a more intelligent comparison
 	*/
@@ -138,6 +144,11 @@ public:
 	int subjectIndex;
 
 	/**
+	The index of the subject tag.
+	*/
+	int subjectTagIndex;
+
+	/**
 	The number of subgroups implied in this activity.
 	*/
 	int nSubgroups;
@@ -159,8 +170,8 @@ public:
 	If _totalDuration!=duration, then this activity is a part of a bigger (split)
 	activity.
 	<p>
-	As a must, for split activities, _activityGroupId==0.
-	For the non-split ones, it is >0
+	As a must, for non-split activities, _activityGroupId==0.
+	For the split ones, it is >0
 	*/
 	Activity(
 		Rules& r,
@@ -172,7 +183,10 @@ public:
 		const QStringList& _studentsNames,
 		int _duration,
 		int _totalDuration,
-		int _parity);
+		int _parity,
+		bool _active);
+		
+	bool searchTeacher(const QString& teacherName);
 
 	/**
 	Removes this teacher from the list of teachers
@@ -183,6 +197,8 @@ public:
 	Renames this teacher in the list of teachers
 	*/
 	void renameTeacher(const QString& initialTeacherName, const QString& finalTeacherName);
+	
+	bool searchStudents(const QString& studentsName);
 
 	/**
 	Removes this students set from the list of students
@@ -202,7 +218,7 @@ public:
 	/**
 	Returns a representation of this activity (xml format).
 	*/
-	QString getXMLDescription(Rules& r);
+	QString getXmlDescription(Rules& r);
 
 	/**
 	Returns a representation of this activity.
@@ -213,6 +229,12 @@ public:
 	Returns a representation of this activity (more detailed).
 	*/
 	QString getDetailedDescription(Rules& r);
+
+	/**
+	Returns a representation of this activity (detailed),
+	together with the constraints related to this activity.
+	*/
+	QString getDetailedDescriptionWithConstraints(Rules& r);
 
 	/**
 	Returns true if this activity is split into more lessons per week.

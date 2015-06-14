@@ -26,10 +26,18 @@
 ModifyConstraintActivityPreferredRoomsForm::ModifyConstraintActivityPreferredRoomsForm(ConstraintActivityPreferredRooms* ctr)
 {
 	updateRoomsListBox();
-	
+
+	int j=-1, i=0;
 	for(Activity* ac=gt.rules.activitiesList.first(); ac; ac=gt.rules.activitiesList.next()){
 		activitiesComboBox->insertItem(ac->getDescription(gt.rules));
+		if(ac->id==ctr->activityId){
+			assert(j==-1);
+			j=i;
+		}
+		i++;
 	}
+	assert(j>=0);
+	activitiesComboBox->setCurrentItem(j);
 	
 	this->_ctr=ctr;
 	
@@ -58,7 +66,7 @@ void ModifyConstraintActivityPreferredRoomsForm::ok()
 	double weight;
 	QString tmp=weightLineEdit->text();
 	sscanf(tmp, "%lf", &weight);
-	if(weight<=0.0){
+	if(weight<0.0){
 		QMessageBox::warning(this, QObject::tr("FET information"),
 			QObject::tr("Invalid weight"));
 		return;

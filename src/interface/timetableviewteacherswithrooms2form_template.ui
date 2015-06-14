@@ -9,7 +9,7 @@
             <x>0</x>
             <y>0</y>
             <width>757</width>
-            <height>571</height>
+            <height>613</height>
         </rect>
     </property>
     <property name="caption">
@@ -55,14 +55,6 @@
                 <bool>true</bool>
             </property>
         </widget>
-        <widget class="QPushButton" row="5" column="0">
-            <property name="name">
-                <cstring>closePushButton</cstring>
-            </property>
-            <property name="text">
-                <string>Close</string>
-            </property>
-        </widget>
         <widget class="QListBox" row="1" column="0" rowspan="2" colspan="1">
             <item>
                 <property name="text">
@@ -92,6 +84,38 @@
                 <bool>true</bool>
             </property>
         </widget>
+        <widget class="QPushButton" row="6" column="0">
+            <property name="name">
+                <cstring>lockPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Lock selected activities</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="6" column="1">
+            <property name="name">
+                <cstring>closePushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Close</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="5" column="1">
+            <property name="name">
+                <cstring>lockSpacePushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Lock selected activities (space)</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="5" column="0">
+            <property name="name">
+                <cstring>lockTimePushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Lock selected activities (time)</string>
+            </property>
+        </widget>
     </grid>
 </widget>
 <connections>
@@ -113,10 +137,31 @@
         <receiver>TimetableViewTeachersWithRooms2Form_template</receiver>
         <slot>detailActivity(int,int)</slot>
     </connection>
+    <connection>
+        <sender>lockPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>TimetableViewTeachersWithRooms2Form_template</receiver>
+        <slot>lock()</slot>
+    </connection>
+    <connection>
+        <sender>lockTimePushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>TimetableViewTeachersWithRooms2Form_template</receiver>
+        <slot>lockTime()</slot>
+    </connection>
+    <connection>
+        <sender>lockSpacePushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>TimetableViewTeachersWithRooms2Form_template</receiver>
+        <slot>lockSpace()</slot>
+    </connection>
 </connections>
 <slots>
     <slot>detailActivity(int, int)</slot>
     <slot>teacherChanged(const QString&amp;)</slot>
+    <slot>lock()</slot>
+    <slot>lockTime()</slot>
+    <slot>lockSpace()</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

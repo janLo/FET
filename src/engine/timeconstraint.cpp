@@ -26,6 +26,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include "timeconstraint.h"
 #include "rules.h"
 #include "timechromosome.h"
+#include "activity.h"
+#include "teacher.h"
+#include "subject.h"
+#include "subjecttag.h"
+#include "studentsset.h"
 
 #include <qstring.h>
 
@@ -50,8 +55,15 @@ static Rules* crt_rules=NULL;
 static int16 subgroupsMatrix[MAX_TOTAL_SUBGROUPS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
 static int16 teachersMatrix[MAX_TEACHERS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
 
-//array used for ConstraintTeachersSubgroupsNoMoreThanXHoursDaily
-static int teachersSubgroupsDays[MAX_TEACHERS][MAX_TOTAL_SUBGROUPS][MAX_DAYS_PER_WEEK];
+//array used for ConstraintTeachersSubgroupsMaxHoursDaily
+static int16 teachersSubgroupsDays[MAX_TEACHERS][MAX_TOTAL_SUBGROUPS][MAX_DAYS_PER_WEEK];
+
+//array used for ConstraintTeachersSubjectTagsMaxHoursContinuously
+//and ConstraintTeachersSubjectTagMaxHoursContinuously
+static int16 teachersSubjectTags[MAX_TEACHERS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
+
+static int teachers_conflicts=-1;
+static int subgroups_conflicts=-1;
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -86,14 +98,15 @@ ConstraintBasicCompulsoryTime::ConstraintBasicCompulsoryTime(double w): TimeCons
 	this->type=CONSTRAINT_BASIC_COMPULSORY_TIME;
 }
 
-void ConstraintBasicCompulsoryTime::computeInternalStructure(Rules& r)
+bool ConstraintBasicCompulsoryTime::computeInternalStructure(Rules& r)
 {
 	if(&r!=NULL)
 		;
 	/*do nothing*/
+	return true;
 }
 
-QString ConstraintBasicCompulsoryTime::getXMLDescription(Rules& r)
+QString ConstraintBasicCompulsoryTime::getXmlDescription(Rules& r)
 {
 	if(&r!=NULL)
 		;
@@ -153,9 +166,10 @@ int ConstraintBasicCompulsoryTime::fitness(TimeChromosome& c, Rules& r, QString*
 		crt_rules = &r;
 	}
 	else{
-		subgroupsConflicts=-1;
-		teachersConflicts=-1;
-		cout<<"Warning here ***"<<endl;
+		assert(subgroups_conflicts>=0);
+		assert(teachers_conflicts>=0);
+		subgroupsConflicts = subgroups_conflicts;
+		teachersConflicts = teachers_conflicts;
 	}
 
 	int i,dd;
@@ -296,7 +310,7 @@ int ConstraintBasicCompulsoryTime::fitness(TimeChromosome& c, Rules& r, QString*
 							(*conflictsString)+=QObject::tr("teacher with name %1 has more than one allocated activity on day %2, hour %3")
 								.arg(r.internalTeachersList[i]->name)
 								.arg(r.daysOfTheWeek[j])
-								.arg(k);
+								.arg(r.hoursOfTheDay[k]);
 							(*conflictsString)+=". ";
 							(*conflictsString)+=QObject::tr("This increases the conflicts factor with %1")
 								.arg(tmp*weight);
@@ -320,7 +334,7 @@ int ConstraintBasicCompulsoryTime::fitness(TimeChromosome& c, Rules& r, QString*
 							*conflictsString+=QObject::tr("subgroup %1 has more than one allocated activity on day %2, hour %3")
 								.arg(r.internalSubgroupsList[i]->name)
 								.arg(r.daysOfTheWeek[j])
-								.arg(k);
+								.arg(r.hoursOfTheDay[k]);
 							*conflictsString+=". ";
 							*conflictsString+=QObject::tr("This increases the conflicts factor with %1")
 								.arg((subgroupsMatrix[i][j][k]-2)*weight);
@@ -331,12 +345,52 @@ int ConstraintBasicCompulsoryTime::fitness(TimeChromosome& c, Rules& r, QString*
 				}
 	}
 	
-	if(teachersConflicts!=-1 && subgroupsConflicts!=-1){
-		assert(nte==teachersConflicts); //just a check, works only on logged fitness calculation
-		assert(nse==subgroupsConflicts);
-	}
+	assert(nte==teachersConflicts); //just a check, works only on logged fitness calculation
+	assert(nse==subgroupsConflicts);
 
 	return int (ceil ( weight * (unallocated + late + nte + nse) ) ); //conflicts factor
+}
+
+bool ConstraintBasicCompulsoryTime::isRelatedToActivity(Activity* a)
+{
+	if(a)
+		;
+
+	return false;
+}
+
+bool ConstraintBasicCompulsoryTime::isRelatedToTeacher(Teacher* t)
+{
+	if(t)
+		;
+
+	return false;
+}
+
+bool ConstraintBasicCompulsoryTime::isRelatedToSubject(Subject* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintBasicCompulsoryTime::isRelatedToSubjectTag(SubjectTag* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintBasicCompulsoryTime::isRelatedToStudentsSet(Rules& r, StudentsSet* s)
+{
+	if(s)
+		;
+	if(&r)
+		;
+
+	return false;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -358,16 +412,16 @@ ConstraintTeacherNotAvailable::ConstraintTeacherNotAvailable(double w, bool c, c
 	this->type=CONSTRAINT_TEACHER_NOT_AVAILABLE;
 }
 
-QString ConstraintTeacherNotAvailable::getXMLDescription(Rules& r){
+QString ConstraintTeacherNotAvailable::getXmlDescription(Rules& r){
 	QString s="<ConstraintTeacherNotAvailable>\n";
 	s+="	<Weight>"+QString::number(weight)+"</Weight>\n";
 	s+="	<Compulsory>";
 	s+=yesNo(this->compulsory);
 	s+="</Compulsory>\n";
-	s+="	<Teacher_Name>"+this->teacherName+"</Teacher_Name>\n";
-	s+="	<Day>"+r.daysOfTheWeek[this->d]+"</Day>\n";
-	s+="	<Start_Hour>"+r.hoursOfTheDay[this->h1]+"</Start_Hour>\n";
-	s+="	<End_Hour>"+r.hoursOfTheDay[this->h2]+"</End_Hour>\n";
+	s+="	<Teacher_Name>"+protect(this->teacherName)+"</Teacher_Name>\n";
+	s+="	<Day>"+protect(r.daysOfTheWeek[this->d])+"</Day>\n";
+	s+="	<Start_Hour>"+protect(r.hoursOfTheDay[this->h1])+"</Start_Hour>\n";
+	s+="	<End_Hour>"+protect(r.hoursOfTheDay[this->h2])+"</End_Hour>\n";
 	s+="</ConstraintTeacherNotAvailable>\n";
 	return s;
 }
@@ -397,9 +451,10 @@ QString ConstraintTeacherNotAvailable::getDetailedDescription(Rules& r){
 	return s;
 }
 
-void ConstraintTeacherNotAvailable::computeInternalStructure(Rules& r){
+bool ConstraintTeacherNotAvailable::computeInternalStructure(Rules& r){
 	this->teacher_ID=r.searchTeacher(this->teacherName);
 	assert(this->teacher_ID>=0);
+	return true;
 }
 
 //critical function here - must be optimized for speed
@@ -407,8 +462,8 @@ int ConstraintTeacherNotAvailable::fitness(TimeChromosome& c, Rules& r, QString 
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
 	if(crt_chrom!=&c || crt_rules!=&r){
-		c.getSubgroupsMatrix(r, subgroupsMatrix);
-		c.getTeachersMatrix(r, teachersMatrix);
+		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
+		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
@@ -455,6 +510,47 @@ int ConstraintTeacherNotAvailable::fitness(TimeChromosome& c, Rules& r, QString 
 	return int (ceil ( weight * nbroken ) );
 }
 
+bool ConstraintTeacherNotAvailable::isRelatedToActivity(Activity* a)
+{
+	if(a)
+		;
+
+	return false;
+}
+
+bool ConstraintTeacherNotAvailable::isRelatedToTeacher(Teacher* t)
+{
+	if(this->teacherName==t->name)
+		return true;
+	return false;
+}
+
+bool ConstraintTeacherNotAvailable::isRelatedToSubject(Subject* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintTeacherNotAvailable::isRelatedToSubjectTag(SubjectTag* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintTeacherNotAvailable::isRelatedToStudentsSet(Rules& r, StudentsSet* s)
+{
+	if(s)
+		;
+	if(&r)
+		;
+
+	return false;
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -473,7 +569,7 @@ ConstraintStudentsSetNotAvailable::ConstraintStudentsSetNotAvailable(double w, b
 	this->type=CONSTRAINT_STUDENTS_SET_NOT_AVAILABLE;
 }
 
-void ConstraintStudentsSetNotAvailable::computeInternalStructure(Rules& r){
+bool ConstraintStudentsSetNotAvailable::computeInternalStructure(Rules& r){
 	StudentsSet* ss=r.searchStudentsSet(this->students);
 	assert(ss);
 
@@ -484,7 +580,7 @@ void ConstraintStudentsSetNotAvailable::computeInternalStructure(Rules& r){
 			if(r.internalSubgroupsList[tmp]->name == ss->name)
 				break;
 		assert(tmp<r.nInternalSubgroups);
-		assert(this->nSubgroups<MAX_SUBGROUPS_PER_ACTIVITY);
+		assert(this->nSubgroups<MAX_SUBGROUPS_PER_CONSTRAINT);
 		this->subgroups[this->nSubgroups++]=tmp;
 	}
 	else if(ss->type==STUDENTS_GROUP){
@@ -495,7 +591,7 @@ void ConstraintStudentsSetNotAvailable::computeInternalStructure(Rules& r){
 				if(r.internalSubgroupsList[tmp]->name == sts->name)
 					break;
 			assert(tmp<r.nInternalSubgroups);
-			assert(this->nSubgroups<MAX_SUBGROUPS_PER_ACTIVITY);
+			assert(this->nSubgroups<MAX_SUBGROUPS_PER_CONSTRAINT);
 			this->subgroups[this->nSubgroups++]=tmp;
 		}
 	}
@@ -508,23 +604,24 @@ void ConstraintStudentsSetNotAvailable::computeInternalStructure(Rules& r){
 					if(r.internalSubgroupsList[tmp]->name == sts->name)
 						break;
 				assert(tmp<r.nInternalSubgroups);
-				assert(this->nSubgroups<MAX_SUBGROUPS_PER_ACTIVITY);
+				assert(this->nSubgroups<MAX_SUBGROUPS_PER_CONSTRAINT);
 				this->subgroups[this->nSubgroups++]=tmp;
 			}
 		}
 	}
 	else
 		assert(0);
+	return true;
 }
 
-QString ConstraintStudentsSetNotAvailable::getXMLDescription(Rules& r){
+QString ConstraintStudentsSetNotAvailable::getXmlDescription(Rules& r){
 	QString s="<ConstraintStudentsSetNotAvailable>\n";
 	s+="	<Weight>"+QString::number(this->weight)+"</Weight>\n";
 	s+="	<Compulsory>";s+=yesNo(this->compulsory);s+="</Compulsory>\n";
-	s+="	<Students>"+this->students+"</Students>\n";
-	s+="	<Day>"+r.daysOfTheWeek[this->d]+"</Day>\n";
-	s+="	<Start_Hour>"+r.hoursOfTheDay[this->h1]+"</Start_Hour>\n";
-	s+="	<End_Hour>"+r.hoursOfTheDay[this->h2]+"</End_Hour>\n";
+	s+="	<Students>"+protect(this->students)+"</Students>\n";
+	s+="	<Day>"+protect(r.daysOfTheWeek[this->d])+"</Day>\n";
+	s+="	<Start_Hour>"+protect(r.hoursOfTheDay[this->h1])+"</Start_Hour>\n";
+	s+="	<End_Hour>"+protect(r.hoursOfTheDay[this->h2])+"</End_Hour>\n";
 	s+="</ConstraintStudentsSetNotAvailable>\n";
 	return s;
 }
@@ -560,8 +657,8 @@ int ConstraintStudentsSetNotAvailable::fitness(TimeChromosome& c, Rules& r, QStr
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
 	if(crt_chrom!=&c || crt_rules!=&r){
-		c.getSubgroupsMatrix(r, subgroupsMatrix);
-		c.getTeachersMatrix(r, teachersMatrix);
+		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
+		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
@@ -615,6 +712,43 @@ int ConstraintStudentsSetNotAvailable::fitness(TimeChromosome& c, Rules& r, QStr
 	return int (ceil ( weight * nbroken ) );
 }
 
+bool ConstraintStudentsSetNotAvailable::isRelatedToActivity(Activity* a)
+{
+	if(a)
+		;
+
+	return false;
+}
+
+bool ConstraintStudentsSetNotAvailable::isRelatedToTeacher(Teacher* t)
+{
+	if(t)
+		;
+
+	return false;
+}
+
+bool ConstraintStudentsSetNotAvailable::isRelatedToSubject(Subject* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintStudentsSetNotAvailable::isRelatedToSubjectTag(SubjectTag* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintStudentsSetNotAvailable::isRelatedToStudentsSet(Rules& r, StudentsSet* s)
+{
+	return r.studentsSetsRelated(this->students, s->name);
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -635,7 +769,7 @@ ConstraintActivitiesSameStartingTime::ConstraintActivitiesSameStartingTime(doubl
 	this->type=CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME;
 }
 
-void ConstraintActivitiesSameStartingTime::computeInternalStructure(Rules &r)
+bool ConstraintActivitiesSameStartingTime::computeInternalStructure(Rules &r)
 {
 	//compute the indices of the activities,
 	//based on their unique ID
@@ -643,16 +777,23 @@ void ConstraintActivitiesSameStartingTime::computeInternalStructure(Rules &r)
 	for(int j=0; j<n_activities; j++)
 		this->_activities[j]=-1;
 
+	this->_n_activities=0;
 	for(int i=0; i<this->n_activities; i++){
 		int j;
 		Activity* act;
-		for(j=0, act=r.activitiesList.first(); act; act=r.activitiesList.next(), j++)
-			if(act->id==this->activitiesId[i])
-				this->_activities[i]=j;
+		for(j=0; j<r.nInternalActivities; j++){
+			act=&r.internalActivitiesList[j];
+			if(act->id==this->activitiesId[i]){
+				this->_activities[this->_n_activities++]=j;
+				break;
+			}
+		}
 	}
+	
+	if(this->_n_activities<=1)
+		return false;
 
-	for(int j=0; j<this->n_activities; j++)
-		assert(this->_activities[j]>=0);
+	return true;
 }
 
 void ConstraintActivitiesSameStartingTime::removeUseless(Rules& r)
@@ -663,21 +804,21 @@ void ConstraintActivitiesSameStartingTime::removeUseless(Rules& r)
 		this->_activities[j]=-1;
 
 	for(int i=0; i<this->n_activities; i++){
-		int j;
 		Activity* act;
-		for(j=0, act=r.activitiesList.first(); act; act=r.activitiesList.next(), j++)
+		for(act=r.activitiesList.first(); act; act=r.activitiesList.next())
 			if(act->id==this->activitiesId[i])
-				this->_activities[i]=j;
+				this->_activities[i]=act->id;
 	}
 
 	int i, j;
-	for(i=0, j=0; j<this->n_activities; j++)
+	i=0;
+	for(j=0; j<this->n_activities; j++)
 		if(this->_activities[j]>=0) //valid activity
-			this->activitiesId[i++]=this->activitiesId[j];
+			this->activitiesId[i++]=this->_activities[j];
 	this->n_activities=i;
 }
 
-QString ConstraintActivitiesSameStartingTime::getXMLDescription(Rules& r){
+QString ConstraintActivitiesSameStartingTime::getXmlDescription(Rules& r){
 	if(&r!=NULL)
 		;
 
@@ -739,7 +880,7 @@ int ConstraintActivitiesSameStartingTime::fitness(TimeChromosome& c, Rules& r, Q
 	//without logging
 	if(conflictsString==NULL){
 		nbroken=0;
-		for(int i=1; i<this->n_activities; i++){
+		for(int i=1; i<this->_n_activities; i++){
 			int t1=c.times[this->_activities[i]];
 			if(t1!=UNALLOCATED_TIME){
 				int day1=t1%r.nDaysPerWeek;
@@ -770,7 +911,7 @@ int ConstraintActivitiesSameStartingTime::fitness(TimeChromosome& c, Rules& r, Q
 	//with logging
 	else{
 		nbroken=0;
-		for(int i=1; i<this->n_activities; i++){
+		for(int i=1; i<this->_n_activities; i++){
 			int t1=c.times[this->_activities[i]];
 			if(t1!=UNALLOCATED_TIME){
 				int day1=t1%r.nDaysPerWeek;
@@ -811,6 +952,48 @@ int ConstraintActivitiesSameStartingTime::fitness(TimeChromosome& c, Rules& r, Q
 	return int (ceil ( weight * nbroken ) );
 }
 
+bool ConstraintActivitiesSameStartingTime::isRelatedToActivity(Activity* a)
+{
+	for(int i=0; i<this->n_activities; i++)
+		if(this->activitiesId[i]==a->id)
+			return true;
+	return false;
+}
+
+bool ConstraintActivitiesSameStartingTime::isRelatedToTeacher(Teacher* t)
+{
+	if(t)
+		;
+
+	return false;
+}
+
+bool ConstraintActivitiesSameStartingTime::isRelatedToSubject(Subject* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintActivitiesSameStartingTime::isRelatedToSubjectTag(SubjectTag* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintActivitiesSameStartingTime::isRelatedToStudentsSet(Rules& r, StudentsSet* s)
+{
+	if(s)
+		;
+	if(&r)
+		;
+
+	return false;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -831,24 +1014,31 @@ ConstraintActivitiesNotOverlapping::ConstraintActivitiesNotOverlapping(double w,
 	this->type=CONSTRAINT_ACTIVITIES_NOT_OVERLAPPING;
 }
 
-void ConstraintActivitiesNotOverlapping::computeInternalStructure(Rules &r)
+bool ConstraintActivitiesNotOverlapping::computeInternalStructure(Rules &r)
 {
 	//compute the indices of the activities,
 	//based on their unique ID
 
-	for(int j=0; j<this->n_activities; j++)
+	for(int j=0; j<n_activities; j++)
 		this->_activities[j]=-1;
 
+	this->_n_activities=0;
 	for(int i=0; i<this->n_activities; i++){
 		int j;
 		Activity* act;
-		for(j=0, act=r.activitiesList.first(); act; act=r.activitiesList.next(), j++)
-			if(act->id==this->activitiesId[i])
-				this->_activities[i]=j;
+		for(j=0; j<r.nInternalActivities; j++){
+			act=&r.internalActivitiesList[j];
+			if(act->id==this->activitiesId[i]){
+				this->_activities[this->_n_activities++]=j;
+				break;
+			}
+		}
 	}
+	
+	if(this->_n_activities<=1)
+		return false;
 
-	for(int j=0; j<this->n_activities; j++)
-		assert(this->_activities[j]>=0);
+	return true;
 }
 
 void ConstraintActivitiesNotOverlapping::removeUseless(Rules& r)
@@ -859,21 +1049,21 @@ void ConstraintActivitiesNotOverlapping::removeUseless(Rules& r)
 		this->_activities[j]=-1;
 
 	for(int i=0; i<this->n_activities; i++){
-		int j;
 		Activity* act;
-		for(j=0, act=r.activitiesList.first(); act; act=r.activitiesList.next(), j++)
+		for(act=r.activitiesList.first(); act; act=r.activitiesList.next())
 			if(act->id==this->activitiesId[i])
-				this->_activities[i]=j;
+				this->_activities[i]=act->id;
 	}
 
 	int i, j;
-	for(i=0, j=0; j<this->n_activities; j++)
+	i=0;
+	for(j=0; j<this->n_activities; j++)
 		if(this->_activities[j]>=0) //valid activity
-			this->activitiesId[i++]=this->activitiesId[j];
+			this->activitiesId[i++]=this->_activities[j];
 	this->n_activities=i;
 }
 
-QString ConstraintActivitiesNotOverlapping::getXMLDescription(Rules& r){
+QString ConstraintActivitiesNotOverlapping::getXmlDescription(Rules& r){
 	if(&r!=NULL)
 		;
 
@@ -932,7 +1122,7 @@ int ConstraintActivitiesNotOverlapping::fitness(TimeChromosome& c, Rules& r, QSt
 	//without logging
 	if(conflictsString==NULL){
 		nbroken=0;
-		for(int i=1; i<this->n_activities; i++){
+		for(int i=1; i<this->_n_activities; i++){
 			int t1=c.times[this->_activities[i]];
 			if(t1!=UNALLOCATED_TIME){
 				int day1=t1%r.nDaysPerWeek;
@@ -973,7 +1163,7 @@ int ConstraintActivitiesNotOverlapping::fitness(TimeChromosome& c, Rules& r, QSt
 	//with logging
 	else{
 		nbroken=0;
-		for(int i=1; i<this->n_activities; i++){
+		for(int i=1; i<this->_n_activities; i++){
 			int t1=c.times[this->_activities[i]];
 			if(t1!=UNALLOCATED_TIME){
 				int day1=t1%r.nDaysPerWeek;
@@ -1012,7 +1202,7 @@ int ConstraintActivitiesNotOverlapping::fitness(TimeChromosome& c, Rules& r, QSt
 						nbroken+=tmp;
 
 						if(tt>0 && conflictsString!=NULL){
-							*conflictsString+=QObject::tr("Time constraint activities not same time");
+							*conflictsString+=QObject::tr("Time constraint activities not overlapping");
 							*conflictsString+=" ";
 							*conflictsString+=QObject::tr("broken:");
 							*conflictsString+=" ";
@@ -1031,6 +1221,48 @@ int ConstraintActivitiesNotOverlapping::fitness(TimeChromosome& c, Rules& r, QSt
 	}
 
 	return int (ceil ( weight * nbroken ) );
+}
+
+bool ConstraintActivitiesNotOverlapping::isRelatedToActivity(Activity* a)
+{
+	for(int i=0; i<this->n_activities; i++)
+		if(this->activitiesId[i]==a->id)
+			return true;
+	return false;
+}
+
+bool ConstraintActivitiesNotOverlapping::isRelatedToTeacher(Teacher* t)
+{
+	if(t)
+		;
+
+	return false;
+}
+
+bool ConstraintActivitiesNotOverlapping::isRelatedToSubject(Subject* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintActivitiesNotOverlapping::isRelatedToSubjectTag(SubjectTag* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintActivitiesNotOverlapping::isRelatedToStudentsSet(Rules& r, StudentsSet* s)
+{
+	if(s)
+		;
+	if(&r)
+		;
+
+	return false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -1064,27 +1296,38 @@ bool ConstraintMinNDaysBetweenActivities::operator==(ConstraintMinNDaysBetweenAc
 			return false;
 	if(this->minDays!=c.minDays)
 		return false;
+	if(this->compulsory!=c.compulsory)
+		return false;
+	if(this->weight!=c.weight)
+		return false;
 	return true;
 }
 
-void ConstraintMinNDaysBetweenActivities::computeInternalStructure(Rules &r)
+bool ConstraintMinNDaysBetweenActivities::computeInternalStructure(Rules &r)
 {
 	//compute the indices of the activities,
 	//based on their unique ID
 
-	for(int j=0; j<this->n_activities; j++)
+	for(int j=0; j<n_activities; j++)
 		this->_activities[j]=-1;
 
+	this->_n_activities=0;
 	for(int i=0; i<this->n_activities; i++){
 		int j;
 		Activity* act;
-		for(j=0, act=r.activitiesList.first(); act; act=r.activitiesList.next(), j++)
-			if(act->id==this->activitiesId[i])
-				this->_activities[i]=j;
+		for(j=0; j<r.nInternalActivities; j++){
+			act=&r.internalActivitiesList[j];
+			if(act->id==this->activitiesId[i]){
+				this->_activities[this->_n_activities++]=j;
+				break;
+			}
+		}
 	}
+	
+	if(this->_n_activities<=1)
+		return false;
 
-	for(int j=0; j<this->n_activities; j++)
-		assert(this->_activities[j]>=0);
+	return true;
 }
 
 void ConstraintMinNDaysBetweenActivities::removeUseless(Rules& r)
@@ -1095,21 +1338,21 @@ void ConstraintMinNDaysBetweenActivities::removeUseless(Rules& r)
 		this->_activities[j]=-1;
 
 	for(int i=0; i<this->n_activities; i++){
-		int j;
 		Activity* act;
-		for(j=0, act=r.activitiesList.first(); act; act=r.activitiesList.next(), j++)
+		for(act=r.activitiesList.first(); act; act=r.activitiesList.next())
 			if(act->id==this->activitiesId[i])
-				this->_activities[i]=j;
+				this->_activities[i]=act->id;
 	}
 
 	int i, j;
-	for(i=0, j=0; j<this->n_activities; j++)
+	i=0;
+	for(j=0; j<this->n_activities; j++)
 		if(this->_activities[j]>=0) //valid activity
-			this->activitiesId[i++]=this->activitiesId[j];
+			this->activitiesId[i++]=this->_activities[j];
 	this->n_activities=i;
 }
 
-QString ConstraintMinNDaysBetweenActivities::getXMLDescription(Rules& r){
+QString ConstraintMinNDaysBetweenActivities::getXmlDescription(Rules& r){
 	if(&r!=NULL)
 		;
 
@@ -1171,7 +1414,7 @@ int ConstraintMinNDaysBetweenActivities::fitness(TimeChromosome& c, Rules& r, QS
 	//without logging
 	if(conflictsString==NULL){
 		nbroken=0;
-		for(int i=1; i<this->n_activities; i++){
+		for(int i=1; i<this->_n_activities; i++){
 			int t1=c.times[this->_activities[i]];
 			if(t1!=UNALLOCATED_TIME){
 				int day1=t1%r.nDaysPerWeek;
@@ -1213,7 +1456,7 @@ int ConstraintMinNDaysBetweenActivities::fitness(TimeChromosome& c, Rules& r, QS
 	//with logging
 	else{
 		nbroken=0;
-		for(int i=1; i<this->n_activities; i++){
+		for(int i=1; i<this->_n_activities; i++){
 			int t1=c.times[this->_activities[i]];
 			if(t1!=UNALLOCATED_TIME){
 				int day1=t1%r.nDaysPerWeek;
@@ -1270,60 +1513,103 @@ int ConstraintMinNDaysBetweenActivities::fitness(TimeChromosome& c, Rules& r, QS
 	return int (ceil ( weight * nbroken ) );
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-
-ConstraintTeachersNoMoreThanXHoursContinuously::ConstraintTeachersNoMoreThanXHoursContinuously()
-	: TimeConstraint()
+bool ConstraintMinNDaysBetweenActivities::isRelatedToActivity(Activity* a)
 {
-	type=CONSTRAINT_TEACHERS_NO_MORE_THAN_X_HOURS_CONTINUOUSLY;
+	for(int i=0; i<this->n_activities; i++)
+		if(this->activitiesId[i]==a->id)
+			return true;
+	return false;
 }
 
-ConstraintTeachersNoMoreThanXHoursContinuously::ConstraintTeachersNoMoreThanXHoursContinuously(double w, bool c, int maxhours)
+bool ConstraintMinNDaysBetweenActivities::isRelatedToTeacher(Teacher* t)
+{
+	if(t)
+		;
+
+	return false;
+}
+
+bool ConstraintMinNDaysBetweenActivities::isRelatedToSubject(Subject* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintMinNDaysBetweenActivities::isRelatedToSubjectTag(SubjectTag* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintMinNDaysBetweenActivities::isRelatedToStudentsSet(Rules& r, StudentsSet* s)
+{
+	if(s)
+		;
+	if(&r)
+		;
+
+	return false;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+
+ConstraintTeachersMaxHoursContinuously::ConstraintTeachersMaxHoursContinuously()
+	: TimeConstraint()
+{
+	type=CONSTRAINT_TEACHERS_MAX_HOURS_CONTINUOUSLY;
+}
+
+ConstraintTeachersMaxHoursContinuously::ConstraintTeachersMaxHoursContinuously(double w, bool c, int maxhours)
  : TimeConstraint(w, c)
  {
 	assert(maxhours>0);
 	this->maxHoursContinuously=maxhours;
 
-	this->type=CONSTRAINT_TEACHERS_NO_MORE_THAN_X_HOURS_CONTINUOUSLY;
+	this->type=CONSTRAINT_TEACHERS_MAX_HOURS_CONTINUOUSLY;
 }
 
-void ConstraintTeachersNoMoreThanXHoursContinuously::computeInternalStructure(Rules& r)
+bool ConstraintTeachersMaxHoursContinuously::computeInternalStructure(Rules& r)
 {
 	if(&r!=NULL)
 		;
+	return true;
 }
 
-QString ConstraintTeachersNoMoreThanXHoursContinuously::getXMLDescription(Rules& r){
+QString ConstraintTeachersMaxHoursContinuously::getXmlDescription(Rules& r){
 	if(&r!=NULL)
 		;
 
-	QString s="<ConstraintTeachersNoMoreThanXHoursContinuously>\n";
+	QString s="<ConstraintTeachersMaxHoursContinuously>\n";
 	s+="	<Weight>"+QString::number(this->weight)+"</Weight>\n";
 	s+="	<Compulsory>";s+=yesNo(this->compulsory);s+="</Compulsory>\n";
 	s+="	<Maximum_Hours_Continuously>"+QString::number(this->maxHoursContinuously)+"</Maximum_Hours_Continuously>\n";
-	s+="</ConstraintTeachersNoMoreThanXHoursContinuously>\n";
+	s+="</ConstraintTeachersMaxHoursContinuously>\n";
 	return s;
 }
 
-QString ConstraintTeachersNoMoreThanXHoursContinuously::getDescription(Rules& r){
+QString ConstraintTeachersMaxHoursContinuously::getDescription(Rules& r){
 	if(&r!=NULL)
 		;
 
 	QString s;
-	s+=(QObject::tr("Teachers no more than %1 hours in a row").arg(this->maxHoursContinuously));s+=", ";
+	s+=(QObject::tr("Teachers max %1 hours continuously").arg(this->maxHoursContinuously));s+=", ";
 	s+=(QObject::tr("W:%1").arg(this->weight));s+=", ";
 	s+=(QObject::tr("C:%1").arg(yesNoTranslated(this->compulsory)));
 
 	return s;
 }
 
-QString ConstraintTeachersNoMoreThanXHoursContinuously::getDetailedDescription(Rules& r){
+QString ConstraintTeachersMaxHoursContinuously::getDetailedDescription(Rules& r){
 	if(&r!=NULL)
 		;
 
 	QString s=QObject::tr("Time constraint");s+="\n";
-	s+=(QObject::tr("Teachers must not have more than %1 hours in a row").arg(this->maxHoursContinuously));s+="\n";
+	s+=(QObject::tr("Teachers must not have more than %1 hours continuously").arg(this->maxHoursContinuously));s+="\n";
 	s+=(QObject::tr("Weight=%1").arg(this->weight));s+="\n";
 	s+=(QObject::tr("Compulsory=%1").arg(yesNoTranslated(this->compulsory)));s+="\n";
 
@@ -1331,12 +1617,12 @@ QString ConstraintTeachersNoMoreThanXHoursContinuously::getDetailedDescription(R
 }
 
 //critical function here - must be optimized for speed
-int ConstraintTeachersNoMoreThanXHoursContinuously::fitness(TimeChromosome& c, Rules& r, QString* conflictsString)
+int ConstraintTeachersMaxHoursContinuously::fitness(TimeChromosome& c, Rules& r, QString* conflictsString)
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
 	if(crt_chrom!=&c || crt_rules!=&r){
-		c.getSubgroupsMatrix(r, subgroupsMatrix);
-		c.getTeachersMatrix(r, teachersMatrix);
+		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
+		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
@@ -1376,7 +1662,7 @@ int ConstraintTeachersNoMoreThanXHoursContinuously::fitness(TimeChromosome& c, R
 
 							if(conflictsString!=NULL){
 								(*conflictsString)+=(QObject::tr(
-									"Time constraint teacher no more than %1 hours in a row broken for teacher %2, on day %3, hour %4.")
+									"Time constraint teacher no more than %1 hours continuously broken for teacher %2, on day %3, hour %4")
 									.arg(QString::number(this->maxHoursContinuously))
 									.arg(r.internalTeachersList[i]->name)
 									.arg(r.daysOfTheWeek[d])
@@ -1399,55 +1685,98 @@ int ConstraintTeachersNoMoreThanXHoursContinuously::fitness(TimeChromosome& c, R
 	return int (ceil ( weight * nbroken ) );
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-
-ConstraintTeachersNoMoreThanXHoursDaily::ConstraintTeachersNoMoreThanXHoursDaily()
-	: TimeConstraint()
+bool ConstraintTeachersMaxHoursContinuously::isRelatedToActivity(Activity* a)
 {
-	this->type=CONSTRAINT_TEACHERS_NO_MORE_THAN_X_HOURS_DAILY;
+	if(a)
+		;
+
+	return false;
 }
 
-ConstraintTeachersNoMoreThanXHoursDaily::ConstraintTeachersNoMoreThanXHoursDaily(double w, bool c, int maxhours)
+bool ConstraintTeachersMaxHoursContinuously::isRelatedToTeacher(Teacher* t)
+{
+	if(t)
+		;
+
+	return true;
+}
+
+bool ConstraintTeachersMaxHoursContinuously::isRelatedToSubject(Subject* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintTeachersMaxHoursContinuously::isRelatedToSubjectTag(SubjectTag* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintTeachersMaxHoursContinuously::isRelatedToStudentsSet(Rules& r, StudentsSet* s)
+{
+	if(s)
+		;
+	if(&r)
+		;
+
+	return false;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+
+ConstraintTeachersMaxHoursDaily::ConstraintTeachersMaxHoursDaily()
+	: TimeConstraint()
+{
+	this->type=CONSTRAINT_TEACHERS_MAX_HOURS_DAILY;
+}
+
+ConstraintTeachersMaxHoursDaily::ConstraintTeachersMaxHoursDaily(double w, bool c, int maxhours)
  : TimeConstraint(w, c)
  {
 	assert(maxhours>0);
 	this->maxHoursDaily=maxhours;
 
-	this->type=CONSTRAINT_TEACHERS_NO_MORE_THAN_X_HOURS_DAILY;
+	this->type=CONSTRAINT_TEACHERS_MAX_HOURS_DAILY;
 }
 
-void ConstraintTeachersNoMoreThanXHoursDaily::computeInternalStructure(Rules& r)
+bool ConstraintTeachersMaxHoursDaily::computeInternalStructure(Rules& r)
 {
 	if(&r!=NULL)
 		;
+	return true;
 }
 
-QString ConstraintTeachersNoMoreThanXHoursDaily::getXMLDescription(Rules& r){
+QString ConstraintTeachersMaxHoursDaily::getXmlDescription(Rules& r){
 	if(&r!=NULL)
 		;
 
-	QString s="<ConstraintTeachersNoMoreThanXHoursDaily>\n";
+	QString s="<ConstraintTeachersMaxHoursDaily>\n";
 	s+="	<Weight>"+QString::number(this->weight)+"</Weight>\n";
 	s+="	<Compulsory>";s+=yesNo(this->compulsory);s+="</Compulsory>\n";
 	s+="	<Maximum_Hours_Daily>"+QString::number(this->maxHoursDaily)+"</Maximum_Hours_Daily>\n";
-	s+="</ConstraintTeachersNoMoreThanXHoursDaily>\n";
+	s+="</ConstraintTeachersMaxHoursDaily>\n";
 	return s;
 }
 
-QString ConstraintTeachersNoMoreThanXHoursDaily::getDescription(Rules& r){
+QString ConstraintTeachersMaxHoursDaily::getDescription(Rules& r){
 	if(&r!=NULL)
 		;
 
 	QString s;
-	s+=(QObject::tr("Teachers no more than %1 hours daily").arg(this->maxHoursDaily));s+=", ";
+	s+=(QObject::tr("Teachers max %1 hours daily").arg(this->maxHoursDaily));s+=", ";
 	s+=(QObject::tr("W:%1").arg(this->weight));s+=", ";
 	s+=(QObject::tr("C:%1").arg(yesNoTranslated(this->compulsory)));
 
 	return s;
 }
 
-QString ConstraintTeachersNoMoreThanXHoursDaily::getDetailedDescription(Rules& r){
+QString ConstraintTeachersMaxHoursDaily::getDetailedDescription(Rules& r){
 	if(&r!=NULL)
 		;
 
@@ -1460,12 +1789,12 @@ QString ConstraintTeachersNoMoreThanXHoursDaily::getDetailedDescription(Rules& r
 }
 
 //critical function here - must be optimized for speed
-int ConstraintTeachersNoMoreThanXHoursDaily::fitness(TimeChromosome& c, Rules& r, QString* conflictsString)
+int ConstraintTeachersMaxHoursDaily::fitness(TimeChromosome& c, Rules& r, QString* conflictsString)
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
 	if(crt_chrom!=&c || crt_rules!=&r){
-		c.getSubgroupsMatrix(r, subgroupsMatrix);
-		c.getTeachersMatrix(r, teachersMatrix);
+		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
+		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
@@ -1503,7 +1832,7 @@ int ConstraintTeachersNoMoreThanXHoursDaily::fitness(TimeChromosome& c, Rules& r
 
 					if(conflictsString!=NULL){
 						(*conflictsString)+=(QObject::tr(
-							"Time constraint teacher no more than %1 hours daily broken for teacher %2, on day %3.")
+							"Time constraint teacher max %1 hours daily broken for teacher %2, on day %3.")
 							.arg(QString::number(this->maxHoursDaily))
 							.arg(r.internalTeachersList[i]->name)
 							.arg(r.daysOfTheWeek[d])
@@ -1520,55 +1849,98 @@ int ConstraintTeachersNoMoreThanXHoursDaily::fitness(TimeChromosome& c, Rules& r
 	return int (ceil ( weight * nbroken ) );
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////
-
-ConstraintTeachersSubgroupsNoMoreThanXHoursDaily::ConstraintTeachersSubgroupsNoMoreThanXHoursDaily()
-	: TimeConstraint()
+bool ConstraintTeachersMaxHoursDaily::isRelatedToActivity(Activity* a)
 {
-	this->type=CONSTRAINT_TEACHERS_SUBGROUPS_NO_MORE_THAN_X_HOURS_DAILY;
+	if(a)
+		;
+
+	return false;
 }
 
-ConstraintTeachersSubgroupsNoMoreThanXHoursDaily::ConstraintTeachersSubgroupsNoMoreThanXHoursDaily(double w, bool c, int maxhours)
+bool ConstraintTeachersMaxHoursDaily::isRelatedToTeacher(Teacher* t)
+{
+	if(t)
+		;
+
+	return true;
+}
+
+bool ConstraintTeachersMaxHoursDaily::isRelatedToSubject(Subject* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintTeachersMaxHoursDaily::isRelatedToSubjectTag(SubjectTag* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintTeachersMaxHoursDaily::isRelatedToStudentsSet(Rules& r, StudentsSet* s)
+{
+	if(s)
+		;
+	if(&r)
+		;
+
+	return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+
+ConstraintTeachersSubgroupsMaxHoursDaily::ConstraintTeachersSubgroupsMaxHoursDaily()
+	: TimeConstraint()
+{
+	this->type=CONSTRAINT_TEACHERS_SUBGROUPS_MAX_HOURS_DAILY;
+}
+
+ConstraintTeachersSubgroupsMaxHoursDaily::ConstraintTeachersSubgroupsMaxHoursDaily(double w, bool c, int maxhours)
  : TimeConstraint(w, c)
  {
 	assert(maxhours>0);
 	this->maxHoursDaily=maxhours;
-	this->type=CONSTRAINT_TEACHERS_SUBGROUPS_NO_MORE_THAN_X_HOURS_DAILY;
+	this->type=CONSTRAINT_TEACHERS_SUBGROUPS_MAX_HOURS_DAILY;
 }
 
-void ConstraintTeachersSubgroupsNoMoreThanXHoursDaily::computeInternalStructure(Rules& r)
+bool ConstraintTeachersSubgroupsMaxHoursDaily::computeInternalStructure(Rules& r)
 {
 	if(&r!=NULL)
 		;
+	return true;
 }
 
-QString ConstraintTeachersSubgroupsNoMoreThanXHoursDaily::getXMLDescription(Rules& r){
+QString ConstraintTeachersSubgroupsMaxHoursDaily::getXmlDescription(Rules& r){
 	if(&r!=NULL)
 		;
 
-	QString s="<ConstraintTeachersSubgroupsNoMoreThanXHoursDaily>\n";
+	QString s="<ConstraintTeachersSubgroupsMaxHoursDaily>\n";
 	s+="	<Weight>"+QString::number(this->weight)+"</Weight>\n";
 	s+="	<Compulsory>";s+=yesNo(this->compulsory);s+="</Compulsory>\n";
 	s+="	<Maximum_Hours_Daily>"+QString::number(this->maxHoursDaily)+"</Maximum_Hours_Daily>\n";
-	s+="</ConstraintTeachersSubgroupsNoMoreThanXHoursDaily>\n";
+	s+="</ConstraintTeachersSubgroupsMaxHoursDaily>\n";
 	return s;
 }
 
-QString ConstraintTeachersSubgroupsNoMoreThanXHoursDaily::getDescription(Rules& r){
+QString ConstraintTeachersSubgroupsMaxHoursDaily::getDescription(Rules& r){
 	if(&r!=NULL)
 		;
 
 	QString s;
-	s+=(QObject::tr("Teachers-subgroups no more than %1 hours in a day").arg(this->maxHoursDaily));s+=", ";
+	s+=(QObject::tr("Teachers-subgroups max %1 hours in a day").arg(this->maxHoursDaily));s+=", ";
 	s+=(QObject::tr("W:%1").arg(this->weight));s+=", ";
 	s+=(QObject::tr("C:%1").arg(yesNoTranslated(this->compulsory)));s+=", ";
-	s+=QObject::tr("Please be very careful: this restriction dramatically slows down the automatic generation of the timetable");
+	s+=QObject::tr("Warning: this constraint dramatically slows down the execution of the program");
 
 	return s;
 }
 
-QString ConstraintTeachersSubgroupsNoMoreThanXHoursDaily::getDetailedDescription(Rules& r){
+QString ConstraintTeachersSubgroupsMaxHoursDaily::getDetailedDescription(Rules& r){
 	if(&r!=NULL)
 		;
 
@@ -1582,19 +1954,8 @@ QString ConstraintTeachersSubgroupsNoMoreThanXHoursDaily::getDetailedDescription
 }
 
 //critical function here - must be optimized for speed
-int ConstraintTeachersSubgroupsNoMoreThanXHoursDaily::fitness(TimeChromosome& c, Rules& r, QString* conflictsString)
+int ConstraintTeachersSubgroupsMaxHoursDaily::fitness(TimeChromosome& c, Rules& r, QString* conflictsString)
 {
-	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
-	//TODO: I should erase the following part, because I am
-	//not using these matrices.
-	/*if(crt_chrom!=&c || crt_rules!=&r){
-		c.getSubgroupsMatrix(r, subgroupsMatrix);
-		c.getTeachersMatrix(r, teachersMatrix);
-
-		crt_chrom=&c;
-		crt_rules=&r;
-	}*/
-
 	int nbroken=0;
 
 	//The matrix will keep all the durations on a day
@@ -1651,7 +2012,7 @@ int ConstraintTeachersSubgroupsNoMoreThanXHoursDaily::fitness(TimeChromosome& c,
 							teachersSubgroupsDays[tch][s][d]=2*this->maxHoursDaily;
 
 							if(conflictsString!=NULL){
-								*conflictsString+=QObject::tr("Time constraint teachers subgroups no more than X hours daily broken ");
+								*conflictsString+=QObject::tr("Time constraint teachers subgroups max hours daily broken ");
 								*conflictsString+=QString("because teacher %1 teaches subgroup %2 more than %3 hours on a day")
 									.arg(r.internalTeachersList[tch]->name)
 									.arg(r.internalSubgroupsList[s]->name)
@@ -1671,6 +2032,48 @@ int ConstraintTeachersSubgroupsNoMoreThanXHoursDaily::fitness(TimeChromosome& c,
 	return int (ceil ( weight * nbroken ) );
 }
 
+bool ConstraintTeachersSubgroupsMaxHoursDaily::isRelatedToActivity(Activity* a)
+{
+	if(a)
+		;
+
+	return false;
+}
+
+bool ConstraintTeachersSubgroupsMaxHoursDaily::isRelatedToTeacher(Teacher* t)
+{
+	if(t)
+		;
+
+	return true;
+}
+
+bool ConstraintTeachersSubgroupsMaxHoursDaily::isRelatedToSubject(Subject* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintTeachersSubgroupsMaxHoursDaily::isRelatedToSubjectTag(SubjectTag* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintTeachersSubgroupsMaxHoursDaily::isRelatedToStudentsSet(Rules& r, StudentsSet* s)
+{
+	if(s)
+		;
+	if(&r)
+		;
+
+	return false;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1688,13 +2091,14 @@ ConstraintTeacherMaxDaysPerWeek::ConstraintTeacherMaxDaysPerWeek(double w, bool 
 	this->type=CONSTRAINT_TEACHER_MAX_DAYS_PER_WEEK;
 }
 
-void ConstraintTeacherMaxDaysPerWeek::computeInternalStructure(Rules& r)
+bool ConstraintTeacherMaxDaysPerWeek::computeInternalStructure(Rules& r)
 {
 	this->teacher_ID=r.searchTeacher(this->teacher);
 	assert(this->teacher_ID>=0);
+	return true;
 }
 
-QString ConstraintTeacherMaxDaysPerWeek::getXMLDescription(Rules& r)
+QString ConstraintTeacherMaxDaysPerWeek::getXmlDescription(Rules& r)
 {
 	if(&r!=NULL)
 		;
@@ -1702,7 +2106,7 @@ QString ConstraintTeacherMaxDaysPerWeek::getXMLDescription(Rules& r)
 	QString s="<ConstraintTeacherMaxDaysPerWeek>\n";
 	s+="	<Weight>"+QString::number(this->weight)+"</Weight>\n";
 	s+="	<Compulsory>";s+=yesNo(this->compulsory);s+="</Compulsory>\n";
-	s+="	<Teacher_Name>"+this->teacher+"</Teacher_Name>\n";
+	s+="	<Teacher_Name>"+protect(this->teacher)+"</Teacher_Name>\n";
 	s+="	<Max_Days_Per_Week>"+QString::number(this->maxDaysPerWeek)+"</Max_Days_Per_Week>\n";
 	s+="</ConstraintTeacherMaxDaysPerWeek>\n";
 	return s;
@@ -1740,8 +2144,8 @@ int ConstraintTeacherMaxDaysPerWeek::fitness(TimeChromosome& c, Rules& r, QStrin
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
 	if(crt_chrom!=&c || crt_rules!=&r){
-		c.getSubgroupsMatrix(r, subgroupsMatrix);
-		c.getTeachersMatrix(r, teachersMatrix);
+		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
+		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
@@ -1821,6 +2225,47 @@ int ConstraintTeacherMaxDaysPerWeek::fitness(TimeChromosome& c, Rules& r, QStrin
 	return int (ceil ( weight * nbroken ) );
 }
 
+bool ConstraintTeacherMaxDaysPerWeek::isRelatedToActivity(Activity* a)
+{
+	if(a)
+		;
+
+	return false;
+}
+
+bool ConstraintTeacherMaxDaysPerWeek::isRelatedToTeacher(Teacher* t)
+{
+	if(this->teacher==t->name)
+		return true;
+	return false;
+}
+
+bool ConstraintTeacherMaxDaysPerWeek::isRelatedToSubject(Subject* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintTeacherMaxDaysPerWeek::isRelatedToSubjectTag(SubjectTag* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintTeacherMaxDaysPerWeek::isRelatedToStudentsSet(Rules& r, StudentsSet* s)
+{
+	if(s)
+		;
+	if(&r)
+		;
+
+	return false;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1836,15 +2281,16 @@ ConstraintTeachersNoGaps::ConstraintTeachersNoGaps(double w, bool c)
 	this->type = CONSTRAINT_TEACHERS_NO_GAPS;
 }
 
-void ConstraintTeachersNoGaps::computeInternalStructure(Rules& r)
+bool ConstraintTeachersNoGaps::computeInternalStructure(Rules& r)
 {
 	if(&r!=NULL)
 		;
 
 	/*do nothing*/
+	return true;
 }
 
-QString ConstraintTeachersNoGaps::getXMLDescription(Rules& r){
+QString ConstraintTeachersNoGaps::getXmlDescription(Rules& r){
 	//to avoid non-used parameter warning
 	if(&r==NULL)
 		;
@@ -1892,8 +2338,8 @@ int ConstraintTeachersNoGaps::fitness(TimeChromosome& c, Rules& r, QString* conf
 
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
 	if(crt_chrom!=&c || crt_rules!=&r){
-		c.getSubgroupsMatrix(r, subgroupsMatrix);
-		c.getTeachersMatrix(r, teachersMatrix);
+		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
+		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
@@ -1958,7 +2404,7 @@ int ConstraintTeachersNoGaps::fitness(TimeChromosome& c, Rules& r, QString* conf
 								(QObject::tr("Time constraint teachers no gaps broken: teacher: %1, week 1, day: %2, before hour: %3, lenght=%4\n")
 								.arg(r.internalTeachersList[i]->name)
 								.arg(r.daysOfTheWeek[j])
-								.arg(k)
+								.arg(r.hoursOfTheDay[k])
 								.arg(tmp));
 						}
 
@@ -1984,7 +2430,7 @@ int ConstraintTeachersNoGaps::fitness(TimeChromosome& c, Rules& r, QString* conf
 								(QObject::tr("Time constraint teachers no gaps broken: teacher: %1, week 2, day: %2, before hour: %3, lenght=%4\n")
 								.arg(r.internalTeachersList[i]->name)
 								.arg(r.daysOfTheWeek[j])
-								.arg(k)
+								.arg(r.hoursOfTheDay[k])
 								.arg(tmp));
 						}
 
@@ -1996,6 +2442,48 @@ int ConstraintTeachersNoGaps::fitness(TimeChromosome& c, Rules& r, QString* conf
 	}
 
 	return int (ceil(weight * tw));
+}
+
+bool ConstraintTeachersNoGaps::isRelatedToActivity(Activity* a)
+{
+	if(a)
+		;
+
+	return false;
+}
+
+bool ConstraintTeachersNoGaps::isRelatedToTeacher(Teacher* t)
+{
+	if(t)
+		;
+
+	return true;
+}
+
+bool ConstraintTeachersNoGaps::isRelatedToSubject(Subject* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintTeachersNoGaps::isRelatedToSubjectTag(SubjectTag* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintTeachersNoGaps::isRelatedToStudentsSet(Rules& r, StudentsSet* s)
+{
+	if(s)
+		;
+	if(&r)
+		;
+
+	return false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -2016,13 +2504,13 @@ ConstraintBreak::ConstraintBreak(double w, bool c, int day, int start_hour, int 
 	this->type = CONSTRAINT_BREAK;
 }
 
-QString ConstraintBreak::getXMLDescription(Rules& r){
+QString ConstraintBreak::getXmlDescription(Rules& r){
 	QString s="<ConstraintBreak>\n";
 	s+="	<Weight>"+QString::number(this->weight)+"</Weight>\n";
 	s+="	<Compulsory>";s+=yesNo(this->compulsory);s+="</Compulsory>\n";
-	s+="	<Day>"+r.daysOfTheWeek[this->d]+"</Day>\n";
-	s+="	<Start_Hour>"+r.hoursOfTheDay[this->h1]+"</Start_Hour>\n";
-	s+="	<End_Hour>"+r.hoursOfTheDay[this->h2]+"</End_Hour>\n";
+	s+="	<Day>"+protect(r.daysOfTheWeek[this->d])+"</Day>\n";
+	s+="	<Start_Hour>"+protect(r.hoursOfTheDay[this->h1])+"</Start_Hour>\n";
+	s+="	<End_Hour>"+protect(r.hoursOfTheDay[this->h2])+"</End_Hour>\n";
 	s+="</ConstraintBreak>\n";
 	return s;
 }
@@ -2051,10 +2539,12 @@ QString ConstraintBreak::getDetailedDescription(Rules& r){
 	return s;
 }
 
-void ConstraintBreak::computeInternalStructure(Rules& r)
+bool ConstraintBreak::computeInternalStructure(Rules& r)
 {
 	if(&r!=NULL)
 		;
+		
+	return true;
 }
 
 //critical function here - must be optimized for speed
@@ -2062,8 +2552,8 @@ int ConstraintBreak::fitness(TimeChromosome& c, Rules& r, QString* conflictsStri
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
 	if(crt_chrom!=&c || crt_rules!=&r){
-		c.getSubgroupsMatrix(r, subgroupsMatrix);
-		c.getTeachersMatrix(r, teachersMatrix);
+		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
+		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
@@ -2099,9 +2589,9 @@ int ConstraintBreak::fitness(TimeChromosome& c, Rules& r, QString* conflictsStri
 							(QObject::tr("Time constraint break not respected for teacher %1, on day %2, hour %3")
 							.arg(r.internalTeachersList[i]->name)
 							.arg(r.daysOfTheWeek[j])
-							.arg(QString::number(k)))
+							.arg(r.hoursOfTheDay[k]))
 							;
-						*conflictsString+=" ";
+						*conflictsString+=". ";
 						*conflictsString+=QObject::tr("This increases the conflicts factor with");
 						*conflictsString+=" "+QString::number(teachersMatrix[i][j][k]*weight)+
 						 "\n";
@@ -2112,6 +2602,48 @@ int ConstraintBreak::fitness(TimeChromosome& c, Rules& r, QString* conflictsStri
 	}
 
 	return int (ceil ( weight * nbroken ) );
+}
+
+bool ConstraintBreak::isRelatedToActivity(Activity* a)
+{
+	if(a)
+		;
+
+	return false;
+}
+
+bool ConstraintBreak::isRelatedToTeacher(Teacher* t)
+{
+	if(t)
+		;
+
+	return false;
+}
+
+bool ConstraintBreak::isRelatedToSubject(Subject* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintBreak::isRelatedToSubjectTag(SubjectTag* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintBreak::isRelatedToStudentsSet(Rules& r, StudentsSet* s)
+{
+	if(s)
+		;
+	if(&r)
+		;
+
+	return false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -2129,15 +2661,16 @@ ConstraintStudentsNoGaps::ConstraintStudentsNoGaps(double w, bool c)
 	this->type = CONSTRAINT_STUDENTS_NO_GAPS;
 }
 
-void ConstraintStudentsNoGaps::computeInternalStructure(Rules& r)
+bool ConstraintStudentsNoGaps::computeInternalStructure(Rules& r)
 {
 	if(&r!=NULL)
 		;
 
 	/*do nothing*/
+	return true;
 }
 
-QString ConstraintStudentsNoGaps::getXMLDescription(Rules& r)
+QString ConstraintStudentsNoGaps::getXmlDescription(Rules& r)
 {
 	//to avoid non-used parameter warning
 	if(&r==NULL)
@@ -2185,8 +2718,8 @@ int ConstraintStudentsNoGaps::fitness(TimeChromosome& c, Rules& r, QString* conf
 
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
 	if(crt_chrom!=&c || crt_rules!=&r){
-		c.getSubgroupsMatrix(r, subgroupsMatrix);
-		c.getTeachersMatrix(r, teachersMatrix);
+		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
+		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
@@ -2255,7 +2788,7 @@ int ConstraintStudentsNoGaps::fitness(TimeChromosome& c, Rules& r, QString* conf
 								(QObject::tr("Time constraint students no gaps broken for subgroup: %1, on week 1, day: %2, before hour: %3, lenght=%4\n")
 								.arg(r.internalSubgroupsList[i]->name)
 								.arg(r.daysOfTheWeek[j])
-								.arg(k)
+								.arg(r.hoursOfTheDay[k])
 								.arg(tmp));
 						}
 						tmp=0;
@@ -2282,7 +2815,7 @@ int ConstraintStudentsNoGaps::fitness(TimeChromosome& c, Rules& r, QString* conf
 								(QObject::tr("Time constraint students no gaps broken for subgroup: %1, on week 2, day: %2, before hour: %3, lenght=%4\n")
 								.arg(r.internalSubgroupsList[i]->name)
 								.arg(r.daysOfTheWeek[j])
-								.arg(k)
+								.arg(r.hoursOfTheDay[k])
 								.arg(tmp));
 						}
 						tmp=0;
@@ -2295,6 +2828,48 @@ int ConstraintStudentsNoGaps::fitness(TimeChromosome& c, Rules& r, QString* conf
 		
 	//windows: 2 represent a weely window, 1 represents a biweekly window
 	return int (ceil(weight * windows));
+}
+
+bool ConstraintStudentsNoGaps::isRelatedToActivity(Activity* a)
+{
+	if(a)
+		;
+
+	return false;
+}
+
+bool ConstraintStudentsNoGaps::isRelatedToTeacher(Teacher* t)
+{
+	if(t)
+		;
+
+	return false;
+}
+
+bool ConstraintStudentsNoGaps::isRelatedToSubject(Subject* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintStudentsNoGaps::isRelatedToSubjectTag(SubjectTag* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintStudentsNoGaps::isRelatedToStudentsSet(Rules& r, StudentsSet* s)
+{
+	if(s)
+		;
+	if(&r)
+		;
+
+	return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -2313,7 +2888,7 @@ ConstraintStudentsSetNoGaps::ConstraintStudentsSetNoGaps(double w, bool c, const
 	this->students = st;
 }
 
-void ConstraintStudentsSetNoGaps::computeInternalStructure(Rules& r){
+bool ConstraintStudentsSetNoGaps::computeInternalStructure(Rules& r){
 	StudentsSet* ss=r.searchStudentsSet(this->students);
 	assert(ss);
 
@@ -2324,7 +2899,7 @@ void ConstraintStudentsSetNoGaps::computeInternalStructure(Rules& r){
 			if(r.internalSubgroupsList[tmp]->name == ss->name)
 				break;
 		assert(tmp<r.nInternalSubgroups);
-		assert(this->nSubgroups<MAX_SUBGROUPS_PER_ACTIVITY);
+		assert(this->nSubgroups<MAX_SUBGROUPS_PER_CONSTRAINT);
 		this->subgroups[this->nSubgroups++]=tmp;
 	}
 	else if(ss->type==STUDENTS_GROUP){
@@ -2335,7 +2910,7 @@ void ConstraintStudentsSetNoGaps::computeInternalStructure(Rules& r){
 				if(r.internalSubgroupsList[tmp]->name == sts->name)
 					break;
 			assert(tmp<r.nInternalSubgroups);
-			assert(this->nSubgroups<MAX_SUBGROUPS_PER_ACTIVITY);
+			assert(this->nSubgroups<MAX_SUBGROUPS_PER_CONSTRAINT);
 			this->subgroups[this->nSubgroups++]=tmp;
 		}
 	}
@@ -2348,16 +2923,18 @@ void ConstraintStudentsSetNoGaps::computeInternalStructure(Rules& r){
 					if(r.internalSubgroupsList[tmp]->name == sts->name)
 						break;
 				assert(tmp<r.nInternalSubgroups);
-				assert(this->nSubgroups<MAX_SUBGROUPS_PER_ACTIVITY);
+				assert(this->nSubgroups<MAX_SUBGROUPS_PER_CONSTRAINT);
 				this->subgroups[this->nSubgroups++]=tmp;
 			}
 		}
 	}
 	else
 		assert(0);
+		
+	return true;
 }
 
-QString ConstraintStudentsSetNoGaps::getXMLDescription(Rules& r){
+QString ConstraintStudentsSetNoGaps::getXmlDescription(Rules& r){
 	//to avoid non-used parameter warning
 	if(&r==NULL)
 		;
@@ -2365,7 +2942,7 @@ QString ConstraintStudentsSetNoGaps::getXMLDescription(Rules& r){
 	QString s="<ConstraintStudentsSetNoGaps>\n";
 	s+="	<Weight>"+QString::number(this->weight)+"</Weight>\n";
 	s+="	<Compulsory>";s+=yesNo(this->compulsory);s+="</Compulsory>\n";
-	s+="	<Students>"; s+=this->students; s+="</Students>\n";
+	s+="	<Students>"; s+=protect(this->students); s+="</Students>\n";
 	s+="</ConstraintStudentsSetNoGaps>\n";
 	return s;
 }
@@ -2405,8 +2982,8 @@ int ConstraintStudentsSetNoGaps::fitness(TimeChromosome& c, Rules& r, QString* c
 
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
 	if(crt_chrom!=&c || crt_rules!=&r){
-		c.getSubgroupsMatrix(r, subgroupsMatrix);
-		c.getTeachersMatrix(r, teachersMatrix);
+		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
+		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
@@ -2477,7 +3054,7 @@ int ConstraintStudentsSetNoGaps::fitness(TimeChromosome& c, Rules& r, QString* c
 								(QObject::tr("Time constraint students set no gaps broken for subgroup: %1, on week 1, day: %2, before hour: %3, lenght=%4\n")
 								.arg(r.internalSubgroupsList[i]->name)
 								.arg(r.daysOfTheWeek[j])
-								.arg(k)
+								.arg(r.hoursOfTheDay[k])
 								.arg(tmp));
 						}
 						tmp=0;
@@ -2505,7 +3082,7 @@ int ConstraintStudentsSetNoGaps::fitness(TimeChromosome& c, Rules& r, QString* c
 								(QObject::tr("Time constraint students no gaps broken for subgroup: %1, on week 2, day: %2, before hour: %3, lenght=%4\n")
 								.arg(r.internalSubgroupsList[i]->name)
 								.arg(r.daysOfTheWeek[j])
-								.arg(k)
+								.arg(r.hoursOfTheDay[k])
 								.arg(tmp));
 						}
 						tmp=0;
@@ -2518,6 +3095,43 @@ int ConstraintStudentsSetNoGaps::fitness(TimeChromosome& c, Rules& r, QString* c
 
 	//gaps: 2 represents a weekly gap, 1 represents a biweekly gap
 	return int (ceil(weight * windows));
+}
+
+bool ConstraintStudentsSetNoGaps::isRelatedToActivity(Activity* a)
+{
+	if(a)
+		;
+
+	return false;
+}
+
+bool ConstraintStudentsSetNoGaps::isRelatedToTeacher(Teacher* t)
+{
+	if(t)
+		;
+
+	return false;
+}
+
+bool ConstraintStudentsSetNoGaps::isRelatedToSubject(Subject* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintStudentsSetNoGaps::isRelatedToSubjectTag(SubjectTag* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintStudentsSetNoGaps::isRelatedToStudentsSet(Rules& r, StudentsSet* s)
+{
+	return r.studentsSetsRelated(this->students, s->name);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -2535,15 +3149,17 @@ ConstraintStudentsEarly::ConstraintStudentsEarly(double w, bool compulsory)
 	this->type = CONSTRAINT_STUDENTS_EARLY;
 }
 
-void ConstraintStudentsEarly::computeInternalStructure(Rules& r)
+bool ConstraintStudentsEarly::computeInternalStructure(Rules& r)
 {
 	if(&r!=NULL)
 		;
 
 	/*do nothing*/
+	
+	return true;
 }
 
-QString ConstraintStudentsEarly::getXMLDescription(Rules& r)
+QString ConstraintStudentsEarly::getXmlDescription(Rules& r)
 {
 	//to avoid non-used parameter warning
 	if(&r==NULL)
@@ -2591,8 +3207,8 @@ int ConstraintStudentsEarly::fitness(TimeChromosome& c, Rules& r, QString* confl
 
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
 	if(crt_chrom!=&c || crt_rules!=&r){
-		c.getSubgroupsMatrix(r, subgroupsMatrix);
-		c.getTeachersMatrix(r, teachersMatrix);
+		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
+		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
@@ -2641,6 +3257,48 @@ int ConstraintStudentsEarly::fitness(TimeChromosome& c, Rules& r, QString* confl
 	return int(ceil(weight * free));
 }
 
+bool ConstraintStudentsEarly::isRelatedToActivity(Activity* a)
+{
+	if(a)
+		;
+
+	return false;
+}
+
+bool ConstraintStudentsEarly::isRelatedToTeacher(Teacher* t)
+{
+	if(t)
+		;
+
+	return false;
+}
+
+bool ConstraintStudentsEarly::isRelatedToSubject(Subject* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintStudentsEarly::isRelatedToSubjectTag(SubjectTag* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintStudentsEarly::isRelatedToStudentsSet(Rules& r, StudentsSet* s)
+{
+	if(s)
+		;
+	if(&r)
+		;
+
+	return true;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -2659,15 +3317,17 @@ ConstraintStudentsNHoursDaily::ConstraintStudentsNHoursDaily(double w, bool c, i
 	this->type = CONSTRAINT_STUDENTS_N_HOURS_DAILY;
 }
 
-void ConstraintStudentsNHoursDaily::computeInternalStructure(Rules& r)
+bool ConstraintStudentsNHoursDaily::computeInternalStructure(Rules& r)
 {
 	if(&r!=NULL)
 		;
 
 	/*do nothing*/
+	
+	return true;
 }
 
-QString ConstraintStudentsNHoursDaily::getXMLDescription(Rules& r)
+QString ConstraintStudentsNHoursDaily::getXmlDescription(Rules& r)
 {
 	//to avoid non-used parameter warning
 	if(&r==NULL)
@@ -2712,10 +3372,14 @@ QString ConstraintStudentsNHoursDaily::getDetailedDescription(Rules& r)
 	s+=QObject::tr("All students sets must have the recommended number of hours daily");s+="\n";
 	s+=(QObject::tr("Weight=%1").arg(this->weight));s+="\n";
 	s+=(QObject::tr("Compulsory=%1").arg(yesNoTranslated(this->compulsory)));s+="\n";
-	if(this->maxHoursDaily>=0)
-		s+=(QObject::tr("Maximum recommended hours daily=%1").arg(this->maxHoursDaily));s+="\n";
-	if(this->minHoursDaily>=0)
-		s+=(QObject::tr("Minimum recommended hours daily=%1").arg(this->minHoursDaily));s+="\n";
+	if(this->maxHoursDaily>=0){
+		s+=(QObject::tr("Maximum recommended hours daily=%1").arg(this->maxHoursDaily));
+		s+="\n";
+	}
+	if(this->minHoursDaily>=0){
+		s+=(QObject::tr("Minimum recommended hours daily=%1").arg(this->minHoursDaily));
+		s+="\n";
+	}
 
 	return s;
 }
@@ -2725,8 +3389,8 @@ int ConstraintStudentsNHoursDaily::fitness(TimeChromosome& c, Rules& r, QString*
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
 	if(crt_chrom!=&c || crt_rules!=&r){
-		c.getSubgroupsMatrix(r, subgroupsMatrix);
-		c.getTeachersMatrix(r, teachersMatrix);
+		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
+		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
@@ -2808,6 +3472,48 @@ int ConstraintStudentsNHoursDaily::fitness(TimeChromosome& c, Rules& r, QString*
 	return int(ceil((too_much+too_little) * weight));
 }
 
+bool ConstraintStudentsNHoursDaily::isRelatedToActivity(Activity* a)
+{
+	if(a)
+		;
+
+	return false;
+}
+
+bool ConstraintStudentsNHoursDaily::isRelatedToTeacher(Teacher* t)
+{
+	if(t)
+		;
+
+	return false;
+}
+
+bool ConstraintStudentsNHoursDaily::isRelatedToSubject(Subject* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintStudentsNHoursDaily::isRelatedToSubjectTag(SubjectTag* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintStudentsNHoursDaily::isRelatedToStudentsSet(Rules& r, StudentsSet* s)
+{
+	if(s)
+		;
+	if(&r)
+		;
+
+	return true;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -2827,7 +3533,7 @@ ConstraintStudentsSetNHoursDaily::ConstraintStudentsSetNHoursDaily(double w, boo
 	this->type = CONSTRAINT_STUDENTS_SET_N_HOURS_DAILY;
 }
 
-QString ConstraintStudentsSetNHoursDaily::getXMLDescription(Rules& r)
+QString ConstraintStudentsSetNHoursDaily::getXmlDescription(Rules& r)
 {
 	//to avoid non-used parameter warning
 	if(&r==NULL)
@@ -2838,7 +3544,7 @@ QString ConstraintStudentsSetNHoursDaily::getXMLDescription(Rules& r)
 	s+="	<Compulsory>";s+=yesNo(this->compulsory);s+="</Compulsory>\n";
 	s+="	<MaxHoursDaily>"+QString::number(this->maxHoursDaily)+"</MaxHoursDaily>\n";
 	s+="	<MinHoursDaily>"+QString::number(this->minHoursDaily)+"</MinHoursDaily>\n";
-	s+="	<Students>"+this->students+"</Students>\n";
+	s+="	<Students>"+protect(this->students)+"</Students>\n";
 	s+="</ConstraintStudentsSetNHoursDaily>\n";
 	return s;
 }
@@ -2881,7 +3587,7 @@ QString ConstraintStudentsSetNHoursDaily::getDetailedDescription(Rules& r)
 	return s;
 }
 
-void ConstraintStudentsSetNHoursDaily::computeInternalStructure(Rules &r)
+bool ConstraintStudentsSetNHoursDaily::computeInternalStructure(Rules &r)
 {
 	StudentsSet* ss=r.searchStudentsSet(this->students);
 	assert(ss);
@@ -2893,7 +3599,7 @@ void ConstraintStudentsSetNHoursDaily::computeInternalStructure(Rules &r)
 			if(r.internalSubgroupsList[tmp]->name == ss->name)
 				break;
 		assert(tmp<r.nInternalSubgroups);
-		assert(this->nSubgroups<MAX_SUBGROUPS_PER_ACTIVITY);
+		assert(this->nSubgroups<MAX_SUBGROUPS_PER_CONSTRAINT);
 		this->subgroups[this->nSubgroups++]=tmp;
 	}
 	else if(ss->type==STUDENTS_GROUP){
@@ -2904,7 +3610,7 @@ void ConstraintStudentsSetNHoursDaily::computeInternalStructure(Rules &r)
 				if(r.internalSubgroupsList[tmp]->name == sts->name)
 					break;
 			assert(tmp<r.nInternalSubgroups);
-			assert(this->nSubgroups<MAX_SUBGROUPS_PER_ACTIVITY);
+			assert(this->nSubgroups<MAX_SUBGROUPS_PER_CONSTRAINT);
 			this->subgroups[this->nSubgroups++]=tmp;
 		}
 	}
@@ -2917,13 +3623,15 @@ void ConstraintStudentsSetNHoursDaily::computeInternalStructure(Rules &r)
 					if(r.internalSubgroupsList[tmp]->name == sts->name)
 						break;
 				assert(tmp<r.nInternalSubgroups);
-				assert(this->nSubgroups<MAX_SUBGROUPS_PER_ACTIVITY);
+				assert(this->nSubgroups<MAX_SUBGROUPS_PER_CONSTRAINT);
 				this->subgroups[this->nSubgroups++]=tmp;
 			}
 		}
 	}
 	else
 		assert(0);
+		
+	return true;
 }
 
 //critical function here - must be optimized for speed
@@ -2931,8 +3639,8 @@ int ConstraintStudentsSetNHoursDaily::fitness(TimeChromosome& c, Rules& r, QStri
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
 	if(crt_chrom!=&c || crt_rules!=&r){
-		c.getSubgroupsMatrix(r, subgroupsMatrix);
-		c.getTeachersMatrix(r, teachersMatrix);
+		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
+		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
@@ -3018,6 +3726,43 @@ int ConstraintStudentsSetNHoursDaily::fitness(TimeChromosome& c, Rules& r, QStri
 	return int(ceil((too_much+too_little) * weight));
 }
 
+bool ConstraintStudentsSetNHoursDaily::isRelatedToActivity(Activity* a)
+{
+	if(a)
+		;
+
+	return false;
+}
+
+bool ConstraintStudentsSetNHoursDaily::isRelatedToTeacher(Teacher* t)
+{
+	if(t)
+		;
+
+	return false;
+}
+
+bool ConstraintStudentsSetNHoursDaily::isRelatedToSubject(Subject* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintStudentsSetNHoursDaily::isRelatedToSubjectTag(SubjectTag* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintStudentsSetNHoursDaily::isRelatedToStudentsSet(Rules& r, StudentsSet* s)
+{
+	return r.studentsSetsRelated(this->students, s->name);
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -3037,7 +3782,7 @@ ConstraintStudentsSetIntervalMaxDaysPerWeek::ConstraintStudentsSetIntervalMaxDay
 	this->type=CONSTRAINT_STUDENTS_SET_INTERVAL_MAX_DAYS_PER_WEEK;
 }
 
-void ConstraintStudentsSetIntervalMaxDaysPerWeek::computeInternalStructure(Rules& r)
+bool ConstraintStudentsSetIntervalMaxDaysPerWeek::computeInternalStructure(Rules& r)
 {
 	StudentsSet* ss=r.searchStudentsSet(this->students);
 	assert(ss);
@@ -3080,16 +3825,18 @@ void ConstraintStudentsSetIntervalMaxDaysPerWeek::computeInternalStructure(Rules
 	}
 	else
 		assert(0);
+		
+	return true;
 }
 
-QString ConstraintStudentsSetIntervalMaxDaysPerWeek::getXMLDescription(Rules& r)
+QString ConstraintStudentsSetIntervalMaxDaysPerWeek::getXmlDescription(Rules& r)
 {
 	QString s="<ConstraintStudentsSetIntervalMaxDaysPerWeek>\n";
 	s+="	<Weight>"+QString::number(this->weight)+"</Weight>\n";
 	s+="	<Compulsory>";s+=yesNo(this->compulsory);s+="</Compulsory>\n";
-	s+="	<Students>"+this->students+"</Students>\n";
-	s+="	<Start_Hour>"+r.hoursOfTheDay[this->h1]+"</Start_Hour>\n";
-	s+="	<End_Hour>"+r.hoursOfTheDay[this->h2]+"</End_Hour>\n";
+	s+="	<Students>"+protect(this->students)+"</Students>\n";
+	s+="	<Start_Hour>"+protect(r.hoursOfTheDay[this->h1])+"</Start_Hour>\n";
+	s+="	<End_Hour>"+protect(r.hoursOfTheDay[this->h2])+"</End_Hour>\n";
 	s+="	<Max_Intervals>"+QString::number(this->n)+"</Max_Intervals>\n";
 	s+="</ConstraintStudentsSetIntervalMaxDaysPerWeek>\n";
 	return s;
@@ -3128,8 +3875,8 @@ int ConstraintStudentsSetIntervalMaxDaysPerWeek::fitness(TimeChromosome& c, Rule
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
 	if(crt_chrom!=&c || crt_rules!=&r){
-		c.getSubgroupsMatrix(r, subgroupsMatrix);
-		c.getTeachersMatrix(r, teachersMatrix);
+		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
+		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
@@ -3218,6 +3965,43 @@ int ConstraintStudentsSetIntervalMaxDaysPerWeek::fitness(TimeChromosome& c, Rule
 	return int (ceil ( weight * nbroken ) );
 }
 
+bool ConstraintStudentsSetIntervalMaxDaysPerWeek::isRelatedToActivity(Activity* a)
+{
+	if(a)
+		;
+
+	return false;
+}
+
+bool ConstraintStudentsSetIntervalMaxDaysPerWeek::isRelatedToTeacher(Teacher* t)
+{
+	if(t)
+		;
+
+	return false;
+}
+
+bool ConstraintStudentsSetIntervalMaxDaysPerWeek::isRelatedToSubject(Subject* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintStudentsSetIntervalMaxDaysPerWeek::isRelatedToSubjectTag(SubjectTag* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintStudentsSetIntervalMaxDaysPerWeek::isRelatedToStudentsSet(Rules& r, StudentsSet* s)
+{
+	return r.studentsSetsRelated(this->students, s->name);
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -3236,26 +4020,38 @@ ConstraintActivityPreferredTime::ConstraintActivityPreferredTime(double w, bool 
 	this->type = CONSTRAINT_ACTIVITY_PREFERRED_TIME;
 }
 
-void ConstraintActivityPreferredTime::computeInternalStructure(Rules& r)
+bool ConstraintActivityPreferredTime::operator==(ConstraintActivityPreferredTime& c){
+	if(this->day!=c.day)
+		return false;
+	if(this->hour!=c.hour)
+		return false;
+	if(this->activityId!=c.activityId)
+		return false;
+	if(this->compulsory!=c.compulsory)
+		return false;
+	if(this->weight!=c.weight)
+		return false;
+	return true;
+}
+
+bool ConstraintActivityPreferredTime::computeInternalStructure(Rules& r)
 {
 	Activity* act;
 	int i;
-	for(i=0, act=r.activitiesList.first(); act; i++, act=r.activitiesList.next())
+	for(i=0; i<r.nInternalActivities; i++){
+		act=&r.internalActivitiesList[i];
 		if(act->id==this->activityId)
 			break;
-
-	if(!act){
-		cout<<"Error in this constraint:"<<endl;
-		cout<<this->getXMLDescription(r)<<endl;
-		assert(0);
-		exit(1);
 	}
-	assert(act);
+	
+	if(i==r.nInternalActivities)
+		return false;
 
-	this->activityIndex=i;
+	this->activityIndex=i;	
+	return true;
 }
 
-QString ConstraintActivityPreferredTime::getXMLDescription(Rules& r)
+QString ConstraintActivityPreferredTime::getXmlDescription(Rules& r)
 {
 	//to avoid non-used parameter warning
 	if(&r==NULL)
@@ -3266,9 +4062,9 @@ QString ConstraintActivityPreferredTime::getXMLDescription(Rules& r)
 	s+="	<Compulsory>";s+=yesNo(this->compulsory);s+="</Compulsory>\n";
 	s+="	<Activity_Id>"+QString::number(this->activityId)+"</Activity_Id>\n";
 	if(this->day>=0)
-		s+="	<Preferred_Day>"+r.daysOfTheWeek[this->day]+"</Preferred_Day>\n";
+		s+="	<Preferred_Day>"+protect(r.daysOfTheWeek[this->day])+"</Preferred_Day>\n";
 	if(this->hour>=0)
-		s+="	<Preferred_Hour>"+r.hoursOfTheDay[this->hour]+"</Preferred_Hour>\n";
+		s+="	<Preferred_Hour>"+protect(r.hoursOfTheDay[this->hour])+"</Preferred_Hour>\n";
 	s+="</ConstraintActivityPreferredTime>\n";
 	return s;
 }
@@ -3322,8 +4118,8 @@ int ConstraintActivityPreferredTime::fitness(TimeChromosome& c, Rules& r, QStrin
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
 	if(crt_chrom!=&c || crt_rules!=&r){
-		c.getSubgroupsMatrix(r, subgroupsMatrix);
-		c.getTeachersMatrix(r, teachersMatrix);
+		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
+		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
@@ -3355,6 +4151,47 @@ int ConstraintActivityPreferredTime::fitness(TimeChromosome& c, Rules& r, QStrin
 	return int(ceil(nbroken * weight));
 }
 
+bool ConstraintActivityPreferredTime::isRelatedToActivity(Activity* a)
+{
+	if(this->activityId==a->id)
+		return true;
+	return false;
+}
+
+bool ConstraintActivityPreferredTime::isRelatedToTeacher(Teacher* t)
+{
+	if(t)
+		;
+
+	return false;
+}
+
+bool ConstraintActivityPreferredTime::isRelatedToSubject(Subject* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintActivityPreferredTime::isRelatedToSubjectTag(SubjectTag* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintActivityPreferredTime::isRelatedToStudentsSet(Rules& r, StudentsSet* s)
+{
+	if(s)
+		;
+	if(&r)
+		;
+		
+	return false;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -3377,20 +4214,24 @@ ConstraintActivityPreferredTimes::ConstraintActivityPreferredTimes(double w, boo
 	this->type=CONSTRAINT_ACTIVITY_PREFERRED_TIMES;
 }
 
-void ConstraintActivityPreferredTimes::computeInternalStructure(Rules& r)
+bool ConstraintActivityPreferredTimes::computeInternalStructure(Rules& r)
 {
 	Activity* act;
 	int i;
-	for(i=0, act=r.activitiesList.first(); act; i++, act=r.activitiesList.next())
+	for(i=0; i<r.nInternalActivities; i++){
+		act=&r.internalActivitiesList[i];
 		if(act->id==this->activityId)
 			break;
+	}
 
-	assert(act);
+	if(i==r.nInternalActivities)
+		return false;
 
-	this->activityIndex=i;
+	this->activityIndex=i;	
+	return true;
 }
 
-QString ConstraintActivityPreferredTimes::getXMLDescription(Rules& r)
+QString ConstraintActivityPreferredTimes::getXmlDescription(Rules& r)
 {
 	//to avoid non-used parameter warning
 	if(&r==NULL)
@@ -3404,9 +4245,9 @@ QString ConstraintActivityPreferredTimes::getXMLDescription(Rules& r)
 	for(int i=0; i<nPreferredTimes; i++){
 		s+="	<Preferred_Time>\n";
 		if(this->days[i]>=0)
-			s+="		<Preferred_Day>"+r.daysOfTheWeek[this->days[i]]+"</Preferred_Day>\n";
+			s+="		<Preferred_Day>"+protect(r.daysOfTheWeek[this->days[i]])+"</Preferred_Day>\n";
 		if(this->hours[i]>=0)
-			s+="		<Preferred_Hour>"+r.hoursOfTheDay[this->hours[i]]+"</Preferred_Hour>\n";
+			s+="		<Preferred_Hour>"+protect(r.hoursOfTheDay[this->hours[i]])+"</Preferred_Hour>\n";
 		s+="	</Preferred_Time>\n";
 	}
 	s+="</ConstraintActivityPreferredTimes>\n";
@@ -3470,8 +4311,8 @@ int ConstraintActivityPreferredTimes::fitness(TimeChromosome& c, Rules& r, QStri
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
 	if(crt_chrom!=&c || crt_rules!=&r){
-		c.getSubgroupsMatrix(r, subgroupsMatrix);
-		c.getTeachersMatrix(r, teachersMatrix);
+		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
+		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
@@ -3510,6 +4351,47 @@ int ConstraintActivityPreferredTimes::fitness(TimeChromosome& c, Rules& r, QStri
 	return int(ceil(nbroken * weight));
 }
 
+bool ConstraintActivityPreferredTimes::isRelatedToActivity(Activity* a)
+{
+	if(this->activityId==a->id)
+		return true;
+	return false;
+}
+
+bool ConstraintActivityPreferredTimes::isRelatedToTeacher(Teacher* t)
+{
+	if(t)
+		;
+
+	return false;
+}
+
+bool ConstraintActivityPreferredTimes::isRelatedToSubject(Subject* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintActivityPreferredTimes::isRelatedToSubjectTag(SubjectTag* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintActivityPreferredTimes::isRelatedToStudentsSet(Rules& r, StudentsSet* s)
+{
+	if(s)
+		;
+	if(&r)
+		;
+		
+	return false;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -3526,20 +4408,24 @@ ConstraintActivityEndsDay::ConstraintActivityEndsDay(double w, bool c, int actId
 	this->type=CONSTRAINT_ACTIVITY_ENDS_DAY;
 }
 
-void ConstraintActivityEndsDay::computeInternalStructure(Rules& r)
+bool ConstraintActivityEndsDay::computeInternalStructure(Rules& r)
 {
 	Activity* act;
 	int i;
-	for(i=0, act=r.activitiesList.first(); act; i++, act=r.activitiesList.next())
+	for(i=0; i<r.nInternalActivities; i++){
+		act=&r.internalActivitiesList[i];
 		if(act->id==this->activityId)
 			break;
+	}
+	
+	if(i==r.nInternalActivities)
+		return false;
 
-	assert(act);
-
-	this->activityIndex=i;
+	this->activityIndex=i;	
+	return true;
 }
 
-QString ConstraintActivityEndsDay::getXMLDescription(Rules& r)
+QString ConstraintActivityEndsDay::getXmlDescription(Rules& r)
 {
 	//to avoid non-used parameter warning
 	if(&r==NULL)
@@ -3593,8 +4479,8 @@ int ConstraintActivityEndsDay::fitness(TimeChromosome& c, Rules& r, QString* con
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
 	if(crt_chrom!=&c || crt_rules!=&r){
-		c.getSubgroupsMatrix(r, subgroupsMatrix);
-		c.getTeachersMatrix(r, teachersMatrix);
+		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
+		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
@@ -3633,6 +4519,47 @@ int ConstraintActivityEndsDay::fitness(TimeChromosome& c, Rules& r, QString* con
 	return int(ceil(nbroken * weight));
 }
 
+bool ConstraintActivityEndsDay::isRelatedToActivity(Activity* a)
+{
+	if(this->activityId==a->id)
+		return true;
+	return false;
+}
+
+bool ConstraintActivityEndsDay::isRelatedToTeacher(Teacher* t)
+{
+	if(t)
+		;
+
+	return false;
+}
+
+bool ConstraintActivityEndsDay::isRelatedToSubject(Subject* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintActivityEndsDay::isRelatedToSubjectTag(SubjectTag* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintActivityEndsDay::isRelatedToStudentsSet(Rules& r, StudentsSet* s)
+{
+	if(s)
+		;
+	if(&r)
+		;
+		
+	return false;
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -3650,24 +4577,34 @@ Constraint2ActivitiesConsecutive::Constraint2ActivitiesConsecutive(double w, boo
 	this->type = CONSTRAINT_2_ACTIVITIES_CONSECUTIVE;
 }
 
-void Constraint2ActivitiesConsecutive::computeInternalStructure(Rules& r)
+bool Constraint2ActivitiesConsecutive::computeInternalStructure(Rules& r)
 {
 	Activity* act;
 	int i;
-	for(i=0, act=r.activitiesList.first(); act; i++, act=r.activitiesList.next())
+	for(i=0; i<r.nInternalActivities; i++){
+		act=&r.internalActivitiesList[i];
 		if(act->id==this->firstActivityId)
 			break;
-	assert(act);
-	this->firstActivityIndex=i;
+	}
+	if(i==r.nInternalActivities)
+		return false;
 
-	for(i=0, act=r.activitiesList.first(); act; i++, act=r.activitiesList.next())
+	this->firstActivityIndex=i;
+	
+	for(i=0; i<r.nInternalActivities; i++){
+		act=&r.internalActivitiesList[i];
 		if(act->id==this->secondActivityId)
 			break;
-	assert(act);
+	}
+	if(i==r.nInternalActivities)
+		return false;
+
 	this->secondActivityIndex=i;
+	
+	return true;
 }
 
-QString Constraint2ActivitiesConsecutive::getXMLDescription(Rules& r)
+QString Constraint2ActivitiesConsecutive::getXmlDescription(Rules& r)
 {
 	//to avoid non-used parameter warning
 	if(&r==NULL)
@@ -3704,7 +4641,7 @@ QString Constraint2ActivitiesConsecutive::getDetailedDescription(Rules& r)
 
 	QString s=QObject::tr("Time constraint");s+="\n";
 	s+=(QObject::tr("Activity with id=%1").arg(this->firstActivityId));s+="\n";
-	s+=(QObject::tr("must be followed by activity with id=%1").arg(this->secondActivityId));s+="\n";
+	s+=(QObject::tr("must be followed (immediately) by activity with id=%1").arg(this->secondActivityId));s+="\n";
 	s+=(QObject::tr("Weight=%1").arg(this->weight));s+="\n";
 	s+=(QObject::tr("Compulsory=%1").arg(yesNoTranslated(this->compulsory)));s+="\n";
 
@@ -3716,8 +4653,8 @@ int Constraint2ActivitiesConsecutive::fitness(TimeChromosome& c, Rules& r, QStri
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
 	if(crt_chrom!=&c || crt_rules!=&r){
-		c.getSubgroupsMatrix(r, subgroupsMatrix);
-		c.getTeachersMatrix(r, teachersMatrix);
+		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
+		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
@@ -3754,6 +4691,224 @@ int Constraint2ActivitiesConsecutive::fitness(TimeChromosome& c, Rules& r, QStri
 	return int(ceil(nbroken * weight));
 }
 
+bool Constraint2ActivitiesConsecutive::isRelatedToActivity(Activity* a)
+{
+	if(this->firstActivityId==a->id)
+		return true;
+	if(this->secondActivityId==a->id)
+		return true;
+	return false;
+}
+
+bool Constraint2ActivitiesConsecutive::isRelatedToTeacher(Teacher* t)
+{
+	if(t)
+		;
+
+	return false;
+}
+
+bool Constraint2ActivitiesConsecutive::isRelatedToSubject(Subject* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool Constraint2ActivitiesConsecutive::isRelatedToSubjectTag(SubjectTag* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool Constraint2ActivitiesConsecutive::isRelatedToStudentsSet(Rules& r, StudentsSet* s)
+{
+	if(s)
+		;
+	if(&r)
+		;
+		
+	return false;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+Constraint2ActivitiesOrdered::Constraint2ActivitiesOrdered()
+	: TimeConstraint()
+{
+	this->type = CONSTRAINT_2_ACTIVITIES_ORDERED;
+}
+
+Constraint2ActivitiesOrdered::Constraint2ActivitiesOrdered(double w, bool c, int firstActId, int secondActId)
+	: TimeConstraint(w, c)
+{
+	this->firstActivityId = firstActId;
+	this->secondActivityId = secondActId;
+	this->type = CONSTRAINT_2_ACTIVITIES_ORDERED;
+}
+
+bool Constraint2ActivitiesOrdered::computeInternalStructure(Rules& r)
+{
+	Activity* act;
+	int i;
+	for(i=0; i<r.nInternalActivities; i++){
+		act=&r.internalActivitiesList[i];
+		if(act->id==this->firstActivityId)
+			break;
+	}
+	if(i==r.nInternalActivities)
+		return false;
+
+	this->firstActivityIndex=i;
+	
+	for(i=0; i<r.nInternalActivities; i++){
+		act=&r.internalActivitiesList[i];
+		if(act->id==this->secondActivityId)
+			break;
+	}
+	if(i==r.nInternalActivities)
+		return false;
+
+	this->secondActivityIndex=i;
+	
+	return true;
+}
+
+QString Constraint2ActivitiesOrdered::getXmlDescription(Rules& r)
+{
+	//to avoid non-used parameter warning
+	if(&r==NULL)
+		;
+
+	QString s="<Constraint2ActivitiesOrdered>\n";
+	s+="	<Weight>"+QString::number(this->weight)+"</Weight>\n";
+	s+="	<Compulsory>";s+=yesNo(this->compulsory);s+="</Compulsory>\n";
+	s+="	<First_Activity_Id>"+QString::number(this->firstActivityId)+"</First_Activity_Id>\n";
+	s+="	<Second_Activity_Id>"+QString::number(this->secondActivityId)+"</Second_Activity_Id>\n";
+	s+="</Constraint2ActivitiesOrdered>\n";
+	return s;
+}
+
+QString Constraint2ActivitiesOrdered::getDescription(Rules& r)
+{
+	//to avoid non-used parameter warning
+	if(&r==NULL)
+		;
+
+	QString s="2 activities ordered: ";
+	s+=(QObject::tr("act. id 1:%1").arg(this->firstActivityId));s+=", ";
+	s+=(QObject::tr("act. id 2:%1").arg(this->secondActivityId));s+=", ";
+	s+=(QObject::tr("W:%1").arg(this->weight));s+=", ";
+	s+=(QObject::tr("C:%1").arg(yesNoTranslated(this->compulsory)));
+
+	return s;
+}
+
+QString Constraint2ActivitiesOrdered::getDetailedDescription(Rules& r)
+{
+	if(&r!=NULL)
+		;
+
+	QString s=QObject::tr("Time constraint");s+="\n";
+	s+=(QObject::tr("Activity with id=%1").arg(this->firstActivityId));s+="\n";
+	s+=(QObject::tr("must be followed (at arbitrary distance) by activity with id=%1").arg(this->secondActivityId));s+="\n";
+	s+=(QObject::tr("Weight=%1").arg(this->weight));s+="\n";
+	s+=(QObject::tr("Compulsory=%1").arg(yesNoTranslated(this->compulsory)));s+="\n";
+
+	return s;
+}
+
+//critical function here - must be optimized for speed
+int Constraint2ActivitiesOrdered::fitness(TimeChromosome& c, Rules& r, QString* conflictsString)
+{
+	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
+	if(crt_chrom!=&c || crt_rules!=&r){
+		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
+		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
+
+		crt_chrom=&c;
+		crt_rules=&r;
+	}
+
+	int nbroken;
+
+	assert(r.internalStructureComputed);
+
+	nbroken=0;
+	if(c.times[this->firstActivityIndex]!=UNALLOCATED_TIME && c.times[this->secondActivityIndex]!=UNALLOCATED_TIME){
+		int d1=c.times[this->firstActivityIndex]%r.nDaysPerWeek; //the day when the first activity was scheduled
+		int h1=c.times[this->firstActivityIndex]/r.nDaysPerWeek
+			+r.internalActivitiesList[this->firstActivityIndex].duration; //the hour when the first activity ends
+		int d2=c.times[this->secondActivityIndex]%r.nDaysPerWeek; //the day when the second activity was scheduled
+		int h2=c.times[this->secondActivityIndex]/r.nDaysPerWeek; //the hour when the second activity begins
+
+		if(d1>d2 || d1==d2 && h1>h2)
+			nbroken++;
+
+		if(r.internalActivitiesList[this->firstActivityIndex].parity==PARITY_WEEKLY) //for weekly activities, double the conflicts
+			nbroken*=2;
+		if(r.internalActivitiesList[this->secondActivityIndex].parity==PARITY_WEEKLY) //for weekly activities, double the conflicts
+			nbroken*=2;
+	}
+
+	if(conflictsString!=NULL && nbroken>0){
+		*conflictsString+=
+			(QObject::tr("Time constraint 2 activities ordered broken for activities with id=%1 and id=%2, increases conflicts factor with %3\n")
+			.arg(this->firstActivityId)
+			.arg(this->secondActivityId)
+			.arg(weight*nbroken));
+	}
+
+	return int(ceil(nbroken * weight));
+}
+
+bool Constraint2ActivitiesOrdered::isRelatedToActivity(Activity* a)
+{
+	if(this->firstActivityId==a->id)
+		return true;
+	if(this->secondActivityId==a->id)
+		return true;
+	return false;
+}
+
+bool Constraint2ActivitiesOrdered::isRelatedToTeacher(Teacher* t)
+{
+	if(t)
+		;
+
+	return false;
+}
+
+bool Constraint2ActivitiesOrdered::isRelatedToSubject(Subject* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool Constraint2ActivitiesOrdered::isRelatedToSubjectTag(SubjectTag* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool Constraint2ActivitiesOrdered::isRelatedToStudentsSet(Rules& r, StudentsSet* s)
+{
+	if(s)
+		;
+	if(&r)
+		;
+		
+	return false;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -3771,24 +4926,34 @@ Constraint2ActivitiesGrouped::Constraint2ActivitiesGrouped(double w, bool c, int
 	this->type = CONSTRAINT_2_ACTIVITIES_GROUPED;
 }
 
-void Constraint2ActivitiesGrouped::computeInternalStructure(Rules& r)
+bool Constraint2ActivitiesGrouped::computeInternalStructure(Rules& r)
 {
 	Activity* act;
 	int i;
-	for(i=0, act=r.activitiesList.first(); act; i++, act=r.activitiesList.next())
+	for(i=0; i<r.nInternalActivities; i++){
+		act=&r.internalActivitiesList[i];
 		if(act->id==this->firstActivityId)
 			break;
-	assert(act);
-	this->firstActivityIndex=i;
+	}
+	if(i==r.nInternalActivities)
+		return false;
 
-	for(i=0, act=r.activitiesList.first(); act; i++, act=r.activitiesList.next())
+	this->firstActivityIndex=i;
+	
+	for(i=0; i<r.nInternalActivities; i++){
+		act=&r.internalActivitiesList[i];
 		if(act->id==this->secondActivityId)
 			break;
-	assert(act);
+	}
+	if(i==r.nInternalActivities)
+		return false;
+
 	this->secondActivityIndex=i;
+	
+	return true;
 }
 
-QString Constraint2ActivitiesGrouped::getXMLDescription(Rules& r)
+QString Constraint2ActivitiesGrouped::getXmlDescription(Rules& r)
 {
 	//to avoid non-used parameter warning
 	if(&r==NULL)
@@ -3837,8 +5002,8 @@ int Constraint2ActivitiesGrouped::fitness(TimeChromosome& c, Rules& r, QString* 
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
 	if(crt_chrom!=&c || crt_rules!=&r){
-		c.getSubgroupsMatrix(r, subgroupsMatrix);
-		c.getTeachersMatrix(r, teachersMatrix);
+		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
+		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
@@ -3889,6 +5054,49 @@ int Constraint2ActivitiesGrouped::fitness(TimeChromosome& c, Rules& r, QString* 
 	return int(ceil(nbroken * weight));
 }
 
+bool Constraint2ActivitiesGrouped::isRelatedToActivity(Activity* a)
+{
+	if(this->firstActivityId==a->id)
+		return true;
+	if(this->secondActivityId==a->id)
+		return true;
+	return false;
+}
+
+bool Constraint2ActivitiesGrouped::isRelatedToTeacher(Teacher* t)
+{
+	if(t)
+		;
+
+	return false;
+}
+
+bool Constraint2ActivitiesGrouped::isRelatedToSubject(Subject* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool Constraint2ActivitiesGrouped::isRelatedToSubjectTag(SubjectTag* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool Constraint2ActivitiesGrouped::isRelatedToStudentsSet(Rules& r, StudentsSet* s)
+{
+	if(s)
+		;
+	if(&r)
+		;
+		
+	return false;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -3899,11 +5107,12 @@ ConstraintActivitiesPreferredTimes::ConstraintActivitiesPreferredTimes()
 }
 
 ConstraintActivitiesPreferredTimes::ConstraintActivitiesPreferredTimes(double w, bool c, QString te,
-	QString st, QString su, int nPT, int d[], int h[])
+	QString st, QString su, QString sut, int nPT, int d[], int h[])
 	: TimeConstraint(w, c)
 {
 	this->teacherName=te;
 	this->subjectName=su;
+	this->subjectTagName=sut;
 	this->studentsName=st;
 	this->nPreferredTimes=nPT;
 	assert(nPT<=MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_TIMES);
@@ -3914,16 +5123,18 @@ ConstraintActivitiesPreferredTimes::ConstraintActivitiesPreferredTimes(double w,
 	this->type=CONSTRAINT_ACTIVITIES_PREFERRED_TIMES;
 }
 
-void ConstraintActivitiesPreferredTimes::computeInternalStructure(Rules& r)
+bool ConstraintActivitiesPreferredTimes::computeInternalStructure(Rules& r)
 {
-	assert(this->teacherName!="" || this->studentsName!="" || this->subjectName!="");
+	//assert(this->teacherName!="" || this->studentsName!="" || this->subjectName!="" || this->subjectTagName!="");
 
 	this->nActivities=0;
 
 	QStringList::iterator it;
 	Activity* act;
 	int i;
-	for(i=0, act=r.activitiesList.first(); act; i++, act=r.activitiesList.next()){
+	for(i=0; i<r.nInternalActivities; i++){
+		act=&r.internalActivitiesList[i];
+
 		//check if this activity has the corresponding teacher
 		if(this->teacherName!=""){
 			it = act->teachersNames.find(this->teacherName);
@@ -3940,13 +5151,22 @@ void ConstraintActivitiesPreferredTimes::computeInternalStructure(Rules& r)
 		if(this->subjectName!="" && act->subjectName!=this->subjectName){
 				continue;
 		}
+		//check if this activity has the corresponding subject tag
+		if(this->subjectTagName!="" && act->subjectTagName!=this->subjectTagName){
+				continue;
+		}
 	
 		assert(this->nActivities < MAX_ACTIVITIES);	
 		this->activitiesIndices[this->nActivities++]=i;
 	}
+	
+	if(this->nActivities>0)
+		return true;
+	else
+		return false;
 }
 
-QString ConstraintActivitiesPreferredTimes::getXMLDescription(Rules& r)
+QString ConstraintActivitiesPreferredTimes::getXmlDescription(Rules& r)
 {
 	//to avoid non-used parameter warning
 	if(&r==NULL)
@@ -3955,19 +5175,21 @@ QString ConstraintActivitiesPreferredTimes::getXMLDescription(Rules& r)
 	QString s="<ConstraintActivitiesPreferredTimes>\n";
 	s+="	<Weight>"+QString::number(this->weight)+"</Weight>\n";
 	s+="	<Compulsory>";s+=yesNo(this->compulsory);s+="</Compulsory>\n";
-	if(this->teacherName!="")
-		s+="	<Teacher_Name>"+this->teacherName+"</Teacher_Name>\n";
-	if(this->studentsName!="")
-		s+="	<Students_Name>"+this->studentsName+"</Students_Name>\n";
-	if(this->subjectName!="")
-		s+="	<Subject_Name>"+this->subjectName+"</Subject_Name>\n";
+	//if(this->teacherName!="")
+		s+="	<Teacher_Name>"+protect(this->teacherName)+"</Teacher_Name>\n";
+	//if(this->studentsName!="")
+		s+="	<Students_Name>"+protect(this->studentsName)+"</Students_Name>\n";
+	//if(this->subjectName!="")
+		s+="	<Subject_Name>"+protect(this->subjectName)+"</Subject_Name>\n";
+	//if(this->subjectTagName!="")
+		s+="	<Subject_Tag_Name>"+protect(this->subjectTagName)+"</Subject_Tag_Name>\n";
 	s+="	<Number_of_Preferred_Times>"+QString::number(this->nPreferredTimes)+"</Number_of_Preferred_Times>\n";
 	for(int i=0; i<nPreferredTimes; i++){
 		s+="	<Preferred_Time>\n";
 		if(this->days[i]>=0)
-			s+="		<Preferred_Day>"+r.daysOfTheWeek[this->days[i]]+"</Preferred_Day>\n";
+			s+="		<Preferred_Day>"+protect(r.daysOfTheWeek[this->days[i]])+"</Preferred_Day>\n";
 		if(this->hours[i]>=0)
-			s+="		<Preferred_Hour>"+r.hoursOfTheDay[this->hours[i]]+"</Preferred_Hour>\n";
+			s+="		<Preferred_Hour>"+protect(r.hoursOfTheDay[this->hours[i]])+"</Preferred_Hour>\n";
 		s+="	</Preferred_Time>\n";
 	}
 	s+="</ConstraintActivitiesPreferredTimes>\n";
@@ -3984,10 +5206,20 @@ QString ConstraintActivitiesPreferredTimes::getDescription(Rules& r)
 	s+=QObject::tr("Activities with ");
 	if(this->teacherName!="")
 		s+=QObject::tr("teacher=%1, ").arg(this->teacherName);
+	else
+		s+=QObject::tr("all teachers, ");
 	if(this->studentsName!="")
 		s+=QObject::tr("students=%1, ").arg(this->studentsName);
+	else
+		s+=QObject::tr("all students, ");
 	if(this->subjectName!="")
 		s+=QObject::tr("subject=%1, ").arg(this->subjectName);
+	else
+		s+=QObject::tr("all subjects, ");
+	if(this->subjectTagName!="")
+		s+=QObject::tr("subject tag=%1, ").arg(this->subjectTagName);
+	else
+		s+=QObject::tr("all subject tags, ");
 	s+=QObject::tr("must be scheduled at: ");
 	for(int i=0; i<this->nPreferredTimes; i++){
 		s+=QString::number(i+1);
@@ -4015,10 +5247,20 @@ QString ConstraintActivitiesPreferredTimes::getDetailedDescription(Rules& r)
 
 	if(this->teacherName!="")
 		s+=QObject::tr("Teacher=%1\n").arg(this->teacherName);
+	else
+		s+=QObject::tr("All teachers\n");
 	if(this->studentsName!="")
 		s+=QObject::tr("Students=%1\n").arg(this->studentsName);
+	else
+		s+=QObject::tr("All students\n");
 	if(this->subjectName!="")
 		s+=QObject::tr("Subject=%1\n").arg(this->subjectName);
+	else
+		s+=QObject::tr("All subjects\n");
+	if(this->subjectTagName!="")
+		s+=QObject::tr("Subject tag=%1\n").arg(this->subjectTagName);
+	else
+		s+=QObject::tr("All subject tags\n");
 
 	s+=QObject::tr("must be scheduled at:\n");
 	for(int i=0; i<this->nPreferredTimes; i++){
@@ -4045,8 +5287,8 @@ int ConstraintActivitiesPreferredTimes::fitness(TimeChromosome& c, Rules& r, QSt
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
 	if(crt_chrom!=&c || crt_rules!=&r){
-		c.getSubgroupsMatrix(r, subgroupsMatrix);
-		c.getTeachersMatrix(r, teachersMatrix);
+		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
+		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
@@ -4056,41 +5298,131 @@ int ConstraintActivitiesPreferredTimes::fitness(TimeChromosome& c, Rules& r, QSt
 
 	assert(r.internalStructureComputed);
 
-	nbroken=0;
+	//without logging
+	if(conflictsString==NULL){
+		nbroken=0;
+		int tmp;
 	
-	for(int i=0; i<this->nActivities; i++){
-		int ai=this->activitiesIndices[i];
-		if(c.times[ai]!=UNALLOCATED_TIME){
-			int d=c.times[ai]%r.nDaysPerWeek; //the day when this activity was scheduled
-			int h=c.times[ai]/r.nDaysPerWeek; //the hour
-			int i;
-			for(i=0; i<this->nPreferredTimes; i++){
-				if(this->days[i]>=0 && this->days[i]!=d)
-					continue;
-				if(this->hours[i]>=0 && this->hours[i]!=h)
-					continue;
-				break;
+		for(int i=0; i<this->nActivities; i++){
+			tmp=0;
+			int ai=this->activitiesIndices[i];
+			if(c.times[ai]!=UNALLOCATED_TIME){
+				int d=c.times[ai]%r.nDaysPerWeek; //the day when this activity was scheduled
+				int h=c.times[ai]/r.nDaysPerWeek; //the hour
+				int i;
+				for(i=0; i<this->nPreferredTimes; i++){
+					if(this->days[i]>=0 && this->days[i]!=d)
+						continue;
+					if(this->hours[i]>=0 && this->hours[i]!=h)
+						continue;
+					break;
+				}
+				if(i==this->nPreferredTimes){
+					tmp=1;
+					if(r.internalActivitiesList[ai].parity==PARITY_WEEKLY) //for weekly activities, double the conflicts
+						tmp=2;
+				}
 			}
-			if(i==this->nPreferredTimes){
-				nbroken=1;
-				if(r.internalActivitiesList[ai].parity==PARITY_WEEKLY) //for weekly activities, double the conflicts
-					nbroken*=2;
+			nbroken+=tmp;
+		}
+	}
+	else{
+		nbroken=0;
+		int tmp;
+	
+		for(int i=0; i<this->nActivities; i++){
+			tmp=0;
+			int ai=this->activitiesIndices[i];
+			if(c.times[ai]!=UNALLOCATED_TIME){
+				int d=c.times[ai]%r.nDaysPerWeek; //the day when this activity was scheduled
+				int h=c.times[ai]/r.nDaysPerWeek; //the hour
+				int i;
+				for(i=0; i<this->nPreferredTimes; i++){
+					if(this->days[i]>=0 && this->days[i]!=d)
+						continue;
+					if(this->hours[i]>=0 && this->hours[i]!=h)
+						continue;
+					break;
+				}
+				if(i==this->nPreferredTimes){
+					tmp=1;
+					if(r.internalActivitiesList[ai].parity==PARITY_WEEKLY) //for weekly activities, double the conflicts
+						tmp=2;
+				}
+			}
+			nbroken+=tmp;
+			if(conflictsString!=NULL && tmp>0){
+				*conflictsString+=
+					QObject::tr("Time constraint activities preferred times broken"
+						" for activity with id=%1, "
+						" increases conflicts factor with %2\n")
+					.arg(r.internalActivitiesList[ai].id)
+					.arg(weight*tmp);
 			}
 		}
 	}
 
-	if(conflictsString!=NULL && nbroken>0){
-		*conflictsString+=
-			QObject::tr("Time constraint activities preferred times broken"
-				" for activities with teacher=%1, students=%2, subject=%3,"
-				" increases conflicts factor with %4\n")
-			.arg(this->teacherName)
-			.arg(this->studentsName)
-			.arg(this->subjectName)
-			.arg(weight*nbroken);
-	}
-
 	return int(ceil(nbroken * weight));
+}
+
+bool ConstraintActivitiesPreferredTimes::isRelatedToActivity(Activity* a)
+{
+	QStringList::iterator it;
+
+	//check if this activity has the corresponding teacher
+	if(this->teacherName!=""){
+		it = a->teachersNames.find(this->teacherName);
+		if(it==a->teachersNames.end())
+			return false;
+	}
+	//check if this activity has the corresponding students
+	if(this->studentsName!=""){
+		it = a->studentsNames.find(this->studentsName);
+		if(it==a->studentsNames.end())
+			return false;
+	}
+	//check if this activity has the corresponding subject
+	if(this->subjectName!="" && a->subjectName!=this->subjectName)
+		return false;
+	//check if this activity has the corresponding subject tag
+	if(this->subjectTagName!="" && a->subjectTagName!=this->subjectTagName)
+		return false;
+
+	return true;
+}
+
+bool ConstraintActivitiesPreferredTimes::isRelatedToTeacher(Teacher* t)
+{
+	if(t)
+		;
+
+	return false;
+}
+
+bool ConstraintActivitiesPreferredTimes::isRelatedToSubject(Subject* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintActivitiesPreferredTimes::isRelatedToSubjectTag(SubjectTag* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintActivitiesPreferredTimes::isRelatedToStudentsSet(Rules& r, StudentsSet* s)
+{
+	if(s)
+		;
+	if(&r)
+		;
+		
+	return false;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -4113,7 +5445,7 @@ ConstraintActivitiesSameStartingHour::ConstraintActivitiesSameStartingHour(doubl
 	this->type=CONSTRAINT_ACTIVITIES_SAME_STARTING_HOUR;
 }
 
-void ConstraintActivitiesSameStartingHour::computeInternalStructure(Rules &r)
+bool ConstraintActivitiesSameStartingHour::computeInternalStructure(Rules &r)
 {
 	//compute the indices of the activities,
 	//based on their unique ID
@@ -4121,16 +5453,23 @@ void ConstraintActivitiesSameStartingHour::computeInternalStructure(Rules &r)
 	for(int j=0; j<n_activities; j++)
 		this->_activities[j]=-1;
 
+	this->_n_activities=0;
 	for(int i=0; i<this->n_activities; i++){
 		int j;
 		Activity* act;
-		for(j=0, act=r.activitiesList.first(); act; act=r.activitiesList.next(), j++)
-			if(act->id==this->activitiesId[i])
-				this->_activities[i]=j;
+		for(j=0; j<r.nInternalActivities; j++){
+			act=&r.internalActivitiesList[j];
+			if(act->id==this->activitiesId[i]){
+				this->_activities[this->_n_activities++]=j;
+				break;
+			}
+		}
 	}
+	
+	if(this->_n_activities<=1)
+		return false;
 
-	for(int j=0; j<this->n_activities; j++)
-		assert(this->_activities[j]>=0);
+	return true;
 }
 
 void ConstraintActivitiesSameStartingHour::removeUseless(Rules& r)
@@ -4141,21 +5480,21 @@ void ConstraintActivitiesSameStartingHour::removeUseless(Rules& r)
 		this->_activities[j]=-1;
 
 	for(int i=0; i<this->n_activities; i++){
-		int j;
 		Activity* act;
-		for(j=0, act=r.activitiesList.first(); act; act=r.activitiesList.next(), j++)
+		for(act=r.activitiesList.first(); act; act=r.activitiesList.next())
 			if(act->id==this->activitiesId[i])
-				this->_activities[i]=j;
+				this->_activities[i]=act->id;
 	}
 
 	int i, j;
-	for(i=0, j=0; j<this->n_activities; j++)
+	i=0;
+	for(j=0; j<this->n_activities; j++)
 		if(this->_activities[j]>=0) //valid activity
-			this->activitiesId[i++]=this->activitiesId[j];
+			this->activitiesId[i++]=this->_activities[j];
 	this->n_activities=i;
 }
 
-QString ConstraintActivitiesSameStartingHour::getXMLDescription(Rules& r){
+QString ConstraintActivitiesSameStartingHour::getXmlDescription(Rules& r){
 	if(&r!=NULL)
 		;
 
@@ -4217,7 +5556,7 @@ int ConstraintActivitiesSameStartingHour::fitness(TimeChromosome& c, Rules& r, Q
 	//without logging
 	if(conflictsString==NULL){
 		nbroken=0;
-		for(int i=1; i<this->n_activities; i++){
+		for(int i=1; i<this->_n_activities; i++){
 			int t1=c.times[this->_activities[i]];
 			if(t1!=UNALLOCATED_TIME){
 				//int day1=t1%r.nDaysPerWeek;
@@ -4248,7 +5587,7 @@ int ConstraintActivitiesSameStartingHour::fitness(TimeChromosome& c, Rules& r, Q
 	//with logging
 	else{
 		nbroken=0;
-		for(int i=1; i<this->n_activities; i++){
+		for(int i=1; i<this->_n_activities; i++){
 			int t1=c.times[this->_activities[i]];
 			if(t1!=UNALLOCATED_TIME){
 				//int day1=t1%r.nDaysPerWeek;
@@ -4287,4 +5626,517 @@ int ConstraintActivitiesSameStartingHour::fitness(TimeChromosome& c, Rules& r, Q
 	}
 
 	return int (ceil ( weight * nbroken ) );
+}
+
+bool ConstraintActivitiesSameStartingHour::isRelatedToActivity(Activity* a)
+{
+	for(int i=0; i<this->n_activities; i++)
+		if(this->activitiesId[i]==a->id)
+			return true;
+	return false;
+}
+
+bool ConstraintActivitiesSameStartingHour::isRelatedToTeacher(Teacher* t)
+{
+	if(t)
+		;
+
+	return false;
+}
+
+bool ConstraintActivitiesSameStartingHour::isRelatedToSubject(Subject* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintActivitiesSameStartingHour::isRelatedToSubjectTag(SubjectTag* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintActivitiesSameStartingHour::isRelatedToStudentsSet(Rules& r, StudentsSet* s)
+{
+	if(s)
+		;
+	if(&r)
+		;
+		
+	return false;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+
+ConstraintTeachersSubjectTagsMaxHoursContinuously::ConstraintTeachersSubjectTagsMaxHoursContinuously()
+	: TimeConstraint()
+{
+	type=CONSTRAINT_TEACHERS_SUBJECT_TAGS_MAX_HOURS_CONTINUOUSLY;
+}
+
+ConstraintTeachersSubjectTagsMaxHoursContinuously::ConstraintTeachersSubjectTagsMaxHoursContinuously(double w, bool c, int maxhours)
+ : TimeConstraint(w, c)
+ {
+	assert(maxhours>0);
+	this->maxHoursContinuously=maxhours;
+
+	this->type=CONSTRAINT_TEACHERS_SUBJECT_TAGS_MAX_HOURS_CONTINUOUSLY;
+}
+
+bool ConstraintTeachersSubjectTagsMaxHoursContinuously::computeInternalStructure(Rules& r)
+{
+	if(&r)
+		;
+		
+	return true;
+}
+
+QString ConstraintTeachersSubjectTagsMaxHoursContinuously::getXmlDescription(Rules& r){
+	if(&r!=NULL)
+		;
+
+	QString s="<ConstraintTeachersSubjectTagsMaxHoursContinuously>\n";
+	s+="	<Weight>"+QString::number(this->weight)+"</Weight>\n";
+	s+="	<Compulsory>";s+=yesNo(this->compulsory);s+="</Compulsory>\n";
+	s+="	<Maximum_Hours_Continuously>"+QString::number(this->maxHoursContinuously)+"</Maximum_Hours_Continuously>\n";
+	s+="</ConstraintTeachersSubjectTagsMaxHoursContinuously>\n";
+	return s;
+}
+
+QString ConstraintTeachersSubjectTagsMaxHoursContinuously::getDescription(Rules& r){
+	if(&r!=NULL)
+		;
+
+	QString s;
+	s+=QObject::tr("Teachers subject tags max %1 hours in a row")
+	 .arg(this->maxHoursContinuously);	 
+	s+=", ";
+	s+=(QObject::tr("W:%1").arg(this->weight));s+=", ";
+	s+=(QObject::tr("C:%1").arg(yesNoTranslated(this->compulsory))); s+=", ";
+
+	return s;
+}
+
+QString ConstraintTeachersSubjectTagsMaxHoursContinuously::getDetailedDescription(Rules& r){
+	if(&r!=NULL)
+		;
+
+	QString s=QObject::tr("Time constraint");s+="\n";
+	s+=QObject::tr("Teachers subject tags max %1 hours in a row")
+	 .arg(this->maxHoursContinuously);
+	s+="\n";
+	s+=(QObject::tr("Weight=%1").arg(this->weight));
+	s+="\n";
+	s+=(QObject::tr("Compulsory=%1").arg(yesNoTranslated(this->compulsory)));
+	s+="\n";
+	s+=QObject::tr("Warning: this constraint dramatically slows down the execution of the program");
+	s+="\n";
+
+	return s;
+}
+
+//critical function here - must be optimized for speed
+int ConstraintTeachersSubjectTagsMaxHoursContinuously::fitness(TimeChromosome& c, Rules& r, QString* conflictsString)
+{
+	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
+	if(crt_chrom!=&c || crt_rules!=&r){
+		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
+		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
+
+		crt_chrom=&c;
+		crt_rules=&r;
+	}
+
+	int nbroken;
+
+	//without logging
+	if(conflictsString==NULL){
+		nbroken=0;
+		for(uint st=0; st<r.subjectTagsList.count(); st++){
+			for(int d=0; d<r.nDaysPerWeek; d++)
+				for(int h=0; h<r.nHoursPerDay; h++)
+					for(int t=0; t<r.nInternalTeachers; t++)
+						teachersSubjectTags[t][d][h]=0;
+						
+			for(int i=0; i<r.nInternalActivities; i++)
+				if(c.times[i]!=UNALLOCATED_TIME){
+					Activity* act=&r.internalActivitiesList[i];
+					if((uint)(act->subjectTagIndex)!=st)
+						continue;
+					int hour=c.times[i]/r.nDaysPerWeek;
+					int day=c.times[i]%r.nDaysPerWeek;
+					for(int dd=0; dd<act->duration && hour+dd<r.nHoursPerDay; dd++)
+						for(int it=0; it<act->nTeachers; it++){
+							int tch=act->teachers[it];
+							if(act->parity==PARITY_WEEKLY){
+								teachersSubjectTags[tch][day][hour+dd]+=2;
+							}
+							else{
+								assert(act->parity==PARITY_BIWEEKLY);
+								teachersSubjectTags[tch][day][hour+dd]++;
+							}
+						}
+				}
+				
+			for(int t=0; t<r.nInternalTeachers; t++){
+				for(int d=0; d<r.nDaysPerWeek; d++){
+					//Bi-weekly activities are treated here as weekly ones, for the sake of simplicity					
+					int n_cont_hours=0;
+					for(int h=0; h<r.nHoursPerDay; h++){
+						if(teachersSubjectTags[t][d][h]>0){
+							n_cont_hours++;
+							if(n_cont_hours>this->maxHoursContinuously){
+								nbroken+=2;
+							}
+						}
+						else
+							n_cont_hours=0;
+					}
+				}
+			}
+		}
+	}
+	//with logging
+	else{
+		nbroken=0;
+		for(uint st=0; st<r.subjectTagsList.count(); st++){
+			for(int d=0; d<r.nDaysPerWeek; d++)
+				for(int h=0; h<r.nHoursPerDay; h++)
+					for(int t=0; t<r.nInternalTeachers; t++)
+						teachersSubjectTags[t][d][h]=0;
+						
+			for(int i=0; i<r.nInternalActivities; i++)
+				if(c.times[i]!=UNALLOCATED_TIME){
+					Activity* act=&r.internalActivitiesList[i];
+					if((uint)(act->subjectTagIndex)!=st)
+						continue;
+					int hour=c.times[i]/r.nDaysPerWeek;
+					int day=c.times[i]%r.nDaysPerWeek;
+					for(int dd=0; dd<act->duration && hour+dd<r.nHoursPerDay; dd++)
+						for(int it=0; it<act->nTeachers; it++){
+							int tch=act->teachers[it];
+							if(act->parity==PARITY_WEEKLY){
+								teachersSubjectTags[tch][day][hour+dd]+=2;
+							}
+							else{
+								assert(act->parity==PARITY_BIWEEKLY);
+								teachersSubjectTags[tch][day][hour+dd]++;
+							}
+						}
+				}
+				
+			for(int t=0; t<r.nInternalTeachers; t++){
+				for(int d=0; d<r.nDaysPerWeek; d++){
+					//Bi-weekly activities are treated here as weekly ones, for the sake of simplicity					
+					int n_cont_hours=0;
+					for(int h=0; h<r.nHoursPerDay; h++){
+						if(teachersSubjectTags[t][d][h]>0){
+							n_cont_hours++;
+							if(n_cont_hours>this->maxHoursContinuously){
+								nbroken+=2;
+
+								if(conflictsString!=NULL){
+									(*conflictsString)+=(QObject::tr(
+										"Time constraint teachers subject tags max %1 hours in a row broken for subject tag %2, teacher %3, on day %4, hour %5")
+										.arg(QString::number(this->maxHoursContinuously))
+										.arg(r.subjectTagsList.at(st)->name)
+										.arg(r.internalTeachersList[t]->name)
+										.arg(r.daysOfTheWeek[d])
+										.arg(r.hoursOfTheDay[h])
+										)
+										+
+								 		(QObject::tr(". This increases the conflicts factor with %1").arg(QString::number(2*weight)))
+										+ "\n";
+								}
+							}
+						}
+						else
+							n_cont_hours=0;
+					}
+				}
+			}
+		}
+	}
+	
+	return int (ceil ( weight * nbroken ) );
+}
+
+bool ConstraintTeachersSubjectTagsMaxHoursContinuously::isRelatedToActivity(Activity* a)
+{
+	if(a)
+		;
+
+	return false;
+}
+
+bool ConstraintTeachersSubjectTagsMaxHoursContinuously::isRelatedToTeacher(Teacher* t)
+{
+	if(t)
+		;
+
+	return true;
+}
+
+bool ConstraintTeachersSubjectTagsMaxHoursContinuously::isRelatedToSubject(Subject* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintTeachersSubjectTagsMaxHoursContinuously::isRelatedToSubjectTag(SubjectTag* s)
+{
+	if(s)
+		;
+
+	return true;
+}
+
+bool ConstraintTeachersSubjectTagsMaxHoursContinuously::isRelatedToStudentsSet(Rules& r, StudentsSet* s)
+{
+	if(s)
+		;
+	if(&r)
+		;
+
+	return false;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+
+ConstraintTeachersSubjectTagMaxHoursContinuously::ConstraintTeachersSubjectTagMaxHoursContinuously()
+	: TimeConstraint()
+{
+	type=CONSTRAINT_TEACHERS_SUBJECT_TAG_MAX_HOURS_CONTINUOUSLY;
+}
+
+ConstraintTeachersSubjectTagMaxHoursContinuously::ConstraintTeachersSubjectTagMaxHoursContinuously(double w, bool c, int maxhours, const QString& subjecttag)
+ : TimeConstraint(w, c)
+ {
+	assert(maxhours>0);
+	this->maxHoursContinuously=maxhours;
+	this->subjectTagName=subjecttag;
+
+	this->type=CONSTRAINT_TEACHERS_SUBJECT_TAG_MAX_HOURS_CONTINUOUSLY;
+}
+
+bool ConstraintTeachersSubjectTagMaxHoursContinuously::computeInternalStructure(Rules& r)
+{
+	this->subjectTagIndex=r.searchSubjectTag(this->subjectTagName);
+	return true;
+}
+
+QString ConstraintTeachersSubjectTagMaxHoursContinuously::getXmlDescription(Rules& r){
+	if(&r!=NULL)
+		;
+
+	QString s="<ConstraintTeachersSubjectTagMaxHoursContinuously>\n";
+	s+="	<Weight>"+QString::number(this->weight)+"</Weight>\n";
+	s+="	<Compulsory>";s+=yesNo(this->compulsory);s+="</Compulsory>\n";
+	s+="	<Maximum_Hours_Continuously>"+QString::number(this->maxHoursContinuously)+"</Maximum_Hours_Continuously>\n";
+	s+="	<Subject_Tag>"+protect(this->subjectTagName)+"</Subject_Tag>\n";
+	s+="</ConstraintTeachersSubjectTagMaxHoursContinuously>\n";
+	return s;
+}
+
+QString ConstraintTeachersSubjectTagMaxHoursContinuously::getDescription(Rules& r){
+	if(&r!=NULL)
+		;
+
+	QString s;
+	s+=QObject::tr("Teachers subject tag %1 max %2 hours in a row")
+	 .arg(this->subjectTagName)
+	 .arg(this->maxHoursContinuously);	 
+	s+=", ";
+	s+=(QObject::tr("W:%1").arg(this->weight));s+=", ";
+	s+=(QObject::tr("C:%1").arg(yesNoTranslated(this->compulsory))); s+=", ";
+
+	return s;
+}
+
+QString ConstraintTeachersSubjectTagMaxHoursContinuously::getDetailedDescription(Rules& r){
+	if(&r!=NULL)
+		;
+
+	QString s=QObject::tr("Time constraint");s+="\n";
+	s+=QObject::tr("Teachers subject tag %1 max %2 hours in a row")
+	 .arg(this->subjectTagName)
+	 .arg(this->maxHoursContinuously);
+	s+="\n";
+	s+=(QObject::tr("Weight=%1").arg(this->weight));
+	s+="\n";
+	s+=(QObject::tr("Compulsory=%1").arg(yesNoTranslated(this->compulsory)));
+	s+="\n";
+	s+=QObject::tr("Warning: this constraint dramatically slows down the execution of the program");
+	s+="\n";
+
+	return s;
+}
+
+//critical function here - must be optimized for speed
+int ConstraintTeachersSubjectTagMaxHoursContinuously::fitness(TimeChromosome& c, Rules& r, QString* conflictsString)
+{
+	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
+	if(crt_chrom!=&c || crt_rules!=&r){
+		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
+		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
+
+		crt_chrom=&c;
+		crt_rules=&r;
+	}
+
+	int nbroken;
+
+	//without logging
+	if(conflictsString==NULL){
+		nbroken=0;
+		for(int d=0; d<r.nDaysPerWeek; d++)
+			for(int h=0; h<r.nHoursPerDay; h++)
+				for(int t=0; t<r.nInternalTeachers; t++)
+					teachersSubjectTags[t][d][h]=0;
+						
+		for(int i=0; i<r.nInternalActivities; i++)
+			if(c.times[i]!=UNALLOCATED_TIME){
+				Activity* act=&r.internalActivitiesList[i];
+				if(act->subjectTagIndex!=this->subjectTagIndex)
+					continue;
+				int hour=c.times[i]/r.nDaysPerWeek;
+				int day=c.times[i]%r.nDaysPerWeek;
+				for(int dd=0; dd<act->duration && hour+dd<r.nHoursPerDay; dd++)
+					for(int it=0; it<act->nTeachers; it++){
+						int tch=act->teachers[it];
+						if(act->parity==PARITY_WEEKLY){
+							teachersSubjectTags[tch][day][hour+dd]+=2;
+						}
+						else{
+							assert(act->parity==PARITY_BIWEEKLY);
+							teachersSubjectTags[tch][day][hour+dd]++;
+						}
+					}
+			}
+				
+		for(int t=0; t<r.nInternalTeachers; t++){
+			for(int d=0; d<r.nDaysPerWeek; d++){
+				//Bi-weekly activities are treated here as weekly ones, for the sake of simplicity					
+				int n_cont_hours=0;
+				for(int h=0; h<r.nHoursPerDay; h++){
+					if(teachersSubjectTags[t][d][h]>0){
+						n_cont_hours++;
+						if(n_cont_hours>this->maxHoursContinuously){
+							nbroken+=2;
+						}
+					}
+					else
+						n_cont_hours=0;
+				}
+			}
+		}
+	}
+	//with logging
+	else{
+		nbroken=0;
+		for(int d=0; d<r.nDaysPerWeek; d++)
+			for(int h=0; h<r.nHoursPerDay; h++)
+				for(int t=0; t<r.nInternalTeachers; t++)
+					teachersSubjectTags[t][d][h]=0;
+						
+		for(int i=0; i<r.nInternalActivities; i++)
+			if(c.times[i]!=UNALLOCATED_TIME){
+				Activity* act=&r.internalActivitiesList[i];
+				if(act->subjectTagIndex!=this->subjectTagIndex)
+					continue;
+				int hour=c.times[i]/r.nDaysPerWeek;
+				int day=c.times[i]%r.nDaysPerWeek;
+				for(int dd=0; dd<act->duration && hour+dd<r.nHoursPerDay; dd++)
+					for(int it=0; it<act->nTeachers; it++){
+						int tch=act->teachers[it];
+						if(act->parity==PARITY_WEEKLY){
+							teachersSubjectTags[tch][day][hour+dd]+=2;
+						}
+						else{
+							assert(act->parity==PARITY_BIWEEKLY);
+							teachersSubjectTags[tch][day][hour+dd]++;
+						}
+					}
+			}
+				
+		for(int t=0; t<r.nInternalTeachers; t++){
+			for(int d=0; d<r.nDaysPerWeek; d++){
+				//Bi-weekly activities are treated here as weekly ones, for the sake of simplicity					
+				int n_cont_hours=0;
+				for(int h=0; h<r.nHoursPerDay; h++){
+					if(teachersSubjectTags[t][d][h]>0){
+						n_cont_hours++;
+						if(n_cont_hours>this->maxHoursContinuously){
+							nbroken+=2;
+
+							if(conflictsString!=NULL){
+								(*conflictsString)+=(QObject::tr(
+									"Time constraint teachers subject tag max %1 hours in a row broken for subject tag %2, teacher %3, on day %4, hour %5")
+									.arg(QString::number(this->maxHoursContinuously))
+									.arg(this->subjectTagName)
+									.arg(r.internalTeachersList[t]->name)
+									.arg(r.daysOfTheWeek[d])
+									.arg(r.hoursOfTheDay[h])
+									)
+									+
+							 		(QObject::tr(". This increases the conflicts factor with %1").arg(QString::number(2*weight)))
+									+ "\n";
+							}
+						}
+					}
+					else
+						n_cont_hours=0;
+				}
+			}
+		}
+	}
+	
+	return int (ceil ( weight * nbroken ) );
+}
+
+bool ConstraintTeachersSubjectTagMaxHoursContinuously::isRelatedToActivity(Activity* a)
+{
+	if(a)
+		;
+
+	return false;
+}
+
+bool ConstraintTeachersSubjectTagMaxHoursContinuously::isRelatedToTeacher(Teacher* t)
+{
+	if(t)
+		;
+
+	return true;
+}
+
+bool ConstraintTeachersSubjectTagMaxHoursContinuously::isRelatedToSubject(Subject* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintTeachersSubjectTagMaxHoursContinuously::isRelatedToSubjectTag(SubjectTag* s)
+{
+	return s->name==this->subjectTagName;
+}
+
+bool ConstraintTeachersSubjectTagMaxHoursContinuously::isRelatedToStudentsSet(Rules& r, StudentsSet* s)
+{
+	if(s)
+		;
+	if(&r)
+		;
+
+	return false;
 }

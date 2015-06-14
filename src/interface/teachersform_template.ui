@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>483</width>
-            <height>478</height>
+            <width>656</width>
+            <height>536</height>
         </rect>
     </property>
     <property name="caption">
@@ -25,24 +25,6 @@
         <property name="spacing">
             <number>6</number>
         </property>
-        <widget class="QListBox" row="0" column="0" rowspan="1" colspan="2">
-            <item>
-                <property name="text">
-                    <string>New Item</string>
-                </property>
-            </item>
-            <property name="name">
-                <cstring>teachersListBox</cstring>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="3" column="0">
-            <property name="name">
-                <cstring>closePushButton</cstring>
-            </property>
-            <property name="text">
-                <string>Close</string>
-            </property>
-        </widget>
         <widget class="QPushButton" row="1" column="0">
             <property name="name">
                 <cstring>addTeacherPushButton</cstring>
@@ -67,12 +49,54 @@
                 <string>Sort alphabetically</string>
             </property>
         </widget>
+        <widget class="QListBox" row="0" column="0">
+            <item>
+                <property name="text">
+                    <string>New Item</string>
+                </property>
+            </item>
+            <property name="name">
+                <cstring>teachersListBox</cstring>
+            </property>
+        </widget>
+        <widget class="QTextEdit" row="0" column="1">
+            <property name="name">
+                <cstring>currentTeacherTextEdit</cstring>
+            </property>
+            <property name="readOnly">
+                <bool>true</bool>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="4" column="0">
+            <property name="name">
+                <cstring>closePushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Close</string>
+            </property>
+        </widget>
         <widget class="QPushButton" row="2" column="0">
             <property name="name">
                 <cstring>renameTeacherPushButton</cstring>
             </property>
             <property name="text">
                 <string>Rename current</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="3" column="0">
+            <property name="name">
+                <cstring>activateTeacherPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Activate all activities for selected teacher</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="3" column="1">
+            <property name="name">
+                <cstring>deactivateTeacherPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>De-activate all activities for selected teacher</string>
             </property>
         </widget>
     </grid>
@@ -108,6 +132,24 @@
         <receiver>TeachersForm_template</receiver>
         <slot>removeTeacher()</slot>
     </connection>
+    <connection>
+        <sender>teachersListBox</sender>
+        <signal>highlighted(int)</signal>
+        <receiver>TeachersForm_template</receiver>
+        <slot>teacherChanged(int)</slot>
+    </connection>
+    <connection>
+        <sender>activateTeacherPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>TeachersForm_template</receiver>
+        <slot>activateTeacher()</slot>
+    </connection>
+    <connection>
+        <sender>deactivateTeacherPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>TeachersForm_template</receiver>
+        <slot>deactivateTeacher()</slot>
+    </connection>
 </connections>
 <tabstops>
     <tabstop>teachersListBox</tabstop>
@@ -122,6 +164,9 @@
     <slot>removeTeacher()</slot>
     <slot>renameTeacher()</slot>
     <slot>sortTeachers()</slot>
+    <slot>teacherChanged(int)</slot>
+    <slot>activateTeacher()</slot>
+    <slot>deactivateTeacher()</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

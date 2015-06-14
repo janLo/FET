@@ -33,6 +33,7 @@ ModifyConstraintActivitiesPreferredTimesForm::ModifyConstraintActivitiesPreferre
 	updateTeachersComboBox();
 	updateStudentsComboBox();
 	updateSubjectsComboBox();
+	updateSubjectTagsComboBox();
 
 	preferredTimesTable->setNumRows(gt.rules.nHoursPerDay+1);
 	preferredTimesTable->setNumCols(gt.rules.nDaysPerWeek+1);
@@ -150,12 +151,29 @@ void ModifyConstraintActivitiesPreferredTimesForm::updateSubjectsComboBox(){
 	subjectsComboBox->setCurrentItem(j);
 }
 
+void ModifyConstraintActivitiesPreferredTimesForm::updateSubjectTagsComboBox(){
+	int i=0, j=-1;
+	subjectTagsComboBox->clear();
+	subjectTagsComboBox->insertItem("");
+	if(this->_ctr->subjectTagName=="")
+		j=i;
+	i++;
+	for(SubjectTag* s=gt.rules.subjectTagsList.first(); s; s=gt.rules.subjectTagsList.next()){
+		subjectTagsComboBox->insertItem(s->name);
+		if(s->name==this->_ctr->subjectTagName)
+			j=i;
+		i++;
+	}
+	assert(j>=0);
+	subjectTagsComboBox->setCurrentItem(j);
+}
+
 void ModifyConstraintActivitiesPreferredTimesForm::ok()
 {
 	double weight;
 	QString tmp=weightLineEdit->text();
 	sscanf(tmp, "%lf", &weight);
-	if(weight<=0.0){
+	if(weight<0.0){
 		QMessageBox::warning(this, QObject::tr("FET information"),
 			QObject::tr("Invalid weight"));
 		return;
@@ -177,10 +195,14 @@ void ModifyConstraintActivitiesPreferredTimesForm::ok()
 	if(subject!="")
 		assert(gt.rules.searchSubject(subject)>=0);
 		
-	if(teacher=="" && students=="" && subject=="")
+	QString subjectTag=subjectTagsComboBox->currentText();
+	if(subjectTag!="")
+		assert(gt.rules.searchSubjectTag(subjectTag)>=0);
+		
+	if(teacher=="" && students=="" && subject=="" && subjectTag=="")
 		QMessageBox::warning(this, QObject::tr("FET information"),
 			QObject::tr("Please be careful - you are considering all the activities"
-			"\n(no teacher, students or subject specified)"));
+			"\n(no teacher, students, subject or subject tag specified)"));
 
 	int days[MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_TIMES];
 	int hours[MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_TIMES];

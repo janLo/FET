@@ -43,9 +43,13 @@ public:
 	void updateActivitiesListBox();
 	
 	void blockChanged();
+	
+	bool filterOk(Activity* a);
+	void filterChanged();	
 
 	void addActivity();
 	void removeActivity();
+	void clear();
 
 	void addConstraint();
 	

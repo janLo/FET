@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.0" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
 <class>TimetableViewTeachersForm_template</class>
 <widget class="QDialog">
     <property name="name">
@@ -55,14 +55,6 @@
                 <bool>true</bool>
             </property>
         </widget>
-        <widget class="QPushButton" row="5" column="0">
-            <property name="name">
-                <cstring>closePushButton</cstring>
-            </property>
-            <property name="text">
-                <string>Close</string>
-            </property>
-        </widget>
         <widget class="QListBox" row="1" column="0" rowspan="2" colspan="1">
             <item>
                 <property name="text">
@@ -92,6 +84,22 @@
                 <bool>true</bool>
             </property>
         </widget>
+        <widget class="QPushButton" row="5" column="1">
+            <property name="name">
+                <cstring>closePushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Close</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="5" column="0">
+            <property name="name">
+                <cstring>lockPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Lock selected activities</string>
+            </property>
+        </widget>
     </grid>
 </widget>
 <connections>
@@ -113,10 +121,17 @@
         <receiver>TimetableViewTeachersForm_template</receiver>
         <slot>detailActivity(int,int)</slot>
     </connection>
+    <connection>
+        <sender>lockPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>TimetableViewTeachersForm_template</receiver>
+        <slot>lock()</slot>
+    </connection>
 </connections>
 <slots>
     <slot>detailActivity(int, int)</slot>
     <slot>teacherChanged(const QString&amp;)</slot>
+    <slot>lock()</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

@@ -31,8 +31,6 @@ public:
 	void removeActivity();
 	void modifyActivity();
 	void activityChanged(int index);
-	void teacherChanged(const QString& dummy);
-	void studentsChanged(const QString& dummy);
 	void filterChanged();
 	bool filterOk(Activity* act);
 };

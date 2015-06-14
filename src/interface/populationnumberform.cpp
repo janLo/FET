@@ -23,6 +23,8 @@
 PopulationNumberForm::PopulationNumberForm()
  : PopulationNumberForm_template()
 {
+	this->p_n=population_number;
+
 	populationNumberSlider->setMaxValue(MAX_POPULATION_SIZE);
 	populationNumberSlider->setValue(population_number);
 	populationNumberSlider->setMinValue(1);
@@ -40,10 +42,22 @@ PopulationNumberForm::~PopulationNumberForm()
 
 void PopulationNumberForm::populationNumberChanged()
 {
-	population_number=populationNumberSlider->value();
+	this->p_n=populationNumberSlider->value();
 
 	QString s=QObject::tr("Population number (power of search)");
 	s+="\n";
-	s+=QString::number(population_number);
+	s+=QString::number(this->p_n);
 	populationNumberTextLabel->setText(s);
+}
+
+void PopulationNumberForm::cancel()
+{
+	this->close();
+}
+
+void PopulationNumberForm::ok()
+{
+	population_number=this->p_n;
+
+	this->close();
 }

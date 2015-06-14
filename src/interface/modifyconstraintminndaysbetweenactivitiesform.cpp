@@ -42,6 +42,9 @@ ModifyConstraintMinNDaysBetweenActivitiesForm::ModifyConstraintMinNDaysBetweenAc
 	minDaysSpinBox->setMinValue(1);
 	minDaysSpinBox->setMaxValue(gt.rules.nDaysPerWeek-1);
 	minDaysSpinBox->setValue(ctr->minDays);
+
+	compulsoryCheckBox->setChecked(ctr->compulsory);
+	weightLineEdit->setText(QString::number(ctr->weight));
 }
 
 ModifyConstraintMinNDaysBetweenActivitiesForm::~ModifyConstraintMinNDaysBetweenActivitiesForm()
@@ -67,7 +70,7 @@ void ModifyConstraintMinNDaysBetweenActivitiesForm::ok()
 	double weight;
 	QString tmp=weightLineEdit->text();
 	sscanf(tmp, "%lf", &weight);
-	if(weight<=0.0){
+	if(weight<0.0){
 		QMessageBox::warning(this, QObject::tr("FET information"),
 			QObject::tr("Invalid weight"));
 		return;

@@ -380,8 +380,10 @@ Versions 3.11.0 - 3.11.6 - liviu@lalescu.ro
 - Version 3.11.6
 	- Improved Romanian translation
 ---------------------------------------------------------------------------------
-Versions 3.12.0 - 3.12.x - liviu@lalescu.ro, French translation by Jerome Durand (fetfr@free.fr),
-	Catalan translation by Miguel Gea Milvaques.
+Versions 3.12.0 - 3.12.32 - liviu@lalescu.ro, 
+	French translation by Jerome Durand (fetfr@free.fr),
+	Catalan translation by Miguel Gea Milvaques, 
+	Malay translation by Abdul Hadi Kamel.
 - Version 3.12.0
 	- The user now has the possibility to choose only one phase allocation 
 	(for difficult space constraints)
@@ -459,3 +461,162 @@ Versions 3.12.0 - 3.12.x - liviu@lalescu.ro, French translation by Jerome Durand
 		by Sebastian Canagaratna)
 - Version 3.12.30
 	- Added Catalan translation (thanks to Miguel Gea Milvaques)
+- Version 3.12.31
+	- The activities dialog now contains a subject tag filter
+	- Important bug fixes in the constraints same starting time, same starting hour and same room
+- Version 3.12.32
+	- Added Malay translation (thanks to Abdul Hadi Kamel)
+---------------------------------------------------------------------------------
+Versions 3.13.0 - 3.13.8 - liviu@lalescu.ro, 
+- Version 3.13.0
+	- Added ConstraintSubjectSubjectTagPreferredRoom(s) and ConstraintSubjectPreferredRoom(s)
+	(suggested by Abdul Hadi Kamel).
+	- Improved the conflicts reporting for space constraints (now, it keeps track of
+	the parity).
+	- Various bug fixes.
+- Version 3.13.1
+	- Small improvement in speed.
+- Version 3.13.2
+	- Small bug fixes.
+	- Added the possibility to lock activities when viewing the timetable (suggested by Abdul Hadi Kamel).
+- Version 3.13.3
+	- Possibility to fix only time or space (suggested by Abdul Hadi Kamel).
+	- Small bug-fixes.
+- Version 3.13.4
+	- Small improvement (the program does not crash anymore if there are more activities, constraints, etc.
+	 than the maximum allowed).
+- Version 3.13.5
+- Version 3.13.6
+	- Bug fix - memory leakage fixed.
+- Version 3.13.7
+	- Now the selected language has a check mark near it.
+- Version 3.13.8
+	- Small bug fix (when adding a new ConstraintActivityPreferredTime).
+---------------------------------------------------------------------------------
+Versions 3.14.0 - 3.14.21
+	- liviu@lalescu.ro, 
+	- Polish translation by Radoslaw Pasiok,
+	- Malay translation update by Abdul Hadi Kamel.
+- Version 3.14.0
+	- Now each activity's description includes the directly related constraints.
+	(suggested by Abdul Hadi Kamel)
+- Version 3.14.1
+	- Bug fix.
+- Version 3.14.2
+	- When quitting, the save file message box has default on "Yes".
+	- Now, the teachers and subjects form shows also the related constraints.
+	- Various small bug-fixes.
+- Version 3.14.3
+	- Now, the subject tags form shows also the related constraints.
+- Version 3.14.4
+	- Now, the students sets, rooms and equipments forms show also the related constraints.
+- Version 3.14.5
+	- Small bug fix (when showing related constraints for students sets).
+- Version 3.14.6
+	- Added ConstraintTeachersSubjectTagsMaxHoursContinuously (suggested
+	by Abdul Hadi-Kamel).
+- Version 3.14.7
+	- Added ConstraintTeachersSubjectTagMaxHoursContinuously (suggested
+	by Abdul Hadi-Kamel).
+	- Small bug fix.
+- Version 3.14.8
+	- Bug fix (thanks to Sebastian Canagaratna).
+- Version 3.14.9
+	- MAX_YEARS is now 100.
+	- Small improvement in the code.
+- Version 3.14.10
+	- Small bug fix.
+- Version 3.14.11
+	- Improved population size dialog.
+	- Improved the name of 3 constraints
+		(ConstraintTeachersNoMoreThanXHoursDaily is now ConstraintTeachersMaxHoursDaily,
+		ConstraintTeachersNoMoreThanXHoursContinuously is now ConstraintTeachersMaxHoursContinuously and
+		ConstraintTeachersSubgroupsNoMoreThanXHoursDaily is now ConstraintTeachersSubgroupsMaxHoursDaily)
+- Version 3.14.12
+	- Small bug fix and improvement in modify activity dialog
+- Version 3.14.13
+	- Improved "Save as" dialog.
+- Version 3.14.14
+	- Now, special characters <, >, ', " and & are handled correctly in names 
+	(bug reported by Frans de Bruijn)
+	- Code readability improvement (instead of getXMLDescription, now it is getXmlDescription)
+- Version 3.14.15
+	- Improved ConstraintActivitiesPreferredTimes, to include also a subject tag.
+	- Bug fix in ConstraintActivitiesPreferredTimes.
+	- Improvement when saving a ConstraintActivitiesPreferredTimes.
+- Version 3.14.16
+	- Bug fix (when viewing the timetable).
+- Version 3.14.17
+	- Added Polish translation (by Radoslaw Pasiok).
+- Version 3.14.18
+	- Updated Malay translation (by Abdul Hadi Kamel).
+- Version 3.14.19
+	- Bug fix (in ConstraintStudentsSetNotAvailable) - thanks to Daan Huntjens
+	Corrected with the help of Valgrind.
+- Version 3.14.20
+	- Bug fix in modify constraint activities not overlapping and modify
+	constraint min n days between activities.
+- Version 3.14.21
+	- Small bug fixes (when showing the conflicts, now the hours are shown properly).
+---------------------------------------------------------------------------------
+Versions 3.15.0 - 3.15.4
+	- liviu@lalescu.ro,
+	- constraints and constraints subtags help files by Daniel S.
+- Version 3.15.0
+	- When adding or modifying an activity, the dialog contains a list box for teachers and
+	students, allowing as many as needed (suggested by Dragos Petrascu).
+	- Changes in the way of viewing the generated timetables (suggested by Scott Sweeting).
+	- Bug fix: saving the timetables in html and xml corrected to handle special characters
+	like <, >, & etc.
+	- Added ConstraintTeacherSubjectRequireRoom (suggested by Scott Sweeting).
+- Version 3.15.1
+	- Clear buttons in AddActivity and ModifyActivity now work correctly.
+- Version 3.15.2
+	- Added help files and help menu for constraints and constraints subtags (by Daniel S).
+	- Added Constraint2ActivitiesOrdered (suggested by Gianluca Salvo).
+- Version 3.15.3
+	- Time allocation now generates a .html file for students timetable ordered by
+	students subgroup and days and hours.
+- Version 3.15.4
+	- Bug fix - the interface now only permits MAX_TEACHERS_PER_ACTIVITY (currently 6)
+	for an activity.
+---------------------------------------------------------------------------------
+Versions 3.16.0 - 3.16.9
+	- liviu@lalescu.ro
+- Version 3.16.0
+	- Added buildings
+	- Added filters for rooms dialog
+	- The rooms adding and modifying dialogs are improved
+- Version 3.16.1
+	- Added ConstraintMinimizeBuildingChangesForTeachers (suggested by Dragos Petrascu)
+	- Added ConstraintMinimizeBuildingChangesForStudents (suggested by Dragos Petrascu)
+- Version 3.16.2
+	- Added ConstraintMaxBuildingChangesPerDayForTeachers (suggested by Dragos Petrascu)
+	- Added ConstraintMaxBuildingChangesPerDayForStudents (suggested by Dragos Petrascu)
+- Version 3.16.3
+	- Added ConstraintMinimizeNumberOfRoomsForTeachers (suggested by Dragos Petrascu)
+	- Small bug fixes
+- Version 3.16.4
+	- Removed ConstraintMinimizeBuildingChangesForTeachers and ConstraintMinimizeBuildingChangesForStudents
+	- Added ConstraintMaxRoomChangesPerDayForTeachers & ConstraintMaxRoomChangesPerDayForStudents
+- Version 3.16.5
+	- The _studentstimetable2.html contains also the teachers (suggested by Daniel Schockett).
+- Version 3.16.6
+	- The activity can now contain maximum 100 teachers (sugested by Dragos Petrascu)
+- Version 3.16.7
+	- Small interface bug fixes in ConstraintMaxRoomChangesPerDay add dialog and modify
+	dialog (reported by Daan Huntjens).
+- Version 3.16.8
+	- Improved AddConstraintActivitiesSameStartingTime dialog (suggested by Yush Yuen).
+- Version 3.16.9
+	- Bug fix in ConstraintActivityPreferredTime (suggested by Yush Yuen).
+	- The weight of the constraints can be 0 (suggested by Yush Yuen).
+---------------------------------------------------------------------------------
+Versions 3.17.0 - 3.17.x
+	- liviu@lalescu.ro
+- Version 3.17.0
+	- Small bug fixes.
+	- The user can now select a list of active activities to build the schedule upon.
+- Version 3.17.1
+	- Improved the saving in .html of the teachers' timetable (suggested
+	by Sebastian O'Halloran).

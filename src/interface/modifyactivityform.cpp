@@ -39,7 +39,15 @@
 			(i==4?duration5SpinBox:					\
 			(i==5?duration6SpinBox:					\
 			(i==6?duration7SpinBox:					\
-			(duration1SpinBox))))))))
+			(duration8SpinBox))))))))
+#define activ(i)		(i==0?active1CheckBox:			\
+			(i==1?active2CheckBox:					\
+			(i==2?active3CheckBox:					\
+			(i==3?active4CheckBox:					\
+			(i==4?active5CheckBox:					\
+			(i==5?active6CheckBox:					\
+			(i==6?active7CheckBox:					\
+			(active8CheckBox))))))))
 
 ModifyActivityForm::ModifyActivityForm(int id, int activityGroupId)
 {
@@ -49,46 +57,10 @@ ModifyActivityForm::ModifyActivityForm(int id, int activityGroupId)
 		if(act->activityGroupId==this->_activityGroupId && act->id==this->_id)
 			this->_activity=act;
 			
-	QStringList::Iterator it = this->_activity->teachersNames.begin();
-	assert(it != this->_activity->teachersNames.end());
-	this->_teacher1=*it;
-	if(it!=this->_activity->teachersNames.end())
-		it++;
-	if(it!=this->_activity->teachersNames.end())
-		this->_teacher2=*it;
-	else
-		this->_teacher2="";
-	if(it!=this->_activity->teachersNames.end())
-		it++;
-	if(it!=this->_activity->teachersNames.end())
-		this->_teacher3=*it;
-	else
-		this->_teacher3="";
-		
+	this->_teachers=this->_activity->teachersNames;
 	this->_subject = this->_activity->subjectName;
 	this->_subjectTag = this->_activity->subjectTagName;
-
-	it = this->_activity->studentsNames.begin();
-	assert(it != this->_activity->studentsNames.end());
-	this->_students1=*it;
-	if(it!=this->_activity->studentsNames.end())
-		it++;
-	if(it!=this->_activity->studentsNames.end())
-		this->_students2=*it;
-	else
-		this->_students2="";
-	if(it!=this->_activity->studentsNames.end())
-		it++;
-	if(it!=this->_activity->studentsNames.end())
-		this->_students3=*it;
-	else
-		this->_students3="";
-	if(it!=this->_activity->studentsNames.end())
-		it++;
-	if(it!=this->_activity->studentsNames.end())
-		this->_students4=*it;
-	else
-		this->_students4="";
+	this->_students=this->_activity->studentsNames;
 	
 	int nSplit;
 	
@@ -96,23 +68,32 @@ ModifyActivityForm::ModifyActivityForm(int id, int activityGroupId)
 		nSplit=0;
 		for(Activity* act=gt.rules.activitiesList.first(); act; act=gt.rules.activitiesList.next())
 			if(act->activityGroupId==this->_activityGroupId){
-				par(nSplit)->setChecked(act->parity==PARITY_BIWEEKLY);
-				dur(nSplit)->setValue(act->duration);
-				nSplit++;
+				if(nSplit>=8){
+					assert(0);
+				}
+				else{
+					if(this->_id==act->id)
+						subactivitiesTabWidget->setCurrentPage(nSplit);
+					par(nSplit)->setChecked(act->parity==PARITY_BIWEEKLY);
+					dur(nSplit)->setValue(act->duration);
+					activ(nSplit)->setChecked(act->active);
+					nSplit++;
+				}
 			}
 	}
 	else{
 		nSplit=1;
 		par(0)->setChecked(this->_activity->parity==PARITY_BIWEEKLY);
 		dur(0)->setValue(this->_activity->duration);
+		activ(0)->setChecked(this->_activity->active);
 	}
 
 	splitSpinBox->setMinValue(nSplit);
 	splitSpinBox->setMaxValue(nSplit);	
 	splitSpinBox->setValue(nSplit);	
 	
-	updateStudentsComboBox();
-	updateTeachersComboBox();
+	updateStudentsListBox();
+	updateTeachersListBox();
 	updateSubjectsComboBox();
 	updateSubjectTagsComboBox();
 
@@ -127,50 +108,17 @@ ModifyActivityForm::~ModifyActivityForm()
 {
 }
 
-void ModifyActivityForm::updateTeachersComboBox()
+void ModifyActivityForm::updateTeachersListBox()
 {
-	int i, j;
-
-	i=0;
-	j=-1;
-	teachers1ComboBox->clear();
-	for(Teacher* tch=gt.rules.teachersList.first(); tch; tch=gt.rules.teachersList.next(), i++){
-		teachers1ComboBox->insertItem(tch->name);
-		if(tch->name==this->_teacher1)
-			j=i;
-	}
-	assert(j!=-1);
-	teachers1ComboBox->setCurrentItem(j);
-
-	i=1;
-	j=-1;
-	teachers2ComboBox->clear();
-	teachers2ComboBox->insertItem("");
-	if(this->_teacher2=="")
-		j=0;
-	for(Teacher* tch=gt.rules.teachersList.first(); tch; tch=gt.rules.teachersList.next(), i++){
-		teachers2ComboBox->insertItem(tch->name);
-		if(tch->name==this->_teacher2)
-			j=i;
-	}
-	assert(j!=-1);
-	teachers2ComboBox->setCurrentItem(j);
-
-	i=1;
-	j=-1;
-	teachers3ComboBox->clear();
-	teachers3ComboBox->insertItem("");
-	if(this->_teacher3=="")
-		j=0;
-	for(Teacher* tch=gt.rules.teachersList.first(); tch; tch=gt.rules.teachersList.next(), i++){
-		teachers3ComboBox->insertItem(tch->name);
-		if(tch->name==this->_teacher3)
-			j=i;
-	}
-	assert(j!=-1);
-	teachers3ComboBox->setCurrentItem(j);
-
-	teacherChanged("");
+	allTeachersListBox->clear();
+	for(Teacher* tch=gt.rules.teachersList.first(); tch; tch=gt.rules.teachersList.next())
+		allTeachersListBox->insertItem(tch->name);
+		
+	selectedTeachersListBox->clear();
+	for(QStringList::Iterator it=this->_teachers.begin(); it!=this->_teachers.end(); it++)
+		selectedTeachersListBox->insertItem(*it);
+		
+	activityChanged();
 }
 
 void ModifyActivityForm::updateSubjectsComboBox()
@@ -207,140 +155,71 @@ void ModifyActivityForm::updateSubjectTagsComboBox()
 	subjectTagChanged("");
 }
 
-void ModifyActivityForm::showYearsChanged()
+void ModifyActivityForm::updateStudentsListBox()
 {
-	updateStudentsComboBox();
-}
-
-void ModifyActivityForm::showGroupsChanged()
-{
-	updateStudentsComboBox();
-}
-
-void ModifyActivityForm::showSubgroupsChanged()
-{
-	updateStudentsComboBox();
-}
-
-void ModifyActivityForm::updateStudentsComboBox()
-{
-	int i, j;
+	allStudentsListBox->clear();
+	for(StudentsYear* sty=gt.rules.yearsList.first(); sty; sty=gt.rules.yearsList.next()){
+		allStudentsListBox->insertItem(sty->name);
+		for(StudentsGroup* stg=sty->groupsList.first(); stg; stg=sty->groupsList.next()){
+			allStudentsListBox->insertItem(stg->name);
+			for(StudentsSubgroup* sts=stg->subgroupsList.first(); sts; sts=stg->subgroupsList.next())
+				allStudentsListBox->insertItem(sts->name);
+		}
+	}
 	
-	i=0;
-	j=0;
-	students1ComboBox->clear();
-	for(StudentsYear* sty=gt.rules.yearsList.first(); sty; sty=gt.rules.yearsList.next()){
-		students1ComboBox->insertItem(sty->name);
-		i++;
-		if(sty->name==this->_students1)
-			j=i;
-		for(StudentsGroup* stg=sty->groupsList.first(); stg; stg=sty->groupsList.next()){
-			students1ComboBox->insertItem(stg->name);
-			i++;
-			if(stg->name==this->_students1)
-				j=i;
-			for(StudentsSubgroup* sts=stg->subgroupsList.first(); sts; sts=stg->subgroupsList.next()){
-				students1ComboBox->insertItem(sts->name);
-				i++;
-				if(sts->name==this->_students1)
-					j=i;
-			}
-		}
-	}
-	assert(j!=0);
-	students1ComboBox->setCurrentItem(j-1);
+	selectedStudentsListBox->clear();
+	for(QStringList::Iterator it=this->_students.begin(); it!=this->_students.end(); it++)
+		selectedStudentsListBox->insertItem(*it);
 
-	i=0;
-	j=0;
-	students2ComboBox->clear();
-	students2ComboBox->insertItem("");
-	i++;
-	if(this->_students2=="")
-		j=i;
-	for(StudentsYear* sty=gt.rules.yearsList.first(); sty; sty=gt.rules.yearsList.next()){
-		students2ComboBox->insertItem(sty->name);
-		i++;
-		if(sty->name==this->_students2)
-			j=i;
-		for(StudentsGroup* stg=sty->groupsList.first(); stg; stg=sty->groupsList.next()){
-			students2ComboBox->insertItem(stg->name);
-			i++;
-			if(stg->name==this->_students2)
-				j=i;
-			for(StudentsSubgroup* sts=stg->subgroupsList.first(); sts; sts=stg->subgroupsList.next()){
-				students2ComboBox->insertItem(sts->name);
-				i++;
-				if(sts->name==this->_students2)
-					j=i;
-			}
-		}
-	}
-	assert(j!=0);
-	students2ComboBox->setCurrentItem(j-1);
-
-	i=0;
-	j=0;
-	students3ComboBox->clear();
-	students3ComboBox->insertItem("");
-	i++;
-	if(this->_students3=="")
-		j=i;
-	for(StudentsYear* sty=gt.rules.yearsList.first(); sty; sty=gt.rules.yearsList.next()){
-		students3ComboBox->insertItem(sty->name);
-		i++;
-		if(sty->name==this->_students3)
-			j=i;
-		for(StudentsGroup* stg=sty->groupsList.first(); stg; stg=sty->groupsList.next()){
-			students3ComboBox->insertItem(stg->name);
-			i++;
-			if(stg->name==this->_students3)
-				j=i;
-			for(StudentsSubgroup* sts=stg->subgroupsList.first(); sts; sts=stg->subgroupsList.next()){
-				students3ComboBox->insertItem(sts->name);
-				i++;
-				if(sts->name==this->_students3)
-					j=i;
-			}
-		}
-	}
-	assert(j!=0);
-	students3ComboBox->setCurrentItem(j-1);
-
-	i=0;
-	j=0;
-	students4ComboBox->clear();
-	students4ComboBox->insertItem("");
-	i++;
-	if(this->_students4=="")
-		j=i;
-	for(StudentsYear* sty=gt.rules.yearsList.first(); sty; sty=gt.rules.yearsList.next()){
-		students4ComboBox->insertItem(sty->name);
-		i++;
-		if(sty->name==this->_students4)
-			j=i;
-		for(StudentsGroup* stg=sty->groupsList.first(); stg; stg=sty->groupsList.next()){
-			students4ComboBox->insertItem(stg->name);
-			i++;
-			if(stg->name==this->_students4)
-				j=i;
-			for(StudentsSubgroup* sts=stg->subgroupsList.first(); sts; sts=stg->subgroupsList.next()){
-				students4ComboBox->insertItem(sts->name);
-				i++;
-				if(sts->name==this->_students4)
-					j=i;
-			}
-		}
-	}
-	assert(j!=0);
-	students4ComboBox->setCurrentItem(j-1);
-
-	studentsChanged("");
+	activityChanged();
 }
 
-void ModifyActivityForm::teacherChanged(const QString& dummy)
+void ModifyActivityForm::addTeacher()
 {
-	if(dummy=="")
-		;
+	if(allTeachersListBox->currentItem()<0 || (uint)(allTeachersListBox->currentItem())>=allTeachersListBox->count())
+		return;
+	
+	for(uint i=0; i<selectedTeachersListBox->count(); i++)
+		if(selectedTeachersListBox->text(i)==allTeachersListBox->currentText())
+			return;
+			
+	selectedTeachersListBox->insertItem(allTeachersListBox->currentText());
+
+	activityChanged();
+}
+
+void ModifyActivityForm::removeTeacher()
+{
+	if(selectedTeachersListBox->count()<=0 || selectedTeachersListBox->currentItem()<0 ||
+	 (uint)(selectedTeachersListBox->currentItem())>=selectedTeachersListBox->count())
+		return;
+		
+	selectedTeachersListBox->removeItem(selectedTeachersListBox->currentItem());
+
+	activityChanged();
+}
+
+void ModifyActivityForm::addStudents()
+{
+	if(allStudentsListBox->currentItem()<0 || (uint)(allStudentsListBox->currentItem())>=allStudentsListBox->count())
+		return;
+	
+	for(uint i=0; i<selectedStudentsListBox->count(); i++)
+		if(selectedStudentsListBox->text(i)==allStudentsListBox->currentText())
+			return;
+			
+	selectedStudentsListBox->insertItem(allStudentsListBox->currentText());
+	
+	activityChanged();
+}
+
+void ModifyActivityForm::removeStudents()
+{
+	if(selectedStudentsListBox->count()<=0 || selectedStudentsListBox->currentItem()<0 ||
+	 (uint)(selectedStudentsListBox->currentItem())>=selectedStudentsListBox->count())
+		return;
+		
+	selectedStudentsListBox->removeItem(selectedStudentsListBox->currentItem());
 
 	activityChanged();
 }
@@ -361,43 +240,25 @@ void ModifyActivityForm::subjectTagChanged(const QString& dummy)
 	activityChanged();
 }
 
-void ModifyActivityForm::studentsChanged(const QString& dummy)
-{
-	if(dummy=="")
-		;
-
-	activityChanged();
-}
-
 void ModifyActivityForm::activityChanged()
 {
 	QString s;
-	s+=QObject::tr("Current activity:");s+="\n";
-	s+=QObject::tr(QString("Teacher=%1").arg(teachers1ComboBox->currentText()));s+="\n";
-	if(teachers2ComboBox->currentItem()!=0){
-		s+=QObject::tr(QString("Teacher=%1").arg(teachers2ComboBox->currentText()));
+	s+=QObject::tr("Current activity:");
+	s+="\n";
+	
+	for(uint i=0; i<selectedTeachersListBox->count(); i++){
+		s+=QObject::tr(QString("Teacher=%1").arg(selectedTeachersListBox->text(i)));
 		s+="\n";
 	}
-	if(teachers3ComboBox->currentItem()!=0){
-		s+=QObject::tr(QString("Teacher=%1").arg(teachers3ComboBox->currentText()));
-		s+="\n";
-	}
-	s+=QObject::tr(QString("Subject=%1").arg(subjectsComboBox->currentText()));s+="\n";
+
+	s+=QObject::tr(QString("Subject=%1").arg(subjectsComboBox->currentText()));
+	s+="\n";
 	if(subjectTagsComboBox->currentText()!=""){
 		s+=QObject::tr(QString("Subject tag=%1").arg(subjectTagsComboBox->currentText()));
 		s+="\n";
 	}
-	s+=QObject::tr(QString("Students=%1").arg(students1ComboBox->currentText()));s+="\n";
-	if(students2ComboBox->currentItem()!=0){
-		s+=QObject::tr(QString("Students=%1").arg(students2ComboBox->currentText()));
-		s+="\n";
-	}
-	if(students3ComboBox->currentItem()!=0){
-		s+=QObject::tr(QString("Students=%1").arg(students3ComboBox->currentText()));
-		s+="\n";
-	}
-	if(students4ComboBox->currentItem()!=0){
-		s+=QObject::tr(QString("Students=%1").arg(students4ComboBox->currentText()));
+	for(uint i=0; i<selectedStudentsListBox->count(); i++){
+		s+=QObject::tr(QString("Students=%1").arg(selectedStudentsListBox->text(i)));
 		s+="\n";
 	}
 
@@ -406,6 +267,15 @@ void ModifyActivityForm::activityChanged()
 		s+="\n";
 		if(par(0)->isChecked()){
 			s+=QObject::tr("Bi-weekly activity");
+			s+="\n";
+		}
+		
+		if(activ(0)->isChecked()){
+			s+=QObject::tr("Active activity");
+			s+="\n";
+		}
+		else{
+			s+=QObject::tr("Non-active activity");
 			s+="\n";
 		}
 	}
@@ -421,6 +291,14 @@ void ModifyActivityForm::activityChanged()
 			s+="\n";
 			if(par(i)->isChecked()){
 				s+=QObject::tr("Bi-weekly activity");
+				s+="\n";
+			}
+			if(activ(i)->isChecked()){
+				s+=QObject::tr("Active activity");
+				s+="\n";
+			}
+			else{
+				s+=QObject::tr("Non-active activity");
 				s+="\n";
 			}
 			s+="\n";
@@ -439,22 +317,23 @@ void ModifyActivityForm::ok()
 {
 	//teachers
 	QStringList teachers_names;
-	if(teachers1ComboBox->currentItem()<0 || teachers1ComboBox->currentText()==""){
+	if(selectedTeachersListBox->count()<=0){
 		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Invalid teacher (1)"));
+			QObject::tr("Invalid teacher(s)"));
+		return;
+	}
+	else if(selectedTeachersListBox->count()>(uint)(MAX_TEACHERS_PER_ACTIVITY)){
+		QMessageBox::warning(this, QObject::tr("FET information"),
+			QObject::tr("Too many teachers for an activity. The current maximum is %1.\n"
+			"If you really need more teachers per activity, please talk to the author").
+			arg(MAX_TEACHERS_PER_ACTIVITY));
 		return;
 	}
 	else{
-		assert(gt.rules.searchTeacher(teachers1ComboBox->currentText())>=0);
-		teachers_names.append(teachers1ComboBox->currentText());
-	}
-	if(teachers2ComboBox->currentItem()>=1){
-		assert(gt.rules.searchTeacher(teachers2ComboBox->currentText())>=0);
-		teachers_names.append(teachers2ComboBox->currentText());
-	}
-	if(teachers3ComboBox->currentItem()>=1){
-		assert(gt.rules.searchTeacher(teachers3ComboBox->currentText())>=0);
-		teachers_names.append(teachers3ComboBox->currentText());
+		for(uint i=0; i<selectedTeachersListBox->count(); i++){
+			assert(gt.rules.searchTeacher(selectedTeachersListBox->text(i))>=0);
+			teachers_names.append(selectedTeachersListBox->text(i));
+		}
 	}
 
 	//subject
@@ -477,28 +356,18 @@ void ModifyActivityForm::ok()
 
 	//students
 	QStringList students_names;
-	if(students1ComboBox->currentItem()<0 || students1ComboBox->currentText()==""){
+	if(selectedStudentsListBox->count()<=0){
 		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Invalid students set (1)"));
+			QObject::tr("Invalid students set(s)"));
 		return;
 	}
 	else{
-		assert(gt.rules.searchStudentsSet(students1ComboBox->currentText())!=NULL);
-		students_names.append(students1ComboBox->currentText());
+		for(uint i=0; i<selectedStudentsListBox->count(); i++){
+			assert(gt.rules.searchStudentsSet(selectedStudentsListBox->text(i))!=NULL);
+			students_names.append(selectedStudentsListBox->text(i));
+		}
 	}
-	if(students2ComboBox->currentItem()>=1){
-		assert(gt.rules.searchStudentsSet(students2ComboBox->currentText())!=NULL);
-		students_names.append(students2ComboBox->currentText());
-	}
-	if(students3ComboBox->currentItem()>=1){
-		assert(gt.rules.searchStudentsSet(students3ComboBox->currentText())!=NULL);
-		students_names.append(students3ComboBox->currentText());
-	}
-	if(students4ComboBox->currentItem()>=1){
-		assert(gt.rules.searchStudentsSet(students4ComboBox->currentText())!=NULL);
-		students_names.append(students4ComboBox->currentText());
-	}
-	
+
 	int total_number_of_students=0;
 	for(QStringList::Iterator it=students_names.begin(); it!=students_names.end(); it++){
 		StudentsSet* ss=gt.rules.searchStudentsSet(*it);
@@ -508,6 +377,7 @@ void ModifyActivityForm::ok()
 	int totalduration;
 	int durations[8];
 	int parities[8];
+	bool active[8];
 	int nsplit=splitSpinBox->value();
 
 	totalduration=0;
@@ -516,16 +386,30 @@ void ModifyActivityForm::ok()
 		parities[i]=PARITY_WEEKLY;
 		if(par(i)->isChecked())
 			parities[i]=PARITY_BIWEEKLY;
+		active[i]=activ(i)->isChecked();
 
 		totalduration+=durations[i];
 	}
 
 	gt.rules.modifyActivity(this->_id, this->_activityGroupId, teachers_names, subject_name,
-	 subject_tag_name,students_names, total_number_of_students, nsplit, totalduration, durations, parities);
+	 subject_tag_name,students_names, total_number_of_students, nsplit, totalduration, durations, parities, active);
 	
 	this->close();
+}
+
+void ModifyActivityForm::clearTeachers()
+{
+	selectedTeachersListBox->clear();
+	activityChanged();
+}
+
+void ModifyActivityForm::clearStudents()
+{
+	selectedStudentsListBox->clear();
+	activityChanged();
 }
 
 #undef prefDay
 #undef prefHour
 #undef subTab
+#undef activ

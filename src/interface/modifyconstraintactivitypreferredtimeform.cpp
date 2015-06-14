@@ -34,8 +34,8 @@ ModifyConstraintActivityPreferredTimeForm::ModifyConstraintActivityPreferredTime
 	updatePeriodGroupBox();
 	updateActivitiesComboBox();
 
-	dayComboBox->setCurrentItem(ctr->day);
-	startHourComboBox->setCurrentItem(ctr->hour);
+	dayComboBox->setCurrentItem(ctr->day+1);
+	startHourComboBox->setCurrentItem(ctr->hour+1);
 
 	constraintChanged();
 }
@@ -60,10 +60,12 @@ void ModifyConstraintActivityPreferredTimeForm::updateActivitiesComboBox(){
 
 void ModifyConstraintActivityPreferredTimeForm::updatePeriodGroupBox(){
 	startHourComboBox->clear();
+	startHourComboBox->insertItem(QObject::tr("Any"));
 	for(int i=0; i<=gt.rules.nHoursPerDay; i++)
 		startHourComboBox->insertItem(gt.rules.hoursOfTheDay[i]);
 
 	dayComboBox->clear();
+	dayComboBox->insertItem(QObject::tr("Any"));
 	for(int i=0; i<gt.rules.nDaysPerWeek; i++)
 		dayComboBox->insertItem(gt.rules.daysOfTheWeek[i]);
 }
@@ -129,7 +131,7 @@ void ModifyConstraintActivityPreferredTimeForm::ok()
 	double weight;
 	QString tmp=weightLineEdit->text();
 	sscanf(tmp, "%lf", &weight);
-	if(weight<=0.0){
+	if(weight<0.0){
 		QMessageBox::warning(this, QObject::tr("FET information"),
 			QObject::tr("Invalid weight"));
 		return;
@@ -152,6 +154,12 @@ void ModifyConstraintActivityPreferredTimeForm::ok()
 		return;
 	}
 
+	if(startHour==0 && day==0){
+		QMessageBox::warning(this, QObject::tr("FET information"),
+			QObject::tr("Please specify at least a day or an hour"));
+		return;
+	}
+	
 	int tmp2=activitiesComboBox->currentItem();
 	if(tmp2<0 || (uint)(tmp2)>=gt.rules.activitiesList.count()){
 		QMessageBox::warning(this, QObject::tr("FET information"),
@@ -162,8 +170,8 @@ void ModifyConstraintActivityPreferredTimeForm::ok()
 
 	this->_ctr->weight=weight;
 	this->_ctr->compulsory=compulsory;
-	this->_ctr->day=day;
-	this->_ctr->hour=startHour;
+	this->_ctr->day=day-1;
+	this->_ctr->hour=startHour-1;
 	this->_ctr->activityId=id;
 	
 	gt.rules.internalStructureComputed=false;

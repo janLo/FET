@@ -1,5 +1,5 @@
 /***************************************************************************
-                          constraintactivityroomform.h  -  description
+                          constraintactivitypreferredroomform.h  -  description
                              -------------------
     begin                : Feb 13, 2005
     copyright            : (C) 2005 by Lalescu Liviu

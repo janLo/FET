@@ -49,6 +49,10 @@
         <source>Modify</source>
         <translation>Modifier</translation>
     </message>
+    <message>
+        <source>Subject tag</source>
+        <translation type="unfinished">Etiquette matière</translation>
+    </message>
 </context>
 <context>
     <name>AddActivityForm_template</name>
@@ -78,31 +82,31 @@
     </message>
     <message>
         <source>Students set (1)</source>
-        <translation>Classe (1)</translation>
+        <translation type="obsolete">Classe (1)</translation>
     </message>
     <message>
         <source>Students set (2)</source>
-        <translation>Classe (2)</translation>
+        <translation type="obsolete">Classe (2)</translation>
     </message>
     <message>
         <source>Students set (3)</source>
-        <translation>Classe (3)</translation>
+        <translation type="obsolete">Classe (3)</translation>
     </message>
     <message>
         <source>Students set (4)</source>
-        <translation>Classe (4)</translation>
+        <translation type="obsolete">Classe (4)</translation>
     </message>
     <message>
         <source>Teacher (1)</source>
-        <translation>Enseignant (1)</translation>
+        <translation type="obsolete">Enseignant (1)</translation>
     </message>
     <message>
         <source>Teacher (2)</source>
-        <translation>Enseignant (2)</translation>
+        <translation type="obsolete">Enseignant (2)</translation>
     </message>
     <message>
         <source>Teacher (3)</source>
-        <translation>Enseignant (3)</translation>
+        <translation type="obsolete">Enseignant (3)</translation>
     </message>
     <message>
         <source>Split this activity into ... lessons per week.</source>
@@ -182,6 +186,61 @@ chaque sous-activité (cours)</translation>
         <source>Subject tag</source>
         <translation></translation>
     </message>
+    <message>
+        <source>All teachers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selected teachers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selected students</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All students</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Ajouter</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Item</source>
+        <translation type="unfinished">Nouveau</translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Active</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>AddBuildingForm_template</name>
+    <message>
+        <source>Add Building Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished">Nom</translation>
+    </message>
+    <message>
+        <source>Add building</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
 </context>
 <context>
     <name>AddConstraint2ActivitiesConsecutiveForm_template</name>
@@ -255,6 +314,43 @@ dans n&apos;importe quel ordre, séparées par des virgules.</translation>
     <message>
         <source>Close</source>
         <translation>Fermer</translation>
+    </message>
+</context>
+<context>
+    <name>AddConstraint2ActivitiesOrderedForm_template</name>
+    <message>
+        <source>FET - Add new Constraint2ActivitiesOrdered dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Compulsory constraint</source>
+        <translation type="unfinished">Contrainte obligatoire</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <source>Add current constraint</source>
+        <translation type="unfinished">Ajouter la contrainte courante</translation>
+    </message>
+    <message>
+        <source>Please input here the id&apos;s of the 2 activities,
+in order, separated by commas.</source>
+        <translation type="unfinished">Veuillez saisir les numéros des deux activités,
+dans l&apos;ordre, séparées par des virgules.</translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="unfinished">Poids (1.0 recomandé)</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="unfinished">1.0</translation>
     </message>
 </context>
 <context>
@@ -341,6 +437,10 @@ dans n&apos;importe quel ordre, séparées par des virgules.</translation>
     <message>
         <source>Close</source>
         <translation>Fermer</translation>
+    </message>
+    <message>
+        <source>Subject tag</source>
+        <translation type="unfinished">Etiquette matière</translation>
     </message>
 </context>
 <context>
@@ -495,6 +595,26 @@ tuple)</source>
         <translation>Bloc (cliquez si vous ne voulez saisir que des sous-activités
 Une nouvelle contrainte ConstraintActivitiesSameStartingTime-s sera ajoutée
 pour chaque combinaison correspondante)</translation>
+    </message>
+    <message>
+        <source>Subject tag</source>
+        <translation type="unfinished">Etiquette matière</translation>
+    </message>
+    <message>
+        <source>Students set</source>
+        <translation type="unfinished">Classe</translation>
+    </message>
+    <message>
+        <source>Subject</source>
+        <translation type="unfinished">Matière</translation>
+    </message>
+    <message>
+        <source>Teacher</source>
+        <translation type="unfinished">Enseignant</translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -806,6 +926,146 @@ pour chaque combinaison correspondante)</translation>
     </message>
 </context>
 <context>
+    <name>AddConstraintMaxBuildingChangesPerDayForStudentsForm_template</name>
+    <message>
+        <source>FET - Add new constraint max building changes per day for students dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add current constraint</source>
+        <translation type="unfinished">Ajouter la contrainte courante</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="unfinished">1.0</translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="unfinished">Poids (1.0 recomandé)</translation>
+    </message>
+    <message>
+        <source>Compulsory</source>
+        <translation type="unfinished">Obligatoire</translation>
+    </message>
+    <message>
+        <source>Max building changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>AddConstraintMaxBuildingChangesPerDayForTeachersForm_template</name>
+    <message>
+        <source>FET - Add new constraint max building changes per day for teachers dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add current constraint</source>
+        <translation type="unfinished">Ajouter la contrainte courante</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="unfinished">1.0</translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="unfinished">Poids (1.0 recomandé)</translation>
+    </message>
+    <message>
+        <source>Compulsory</source>
+        <translation type="unfinished">Obligatoire</translation>
+    </message>
+    <message>
+        <source>Max building changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>AddConstraintMaxRoomChangesPerDayForStudentsForm_template</name>
+    <message>
+        <source>FET - Add new constraint max room changes per day for students dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add current constraint</source>
+        <translation type="unfinished">Ajouter la contrainte courante</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="unfinished">1.0</translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="unfinished">Poids (1.0 recomandé)</translation>
+    </message>
+    <message>
+        <source>Compulsory</source>
+        <translation type="unfinished">Obligatoire</translation>
+    </message>
+    <message>
+        <source>Max room changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>AddConstraintMaxRoomChangesPerDayForTeachersForm_template</name>
+    <message>
+        <source>FET - Add new constraint max room changes per day for teachers dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add current constraint</source>
+        <translation type="unfinished">Ajouter la contrainte courante</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="unfinished">1.0</translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="unfinished">Poids (1.0 recomandé)</translation>
+    </message>
+    <message>
+        <source>Compulsory</source>
+        <translation type="unfinished">Obligatoire</translation>
+    </message>
+    <message>
+        <source>Max room changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>AddConstraintMinNDaysBetweenActivitiesForm_template</name>
     <message>
         <source>FET - Add new constraint min n days between activities</source>
@@ -857,6 +1117,60 @@ pour chaque combinaison correspondante)</translation>
     </message>
 </context>
 <context>
+    <name>AddConstraintMinimizeBuildingChangesForStudentsForm_template</name>
+    <message>
+        <source>Add current constraint</source>
+        <translation type="obsolete">Ajouter la contrainte courante</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="obsolete">Fermer</translation>
+    </message>
+    <message>
+        <source>Compulsory (recommended: no)</source>
+        <translation type="obsolete">Obligatoire (recommandé : non)</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="obsolete">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="obsolete">1.0</translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="obsolete">Poids (1.0 recomandé)</translation>
+    </message>
+</context>
+<context>
+    <name>AddConstraintMinimizeBuildingChangesForTeachersForm_template</name>
+    <message>
+        <source>Add current constraint</source>
+        <translation type="obsolete">Ajouter la contrainte courante</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="obsolete">Fermer</translation>
+    </message>
+    <message>
+        <source>Compulsory (recommended: no)</source>
+        <translation type="obsolete">Obligatoire (recommandé : non)</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="obsolete">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="obsolete">1.0</translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="obsolete">Poids (1.0 recomandé)</translation>
+    </message>
+</context>
+<context>
     <name>AddConstraintMinimizeNumberOfRoomsForStudentsForm_template</name>
     <message>
         <source>FET - Add new constraint minimize number of rooms for students</source>
@@ -881,6 +1195,33 @@ pour chaque combinaison correspondante)</translation>
     <message>
         <source>1.0</source>
         <translation>1.0</translation>
+    </message>
+</context>
+<context>
+    <name>AddConstraintMinimizeNumberOfRoomsForTeachersForm_template</name>
+    <message>
+        <source>FET - Add new constraint minimize number of rooms for teachers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add constraint</source>
+        <translation type="unfinished">Ajouter une contrainte</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <source>Compulsory (recommended: no)</source>
+        <translation type="unfinished">Obligatoire (recommandé : non)</translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="unfinished">Poids (1.0 recomandé)</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="unfinished">1.0</translation>
     </message>
 </context>
 <context>
@@ -1263,6 +1604,92 @@ pour chaque combinaison correspondante)</translation>
     </message>
 </context>
 <context>
+    <name>AddConstraintSubjectPreferredRoomForm_template</name>
+    <message>
+        <source>FET - Add new constraint subject preferred room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="unfinished">1.0</translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="unfinished">Poids (1.0 recomandé)</translation>
+    </message>
+    <message>
+        <source>Add constraint</source>
+        <translation type="unfinished">Ajouter une contrainte</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <source>Compulsory</source>
+        <translation type="unfinished">Obligatoire</translation>
+    </message>
+    <message>
+        <source>Room</source>
+        <translation type="unfinished">Salle</translation>
+    </message>
+    <message>
+        <source>Subject</source>
+        <translation type="unfinished">Matière</translation>
+    </message>
+</context>
+<context>
+    <name>AddConstraintSubjectPreferredRoomsForm_template</name>
+    <message>
+        <source>FET - Add new constraint subject preferred rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="unfinished">Poids (1.0 recomandé)</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="unfinished">1.0</translation>
+    </message>
+    <message>
+        <source>Compulsory</source>
+        <translation type="unfinished">Obligatoire</translation>
+    </message>
+    <message>
+        <source>Add constraint</source>
+        <translation type="unfinished">Ajouter une contrainte</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Ajouter</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Item</source>
+        <translation type="unfinished">Nouveau</translation>
+    </message>
+    <message>
+        <source>Selected rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subject</source>
+        <translation type="unfinished">Matière</translation>
+    </message>
+</context>
+<context>
     <name>AddConstraintSubjectRequiresEquipmentsForm_template</name>
     <message>
         <source>FET - Add new constraint subject requires equipments</source>
@@ -1311,6 +1738,100 @@ pour chaque combinaison correspondante)</translation>
     <message>
         <source>Subject</source>
         <translation>Matière</translation>
+    </message>
+</context>
+<context>
+    <name>AddConstraintSubjectSubjectTagPreferredRoomForm_template</name>
+    <message>
+        <source>FET - Add new constraint subject subject tag preferred room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subject</source>
+        <translation type="unfinished">Matière</translation>
+    </message>
+    <message>
+        <source>Room</source>
+        <translation type="unfinished">Salle</translation>
+    </message>
+    <message>
+        <source>Add constraint</source>
+        <translation type="unfinished">Ajouter une contrainte</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="unfinished">1.0</translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="unfinished">Poids (1.0 recomandé)</translation>
+    </message>
+    <message>
+        <source>Compulsory</source>
+        <translation type="unfinished">Obligatoire</translation>
+    </message>
+    <message>
+        <source>Subject tag</source>
+        <translation type="unfinished">Etiquette matière</translation>
+    </message>
+</context>
+<context>
+    <name>AddConstraintSubjectSubjectTagPreferredRoomsForm_template</name>
+    <message>
+        <source>FET - Add new constraint subject subject tag preferred rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subject</source>
+        <translation type="unfinished">Matière</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Ajouter</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="unfinished">Poids (1.0 recomandé)</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="unfinished">1.0</translation>
+    </message>
+    <message>
+        <source>Selected rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Item</source>
+        <translation type="unfinished">Nouveau</translation>
+    </message>
+    <message>
+        <source>Add constraint</source>
+        <translation type="unfinished">Ajouter une contrainte</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <source>All rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Compulsory</source>
+        <translation type="unfinished">Obligatoire</translation>
+    </message>
+    <message>
+        <source>Subject tag</source>
+        <translation type="unfinished">Etiquette matière</translation>
     </message>
 </context>
 <context>
@@ -1494,6 +2015,123 @@ pour chaque combinaison correspondante)</translation>
     </message>
 </context>
 <context>
+    <name>AddConstraintTeacherSubjectRequireRoomForm_template</name>
+    <message>
+        <source>FET - Add new constraint teacher subject require room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teacher</source>
+        <translation type="unfinished">Enseignant</translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="unfinished">Poids (1.0 recomandé)</translation>
+    </message>
+    <message>
+        <source>Add constraint</source>
+        <translation type="unfinished">Ajouter une contrainte</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <source>Compulsory</source>
+        <translation type="unfinished">Obligatoire</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="unfinished">1.0</translation>
+    </message>
+    <message>
+        <source>Room</source>
+        <translation type="unfinished">Salle</translation>
+    </message>
+    <message>
+        <source>Subject</source>
+        <translation type="unfinished">Matière</translation>
+    </message>
+</context>
+<context>
+    <name>AddConstraintTeachersMaxHoursContinuouslyForm_template</name>
+    <message>
+        <source>FET - Add new constraint teachers no more than X hours continuously dialog</source>
+        <translation type="obsolete">FET - Ajouter une contrainte : X heures en continu par jour pour les enseignants</translation>
+    </message>
+    <message>
+        <source>Add current constraint</source>
+        <translation type="unfinished">Ajouter la contrainte courante</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="unfinished">1.0</translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="unfinished">Poids (1.0 recomandé)</translation>
+    </message>
+    <message>
+        <source>Max hours continuously</source>
+        <translation type="unfinished">Nombre d&apos;heures maxi en continu</translation>
+    </message>
+    <message>
+        <source>Compulsory constraint</source>
+        <translation type="unfinished">Contrainte obligatoire</translation>
+    </message>
+    <message>
+        <source>FET - Add new constraint teachers max hours continuously dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>AddConstraintTeachersMaxHoursDailyForm_template</name>
+    <message>
+        <source>FET - Add new constraint teachers no more than X hours daily dialog</source>
+        <translation type="obsolete">FET - Ajouter une contrainte : X heures par jour pour les enseignants</translation>
+    </message>
+    <message>
+        <source>Add current constraint</source>
+        <translation type="unfinished">Ajouter la contrainte courante</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="unfinished">1.0</translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="unfinished">Poids (1.0 recomandé)</translation>
+    </message>
+    <message>
+        <source>Max hours daily</source>
+        <translation type="unfinished">Nombre d&apos;heures maxi par jour</translation>
+    </message>
+    <message>
+        <source>Compulsory constraint</source>
+        <translation type="unfinished">Contrainte obligatoire</translation>
+    </message>
+    <message>
+        <source>FET - Add new constraint teachers max hours daily dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>AddConstraintTeachersNoGapsForm_template</name>
     <message>
         <source>FET - Add new constraint teachers no gaps dialog</source>
@@ -1528,105 +2166,218 @@ pour chaque combinaison correspondante)</translation>
     <name>AddConstraintTeachersNoMoreThanXHoursContinuouslyForm_template</name>
     <message>
         <source>FET - Add new constraint teachers no more than X hours continuously dialog</source>
-        <translation>FET - Ajouter une contrainte : X heures en continu par jour pour les enseignants</translation>
+        <translation type="obsolete">FET - Ajouter une contrainte : X heures en continu par jour pour les enseignants</translation>
     </message>
     <message>
         <source>Add current constraint</source>
-        <translation>Ajouter la contrainte courante</translation>
+        <translation type="obsolete">Ajouter la contrainte courante</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation>Fermer</translation>
+        <translation type="obsolete">Fermer</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Contrainte courante</translation>
+        <translation type="obsolete">Contrainte courante</translation>
     </message>
     <message>
         <source>1.0</source>
-        <translation>1.0</translation>
+        <translation type="obsolete">1.0</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Poids (1.0 recomandé)</translation>
+        <translation type="obsolete">Poids (1.0 recomandé)</translation>
     </message>
     <message>
         <source>Max hours continuously</source>
-        <translation>Nombre d&apos;heures maxi en continu</translation>
+        <translation type="obsolete">Nombre d&apos;heures maxi en continu</translation>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Contrainte obligatoire</translation>
+        <translation type="obsolete">Contrainte obligatoire</translation>
     </message>
 </context>
 <context>
     <name>AddConstraintTeachersNoMoreThanXHoursDailyForm_template</name>
     <message>
         <source>FET - Add new constraint teachers no more than X hours daily dialog</source>
-        <translation>FET - Ajouter une contrainte : X heures par jour pour les enseignants</translation>
+        <translation type="obsolete">FET - Ajouter une contrainte : X heures par jour pour les enseignants</translation>
     </message>
     <message>
         <source>Add current constraint</source>
-        <translation>Ajouter la contrainte courante</translation>
+        <translation type="obsolete">Ajouter la contrainte courante</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation>Fermer</translation>
+        <translation type="obsolete">Fermer</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Contrainte courante</translation>
+        <translation type="obsolete">Contrainte courante</translation>
     </message>
     <message>
         <source>1.0</source>
-        <translation>1.0</translation>
+        <translation type="obsolete">1.0</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Poids (1.0 recomandé)</translation>
+        <translation type="obsolete">Poids (1.0 recomandé)</translation>
     </message>
     <message>
         <source>Max hours daily</source>
-        <translation>Nombre d&apos;heures maxi par jour</translation>
+        <translation type="obsolete">Nombre d&apos;heures maxi par jour</translation>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Contrainte obligatoire</translation>
+        <translation type="obsolete">Contrainte obligatoire</translation>
+    </message>
+</context>
+<context>
+    <name>AddConstraintTeachersSubgroupsMaxHoursDailyForm_template</name>
+    <message>
+        <source>FET - Add new constraint teachers-subgroups no more than X hours daily dialog</source>
+        <translation type="obsolete">FET - Ajouter une contrainte : X heures par jour pour un groupe et un enseignant donnés</translation>
+    </message>
+    <message>
+        <source>Add current constraint</source>
+        <translation type="unfinished">Ajouter la contrainte courante</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="unfinished">1.0</translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="unfinished">Poids (1.0 recomandé)</translation>
+    </message>
+    <message>
+        <source>Max hours daily</source>
+        <translation type="unfinished">Nombre d&apos;heures maxi par jour</translation>
+    </message>
+    <message>
+        <source>Compulsory constraint</source>
+        <translation type="unfinished">Contrainte obligatoire</translation>
+    </message>
+    <message>
+        <source>FET - Add new constraint teachers-subgroups max hours daily dialog</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>AddConstraintTeachersSubgroupsNoMoreThanXHoursDailyForm_template</name>
     <message>
         <source>FET - Add new constraint teachers-subgroups no more than X hours daily dialog</source>
-        <translation>FET - Ajouter une contrainte : X heures par jour pour un groupe et un enseignant donnés</translation>
+        <translation type="obsolete">FET - Ajouter une contrainte : X heures par jour pour un groupe et un enseignant donnés</translation>
     </message>
     <message>
         <source>Add current constraint</source>
-        <translation>Ajouter la contrainte courante</translation>
+        <translation type="obsolete">Ajouter la contrainte courante</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation>Fermer</translation>
+        <translation type="obsolete">Fermer</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Contrainte courante</translation>
+        <translation type="obsolete">Contrainte courante</translation>
     </message>
     <message>
         <source>1.0</source>
-        <translation>1.0</translation>
+        <translation type="obsolete">1.0</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Poids (1.0 recomandé)</translation>
+        <translation type="obsolete">Poids (1.0 recomandé)</translation>
     </message>
     <message>
         <source>Max hours daily</source>
-        <translation>Nombre d&apos;heures maxi par jour</translation>
+        <translation type="obsolete">Nombre d&apos;heures maxi par jour</translation>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Contrainte obligatoire</translation>
+        <translation type="obsolete">Contrainte obligatoire</translation>
+    </message>
+</context>
+<context>
+    <name>AddConstraintTeachersSubjectTagMaxHoursContinuouslyForm_template</name>
+    <message>
+        <source>FET - Add new constraint teachers subject tag max hours continuously dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add current constraint</source>
+        <translation type="unfinished">Ajouter la contrainte courante</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="unfinished">1.0</translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="unfinished">Poids (1.0 recomandé)</translation>
+    </message>
+    <message>
+        <source>Max hours continuously</source>
+        <translation type="unfinished">Nombre d&apos;heures maxi en continu</translation>
+    </message>
+    <message>
+        <source>Compulsory constraint</source>
+        <translation type="unfinished">Contrainte obligatoire</translation>
+    </message>
+    <message>
+        <source>Subject tag</source>
+        <translation type="unfinished">Etiquette matière</translation>
+    </message>
+</context>
+<context>
+    <name>AddConstraintTeachersSubjectTagsMaxHoursContinuouslyForm_template</name>
+    <message>
+        <source>FET - Add new constraint teachers subject tags max hours continuously dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add current constraint</source>
+        <translation type="unfinished">Ajouter la contrainte courante</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="unfinished">1.0</translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="unfinished">Poids (1.0 recomandé)</translation>
+    </message>
+    <message>
+        <source>Max hours continuously</source>
+        <translation type="unfinished">Nombre d&apos;heures maxi en continu</translation>
+    </message>
+    <message>
+        <source>Compulsory constraint</source>
+        <translation type="unfinished">Contrainte obligatoire</translation>
     </message>
 </context>
 <context>
@@ -1673,6 +2424,10 @@ pour chaque combinaison correspondante)</translation>
     <message>
         <source>Close</source>
         <translation>Fermer</translation>
+    </message>
+    <message>
+        <source>Building</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2000,6 +2755,37 @@ separated by commas (maximum 20 for now).
     </message>
 </context>
 <context>
+    <name>BuildingsForm_template</name>
+    <message>
+        <source>Buildings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <source>New Item</source>
+        <translation type="unfinished">Nouveau</translation>
+    </message>
+    <message>
+        <source>Add building</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Modify</source>
+        <translation type="unfinished">Modifier</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sort</source>
+        <translation type="unfinished">Trier</translation>
+    </message>
+</context>
+<context>
     <name>CommentsForm_template</name>
     <message>
         <source>FET - timetable data - comments</source>
@@ -2082,6 +2868,41 @@ separated by commas (maximum 20 for now).
     <message>
         <source>Modify</source>
         <translation>Modifier</translation>
+    </message>
+</context>
+<context>
+    <name>Constraint2ActivitiesOrderedForm_template</name>
+    <message>
+        <source>FET - Constraint2ActivitiesOrdered</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Ajouter</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Constraints</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>New Item</source>
+        <translation type="unfinished">Nouveau</translation>
+    </message>
+    <message>
+        <source>Modify</source>
+        <translation type="unfinished">Modifier</translation>
     </message>
 </context>
 <context>
@@ -2336,10 +3157,6 @@ separated by commas (maximum 20 for now).
 <context>
     <name>ConstraintActivityPreferredRoomsForm_template</name>
     <message>
-        <source>FET - ConstraintActivityPreferredRoom</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Close</source>
         <translation type="unfinished">Fermer</translation>
     </message>
@@ -2366,6 +3183,10 @@ separated by commas (maximum 20 for now).
     <message>
         <source>Modify</source>
         <translation type="unfinished">Modifier</translation>
+    </message>
+    <message>
+        <source>FET - ConstraintActivityPreferredRooms</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2544,6 +3365,146 @@ separated by commas (maximum 20 for now).
     </message>
 </context>
 <context>
+    <name>ConstraintMaxBuildingChangesPerDayForStudentsForm_template</name>
+    <message>
+        <source>FET - Max building changes per day for students constraints</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Item</source>
+        <translation type="unfinished">Nouveau</translation>
+    </message>
+    <message>
+        <source>Constraints</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Ajouter</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Modify</source>
+        <translation type="unfinished">Modifier</translation>
+    </message>
+</context>
+<context>
+    <name>ConstraintMaxBuildingChangesPerDayForTeachersForm_template</name>
+    <message>
+        <source>FET - Max building changes per day for teachers constraints</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Item</source>
+        <translation type="unfinished">Nouveau</translation>
+    </message>
+    <message>
+        <source>Constraints</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Ajouter</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Modify</source>
+        <translation type="unfinished">Modifier</translation>
+    </message>
+</context>
+<context>
+    <name>ConstraintMaxRoomChangesPerDayForStudentsForm_template</name>
+    <message>
+        <source>FET - Max room changes per day for students constraints</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Item</source>
+        <translation type="unfinished">Nouveau</translation>
+    </message>
+    <message>
+        <source>Constraints</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Ajouter</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Modify</source>
+        <translation type="unfinished">Modifier</translation>
+    </message>
+</context>
+<context>
+    <name>ConstraintMaxRoomChangesPerDayForTeachersForm_template</name>
+    <message>
+        <source>FET - Max room changes per day for teachers constraints</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Item</source>
+        <translation type="unfinished">Nouveau</translation>
+    </message>
+    <message>
+        <source>Constraints</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Ajouter</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Modify</source>
+        <translation type="unfinished">Modifier</translation>
+    </message>
+</context>
+<context>
     <name>ConstraintMinNDaysBetweenActivitiesForm_template</name>
     <message>
         <source>FET - Time constraints min n days between activities</source>
@@ -2579,6 +3540,52 @@ separated by commas (maximum 20 for now).
     </message>
 </context>
 <context>
+    <name>ConstraintMinimizeBuildingChangesForStudentsForm_template</name>
+    <message>
+        <source>New Item</source>
+        <translation type="obsolete">Nouveau</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="obsolete">Fermer</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="obsolete">Ajouter</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="obsolete">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>Modify</source>
+        <translation type="obsolete">Modifier</translation>
+    </message>
+</context>
+<context>
+    <name>ConstraintMinimizeBuildingChangesForTeachersForm_template</name>
+    <message>
+        <source>New Item</source>
+        <translation type="obsolete">Nouveau</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="obsolete">Fermer</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="obsolete">Ajouter</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="obsolete">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>Modify</source>
+        <translation type="obsolete">Modifier</translation>
+    </message>
+</context>
+<context>
     <name>ConstraintMinimizeNumberOfRoomsForStudentsForm_template</name>
     <message>
         <source>FET - Minimize number of rooms for students constraints</source>
@@ -2611,6 +3618,41 @@ separated by commas (maximum 20 for now).
     <message>
         <source>Modify</source>
         <translation>Modifier</translation>
+    </message>
+</context>
+<context>
+    <name>ConstraintMinimizeNumberOfRoomsForTeachersForm_template</name>
+    <message>
+        <source>FET - Minimize number of rooms for teachers constraints</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Item</source>
+        <translation type="unfinished">Nouveau</translation>
+    </message>
+    <message>
+        <source>Constraints</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Ajouter</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Modify</source>
+        <translation type="unfinished">Modifier</translation>
     </message>
 </context>
 <context>
@@ -2949,6 +3991,84 @@ separated by commas (maximum 20 for now).
     </message>
 </context>
 <context>
+    <name>ConstraintSubjectPreferredRoomForm_template</name>
+    <message>
+        <source>FET - Space constraints subject preferred room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Item</source>
+        <translation type="unfinished">Nouveau</translation>
+    </message>
+    <message>
+        <source>Constraints</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Ajouter</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Modify</source>
+        <translation type="unfinished">Modifier</translation>
+    </message>
+    <message>
+        <source>Filter</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ConstraintSubjectPreferredRoomsForm_template</name>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Ajouter</translation>
+    </message>
+    <message>
+        <source>Constraints</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>New Item</source>
+        <translation type="unfinished">Nouveau</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Modify</source>
+        <translation type="unfinished">Modifier</translation>
+    </message>
+    <message>
+        <source>Filter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FET - ConstraintSubjectPreferredRooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ConstraintSubjectRequiresEquipmentsForm_template</name>
     <message>
         <source>FET - Space constraints subject requires equipments</source>
@@ -2985,6 +4105,84 @@ separated by commas (maximum 20 for now).
     <message>
         <source>Filter</source>
         <translation>Filtrer</translation>
+    </message>
+</context>
+<context>
+    <name>ConstraintSubjectSubjectTagPreferredRoomForm_template</name>
+    <message>
+        <source>FET - Space constraints subject subject tag preferred room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Item</source>
+        <translation type="unfinished">Nouveau</translation>
+    </message>
+    <message>
+        <source>Constraints</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Ajouter</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Modify</source>
+        <translation type="unfinished">Modifier</translation>
+    </message>
+    <message>
+        <source>Filter</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ConstraintSubjectSubjectTagPreferredRoomsForm_template</name>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Ajouter</translation>
+    </message>
+    <message>
+        <source>Constraints</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>New Item</source>
+        <translation type="unfinished">Nouveau</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Modify</source>
+        <translation type="unfinished">Modifier</translation>
+    </message>
+    <message>
+        <source>Filter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FET - ConstraintSubjectSubjectTagPreferredRooms</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3144,6 +4342,123 @@ separated by commas (maximum 20 for now).
     </message>
 </context>
 <context>
+    <name>ConstraintTeacherSubjectRequireRoomForm_template</name>
+    <message>
+        <source>FET - Space constraints teacher subject require room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Item</source>
+        <translation type="unfinished">Nouveau</translation>
+    </message>
+    <message>
+        <source>Constraints</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Ajouter</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Modify</source>
+        <translation type="unfinished">Modifier</translation>
+    </message>
+    <message>
+        <source>Filter</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ConstraintTeachersMaxHoursContinuouslyForm_template</name>
+    <message>
+        <source>FET - Time constraints teachers no more than X hours continuously</source>
+        <translation type="obsolete">FET - Contrainte : X heures en continu par jour pour les enseignants</translation>
+    </message>
+    <message>
+        <source>New Item</source>
+        <translation type="unfinished">Nouveau</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Ajouter</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Modify</source>
+        <translation type="unfinished">Modifier</translation>
+    </message>
+    <message>
+        <source>Constraints</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FET - Time constraints teachers max hours continuously</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ConstraintTeachersMaxHoursDailyForm_template</name>
+    <message>
+        <source>FET - Time constraints teachers no more than X hours daily</source>
+        <translation type="obsolete">FET - Contrainte : X heures par jour pour les enseignants</translation>
+    </message>
+    <message>
+        <source>New Item</source>
+        <translation type="unfinished">Nouveau</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Ajouter</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Modify</source>
+        <translation type="unfinished">Modifier</translation>
+    </message>
+    <message>
+        <source>Constraints</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FET - Time constraints teachers max hours daily</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ConstraintTeachersNoGapsForm_template</name>
     <message>
         <source>FET - Time constraints teachers no gaps</source>
@@ -3182,105 +4497,218 @@ separated by commas (maximum 20 for now).
     <name>ConstraintTeachersNoMoreThanXHoursContinuouslyForm_template</name>
     <message>
         <source>FET - Time constraints teachers no more than X hours continuously</source>
-        <translation>FET - Contrainte : X heures en continu par jour pour les enseignants</translation>
+        <translation type="obsolete">FET - Contrainte : X heures en continu par jour pour les enseignants</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Nouveau</translation>
+        <translation type="obsolete">Nouveau</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation>Fermer</translation>
+        <translation type="obsolete">Fermer</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation>Ajouter</translation>
+        <translation type="obsolete">Ajouter</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Contrainte courante</translation>
+        <translation type="obsolete">Contrainte courante</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation>Supprimer</translation>
+        <translation type="obsolete">Supprimer</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Modifier</translation>
+        <translation type="obsolete">Modifier</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Constraintes</translation>
+        <translation type="obsolete">Constraintes</translation>
     </message>
 </context>
 <context>
     <name>ConstraintTeachersNoMoreThanXHoursDailyForm_template</name>
     <message>
         <source>FET - Time constraints teachers no more than X hours daily</source>
-        <translation>FET - Contrainte : X heures par jour pour les enseignants</translation>
+        <translation type="obsolete">FET - Contrainte : X heures par jour pour les enseignants</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Nouveau</translation>
+        <translation type="obsolete">Nouveau</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation>Fermer</translation>
+        <translation type="obsolete">Fermer</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation>Ajouter</translation>
+        <translation type="obsolete">Ajouter</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Contrainte courante</translation>
+        <translation type="obsolete">Contrainte courante</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation>Supprimer</translation>
+        <translation type="obsolete">Supprimer</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Modifier</translation>
+        <translation type="obsolete">Modifier</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Constraintes</translation>
+        <translation type="obsolete">Constraintes</translation>
+    </message>
+</context>
+<context>
+    <name>ConstraintTeachersSubgroupsMaxHoursDailyForm_template</name>
+    <message>
+        <source>FET - Time constraints teachers-subgroups no more than X hours daily</source>
+        <translation type="obsolete">FET - Contrainte : X heures par jour pour un groupe et un enseignant donnés</translation>
+    </message>
+    <message>
+        <source>New Item</source>
+        <translation type="unfinished">Nouveau</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Ajouter</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Modify</source>
+        <translation type="unfinished">Modifier</translation>
+    </message>
+    <message>
+        <source>Constraints</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FET - Time constraints teachers-subgroups max hours daily</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ConstraintTeachersSubgroupsNoMoreThanXHoursDailyForm_template</name>
     <message>
         <source>FET - Time constraints teachers-subgroups no more than X hours daily</source>
-        <translation>FET - Contrainte : X heures par jour pour un groupe et un enseignant donnés</translation>
+        <translation type="obsolete">FET - Contrainte : X heures par jour pour un groupe et un enseignant donnés</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Nouveau</translation>
+        <translation type="obsolete">Nouveau</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation>Fermer</translation>
+        <translation type="obsolete">Fermer</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation>Ajouter</translation>
+        <translation type="obsolete">Ajouter</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Contrainte courante</translation>
+        <translation type="obsolete">Contrainte courante</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation>Supprimer</translation>
+        <translation type="obsolete">Supprimer</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Modifier</translation>
+        <translation type="obsolete">Modifier</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Constraintes</translation>
+        <translation type="obsolete">Constraintes</translation>
+    </message>
+</context>
+<context>
+    <name>ConstraintTeachersSubjectTagMaxHoursContinuouslyForm_template</name>
+    <message>
+        <source>FET - Time constraints teachers subject tag max hours continuously</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Item</source>
+        <translation type="unfinished">Nouveau</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Ajouter</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Modify</source>
+        <translation type="unfinished">Modifier</translation>
+    </message>
+    <message>
+        <source>Constraints</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Filter</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ConstraintTeachersSubjectTagsMaxHoursContinuouslyForm_template</name>
+    <message>
+        <source>FET - Time constraints teachers subject tags max hours continuously</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Item</source>
+        <translation type="unfinished">Nouveau</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Ajouter</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Modify</source>
+        <translation type="unfinished">Modifier</translation>
+    </message>
+    <message>
+        <source>Constraints</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3781,15 +5209,15 @@ separated by commas (maximum 20 for now).
     </message>
     <message>
         <source>Teachers no more than X hours continuously</source>
-        <translation>Enseignants pas plus de X heures d&apos;affilée</translation>
+        <translation type="obsolete">Enseignants pas plus de X heures d&apos;affilée</translation>
     </message>
     <message>
         <source>Teachers no more than X hours daily</source>
-        <translation>Enseignants pas plus de X heures par jour</translation>
+        <translation type="obsolete">Enseignants pas plus de X heures par jour</translation>
     </message>
     <message>
         <source>Teachers-subgroups no more than X hours daily</source>
-        <translation>Enseignants/sous-groupe pas plus de X heures par jour</translation>
+        <translation type="obsolete">Enseignants/sous-groupe pas plus de X heures par jour</translation>
     </message>
     <message>
         <source>Activity preferred time</source>
@@ -3939,6 +5367,102 @@ separated by commas (maximum 20 for now).
         <source>Activity preferred rooms</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>CA</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;CA</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MY</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;MY</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subject preferred room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subject subject tag preferred room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subject preferred rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subject subject tag preferred rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teachers-subject tags max hours continuously</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teachers-subject tag max hours continuously</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teachers max hours continuously</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teachers max hours daily</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teachers-subgroups max hours daily</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;PL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teacher subject require room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>2 activities ordered</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time constraints subtags</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buildings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Max building changes per day for teachers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Max building changes per day for students</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Minimize number of rooms for teachers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Max room changes per day for teachers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Max room changes per day for students</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>GroupsForm_template</name>
@@ -3981,6 +5505,14 @@ separated by commas (maximum 20 for now).
     <message>
         <source>Sort current groups alphabetically</source>
         <translation>Trier les groupes en ordre alphabétique</translation>
+    </message>
+    <message>
+        <source>Activate all activities for selected students group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>De-activate all activities for selected students group</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4026,7 +5558,7 @@ separated by commas (maximum 20 for now).
     <message>
         <source>FET is free software for automatically scheduling the timetable of a school, high-school or faculty.
 
-Version: 3.12.30 (March 2005)
+Version: 3.17.1 (August 2005)
 
 Licensed under GNU/GPL.
 
@@ -4044,13 +5576,131 @@ Please support this project by making a donation. You can contact the author for
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>French translation - by Jerome Durand 
+<byte value="x9"/>(fetfr@free.fr, http://fetfr.free.fr/ )
+
+Catalan translation - by Miguel Gea Milvaques
+
+Romanian translation - by Liviu Lalescu 
+<byte value="x9"/>(liviu@lalescu.ro, http://lalescu.ro/liviu/ )
+
+Malay translation - by Abdul Hadi Kamel
+
+Polish translation - by Radoslaw Pasiok
+<byte value="x9"/>(zapala@konto.pl)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>In chronological order:
 
-Sebastian Canagaratna, Department of Chemistry, Ohio Northern University</source>
+Sebastian Canagaratna, Department of Chemistry, Ohio Northern University
+
+Andreea Mihailescu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>(chronologically)
+--------------------
+
+Costin Badica<byte value="x9"/>- my teacher. He actually made me begin this project and provided me with documentation and advices.
+
+Carsten Niehaus - suggestions.
+
+Imre Nagy <byte value="x9"/>- e-mail list (does not work anymore), suggestions.
+
+Sajith V. K. <byte value="x9"/>- suggestions
+
+Michael Towers<byte value="x9"/>- lots of bugs reported, sample files, suggestions, front/back-end.
+
+Antti Leppik<byte value="x9"/>- sample file, suggestions.
+
+Ian Fantom<byte value="x9"/>- sample file, suggestions.
+
+Simon Ghetti<byte value="x9"/>- sample files, suggestions.
+
+Gibbon Tamba - sample file, bug reported.
+
+Jerome Durand - bug reported, French translation (fetfr@free.fr, please also see http://fetfr.free.fr/).
+
+Marek Jaszuk - bugs reported, suggestions, sample file.
+
+Ramanathan Srinivasan - suggestions.
+
+Vimal Joseph - suggestions, a script to convert the .xml results into .tex.
+
+Cristian Gherman - bug reported, suggestions.
+<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>
+Nicholas Robinson - suggestions.
+
+Radu Spineanu <byte value="x9"/>- Debian package.
+
+Morten Piil<byte value="x9"/>- bug reported, sample file.
+
+Sebastian Canagaratna - lots of suggestions, bugs reported, sample files.
+
+Abdul Hadi Kamel - sample file, bugs reported, Malay translation.
+
+Miguel Gea Milvaques - Catalan translation.
+
+Frank de Bruijn - bug reported.
+
+Radoslaw Pasiok - Polish translation.
+
+Daan Huntjens - bug reported, sample file, suggestions.
+
+Yush Yuen - sample file.
+
+Scott Sweeting - sample file, suggestions, icon for FET.
+
+Dragos Petrascu - suggestions.
+
+Daniel S. - suggestions, help files for the constraints.
+
+Gianluca Salvo - suggested Constraint2ActivitiesOrdered.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>---------------------------------------------------------------------
+
+radu (sunt@acasa.ro)   (2005-08-03 23:40:27+03)
+<byte value="x9"/>
+programul e foarte bun. si e gratis... asta e deja pasiune.
+
+multa bafta mai departe.
+
+R. Nemeth, CT &quot;C. Brancusi&quot;, Oradea.
+
+---------------------------------------------------------------------
+
+j. weimenglee (weimenglee@gmail.com)   (2005-06-22 18:34:13+03) (Rating: 1 star out of 5)
+<byte value="x9"/>
+too bad
+
+---------------------------------------------------------------------
+
+Sema (skweli@yahoo.fr)   (2005-06-21 11:43:06+03) (Rating: 1 star out of 5)
+<byte value="x9"/>
+it&apos;s not for universities. it doesnt look professional.
+
+---------------------------------------------------------------------
+
+Adrian Hernandez Santisteban (filosofo@gmail.com)   (2005-06-13 02:32:55+03) (Rating: 5 stars out of 5)
+<byte value="x9"/>
+I am a member of a literacy campaign in MEXICO. We are a non-profit organization that work to improve the quality of life of those ones who did not recieved a proper education. We like to thank you very much for this program, it is excellent. It helped us resolve all our logistic problems.
+
+---------------------------------------------------------------------
+
+ely mustapha (mustapha.ahmedly@esct.rnu.tn)   (2005-05-18 12:55:57+03) (Rating: 5 stars out of 5)
+<byte value="x9"/>
+Excellent programme. De telles solutions manquent sur le net. Merci encore.
+
+---------------------------------------------------------------------
+
+rezgui (rezguiwahid@yahoo.fr)   (2005-04-21 18:46:34+03)
+<byte value="x9"/>
+an excellent program for timetabling,but i want to complie it on windows architecture
+
+---------------------------------------------------------------------
 
 Erik Happaerts (erik.happaerts@ehb.be)   (2005-03-26 11:59:25+02)
 <byte value="x9"/>
@@ -4110,60 +5760,19 @@ Eraldo Paulesu (eraldo.paulesu@unimib.it)   (2004-11-15 03:19:34+02)
 It looks an excellent software for schools of all grades but not for universities</source>
         <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>HelpConstraintsForm_template</name>
     <message>
-        <source>French translation - by Jerome Durand 
-<byte value="x9"/>(fetfr@free.fr, http://fetfr.free.fr/ )
-
-Catalan translation - by Miguel Gea Milvaques
-
-Romanian translation - by Liviu Lalescu 
-<byte value="x9"/>(liviu@lalescu.ro, http://lalescu.ro/liviu/ )</source>
-        <translation type="unfinished"></translation>
+        <source>Close</source>
+        <translation type="obsolete">Fermer</translation>
     </message>
+</context>
+<context>
+    <name>HelpConstraintsSubtagsForm_template</name>
     <message>
-        <source>People who helped me (chronologically)
---------------------------------------
-
-Costin Badica<byte value="x9"/>- my teacher. He actually made me begin this project and provided me with documentation and advices.
-
-Carsten Niehaus - suggestions.
-
-Imre Nagy <byte value="x9"/>- e-mail list (does not work anymore), suggestions.
-
-Sajith V. K. <byte value="x9"/>- suggestions
-
-Michael Towers<byte value="x9"/>- lots of bugs reported, sample files, suggestions, front/back-end.
-
-Antti Leppik<byte value="x9"/>- sample file, suggestions.
-
-Ian Fantom<byte value="x9"/>- sample file, suggestions.
-
-Simon Ghetti<byte value="x9"/>- sample files, suggestions.
-
-Gibbon Tamba - sample file, bug reported.
-
-Jerome Durand - bug reported, French translation (fetfr@free.fr, please also see http://fetfr.free.fr/).
-
-Marek Jaszuk - bugs reported, suggestions, sample file.
-
-Ramanathan Srinivasan - suggestions.
-
-Vimal Joseph - suggestions, a script to convert the .xml results into .tex.
-
-Cristian Gherman - bug reported, suggestions.
-<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>
-Nicholas Robinson - suggestions.
-
-Radu Spineanu <byte value="x9"/>- Debian package.
-
-Morten Piil<byte value="x9"/>- bug reported, sample file.
-
-Sebastian Canagaratna - lots of suggestions, bugs reported, sample files.
-
-Abdul Hadi Kamel - sample file, bugs reported.
-
-Miguel Gea Milvaques - Catalan translation.</source>
-        <translation type="unfinished"></translation>
+        <source>Close</source>
+        <translation type="obsolete">Fermer</translation>
     </message>
 </context>
 <context>
@@ -4448,7 +6057,626 @@ A: It will slow down the automatic allocation, so please don&apos;t.
 Q: What about the one phase and 2 phases automatic allocation?
 A: If FET fails to solve your timetable in 2 phases (it has many broken space constraints), try a single phase allocation
 <byte value="x9"/>
-<byte value="x9"/>-&gt; added - 14 February 2005.</source>
+<byte value="x9"/>-&gt; added - 14 February 2005.
+
+
+this documentation by Liviu Lalescu</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>HelpTimeConstraintsForm_template</name>
+    <message>
+        <source>FET - Help on time constraints</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <source>FET - Time Constraints Documentation
+
+
+
+Constraint2ActivitiesConsecutive
+
+
+Subtags: Weight, Compulsory, First_Activity_Id, Second_Activity_Id
+
+
+Description: You have two activities that you want to schedule one after the other, in the same day. Order is important. It adds, to the fitness of the chromosome, a value that grows as the 2 activities are scheduled farther one from each other. For the moment, fitness factor increases with one unit for every additional hour and one unit for every day (the optimal being 0 - when the starting time of the second activity is the ending time of the first one). A user needed a timetable to respect the requirement that 2 activities follow one after the other (order is important). For compulsory and non-compulsory, normal error reporting is done. The conflicts are a difference in days + a difference in hours. The number of conflicts is multiplied with 2 if the first activity is weekly (not bi-weekly) and again multiplied with 2 if the second activity is weekly.
+
+
+
+Constraint2ActivitiesGrouped
+
+
+Subtags: Weight, Compulsory, First_Activity_Id, Second_Activity_Id
+
+
+Description: You have two activities that you want to schedule one after the other, in the same day. Order is not important. It adds, to the fitness of the chromosome, a value that grows as the 2 activities are scheduled farther one from each other. For the moment, fitness factor increases with one unit for every additional hour and one unit for every day. (For hours, we have a 0 as minimum if the activities are OK, a positive constant value if they overlap and a positive increasing value if they are not touching. For days - we have a simple absolute difference). A user needed a timetable to respect the requirement that 2 activities follow one after the other (order is not important).For compulsory and non-compulsory, normal error reporting is done. The conflicts reported are: the difference in days +or- the difference in hours if the activities are too far from each other. It is a constant number if the activities overlap; 0 if the hours are OK. The number of conflicts is multiplied with 2 if the first activity is weekly (not bi-weekly) and again multiplied with 2 if the second activity is weekly.
+
+
+
+ConstraintActivitiesNotOverlapping
+
+
+Subtags: Weight, Compulsory, Number_of_Activities, Activity_Id, Activity_Id
+
+
+Possible Subtags: More Activity_Id
+
+
+Description: It aims at scheduling a set of activities so that they do not overlap. The number of conflicts is considered the number of overlapping hours.
+
+
+
+ConstraintActivitiesPreferredTimes
+
+
+Subtags: Weight, Compulsory, Teacher_Name, Students_Name, Subject_Name, Subject_Tag, Number_of_Preferred_Times, Preferred_Time
+
+
+Preferred_Time Subtags: Preferred_Day, Preferred_Hour
+
+
+Description: It returns conflicts if a set of activities is scheduled in another interval than the preferred set of times. The set of activities is specified by a subject, teacher, students or a combination of these. A user suggested that ConstraintActivityPreferredTimes should be more general. Now, you can specify a teacher, the students and a subject as a filter to a set of activities that must be scheduled in certain intervals.
+
+
+
+ConstraintActivitiesSameStartingHour
+
+
+Subtags: ???
+
+
+Description: It aims at scheduling a set of activities at the same starting hour. The number of conflicts is considered the sum of differences in the scheduling time for all pairs of activities. The difference in the scheduling time for a pair of activities is considered the difference in the starting hour. TODO: Weekly activities are counted as two and bi-weekly activities as one (really necessary?). IMPORTANT: The compulsory constraints of this kind implement chromosome repairing, so no conflicts will be reported
+
+
+
+ConstraintActivitiesSameStartingTime
+
+
+Subtags: Weight, Compulsory, Number_of_Activities, Activity_Id, Activity_Id
+
+
+Possible Subtags: More Activity_Id
+
+
+Description: It aims at scheduling a set of activities at the same starting time. The number of conflicts is considered the sum of differences in the scheduling time for all pairs of activities. The difference in the scheduling time for a pair of activities is considered the sum between the difference in the starting day and the difference in the starting hour. TODO: Weekly activities are counted as two and bi-weekly activities as one (really necessary?). IMPORTANT: Starting with version 3.2.3, the compulsory constraints of this kind implement chromosome repairing, so no conflicts will be reported. For compulsory constraints, the solution candidate is repaired before evaluation (so all solutions will respect these constraints and there will be no conflicts reported). This is faster, as an input file from user Ian Fantom proved. For non-compulsory constraints, the method is conflict reporting (slower, worse than the above method).
+
+
+ConstraintActivityEndsDay
+
+
+Subtags: Weight, Compulsory, Activity_Id
+
+
+
+Description: It returns a conflicts factor that increases with the number of lessons that follow after this activity (in the same day).
+
+
+ConstraintActivityPreferredTime
+
+
+Subtags: Weight, Compulsory, Activity_Id, Preferred_Hour, Preferred_Day
+
+
+Description: It adds, to the fitness of the chromosome, a fitness factor that grows as the activity is scheduled farther from the wanted time For the moment, fitness factor increases with one unit for every hour and one unit for every day. For compulsory constraints, the solution candidate is repaired before evaluation (so all solutions will respect these constraints and there will be no conflicts reported). This is faster (proved practically, not theoretically). For non-compulsory constraints, the method is conflict reporting. The procedure reports a conflicts factor that is increasing with the distance to the desired period. This might generate worse solutions, if you are only interested in the exact placement. In this case, please use ConstraintActivityPreferredTimes with only one preferred time.
+
+
+
+ConstraintActivityPreferredTimes
+
+
+Subtags: Weight, Compulsory, Activity_Id, Number_of_Preferred_Times, Preferred_Time
+
+
+Preferred_Time Subtags: Preferred_Day, Preferred_Hour
+
+
+Description: It returns conflicts if the activity is scheduled in another interval than the preferred set of times. You can specify a set of time slots when this activity can be scheduled (a kind of OR of more ConstraintActivityPreferredTime). Important: For only one non-compulsory preferred time, ConstraintActivityPreferredTimes might behave better than ConstraintActivityPreferredTime, depending on whether you are interested in minimizing the distance to this preferred time or only in reaching the exact preferred time. Please see the detailed observation in the explanation of ConstraintActivityPreferredTime.
+
+
+
+ConstraintBasicCompulsoryTime
+
+
+Subtags: Weight, Compulsory
+
+
+Description: This class comprises all the basic compulsory constraints (constraints which must be fulfilled for any timetable) - the time allocation part.
+
+
+
+ConstraintBreak
+
+
+Subtags: Weight, Compulsory, Day, Start_Hour, End_Hour
+
+
+Description: It constrains the timetable to not schedule any activity in the specified day, between the start hour and end hour.
+
+
+
+ConstraintMinNDaysBetweenActivities
+
+
+Subtags: Weight, Compulsory, Day, Number_of_Activities, Activity_Id, Activity_Id, MinDays
+
+
+Possible Subtags: More Activity_Id
+
+
+Description: It refers to a set of activities and involves a constant, N. For every pair of activities in the set, it does not allow the distance(in days) between them to be less than N. If you specify N=1, then this constraint means that no two activities can be scheduled in the same day. N=2 means that each two subactivities must be separated by at least one day. Example: 3 activities and N=2. Then, one can place them on Monday, Wednesday and Friday (5 days week). Example2: 2 activities, N=3. Then, one can place them on Monday and Thursday, on Monday and Friday, then on Tuesday and Friday (5 days week).
+
+
+
+ConstraintStudentsEarly
+
+
+Subtags: Weight, Compulsory
+
+
+Description: It adds, to the fitness of the chromosome, a fitness factor that is related to how early the students begin their courses. The result is a timetable having more activities scheduled at the beginning of the day. IMPORTANT: biweekly activities are treated as weekly ones, for speed and because in normal situations this does not matter. It is a constraint that imposes the condition that all the students must begin their courses as early as possible. You have to be careful with this constraint: if any set of students begins the classes later than the first hour in a certain day, you will get a conflict.
+
+
+
+ConstraintStudentsNHoursDaily
+
+
+Subtags: Weight, Compulsory, MaxHoursDaily, MinHoursDaily
+
+
+Description: The result is a timetable respecting the condition that all of the students must not have too little or too much hours in a day.
+
+
+
+ConstraintStudentsNoGaps
+
+
+Subtags: Weight, Compulsory
+
+
+Description: It adds, to the fitness of the chromosome, a conflicts factor computed from the gaps existing in the timetable (regarding the students). The overall result is a timetable having less gaps for the students.
+
+
+
+ConstraintStudentsSetIntervalMaxDaysPerWeek
+
+
+Subtags: Weight, Compulsory, Students, Start_Hour, End_Hour, Max_Intervals
+
+
+Description: For a certain students set: The purpose is that a certain interval not be scheduled more than n times in a week (for example, there must be only 2 occupied intervals between hours 3 and 6, which might be on Monday and on Tuesday. Quite a difficult and long name. A user needed a constraint to disallow more than 2 afternoons per week for a students set. This constraint is more general. You can specify an interval (by the start and end hour), a students set and the maximum number of days in a week when it is permitted to have activities in this time interval.
+
+
+
+ConstraintStudentsSetNHoursDaily
+
+
+Subtags: Weight, Compulsory, MaxHoursDaily, MinHoursDaily, Students
+
+
+Description: The result is a timetable respecting the condition that this students set must not have too little or too much hours in a day.
+
+
+
+ConstraintStudentsSetNoGaps
+
+
+Subtags: Weight, Compulsory, Students
+
+
+Description: It adds, to the fitness of the chromosome, a conflicts factor computed from the gaps existing in the timetable (regarding the specified students set).
+
+
+
+ConstraintStudentsSetNotAvailable
+
+
+Subtags: Weight, Compulsory, Students, Day, Start_Hour, End_Hour
+
+
+Description: It returns a fitness factor equal to the product of this restriction&apos;s weight and the number of conflicting hours for each students&apos; set (hours when it is not available, but a course is scheduled at that time). For the moment, this is done for a certain day and an hour interval. (on day &quot;Day&quot;, between hours &quot;Start_Hour&quot; and &quot;End_Hour&quot;).
+
+
+
+ConstraintTeacherMaxDaysPerWeek
+
+
+Subtags: Weight, Compulsory, Teacher_Name, Max_Days_Per_Week
+
+
+Description: The resulting timetable must respect the requirement that this teacher must not have too much working days per week.
+
+
+
+ConstraintTeacherNotAvailable
+
+
+Subtags: Weight, Compulsory, Teacher_Name, Day, Start_Hour, End_Hour
+
+
+Description: It returns a fitness factor a number equal to the product of this restriction&apos;s weight and the number of conflicting hours for each teacher (hours when he is not available, but a course is scheduled at that time). For the moment, this is done for a certain day and an hour interval. (For teacher &quot;Teacher_Name&quot;, on day &quot;Day&quot;, between hours &quot;Start_Hour&quot; and &quot;End_Hour&quot;).
+
+
+
+ConstraintTeachersNoGaps
+
+
+Subtags: Weight, Compulsory
+
+
+Description: It adds, to the fitness of the chromosome, a conflicts factor computed from the gaps existing in the timetable (regarding the teachers). The overall result is a timetable having less gaps for the teachers.
+
+
+
+ConstraintTeachersMaxHoursContinuously
+
+
+Subtags: Weight, Compulsory, Maximum_Hours_Continuously
+
+
+Description: This is a constraint, aimed at obtaining timetables which do not allow more than &quot;Maximum_Hours_Continuously&quot; hours in a row for any teacher.
+
+
+
+ConstraintTeachersMaxHoursDaily
+
+
+Subtags: Weight, Compulsory, Maximum_Hours_Daily
+
+
+Description: This is a constraint, aimed at obtaining timetables which do not allow more than &quot;Maximum_Hours_Daily&quot; hours in a day for any teacher.
+
+
+
+ConstraintTeachersSubgroupsMaxHoursDaily
+
+
+Subtags: Weight, Compulsory, Maximum_Hours_Daily
+
+
+Description: A constraint aimed at obtaining timetables which do not allow for a certain teacher and a certain subgroup more than X hours per day.
+
+
+ConstraintTeachersSubjectTagMaxHoursContinuously
+
+
+Subtags: Weight, Compulsory, Maximum_Hours_Daily
+
+
+Description: A constraint aimed at obtaining timetables which do not allow for a certain teacher and a certain group of subjects by tag more than X hours per day.
+
+
+ConstraintTeachersSubjectTagsMaxHoursContinuously
+
+
+Subtags: Weight, Compulsory, Maximum_Hours_Daily
+
+
+Description: A constraint aimed at obtaining timetables which do not allow for a certain teacher and a certain set of groups of subjects more than X hours per day.
+
+
+this documentation by Daniel S.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>HelpTimeConstraintsSubtagsForm_template</name>
+    <message>
+        <source>FET - Help on time constraints subtags</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <source>FET - Time Constraints Subtags Documentation
+
+
+Activity_Id
+
+
+Used by: Constraint2ActivitiesConsecutive, Constraint2ActivitiesGrouped, ConstraintActivitiesNotOverlapping, ConstraintActivitiesSameStartingTime, ConstraintActivityEndsDay, ConstraintActivityPreferredTime, ConstraintActivityPreferredTimes, ConstraintMinNDaysBetweenActivities
+
+
+Possible Values: Any natural number equal to an assigned Activity ID
+
+
+Description: Indicates an activity by ID number.
+
+
+
+Compulsory
+
+
+Used by: All
+
+
+Possible Values: yes, no
+
+
+Description: Indicates whether the attached constraint is compulsory or non-compulsory.
+
+
+
+Day
+
+
+Used by: ConstraintBreak, ConstraintMinNDaysBetweenActivities, ConstraintStudentsSetNotAvailable, ConstraintStudentsSetNotAvailable, ConstraintTeacherNotAvailable
+
+
+Possible Values: Any Name of a Day from Day_List
+
+
+Description: Indicates the day the constraint refers to.
+
+
+
+End_Hour
+
+
+Used by: ConstraintBreak, ConstraintStudentsSetIntervalMaxDaysPerWeek, ConstraintStudentsSetNotAvailable, ConstraintTeacherNotAvailable
+
+
+Possible Values: Any Name of an Hour from Hours_List
+
+
+Description: Indicates the ending hour that the constraint refers to. The constraint includes End_Hour.
+
+
+
+First_Activity_Id
+
+
+Used by: Constraint2ActivitiesConsecutive, Constraint2ActivitiesGrouped,
+
+
+Possible Values: Any natural number equal to an assigned Activity ID
+
+
+Description: Indicates an activity by ID number. This must be the first of two activities listed.
+
+
+
+Max_Intervals
+
+
+Used by: ConstraintStudentsSetIntervalMaxDaysPerWeek
+
+
+Possible Values: Any natural number less than the number of days in the week.
+
+
+Description: Indicates the number of of times in a week that a given interval can be occupied by activities. For example, this is used to give students a certain number of afternoons off per week. A value of 2 in a 5 day week would give students 3 free afternoons.
+
+
+
+MaxHoursDaily
+
+
+Used by: ConstraintStudentsNHoursDaily, ConstraintStudentsSetNHoursDaily
+
+
+Possible Values: Any natural number less than the number of Hours in a day from Hours_List.
+
+
+Description: Indicates the greatest number of hours that a group can have activities in a given day.
+
+
+
+Maximum_Hours_Continuously
+
+
+Used by: ConstraintTeachersNoMoreThanXHoursContinuously
+
+
+Possible Values: Any natural number less than the number of Hours in a day from Hours_List.
+
+
+Description: Indicates the greatest number of consecutive hours that a teacher can have activities.
+
+
+
+Maximum_Hours_Daily
+
+
+Used by: ConstraintTeachersNoMoreThanXHoursDaily, ConstraintTeachersSubgroupsNoMoreThanXHoursDaily
+
+
+Possible Values: Any natural number less than or equal to the number of Hours in a day from Hours_List.
+
+
+Description: Indicates the greatest number of hours in a given day that a teacher can have activities.
+
+
+
+MinDays
+
+
+Used by: ConstraintMinNDaysBetweenActivities
+
+
+Possible Values: Any natural number less than the number of Days from Days_List.
+
+
+Description: Indicates the minimum number of days between given activities. A value of 1 means that the activities will not be scheduled on the same day.
+
+
+
+MinHoursDaily
+
+
+Used by: ConstraintStudentsNHoursDaily, ConstraintStudentsSetNHoursDaily
+
+
+Possible Values: Any non-negative number less than the number of Hours in a day from Hours_List.
+
+
+Description: Indicates the least number of hours that a group can have activities in a given day.
+
+
+
+Number_of_Activities
+
+
+Used by: ConstraintActivitiesNotOverlapping, ConstraintActivitiesSameStartingTime, ConstraintMinNDaysBetweenActivities
+
+
+Possible Values: Any natural number. It must equal the number of Activity_Id lines given in the constraint.
+
+
+Description: It counts the number of activities which are under a given constraint. It allows the program to know how many lines of &lt;Activity_Id&gt;nnn&lt;/Activity_Id&gt; to expect.
+
+
+
+Number_of_Preferred_Times
+
+
+Used by: ConstraintActivitiesPreferredTimes, ConstraintActivityPreferredTimes
+
+
+Possible Values: Any natural number. It must equal the number of Preferred_Time sections given in the constraint.
+
+
+Description: I counts the number of possible preferred times which are under a given constraint. It allows the program to know how many sections of &lt;Preferred_Time&gt;...&lt;/Preferred_Time&gt; to expect.
+
+
+
+***Preferred_Time***
+
+
+Used by: ConstraintActivitiesPreferredTimes, ConstraintActivityPreferredTimes
+
+
+Possible Values: It has no values, only the subtags, Preferred_Day and Preferred_Hour.
+
+
+Description: This is the only TimeConstraint subtag which has its own subtags, Preferred_Day and Preferred_Hour. It lists a preferred time for a given activity or set of activities.
+
+
+
+Preferred_Day
+
+
+Used by: ConstraintActivitiesPreferredTimes, ConstraintActivityPreferredTime, ConstraintActivityPreferredTimes
+
+
+Possible Values: Any Name of a Day from Day_List
+
+
+Description: Indicates the preferred day the constraint refers to.
+
+
+
+Preferred_Hour
+
+
+Used by: ConstraintActivitiesPreferredTimes, ConstraintActivityPreferredTime, ConstraintActivityPreferredTimes
+
+
+Possible Values: Any Name of an Hour from Hours_List
+
+
+Description: Indicates the preferred hour that the constraint refers to.
+
+
+
+Second_Activity_Id
+
+
+Used by: Constraint2ActivitiesConsecutive, Constraint2ActivitiesGrouped
+
+
+Possible Values: Any natural number equal to an assigned Activity ID
+
+
+Description: Indicates an activity by ID number. This must be the second of two activities listed.
+
+
+
+Start_Hour
+
+
+Used by: ConstraintBreak, ConstraintStudentsSetIntervalMaxDaysPerWeek, ConstraintStudentsSetNotAvailable, ConstraintTeacherNotAvailable
+
+
+Possible Values: Any Name of an Hour from Hours_List
+
+
+Description: Indicates the first hour that the constraint refers to. The constraint includes Start_Hour.
+
+
+
+Students
+
+
+Used by: ConstraintStudentsSetIntervalMaxDaysPerWeek, ConstraintStudentsSetNHoursDaily, ConstraintStudentsSetNoGaps, ConstraintStudentsSetNotAvailable
+
+
+Possible Values: Any name of a set of students, a year, a group or a subgroup.
+
+
+Description: Indicates the set of students that the constraint will apply to.
+
+
+
+Students_Name
+
+
+Used by: ConstraintActivitiesPreferredTimes
+
+
+Possible Values: Any name of a set of students, a year, a group or a subgroup.
+
+
+Description: Indicates the set of students that the constraint will apply to.
+
+
+
+Subject_Name
+
+
+Used by: ConstraintActivitiesPreferredTimes
+
+
+Possible Values: Any name of a subject.
+
+
+Description: Indicates the set of activities, as indicated by subject, that the constraint will apply to.
+
+
+
+Teacher_Name
+
+
+Used by: ConstraintActivitiesPreferredTimes, ConstraintTeacherMaxDaysPerWeek, ConstraintTeacherNotAvailable
+
+
+Possible Values: Any name of a teacher.
+
+
+Description: Indicates the teacher that the constraint will apply to.
+
+
+
+Weight
+
+
+Used by: All
+
+
+Possible Values: Any number between 1 and 100, but preferably only integers.
+
+
+Description: Indicates how important the constraint is compared to other constraints. The default value is 1.
+
+
+this documentation by Daniel S.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4688,35 +6916,90 @@ A: If FET fails to solve your timetable in 2 phases (it has many broken space co
     </message>
     <message>
         <source>Students set (1)</source>
-        <translation>Classe (1)</translation>
+        <translation type="obsolete">Classe (1)</translation>
     </message>
     <message>
         <source>Students set (2)</source>
-        <translation>Classe (2)</translation>
+        <translation type="obsolete">Classe (2)</translation>
     </message>
     <message>
         <source>Students set (3)</source>
-        <translation>Classe (3)</translation>
+        <translation type="obsolete">Classe (3)</translation>
     </message>
     <message>
         <source>Students set (4)</source>
-        <translation>Classe (4)</translation>
+        <translation type="obsolete">Classe (4)</translation>
     </message>
     <message>
         <source>Teacher (1)</source>
-        <translation>Enseignant (1)</translation>
+        <translation type="obsolete">Enseignant (1)</translation>
     </message>
     <message>
         <source>Teacher (2)</source>
-        <translation>Enseignant (2)</translation>
+        <translation type="obsolete">Enseignant (2)</translation>
     </message>
     <message>
         <source>Teacher (3)</source>
-        <translation>Enseignant (3)</translation>
+        <translation type="obsolete">Enseignant (3)</translation>
     </message>
     <message>
         <source>Subject tag</source>
         <translation>Etiquette matière</translation>
+    </message>
+    <message>
+        <source>New Item</source>
+        <translation type="unfinished">Nouveau</translation>
+    </message>
+    <message>
+        <source>Selected teachers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Ajouter</translation>
+    </message>
+    <message>
+        <source>All teachers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All students</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selected students</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Active</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ModifyBuildingForm_template</name>
+    <message>
+        <source>Modify Building Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished">Nom</translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
     </message>
 </context>
 <context>
@@ -4791,6 +7074,43 @@ dans l&apos;ordre, séparées par des virgules.</translation>
 in any order, separated by commas.</source>
         <translation>Veuillez saisir les numéros des deux activités,
 dans n&apos;importe quel ordre, séparées par des virgules.</translation>
+    </message>
+</context>
+<context>
+    <name>ModifyConstraint2ActivitiesOrderedForm_template</name>
+    <message>
+        <source>FET - Modify Constraint2ActivitiesOrdered dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Compulsory constraint</source>
+        <translation type="unfinished">Contrainte obligatoire</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please input here the id&apos;s of the 2 activities,
+in order, separated by commas.</source>
+        <translation type="unfinished">Veuillez saisir les numéros des deux activités,
+dans l&apos;ordre, séparées par des virgules.</translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="unfinished">Poids (1.0 recomandé)</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="unfinished">1.0</translation>
     </message>
 </context>
 <context>
@@ -4881,6 +7201,10 @@ dans n&apos;importe quel ordre, séparées par des virgules.</translation>
     <message>
         <source>1.0</source>
         <translation>1.0</translation>
+    </message>
+    <message>
+        <source>Subject tag</source>
+        <translation type="unfinished">Etiquette matière</translation>
     </message>
 </context>
 <context>
@@ -5337,6 +7661,146 @@ dans n&apos;importe quel ordre, séparées par des virgules.</translation>
     </message>
 </context>
 <context>
+    <name>ModifyConstraintMaxBuildingChangesPerDayForStudentsForm_template</name>
+    <message>
+        <source>FET - Modify constraint max building changes per day for students dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="unfinished">Poids (1.0 recomandé)</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="unfinished">1.0</translation>
+    </message>
+    <message>
+        <source>Max building changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Compulsory</source>
+        <translation type="unfinished">Obligatoire</translation>
+    </message>
+</context>
+<context>
+    <name>ModifyConstraintMaxBuildingChangesPerDayForTeachersForm_template</name>
+    <message>
+        <source>FET - Modify constraint max building changes per day for teachers dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="unfinished">Poids (1.0 recomandé)</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="unfinished">1.0</translation>
+    </message>
+    <message>
+        <source>Max building changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Compulsory</source>
+        <translation type="unfinished">Obligatoire</translation>
+    </message>
+</context>
+<context>
+    <name>ModifyConstraintMaxRoomChangesPerDayForStudentsForm_template</name>
+    <message>
+        <source>FET - Modify constraint max room changes per day for students dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="unfinished">Poids (1.0 recomandé)</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="unfinished">1.0</translation>
+    </message>
+    <message>
+        <source>Compulsory</source>
+        <translation type="unfinished">Obligatoire</translation>
+    </message>
+    <message>
+        <source>Max room changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ModifyConstraintMaxRoomChangesPerDayForTeachersForm_template</name>
+    <message>
+        <source>FET - Modify constraint max room changes per day for teachers dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="unfinished">Poids (1.0 recomandé)</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="unfinished">1.0</translation>
+    </message>
+    <message>
+        <source>Compulsory</source>
+        <translation type="unfinished">Obligatoire</translation>
+    </message>
+    <message>
+        <source>Max room changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ModifyConstraintMinNDaysBetweenActivitiesForm_template</name>
     <message>
         <source>FET - Modify constraint min n days between activities</source>
@@ -5392,6 +7856,52 @@ dans n&apos;importe quel ordre, séparées par des virgules.</translation>
     </message>
 </context>
 <context>
+    <name>ModifyConstraintMinimizeBuildingChangesForStudentsForm_template</name>
+    <message>
+        <source>Cancel</source>
+        <translation type="obsolete">Annuler</translation>
+    </message>
+    <message>
+        <source>Compulsory (recommended: no)</source>
+        <translation type="obsolete">Obligatoire (recommandé : non)</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="obsolete">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="obsolete">1.0</translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="obsolete">Poids (1.0 recomandé)</translation>
+    </message>
+</context>
+<context>
+    <name>ModifyConstraintMinimizeBuildingChangesForTeachersForm_template</name>
+    <message>
+        <source>Cancel</source>
+        <translation type="obsolete">Annuler</translation>
+    </message>
+    <message>
+        <source>Compulsory (recommended: no)</source>
+        <translation type="obsolete">Obligatoire (recommandé : non)</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="obsolete">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="obsolete">1.0</translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="obsolete">Poids (1.0 recomandé)</translation>
+    </message>
+</context>
+<context>
     <name>ModifyConstraintMinimizeNumberOfRoomsForStudentsForm_template</name>
     <message>
         <source>FET - Modify constraint minimize number of rooms for students</source>
@@ -5416,6 +7926,33 @@ dans n&apos;importe quel ordre, séparées par des virgules.</translation>
     <message>
         <source>1.0</source>
         <translation>1.0</translation>
+    </message>
+</context>
+<context>
+    <name>ModifyConstraintMinimizeNumberOfRoomsForTeachersForm_template</name>
+    <message>
+        <source>FET - Modify constraint minimize number of rooms for teachers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+    <message>
+        <source>Compulsory (recommended: no)</source>
+        <translation type="unfinished">Obligatoire (recommandé : non)</translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="unfinished">Poids (1.0 recomandé)</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="unfinished">1.0</translation>
     </message>
 </context>
 <context>
@@ -5798,6 +8335,92 @@ dans n&apos;importe quel ordre, séparées par des virgules.</translation>
     </message>
 </context>
 <context>
+    <name>ModifyConstraintSubjectPreferredRoomForm_template</name>
+    <message>
+        <source>FET - Modify constraint subject preferred room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="unfinished">1.0</translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="unfinished">Poids (1.0 recomandé)</translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+    <message>
+        <source>Compulsory</source>
+        <translation type="unfinished">Obligatoire</translation>
+    </message>
+    <message>
+        <source>Room</source>
+        <translation type="unfinished">Salle</translation>
+    </message>
+    <message>
+        <source>Subject</source>
+        <translation type="unfinished">Matière</translation>
+    </message>
+</context>
+<context>
+    <name>ModifyConstraintSubjectPreferredRoomsForm_template</name>
+    <message>
+        <source>FET - Modify constraint subject preferred rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="unfinished">Poids (1.0 recomandé)</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="unfinished">1.0</translation>
+    </message>
+    <message>
+        <source>Compulsory</source>
+        <translation type="unfinished">Obligatoire</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Ajouter</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+    <message>
+        <source>All rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Item</source>
+        <translation type="unfinished">Nouveau</translation>
+    </message>
+    <message>
+        <source>Selected rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subject</source>
+        <translation type="unfinished">Matière</translation>
+    </message>
+</context>
+<context>
     <name>ModifyConstraintSubjectRequiresEquipmentsForm_template</name>
     <message>
         <source>FET - Modify constraint subject requires equipments</source>
@@ -5846,6 +8469,100 @@ dans n&apos;importe quel ordre, séparées par des virgules.</translation>
     <message>
         <source>Cancel</source>
         <translation>Annuler</translation>
+    </message>
+</context>
+<context>
+    <name>ModifyConstraintSubjectSubjectTagPreferredRoomForm_template</name>
+    <message>
+        <source>FET - Modify constraint subject subject tag preferred room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+    <message>
+        <source>Room</source>
+        <translation type="unfinished">Salle</translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="unfinished">Poids (1.0 recomandé)</translation>
+    </message>
+    <message>
+        <source>Compulsory</source>
+        <translation type="unfinished">Obligatoire</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="unfinished">1.0</translation>
+    </message>
+    <message>
+        <source>Subject</source>
+        <translation type="unfinished">Matière</translation>
+    </message>
+    <message>
+        <source>Subject tag</source>
+        <translation type="unfinished">Etiquette matière</translation>
+    </message>
+</context>
+<context>
+    <name>ModifyConstraintSubjectSubjectTagPreferredRoomsForm_template</name>
+    <message>
+        <source>FET - Modify constraint subject subject tag preferred rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="unfinished">Poids (1.0 recomandé)</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="unfinished">1.0</translation>
+    </message>
+    <message>
+        <source>Compulsory</source>
+        <translation type="unfinished">Obligatoire</translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+    <message>
+        <source>Subject</source>
+        <translation type="unfinished">Matière</translation>
+    </message>
+    <message>
+        <source>All rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Item</source>
+        <translation type="unfinished">Nouveau</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Ajouter</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selected rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subject tag</source>
+        <translation type="unfinished">Etiquette matière</translation>
     </message>
 </context>
 <context>
@@ -6029,6 +8746,123 @@ dans n&apos;importe quel ordre, séparées par des virgules.</translation>
     </message>
 </context>
 <context>
+    <name>ModifyConstraintTeacherSubjectRequireRoomForm_template</name>
+    <message>
+        <source>FET - Modify constraint teacher subject require room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teacher</source>
+        <translation type="unfinished">Enseignant</translation>
+    </message>
+    <message>
+        <source>Subject</source>
+        <translation type="unfinished">Matière</translation>
+    </message>
+    <message>
+        <source>Room</source>
+        <translation type="unfinished">Salle</translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="unfinished">Poids (1.0 recomandé)</translation>
+    </message>
+    <message>
+        <source>Compulsory</source>
+        <translation type="unfinished">Obligatoire</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="unfinished">1.0</translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+</context>
+<context>
+    <name>ModifyConstraintTeachersMaxHoursContinuouslyForm_template</name>
+    <message>
+        <source>FET - Modify constraint teachers no more than X hours continuously dialog</source>
+        <translation type="obsolete">FET - Modifier une contrainte : X heures d&apos;affilée par jour pour les enseignants</translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+    <message>
+        <source>Compulsory constraint</source>
+        <translation type="unfinished">Contrainte obligatoire</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="unfinished">1.0</translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="unfinished">Poids (1.0 recomandé)</translation>
+    </message>
+    <message>
+        <source>Max hours continuously</source>
+        <translation type="unfinished">Nombre d&apos;heures maxi en continu</translation>
+    </message>
+    <message>
+        <source>FET - Modify constraint teachers max hours continuously dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ModifyConstraintTeachersMaxHoursDailyForm_template</name>
+    <message>
+        <source>FET - Modify constraint teachers no more than X hours daily dialog</source>
+        <translation type="obsolete">FET - Modifier une contrainte : X heures par jour pour les enseignants</translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+    <message>
+        <source>Compulsory constraint</source>
+        <translation type="unfinished">Contrainte obligatoire</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="unfinished">1.0</translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="unfinished">Poids (1.0 recomandé)</translation>
+    </message>
+    <message>
+        <source>Max hours daily</source>
+        <translation type="unfinished">Nombre d&apos;heures maxi par jour</translation>
+    </message>
+    <message>
+        <source>FET - Modify constraint teachers max hours daily dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ModifyConstraintTeachersNoGapsForm_template</name>
     <message>
         <source>FET - Modify constraint teachers no gaps dialog</source>
@@ -6063,105 +8897,218 @@ dans n&apos;importe quel ordre, séparées par des virgules.</translation>
     <name>ModifyConstraintTeachersNoMoreThanXHoursContinuouslyForm_template</name>
     <message>
         <source>FET - Modify constraint teachers no more than X hours continuously dialog</source>
-        <translation>FET - Modifier une contrainte : X heures d&apos;affilée par jour pour les enseignants</translation>
+        <translation type="obsolete">FET - Modifier une contrainte : X heures d&apos;affilée par jour pour les enseignants</translation>
     </message>
     <message>
         <source>Ok</source>
-        <translation>OK</translation>
+        <translation type="obsolete">OK</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Annuler</translation>
+        <translation type="obsolete">Annuler</translation>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Contrainte obligatoire</translation>
+        <translation type="obsolete">Contrainte obligatoire</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Contrainte courante</translation>
+        <translation type="obsolete">Contrainte courante</translation>
     </message>
     <message>
         <source>1.0</source>
-        <translation>1.0</translation>
+        <translation type="obsolete">1.0</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Poids (1.0 recomandé)</translation>
+        <translation type="obsolete">Poids (1.0 recomandé)</translation>
     </message>
     <message>
         <source>Max hours continuously</source>
-        <translation>Nombre d&apos;heures maxi en continu</translation>
+        <translation type="obsolete">Nombre d&apos;heures maxi en continu</translation>
     </message>
 </context>
 <context>
     <name>ModifyConstraintTeachersNoMoreThanXHoursDailyForm_template</name>
     <message>
         <source>FET - Modify constraint teachers no more than X hours daily dialog</source>
-        <translation>FET - Modifier une contrainte : X heures par jour pour les enseignants</translation>
+        <translation type="obsolete">FET - Modifier une contrainte : X heures par jour pour les enseignants</translation>
     </message>
     <message>
         <source>Ok</source>
-        <translation>OK</translation>
+        <translation type="obsolete">OK</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Annuler</translation>
+        <translation type="obsolete">Annuler</translation>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Contrainte obligatoire</translation>
+        <translation type="obsolete">Contrainte obligatoire</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Contrainte courante</translation>
+        <translation type="obsolete">Contrainte courante</translation>
     </message>
     <message>
         <source>1.0</source>
-        <translation>1.0</translation>
+        <translation type="obsolete">1.0</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Poids (1.0 recomandé)</translation>
+        <translation type="obsolete">Poids (1.0 recomandé)</translation>
     </message>
     <message>
         <source>Max hours daily</source>
-        <translation>Nombre d&apos;heures maxi par jour</translation>
+        <translation type="obsolete">Nombre d&apos;heures maxi par jour</translation>
+    </message>
+</context>
+<context>
+    <name>ModifyConstraintTeachersSubgroupsMaxHoursDailyForm_template</name>
+    <message>
+        <source>FET - Modify constraint teachers-subgroups no more than X hours daily dialog</source>
+        <translation type="obsolete">FET - Modifier une contrainte : X heures par jour pour un groupe et un enseignant donnés</translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+    <message>
+        <source>Compulsory constraint</source>
+        <translation type="unfinished">Contrainte obligatoire</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="unfinished">1.0</translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="unfinished">Poids (1.0 recomandé)</translation>
+    </message>
+    <message>
+        <source>Max hours daily</source>
+        <translation type="unfinished">Nombre d&apos;heures maxi par jour</translation>
+    </message>
+    <message>
+        <source>FET - Modify constraint teachers-subgroups max hours daily dialog</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ModifyConstraintTeachersSubgroupsNoMoreThanXHoursDailyForm_template</name>
     <message>
         <source>FET - Modify constraint teachers-subgroups no more than X hours daily dialog</source>
-        <translation>FET - Modifier une contrainte : X heures par jour pour un groupe et un enseignant donnés</translation>
+        <translation type="obsolete">FET - Modifier une contrainte : X heures par jour pour un groupe et un enseignant donnés</translation>
     </message>
     <message>
         <source>Ok</source>
-        <translation>OK</translation>
+        <translation type="obsolete">OK</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Annuler</translation>
+        <translation type="obsolete">Annuler</translation>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Contrainte obligatoire</translation>
+        <translation type="obsolete">Contrainte obligatoire</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Contrainte courante</translation>
+        <translation type="obsolete">Contrainte courante</translation>
     </message>
     <message>
         <source>1.0</source>
-        <translation>1.0</translation>
+        <translation type="obsolete">1.0</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Poids (1.0 recomandé)</translation>
+        <translation type="obsolete">Poids (1.0 recomandé)</translation>
     </message>
     <message>
         <source>Max hours daily</source>
-        <translation>Nombre d&apos;heures maxi par jour</translation>
+        <translation type="obsolete">Nombre d&apos;heures maxi par jour</translation>
+    </message>
+</context>
+<context>
+    <name>ModifyConstraintTeachersSubjectTagMaxHoursContinuouslyForm_template</name>
+    <message>
+        <source>FET - Modify constraint teachers subject tag max hours continuously dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+    <message>
+        <source>Compulsory constraint</source>
+        <translation type="unfinished">Contrainte obligatoire</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="unfinished">1.0</translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="unfinished">Poids (1.0 recomandé)</translation>
+    </message>
+    <message>
+        <source>Max hours continuously</source>
+        <translation type="unfinished">Nombre d&apos;heures maxi en continu</translation>
+    </message>
+    <message>
+        <source>Subject tag</source>
+        <translation type="unfinished">Etiquette matière</translation>
+    </message>
+</context>
+<context>
+    <name>ModifyConstraintTeachersSubjectTagsMaxHoursContinuouslyForm_template</name>
+    <message>
+        <source>FET - Modify constraint teachers subject tags max hours continuously dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+    <message>
+        <source>Compulsory constraint</source>
+        <translation type="unfinished">Contrainte obligatoire</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Contrainte courante</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="unfinished">1.0</translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="unfinished">Poids (1.0 recomandé)</translation>
+    </message>
+    <message>
+        <source>Max hours continuously</source>
+        <translation type="unfinished">Nombre d&apos;heures maxi en continu</translation>
     </message>
 </context>
 <context>
@@ -6208,6 +9155,10 @@ dans n&apos;importe quel ordre, séparées par des virgules.</translation>
     <message>
         <source>Cancel</source>
         <translation>Annuler</translation>
+    </message>
+    <message>
+        <source>Building</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6299,7 +9250,7 @@ dans n&apos;importe quel ordre, séparées par des virgules.</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation>Fermer</translation>
+        <translation type="obsolete">Fermer</translation>
     </message>
     <message>
         <source>Faster</source>
@@ -6312,6 +9263,21 @@ dans n&apos;importe quel ordre, séparées par des virgules.</translation>
     <message>
         <source>Population number</source>
         <translation>Effectif de population</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+</context>
+<context>
+    <name>QOBject</name>
+    <message>
+        <source>FET information</source>
+        <translation type="unfinished">FET - information</translation>
     </message>
 </context>
 <context>
@@ -6362,7 +9328,7 @@ dans n&apos;importe quel ordre, séparées par des virgules.</translation>
     </message>
     <message>
         <source>Bi-weekly</source>
-        <translation>Bi-hebdo</translation>
+        <translation type="obsolete">Bi-hebdo</translation>
     </message>
     <message>
         <source>Activity:
@@ -6482,7 +9448,7 @@ dans n&apos;importe quel ordre, séparées par des virgules.</translation>
     </message>
     <message>
         <source>Time constraint activities not same time</source>
-        <translation>Contrainte temporelle : heures différentes</translation>
+        <translation type="obsolete">Contrainte temporelle : heures différentes</translation>
     </message>
     <message>
         <source>broken:</source>
@@ -6494,7 +9460,7 @@ dans n&apos;importe quel ordre, séparées par des virgules.</translation>
     </message>
     <message>
         <source>Time constraint teachers subgroups no more than X hours daily broken </source>
-        <translation>Contrainte temporelle plus de X heures pour un enseignant pour un groupe rompue</translation>
+        <translation type="obsolete">Contrainte temporelle plus de X heures pour un enseignant pour un groupe rompue</translation>
     </message>
     <message>
         <source>Break</source>
@@ -6644,7 +9610,7 @@ seront supprimées</translation>
     </message>
     <message>
         <source>Invalid students set (1)</source>
-        <translation>Ensemble d&apos;élèves non valide</translation>
+        <translation type="obsolete">Ensemble d&apos;élèves non valide</translation>
     </message>
     <message>
         <source>Invalid duration</source>
@@ -7077,19 +10043,19 @@ car l&apos;enseignant n&apos;est pas valide</translation>
     </message>
     <message>
         <source>Teachers no more than %1 hours in a row</source>
-        <translation>Enseignants pas plus de %1 heures d&apos;affilée</translation>
+        <translation type="obsolete">Enseignants pas plus de %1 heures d&apos;affilée</translation>
     </message>
     <message>
         <source>Teachers must not have more than %1 hours in a row</source>
-        <translation>Les enseignants ne doivent pas avoir plus de %1 heures d&apos;affilée</translation>
+        <translation type="obsolete">Les enseignants ne doivent pas avoir plus de %1 heures d&apos;affilée</translation>
     </message>
     <message>
         <source>Time constraint teacher no more than %1 hours in a row broken for teacher %2, on day %3, hour %4.</source>
-        <translation>Contrainte temporelle non respectée : pas plus de %1 heures d&apos;affilée pour l&apos;enseignant %2 jour %3, heure %4.</translation>
+        <translation type="obsolete">Contrainte temporelle non respectée : pas plus de %1 heures d&apos;affilée pour l&apos;enseignant %2 jour %3, heure %4.</translation>
     </message>
     <message>
         <source>Teachers-subgroups no more than %1 hours in a day</source>
-        <translation>Enseignants/sous-groupe pas plus de %1 heures par jour</translation>
+        <translation type="obsolete">Enseignants/sous-groupe pas plus de %1 heures par jour</translation>
     </message>
     <message>
         <source>Teachers must not teach to any subgroup more than %1 hours in a day</source>
@@ -7136,7 +10102,7 @@ car l&apos;enseignant n&apos;est pas valide</translation>
     </message>
     <message>
         <source>Invalid teacher (1)</source>
-        <translation>Enseignant non autorisé (1)</translation>
+        <translation type="obsolete">Enseignant non autorisé (1)</translation>
     </message>
     <message>
         <source>Teachers&apos; gaps to be avoided</source>
@@ -7376,7 +10342,7 @@ car l&apos;enseignant n&apos;est pas valide</translation>
     </message>
     <message>
         <source>Please specify at least a day or an hour</source>
-        <translation type="obsolete">Spécifiez au moins une heure par jour</translation>
+        <translation type="unfinished">Spécifiez au moins une heure par jour</translation>
     </message>
     <message>
         <source>Invalid max intervals</source>
@@ -7432,7 +10398,7 @@ car l&apos;enseignant n&apos;est pas valide</translation>
     </message>
     <message>
         <source>Teachers no more than %1 hours daily</source>
-        <translation>Enseignants pas plus de %1 heures par jour</translation>
+        <translation type="obsolete">Enseignants pas plus de %1 heures par jour</translation>
     </message>
     <message>
         <source>Teachers must not have more than %1 hours daily</source>
@@ -7440,7 +10406,7 @@ car l&apos;enseignant n&apos;est pas valide</translation>
     </message>
     <message>
         <source>Time constraint teacher no more than %1 hours daily broken for teacher %2, on day %3.</source>
-        <translation>Contrainte temporelle non respectée :- plus de %1 heures par jour pour %2, jour %3.</translation>
+        <translation type="obsolete">Contrainte temporelle non respectée :- plus de %1 heures par jour pour %2, jour %3.</translation>
     </message>
     <message>
         <source>must be scheduled at:
@@ -7787,7 +10753,7 @@ abandonnez et créez un sous-groupe avec un nouveau nom</translation>
     </message>
     <message>
         <source>must be followed by activity with id=%1</source>
-        <translation>doit être suivi de l&apos;activité num=%1</translation>
+        <translation type="obsolete">doit être suivi de l&apos;activité num=%1</translation>
     </message>
     <message>
         <source>Time constraint 2 activities consecutive broken for activities with id=%1 and id=%2, increases conflicts factor with %3
@@ -7847,7 +10813,7 @@ abandonnez et créez un sous-groupe avec un nouveau nom</translation>
     <message>
         <source>Time constraint activities preferred times broken for activities with teacher=%1, students=%2, subject=%3, increases conflicts factor with %4
 </source>
-        <translation>Contrainte temporelle heures souhaitées non respectée pour les activités avec l&apos;enseignant %1, classe %2 matière %3, augmente le facteur de conflit de %4
+        <translation type="obsolete">Contrainte temporelle heures souhaitées non respectée pour les activités avec l&apos;enseignant %1, classe %2 matière %3, augmente le facteur de conflit de %4
 
 </translation>
     </message>
@@ -7953,7 +10919,7 @@ des contraintes utilisant des jours supprimées.
     <message>
         <source>Please be careful - you are considering all the activities
 (no teacher, students or subject specified)</source>
-        <translation>Attention - vous impactez toutes les activités
+        <translation type="obsolete">Attention - vous impactez toutes les activités
 (pas d&apos;enseignant, d&apos;élèves ou de matières spécifiés)</translation>
     </message>
     <message>
@@ -7990,7 +10956,7 @@ en utilisant &quot;fetxml2latex.py&quot; ou &quot;students.xsl&quot;,
     </message>
     <message>
         <source>Space constraint minimize number of rooms broken for subgroup %1, number of rooms=%2</source>
-        <translation>Contrainte temporelle minimiser le nombre de salles non respectée pour le sous-groupe: %1, nombre de salles=%2
+        <translation type="obsolete">Contrainte temporelle minimiser le nombre de salles non respectée pour le sous-groupe: %1, nombre de salles=%2
 
 </translation>
     </message>
@@ -8381,6 +11347,571 @@ MAX_CONSTRAINT_ACTIVITIES_SAME_ROOM must be increased (you have too many activit
         <source>Space constraint activities same room broken, because activity with id=%1 is not in the same room with activity with id=%2</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Activity with id=%1 has fixed day on %2 and %3 - impossible
+Please fix that</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Activity with id=%1 has fixed hour on %2 and %3 - impossible
+Please fix that</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ConstraintTeacherRequiresRoom: Teacher=%1,
+Activity with id=%2 has fixed room on %3 and %4 - impossible
+Please fix that</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Activity with id=%1 has fixed room on %2 and %3 - impossible
+Please fix that</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Because of space constraint
+%1
+Activity with id=%2 has fixed room on %3 and %4 - impossible
+Please fix that</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subject subject tag preferred room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Room name=%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Space constraint subject subject tag preferred room broken for activity with id %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subject subject tag preferred rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subject preferred room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Space constraint subject preferred room broken for activity with id %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subject preferred rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please report error to the author
+MAX_CONSTRAINT_SUBJECT_PREFERRED_ROOMS must be increased (you have too many selected rooms)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please report error to the author
+MAX_CONSTRAINT_SUBJECT_PREFERRED_ROOM must be increased (you have too many selected rooms)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please report error to the author
+MAX_CONSTRAINT_SUBJECT_SUBJECT_TAG_PREFERRED_ROOMS must be increased (you have too many selected rooms)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Constraint
+%1 NOT added - duplicate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allocation in course.
+Please stop simulation before this.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You have too many teachers.
+Please talk to the author or increase variable MAX_TEACHERS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You have too many subjects.
+Please talk to the author or increase variable MAX_SUBJECTS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You have too many years.
+Please talk to the author or increase variable MAX_YEARS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You have too many groups per year.
+Please talk to the author or increase variable MAX_GROUPS_PER_YEAR</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You have too many subgroups per group.
+Please talk to the author or increase variable MAX_SUBGROUPS_PER_GROUP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You have too many total subgroups.
+Please talk to the author or increase variable MAX_TOTAL_SUBGROUPS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You have too many equipments.
+Please talk to the author or increase variable MAX_EQUIPMENTS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You have too many rooms.
+Please talk to the author or increase variable MAX_ROOMS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time constraints directly related to this activity:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Space constraints directly related to this activity:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Constraint
+%1
+not added - must be a duplicate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teacher</source>
+        <translation type="unfinished">Enseignant</translation>
+    </message>
+    <message>
+        <source>Time constraints directly related to this teacher:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Space constraints directly related to this teacher:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subject</source>
+        <translation type="unfinished">Matière</translation>
+    </message>
+    <message>
+        <source>Subject tag</source>
+        <translation type="unfinished">Etiquette matière</translation>
+    </message>
+    <message>
+        <source>Time constraints directly related to this students year:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Space constraints directly related to this students year:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time constraints directly related to this students group:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Space constraints directly related to this students group:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time constraints directly related to this students subgroup:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Space constraints directly related to this students subgroup:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time constraints directly related to this subject:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Space constraints directly related to this subject:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time constraints directly related to this subject tag:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Space constraints directly related to this subject tag:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Space constraints directly related to this room:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Space constraints directly related to this equipment:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Warning: this constraint dramatically slows down the execution of the program</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teachers subject tags max hours continuously</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teachers subject tags max hours continuously </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time constraint teachers subject tags max %1 hours in a row broken for subject tag %2, teacher %3, on day %4, hour %5</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teachers subject tags max %1 hours in a row</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teachers subject tag %1 max %2 hours in a row</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teachers subject tag max hours continuously</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teachers subject tag max hours continuously </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time constraint teachers subject tag max %1 hours in a row broken for subject tag %2, teacher %3, on day %4, hour %5</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teachers max %1 hours continuously</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teachers must not have more than %1 hours continuously</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time constraint teacher no more than %1 hours continuously broken for teacher %2, on day %3, hour %4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teachers max %1 hours daily</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time constraint teacher max %1 hours daily broken for teacher %2, on day %3.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teachers-subgroups max %1 hours in a day</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time constraint teachers subgroups max hours daily broken </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot modify this activity, because it contains more than 8 subactivities.
+If you really need that, please talk to the author
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>subject tag=%1, </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subject tag=%1
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please be careful - you are considering all the activities
+(no teacher, students, subject or subject tag specified)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>all teachers, </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>all students, </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>all subjects, </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>all subject tags, </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All teachers
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All students
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All subjects
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All subject tags
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time constraint activities preferred times broken for activity with id=%1,  increases conflicts factor with %2
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid teacher(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid students set(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ConstraintTeacherSubjectRequireRoom: Teacher=%1, Subject=%2
+Activity with id=%3 has fixed room on %4 and %5 - impossible
+Please fix that</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teacher subject requires room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Space constraint teacher subject requires room broken for teacher %1, subject %2, room %3, activity with id=%4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>must be followed (immediately) by activity with id=%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>must be followed (at arbitrary distance) by activity with id=%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time constraint 2 activities ordered broken for activities with id=%1 and id=%2, increases conflicts factor with %3
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The activities with id&apos;s: %1 must be scheduled in order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Too many teachers for an activity. The current maximum is %1.
+If you really need more teachers per activity, please talk to the author</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Incorrect building</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid selected building</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this building and all related constraints?
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid building</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Building insertion dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Building added</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You have too many buildings.
+Please talk to the author or increase variable MAX_BUILDINGS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>B:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Building=</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Space constraints directly related to this building:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Max building changes per day for teachers, W:%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MBC:%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Constraint to specify maximum the number of building
+changes for teachers, in each day
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Max building changes=%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Space constraint max building changes per day for teachers broken for teacher %1 on day %2, max changes=%3, actual changes=%4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Max building changes per day for students, W:%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Constraint to specify maximum the number of building
+changes for students, in each day
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Max building changes per day for teachers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Max building changes per day for students</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Space constraint max building changes per day for students broken for subgroup %1 on day %2, max changes=%3, actual changes=%4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Space constraint minimize number of rooms for students broken for subgroup %1, number of rooms=%2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Minimize number of rooms for teachers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Minimize number of rooms for each teacher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Space constraint minimize number of rooms for teachers broken for teacher %1, number of rooms=%2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Max room changes per day for teachers, W:%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MRC:%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Constraint to specify maximum the number of room
+changes for teachers, in each day
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Max room changes=%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Space constraint max room changes per day for teachers broken for teacher %1 on day %2, max changes=%3, actual changes=%4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Max room changes per day for students, W:%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Constraint to specify maximum the number of room
+changes for students, in each day
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Space constraint max room changes per day for students broken for subgroup %1 on day %2, max changes=%3, actual changes=%4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Max room changes per day for teachers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Max room changes per day for students</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Active activity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Non-active activity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bi-weekly, </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A: yes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A: no</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Active: yes
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Active: no
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You have too many active activities.
+Please talk to the author or increase variable MAX_ACTIVITIES</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time constraint activities not overlapping</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Activated a number of %1 activities</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>De-activated a number of %1 activities</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QObject::QObject</name>
@@ -8462,6 +11993,18 @@ MAX_CONSTRAINT_ACTIVITIES_SAME_ROOM must be increased (you have too many activit
     <message>
         <source>Modify current</source>
         <translation>Modifier la salle courante</translation>
+    </message>
+    <message>
+        <source>Filter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="unfinished">Type</translation>
+    </message>
+    <message>
+        <source>Building</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -8561,6 +12104,14 @@ MAX_CONSTRAINT_ACTIVITIES_SAME_ROOM must be increased (you have too many activit
         <source>Sort current subgroups</source>
         <translation>Trier les sous-groupes courants</translation>
     </message>
+    <message>
+        <source>Activate all activities for selected students subgroup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>De-activate all activities for selected students subgroup</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SubjectTagsForm_template</name>
@@ -8591,6 +12142,14 @@ MAX_CONSTRAINT_ACTIVITIES_SAME_ROOM must be increased (you have too many activit
     <message>
         <source>Sort alphabetically</source>
         <translation>Trier en ordre alphabétique</translation>
+    </message>
+    <message>
+        <source>Activate all activities for selected subject tag</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>De-activate all activities for selected subject tag</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -8623,6 +12182,14 @@ MAX_CONSTRAINT_ACTIVITIES_SAME_ROOM must be increased (you have too many activit
         <source>Sort alphabetically</source>
         <translation>Trier en ordre alphabétique</translation>
     </message>
+    <message>
+        <source>Activate all activities for selected subject</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>De-activate all activities for selected subject</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>TeachersForm_template</name>
@@ -8653,6 +12220,14 @@ MAX_CONSTRAINT_ACTIVITIES_SAME_ROOM must be increased (you have too many activit
     <message>
         <source>Rename current</source>
         <translation>Renommer</translation>
+    </message>
+    <message>
+        <source>Activate all activities for selected teacher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>De-activate all activities for selected teacher</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -9003,6 +12578,18 @@ reprendre la génération automatique à partir de la sauvegarde)</translation>
         <source>Please click on the table for details for a specific activity.</source>
         <translation>Cliquez dans le tableau pour avoir le détail de l&apos;activité.</translation>
     </message>
+    <message>
+        <source>Lock selected activities</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lock selected activities (time only)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lock selected activities (space only)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>TimetableViewRoomsForm_template</name>
@@ -9033,6 +12620,18 @@ reprendre la génération automatique à partir de la sauvegarde)</translation>
     <message>
         <source>Please click on the table for details for a specific activity.</source>
         <translation>Cliquez dans le tableau pour avoir le détail de l&apos;activité.</translation>
+    </message>
+    <message>
+        <source>Lock selected activities</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lock selected activities (space)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lock selected activities (time)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -9073,6 +12672,10 @@ reprendre la génération automatique à partir de la sauvegarde)</translation>
         <source>Please click on the table for details for a specific activity.</source>
         <translation>Cliquez dans le tableau pour avoir le détail de l&apos;activité.</translation>
     </message>
+    <message>
+        <source>Lock selected activities</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>TimetableViewStudentsWithRooms2Form_template</name>
@@ -9111,6 +12714,18 @@ reprendre la génération automatique à partir de la sauvegarde)</translation>
     <message>
         <source>Please click on the table for details for a specific activity.</source>
         <translation>Cliquez dans le tableau pour avoir le détail de l&apos;activité.</translation>
+    </message>
+    <message>
+        <source>Lock selected activities</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lock (time only)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lock (space only)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -9151,6 +12766,18 @@ reprendre la génération automatique à partir de la sauvegarde)</translation>
         <source>Please click on the table for details for a specific activity.</source>
         <translation>Cliquez dans le tableau pour avoir le détail de l&apos;activité.</translation>
     </message>
+    <message>
+        <source>Lock selected activities</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lock (space)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lock (time)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>TimetableViewTeachersForm_template</name>
@@ -9181,6 +12808,10 @@ reprendre la génération automatique à partir de la sauvegarde)</translation>
     <message>
         <source>Please click on the table for details for a specific activity.</source>
         <translation>Cliquez dans le tableau pour avoir le détail de l&apos;activité.</translation>
+    </message>
+    <message>
+        <source>Lock selected activities</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -9213,6 +12844,18 @@ reprendre la génération automatique à partir de la sauvegarde)</translation>
         <source>Please click on the table for details for a specific activity.</source>
         <translation>Cliquez dans le tableau pour avoir le détail de l&apos;activité.</translation>
     </message>
+    <message>
+        <source>Lock selected activities</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lock selected activities (space)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lock selected activities (time)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>TimetableViewTeachersWithRoomsForm_template</name>
@@ -9244,6 +12887,18 @@ reprendre la génération automatique à partir de la sauvegarde)</translation>
         <source>Please click on the table for details for a specific activity.</source>
         <translation>Cliquez dans le tableau pour avoir le détail de l&apos;activité.</translation>
     </message>
+    <message>
+        <source>Lock selected activities</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lock selected activities (space)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lock selected activities (time)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>YearsForm_template</name>
@@ -9274,6 +12929,14 @@ reprendre la génération automatique à partir de la sauvegarde)</translation>
     <message>
         <source>Sort alphabetically</source>
         <translation>Trier alphabétiquement</translation>
+    </message>
+    <message>
+        <source>Activate all activities for selected students year</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>De-activate all activities for selected students year</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

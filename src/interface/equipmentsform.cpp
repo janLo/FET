@@ -123,6 +123,6 @@ void EquipmentsForm::equipmentChanged(int index)
 	Equipment* equipment=gt.rules.equipmentsList.at(index);
 
 	assert(equipment!=NULL);
-	s=equipment->getDetailedDescription();
+	s=equipment->getDetailedDescriptionWithConstraints(gt.rules);
 	currentEquipmentTextEdit->setText(s);
 }

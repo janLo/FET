@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>305</width>
-            <height>324</height>
+            <width>379</width>
+            <height>368</height>
         </rect>
     </property>
     <property name="caption">
@@ -19,11 +19,6 @@
         <property name="name">
             <cstring>unnamed</cstring>
         </property>
-        <widget class="QLineEdit" row="1" column="1" rowspan="1" colspan="3">
-            <property name="name">
-                <cstring>typeLineEdit</cstring>
-            </property>
-        </widget>
         <widget class="QLabel" row="0" column="0">
             <property name="name">
                 <cstring>nameTextLabel</cstring>
@@ -40,28 +35,12 @@
                 <string>Type</string>
             </property>
         </widget>
-        <widget class="QLabel" row="2" column="0" rowspan="1" colspan="2">
-            <property name="name">
-                <cstring>capacityTextLabel</cstring>
-            </property>
-            <property name="text">
-                <string>Capacity</string>
-            </property>
-        </widget>
-        <widget class="QLineEdit" row="0" column="1" rowspan="1" colspan="3">
+        <widget class="QLineEdit" row="0" column="1" rowspan="1" colspan="2">
             <property name="name">
                 <cstring>nameLineEdit</cstring>
             </property>
         </widget>
-        <widget class="QPushButton" row="3" column="0" rowspan="1" colspan="3">
-            <property name="name">
-                <cstring>addRoomPushButton</cstring>
-            </property>
-            <property name="text">
-                <string>Add room</string>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="3" column="3">
+        <widget class="QPushButton" row="4" column="2">
             <property name="name">
                 <cstring>closePushButton</cstring>
             </property>
@@ -69,7 +48,36 @@
                 <string>Close</string>
             </property>
         </widget>
-        <widget class="QSpinBox" row="2" column="2">
+        <widget class="QPushButton" row="4" column="0" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>addRoomPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Add room</string>
+            </property>
+        </widget>
+        <widget class="QLabel" row="3" column="0" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>capacityTextLabel</cstring>
+            </property>
+            <property name="text">
+                <string>Capacity</string>
+            </property>
+        </widget>
+        <widget class="QComboBox" row="2" column="1" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>buildingsComboBox</cstring>
+            </property>
+        </widget>
+        <widget class="QComboBox" row="1" column="1" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>typesComboBox</cstring>
+            </property>
+            <property name="editable">
+                <bool>true</bool>
+            </property>
+        </widget>
+        <widget class="QSpinBox" row="3" column="2">
             <property name="name">
                 <cstring>capacitySpinBox</cstring>
             </property>
@@ -81,6 +89,14 @@
             </property>
             <property name="value">
                 <number>1000</number>
+            </property>
+        </widget>
+        <widget class="QLabel" row="2" column="0">
+            <property name="name">
+                <cstring>buildingTextLabel</cstring>
+            </property>
+            <property name="text">
+                <string>Building</string>
             </property>
         </widget>
     </grid>
@@ -101,7 +117,6 @@
 </connections>
 <tabstops>
     <tabstop>nameLineEdit</tabstop>
-    <tabstop>typeLineEdit</tabstop>
     <tabstop>capacitySpinBox</tabstop>
     <tabstop>addRoomPushButton</tabstop>
     <tabstop>closePushButton</tabstop>

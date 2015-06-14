@@ -32,6 +32,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include "subject.h"
 #include "subjecttag.h"
 #include "equipment.h"
+#include "building.h"
 #include "room.h"
 
 #include <qstring.h>
@@ -115,6 +116,11 @@ public:
 	EquipmentsList equipmentsList;
 
 	/**
+	The list of buildings
+	*/
+	BuildingsList buildingsList;
+
+	/**
 	The list of rooms
 	*/
 	RoomsList roomsList;
@@ -185,12 +191,19 @@ public:
 	int nInternalSubgroups;
 	StudentsSubgroup* internalSubgroupsList[MAX_TOTAL_SUBGROUPS];
 
-	//For speed, I used here not pointers, but static copies.
+	/**
+	Here will be only the active activities.
+	
+	For speed, I used here not pointers, but static copies.
+	*/
 	int nInternalActivities;
 	Activity internalActivitiesList[MAX_ACTIVITIES];
 
 	int nInternalEquipments;
 	Equipment* internalEquipmentsList[MAX_EQUIPMENTS];
+
+	int nInternalBuildings;
+	Building* internalBuildingsList[MAX_BUILDINGS];
 
 	int nInternalRooms;
 	Room* internalRoomsList[MAX_ROOMS];
@@ -335,6 +348,12 @@ public:
 	(year, group or subgroup) or NULL.
 	*/
 	StudentsSet* searchStudentsSet(const QString& setName);
+	
+	/**
+	True if the students sets contain one common subgroup.
+	This function is used in constraints isRelatedToStudentsSet
+	*/
+	bool studentsSetsRelated(const QString& studentsSet1, const QString& studentsSet2);
 
 	/**
 	Adds a new year of study to the academic structure
@@ -406,7 +425,7 @@ public:
 	A function to sort the subgroups of this group alphabetically
 	*/
 	void sortSubgroupsAlphabetically(const QString& yearName, const QString& groupName);
-
+	
 	/**
 	Adds a new indivisible activity (not split) to the list of activities.
 	(It can add a subactivity of a split activity)
@@ -424,6 +443,7 @@ public:
 		int _duration, /*duration, in hours*/
 		int _totalDuration,
 		int _parity, /*parity: PARITY_WEEKLY or PARITY_BIWEEKLY*/
+		bool _active,
 		int _preferredDay,
 		int _preferredHour);
 
@@ -446,6 +466,7 @@ public:
 		int _totalDuration,
 		int _durations[],
 		int _parities[],
+		bool _active[],
 		int _minDayDistance,
 		int _preferredDays[],
 		int _preferredHours[]);
@@ -479,7 +500,8 @@ public:
 	 	int _nSplits,
 		int _totalDuration,
 		int _durations[],
-		int _parities[]);
+		int _parities[],
+		bool _active[]);
 
 	/**
 	Adds a new equipment (already allocated).
@@ -510,6 +532,34 @@ public:
 	void sortEquipmentsAlphabetically();
 
 	/**
+	Adds a new building (already allocated).
+	Returns true on success, false for already existing building (same name).
+	*/
+	bool addBuilding(Building* eq);
+
+	/**
+	Returns -1 if not found or the index in the buildings list if found.
+	*/
+	int searchBuilding(const QString& buildingName);
+
+	/**
+	Removes the building with this name.
+	Returns true on success, false on failure (not found).
+	*/
+	bool removeBuilding(const QString& buildingName);
+	
+	/**
+	Modifies (renames) this building and takes care of all related constraints.
+	Returns true on success, false on failure (if not found)
+	*/
+	bool modifyBuilding(const QString& initialBuildingName, const QString& finalBuildingName);
+
+	/**
+	A function to sort the buildings alphabetically
+	*/
+	void sortBuildingsAlphabetically();
+
+	/**
 	Adds a new room (already allocated).
 	Returns true on success, false for already existing rooms (same name).
 	*/
@@ -531,7 +581,7 @@ public:
 	Returns true on success, false on failure (if not found)
 	It does not alter the list of equipments.
 	*/
-	bool modifyRoom(const QString& initialRoomName, const QString& finalRoomName, const QString& type, int capacity);
+	bool modifyRoom(const QString& initialRoomName, const QString& finalRoomName, const QString& type, const QString& building, int capacity);
 
 	/**
 	A function to sort the room alphabetically, by name
@@ -572,6 +622,22 @@ public:
 	Write the rules to the xml input file "inputfile".
 	*/
 	void write(const QString& filename);
+	
+	int activateTeacher(const QString& teacherName);
+	
+	int activateStudents(const QString& studentsName);
+	
+	int activateSubject(const QString& subjectName);
+	
+	int activateSubjectTag(const QString& subjectTagName);
+
+	int deactivateTeacher(const QString& teacherName);
+	
+	int deactivateStudents(const QString& studentsName);
+	
+	int deactivateSubject(const QString& subjectName);
+	
+	int deactivateSubjectTag(const QString& subjectTagName);
 };
 
 #endif

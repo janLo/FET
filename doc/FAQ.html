@@ -6,8 +6,8 @@
 	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.3  (Linux)">
 	<META NAME="AUTHOR" CONTENT="Lalescu Liviu">
 	<META NAME="CREATED" CONTENT="20050228;17341200">
-	<META NAME="CHANGEDBY" CONTENT="Lalescu Liviu">
-	<META NAME="CHANGED" CONTENT="20050228;17343800">
+	<META NAME="CHANGEDBY" CONTENT="Liviu Lalescu">
+	<META NAME="CHANGED" CONTENT="20050707;16583200">
 </HEAD>
 <BODY LANG="en-US" DIR="LTR">
 <P>FET FAQ:</P>
@@ -15,16 +15,16 @@
 <P><BR><BR>
 </P>
 <P>Q: What is the organization of FET input data?</P>
-<P>A: 	- Students - organized into sets (years, containing groups,
+<P>A: - Students - organized into sets (years, containing groups,
 containing subgroups).</P>
-<P>	- Teachers.</P>
-<P>	- Subjects (the names of the possible courses, eg. Maths,
-Physics, etc.).</P>
-<P>	- Rooms (classrooms).</P>
-<P>	- Activities: a coupling of one or more teachers, a subject and
+<P>- Teachers.</P>
+<P>- Subjects (the names of the possible courses, eg. Maths, Physics,
+etc.).</P>
+<P>- Rooms (classrooms).</P>
+<P>- Activities: a coupling of one or more teachers, a subject and
 one or more students set. This is usually named a course, a lecture,
 a laboratory and so on.</P>
-<P>	- Constraints. They can be: time constraints (referring to the
+<P>- Constraints. They can be: time constraints (referring to the
 allocated day and hour) or space constraints (referring to rooms
 allocation). They can also be compulsory or non-compulsory.
 ConstraintBasicCompulsoryTime and ConstraintBasicCompulsorySpace are
@@ -96,12 +96,10 @@ by default to 1250, and MAX_POPULATION_NUMBER to 8192.</P>
 </P>
 <P>Q: What is the structure of the students FET can handle?</P>
 <P>A: FET was designed to allow any school structure:</P>
-<P>	- independent subgroups (non-overlapping);</P>
-<P>	- overlapping groups (several subgroups) and years (several
+<P>- independent subgroups (non-overlapping);</P>
+<P>- overlapping groups (several subgroups) and years (several
 groups).</P>
-<P>	</P>
 <P>-------------------------------------------------------------------------------</P>
-<P>	</P>
 <P>Q: How can one work with overlapping structures of students?</P>
 <P>A: If you have overlapping groups, then you must define the
 smallest independent subgroup, which does not overlap with any other
@@ -128,7 +126,6 @@ corresponding groups:</P>
 <P><BR><BR>
 </P>
 <P>-------------------------------------------------------------------------------</P>
-<P>	</P>
 <P>Q: Can you add more students sets or teachers to a single
 activity?</P>
 <P>A: Yes, you can add several students sets (subgroups, groups or
@@ -191,9 +188,9 @@ contact the author for that.</P>
 <P>Q: What is the algorithm behind FET?</P>
 <P>A: A simple genetic algorithm applied on a simple data
 representation.</P>
-<P>	In the future, I hope I will put here some real description of
-the algorithm. Until then,here are different tricks needed to
-understand the program:</P>
+<P>In the future, I hope I will put here some real description of the
+algorithm. Until then,here are different tricks needed to understand
+the program:</P>
 <P>- The genetic algorithm and representation behind the program
 looks very simple to me now and I think it can be explained in at
 most 2 hours. The engine is also not so hard to understand. The
@@ -230,7 +227,6 @@ BUT: I preferred that any return value of a constraint to be an
 integer, which is this real value rounded up to the nearest integer
 (reasons of speed). For the moment, please try to work with integer
 weights (between 1 and 100).</P>
-<P>	</P>
 <P>-------------------------------------------------------------------------------</P>
 <P><BR><BR>
 </P>
@@ -251,66 +247,62 @@ compulsory or non-compulsory and the execution time is very long).</P>
 <P><BR><BR>
 </P>
 <P>This is a research problem.</P>
-<P>	</P>
 <P>-------------------------------------------------------------------------------</P>
-<P>	</P>
 <P>Q: How does ConstraintActivitiesSameStartingTime work?</P>
-<P>A: 	- for compulsory constraints, the solution candidate is
+<P>A: - for compulsory constraints, the solution candidate is
 repaired before evaluation (so all solutions will respect these
 constraints and there will be no conflicts reported). This is faster,
 as an input file from user Ian Fantom proved.</P>
-<P>	- for non-compulsory constraints, the method is conflict
-reporting (slower, worse than the above method).</P>
+<P>- for non-compulsory constraints, the method is conflict reporting
+(slower, worse than the above method).</P>
 <P><BR><BR>
 </P>
 <P>-------------------------------------------------------------------------------</P>
-<P>	</P>
 <P>Q: How does ConstraintActivityPreferredTime work?</P>
-<P>A: 	- for compulsory constraints, the solution candidate is
+<P>A: - for compulsory constraints, the solution candidate is
 repaired before evaluation (so all solutions will respect these
 constraints and there will be no conflicts reported). This is faster
 (proved practically, not theoretically).</P>
-<P>	- for non-compulsory constraints, the method is conflict
+<P>- for non-compulsory constraints, the method is conflict
 reporting. The procedure reports a conflicts factor that is
 increasing with the distance to the desired period. This might
 generate worse solutions, if you are only interested in the exact
 placement. In this case, please use ConstraintActivityPreferredTimes
 with only one preferred time.</P>
-<P>		Example: 5 days per week</P>
-<P>				5 activities daily exclusive</P>
-<P>				activity 1 - preferred on monday</P>
-<P>				activity 2 - preferred on monday</P>
-<P>				activity 3 - preferred on tuesday</P>
-<P>				activity 4 - preferred on thursday</P>
-<P>				activity 5 - anytime</P>
-<P>		The best solution will contain 2 conflicts, and a possible
+<P>Example: 5 days per week</P>
+<P>5 activities daily exclusive</P>
+<P>activity 1 - preferred on monday</P>
+<P>activity 2 - preferred on monday</P>
+<P>activity 3 - preferred on tuesday</P>
+<P>activity 4 - preferred on thursday</P>
+<P>activity 5 - anytime</P>
+<P>The best solution will contain 2 conflicts, and a possible
 solution would be:</P>
-<P>				act 1 - mon</P>
-<P>				act 2 - tue</P>
-<P>				act 3 - wed</P>
-<P>				act 4 - thu</P>
-<P>				act 5 - fri</P>
-<P>		If you use ConstraintActivityPreferredTimes, you will get only
-one conflict:</P>
-<P>				act 1 - mon</P>
-<P>				act 2 - wed</P>
-<P>				act 3 - tue</P>
-<P>				act 4 - thu</P>
-<P>				act 5 - fri</P>
-<P>				</P>
+<P>act 1 - mon</P>
+<P>act 2 - tue</P>
+<P>act 3 - wed</P>
+<P>act 4 - thu</P>
+<P>act 5 - fri</P>
+<P>If you use ConstraintActivityPreferredTimes, you will get only one
+conflict:</P>
+<P>act 1 - mon</P>
+<P>act 2 - wed</P>
+<P>act 3 - tue</P>
+<P>act 4 - thu</P>
+<P>act 5 - fri</P>
 <P>-------------------------------------------------------------------------------</P>
 <P><BR><BR>
 </P>
 <P>Q: What advantages has FET over other applications?</P>
-<P>A: 	- It is free software</P>
-<P>	- Supports weekly and biweekly activities (my university of
+<P>A: - It is free software</P>
+<P>- Supports weekly and biweekly activities (my university of
 Craiova, Romania, needed that);</P>
-<P>	- Independent subgroups, overlapping or independent groups,
+<P>- Independent subgroups, overlapping or independent groups,
 overlapping or independent years (flexible enough to permit any kind
 of students structure). FET can even be used to manage every
 individual student, if you really need that;</P>
-<P>	- Possibility of optional activities;</P>
-<P>	- Many kinds of constraints, possibility to add many more (please
+<P>- Possibility of optional activities;</P>
+<P>- Many kinds of constraints, possibility to add many more (please
 suggest!).</P>
 <P><BR><BR>
 </P>
@@ -319,11 +311,10 @@ suggest!).</P>
 </P>
 <P>Q: What are the disadvantages of FET, compared to other
 applications?</P>
-<P>A:	- Very unfriendly (no help, primitive graphical user
+<P>A: - Very unfriendly (no help, primitive graphical user
 interface);</P>
-<P>	- Potentially buggy. I do not have enough sample files for
-testing FET (and I hate testing :-)</P>
-<P>	</P>
+<P>- Potentially buggy. I do not have enough sample files for testing
+FET (and I hate testing :-)</P>
 <P>-------------------------------------------------------------------------------</P>
 <P><BR><BR>
 </P>
@@ -396,7 +387,7 @@ procedure in file /.../fet-x.x.x/doc/how-to-implement-new-constraints</P>
 <P>Q: Help on ConstraintStudentsEarly.</P>
 <P>A: It is a constraint that imposes the condition that all the
 students must begin their courses as early as possible. You have to
-be careful with this constraint: if any set of students	begins the
+be careful with this constraint: if any set of students begins the
 classes later than the first hour in a certain day, you</P>
 <P>will get a conflict.</P>
 <P><BR><BR>
@@ -416,11 +407,11 @@ compulsory constraints or by making them non-compulsory</P>
 </P>
 <P>Q: Do the weights have any importance? What is the best way to
 choose them?</P>
-<P>	---The comment below was written when FET used only mutation
-which randomized an activity's starting time.</P>
+<P>---The comment below was written when FET used only mutation which
+randomized an activity's starting time.</P>
 <P>A: Yes, the weights are important, but unfortunately I cannot
 answer to the second question.</P>
-<P>	I can justify the first affirmation by an example: the considered
+<P>I can justify the first affirmation by an example: the considered
 file is named (for the moment) sample4. As it is right now, it is a
 good example of a very constraint timetable, difficult to schedule by
 FET. The weights are chosen such that the basic constraints have a
@@ -452,7 +443,7 @@ not so fit and therefore the chances are lower of finding the good
 solution.</P>
 <P><BR><BR>
 </P>
-<P>	---The comment below was written after I chosed to introduce also
+<P>---The comment below was written after I chosed to introduce also
 the second kind of mutation, a swapping of two random activities.
 This swapping was very benefical, and now the results are the same,
 regardless of the weights (I am only referring to the above example).
@@ -468,10 +459,10 @@ which does not.</P>
 <P>A: Yes, but this is not easy. All the part regarding data
 representation and gradually construction of the solution is working,
 only the interface has to be updated.</P>
-<P>	Anyway, when you add a compulsory
-ConstraintActivityPreferredTime, it means that you fixed that
-activity. You can use this feature for a semi-automatic or even
-manual timetabling, but it is not so convenient.</P>
+<P>Anyway, when you add a compulsory ConstraintActivityPreferredTime,
+it means that you fixed that activity. You can use this feature for a
+semi-automatic or even manual timetabling, but it is not so
+convenient.</P>
 <P><BR><BR>
 </P>
 <P>-------------------------------------------------------------------------------</P>
@@ -512,9 +503,8 @@ conflicts are a difference in days + a difference in hours. The
 number of conflicts is multiplied with 2 if the first activity is
 weekly (not bi-weekly) and again multiplied with 2 if the second
 activity is weekly.</P>
-<P>	</P>
-<P>	-&gt;added - 15 May 2004.</P>
-<P>	-&gt;modified - 20 February 2005.</P>
+<P>-&gt;added - 15 May 2004.</P>
+<P>-&gt;modified - 20 February 2005.</P>
 <P><BR><BR>
 </P>
 <P>-------------------------------------------------------------------------------</P>
@@ -524,16 +514,16 @@ activity is weekly.</P>
 <P>A: A user needed a timetable to respect the requirement that 2
 activities follow one after the other (order is not important).For
 compulsory and non-compulsory, normal error reporting is done. The
-conflicts reported are: the difference in days+:		- the difference in
+conflicts reported are: the difference in days+: - the difference in
 hours if the activities are too far from each other</P>
-<P>	- a constant number if the activities overlap</P>
-<P>	- 0 if the hours are OK.</P>
+<P>- a constant number if the activities overlap</P>
+<P>- 0 if the hours are OK.</P>
 <P>The number of conflicts is multiplied with 2 if the first activity
 is weekly (not bi-weekly) and again multiplied with 2 if the second
 activity is weekly.</P>
 <P><BR><BR>
 </P>
-<P>	-&gt;added - 15 May 2004.</P>
+<P>-&gt;added - 15 May 2004.</P>
 <P><BR><BR>
 </P>
 <P>-------------------------------------------------------------------------------</P>
@@ -546,7 +536,7 @@ subject as a filter to a set of activities that must be scheduled in
 certain intervals.</P>
 <P><BR><BR>
 </P>
-<P>	-&gt;added - 15 May 2004.</P>
+<P>-&gt;added - 15 May 2004.</P>
 <P><BR><BR>
 </P>
 <P>-------------------------------------------------------------------------------</P>
@@ -560,12 +550,12 @@ FET deal with such a situation?</P>
 <P>A: Yes, FET can deal with that. Just add many compulsory
 ConstraintActivityPreferredTime-s, one for each activity that you
 would like to be fixed (the preferred time will be the one from the
-previous allocation). This will not slow down the allocation,</P>
-<P>because compulsory constraints of this type are dealt with in a
-special way (repairing of the chromosomes, to be more specific).</P>
+previous allocation). This will not slow down the allocation, because
+compulsory constraints of this type are dealt with in a special way
+(repairing of the chromosomes, to be more specific).</P>
 <P><BR><BR>
 </P>
-<P>	-&gt;added - 17 November 2004.</P>
+<P>-&gt;added - 17 November 2004.</P>
 <P><BR><BR>
 </P>
 <P>-------------------------------------------------------------------------------</P>
@@ -576,7 +566,7 @@ data?</P>
 <P>A: It will slow down the automatic allocation, so please don't.</P>
 <P><BR><BR>
 </P>
-<P>	-&gt; added - 12 February 2005.</P>
+<P>-&gt; added - 12 February 2005.</P>
 <P><BR><BR>
 </P>
 <P>-------------------------------------------------------------------------------</P>
@@ -585,7 +575,9 @@ data?</P>
 <P>Q: What about the one phase and 2 phases automatic allocation?</P>
 <P>A: If FET fails to solve your timetable in 2 phases (it has many
 broken space constraints), try a single phase allocation</P>
-<P>	</P>
-<P>	-&gt; added - 14 February 2005.</P>
+<P>-&gt; added - 14 February 2005.</P>
+<P><BR><BR>
+</P>
+<P ALIGN=RIGHT>this documentation by Liviu Lalescu</P>
 </BODY>
 </HTML>

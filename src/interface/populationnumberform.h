@@ -17,12 +17,17 @@
 
 class PopulationNumberForm : public PopulationNumberForm_template
 {
+	int p_n;
+	
 public:
 	PopulationNumberForm();
 
 	~PopulationNumberForm();
 
 	void populationNumberChanged();
+	
+	void ok();
+	void cancel();
 };
 
 #endif

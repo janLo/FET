@@ -20,6 +20,7 @@
 #include <qstringlist.h>
 
 class Room;
+class Rules;
 
 class RoomsList: public QPtrList<Room>
 {
@@ -37,6 +38,15 @@ public:
 	QString type;
 	int capacity;
 	QStringList equipments;
+	/**
+	If empty string, it is ignored
+	*/
+	QString building; 
+	
+	/**
+	Internal. If -1, it is ignored
+	*/
+	int buildingIndex;
 
 	Room();
 	~Room();
@@ -44,10 +54,13 @@ public:
 	void addEquipment(const QString& equipmentName);
 	void removeEquipment(const QString& equipmentName);
 	bool searchEquipment(const QString& equipmentName);
+	
+	void computeInternalStructure(Rules& r);
 
+	QString getXmlDescription();
 	QString getDescription();
 	QString getDetailedDescription();
-	QString getXMLDescription();
+	QString getDetailedDescriptionWithConstraints(Rules& r);
 };
 
 #endif

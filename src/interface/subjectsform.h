@@ -26,6 +26,11 @@ public:
 	void removeSubject();
 	void renameSubject();
 	void sortSubjects();
+	
+	void subjectChanged(int index);
+	
+	void activateSubject();
+	void deactivateSubject();
 };
 
 #endif

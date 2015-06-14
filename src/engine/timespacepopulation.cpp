@@ -85,13 +85,30 @@ TimeSpaceChromosome& TimeSpacePopulation::bestChromosome(Rules& r)
 
 	if(this->bestFirst || this->sorted)
 		return this->chromosomes[0];
+		
+	TimeSpaceChromosome* c=&chromosomes[0];
+	int j=-1;
+	for(int i=1; i<this->n; i++)
+		if(better(r, this->chromosomes[i], *c)){
+			c=&this->chromosomes[i];
+			j=i;
+		}
+	if(j!=-1){
+		TimeSpaceChromosome c;
+		c.copy(r, this->chromosomes[0]);
+		this->chromosomes[0].copy(r, this->chromosomes[j]);
+		this->chromosomes[j].copy(r, c);	
+	}
+	
+	this->bestFirst=true;
+	return this->chromosomes[0];
 
-	if(!this->sorted){
+/*	if(!this->sorted){
 		this->sort(r, 0, n-1);
 		this->sorted=true;
 		this->bestFirst=true;
 	}
-	return this->chromosomes[0];
+	return this->chromosomes[0];*/
 }
 
 TimeSpaceChromosome& TimeSpacePopulation::worstChromosome(Rules& r)

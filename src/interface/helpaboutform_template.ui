@@ -55,7 +55,7 @@
                         <property name="text">
                             <string>FET is free software for automatically scheduling the timetable of a school, high-school or faculty.
 
-Version: 3.12.30 (March 2005)
+Version: 3.17.1 (August 2005)
 
 Licensed under GNU/GPL.
 
@@ -92,7 +92,12 @@ Please support this project by making a donation. You can contact the author for
 Catalan translation - by Miguel Gea Milvaques
 
 Romanian translation - by Liviu Lalescu 
-	(liviu@lalescu.ro, http://lalescu.ro/liviu/ )</string>
+	(liviu@lalescu.ro, http://lalescu.ro/liviu/ )
+
+Malay translation - by Abdul Hadi Kamel
+
+Polish translation - by Radoslaw Pasiok
+	(zapala@konto.pl)</string>
                         </property>
                     </widget>
                 </grid>
@@ -140,8 +145,8 @@ Romanian translation - by Liviu Lalescu
                             <cstring>textBrowser4</cstring>
                         </property>
                         <property name="text">
-                            <string>People who helped me (chronologically)
---------------------------------------
+                            <string>(chronologically)
+--------------------
 
 Costin Badica	- my teacher. He actually made me begin this project and provided me with documentation and advices.
 
@@ -179,9 +184,27 @@ Morten Piil	- bug reported, sample file.
 
 Sebastian Canagaratna - lots of suggestions, bugs reported, sample files.
 
-Abdul Hadi Kamel - sample file, bugs reported.
+Abdul Hadi Kamel - sample file, bugs reported, Malay translation.
 
-Miguel Gea Milvaques - Catalan translation.</string>
+Miguel Gea Milvaques - Catalan translation.
+
+Frank de Bruijn - bug reported.
+
+Radoslaw Pasiok - Polish translation.
+
+Daan Huntjens - bug reported, sample file, suggestions.
+
+Yush Yuen - sample file.
+
+Scott Sweeting - sample file, suggestions, icon for FET.
+
+Dragos Petrascu - suggestions.
+
+Daniel S. - suggestions, help files for the constraints.
+
+Gianluca Salvo - suggested Constraint2ActivitiesOrdered.
+
+Sebastian O'Halloran - suggestions.</string>
                         </property>
                     </widget>
                 </grid>
@@ -204,7 +227,9 @@ Miguel Gea Milvaques - Catalan translation.</string>
                         <property name="text">
                             <string>In chronological order:
 
-Sebastian Canagaratna, Department of Chemistry, Ohio Northern University</string>
+Sebastian Canagaratna, Department of Chemistry, Ohio Northern University
+
+Andreea Mihailescu</string>
                         </property>
                     </widget>
                 </grid>
@@ -226,6 +251,46 @@ Sebastian Canagaratna, Department of Chemistry, Ohio Northern University</string
                         </property>
                         <property name="text">
                             <string>---------------------------------------------------------------------
+
+radu (sunt@acasa.ro)   (2005-08-03 23:40:27+03)
+	
+programul e foarte bun. si e gratis... asta e deja pasiune.
+
+multa bafta mai departe.
+
+R. Nemeth, CT "C. Brancusi", Oradea.
+
+---------------------------------------------------------------------
+
+j. weimenglee (weimenglee@gmail.com)   (2005-06-22 18:34:13+03) (Rating: 1 star out of 5)
+	
+too bad
+
+---------------------------------------------------------------------
+
+Sema (skweli@yahoo.fr)   (2005-06-21 11:43:06+03) (Rating: 1 star out of 5)
+	
+it's not for universities. it doesnt look professional.
+
+---------------------------------------------------------------------
+
+Adrian Hernandez Santisteban (filosofo@gmail.com)   (2005-06-13 02:32:55+03) (Rating: 5 stars out of 5)
+	
+I am a member of a literacy campaign in MEXICO. We are a non-profit organization that work to improve the quality of life of those ones who did not recieved a proper education. We like to thank you very much for this program, it is excellent. It helped us resolve all our logistic problems.
+
+---------------------------------------------------------------------
+
+ely mustapha (mustapha.ahmedly@esct.rnu.tn)   (2005-05-18 12:55:57+03) (Rating: 5 stars out of 5)
+	
+Excellent programme. De telles solutions manquent sur le net. Merci encore.
+
+---------------------------------------------------------------------
+
+rezgui (rezguiwahid@yahoo.fr)   (2005-04-21 18:46:34+03)
+	
+an excellent program for timetabling,but i want to complie it on windows architecture
+
+---------------------------------------------------------------------
 
 Erik Happaerts (erik.happaerts@ehb.be)   (2005-03-26 11:59:25+02)
 	

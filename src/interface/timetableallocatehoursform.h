@@ -81,8 +81,15 @@ public:
 
 	/**
 	Function writing the students' timetable html format, to a file
+	(variant 1)
 	*/
-	void writeStudentsTimetableHtml(const QString& htmlfilename);
+	void writeStudentsTimetable1Html(const QString& htmlfilename);
+
+	/**
+	Function writing the students' timetable html format, to a file
+	(variant 2)
+	*/
+	void writeStudentsTimetable2Html(const QString& htmlfilename);
 
 	/**
 	Function writing the teachers' timetable in html format, version 1

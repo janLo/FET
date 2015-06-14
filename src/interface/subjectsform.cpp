@@ -21,6 +21,7 @@
 
 #include <qlistbox.h>
 #include <qinputdialog.h>
+#include <qtextedit.h>
 
 SubjectsForm::SubjectsForm()
  : SubjectsForm_template()
@@ -28,6 +29,11 @@ SubjectsForm::SubjectsForm()
 	subjectsListBox->clear();
 	for(Subject* sbj=gt.rules.subjectsList.first(); sbj; sbj=gt.rules.subjectsList.next())
 		subjectsListBox->insertItem(sbj->name);
+		
+	if(subjectsListBox->count()>0){
+		subjectsListBox->setCurrentItem(0);
+		this->subjectChanged(0);
+	}
 }
 
 
@@ -51,6 +57,8 @@ void SubjectsForm::addSubject()
 		}
 		else{
 			subjectsListBox->insertItem(sbj->name);
+			subjectsListBox->setCurrentItem(subjectsListBox->count()-1);
+			this->subjectChanged(subjectsListBox->count()-1);
 		}
 	}
 	else
@@ -59,6 +67,7 @@ void SubjectsForm::addSubject()
 
 void SubjectsForm::removeSubject()
 {
+	int i=subjectsListBox->currentItem();
 	if(subjectsListBox->currentItem()<0){
 		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected subject"));
 		return;
@@ -77,13 +86,18 @@ void SubjectsForm::removeSubject()
 		return;
 
 	int tmp=gt.rules.removeSubject(text);
-	if(tmp)
+	if(tmp){
 		subjectsListBox->removeItem(subjectsListBox->currentItem());
-	this->show();
+		if((uint)(i)>=subjectsListBox->count())
+			i=subjectsListBox->count()-1;
+		subjectsListBox->setCurrentItem(i);
+		this->subjectChanged(i);
+	}
 }
 
 void SubjectsForm::renameSubject()
 {
+	int i=subjectsListBox->currentItem();
 	if(subjectsListBox->currentItem()<0){
 		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected subject"));
 		return;
@@ -100,7 +114,7 @@ void SubjectsForm::renameSubject()
 	bool ok = FALSE;
 	QString finalSubjectName;
 	finalSubjectName = QInputDialog::getText( QObject::tr("User input"), QObject::tr("Please enter new subject's name") ,
-                    QLineEdit::Normal, QString::null, &ok, this );
+                    QLineEdit::Normal, initialSubjectName, &ok, this );
 
 	if ( ok && !(finalSubjectName.isEmpty()) ){
 		// user entered something and pressed OK
@@ -110,12 +124,9 @@ void SubjectsForm::renameSubject()
 		}
 		else{
 			gt.rules.modifySubject(initialSubjectName, finalSubjectName);
+			subjectsListBox->changeItem(finalSubjectName, i);
 		}
 	}
-
-	subjectsListBox->clear();
-	for(Subject* sbj=gt.rules.subjectsList.first(); sbj; sbj=gt.rules.subjectsList.next())
-		subjectsListBox->insertItem(sbj->name);	
 }
 
 void SubjectsForm::sortSubjects()
@@ -125,4 +136,43 @@ void SubjectsForm::sortSubjects()
 	subjectsListBox->clear();
 	for(Subject* sbj=gt.rules.subjectsList.first(); sbj; sbj=gt.rules.subjectsList.next())
 		subjectsListBox->insertItem(sbj->name);	
+}
+
+void SubjectsForm::subjectChanged(int index)
+{
+	if(index<0){
+		currentSubjectTextEdit->setText(QObject::tr("Invalid subject"));
+		return;
+	}
+	
+	Subject* sb=gt.rules.subjectsList.at(index);
+	assert(sb);
+	QString s=sb->getDetailedDescriptionWithConstraints(gt.rules);
+	currentSubjectTextEdit->setText(s);
+}
+
+void SubjectsForm::activateSubject()
+{
+	if(subjectsListBox->currentItem()<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected subject"));
+		return;
+	}
+	
+	QString subjectName=subjectsListBox->currentText();
+	
+	int count=gt.rules.activateSubject(subjectName);
+	QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Activated a number of %1 activities").arg(count));
+}
+
+void SubjectsForm::deactivateSubject()
+{
+	if(subjectsListBox->currentItem()<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected subject"));
+		return;
+	}
+	
+	QString subjectName=subjectsListBox->currentText();
+	
+	int count=gt.rules.deactivateSubject(subjectName);
+	QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("De-activated a number of %1 activities").arg(count));
 }

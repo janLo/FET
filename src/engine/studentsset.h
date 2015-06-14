@@ -13,12 +13,6 @@
 #ifndef STUDENTSSET_H
 #define STUDENTSSET_H
 
-/**
-This class represents a set of students, for instance years, groups or subgroups.
-
-@author Liviu Lalescu
-*/
-
 #include "genetictimetable_defs.h"
 
 #include <qptrlist.h>
@@ -31,6 +25,8 @@ const int STUDENTS_SUBGROUP=3;
 class StudentsYear;
 class StudentsGroup;
 class StudentsSubgroup;
+
+class Rules;
 
 class StudentsYearsList: public QPtrList<StudentsYear>
 {
@@ -47,6 +43,11 @@ class StudentsSubgroupsList: public QPtrList<StudentsSubgroup>
 	int compareItems(QPtrCollection::Item, QPtrCollection::Item);
 };
 
+/**
+This class represents a set of students, for instance years, groups or subgroups.
+
+@author Liviu Lalescu
+*/
 class StudentsSet
 {
 public:
@@ -66,9 +67,10 @@ public:
 	StudentsYear();
 	~StudentsYear();
 
-	QString getXMLDescription();
+	QString getXmlDescription();
 	QString getDescription();
 	QString getDetailedDescription();
+	QString getDetailedDescriptionWithConstraints(Rules& r);
 };
 
 class StudentsGroup: public StudentsSet
@@ -79,9 +81,10 @@ public:
 	StudentsGroup();
 	~StudentsGroup();
 
-	QString getXMLDescription();
+	QString getXmlDescription();
 	QString getDescription();
 	QString getDetailedDescription();
+	QString getDetailedDescriptionWithConstraints(Rules& r);
 };
 
 class StudentsSubgroup: public StudentsSet
@@ -90,9 +93,10 @@ public:
 	StudentsSubgroup();
 	~StudentsSubgroup();
 
-	QString getXMLDescription();
+	QString getXmlDescription();
 	QString getDescription();
 	QString getDetailedDescription();
+	QString getDetailedDescriptionWithConstraints(Rules& r);
 };
 
 #endif

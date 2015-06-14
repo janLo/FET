@@ -294,7 +294,8 @@ void SpaceChromosome::getRoomsTimetable(
 				a1[i][j][k]=a2[i][j][k]=UNALLOCATED_ACTIVITY;
 
 	Activity *act;
-	for(act=r.activitiesList.first(), i=0; act; act=r.activitiesList.next(), i++){
+	for(i=0; i<r.nInternalActivities; i++){
+		act=&r.internalActivitiesList[i];
 		int room=this->rooms[i];
 		int day=days[i];
 		int hour=hours[i];

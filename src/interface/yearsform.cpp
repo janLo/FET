@@ -74,7 +74,7 @@ void YearsForm::yearChanged()
 	if(yearsListBox->currentItem()<0)
 		return;
 	StudentsYear* sty=gt.rules.yearsList.at(yearsListBox->currentItem());
-	detailsTextEdit->setText(sty->getDetailedDescription());
+	detailsTextEdit->setText(sty->getDetailedDescriptionWithConstraints(gt.rules));
 }
 
 void YearsForm::sortYears()
@@ -95,13 +95,37 @@ void YearsForm::modifyYear()
 	}
 	QString yearName=yearsListBox->currentText();
 	int numberOfStudents=gt.rules.searchStudentsSet(yearName)->numberOfStudents;
-	
+
 	ModifyStudentsYearForm* modifyStudentsYearForm=new ModifyStudentsYearForm(yearName, numberOfStudents);
 	modifyStudentsYearForm->exec();
 
 	yearsListBox->clear();
 	for(StudentsYear* year=gt.rules.yearsList.first(); year; year=gt.rules.yearsList.next())
 		yearsListBox->insertItem(year->name);
-		
+
 	yearsListBox->setCurrentItem(ci);
+}
+
+void YearsForm::activateStudents()
+{
+	if(yearsListBox->currentItem()<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected year"));
+		return;
+	}
+	
+	QString yearName=yearsListBox->currentText();
+	int count=gt.rules.activateStudents(yearName);
+	QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Activated a number of %1 activities").arg(count));
+}
+
+void YearsForm::deactivateStudents()
+{
+	if(yearsListBox->currentItem()<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected year"));
+		return;
+	}
+	
+	QString yearName=yearsListBox->currentText();
+	int count=gt.rules.deactivateStudents(yearName);
+	QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("De-activated a number of %1 activities").arg(count));
 }

@@ -21,6 +21,8 @@
 class RoomsForm : public RoomsForm_template
 {
 public:
+	RoomsList visibleRoomsList;
+
 	RoomsForm();
 	~RoomsForm();
 
@@ -30,6 +32,8 @@ public:
 	void sortRooms();
 	void roomChanged(int index);
 	void roomsEquipments();
+	void filterChanged();
+	bool filterOk(Room* rm);
 };
 
 #endif

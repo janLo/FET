@@ -26,6 +26,11 @@ public:
 	void removeTeacher();
 	void renameTeacher();
 	void sortTeachers();
+	
+	void teacherChanged(int index);
+	
+	void activateTeacher();
+	void deactivateTeacher();
 };
 
 #endif

@@ -60,7 +60,7 @@ const int MAX_POPULATION_SIZE=8192;
 /**
 The maximum number of different years of students
 */
-const int MAX_YEARS=70;
+const int MAX_YEARS=100;
 
 /**
 Maximum number of allowed groups per year of students
@@ -92,9 +92,9 @@ const int MAX_SUBGROUPS_PER_ACTIVITY=400;//MAX_SUBGROUPS_PER_GROUP * MAX_GROUPS_
 This constant represents the maximum number of teachers
 for any activity.
 */
-const int MAX_TEACHERS_PER_ACTIVITY = 6;
+const int MAX_TEACHERS_PER_ACTIVITY = 100;
 
-const int MAX_SUBGROUPS_PER_CONSTRAINT=100;//MAX_SUBGROUPS_PER_GROUP * MAX_GROUPS_PER_YEAR;
+const int MAX_SUBGROUPS_PER_CONSTRAINT=400;//MAX_SUBGROUPS_PER_GROUP * MAX_GROUPS_PER_YEAR;
 
 /**
 The maximum number of different teachers
@@ -120,6 +120,11 @@ const int MAX_EQUIPMENTS=300;
 The maximum number of equipments for a constraint subject requires equipments
 */
 const int MAX_EQUIPMENTS_FOR_A_CONSTRAINT=50;
+
+/**
+The maximum number of buildings
+*/
+const int MAX_BUILDINGS=100;
 
 /**
 The maximum number of rooms
@@ -235,6 +240,20 @@ const int MAX_CONSTRAINT_ACTIVITY_PREFERRED_ROOMS=20;
 /**
 The maximum number of rooms for a single
 constraint of type
+ConstraintSubjectPreferredRooms
+*/
+const int MAX_CONSTRAINT_SUBJECT_PREFERRED_ROOMS=20;
+
+/**
+The maximum number of rooms for a single
+constraint of type
+ConstraintSubjectSubjectTagPreferredRooms
+*/
+const int MAX_CONSTRAINT_SUBJECT_SUBJECT_TAG_PREFERRED_ROOMS=20;
+
+/**
+The maximum number of activities for a single
+constraint of type
 ConstraintActivitiesSameRoom
 */
 const int MAX_CONSTRAINT_ACTIVITIES_SAME_ROOM=20;
@@ -250,6 +269,13 @@ The maximum number of activities which share the same teacher name.
 This constant is used (for now) in ConstraintTeacherRequiresRoom.
 */
 const int MAX_ACTIVITIES_FOR_A_TEACHER=200;
+
+/**
+The maximum number of activities which share the same teacher name 
+and subject name. This constant is used (for now) in 
+ConstraintTeacherSubjectRequireRoom.
+*/
+const int MAX_ACTIVITIES_FOR_A_TEACHER_AND_SUBJECT=200;
 
 
 /**
@@ -349,9 +375,15 @@ const QString ROOMS_TIMETABLE_FILENAME_XML="roomstimetable.xml";
 
 /**
 An output file containing the timetable for each subgroup,
-arranged in html format
+arranged in html format. Version 1 - flyers for each subgroup
 */
-const QString STUDENTS_TIMETABLE_FILENAME_HTML="studentstimetable.html";
+const QString STUDENTS_TIMETABLE_1_FILENAME_HTML="studentstimetable1.html";
+
+/**
+An output file containing the timetable for each subgroup,
+arranged in html format. Version 2 - overall
+*/
+const QString STUDENTS_TIMETABLE_2_FILENAME_HTML="studentstimetable2.html";
 
 /**
 An output file containing the timetable for each teacher,
@@ -367,15 +399,39 @@ const QString TEACHERS_TIMETABLE_2_FILENAME_HTML="teacherstimetable2.html";
 
 /**
 An output file containing the timetable for each room,
-arranged in html format
+arranged in html format.
 */
 const QString ROOMS_TIMETABLE_FILENAME_HTML="roomstimetable.html";
 
 /**
+An output file containing the timetable for each room,
+arranged in html format. Version 1 - flyers for each room
+*/
+const QString ROOMS_TIMETABLE_1_FILENAME_HTML="roomstimetable1.html";
+
+/**
+An output file containing the timetable for each room,
+arranged in html format. Version 2 - overall.
+*/
+const QString ROOMS_TIMETABLE_2_FILENAME_HTML="roomstimetable2.html";
+
+/**
 An output file containing the timetable (with rooms) for each subgroup,
-arranged in html format
+arranged in html format.
 */
 const QString STUDENTS_TIMETABLE_WITH_ROOMS_FILENAME_HTML="studentstimetablewithrooms.html";
+
+/**
+An output file containing the timetable (with rooms) for each subgroup,
+arranged in html format. Version 1 - flyers for each subgroup
+*/
+const QString STUDENTS_TIMETABLE_WITH_ROOMS_1_FILENAME_HTML="studentstimetablewithrooms1.html";
+
+/**
+An output file containing the timetable (with rooms) for each subgroup,
+arranged in html format. Version 2 - overall
+*/
+const QString STUDENTS_TIMETABLE_WITH_ROOMS_2_FILENAME_HTML="studentstimetablewithrooms2.html";
 
 /**
 An output file containing the timetable for each teacher (with rooms),
@@ -443,5 +499,10 @@ extern int METHOD2_MUTATION2_PROBABILITY;
 Probability for Evolution2 propagation, in percents
 */
 extern int METHOD2_PROPAGATION_PROBABILITY;
+
+/**
+A function used in xml saving
+*/
+QString protect(const QString& str);
 
 #endif

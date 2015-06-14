@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>447</width>
-            <height>512</height>
+            <width>652</width>
+            <height>554</height>
         </rect>
     </property>
     <property name="caption">
@@ -41,24 +41,6 @@
                 <string>Add subject</string>
             </property>
         </widget>
-        <widget class="QListBox" row="0" column="0" rowspan="1" colspan="2">
-            <item>
-                <property name="text">
-                    <string>New Item</string>
-                </property>
-            </item>
-            <property name="name">
-                <cstring>subjectsListBox</cstring>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="3" column="0">
-            <property name="name">
-                <cstring>closePushButton</cstring>
-            </property>
-            <property name="text">
-                <string>Close</string>
-            </property>
-        </widget>
         <widget class="QPushButton" row="2" column="0">
             <property name="name">
                 <cstring>renameSubjectPushButton</cstring>
@@ -73,6 +55,48 @@
             </property>
             <property name="text">
                 <string>Sort alphabetically</string>
+            </property>
+        </widget>
+        <widget class="QListBox" row="0" column="0">
+            <item>
+                <property name="text">
+                    <string>New Item</string>
+                </property>
+            </item>
+            <property name="name">
+                <cstring>subjectsListBox</cstring>
+            </property>
+        </widget>
+        <widget class="QTextEdit" row="0" column="1">
+            <property name="name">
+                <cstring>currentSubjectTextEdit</cstring>
+            </property>
+            <property name="readOnly">
+                <bool>true</bool>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="4" column="0">
+            <property name="name">
+                <cstring>closePushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Close</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="3" column="0">
+            <property name="name">
+                <cstring>activateSubjectPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Activate all activities for selected subject</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="3" column="1">
+            <property name="name">
+                <cstring>deactivateSubjectPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>De-activate all activities for selected subject</string>
             </property>
         </widget>
     </grid>
@@ -108,6 +132,24 @@
         <receiver>SubjectsForm_template</receiver>
         <slot>sortSubjects()</slot>
     </connection>
+    <connection>
+        <sender>subjectsListBox</sender>
+        <signal>highlighted(int)</signal>
+        <receiver>SubjectsForm_template</receiver>
+        <slot>subjectChanged(int)</slot>
+    </connection>
+    <connection>
+        <sender>activateSubjectPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>SubjectsForm_template</receiver>
+        <slot>activateSubject()</slot>
+    </connection>
+    <connection>
+        <sender>deactivateSubjectPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>SubjectsForm_template</receiver>
+        <slot>deactivateSubject()</slot>
+    </connection>
 </connections>
 <tabstops>
     <tabstop>subjectsListBox</tabstop>
@@ -122,6 +164,9 @@
     <slot>removeSubject()</slot>
     <slot>renameSubject()</slot>
     <slot>sortSubjects()</slot>
+    <slot>subjectChanged(int)</slot>
+    <slot>activateSubject()</slot>
+    <slot>deactivateSubject()</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

@@ -43,22 +43,34 @@ public:
 	void dataSubgroups();
 	void dataActivities();
 	void dataEquipments();
+	void dataBuildings();
 	void dataRooms();
 	void dataAllTimeConstraints();
 	void dataAllSpaceConstraints();
 
 	void dataSpaceConstraintsBasicCompulsorySpace();
 	void dataSpaceConstraintsTeacherRequiresRoom();
+	void dataSpaceConstraintsTeacherSubjectRequireRoom();
 	void dataSpaceConstraintsRoomNotAvailable();
 	void dataSpaceConstraintsActivityPreferredRoom();
 	void dataSpaceConstraintsMinimizeNumberOfRoomsForStudents();
+	void dataSpaceConstraintsMinimizeNumberOfRoomsForTeachers();
 	void dataSpaceConstraintsRoomTypeNotAllowedSubjects();
 	void dataSpaceConstraintsSubjectRequiresEquipments();
 	void dataSpaceConstraintsSubjectSubjectTagRequireEquipments();
 	void dataSpaceConstraintsActivitiesSameRoom();
 	void dataSpaceConstraintsActivityPreferredRooms();
+	void dataSpaceConstraintsSubjectPreferredRoom();
+	void dataSpaceConstraintsSubjectSubjectTagPreferredRoom();
+	void dataSpaceConstraintsSubjectPreferredRooms();
+	void dataSpaceConstraintsSubjectSubjectTagPreferredRooms();
+	void dataSpaceConstraintsMaxBuildingChangesPerDayForTeachers();
+	void dataSpaceConstraintsMaxBuildingChangesPerDayForStudents();
+	void dataSpaceConstraintsMaxRoomChangesPerDayForTeachers();
+	void dataSpaceConstraintsMaxRoomChangesPerDayForStudents();
 	
 	void dataTimeConstraints2ActivitiesConsecutive();
+	void dataTimeConstraints2ActivitiesOrdered();
 	void dataTimeConstraints2ActivitiesGrouped();
 	void dataTimeConstraintsActivitiesPreferredTimes();
 	void dataTimeConstraintsActivitiesSameStartingTime();
@@ -68,9 +80,9 @@ public:
 	void dataTimeConstraintsStudentsSetNotAvailable();
 	void dataTimeConstraintsBreak();
 	void dataTimeConstraintsTeacherMaxDaysPerWeek();
-	void dataTimeConstraintsTeachersNoMoreThanXHoursContinuously();
-	void dataTimeConstraintsTeachersNoMoreThanXHoursDaily();
-	void dataTimeConstraintsTeachersSubgroupsNoMoreThanXHoursDaily();
+	void dataTimeConstraintsTeachersMaxHoursContinuously();
+	void dataTimeConstraintsTeachersMaxHoursDaily();
+	void dataTimeConstraintsTeachersSubgroupsMaxHoursDaily();
 	void dataTimeConstraintsActivityPreferredTime();
 	void dataTimeConstraintsStudentsSetNoGaps();
 	void dataTimeConstraintsStudentsNoGaps();
@@ -83,9 +95,13 @@ public:
 	void dataTimeConstraintsActivitiesNotOverlapping();
 	void dataTimeConstraintsMinNDaysBetweenActivities();
 	void dataTimeConstraintsActivityPreferredTimes();
+	void dataTimeConstraintsTeachersSubjectTagsMaxHoursContinuously();
+	void dataTimeConstraintsTeachersSubjectTagMaxHoursContinuously();
 
 	void helpAbout();
 	void helpFAQ();
+	void helpTimeConstraints();
+	void helpTimeConstraintsSubtags();
 
 	void timetableAllocateHours();
 	void timetableViewStudents();
@@ -107,6 +123,8 @@ public:
 	void languageFrench();
 	void languageCatalan();
 	void languageRomanian();
+	void languageMalay();
+	void languagePolish();
 	
 	void parametersPopulationNumber();
 };

@@ -25,11 +25,85 @@
 
 AddConstraintActivitiesSameStartingTimeForm::AddConstraintActivitiesSameStartingTimeForm()
 {
+	teachersComboBox->insertItem("");
+	for(Teacher* tch=gt.rules.teachersList.first(); tch; tch=gt.rules.teachersList.next())
+		teachersComboBox->insertItem(tch->name);
+	teachersComboBox->setCurrentItem(0);
+
+	subjectsComboBox->insertItem("");
+	for(Subject* sb=gt.rules.subjectsList.first(); sb; sb=gt.rules.subjectsList.next())
+		subjectsComboBox->insertItem(sb->name);
+	subjectsComboBox->setCurrentItem(0);
+
+	subjectTagsComboBox->insertItem("");
+	for(SubjectTag* st=gt.rules.subjectTagsList.first(); st; st=gt.rules.subjectTagsList.next())
+		subjectTagsComboBox->insertItem(st->name);
+	subjectTagsComboBox->setCurrentItem(0);
+
+	studentsComboBox->insertItem("");
+	for(StudentsYear* sty=gt.rules.yearsList.first(); sty; sty=gt.rules.yearsList.next()){
+		studentsComboBox->insertItem(sty->name);
+		for(StudentsGroup* stg=sty->groupsList.first(); stg; stg=sty->groupsList.next()){
+			studentsComboBox->insertItem(stg->name);
+			for(StudentsSubgroup* sts=stg->subgroupsList.first(); sts; sts=stg->subgroupsList.next())
+				studentsComboBox->insertItem(sts->name);
+		}
+	}
+	studentsComboBox->setCurrentItem(0);
+	
 	updateActivitiesListBox();
 }
 
 AddConstraintActivitiesSameStartingTimeForm::~AddConstraintActivitiesSameStartingTimeForm()
 {
+}
+
+bool AddConstraintActivitiesSameStartingTimeForm::filterOk(Activity* act)
+{
+	QString tn=teachersComboBox->currentText();
+	QString stn=studentsComboBox->currentText();
+	QString sbn=subjectsComboBox->currentText();
+	QString sbtn=subjectTagsComboBox->currentText();
+	int ok=true;
+
+	//teacher
+	if(tn!=""){
+		bool ok2=false;
+		for(QStringList::Iterator it=act->teachersNames.begin(); it!=act->teachersNames.end(); it++)
+			if(*it == tn){
+				ok2=true;
+				break;
+			}
+		if(!ok2)
+			ok=false;
+	}
+
+	//subject
+	if(sbn!="" && sbn!=act->subjectName)
+		ok=false;
+		
+	//subject tag
+	if(sbtn!="" && sbtn!=act->subjectTagName)
+		ok=false;
+		
+	//students
+	if(stn!=""){
+		bool ok2=false;
+		for(QStringList::Iterator it=act->studentsNames.begin(); it!=act->studentsNames.end(); it++)
+			if(*it == stn){
+				ok2=true;
+				break;
+			}
+		if(!ok2)
+			ok=false;
+	}
+	
+	return ok;
+}
+
+void AddConstraintActivitiesSameStartingTimeForm::filterChanged()
+{
+	this->updateActivitiesListBox();
 }
 
 void AddConstraintActivitiesSameStartingTimeForm::updateActivitiesListBox()
@@ -43,20 +117,23 @@ void AddConstraintActivitiesSameStartingTimeForm::updateActivitiesListBox()
 	if(blockCheckBox->isChecked())
 		//show only non-split activities and split activities which are the representatives
 		for(Activity* ac=gt.rules.activitiesList.first(); ac; ac=gt.rules.activitiesList.next()){
-			if(ac->activityGroupId==0){
-				activitiesListBox->insertItem(ac->getDescription(gt.rules));
-				this->activitiesList.append(ac->id);
-			}
-			else if(ac->id==ac->activityGroupId){
-				activitiesListBox->insertItem(ac->getDescription(gt.rules));
-				this->activitiesList.append(ac->id);
+			if(filterOk(ac)){
+				if(ac->activityGroupId==0){
+					activitiesListBox->insertItem(ac->getDescription(gt.rules));
+					this->activitiesList.append(ac->id);
+				}
+				else if(ac->id==ac->activityGroupId){
+					activitiesListBox->insertItem(ac->getDescription(gt.rules));
+					this->activitiesList.append(ac->id);
+				}
 			}
 		}
 	else
-		for(Activity* ac=gt.rules.activitiesList.first(); ac; ac=gt.rules.activitiesList.next()){
-			activitiesListBox->insertItem(ac->getDescription(gt.rules));
-			this->activitiesList.append(ac->id);
-		}
+		for(Activity* ac=gt.rules.activitiesList.first(); ac; ac=gt.rules.activitiesList.next())
+			if(filterOk(ac)){
+				activitiesListBox->insertItem(ac->getDescription(gt.rules));
+				this->activitiesList.append(ac->id);
+			}
 }
 
 void AddConstraintActivitiesSameStartingTimeForm::blockChanged()
@@ -71,7 +148,7 @@ void AddConstraintActivitiesSameStartingTimeForm::addConstraint()
 	double weight;
 	QString tmp=weightLineEdit->text();
 	sscanf(tmp, "%lf", &weight);
-	if(weight<=0.0){
+	if(weight<0.0){
 		QMessageBox::warning(this, QObject::tr("FET information"),
 			QObject::tr("Invalid weight"));
 		return;
@@ -250,4 +327,10 @@ void AddConstraintActivitiesSameStartingTimeForm::removeActivity()
 	simultaneousActivitiesListBox->removeItem(simultaneousActivitiesListBox->currentItem());
 	int tmp2=this->simultaneousActivitiesList.remove(_id);
 	assert(tmp2==1);
+}
+
+void AddConstraintActivitiesSameStartingTimeForm::clear()
+{
+	simultaneousActivitiesListBox->clear();
+	simultaneousActivitiesList.clear();
 }

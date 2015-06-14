@@ -44,6 +44,7 @@ public:
 	void updateTeachersComboBox();
 	void updateStudentsComboBox();
 	void updateSubjectsComboBox();
+	void updateSubjectTagsComboBox();
 
 	void ok();
 	void cancel();

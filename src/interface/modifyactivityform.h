@@ -34,6 +34,7 @@
 #include <qpushbutton.h>
 #include <qlineedit.h>
 #include <qtextedit.h>
+#include <qlistbox.h>
 
 
 class ModifyActivityForm : public ModifyActivityForm_template  {
@@ -41,28 +42,28 @@ public:
 	int _id;
 	int _activityGroupId;
 	Activity* _activity;
-	QString _teacher1;
-	QString _teacher2;
-	QString _teacher3;
+	QStringList _teachers;
 	QString _subject;
 	QString _subjectTag;
-	QString _students1;
-	QString _students2;
-	QString _students3;
-	QString _students4;
+	QStringList _students;
 
 	ModifyActivityForm(int id, int activityGroupId);
 	~ModifyActivityForm();
 
-	void updateStudentsComboBox();
-	void updateTeachersComboBox();
+	void addTeacher();
+	void removeTeacher();
+	void addStudents();
+	void removeStudents();
+	void updateStudentsListBox();
+	void updateTeachersListBox();
 	void updateSubjectsComboBox();
 	void updateSubjectTagsComboBox();
+	
+	void clearTeachers();
+	void clearStudents();
 
-	void teacherChanged(const QString& dummy);
 	void subjectChanged(const QString& dummy);
 	void subjectTagChanged(const QString& dummy);
-	void studentsChanged(const QString& dummy);
 	void parityChanged();
 	void durationChanged();
 	void activityChanged();

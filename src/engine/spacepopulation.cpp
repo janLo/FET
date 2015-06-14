@@ -92,13 +92,30 @@ SpaceChromosome& SpacePopulation::bestChromosome(Rules& r){
 
 	if(this->bestFirst || this->sorted)
 		return this->chromosomes[0];
+		
+	SpaceChromosome* c=&chromosomes[0];
+	int j=-1;
+	for(int i=1; i<this->n; i++)
+		if(better(r, this->chromosomes[i], *c, this->days, this->hours)){
+			c=&this->chromosomes[i];
+			j=i;
+		}
+	if(j!=-1){
+		SpaceChromosome c;
+		c.copy(r, this->chromosomes[0]);
+		this->chromosomes[0].copy(r, this->chromosomes[j]);
+		this->chromosomes[j].copy(r, c);
+	}
+	
+	this->bestFirst=true;
+	return this->chromosomes[0];
 
-	if(!this->sorted){
+/*	if(!this->sorted){
 		this->sort(r, 0, n-1);
 		this->sorted=true;
 		this->bestFirst=true;
 	}
-	return this->chromosomes[0];
+	return this->chromosomes[0];*/
 }
 
 SpaceChromosome& SpacePopulation::worstChromosome(Rules& r){
@@ -224,7 +241,7 @@ void SpacePopulation::sort(Rules& ru, int left, int right){
 
 		int i=l-1, j=r+1, p=l+rand()%(r-l+1),
 		 hpivot=this->chromosomes[p].hardFitness(ru, this->days, this->hours),
-		 spivot=this->chromosomes[p].softFitness(ru, this->days, this->hours); 
+		 spivot=this->chromosomes[p].softFitness(ru, this->days, this->hours);
 
 		for(;;){
 			do i++; while (better(this->chromosomes[i].hardFitness(ru, this->days, this->hours), this->chromosomes[i].softFitness(ru, this->days, this->hours), hpivot, spivot));

@@ -22,6 +22,7 @@
 
 #include <qlabel.h>
 #include <qtabwidget.h>
+#include <qlistbox.h>
 
 #define subTab(i)	subactivitiesTabWidget->page(i)
 #define prefDay(i)	(i==0?preferredDay1ComboBox:				\
@@ -56,13 +57,21 @@
 			(i==5?duration6SpinBox:					\
 			(i==6?duration7SpinBox:					\
 			(duration1SpinBox))))))))
+#define activ(i)		(i==0?active1CheckBox:					\
+			(i==1?active2CheckBox:					\
+			(i==2?active3CheckBox:					\
+			(i==3?active4CheckBox:					\
+			(i==4?active5CheckBox:					\
+			(i==5?active6CheckBox:					\
+			(i==6?active7CheckBox:					\
+			(active8CheckBox))))))))
 
 AddActivityForm::AddActivityForm()
 {
 	updatePreferredDaysComboBox();
 	updatePreferredHoursComboBox();
-	updateStudentsComboBox();
-	updateTeachersComboBox();
+	updateStudentsListBox();
+	updateTeachersListBox();
 	updateSubjectsComboBox();
 	updateSubjectTagsComboBox();
 
@@ -82,26 +91,65 @@ AddActivityForm::~AddActivityForm()
 {
 }
 
-void AddActivityForm::updateTeachersComboBox()
+void AddActivityForm::updateTeachersListBox()
 {
-	teachers1ComboBox->clear();
+	allTeachersListBox->clear();
 	for(Teacher* tch=gt.rules.teachersList.first(); tch; tch=gt.rules.teachersList.next())
-		teachers1ComboBox->insertItem(tch->name);
-	teachers1ComboBox->setCurrentItem(0);
+		allTeachersListBox->insertItem(tch->name);
+		
+	selectedTeachersListBox->clear();
 
-	teachers2ComboBox->clear();
-	teachers2ComboBox->insertItem("");
-	for(Teacher* tch=gt.rules.teachersList.first(); tch; tch=gt.rules.teachersList.next())
-		teachers2ComboBox->insertItem(tch->name);
-	teachers2ComboBox->setCurrentItem(0);
+	activityChanged();
+}
 
-	teachers3ComboBox->clear();
-	teachers3ComboBox->insertItem("");
-	for(Teacher* tch=gt.rules.teachersList.first(); tch; tch=gt.rules.teachersList.next())
-		teachers3ComboBox->insertItem(tch->name);
-	teachers3ComboBox->setCurrentItem(0);
+void AddActivityForm::addTeacher()
+{
+	if(allTeachersListBox->currentItem()<0 || (uint)(allTeachersListBox->currentItem())>=allTeachersListBox->count())
+		return;
+	
+	for(uint i=0; i<selectedTeachersListBox->count(); i++)
+		if(selectedTeachersListBox->text(i)==allTeachersListBox->currentText())
+			return;
+			
+	selectedTeachersListBox->insertItem(allTeachersListBox->currentText());
 
-	teacherChanged("");
+	activityChanged();
+}
+
+void AddActivityForm::removeTeacher()
+{
+	if(selectedTeachersListBox->count()<=0 || selectedTeachersListBox->currentItem()<0 ||
+	 (uint)(selectedTeachersListBox->currentItem())>=selectedTeachersListBox->count())
+		return;
+		
+	selectedTeachersListBox->removeItem(selectedTeachersListBox->currentItem());
+
+	activityChanged();
+}
+
+void AddActivityForm::addStudents()
+{
+	if(allStudentsListBox->currentItem()<0 || (uint)(allStudentsListBox->currentItem())>=allStudentsListBox->count())
+		return;
+	
+	for(uint i=0; i<selectedStudentsListBox->count(); i++)
+		if(selectedStudentsListBox->text(i)==allStudentsListBox->currentText())
+			return;
+			
+	selectedStudentsListBox->insertItem(allStudentsListBox->currentText());
+	
+	activityChanged();
+}
+
+void AddActivityForm::removeStudents()
+{
+	if(selectedStudentsListBox->count()<=0 || selectedStudentsListBox->currentItem()<0 ||
+	 (uint)(selectedStudentsListBox->currentItem())>=selectedStudentsListBox->count())
+		return;
+		
+	selectedStudentsListBox->removeItem(selectedStudentsListBox->currentItem());
+
+	activityChanged();
 }
 
 void AddActivityForm::updateSubjectsComboBox()
@@ -127,85 +175,41 @@ void AddActivityForm::updateSubjectTagsComboBox()
 
 void AddActivityForm::showYearsChanged()
 {
-	updateStudentsComboBox();
+	updateStudentsListBox();
 }
 
 void AddActivityForm::showGroupsChanged()
 {
-	updateStudentsComboBox();
+	updateStudentsListBox();
 }
 
 void AddActivityForm::showSubgroupsChanged()
 {
-	updateStudentsComboBox();
+	updateStudentsListBox();
 }
 
-void AddActivityForm::updateStudentsComboBox()
+void AddActivityForm::updateStudentsListBox()
 {
 	bool showYears=yearsCheckBox->isChecked();	
 	bool showGroups=groupsCheckBox->isChecked();	
 	bool showSubgroups=subgroupsCheckBox->isChecked();	
 
-	students1ComboBox->clear();
+	allStudentsListBox->clear();
 	for(StudentsYear* sty=gt.rules.yearsList.first(); sty; sty=gt.rules.yearsList.next()){
 		if(showYears)
-			students1ComboBox->insertItem(sty->name);
+			allStudentsListBox->insertItem(sty->name);
 		for(StudentsGroup* stg=sty->groupsList.first(); stg; stg=sty->groupsList.next()){
 			if(showGroups)
-				students1ComboBox->insertItem(stg->name);
+				allStudentsListBox->insertItem(stg->name);
 			for(StudentsSubgroup* sts=stg->subgroupsList.first(); sts; sts=stg->subgroupsList.next())
 				if(showSubgroups)
-					students1ComboBox->insertItem(sts->name);
+					allStudentsListBox->insertItem(sts->name);
 		}
 	}
-	students1ComboBox->setCurrentItem(0);
+	
+	selectedStudentsListBox->clear();
 
-	students2ComboBox->clear();
-	students2ComboBox->insertItem("");
-	for(StudentsYear* sty=gt.rules.yearsList.first(); sty; sty=gt.rules.yearsList.next()){
-		if(showYears)
-			students2ComboBox->insertItem(sty->name);
-		for(StudentsGroup* stg=sty->groupsList.first(); stg; stg=sty->groupsList.next()){
-			if(showGroups)
-				students2ComboBox->insertItem(stg->name);
-			for(StudentsSubgroup* sts=stg->subgroupsList.first(); sts; sts=stg->subgroupsList.next())
-				if(showSubgroups)
-					students2ComboBox->insertItem(sts->name);
-		}
-	}
-	students2ComboBox->setCurrentItem(0);
-
-	students3ComboBox->clear();
-	students3ComboBox->insertItem("");
-	for(StudentsYear* sty=gt.rules.yearsList.first(); sty; sty=gt.rules.yearsList.next()){
-		if(showYears)
-			students3ComboBox->insertItem(sty->name);
-		for(StudentsGroup* stg=sty->groupsList.first(); stg; stg=sty->groupsList.next()){
-			if(showGroups)
-				students3ComboBox->insertItem(stg->name);
-			for(StudentsSubgroup* sts=stg->subgroupsList.first(); sts; sts=stg->subgroupsList.next())
-				if(showSubgroups)
-					students3ComboBox->insertItem(sts->name);
-		}
-	}
-	students3ComboBox->setCurrentItem(0);
-
-	students4ComboBox->clear();
-	students4ComboBox->insertItem("");
-	for(StudentsYear* sty=gt.rules.yearsList.first(); sty; sty=gt.rules.yearsList.next()){
-		if(showYears)
-			students4ComboBox->insertItem(sty->name);
-		for(StudentsGroup* stg=sty->groupsList.first(); stg; stg=sty->groupsList.next()){
-			if(showGroups)
-				students4ComboBox->insertItem(stg->name);
-			for(StudentsSubgroup* sts=stg->subgroupsList.first(); sts; sts=stg->subgroupsList.next())
-				if(showSubgroups)
-					students4ComboBox->insertItem(sts->name);
-		}
-	}
-	students4ComboBox->setCurrentItem(0);
-
-	studentsChanged("");
+	activityChanged();
 }
 
 void AddActivityForm::updatePreferredDaysComboBox()
@@ -228,14 +232,6 @@ void AddActivityForm::updatePreferredHoursComboBox()
 	}
 }
 
-void AddActivityForm::teacherChanged(const QString& dummy)
-{
-	if(dummy=="")
-		;
-
-	activityChanged();
-}
-
 void AddActivityForm::subjectChanged(const QString& dummy)
 {
 	if(dummy=="")
@@ -245,14 +241,6 @@ void AddActivityForm::subjectChanged(const QString& dummy)
 }
 
 void AddActivityForm::subjectTagChanged(const QString& dummy)
-{
-	if(dummy=="")
-		;
-
-	activityChanged();
-}
-
-void AddActivityForm::studentsChanged(const QString& dummy)
 {
 	if(dummy=="")
 		;
@@ -280,30 +268,19 @@ void AddActivityForm::activityChanged()
 {
 	QString s;
 	s+=QObject::tr("Current activity:");s+="\n";
-	s+=QObject::tr(QString("Teacher=%1").arg(teachers1ComboBox->currentText()));s+="\n";
-	if(teachers2ComboBox->currentItem()!=0){
-		s+=QObject::tr(QString("Teacher=%1").arg(teachers2ComboBox->currentText()));
+	for(uint i=0; i<selectedTeachersListBox->count(); i++){
+		s+=QObject::tr(QString("Teacher=%1").arg(selectedTeachersListBox->text(i)));
 		s+="\n";
 	}
-	if(teachers3ComboBox->currentItem()!=0){
-		s+=QObject::tr(QString("Teacher=%1").arg(teachers3ComboBox->currentText()));
-		s+="\n";
-	}
-	s+=QObject::tr(QString("Subject=%1").arg(subjectsComboBox->currentText()));s+="\n";
+
+	s+=QObject::tr(QString("Subject=%1").arg(subjectsComboBox->currentText()));
+	s+="\n";
 	if(subjectTagsComboBox->currentText()!=""){
-		s+=QObject::tr(QString("Subject tag=%1").arg(subjectTagsComboBox->currentText()));s+="\n";
-	}
-	s+=QObject::tr(QString("Students=%1").arg(students1ComboBox->currentText()));s+="\n";
-	if(students2ComboBox->currentItem()!=0){
-		s+=QObject::tr(QString("Students=%1").arg(students2ComboBox->currentText()));
+		s+=QObject::tr(QString("Subject tag=%1").arg(subjectTagsComboBox->currentText()));
 		s+="\n";
 	}
-	if(students3ComboBox->currentItem()!=0){
-		s+=QObject::tr(QString("Students=%1").arg(students3ComboBox->currentText()));
-		s+="\n";
-	}
-	if(students4ComboBox->currentItem()!=0){
-		s+=QObject::tr(QString("Students=%1").arg(students4ComboBox->currentText()));
+	for(uint i=0; i<selectedStudentsListBox->count(); i++){
+		s+=QObject::tr(QString("Students=%1").arg(selectedStudentsListBox->text(i)));
 		s+="\n";
 	}
 
@@ -320,6 +297,14 @@ void AddActivityForm::activityChanged()
 		}
 		if(prefHour(0)->currentItem()>0){
 			s+=QObject::tr("Preferred hour=%1").arg(prefHour(0)->currentText());
+			s+="\n";
+		}
+		if(activ(0)->isChecked()){
+			s+=QObject::tr("Active activity");
+			s+="\n";
+		}
+		else{
+			s+=QObject::tr("Non-active activity");
 			s+="\n";
 		}
 	}
@@ -349,6 +334,14 @@ void AddActivityForm::activityChanged()
 				s+=QObject::tr("Preferred hour=%1").arg(prefHour(i)->currentText());
 				s+="\n";
 			}
+			if(activ(i)->isChecked()){
+				s+=QObject::tr("Active activity");
+				s+="\n";
+			}
+			else{
+				s+=QObject::tr("Non-active activity");
+				s+="\n";
+			}
 			s+="\n";
 		}
 	}
@@ -360,22 +353,23 @@ void AddActivityForm::addActivity()
 {
 	//teachers
 	QStringList teachers_names;
-	if(teachers1ComboBox->currentItem()<0 || teachers1ComboBox->currentText()==""){
+	if(selectedTeachersListBox->count()<=0){
 		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Invalid teacher (1)"));
+			QObject::tr("Invalid teacher(s)"));
+		return;
+	}
+	else if(selectedTeachersListBox->count()>(uint)(MAX_TEACHERS_PER_ACTIVITY)){
+		QMessageBox::warning(this, QObject::tr("FET information"),
+			QObject::tr("Too many teachers for an activity. The current maximum is %1.\n"
+			"If you really need more teachers per activity, please talk to the author").
+			arg(MAX_TEACHERS_PER_ACTIVITY));
 		return;
 	}
 	else{
-		assert(gt.rules.searchTeacher(teachers1ComboBox->currentText())>=0);
-		teachers_names.append(teachers1ComboBox->currentText());
-	}
-	if(teachers2ComboBox->currentItem()>=1){
-		assert(gt.rules.searchTeacher(teachers2ComboBox->currentText())>=0);
-		teachers_names.append(teachers2ComboBox->currentText());
-	}
-	if(teachers3ComboBox->currentItem()>=1){
-		assert(gt.rules.searchTeacher(teachers3ComboBox->currentText())>=0);
-		teachers_names.append(teachers3ComboBox->currentText());
+		for(uint i=0; i<selectedTeachersListBox->count(); i++){
+			assert(gt.rules.searchTeacher(selectedTeachersListBox->text(i))>=0);
+			teachers_names.append(selectedTeachersListBox->text(i));
+		}
 	}
 
 	//subject
@@ -398,26 +392,16 @@ void AddActivityForm::addActivity()
 
 	//students
 	QStringList students_names;
-	if(students1ComboBox->currentItem()<0 || students1ComboBox->currentText()==""){
+	if(selectedStudentsListBox->count()<=0){
 		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Invalid students set (1)"));
+			QObject::tr("Invalid students set(s)"));
 		return;
 	}
 	else{
-		assert(gt.rules.searchStudentsSet(students1ComboBox->currentText())!=NULL);
-		students_names.append(students1ComboBox->currentText());
-	}
-	if(students2ComboBox->currentItem()>=1){
-		assert(gt.rules.searchStudentsSet(students2ComboBox->currentText())!=NULL);
-		students_names.append(students2ComboBox->currentText());
-	}
-	if(students3ComboBox->currentItem()>=1){
-		assert(gt.rules.searchStudentsSet(students3ComboBox->currentText())!=NULL);
-		students_names.append(students3ComboBox->currentText());
-	}
-	if(students4ComboBox->currentItem()>=1){
-		assert(gt.rules.searchStudentsSet(students4ComboBox->currentText())!=NULL);
-		students_names.append(students4ComboBox->currentText());
+		for(uint i=0; i<selectedStudentsListBox->count(); i++){
+			assert(gt.rules.searchStudentsSet(selectedStudentsListBox->text(i))!=NULL);
+			students_names.append(selectedStudentsListBox->text(i));
+		}
 	}
 
 	if(splitSpinBox->value()==1){ //indivisible activity
@@ -444,13 +428,17 @@ void AddActivityForm::addActivity()
 			return;
 		}
 
+		bool active=false;
+		if(active1CheckBox->isChecked())
+			active=true;
+
 		int activityid=0; //We set the id of this newly added activity = (the largest existing id + 1)
 		for(Activity* act=gt.rules.activitiesList.first(); act; act=gt.rules.activitiesList.next())
 			if(act->id > activityid)
 				activityid = act->id;
 		activityid++;
 		Activity a(gt.rules, activityid, 0, teachers_names, subject_name, subject_tag_name, students_names,
-			duration, duration, parity);
+			duration, duration, parity, active);
 
 		bool already_existing=false;
 		for(Activity* act=gt.rules.activitiesList.first(); act; act=gt.rules.activitiesList.next())
@@ -467,7 +455,7 @@ void AddActivityForm::addActivity()
 		}
 
 		bool tmp=gt.rules.addSimpleActivity(activityid, 0, teachers_names, subject_name, subject_tag_name,
-			students_names,	duration, duration, parity, preferred_day, preferred_hour);
+			students_names,	duration, duration, parity, active, preferred_day, preferred_hour);
 		if(tmp)
 			QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Activity added"));
 		else
@@ -479,6 +467,7 @@ void AddActivityForm::addActivity()
 		int parities[8];
 		int preferred_days[8];
 		int preferred_hours[8];
+		bool active[8];
 		int nsplit=splitSpinBox->value();
 
 		totalduration=0;
@@ -487,6 +476,9 @@ void AddActivityForm::addActivity()
 			parities[i]=PARITY_WEEKLY;
 			if(par(i)->isChecked())
 				parities[i]=PARITY_BIWEEKLY;
+			active[i]=false;
+			if(activ(i)->isChecked())
+				active[i]=true;
 			preferred_days[i]=prefDay(i)->currentItem()-1;
 			preferred_hours[i]=prefHour(i)->currentItem()-1;
 
@@ -505,7 +497,7 @@ void AddActivityForm::addActivity()
 		bool tmp=gt.rules.addSplitActivity(firstactivityid, firstactivityid,
 			teachers_names, subject_name, subject_tag_name, students_names,
 			nsplit, totalduration, durations,
-			parities, minD, preferred_days, preferred_hours);
+			parities, active, minD, preferred_days, preferred_hours);
 		if(tmp)
 			QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Split activity added"));
 		else
@@ -513,6 +505,19 @@ void AddActivityForm::addActivity()
 	}
 }
 
+void AddActivityForm::clearTeachers()
+{
+	selectedTeachersListBox->clear();
+	activityChanged();
+}
+
+void AddActivityForm::clearStudents()
+{
+	selectedStudentsListBox->clear();
+	activityChanged();
+}
+
 #undef prefDay
 #undef prefHour
 #undef subTab
+#undef activ

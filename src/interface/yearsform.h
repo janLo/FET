@@ -26,6 +26,9 @@ public:
 	void modifyYear();
 	void sortYears();
 	void yearChanged();
+	
+	void activateStudents();
+	void deactivateStudents();
 };
 
 #endif

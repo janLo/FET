@@ -19,6 +19,7 @@
 
 #include <qlistbox.h>
 #include <qinputdialog.h>
+#include <qtextedit.h>
 
 TeachersForm::TeachersForm()
  : TeachersForm_template()
@@ -26,6 +27,11 @@ TeachersForm::TeachersForm()
 	teachersListBox->clear();
 	for(Teacher* tch=gt.rules.teachersList.first(); tch; tch=gt.rules.teachersList.next())
 		teachersListBox->insertItem(tch->name);
+		
+	if(teachersListBox->count()>0){
+		teachersListBox->setCurrentItem(0);
+		this->teacherChanged(0);
+	}
 }
 
 
@@ -49,6 +55,8 @@ void TeachersForm::addTeacher()
 		}
 		else{
 			teachersListBox->insertItem(tch->name);
+			teachersListBox->setCurrentItem(teachersListBox->count()-1);
+			this->teacherChanged(teachersListBox->count()-1);
 		}
 	}
 	else
@@ -57,6 +65,7 @@ void TeachersForm::addTeacher()
 
 void TeachersForm::removeTeacher()
 {
+	int i=teachersListBox->currentItem();
 	if(teachersListBox->currentItem()<0){
 		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected teacher"));
 		return;
@@ -75,13 +84,18 @@ void TeachersForm::removeTeacher()
 		return;
 
 	int tmp=gt.rules.removeTeacher(text);
-	if(tmp)
+	if(tmp){
 		teachersListBox->removeItem(teachersListBox->currentItem());
-	this->show();
+		if((uint)(i)>=teachersListBox->count())
+			i=teachersListBox->count()-1;
+		teachersListBox->setCurrentItem(i);
+		this->teacherChanged(i);		
+	}
 }
 
 void TeachersForm::renameTeacher()
 {
+	int i=teachersListBox->currentItem();
 	if(teachersListBox->currentItem()<0){
 		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected teacher"));
 		return;
@@ -97,7 +111,7 @@ void TeachersForm::renameTeacher()
 	bool ok = FALSE;
 	QString finalTeacherName;
 	finalTeacherName = QInputDialog::getText( QObject::tr("User input"), QObject::tr("Please enter new teacher's name") ,
-                    QLineEdit::Normal, QString::null, &ok, this );
+                    QLineEdit::Normal, initialTeacherName, &ok, this );
 
 	if ( ok && !(finalTeacherName.isEmpty())){
 		// user entered something and pressed OK
@@ -107,12 +121,9 @@ void TeachersForm::renameTeacher()
 		}
 		else{
 			gt.rules.modifyTeacher(initialTeacherName, finalTeacherName);
+			teachersListBox->changeItem(finalTeacherName, i);
 		}
 	}
-	
-	teachersListBox->clear();
-	for(Teacher* tch=gt.rules.teachersList.first(); tch; tch=gt.rules.teachersList.next())
-		teachersListBox->insertItem(tch->name);
 }
 
 void TeachersForm::sortTeachers()
@@ -122,4 +133,41 @@ void TeachersForm::sortTeachers()
 	teachersListBox->clear();
 	for(Teacher* tch=gt.rules.teachersList.first(); tch; tch=gt.rules.teachersList.next())
 		teachersListBox->insertItem(tch->name);
+}
+
+void TeachersForm::teacherChanged(int index)
+{
+	if(index<0){
+		currentTeacherTextEdit->setText(QObject::tr("Invalid teacher"));
+		return;
+	}
+	
+	Teacher* t=gt.rules.teachersList.at(index);
+	assert(t);
+	QString s=t->getDetailedDescriptionWithConstraints(gt.rules);
+	currentTeacherTextEdit->setText(s);
+}
+
+void TeachersForm::activateTeacher()
+{
+	if(teachersListBox->currentItem()<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected teacher"));
+		return;
+	}
+
+	QString teacherName=teachersListBox->currentText();
+	int count=gt.rules.activateTeacher(teacherName);
+	QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Activated a number of %1 activities").arg(count));
+}
+
+void TeachersForm::deactivateTeacher()
+{
+	if(teachersListBox->currentItem()<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected teacher"));
+		return;
+	}
+
+	QString teacherName=teachersListBox->currentText();
+	int count=gt.rules.deactivateTeacher(teacherName);
+	QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("De-activated a number of %1 activities").arg(count));
 }

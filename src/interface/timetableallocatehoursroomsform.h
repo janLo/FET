@@ -87,8 +87,15 @@ public:
 
 	/**
 	Function writing the students' timetable (with rooms) in html format, to a file
+	Variant 1
 	*/
-	void writeStudentsTimetableWithRoomsHtml(const QString& htmlfilename);
+	void writeStudentsTimetableWithRooms1Html(const QString& htmlfilename);
+
+	/**
+	Function writing the students' timetable (with rooms) in html format, to a file
+	Variant 2
+	*/
+	void writeStudentsTimetableWithRooms2Html(const QString& htmlfilename);
 
 	/**
 	Function writing the teachers' timetable (with rooms) in html format, to a file
@@ -104,8 +111,15 @@ public:
 
 	/**
 	Function writing the rooms' timetable in html format, to a file
+	Variant 1
 	*/
-	void writeRoomsTimetableHtml(const QString& htmlfilename);
+	void writeRoomsTimetable1Html(const QString& htmlfilename);
+
+	/**
+	Function writing the rooms' timetable in html format, to a file
+	Variant 2
+	*/
+	void writeRoomsTimetable2Html(const QString& htmlfilename);
 
 	void getTeachersTimetable(TimeSpaceChromosome& c);
 

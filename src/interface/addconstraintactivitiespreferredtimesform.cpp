@@ -31,6 +31,7 @@ AddConstraintActivitiesPreferredTimesForm::AddConstraintActivitiesPreferredTimes
 	updateTeachersComboBox();
 	updateStudentsComboBox();
 	updateSubjectsComboBox();
+	updateSubjectTagsComboBox();
 
 	preferredTimesTable->setNumRows(gt.rules.nHoursPerDay+1);
 	preferredTimesTable->setNumCols(gt.rules.nDaysPerWeek+1);
@@ -95,6 +96,13 @@ void AddConstraintActivitiesPreferredTimesForm::updateSubjectsComboBox(){
 		subjectsComboBox->insertItem(s->name);
 }
 
+void AddConstraintActivitiesPreferredTimesForm::updateSubjectTagsComboBox(){
+	subjectTagsComboBox->clear();
+	subjectTagsComboBox->insertItem("");
+	for(SubjectTag* s=gt.rules.subjectTagsList.first(); s; s=gt.rules.subjectTagsList.next())
+		subjectTagsComboBox->insertItem(s->name);
+}
+
 void AddConstraintActivitiesPreferredTimesForm::addConstraint()
 {
 	TimeConstraint *ctr=NULL;
@@ -102,7 +110,7 @@ void AddConstraintActivitiesPreferredTimesForm::addConstraint()
 	double weight;
 	QString tmp=weightLineEdit->text();
 	sscanf(tmp, "%lf", &weight);
-	if(weight<=0.0){
+	if(weight<0.0){
 		QMessageBox::warning(this, QObject::tr("FET information"),
 			QObject::tr("Invalid weight"));
 		return;
@@ -124,10 +132,15 @@ void AddConstraintActivitiesPreferredTimesForm::addConstraint()
 	if(subject!="")
 		assert(gt.rules.searchSubject(subject)>=0);
 		
-	if(teacher=="" && students=="" && subject=="")
+	QString subjectTag=subjectTagsComboBox->currentText();
+	if(subjectTag!="")
+		assert(gt.rules.searchSubjectTag(subjectTag)>=0);
+		
+	if(teacher=="" && students=="" && subject=="" && subjectTag==""){
 		QMessageBox::warning(this, QObject::tr("FET information"),
 			QObject::tr("Please be careful - you are considering all the activities"
-			"\n(no teacher, students or subject specified)"));
+			"\n(no teacher, students, subject or subject tag specified)"));
+	}
 
 	int days[MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_TIMES];
 	int hours[MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_TIMES];
@@ -151,7 +164,7 @@ void AddConstraintActivitiesPreferredTimesForm::addConstraint()
 				n++;
 			}
 
-	ctr=new ConstraintActivitiesPreferredTimes(weight, compulsory, teacher, students, subject, n, days, hours);
+	ctr=new ConstraintActivitiesPreferredTimes(weight, compulsory, teacher, students, subject, subjectTag, n, days, hours);
 
 	bool tmp2=gt.rules.addTimeConstraint(ctr);
 	if(tmp2){

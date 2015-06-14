@@ -38,6 +38,9 @@ ModifyConstraintActivitiesNotOverlappingForm::ModifyConstraintActivitiesNotOverl
 		assert(act);
 		this->notOverlappingActivitiesListBox->insertItem(act->getDescription(gt.rules));
 	}
+	
+	compulsoryCheckBox->setChecked(ctr->compulsory);
+	weightLineEdit->setText(QString::number(ctr->weight));			
 }
 
 ModifyConstraintActivitiesNotOverlappingForm::~ModifyConstraintActivitiesNotOverlappingForm()
@@ -63,7 +66,7 @@ void ModifyConstraintActivitiesNotOverlappingForm::ok()
 	double weight;
 	QString tmp=weightLineEdit->text();
 	sscanf(tmp, "%lf", &weight);
-	if(weight<=0.0){
+	if(weight<0.0){
 		QMessageBox::warning(this, QObject::tr("FET information"),
 			QObject::tr("Invalid weight"));
 		return;

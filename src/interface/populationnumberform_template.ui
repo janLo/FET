@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.2" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
 <class>PopulationNumberForm_template</class>
 <widget class="QDialog">
     <property name="name">
@@ -29,22 +29,6 @@
         </property>
         <property name="orientation">
             <enum>Horizontal</enum>
-        </property>
-    </widget>
-    <widget class="QPushButton">
-        <property name="name">
-            <cstring>closePushButton</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>90</x>
-                <y>240</y>
-                <width>161</width>
-                <height>31</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>Close</string>
         </property>
     </widget>
     <widget class="QLabel">
@@ -98,23 +82,63 @@
             <string>Population number</string>
         </property>
     </widget>
+    <widget class="QPushButton">
+        <property name="name">
+            <cstring>cancelPushButton</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>181</x>
+                <y>260</y>
+                <width>140</width>
+                <height>31</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>Cancel</string>
+        </property>
+    </widget>
+    <widget class="QPushButton">
+        <property name="name">
+            <cstring>okPushButton</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>10</x>
+                <y>260</y>
+                <width>140</width>
+                <height>31</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>OK</string>
+        </property>
+    </widget>
 </widget>
 <connections>
-    <connection>
-        <sender>closePushButton</sender>
-        <signal>clicked()</signal>
-        <receiver>PopulationNumberForm_template</receiver>
-        <slot>close()</slot>
-    </connection>
     <connection>
         <sender>populationNumberSlider</sender>
         <signal>valueChanged(int)</signal>
         <receiver>PopulationNumberForm_template</receiver>
         <slot>populationNumberChanged()</slot>
     </connection>
+    <connection>
+        <sender>cancelPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>PopulationNumberForm_template</receiver>
+        <slot>cancel()</slot>
+    </connection>
+    <connection>
+        <sender>okPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>PopulationNumberForm_template</receiver>
+        <slot>ok()</slot>
+    </connection>
 </connections>
 <slots>
     <slot>populationNumberChanged()</slot>
+    <slot>ok()</slot>
+    <slot>cancel()</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

@@ -8,12 +8,15 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>465</width>
-            <height>325</height>
+            <width>416</width>
+            <height>279</height>
         </rect>
     </property>
     <property name="caption">
         <string>FET - a free evolutionary timetabling program</string>
+    </property>
+    <property name="icon">
+        <pixmap>image0</pixmap>
     </property>
 </widget>
 <menubar>
@@ -24,7 +27,7 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>465</width>
+            <width>416</width>
             <height>48</height>
         </rect>
     </property>
@@ -36,7 +39,7 @@
         <separator/>
         <action name="fileExitAction"/>
     </item>
-    <item text="&amp;Data" name="PopupMenu">
+    <item text="&amp;Data" name="dataMenu">
         <action name="dataInstitutionNameAction"/>
         <action name="dataCommentsAction"/>
         <separator/>
@@ -55,25 +58,28 @@
         <action name="dataActivitiesAction"/>
         <separator/>
         <action name="dataEquipmentsAction"/>
+        <action name="dataBuildingsAction"/>
         <action name="dataRoomsAction"/>
         <separator/>
         <action name="dataAllTimeConstraintsAction"/>
         <action name="dataTime_constraints_miscAction"/>
-        <item text="Time constraints (misc)" name="PopupMenuEditor_28" accel="">
+        <item text="Time constraints (misc)" name="PopupMenuEditor_29" accel="">
             <action name="dataTimeConstraintsBasicCompulsoryTimeAction"/>
             <action name="dataTimeConstraintsBreakAction"/>
-            <action name="dataTimeConstraintsTeachersSubgroupsNoMoreThanXHoursDailyAction"/>
+            <action name="dataTimeConstraintsTeachersSubgroupsMaxHoursDailyAction"/>
+            <action name="dataTimeConstraintsTeachersSubjectTagMaxHoursContinuouslyAction"/>
+            <action name="dataTimeConstraintsTeachersSubjectTagsMaxHoursContinuouslyAction"/>
         </item>
         <action name="dataTime_constraints_teachersAction"/>
-        <item text="Time constraints (teachers)" name="PopupMenuEditor_32" accel="">
+        <item text="Time constraints (teachers)" name="PopupMenuEditor_35" accel="">
             <action name="dataTimeConstraintsTeacherMaxDaysPerWeekAction"/>
             <action name="dataTimeConstraintsTeacherNotAvailableAction"/>
             <action name="dataTimeConstraintsTeachersNoGapsAction"/>
-            <action name="dataTimeConstraintsTeachersNoMoreThanXHoursContinuouslyAction"/>
-            <action name="dataTimeConstraintsTeachersNoMoreThanXHoursDailyAction"/>
+            <action name="dataTimeConstraintsTeachersMaxHoursContinuouslyAction"/>
+            <action name="dataTimeConstraintsTeachersMaxHoursDailyAction"/>
         </item>
         <action name="dataTime_constraints_studentsAction"/>
-        <item text="Time constraints (students)" name="PopupMenuEditor_38" accel="">
+        <item text="Time constraints (students)" name="PopupMenuEditor_41" accel="">
             <action name="dataTimeConstraintsStudentsEarlyAction"/>
             <action name="dataTimeConstraintsStudentsNHoursDailyAction"/>
             <action name="dataTimeConstraintsStudentsNoGapsAction"/>
@@ -83,9 +89,10 @@
             <action name="dataTimeConstraintsStudentsSetNotAvailableAction"/>
         </item>
         <action name="dataTime_constraints_activitiesAction"/>
-        <item text="Time constraints (activities)" name="PopupMenuEditor_46" accel="">
+        <item text="Time constraints (activities)" name="PopupMenuEditor_49" accel="">
             <action name="dataTimeConstraints2ActivitiesConsecutiveAction"/>
             <action name="dataTimeConstraints2ActivitiesGroupedAction"/>
+            <action name="dataTimeConstraints2ActivitiesOrderedAction"/>
             <action name="dataTimeConstraintsActivitiesNotOverlappingAction"/>
             <action name="dataTimeConstraintsActivitiesPreferredTimesAction"/>
             <action name="dataTimeConstraintsActivitiesSameStartingHourAction"/>
@@ -98,27 +105,35 @@
         <separator/>
         <action name="dataAllSpaceConstraintsAction"/>
         <action name="dataSpace_constraints_miscAction"/>
-        <item text="Space constraints (misc)" name="PopupMenuEditor_59" accel="">
+        <item text="Space constraints (misc)" name="PopupMenuEditor_63" accel="">
             <action name="dataSpaceConstraintsActivitiesSameRoomAction"/>
             <action name="dataSpaceConstraintsActivityPreferredRoomAction"/>
             <action name="dataSpaceConstraintsActivityPreferredRoomsAction"/>
             <action name="dataSpaceConstraintsBasicCompulsorySpaceAction"/>
-            <action name="dataSpaceConstraintsMinimizeNumberOfRoomsForStudentsAction"/>
+            <action name="dataSpaceConstraintsMaxBuildingChangesPerDayForStudentsAction"/>
+            <action name="dataSpaceConstraintsMaxBuildingsChangesPerDayForTeachersAction"/>
+            <action name="dataSpaceConstraintsMaxRoomChangesPerDayForStudentsAction"/>
+            <action name="dataSpaceConstraintMaxRoomChangesPerDayForTeachersAction"/>
             <action name="dataSpaceConstraintsRoomTypeNotAllowedSubjectsAction"/>
+            <action name="dataSpaceConstraintsSubjectPreferredRoomAction"/>
+            <action name="dataSpaceConstraintsSubjectPreferredRoomsAction"/>
             <action name="dataSpaceConstraintsSubjectRequiresEquipmentsAction"/>
+            <action name="dataSpaceConstraintsSubjectSubjectTagPreferredRoomAction"/>
+            <action name="dataSpaceConstraintsSubjectSubjectTagPreferredRoomsAction"/>
             <action name="dataSpaceConstraintsSubjectSubjectTagRequireEquipmentsAction"/>
             <action name="dataSpaceConstraintsTeacherRequiresRoomAction"/>
+            <action name="dataSpaceConstraintsTeacherSubjectRequireRoomAction"/>
         </item>
         <action name="dataSpace_constraints_roomsAction"/>
-        <item text="Space constraints (rooms)" name="PopupMenuEditor_69" accel="">
+        <item text="Space constraints (rooms)" name="PopupMenuEditor_79" accel="">
             <action name="dataSpaceConstraintsRoomNotAvailableAction"/>
         </item>
     </item>
-    <item text="&amp;Parameters" name="ParametersMenu">
+    <item text="&amp;Parameters" name="parametersMenu">
         <action name="parametersPopulationNumberAction"/>
         <action name="parametersProbabilitiesAction"/>
     </item>
-    <item text="&amp;Timetable" name="PopupMenu_2">
+    <item text="&amp;Timetable" name="timetableMenu">
         <action name="timetableAllocateHoursAction"/>
         <action name="timetableViewTeachersAction"/>
         <action name="timetableViewStudentsAction"/>
@@ -138,14 +153,18 @@
         <separator/>
         <action name="timetableExportAction"/>
     </item>
-    <item text="&amp;Language" name="LanguageMenu">
+    <item text="&amp;Language" name="languageMenu">
         <action name="languageEnglishAction"/>
         <action name="languageFrenchAction"/>
         <action name="languageCatalanAction"/>
         <action name="languageRomanianAction"/>
+        <action name="languageMalayAction"/>
+        <action name="languagePolishAction"/>
     </item>
     <item text="&amp;Help" name="helpMenu">
         <action name="helpFAQAction"/>
+        <action name="helpTimeConstraintsAction"/>
+        <action name="helpTimeConstraintsSubtagsAction"/>
         <separator/>
         <action name="helpAboutAction"/>
     </item>
@@ -678,26 +697,26 @@
     </action>
     <action>
         <property name="name">
-            <cstring>dataTimeConstraintsTeachersNoMoreThanXHoursContinuouslyAction</cstring>
+            <cstring>dataTimeConstraintsTeachersMaxHoursContinuouslyAction</cstring>
         </property>
         <property name="text">
-            <string>Teachers no more than X hours continuously</string>
+            <string>Teachers max hours continuously</string>
         </property>
     </action>
     <action>
         <property name="name">
-            <cstring>dataTimeConstraintsTeachersNoMoreThanXHoursDailyAction</cstring>
+            <cstring>dataTimeConstraintsTeachersMaxHoursDailyAction</cstring>
         </property>
         <property name="text">
-            <string>Teachers no more than X hours daily</string>
+            <string>Teachers max hours daily</string>
         </property>
     </action>
     <action>
         <property name="name">
-            <cstring>dataTimeConstraintsTeachersSubgroupsNoMoreThanXHoursDailyAction</cstring>
+            <cstring>dataTimeConstraintsTeachersSubgroupsMaxHoursDailyAction</cstring>
         </property>
         <property name="text">
-            <string>Teachers-subgroups no more than X hours daily</string>
+            <string>Teachers-subgroups max hours daily</string>
         </property>
     </action>
     <action>
@@ -1012,7 +1031,162 @@
             <string>&amp;CA</string>
         </property>
     </action>
+    <action>
+        <property name="name">
+            <cstring>languageMalayAction</cstring>
+        </property>
+        <property name="text">
+            <string>MY</string>
+        </property>
+        <property name="menuText">
+            <string>&amp;MY</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>dataSpaceConstraintsSubjectPreferredRoomAction</cstring>
+        </property>
+        <property name="text">
+            <string>Subject preferred room</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>dataSpaceConstraintsSubjectSubjectTagPreferredRoomAction</cstring>
+        </property>
+        <property name="text">
+            <string>Subject subject tag preferred room</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>dataSpaceConstraintsSubjectPreferredRoomsAction</cstring>
+        </property>
+        <property name="text">
+            <string>Subject preferred rooms</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>dataSpaceConstraintsSubjectSubjectTagPreferredRoomsAction</cstring>
+        </property>
+        <property name="text">
+            <string>Subject subject tag preferred rooms</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>dataTimeConstraintsTeachersSubjectTagsMaxHoursContinuouslyAction</cstring>
+        </property>
+        <property name="text">
+            <string>Teachers-subject tags max hours continuously</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>dataTimeConstraintsTeachersSubjectTagMaxHoursContinuouslyAction</cstring>
+        </property>
+        <property name="text">
+            <string>Teachers-subject tag max hours continuously</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>languagePolishAction</cstring>
+        </property>
+        <property name="text">
+            <string>PL</string>
+        </property>
+        <property name="menuText">
+            <string>&amp;PL</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>dataSpaceConstraintsTeacherSubjectRequireRoomAction</cstring>
+        </property>
+        <property name="text">
+            <string>Teacher subject require room</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>helpTimeConstraintsAction</cstring>
+        </property>
+        <property name="text">
+            <string>Time constraints</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>helpTimeConstraintsSubtagsAction</cstring>
+        </property>
+        <property name="text">
+            <string>Time constraints subtags</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>dataTimeConstraints2ActivitiesOrderedAction</cstring>
+        </property>
+        <property name="text">
+            <string>2 activities ordered</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>dataBuildingsAction</cstring>
+        </property>
+        <property name="text">
+            <string>Buildings</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>dataSpaceConstraintsMaxBuildingsChangesPerDayForTeachersAction</cstring>
+        </property>
+        <property name="text">
+            <string>Max building changes per day for teachers</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>dataSpaceConstraintsMaxBuildingChangesPerDayForStudentsAction</cstring>
+        </property>
+        <property name="text">
+            <string>Max building changes per day for students</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>dataSpaceConstraintsMinimizeNumberOfRoomsForTeachersAction</cstring>
+        </property>
+        <property name="text">
+            <string>Minimize number of rooms for teachers</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>dataSpaceConstraintMaxRoomChangesPerDayForTeachersAction</cstring>
+        </property>
+        <property name="text">
+            <string>Max room changes per day for teachers</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>dataSpaceConstraintsMaxRoomChangesPerDayForStudentsAction</cstring>
+        </property>
+        <property name="text">
+            <string>Max room changes per day for students</string>
+        </property>
+    </action>
 </actions>
+<images>
+    <image name="image0">
+        <data format="PNG" length="1471">89504e470d0a1a0a0000000d4948445200000020000000200806000000737a7af40000058649444154789ced964d889d5719c77fefbdc9d4454b178ed0891d4a68432844d0d20a320b71a78b2e045776a358288214d485d052ac8ae94e546211bfda3aba5011da806dc8244d10139bdad269124c9ba66d3ab99d99dceff7bedfe7ebefe2bd7367eecc34aec44dfef072defb3ccf39cfff3ecfff9cf3c24ddcc4161cbae31e1dbae31e01dc377f48f7cd1f12c0edb7ceebf65be7358aa5b9b9039a9b3b2080b9b9bb353777b700f6efbf57fbf7dfabe5cb6f686161410b0b0b3a7dec8ceebaf3a0eebaf3a04e9e3da37d07e6b5efc0bc764dfee39f1e5112a424484ffdfc97ca25e5927ef693a72495924afde8874f4832928cbefddd47955699d22ad3b7bef3a80665a24199e82b0f3fac4c5226e9a1479e505f525fd283dffc9eda0a6a2ba8dbed4e48441b2fbf385a1b8d1585095426e003380f2ea81e7d3d5abff17bebbba66277830f50e425cf3f7e1bfbf6ed8b00f66c388d155f786016e745089b0b1a0bd68171c278a86cc03aa89cb04e54b69e6bbc304e585b93da0dcec389b31781db26b60901eb02d68271e0428475e3c4beb61907d645180bc6ab266123ac13c645182f9c03ebc18fff84a27a6c44a07105b66342c079b174ee3a218097f01e5cd85976eb84f57522ebb6b74494c6501807013cd499a949846077ef0dc0d1d3e7e5bce4bce4c7cfe2c996429042907c90ca2a68f1444b761c9757523b0efafd896bb25eb263db3b6b5ebf79e97db5fad28703e9ca75e9f5abd2734b2bfaf223dfd7eaeaeace1e6d101873def529aa7043bffd2ff3013df88dc7a70834262d7061734b0069217ef5b77709418420e22cf0e1c04df9577a8e8bd72a0e2fbe462ff1140656fae2e50b254ffef6cc24f6b5abe2afaf1a1e7bfaef9465b1bb06ac9dde3b49056559629d48ab403f0da4d5664ce5212b3dc1435595c4b900cff52450f90863cc24b6d5b50cd382b248c9f38f22e01c7f38d59a38fe72f2125559f2c7d3d79020cd0af2349df89f3fb3429c66a4c398c7923f119e3e4218b6f9446f9d284bf96cb7c5e171ec850bcb645946f08eac982630c1e2d17fcadfa0875919f441f7a335b03a90aef6a44b2dabe5770b5dbebf39f19d6f49e7de939e39ded267bef4f5dd35b01dc3dcf3dc52abde766ea768e3420c7271b523f21f7c15809906ccdcb207663e3615db882037817e3cd8b1cea405214c27e92762108ff0fa2400a30a86d9a6089d834101c30266afafd0cf6a7b5241696b8d6ca09dc0fac0d0edf490a6f36c2110a68ed05119314a63da23515681b808945bce91b880610edd04d45e63548e09145058a8cce6b1b7de2d89334351edecff8480f79ec59757268e17965ec1d88a17cfad50e51583b88735d5c47ff4ec3ba449c26830e0fe419b8f3f3483091039d1b4816a4b45dfbaf406a37880b19bf377e0d77f3ea5ca6e8a30cea567975a5a8fa5b5585ae94997d76f7cd09cbf26fdeb03e9cc955a701bf6636f7abdf0bad533c75bfaf417bf3625c23ddb895476e35addb44540b3099183678fb7f8dca76a5d14164a07af2ebfc5e71f3848a3018df1bc2ccf3875d1d36c34a802780b9d5e77eab0832dbb208480f7e03d6415acf53d9d5e9fcad782eaa6d04f3deb9deee4324aab5a079d6e1f63eb0bacb0d0198aebdd1e56c247302a61988b4eb70dd1f4c69bda054e1b8b8a410183b88f190b2faf02fd91a73fac09009446f4e240920c49cbc02d7b1b747318149e241930ca3d337b9b8c7291a415599eefa8c084801478f34a87ac3074fa19ebeb1d1ac1f2d22bef9117395932228d635cb0fc63f97dcab260381c902531c6565cbcd2a22c7246714c9ac41853b1de5ea5c87386c33ec928c69b8a99bdd35d9f103ab2784cff7efb6dbcf7acb5bbf48743d22caf23045123420140349bcdba6a120adbbf32229acd26defb7a22118d468310360f86177f7778f2493655916eb7abad97c8ff0a333333cccece6eefc64ddcc4ff07ff01a9e1c048051cbb290000000049454e44ae426082</data>
+    </image>
+</images>
 <connections>
     <connection>
         <sender>fileNewAction</sender>
@@ -1267,22 +1441,22 @@
         <slot>dataTimeConstraintsTeacherMaxDaysPerWeek()</slot>
     </connection>
     <connection>
-        <sender>dataTimeConstraintsTeachersNoMoreThanXHoursContinuouslyAction</sender>
+        <sender>dataTimeConstraintsTeachersMaxHoursContinuouslyAction</sender>
         <signal>activated()</signal>
         <receiver>FetMainForm_template</receiver>
-        <slot>dataTimeConstraintsTeachersNoMoreThanXHoursContinuously()</slot>
+        <slot>dataTimeConstraintsTeachersMaxHoursContinuously()</slot>
     </connection>
     <connection>
-        <sender>dataTimeConstraintsTeachersNoMoreThanXHoursDailyAction</sender>
+        <sender>dataTimeConstraintsTeachersMaxHoursDailyAction</sender>
         <signal>activated()</signal>
         <receiver>FetMainForm_template</receiver>
-        <slot>dataTimeConstraintsTeachersNoMoreThanXHoursDaily()</slot>
+        <slot>dataTimeConstraintsTeachersMaxHoursDaily()</slot>
     </connection>
     <connection>
-        <sender>dataTimeConstraintsTeachersSubgroupsNoMoreThanXHoursDailyAction</sender>
+        <sender>dataTimeConstraintsTeachersSubgroupsMaxHoursDailyAction</sender>
         <signal>activated()</signal>
         <receiver>FetMainForm_template</receiver>
-        <slot>dataTimeConstraintsTeachersSubgroupsNoMoreThanXHoursDaily()</slot>
+        <slot>dataTimeConstraintsTeachersSubgroupsMaxHoursDaily()</slot>
     </connection>
     <connection>
         <sender>dataTimeConstraintsActivityPreferredTimeAction</sender>
@@ -1482,6 +1656,114 @@
         <receiver>FetMainForm_template</receiver>
         <slot>languageCatalan()</slot>
     </connection>
+    <connection>
+        <sender>languageMalayAction</sender>
+        <signal>activated()</signal>
+        <receiver>FetMainForm_template</receiver>
+        <slot>languageMalay()</slot>
+    </connection>
+    <connection>
+        <sender>dataSpaceConstraintsSubjectPreferredRoomAction</sender>
+        <signal>activated()</signal>
+        <receiver>FetMainForm_template</receiver>
+        <slot>dataSpaceConstraintsSubjectPreferredRoom()</slot>
+    </connection>
+    <connection>
+        <sender>dataSpaceConstraintsSubjectSubjectTagPreferredRoomAction</sender>
+        <signal>activated()</signal>
+        <receiver>FetMainForm_template</receiver>
+        <slot>dataSpaceConstraintsSubjectSubjectTagPreferredRoom()</slot>
+    </connection>
+    <connection>
+        <sender>dataSpaceConstraintsSubjectSubjectTagPreferredRoomsAction</sender>
+        <signal>activated()</signal>
+        <receiver>FetMainForm_template</receiver>
+        <slot>dataSpaceConstraintsSubjectSubjectTagPreferredRooms()</slot>
+    </connection>
+    <connection>
+        <sender>dataSpaceConstraintsSubjectPreferredRoomsAction</sender>
+        <signal>activated()</signal>
+        <receiver>FetMainForm_template</receiver>
+        <slot>dataSpaceConstraintsSubjectPreferredRooms()</slot>
+    </connection>
+    <connection>
+        <sender>dataTimeConstraintsTeachersSubjectTagsMaxHoursContinuouslyAction</sender>
+        <signal>activated()</signal>
+        <receiver>FetMainForm_template</receiver>
+        <slot>dataTimeConstraintsTeachersSubjectTagsMaxHoursContinuously()</slot>
+    </connection>
+    <connection>
+        <sender>dataTimeConstraintsTeachersSubjectTagMaxHoursContinuouslyAction</sender>
+        <signal>activated()</signal>
+        <receiver>FetMainForm_template</receiver>
+        <slot>dataTimeConstraintsTeachersSubjectTagMaxHoursContinuously()</slot>
+    </connection>
+    <connection>
+        <sender>languagePolishAction</sender>
+        <signal>activated()</signal>
+        <receiver>FetMainForm_template</receiver>
+        <slot>languagePolish()</slot>
+    </connection>
+    <connection>
+        <sender>dataSpaceConstraintsTeacherSubjectRequireRoomAction</sender>
+        <signal>activated()</signal>
+        <receiver>FetMainForm_template</receiver>
+        <slot>dataSpaceConstraintsTeacherSubjectRequireRoom()</slot>
+    </connection>
+    <connection>
+        <sender>helpTimeConstraintsSubtagsAction</sender>
+        <signal>activated()</signal>
+        <receiver>FetMainForm_template</receiver>
+        <slot>helpTimeConstraintsSubtags()</slot>
+    </connection>
+    <connection>
+        <sender>helpTimeConstraintsAction</sender>
+        <signal>activated()</signal>
+        <receiver>FetMainForm_template</receiver>
+        <slot>helpTimeConstraints()</slot>
+    </connection>
+    <connection>
+        <sender>dataTimeConstraints2ActivitiesOrderedAction</sender>
+        <signal>activated()</signal>
+        <receiver>FetMainForm_template</receiver>
+        <slot>dataTimeConstraints2ActivitiesOrdered()</slot>
+    </connection>
+    <connection>
+        <sender>dataBuildingsAction</sender>
+        <signal>activated()</signal>
+        <receiver>FetMainForm_template</receiver>
+        <slot>dataBuildings()</slot>
+    </connection>
+    <connection>
+        <sender>dataSpaceConstraintsMaxBuildingsChangesPerDayForTeachersAction</sender>
+        <signal>activated()</signal>
+        <receiver>FetMainForm_template</receiver>
+        <slot>dataSpaceConstraintsMaxBuildingChangesPerDayForTeachers()</slot>
+    </connection>
+    <connection>
+        <sender>dataSpaceConstraintsMaxBuildingChangesPerDayForStudentsAction</sender>
+        <signal>activated()</signal>
+        <receiver>FetMainForm_template</receiver>
+        <slot>dataSpaceConstraintsMaxBuildingChangesPerDayForStudents()</slot>
+    </connection>
+    <connection>
+        <sender>dataSpaceConstraintsMinimizeNumberOfRoomsForTeachersAction</sender>
+        <signal>activated()</signal>
+        <receiver>FetMainForm_template</receiver>
+        <slot>dataSpaceConstraintsMinimizeNumberOfRoomsForTeachers()</slot>
+    </connection>
+    <connection>
+        <sender>dataSpaceConstraintMaxRoomChangesPerDayForTeachersAction</sender>
+        <signal>activated()</signal>
+        <receiver>FetMainForm_template</receiver>
+        <slot>dataSpaceConstraintsMaxRoomChangesPerDayForTeachers()</slot>
+    </connection>
+    <connection>
+        <sender>dataSpaceConstraintsMaxRoomChangesPerDayForStudentsAction</sender>
+        <signal>activated()</signal>
+        <receiver>FetMainForm_template</receiver>
+        <slot>dataSpaceConstraintsMaxRoomChangesPerDayForStudents()</slot>
+    </connection>
 </connections>
 <slots>
     <slot>timetableExport()</slot>
@@ -1527,9 +1809,9 @@
     <slot>dataTimeConstraintsStudentsSetNotAvailable()</slot>
     <slot>dataTimeConstraintsBreak()</slot>
     <slot>dataTimeConstraintsTeacherMaxDaysPerWeek()</slot>
-    <slot>dataTimeConstraintsTeachersNoMoreThanXHoursContinuously()</slot>
-    <slot>dataTimeConstraintsTeachersNoMoreThanXHoursDaily()</slot>
-    <slot>dataTimeConstraintsTeachersSubgroupsNoMoreThanXHoursDaily()</slot>
+    <slot>dataTimeConstraintsTeachersMaxHoursContinuously()</slot>
+    <slot>dataTimeConstraintsTeachersMaxHoursDaily()</slot>
+    <slot>dataTimeConstraintsTeachersSubgroupsMaxHoursDaily()</slot>
     <slot>dataTimeConstraintsActivityPreferredTime()</slot>
     <slot>dataTimeConstraintsStudentsSetNoGaps()</slot>
     <slot>dataTimeConstraintsStudentsNoGaps()</slot>
@@ -1563,6 +1845,25 @@
     <slot>dataSpaceConstraintsActivitiesSameRoom()</slot>
     <slot>dataSpaceConstraintsActivityPreferredRooms()</slot>
     <slot>languageCatalan()</slot>
+    <slot>languageMalay()</slot>
+    <slot>dataSpaceConstraintsSubjectPreferredRoom()</slot>
+    <slot>subjectSubjectTagPreferredRoom()</slot>
+    <slot>dataSpaceConstraintsSubjectSubjectTagPreferredRoom()</slot>
+    <slot>dataSpaceConstraintsSubjectPreferredRooms()</slot>
+    <slot>dataSpaceConstraintsSubjectSubjectTagPreferredRooms()</slot>
+    <slot>dataTimeConstraintsTeachersSubjectTagsMaxHoursContinuously()</slot>
+    <slot>dataTimeConstraintsTeachersSubjectTagMaxHoursContinuously()</slot>
+    <slot>languagePolish()</slot>
+    <slot>dataSpaceConstraintsTeacherSubjectRequireRoom()</slot>
+    <slot>helpTimeConstraints()</slot>
+    <slot>helpTimeConstraintsSubtags()</slot>
+    <slot>dataTimeConstraints2ActivitiesOrdered()</slot>
+    <slot>dataBuildings()</slot>
+    <slot>dataSpaceConstraintsMaxBuildingChangesPerDayForTeachers()</slot>
+    <slot>dataSpaceConstraintsMaxBuildingChangesPerDayForStudents()</slot>
+    <slot>dataSpaceConstraintsMinimizeNumberOfRoomsForTeachers()</slot>
+    <slot>dataSpaceConstraintsMaxRoomChangesPerDayForTeachers()</slot>
+    <slot>dataSpaceConstraintsMaxRoomChangesPerDayForStudents()</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

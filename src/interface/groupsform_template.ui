@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>570</width>
-            <height>431</height>
+            <width>566</width>
+            <height>494</height>
         </rect>
     </property>
     <property name="caption">
@@ -69,14 +69,6 @@
                 <string>Group</string>
             </property>
         </widget>
-        <widget class="QLabel" row="0" column="2">
-            <property name="name">
-                <cstring>groupTextLabel</cstring>
-            </property>
-            <property name="text">
-                <string>Details</string>
-            </property>
-        </widget>
         <widget class="QPushButton" row="2" column="0">
             <property name="name">
                 <cstring>addGroupPushButton</cstring>
@@ -101,7 +93,15 @@
                 <string>Modify current</string>
             </property>
         </widget>
-        <widget class="QPushButton" row="4" column="0" rowspan="1" colspan="3">
+        <widget class="QPushButton" row="3" column="0" rowspan="1" colspan="3">
+            <property name="name">
+                <cstring>sortGroupsPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Sort current groups alphabetically</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="6" column="0" rowspan="1" colspan="3">
             <property name="name">
                 <cstring>closePushButton</cstring>
             </property>
@@ -109,12 +109,28 @@
                 <string>Close</string>
             </property>
         </widget>
-        <widget class="QPushButton" row="3" column="0" rowspan="1" colspan="3">
+        <widget class="QPushButton" row="4" column="0" rowspan="1" colspan="3">
             <property name="name">
-                <cstring>sortGroupsPushButton</cstring>
+                <cstring>activateStudentsPushButton</cstring>
             </property>
             <property name="text">
-                <string>Sort current groups alphabetically</string>
+                <string>Activate all activities for selected students group</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="5" column="0" rowspan="1" colspan="3">
+            <property name="name">
+                <cstring>deactivateStudentsPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>De-activate all activities for selected students group</string>
+            </property>
+        </widget>
+        <widget class="QLabel" row="0" column="2">
+            <property name="name">
+                <cstring>groupTextLabel</cstring>
+            </property>
+            <property name="text">
+                <string>Details</string>
             </property>
         </widget>
     </grid>
@@ -162,6 +178,18 @@
         <receiver>GroupsForm_template</receiver>
         <slot>sortGroups()</slot>
     </connection>
+    <connection>
+        <sender>activateStudentsPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>GroupsForm_template</receiver>
+        <slot>activateStudents()</slot>
+    </connection>
+    <connection>
+        <sender>deactivateStudentsPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>GroupsForm_template</receiver>
+        <slot>deactivateStudents()</slot>
+    </connection>
 </connections>
 <slots>
     <slot>addGroup()</slot>
@@ -170,6 +198,8 @@
     <slot>groupChanged(const QString&amp;)</slot>
     <slot>modifyGroup()</slot>
     <slot>sortGroups()</slot>
+    <slot>activateStudents()</slot>
+    <slot>deactivateStudents()</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

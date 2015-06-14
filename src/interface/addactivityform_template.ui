@@ -19,82 +19,48 @@
         <property name="name">
             <cstring>unnamed</cstring>
         </property>
-        <widget class="QLabel" row="0" column="0">
+        <widget class="QCheckBox" row="12" column="0" rowspan="1" colspan="4">
             <property name="name">
-                <cstring>teachers1TextLabel</cstring>
+                <cstring>yearsCheckBox</cstring>
             </property>
             <property name="text">
-                <string>Teacher (1)</string>
+                <string>Show years</string>
+            </property>
+            <property name="checked">
+                <bool>true</bool>
             </property>
         </widget>
-        <widget class="QComboBox" row="1" column="0">
+        <widget class="QCheckBox" row="13" column="0" rowspan="1" colspan="4">
             <property name="name">
-                <cstring>teachers1ComboBox</cstring>
-            </property>
-            <property name="editable">
-                <bool>false</bool>
-            </property>
-            <property name="insertionPolicy">
-                <enum>NoInsertion</enum>
-            </property>
-            <property name="autoCompletion">
-                <bool>false</bool>
-            </property>
-            <property name="duplicatesEnabled">
-                <bool>false</bool>
-            </property>
-        </widget>
-        <widget class="QComboBox" row="3" column="0">
-            <property name="name">
-                <cstring>teachers2ComboBox</cstring>
-            </property>
-            <property name="editable">
-                <bool>false</bool>
-            </property>
-            <property name="insertionPolicy">
-                <enum>NoInsertion</enum>
-            </property>
-            <property name="autoCompletion">
-                <bool>false</bool>
-            </property>
-            <property name="duplicatesEnabled">
-                <bool>false</bool>
-            </property>
-        </widget>
-        <widget class="QLabel" row="2" column="0">
-            <property name="name">
-                <cstring>teachers2TextLabel</cstring>
+                <cstring>groupsCheckBox</cstring>
             </property>
             <property name="text">
-                <string>Teacher (2)</string>
+                <string>Show groups</string>
+            </property>
+            <property name="checked">
+                <bool>true</bool>
             </property>
         </widget>
-        <widget class="QLabel" row="4" column="0">
+        <widget class="QCheckBox" row="14" column="0" rowspan="1" colspan="4">
             <property name="name">
-                <cstring>teachers3TextLabel</cstring>
+                <cstring>subgroupsCheckBox</cstring>
             </property>
             <property name="text">
-                <string>Teacher (3)</string>
+                <string>Show subgroups</string>
+            </property>
+            <property name="checked">
+                <bool>true</bool>
             </property>
         </widget>
-        <widget class="QComboBox" row="5" column="0">
+        <widget class="QTextEdit" row="1" column="4" rowspan="3" colspan="3">
             <property name="name">
-                <cstring>teachers3ComboBox</cstring>
+                <cstring>currentActivityTextEdit</cstring>
             </property>
-            <property name="editable">
-                <bool>false</bool>
-            </property>
-            <property name="insertionPolicy">
-                <enum>NoInsertion</enum>
-            </property>
-            <property name="autoCompletion">
-                <bool>false</bool>
-            </property>
-            <property name="duplicatesEnabled">
-                <bool>false</bool>
+            <property name="readOnly">
+                <bool>true</bool>
             </property>
         </widget>
-        <widget class="QLabel" row="0" column="1">
+        <widget class="QLabel" row="0" column="4" rowspan="1" colspan="2">
             <property name="name">
                 <cstring>currentActivityTextLabel</cstring>
             </property>
@@ -108,40 +74,7 @@
                 <string>Current activity</string>
             </property>
         </widget>
-        <widget class="QTextEdit" row="1" column="1" rowspan="7" colspan="2">
-            <property name="name">
-                <cstring>currentActivityTextEdit</cstring>
-            </property>
-            <property name="readOnly">
-                <bool>true</bool>
-            </property>
-        </widget>
-        <widget class="QLabel" row="6" column="0">
-            <property name="name">
-                <cstring>subjectsTextLabel</cstring>
-            </property>
-            <property name="text">
-                <string>Subject</string>
-            </property>
-        </widget>
-        <widget class="QComboBox" row="7" column="0">
-            <property name="name">
-                <cstring>subjectsComboBox</cstring>
-            </property>
-            <property name="editable">
-                <bool>false</bool>
-            </property>
-            <property name="insertionPolicy">
-                <enum>NoInsertion</enum>
-            </property>
-            <property name="autoCompletion">
-                <bool>false</bool>
-            </property>
-            <property name="duplicatesEnabled">
-                <bool>false</bool>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="20" column="2">
+        <widget class="QPushButton" row="14" column="5" rowspan="1" colspan="2">
             <property name="name">
                 <cstring>closePushButton</cstring>
             </property>
@@ -149,7 +82,7 @@
                 <string>Close</string>
             </property>
         </widget>
-        <widget class="QPushButton" row="20" column="1">
+        <widget class="QPushButton" row="14" column="4">
             <property name="name">
                 <cstring>addActivityPushButton</cstring>
             </property>
@@ -157,7 +90,91 @@
                 <string>Add current activity</string>
             </property>
         </widget>
-        <widget class="QGroupBox" row="8" column="1" rowspan="3" colspan="2">
+        <widget class="QLabel" row="0" column="0" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>allTeachersTextLabel</cstring>
+            </property>
+            <property name="text">
+                <string>All teachers</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="1" column="1" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>addTeacherPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Add</string>
+            </property>
+        </widget>
+        <widget class="QListBox" row="1" column="0" rowspan="3" colspan="1">
+            <item>
+                <property name="text">
+                    <string>New Item</string>
+                </property>
+            </item>
+            <property name="name">
+                <cstring>allTeachersListBox</cstring>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="9" column="1" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>addStudentsPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Add</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="10" column="1" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>removeStudentsPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Remove</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="11" column="1" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>clearStudentsPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Clear</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="3" column="1" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>clearTeacherPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Clear</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="2" column="1" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>removeTeacherPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Remove</string>
+            </property>
+        </widget>
+        <widget class="QListBox" row="1" column="3" rowspan="3" colspan="1">
+            <item>
+                <property name="text">
+                    <string>New Item</string>
+                </property>
+            </item>
+            <property name="name">
+                <cstring>selectedTeachersListBox</cstring>
+            </property>
+        </widget>
+        <widget class="QLabel" row="0" column="2" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>selectedTeachersTextLabel</cstring>
+            </property>
+            <property name="text">
+                <string>Selected teachers</string>
+            </property>
+        </widget>
+        <widget class="QGroupBox" row="4" column="4" rowspan="3" colspan="3">
             <property name="name">
                 <cstring>splitGroupBox</cstring>
             </property>
@@ -184,7 +201,7 @@
                 </property>
             </widget>
         </widget>
-        <widget class="QLabel" row="11" column="1" rowspan="2" colspan="1">
+        <widget class="QLabel" row="7" column="4" rowspan="2" colspan="2">
             <property name="name">
                 <cstring>minDayDistanceTextLabel</cstring>
             </property>
@@ -196,7 +213,7 @@
 days between each pair of subactivities</string>
             </property>
         </widget>
-        <widget class="QSpinBox" row="11" column="2" rowspan="2" colspan="1">
+        <widget class="QSpinBox" row="8" column="6">
             <property name="name">
                 <cstring>minDayDistanceSpinBox</cstring>
             </property>
@@ -204,7 +221,7 @@ days between each pair of subactivities</string>
                 <bool>false</bool>
             </property>
         </widget>
-        <widget class="QTabWidget" row="13" column="1" rowspan="7" colspan="2">
+        <widget class="QTabWidget" row="9" column="4" rowspan="5" colspan="3">
             <property name="name">
                 <cstring>subactivitiesTabWidget</cstring>
             </property>
@@ -215,146 +232,101 @@ days between each pair of subactivities</string>
                 <attribute name="title">
                     <string>1</string>
                 </attribute>
-                <widget class="QSpinBox">
+                <grid>
                     <property name="name">
-                        <cstring>duration1SpinBox</cstring>
+                        <cstring>unnamed</cstring>
                     </property>
-                    <property name="enabled">
-                        <bool>true</bool>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>110</x>
-                            <y>10</y>
-                            <width>50</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="minValue">
-                        <number>1</number>
-                    </property>
-                </widget>
-                <widget class="QComboBox">
-                    <property name="name">
-                        <cstring>preferredDay1ComboBox</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>150</x>
-                            <y>50</y>
-                            <width>170</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="duplicatesEnabled">
-                        <bool>false</bool>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>preferredHour1TextLabel</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>10</x>
-                            <y>90</y>
-                            <width>130</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Preferred hour</string>
-                    </property>
-                </widget>
-                <widget class="QComboBox">
-                    <property name="name">
-                        <cstring>preferredHour1ComboBox</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>150</x>
-                            <y>90</y>
-                            <width>170</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="duplicatesEnabled">
-                        <bool>false</bool>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>parity1TextLabel</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>true</bool>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>10</x>
-                            <y>130</y>
-                            <width>90</width>
-                            <height>24</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Parity</string>
-                    </property>
-                </widget>
-                <widget class="QCheckBox">
-                    <property name="name">
-                        <cstring>parity1CheckBox</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>true</bool>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>110</x>
-                            <y>130</y>
-                            <width>310</width>
-                            <height>24</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Bi-weekly (once at two weeks)</string>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>duration1TextLabel</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>true</bool>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>10</x>
-                            <y>10</y>
-                            <width>90</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Duration</string>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>preferredDay1TextLabel</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>10</x>
-                            <y>50</y>
-                            <width>130</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Preferred day</string>
-                    </property>
-                </widget>
+                    <widget class="QSpinBox" row="0" column="1" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>duration1SpinBox</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="minValue">
+                            <number>1</number>
+                        </property>
+                    </widget>
+                    <widget class="QComboBox" row="2" column="2">
+                        <property name="name">
+                            <cstring>preferredHour1ComboBox</cstring>
+                        </property>
+                        <property name="duplicatesEnabled">
+                            <bool>false</bool>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" row="0" column="0">
+                        <property name="name">
+                            <cstring>duration1TextLabel</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="text">
+                            <string>Duration</string>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" row="1" column="0" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>preferredDay1TextLabel</cstring>
+                        </property>
+                        <property name="text">
+                            <string>Preferred day</string>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" row="2" column="0" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>preferredHour1TextLabel</cstring>
+                        </property>
+                        <property name="text">
+                            <string>Preferred hour</string>
+                        </property>
+                    </widget>
+                    <widget class="QComboBox" row="1" column="2">
+                        <property name="name">
+                            <cstring>preferredDay1ComboBox</cstring>
+                        </property>
+                        <property name="duplicatesEnabled">
+                            <bool>false</bool>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" row="3" column="0">
+                        <property name="name">
+                            <cstring>parity1TextLabel</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="text">
+                            <string>Parity</string>
+                        </property>
+                    </widget>
+                    <widget class="QCheckBox" row="3" column="1" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>parity1CheckBox</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="text">
+                            <string>Bi-weekly (once at two weeks)</string>
+                        </property>
+                    </widget>
+                    <widget class="QCheckBox" row="4" column="1" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>active1CheckBox</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="text">
+                            <string>Active</string>
+                        </property>
+                        <property name="checked">
+                            <bool>true</bool>
+                        </property>
+                    </widget>
+                </grid>
             </widget>
             <widget class="QWidget">
                 <property name="name">
@@ -363,146 +335,101 @@ days between each pair of subactivities</string>
                 <attribute name="title">
                     <string>2</string>
                 </attribute>
-                <widget class="QLabel">
+                <grid>
                     <property name="name">
-                        <cstring>preferredDay1TextLabel_2</cstring>
+                        <cstring>unnamed</cstring>
                     </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>10</x>
-                            <y>50</y>
-                            <width>130</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Preferred day</string>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>parity1TextLabel_2</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>true</bool>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>10</x>
-                            <y>130</y>
-                            <width>90</width>
-                            <height>24</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Parity</string>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>preferredHour1TextLabel_2</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>10</x>
-                            <y>90</y>
-                            <width>130</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Preferred hour</string>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>duration1TextLabel_2</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>true</bool>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>10</x>
-                            <y>10</y>
-                            <width>90</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Duration</string>
-                    </property>
-                </widget>
-                <widget class="QSpinBox">
-                    <property name="name">
-                        <cstring>duration2SpinBox</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>true</bool>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>110</x>
-                            <y>10</y>
-                            <width>50</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="minValue">
-                        <number>1</number>
-                    </property>
-                </widget>
-                <widget class="QComboBox">
-                    <property name="name">
-                        <cstring>preferredDay2ComboBox</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>150</x>
-                            <y>50</y>
-                            <width>170</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="duplicatesEnabled">
-                        <bool>false</bool>
-                    </property>
-                </widget>
-                <widget class="QComboBox">
-                    <property name="name">
-                        <cstring>preferredHour2ComboBox</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>150</x>
-                            <y>90</y>
-                            <width>170</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="duplicatesEnabled">
-                        <bool>false</bool>
-                    </property>
-                </widget>
-                <widget class="QCheckBox">
-                    <property name="name">
-                        <cstring>parity2CheckBox</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>true</bool>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>110</x>
-                            <y>130</y>
-                            <width>100</width>
-                            <height>24</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Bi-weekly</string>
-                    </property>
-                </widget>
+                    <widget class="QLabel" row="1" column="0" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>preferredDay1TextLabel_2</cstring>
+                        </property>
+                        <property name="text">
+                            <string>Preferred day</string>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" row="3" column="0">
+                        <property name="name">
+                            <cstring>parity1TextLabel_2</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="text">
+                            <string>Parity</string>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" row="2" column="0" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>preferredHour1TextLabel_2</cstring>
+                        </property>
+                        <property name="text">
+                            <string>Preferred hour</string>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" row="0" column="0">
+                        <property name="name">
+                            <cstring>duration1TextLabel_2</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="text">
+                            <string>Duration</string>
+                        </property>
+                    </widget>
+                    <widget class="QSpinBox" row="0" column="1" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>duration2SpinBox</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="minValue">
+                            <number>1</number>
+                        </property>
+                    </widget>
+                    <widget class="QComboBox" row="1" column="2">
+                        <property name="name">
+                            <cstring>preferredDay2ComboBox</cstring>
+                        </property>
+                        <property name="duplicatesEnabled">
+                            <bool>false</bool>
+                        </property>
+                    </widget>
+                    <widget class="QComboBox" row="2" column="2">
+                        <property name="name">
+                            <cstring>preferredHour2ComboBox</cstring>
+                        </property>
+                        <property name="duplicatesEnabled">
+                            <bool>false</bool>
+                        </property>
+                    </widget>
+                    <widget class="QCheckBox" row="3" column="1" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>parity2CheckBox</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="text">
+                            <string>Bi-weekly</string>
+                        </property>
+                    </widget>
+                    <widget class="QCheckBox" row="4" column="1" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>active2CheckBox</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="text">
+                            <string>Active</string>
+                        </property>
+                        <property name="checked">
+                            <bool>true</bool>
+                        </property>
+                    </widget>
+                </grid>
             </widget>
             <widget class="QWidget">
                 <property name="name">
@@ -511,146 +438,101 @@ days between each pair of subactivities</string>
                 <attribute name="title">
                     <string>3</string>
                 </attribute>
-                <widget class="QLabel">
+                <grid>
                     <property name="name">
-                        <cstring>preferredHour1TextLabel_3</cstring>
+                        <cstring>unnamed</cstring>
                     </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>10</x>
-                            <y>90</y>
-                            <width>130</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Preferred hour</string>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>preferredDay1TextLabel_3</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>10</x>
-                            <y>50</y>
-                            <width>130</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Preferred day</string>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>duration1TextLabel_3</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>true</bool>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>10</x>
-                            <y>10</y>
-                            <width>90</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Duration</string>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>parity1TextLabel_3</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>true</bool>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>10</x>
-                            <y>130</y>
-                            <width>90</width>
-                            <height>24</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Parity</string>
-                    </property>
-                </widget>
-                <widget class="QSpinBox">
-                    <property name="name">
-                        <cstring>duration3SpinBox</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>true</bool>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>110</x>
-                            <y>10</y>
-                            <width>50</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="minValue">
-                        <number>1</number>
-                    </property>
-                </widget>
-                <widget class="QComboBox">
-                    <property name="name">
-                        <cstring>preferredDay3ComboBox</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>150</x>
-                            <y>50</y>
-                            <width>170</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="duplicatesEnabled">
-                        <bool>false</bool>
-                    </property>
-                </widget>
-                <widget class="QComboBox">
-                    <property name="name">
-                        <cstring>preferredHour3ComboBox</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>150</x>
-                            <y>90</y>
-                            <width>170</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="duplicatesEnabled">
-                        <bool>false</bool>
-                    </property>
-                </widget>
-                <widget class="QCheckBox">
-                    <property name="name">
-                        <cstring>parity3CheckBox</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>true</bool>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>110</x>
-                            <y>130</y>
-                            <width>100</width>
-                            <height>24</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Bi-weekly</string>
-                    </property>
-                </widget>
+                    <widget class="QLabel" row="2" column="0" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>preferredHour1TextLabel_3</cstring>
+                        </property>
+                        <property name="text">
+                            <string>Preferred hour</string>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" row="1" column="0" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>preferredDay1TextLabel_3</cstring>
+                        </property>
+                        <property name="text">
+                            <string>Preferred day</string>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" row="0" column="0">
+                        <property name="name">
+                            <cstring>duration1TextLabel_3</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="text">
+                            <string>Duration</string>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" row="3" column="0">
+                        <property name="name">
+                            <cstring>parity1TextLabel_3</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="text">
+                            <string>Parity</string>
+                        </property>
+                    </widget>
+                    <widget class="QSpinBox" row="0" column="1" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>duration3SpinBox</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="minValue">
+                            <number>1</number>
+                        </property>
+                    </widget>
+                    <widget class="QComboBox" row="1" column="2">
+                        <property name="name">
+                            <cstring>preferredDay3ComboBox</cstring>
+                        </property>
+                        <property name="duplicatesEnabled">
+                            <bool>false</bool>
+                        </property>
+                    </widget>
+                    <widget class="QComboBox" row="2" column="2">
+                        <property name="name">
+                            <cstring>preferredHour3ComboBox</cstring>
+                        </property>
+                        <property name="duplicatesEnabled">
+                            <bool>false</bool>
+                        </property>
+                    </widget>
+                    <widget class="QCheckBox" row="3" column="1" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>parity3CheckBox</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="text">
+                            <string>Bi-weekly</string>
+                        </property>
+                    </widget>
+                    <widget class="QCheckBox" row="4" column="1" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>active3CheckBox</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="text">
+                            <string>Active</string>
+                        </property>
+                        <property name="checked">
+                            <bool>true</bool>
+                        </property>
+                    </widget>
+                </grid>
             </widget>
             <widget class="QWidget">
                 <property name="name">
@@ -659,146 +541,101 @@ days between each pair of subactivities</string>
                 <attribute name="title">
                     <string>4</string>
                 </attribute>
-                <widget class="QLabel">
+                <grid>
                     <property name="name">
-                        <cstring>parity1TextLabel_4</cstring>
+                        <cstring>unnamed</cstring>
                     </property>
-                    <property name="enabled">
-                        <bool>true</bool>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>10</x>
-                            <y>130</y>
-                            <width>90</width>
-                            <height>24</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Parity</string>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>preferredHour1TextLabel_4</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>10</x>
-                            <y>90</y>
-                            <width>130</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Preferred hour</string>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>duration1TextLabel_4</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>true</bool>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>10</x>
-                            <y>10</y>
-                            <width>90</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Duration</string>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>preferredDay1TextLabel_4</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>10</x>
-                            <y>50</y>
-                            <width>130</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Preferred day</string>
-                    </property>
-                </widget>
-                <widget class="QSpinBox">
-                    <property name="name">
-                        <cstring>duration4SpinBox</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>true</bool>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>110</x>
-                            <y>10</y>
-                            <width>50</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="minValue">
-                        <number>1</number>
-                    </property>
-                </widget>
-                <widget class="QComboBox">
-                    <property name="name">
-                        <cstring>preferredDay4ComboBox</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>150</x>
-                            <y>50</y>
-                            <width>170</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="duplicatesEnabled">
-                        <bool>false</bool>
-                    </property>
-                </widget>
-                <widget class="QComboBox">
-                    <property name="name">
-                        <cstring>preferredHour4ComboBox</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>150</x>
-                            <y>90</y>
-                            <width>170</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="duplicatesEnabled">
-                        <bool>false</bool>
-                    </property>
-                </widget>
-                <widget class="QCheckBox">
-                    <property name="name">
-                        <cstring>parity4CheckBox</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>true</bool>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>110</x>
-                            <y>130</y>
-                            <width>100</width>
-                            <height>24</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Bi-weekly</string>
-                    </property>
-                </widget>
+                    <widget class="QLabel" row="3" column="0">
+                        <property name="name">
+                            <cstring>parity1TextLabel_4</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="text">
+                            <string>Parity</string>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" row="2" column="0" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>preferredHour1TextLabel_4</cstring>
+                        </property>
+                        <property name="text">
+                            <string>Preferred hour</string>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" row="0" column="0">
+                        <property name="name">
+                            <cstring>duration1TextLabel_4</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="text">
+                            <string>Duration</string>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" row="1" column="0" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>preferredDay1TextLabel_4</cstring>
+                        </property>
+                        <property name="text">
+                            <string>Preferred day</string>
+                        </property>
+                    </widget>
+                    <widget class="QSpinBox" row="0" column="1" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>duration4SpinBox</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="minValue">
+                            <number>1</number>
+                        </property>
+                    </widget>
+                    <widget class="QComboBox" row="1" column="2">
+                        <property name="name">
+                            <cstring>preferredDay4ComboBox</cstring>
+                        </property>
+                        <property name="duplicatesEnabled">
+                            <bool>false</bool>
+                        </property>
+                    </widget>
+                    <widget class="QComboBox" row="2" column="2">
+                        <property name="name">
+                            <cstring>preferredHour4ComboBox</cstring>
+                        </property>
+                        <property name="duplicatesEnabled">
+                            <bool>false</bool>
+                        </property>
+                    </widget>
+                    <widget class="QCheckBox" row="3" column="1" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>parity4CheckBox</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="text">
+                            <string>Bi-weekly</string>
+                        </property>
+                    </widget>
+                    <widget class="QCheckBox" row="4" column="1" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>active4CheckBox</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="text">
+                            <string>Active</string>
+                        </property>
+                        <property name="checked">
+                            <bool>true</bool>
+                        </property>
+                    </widget>
+                </grid>
             </widget>
             <widget class="QWidget">
                 <property name="name">
@@ -807,146 +644,101 @@ days between each pair of subactivities</string>
                 <attribute name="title">
                     <string>5</string>
                 </attribute>
-                <widget class="QLabel">
+                <grid>
                     <property name="name">
-                        <cstring>preferredHour1TextLabel_5</cstring>
+                        <cstring>unnamed</cstring>
                     </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>10</x>
-                            <y>90</y>
-                            <width>130</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Preferred hour</string>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>preferredDay1TextLabel_5</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>10</x>
-                            <y>50</y>
-                            <width>130</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Preferred day</string>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>duration1TextLabel_5</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>true</bool>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>10</x>
-                            <y>10</y>
-                            <width>90</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Duration</string>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>parity1TextLabel_5</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>true</bool>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>10</x>
-                            <y>130</y>
-                            <width>90</width>
-                            <height>24</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Parity</string>
-                    </property>
-                </widget>
-                <widget class="QComboBox">
-                    <property name="name">
-                        <cstring>preferredDay5ComboBox</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>150</x>
-                            <y>50</y>
-                            <width>170</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="duplicatesEnabled">
-                        <bool>false</bool>
-                    </property>
-                </widget>
-                <widget class="QSpinBox">
-                    <property name="name">
-                        <cstring>duration5SpinBox</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>true</bool>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>110</x>
-                            <y>10</y>
-                            <width>50</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="minValue">
-                        <number>1</number>
-                    </property>
-                </widget>
-                <widget class="QComboBox">
-                    <property name="name">
-                        <cstring>preferredHour5ComboBox</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>150</x>
-                            <y>90</y>
-                            <width>170</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="duplicatesEnabled">
-                        <bool>false</bool>
-                    </property>
-                </widget>
-                <widget class="QCheckBox">
-                    <property name="name">
-                        <cstring>parity5CheckBox</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>true</bool>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>110</x>
-                            <y>130</y>
-                            <width>100</width>
-                            <height>24</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Bi-weekly</string>
-                    </property>
-                </widget>
+                    <widget class="QLabel" row="2" column="0" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>preferredHour1TextLabel_5</cstring>
+                        </property>
+                        <property name="text">
+                            <string>Preferred hour</string>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" row="1" column="0" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>preferredDay1TextLabel_5</cstring>
+                        </property>
+                        <property name="text">
+                            <string>Preferred day</string>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" row="0" column="0">
+                        <property name="name">
+                            <cstring>duration1TextLabel_5</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="text">
+                            <string>Duration</string>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" row="3" column="0">
+                        <property name="name">
+                            <cstring>parity1TextLabel_5</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="text">
+                            <string>Parity</string>
+                        </property>
+                    </widget>
+                    <widget class="QComboBox" row="1" column="2">
+                        <property name="name">
+                            <cstring>preferredDay5ComboBox</cstring>
+                        </property>
+                        <property name="duplicatesEnabled">
+                            <bool>false</bool>
+                        </property>
+                    </widget>
+                    <widget class="QSpinBox" row="0" column="1" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>duration5SpinBox</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="minValue">
+                            <number>1</number>
+                        </property>
+                    </widget>
+                    <widget class="QComboBox" row="2" column="2">
+                        <property name="name">
+                            <cstring>preferredHour5ComboBox</cstring>
+                        </property>
+                        <property name="duplicatesEnabled">
+                            <bool>false</bool>
+                        </property>
+                    </widget>
+                    <widget class="QCheckBox" row="3" column="1" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>parity5CheckBox</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="text">
+                            <string>Bi-weekly</string>
+                        </property>
+                    </widget>
+                    <widget class="QCheckBox" row="4" column="1" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>active5CheckBox</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="text">
+                            <string>Active</string>
+                        </property>
+                        <property name="checked">
+                            <bool>true</bool>
+                        </property>
+                    </widget>
+                </grid>
             </widget>
             <widget class="QWidget">
                 <property name="name">
@@ -955,146 +747,101 @@ days between each pair of subactivities</string>
                 <attribute name="title">
                     <string>6</string>
                 </attribute>
-                <widget class="QLabel">
+                <grid>
                     <property name="name">
-                        <cstring>preferredDay1TextLabel_6</cstring>
+                        <cstring>unnamed</cstring>
                     </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>10</x>
-                            <y>50</y>
-                            <width>130</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Preferred day</string>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>preferredHour1TextLabel_6</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>10</x>
-                            <y>90</y>
-                            <width>130</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Preferred hour</string>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>duration1TextLabel_6</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>true</bool>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>10</x>
-                            <y>10</y>
-                            <width>90</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Duration</string>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>parity1TextLabel_6</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>true</bool>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>10</x>
-                            <y>130</y>
-                            <width>90</width>
-                            <height>24</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Parity</string>
-                    </property>
-                </widget>
-                <widget class="QSpinBox">
-                    <property name="name">
-                        <cstring>duration6SpinBox</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>true</bool>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>110</x>
-                            <y>10</y>
-                            <width>50</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="minValue">
-                        <number>1</number>
-                    </property>
-                </widget>
-                <widget class="QComboBox">
-                    <property name="name">
-                        <cstring>preferredDay6ComboBox</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>150</x>
-                            <y>50</y>
-                            <width>170</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="duplicatesEnabled">
-                        <bool>false</bool>
-                    </property>
-                </widget>
-                <widget class="QComboBox">
-                    <property name="name">
-                        <cstring>preferredHour6ComboBox</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>150</x>
-                            <y>90</y>
-                            <width>170</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="duplicatesEnabled">
-                        <bool>false</bool>
-                    </property>
-                </widget>
-                <widget class="QCheckBox">
-                    <property name="name">
-                        <cstring>parity6CheckBox</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>true</bool>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>110</x>
-                            <y>130</y>
-                            <width>100</width>
-                            <height>24</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Bi-weekly</string>
-                    </property>
-                </widget>
+                    <widget class="QLabel" row="1" column="0" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>preferredDay1TextLabel_6</cstring>
+                        </property>
+                        <property name="text">
+                            <string>Preferred day</string>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" row="2" column="0" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>preferredHour1TextLabel_6</cstring>
+                        </property>
+                        <property name="text">
+                            <string>Preferred hour</string>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" row="0" column="0">
+                        <property name="name">
+                            <cstring>duration1TextLabel_6</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="text">
+                            <string>Duration</string>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" row="3" column="0">
+                        <property name="name">
+                            <cstring>parity1TextLabel_6</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="text">
+                            <string>Parity</string>
+                        </property>
+                    </widget>
+                    <widget class="QSpinBox" row="0" column="1" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>duration6SpinBox</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="minValue">
+                            <number>1</number>
+                        </property>
+                    </widget>
+                    <widget class="QComboBox" row="1" column="2">
+                        <property name="name">
+                            <cstring>preferredDay6ComboBox</cstring>
+                        </property>
+                        <property name="duplicatesEnabled">
+                            <bool>false</bool>
+                        </property>
+                    </widget>
+                    <widget class="QComboBox" row="2" column="2">
+                        <property name="name">
+                            <cstring>preferredHour6ComboBox</cstring>
+                        </property>
+                        <property name="duplicatesEnabled">
+                            <bool>false</bool>
+                        </property>
+                    </widget>
+                    <widget class="QCheckBox" row="3" column="1" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>parity6CheckBox</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="text">
+                            <string>Bi-weekly</string>
+                        </property>
+                    </widget>
+                    <widget class="QCheckBox" row="4" column="1" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>active6CheckBox</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="text">
+                            <string>Active</string>
+                        </property>
+                        <property name="checked">
+                            <bool>true</bool>
+                        </property>
+                    </widget>
+                </grid>
             </widget>
             <widget class="QWidget">
                 <property name="name">
@@ -1103,146 +850,101 @@ days between each pair of subactivities</string>
                 <attribute name="title">
                     <string>7</string>
                 </attribute>
-                <widget class="QLabel">
+                <grid>
                     <property name="name">
-                        <cstring>duration1TextLabel_7</cstring>
+                        <cstring>unnamed</cstring>
                     </property>
-                    <property name="enabled">
-                        <bool>true</bool>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>10</x>
-                            <y>10</y>
-                            <width>90</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Duration</string>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>preferredDay1TextLabel_7</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>10</x>
-                            <y>50</y>
-                            <width>130</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Preferred day</string>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>parity1TextLabel_7</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>true</bool>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>10</x>
-                            <y>130</y>
-                            <width>90</width>
-                            <height>24</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Parity</string>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>preferredHour1TextLabel_7</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>10</x>
-                            <y>90</y>
-                            <width>130</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Preferred hour</string>
-                    </property>
-                </widget>
-                <widget class="QComboBox">
-                    <property name="name">
-                        <cstring>preferredDay7ComboBox</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>150</x>
-                            <y>50</y>
-                            <width>170</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="duplicatesEnabled">
-                        <bool>false</bool>
-                    </property>
-                </widget>
-                <widget class="QSpinBox">
-                    <property name="name">
-                        <cstring>duration7SpinBox</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>true</bool>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>110</x>
-                            <y>10</y>
-                            <width>50</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="minValue">
-                        <number>1</number>
-                    </property>
-                </widget>
-                <widget class="QComboBox">
-                    <property name="name">
-                        <cstring>preferredHour7ComboBox</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>150</x>
-                            <y>90</y>
-                            <width>170</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="duplicatesEnabled">
-                        <bool>false</bool>
-                    </property>
-                </widget>
-                <widget class="QCheckBox">
-                    <property name="name">
-                        <cstring>parity7CheckBox</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>true</bool>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>110</x>
-                            <y>130</y>
-                            <width>100</width>
-                            <height>24</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Bi-weekly</string>
-                    </property>
-                </widget>
+                    <widget class="QLabel" row="0" column="0">
+                        <property name="name">
+                            <cstring>duration1TextLabel_7</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="text">
+                            <string>Duration</string>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" row="1" column="0" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>preferredDay1TextLabel_7</cstring>
+                        </property>
+                        <property name="text">
+                            <string>Preferred day</string>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" row="3" column="0">
+                        <property name="name">
+                            <cstring>parity1TextLabel_7</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="text">
+                            <string>Parity</string>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" row="2" column="0" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>preferredHour1TextLabel_7</cstring>
+                        </property>
+                        <property name="text">
+                            <string>Preferred hour</string>
+                        </property>
+                    </widget>
+                    <widget class="QComboBox" row="1" column="2">
+                        <property name="name">
+                            <cstring>preferredDay7ComboBox</cstring>
+                        </property>
+                        <property name="duplicatesEnabled">
+                            <bool>false</bool>
+                        </property>
+                    </widget>
+                    <widget class="QSpinBox" row="0" column="1" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>duration7SpinBox</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="minValue">
+                            <number>1</number>
+                        </property>
+                    </widget>
+                    <widget class="QComboBox" row="2" column="2">
+                        <property name="name">
+                            <cstring>preferredHour7ComboBox</cstring>
+                        </property>
+                        <property name="duplicatesEnabled">
+                            <bool>false</bool>
+                        </property>
+                    </widget>
+                    <widget class="QCheckBox" row="3" column="1" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>parity7CheckBox</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="text">
+                            <string>Bi-weekly</string>
+                        </property>
+                    </widget>
+                    <widget class="QCheckBox" row="4" column="1" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>active7CheckBox</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="text">
+                            <string>Active</string>
+                        </property>
+                        <property name="checked">
+                            <bool>true</bool>
+                        </property>
+                    </widget>
+                </grid>
             </widget>
             <widget class="QWidget">
                 <property name="name">
@@ -1251,162 +953,114 @@ days between each pair of subactivities</string>
                 <attribute name="title">
                     <string>8</string>
                 </attribute>
-                <widget class="QLabel">
+                <grid>
                     <property name="name">
-                        <cstring>preferredHour1TextLabel_8</cstring>
+                        <cstring>unnamed</cstring>
                     </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>10</x>
-                            <y>90</y>
-                            <width>130</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Preferred hour</string>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>duration1TextLabel_8</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>true</bool>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>10</x>
-                            <y>10</y>
-                            <width>90</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Duration</string>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>parity1TextLabel_8</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>true</bool>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>10</x>
-                            <y>130</y>
-                            <width>90</width>
-                            <height>24</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Parity</string>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>preferredDay1TextLabel_8</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>10</x>
-                            <y>50</y>
-                            <width>130</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Preferred day</string>
-                    </property>
-                </widget>
-                <widget class="QComboBox">
-                    <property name="name">
-                        <cstring>preferredDay8ComboBox</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>150</x>
-                            <y>50</y>
-                            <width>170</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="duplicatesEnabled">
-                        <bool>false</bool>
-                    </property>
-                </widget>
-                <widget class="QSpinBox">
-                    <property name="name">
-                        <cstring>duration8SpinBox</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>true</bool>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>110</x>
-                            <y>10</y>
-                            <width>50</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="minValue">
-                        <number>1</number>
-                    </property>
-                </widget>
-                <widget class="QComboBox">
-                    <property name="name">
-                        <cstring>preferredHour8ComboBox</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>150</x>
-                            <y>90</y>
-                            <width>170</width>
-                            <height>26</height>
-                        </rect>
-                    </property>
-                    <property name="duplicatesEnabled">
-                        <bool>false</bool>
-                    </property>
-                </widget>
-                <widget class="QCheckBox">
-                    <property name="name">
-                        <cstring>parity8CheckBox</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>true</bool>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>110</x>
-                            <y>130</y>
-                            <width>100</width>
-                            <height>24</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Bi-weekly</string>
-                    </property>
-                </widget>
+                    <widget class="QLabel" row="2" column="0" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>preferredHour1TextLabel_8</cstring>
+                        </property>
+                        <property name="text">
+                            <string>Preferred hour</string>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" row="0" column="0">
+                        <property name="name">
+                            <cstring>duration1TextLabel_8</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="text">
+                            <string>Duration</string>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" row="3" column="0">
+                        <property name="name">
+                            <cstring>parity1TextLabel_8</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="text">
+                            <string>Parity</string>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" row="1" column="0" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>preferredDay1TextLabel_8</cstring>
+                        </property>
+                        <property name="text">
+                            <string>Preferred day</string>
+                        </property>
+                    </widget>
+                    <widget class="QComboBox" row="1" column="2">
+                        <property name="name">
+                            <cstring>preferredDay8ComboBox</cstring>
+                        </property>
+                        <property name="duplicatesEnabled">
+                            <bool>false</bool>
+                        </property>
+                    </widget>
+                    <widget class="QSpinBox" row="0" column="1" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>duration8SpinBox</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="minValue">
+                            <number>1</number>
+                        </property>
+                    </widget>
+                    <widget class="QComboBox" row="2" column="2">
+                        <property name="name">
+                            <cstring>preferredHour8ComboBox</cstring>
+                        </property>
+                        <property name="duplicatesEnabled">
+                            <bool>false</bool>
+                        </property>
+                    </widget>
+                    <widget class="QCheckBox" row="3" column="1" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>parity8CheckBox</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="text">
+                            <string>Bi-weekly</string>
+                        </property>
+                    </widget>
+                    <widget class="QCheckBox" row="4" column="1" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>active8CheckBox</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="text">
+                            <string>Active</string>
+                        </property>
+                        <property name="checked">
+                            <bool>true</bool>
+                        </property>
+                    </widget>
+                </grid>
             </widget>
         </widget>
-        <widget class="QCheckBox" row="18" column="0">
+        <widget class="QLabel" row="4" column="0" rowspan="1" colspan="4">
             <property name="name">
-                <cstring>yearsCheckBox</cstring>
+                <cstring>subjectsTextLabel</cstring>
             </property>
             <property name="text">
-                <string>Show years</string>
-            </property>
-            <property name="checked">
-                <bool>true</bool>
+                <string>Subject</string>
             </property>
         </widget>
-        <widget class="QComboBox" row="13" column="0">
+        <widget class="QComboBox" row="5" column="0" rowspan="1" colspan="4">
             <property name="name">
-                <cstring>students2ComboBox</cstring>
+                <cstring>subjectsComboBox</cstring>
             </property>
             <property name="editable">
                 <bool>false</bool>
@@ -1421,112 +1075,7 @@ days between each pair of subactivities</string>
                 <bool>false</bool>
             </property>
         </widget>
-        <widget class="QLabel" row="10" column="0">
-            <property name="name">
-                <cstring>students1TextLabel</cstring>
-            </property>
-            <property name="text">
-                <string>Students set (1)</string>
-            </property>
-        </widget>
-        <widget class="QLabel" row="14" column="0">
-            <property name="name">
-                <cstring>students3TextLabel</cstring>
-            </property>
-            <property name="text">
-                <string>Students set (3)</string>
-            </property>
-        </widget>
-        <widget class="QComboBox" row="17" column="0">
-            <property name="name">
-                <cstring>students4ComboBox</cstring>
-            </property>
-            <property name="editable">
-                <bool>false</bool>
-            </property>
-            <property name="insertionPolicy">
-                <enum>NoInsertion</enum>
-            </property>
-            <property name="autoCompletion">
-                <bool>false</bool>
-            </property>
-            <property name="duplicatesEnabled">
-                <bool>false</bool>
-            </property>
-        </widget>
-        <widget class="QComboBox" row="11" column="0">
-            <property name="name">
-                <cstring>students1ComboBox</cstring>
-            </property>
-            <property name="editable">
-                <bool>false</bool>
-            </property>
-            <property name="insertionPolicy">
-                <enum>NoInsertion</enum>
-            </property>
-            <property name="autoCompletion">
-                <bool>false</bool>
-            </property>
-            <property name="duplicatesEnabled">
-                <bool>false</bool>
-            </property>
-        </widget>
-        <widget class="QComboBox" row="15" column="0">
-            <property name="name">
-                <cstring>students3ComboBox</cstring>
-            </property>
-            <property name="editable">
-                <bool>false</bool>
-            </property>
-            <property name="insertionPolicy">
-                <enum>NoInsertion</enum>
-            </property>
-            <property name="autoCompletion">
-                <bool>false</bool>
-            </property>
-            <property name="duplicatesEnabled">
-                <bool>false</bool>
-            </property>
-        </widget>
-        <widget class="QLabel" row="16" column="0">
-            <property name="name">
-                <cstring>students4TextLabel</cstring>
-            </property>
-            <property name="text">
-                <string>Students set (4)</string>
-            </property>
-        </widget>
-        <widget class="QCheckBox" row="19" column="0">
-            <property name="name">
-                <cstring>groupsCheckBox</cstring>
-            </property>
-            <property name="text">
-                <string>Show groups</string>
-            </property>
-            <property name="checked">
-                <bool>true</bool>
-            </property>
-        </widget>
-        <widget class="QLabel" row="12" column="0">
-            <property name="name">
-                <cstring>students2TextLabel</cstring>
-            </property>
-            <property name="text">
-                <string>Students set (2)</string>
-            </property>
-        </widget>
-        <widget class="QCheckBox" row="20" column="0">
-            <property name="name">
-                <cstring>subgroupsCheckBox</cstring>
-            </property>
-            <property name="text">
-                <string>Show subgroups</string>
-            </property>
-            <property name="checked">
-                <bool>true</bool>
-            </property>
-        </widget>
-        <widget class="QLabel" row="8" column="0">
+        <widget class="QLabel" row="6" column="0" rowspan="1" colspan="4">
             <property name="name">
                 <cstring>subjectTagsTextLabel</cstring>
             </property>
@@ -1534,7 +1083,7 @@ days between each pair of subactivities</string>
                 <string>Subject tag</string>
             </property>
         </widget>
-        <widget class="QComboBox" row="9" column="0">
+        <widget class="QComboBox" row="7" column="0" rowspan="1" colspan="4">
             <property name="name">
                 <cstring>subjectTagsComboBox</cstring>
             </property>
@@ -1549,6 +1098,42 @@ days between each pair of subactivities</string>
             </property>
             <property name="duplicatesEnabled">
                 <bool>false</bool>
+            </property>
+        </widget>
+        <widget class="QLabel" row="8" column="0">
+            <property name="name">
+                <cstring>allStudentsTextLabel</cstring>
+            </property>
+            <property name="text">
+                <string>All students</string>
+            </property>
+        </widget>
+        <widget class="QLabel" row="8" column="2" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>selectedStudentsTextLabel</cstring>
+            </property>
+            <property name="text">
+                <string>Selected students</string>
+            </property>
+        </widget>
+        <widget class="QListBox" row="9" column="3" rowspan="3" colspan="1">
+            <item>
+                <property name="text">
+                    <string>New Item</string>
+                </property>
+            </item>
+            <property name="name">
+                <cstring>selectedStudentsListBox</cstring>
+            </property>
+        </widget>
+        <widget class="QListBox" row="9" column="0" rowspan="3" colspan="1">
+            <item>
+                <property name="text">
+                    <string>New Item</string>
+                </property>
+            </item>
+            <property name="name">
+                <cstring>allStudentsListBox</cstring>
             </property>
         </widget>
     </grid>
@@ -1573,52 +1158,10 @@ days between each pair of subactivities</string>
         <slot>subjectChanged(const QString&amp;)</slot>
     </connection>
     <connection>
-        <sender>students1ComboBox</sender>
-        <signal>activated(const QString&amp;)</signal>
-        <receiver>AddActivityForm_template</receiver>
-        <slot>studentsChanged(const QString&amp;)</slot>
-    </connection>
-    <connection>
-        <sender>teachers1ComboBox</sender>
-        <signal>activated(const QString&amp;)</signal>
-        <receiver>AddActivityForm_template</receiver>
-        <slot>teacherChanged(const QString&amp;)</slot>
-    </connection>
-    <connection>
         <sender>splitSpinBox</sender>
         <signal>valueChanged(int)</signal>
         <receiver>AddActivityForm_template</receiver>
         <slot>splitChanged()</slot>
-    </connection>
-    <connection>
-        <sender>students2ComboBox</sender>
-        <signal>activated(const QString&amp;)</signal>
-        <receiver>AddActivityForm_template</receiver>
-        <slot>studentsChanged(const QString&amp;)</slot>
-    </connection>
-    <connection>
-        <sender>students3ComboBox</sender>
-        <signal>activated(const QString&amp;)</signal>
-        <receiver>AddActivityForm_template</receiver>
-        <slot>studentsChanged(const QString&amp;)</slot>
-    </connection>
-    <connection>
-        <sender>students4ComboBox</sender>
-        <signal>activated(const QString&amp;)</signal>
-        <receiver>AddActivityForm_template</receiver>
-        <slot>studentsChanged(const QString&amp;)</slot>
-    </connection>
-    <connection>
-        <sender>teachers2ComboBox</sender>
-        <signal>activated(const QString&amp;)</signal>
-        <receiver>AddActivityForm_template</receiver>
-        <slot>teacherChanged(const QString&amp;)</slot>
-    </connection>
-    <connection>
-        <sender>teachers3ComboBox</sender>
-        <signal>activated(const QString&amp;)</signal>
-        <receiver>AddActivityForm_template</receiver>
-        <slot>teacherChanged(const QString&amp;)</slot>
     </connection>
     <connection>
         <sender>minDayDistanceSpinBox</sender>
@@ -1842,16 +1385,93 @@ days between each pair of subactivities</string>
         <receiver>AddActivityForm_template</receiver>
         <slot>subjectTagChanged(const QString&amp;)</slot>
     </connection>
+    <connection>
+        <sender>addTeacherPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>AddActivityForm_template</receiver>
+        <slot>addTeacher()</slot>
+    </connection>
+    <connection>
+        <sender>removeTeacherPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>AddActivityForm_template</receiver>
+        <slot>removeTeacher()</slot>
+    </connection>
+    <connection>
+        <sender>addStudentsPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>AddActivityForm_template</receiver>
+        <slot>addStudents()</slot>
+    </connection>
+    <connection>
+        <sender>removeStudentsPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>AddActivityForm_template</receiver>
+        <slot>removeStudents()</slot>
+    </connection>
+    <connection>
+        <sender>clearTeacherPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>AddActivityForm_template</receiver>
+        <slot>clearTeachers()</slot>
+    </connection>
+    <connection>
+        <sender>clearStudentsPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>AddActivityForm_template</receiver>
+        <slot>clearStudents()</slot>
+    </connection>
+    <connection>
+        <sender>active1CheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>AddActivityForm_template</receiver>
+        <slot>activityChanged()</slot>
+    </connection>
+    <connection>
+        <sender>active2CheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>AddActivityForm_template</receiver>
+        <slot>activityChanged()</slot>
+    </connection>
+    <connection>
+        <sender>active3CheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>AddActivityForm_template</receiver>
+        <slot>activityChanged()</slot>
+    </connection>
+    <connection>
+        <sender>active4CheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>AddActivityForm_template</receiver>
+        <slot>activityChanged()</slot>
+    </connection>
+    <connection>
+        <sender>active5CheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>AddActivityForm_template</receiver>
+        <slot>activityChanged()</slot>
+    </connection>
+    <connection>
+        <sender>active6CheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>AddActivityForm_template</receiver>
+        <slot>activityChanged()</slot>
+    </connection>
+    <connection>
+        <sender>active7CheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>AddActivityForm_template</receiver>
+        <slot>activityChanged()</slot>
+    </connection>
+    <connection>
+        <sender>active8CheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>AddActivityForm_template</receiver>
+        <slot>activityChanged()</slot>
+    </connection>
 </connections>
 <tabstops>
-    <tabstop>teachers1ComboBox</tabstop>
-    <tabstop>teachers2ComboBox</tabstop>
-    <tabstop>teachers3ComboBox</tabstop>
     <tabstop>subjectsComboBox</tabstop>
-    <tabstop>students1ComboBox</tabstop>
-    <tabstop>students2ComboBox</tabstop>
-    <tabstop>students3ComboBox</tabstop>
-    <tabstop>students4ComboBox</tabstop>
     <tabstop>currentActivityTextEdit</tabstop>
     <tabstop>splitSpinBox</tabstop>
     <tabstop>minDayDistanceSpinBox</tabstop>
@@ -1895,13 +1515,17 @@ days between each pair of subactivities</string>
     <slot>activityChanged()</slot>
     <slot>addActivity()</slot>
     <slot>subjectChanged( const QString &amp; )</slot>
-    <slot>teacherChanged( const QString &amp; )</slot>
-    <slot>studentsChanged( const QString &amp; )</slot>
     <slot>splitChanged()</slot>
     <slot>showYearsChanged()</slot>
     <slot>showGroupsChanged()</slot>
     <slot>showSubgroupsChanged()</slot>
     <slot>subjectTagChanged(const QString&amp;)</slot>
+    <slot>addTeacher()</slot>
+    <slot>removeTeacher()</slot>
+    <slot>addStudents()</slot>
+    <slot>removeStudents()</slot>
+    <slot>clearTeachers()</slot>
+    <slot>clearStudents()</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

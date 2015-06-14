@@ -142,7 +142,7 @@ void SubgroupsForm::subgroupChanged(const QString &subgroupName)
 	if(ss==NULL)
 		return;
 	StudentsSubgroup* s=(StudentsSubgroup*)ss;
-	subgroupTextEdit->setText(s->getDetailedDescription());
+	subgroupTextEdit->setText(s->getDetailedDescriptionWithConstraints(gt.rules));
 }
 
 void SubgroupsForm::sortSubgroups()
@@ -206,4 +206,60 @@ void SubgroupsForm::modifySubgroup()
 	groupChanged(groupName);
 	
 	subgroupsListBox->setCurrentItem(ci);
+}
+
+void SubgroupsForm::activateStudents()
+{
+	if(yearsListBox->currentItem()<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected year"));
+		return;
+	}
+	QString yearName=yearsListBox->currentText();
+	int yearIndex=gt.rules.searchYear(yearName);
+	assert(yearIndex>=0);
+
+	if(groupsListBox->currentItem()<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected group"));
+		return;
+	}
+	QString groupName=groupsListBox->currentText();
+	int groupIndex=gt.rules.searchGroup(yearName, groupName);
+	assert(groupIndex>=0);
+
+	if(subgroupsListBox->currentItem()<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected subgroup"));
+		return;
+	}
+	
+	QString subgroupName=subgroupsListBox->currentText();
+	int count=gt.rules.activateStudents(subgroupName);
+	QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Activated a number of %1 activities").arg(count));
+}
+
+void SubgroupsForm::deactivateStudents()
+{
+	if(yearsListBox->currentItem()<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected year"));
+		return;
+	}
+	QString yearName=yearsListBox->currentText();
+	int yearIndex=gt.rules.searchYear(yearName);
+	assert(yearIndex>=0);
+
+	if(groupsListBox->currentItem()<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected group"));
+		return;
+	}
+	QString groupName=groupsListBox->currentText();
+	int groupIndex=gt.rules.searchGroup(yearName, groupName);
+	assert(groupIndex>=0);
+
+	if(subgroupsListBox->currentItem()<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected subgroup"));
+		return;
+	}
+	
+	QString subgroupName=subgroupsListBox->currentText();
+	int count=gt.rules.deactivateStudents(subgroupName);
+	QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("De-activated a number of %1 activities").arg(count));
 }

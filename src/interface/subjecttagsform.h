@@ -26,6 +26,11 @@ public:
 	void removeSubjectTag();
 	void renameSubjectTag();
 	void sortSubjectTags();
+	
+	void subjectTagChanged(int index);
+	
+	void activateSubjectTag();
+	void deactivateSubjectTag();
 };
 
 #endif

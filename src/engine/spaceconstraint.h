@@ -34,6 +34,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 class Rules;
 class SpaceChromosome;
 class SpaceConstraint;
+class Activity;
+class Teacher;
+class Subject;
+class SubjectTag;
+class StudentsSet;
+class Equipment;
+class Building;
+class Room;
 
 typedef QPtrList<SpaceConstraint> SpaceConstraintsList;
 
@@ -44,10 +52,20 @@ const int CONSTRAINT_ROOM_NOT_AVAILABLE							=1004;
 const int CONSTRAINT_SUBJECT_REQUIRES_EQUIPMENTS				=1005;
 const int CONSTRAINT_SUBJECT_SUBJECT_TAG_REQUIRE_EQUIPMENTS		=1006;
 const int CONSTRAINT_TEACHER_REQUIRES_ROOM						=1007;
-const int CONSTRAINT_MINIMIZE_NUMBER_OF_ROOMS_FOR_STUDENTS		=1008;
-const int CONSTRAINT_ACTIVITY_PREFERRED_ROOM					=1009;
-const int CONSTRAINT_ACTIVITY_PREFERRED_ROOMS					=1010;
-const int CONSTRAINT_ACTIVITIES_SAME_ROOM						=1011;
+const int CONSTRAINT_TEACHER_SUBJECT_REQUIRE_ROOM				=1008;
+const int CONSTRAINT_MINIMIZE_NUMBER_OF_ROOMS_FOR_STUDENTS		=1009;
+const int CONSTRAINT_MINIMIZE_NUMBER_OF_ROOMS_FOR_TEACHERS		=1010;
+const int CONSTRAINT_ACTIVITY_PREFERRED_ROOM					=1011;
+const int CONSTRAINT_ACTIVITY_PREFERRED_ROOMS					=1012;
+const int CONSTRAINT_ACTIVITIES_SAME_ROOM						=1013;
+const int CONSTRAINT_SUBJECT_SUBJECT_TAG_PREFERRED_ROOM			=1014;
+const int CONSTRAINT_SUBJECT_SUBJECT_TAG_PREFERRED_ROOMS		=1015;
+const int CONSTRAINT_SUBJECT_PREFERRED_ROOM						=1016;
+const int CONSTRAINT_SUBJECT_PREFERRED_ROOMS					=1017;
+const int CONSTRAINT_MAX_BUILDING_CHANGES_PER_DAY_FOR_TEACHERS	=1018;
+const int CONSTRAINT_MAX_BUILDING_CHANGES_PER_DAY_FOR_STUDENTS	=1019;
+const int CONSTRAINT_MAX_ROOM_CHANGES_PER_DAY_FOR_TEACHERS		=1020;
+const int CONSTRAINT_MAX_ROOM_CHANGES_PER_DAY_FOR_STUDENTS		=1021;
 
 /**
 This class represents a space constraint
@@ -97,12 +115,12 @@ public:
 	/**
 	Returns an XML description of this constraint
 	*/
-	virtual QString getXMLDescription(Rules& r)=0;
+	virtual QString getXmlDescription(Rules& r)=0;
 
 	/**
 	Computes the internal structure for this constraint
 	*/
-	virtual void computeInternalStructure(Rules& r)=0;
+	virtual bool computeInternalStructure(Rules& r)=0;
 
 	/**
 	Returns a small description string for this constraint
@@ -113,6 +131,46 @@ public:
 	Returns a detailed description string for this constraint
 	*/
 	virtual QString getDetailedDescription(Rules& r)=0;
+	
+	/**
+	Returns true if this constraint is related to this activity
+	*/
+	virtual bool isRelatedToActivity(Activity* a)=0;
+
+	/**
+	Returns true if this constraint is related to this teacher
+	*/
+	virtual bool isRelatedToTeacher(Teacher* t)=0;
+
+	/**
+	Returns true if this constraint is related to this subject
+	*/
+	virtual bool isRelatedToSubject(Subject* s)=0;
+
+	/**
+	Returns true if this constraint is related to this subject tag
+	*/
+	virtual bool isRelatedToSubjectTag(SubjectTag* s)=0;
+
+	/**
+	Returns true if this constraint is related to this students set
+	*/
+	virtual bool isRelatedToStudentsSet(Rules& r, StudentsSet* s)=0;
+
+	/**
+	Returns true if this constraint is related to this equipment
+	*/
+	virtual bool isRelatedToEquipment(Equipment* e)=0;
+
+	/**
+	Returns true if this constraint is related to this building
+	*/
+	virtual bool isRelatedToBuilding(Building* b)=0;
+
+	/**
+	Returns true if this constraint is related to this room
+	*/
+	virtual bool isRelatedToRoom(Room* r)=0;
 };
 
 /**
@@ -125,15 +183,31 @@ public:
 
 	ConstraintBasicCompulsorySpace(double w);
 
-	void computeInternalStructure(Rules& r);
+	bool computeInternalStructure(Rules& r);
 
-	QString getXMLDescription(Rules& r);
+	QString getXmlDescription(Rules& r);
 
 	QString getDescription(Rules& r);
 
 	QString getDetailedDescription(Rules& r);
 
 	int fitness(SpaceChromosome& c, Rules& r, const int days[/*MAX_ACTIVITIES*/], const int hours[/*MAX_ACTIVITIES*/], QString* conflictsString=NULL);
+	
+	bool isRelatedToActivity(Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToSubjectTag(SubjectTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+
+	bool isRelatedToEquipment(Equipment* e);
+
+	bool isRelatedToBuilding(Building* b);
+
+	bool isRelatedToRoom(Room* r);
 };
 
 /**
@@ -177,15 +251,31 @@ public:
 
 	ConstraintRoomNotAvailable(double w, bool c, const QString& rn, int day, int start_hour, int end_hour);
 
-	void computeInternalStructure(Rules& r);
+	bool computeInternalStructure(Rules& r);
 
-	QString getXMLDescription(Rules& r);
+	QString getXmlDescription(Rules& r);
 
 	QString getDescription(Rules& r);
 
 	QString getDetailedDescription(Rules& r);
 
 	int fitness(SpaceChromosome& c, Rules& r, const int days[/*MAX_ACTIVITIES*/], const int hours[/*MAX_ACTIVITIES*/], QString* conflictsString=NULL);
+	
+	bool isRelatedToActivity(Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToSubjectTag(SubjectTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+
+	bool isRelatedToEquipment(Equipment* e);
+
+	bool isRelatedToBuilding(Building* b);
+
+	bool isRelatedToRoom(Room* r);
 };
 
 /**
@@ -232,15 +322,31 @@ public:
 	*/
 	bool searchNotAllowedSubject(const QString& subjectName);
 
-	void computeInternalStructure(Rules& r);
+	bool computeInternalStructure(Rules& r);
 
-	QString getXMLDescription(Rules& r);
+	QString getXmlDescription(Rules& r);
 
 	QString getDescription(Rules& r);
 
 	QString getDetailedDescription(Rules& r);
 
 	int fitness(SpaceChromosome& c, Rules& r, const int days[/*MAX_ACTIVITIES*/], const int hours[/*MAX_ACTIVITIES*/], QString* conflictsString=NULL);
+	
+	bool isRelatedToActivity(Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToSubjectTag(SubjectTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+
+	bool isRelatedToEquipment(Equipment* e);
+
+	bool isRelatedToBuilding(Building* b);
+
+	bool isRelatedToRoom(Room* r);
 };
 
 /**
@@ -281,20 +387,36 @@ public:
 	int removeRequiredEquipment(const QString& equip);
 
 	/**
-	Returns true if the subject is in the list of required equipments,
+	Returns true if this equipment is in the list of required equipments,
 	false otherwise.
 	*/
 	bool searchRequiredEquipment(const QString& equip);
 
-	void computeInternalStructure(Rules& r);
+	bool computeInternalStructure(Rules& r);
 
-	QString getXMLDescription(Rules& r);
+	QString getXmlDescription(Rules& r);
 
 	QString getDescription(Rules& r);
 
 	QString getDetailedDescription(Rules& r);
 
 	int fitness(SpaceChromosome& c, Rules& r, const int days[/*MAX_ACTIVITIES*/], const int hours[/*MAX_ACTIVITIES*/], QString* conflictsString=NULL);
+	
+	bool isRelatedToActivity(Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToSubjectTag(SubjectTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+
+	bool isRelatedToEquipment(Equipment* e);
+
+	bool isRelatedToBuilding(Building* b);
+
+	bool isRelatedToRoom(Room* r);
 };
 
 /**
@@ -337,20 +459,36 @@ public:
 	int removeRequiredEquipment(const QString& equip);
 
 	/**
-	Returns true if the subject is in the list of required equipments,
+	Returns true if the equipment is in the list of required equipments,
 	false otherwise.
 	*/
 	bool searchRequiredEquipment(const QString& equip);
 
-	void computeInternalStructure(Rules& r);
+	bool computeInternalStructure(Rules& r);
 
-	QString getXMLDescription(Rules& r);
+	QString getXmlDescription(Rules& r);
 
 	QString getDescription(Rules& r);
 
 	QString getDetailedDescription(Rules& r);
 
 	int fitness(SpaceChromosome& c, Rules& r, const int days[/*MAX_ACTIVITIES*/], const int hours[/*MAX_ACTIVITIES*/], QString* conflictsString=NULL);
+	
+	bool isRelatedToActivity(Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToSubjectTag(SubjectTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+
+	bool isRelatedToEquipment(Equipment* e);
+
+	bool isRelatedToBuilding(Building* b);
+
+	bool isRelatedToRoom(Room* r);
 };
 
 /**
@@ -380,15 +518,87 @@ public:
 
 	ConstraintTeacherRequiresRoom(double w, bool c, const QString& teach, const QString& room);
 
-	void computeInternalStructure(Rules& r);
+	bool computeInternalStructure(Rules& r);
 
-	QString getXMLDescription(Rules& r);
+	QString getXmlDescription(Rules& r);
 
 	QString getDescription(Rules& r);
 
 	QString getDetailedDescription(Rules& r);
 
 	int fitness(SpaceChromosome& c, Rules& r, const int days[/*MAX_ACTIVITIES*/], const int hours[/*MAX_ACTIVITIES*/], QString* conflictsString=NULL);
+	
+	bool isRelatedToActivity(Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToSubjectTag(SubjectTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+
+	bool isRelatedToEquipment(Equipment* e);
+
+	bool isRelatedToBuilding(Building* b);
+
+	bool isRelatedToRoom(Room* r);
+};
+
+/**
+This is a constraint. Its purpose: a teacher must teach a certain subject in
+his preferred room.
+*/
+class ConstraintTeacherSubjectRequireRoom: public SpaceConstraint{
+public:
+	
+	//The number of activities referred to by this constraint
+	int _nActivities;
+
+	//The list of activities referred to by this constraint.
+	//This is a list of indices in the rules internal activities list.
+	int _activities[MAX_ACTIVITIES_FOR_A_TEACHER_AND_SUBJECT];
+	
+	//The index of the room
+	int _room; 
+
+	//----------------------------------------------------------
+
+	QString teacherName;
+	
+	QString subjectName;
+
+	QString roomName;
+
+	ConstraintTeacherSubjectRequireRoom();
+
+	ConstraintTeacherSubjectRequireRoom(double w, bool c, const QString& teach, const QString& subj, const QString& room);
+
+	bool computeInternalStructure(Rules& r);
+
+	QString getXmlDescription(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	int fitness(SpaceChromosome& c, Rules& r, const int days[/*MAX_ACTIVITIES*/], const int hours[/*MAX_ACTIVITIES*/], QString* conflictsString=NULL);
+	
+	bool isRelatedToActivity(Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToSubjectTag(SubjectTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+
+	bool isRelatedToEquipment(Equipment* e);
+
+	bool isRelatedToBuilding(Building* b);
+
+	bool isRelatedToRoom(Room* r);
 };
 
 /**
@@ -401,15 +611,68 @@ public:
 
 	ConstraintMinimizeNumberOfRoomsForStudents(double w, bool c);
 
-	void computeInternalStructure(Rules& r);
+	bool computeInternalStructure(Rules& r);
 
-	QString getXMLDescription(Rules& r);
+	QString getXmlDescription(Rules& r);
 
 	QString getDescription(Rules& r);
 
 	QString getDetailedDescription(Rules& r);
 
 	int fitness(SpaceChromosome& c, Rules& r, const int days[/*MAX_ACTIVITIES*/], const int hours[/*MAX_ACTIVITIES*/], QString* conflictsString=NULL);
+	
+	bool isRelatedToActivity(Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToSubjectTag(SubjectTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+
+	bool isRelatedToEquipment(Equipment* e);
+
+	bool isRelatedToBuilding(Building* b);
+
+	bool isRelatedToRoom(Room* r);
+};
+
+/**
+This is a constraint aimed to minimize the number of rooms used
+for all the teachers.
+*/
+class ConstraintMinimizeNumberOfRoomsForTeachers: public SpaceConstraint{
+public:
+	ConstraintMinimizeNumberOfRoomsForTeachers();
+
+	ConstraintMinimizeNumberOfRoomsForTeachers(double w, bool c);
+
+	bool computeInternalStructure(Rules& r);
+
+	QString getXmlDescription(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	int fitness(SpaceChromosome& c, Rules& r, const int days[/*MAX_ACTIVITIES*/], const int hours[/*MAX_ACTIVITIES*/], QString* conflictsString=NULL);
+	
+	bool isRelatedToActivity(Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToSubjectTag(SubjectTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+
+	bool isRelatedToEquipment(Equipment* e);
+
+	bool isRelatedToBuilding(Building* b);
+
+	bool isRelatedToRoom(Room* r);
 };
 
 /**
@@ -435,16 +698,37 @@ public:
 	ConstraintActivityPreferredRoom();
 
 	ConstraintActivityPreferredRoom(double w, bool c, int aid, const QString& room);
+	
+	/**
+	Comparison operator - to be sure we do not introduce duplicates
+	*/
+	bool operator==(ConstraintActivityPreferredRoom& c);
 
-	void computeInternalStructure(Rules& r);
+	bool computeInternalStructure(Rules& r);
 
-	QString getXMLDescription(Rules& r);
+	QString getXmlDescription(Rules& r);
 
 	QString getDescription(Rules& r);
 
 	QString getDetailedDescription(Rules& r);
 
 	int fitness(SpaceChromosome& c, Rules& r, const int days[/*MAX_ACTIVITIES*/], const int hours[/*MAX_ACTIVITIES*/], QString* conflictsString=NULL);
+	
+	bool isRelatedToActivity(Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToSubjectTag(SubjectTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+
+	bool isRelatedToEquipment(Equipment* e);
+
+	bool isRelatedToBuilding(Building* b);
+
+	bool isRelatedToRoom(Room* r);
 };
 
 /**
@@ -474,15 +758,31 @@ public:
 
 	ConstraintActivityPreferredRooms(double w, bool c, int aid, const QStringList& roomsList);
 
-	void computeInternalStructure(Rules& r);
+	bool computeInternalStructure(Rules& r);
 
-	QString getXMLDescription(Rules& r);
+	QString getXmlDescription(Rules& r);
 
 	QString getDescription(Rules& r);
 
 	QString getDetailedDescription(Rules& r);
 
 	int fitness(SpaceChromosome& c, Rules& r, const int days[/*MAX_ACTIVITIES*/], const int hours[/*MAX_ACTIVITIES*/], QString* conflictsString=NULL);
+	
+	bool isRelatedToActivity(Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToSubjectTag(SubjectTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+
+	bool isRelatedToEquipment(Equipment* e);
+
+	bool isRelatedToBuilding(Building* b);
+
+	bool isRelatedToRoom(Room* r);
 };
 
 /**
@@ -507,6 +807,11 @@ public:
 	int activitiesId[MAX_CONSTRAINT_ACTIVITIES_SAME_ROOM];
 
 	/**
+	The number of activities involved in this constraint - internal structure
+	*/
+	int _n_activities;
+
+	/**
 	The activities involved in this constraint (indexes in the rules) - internal structure
 	*/
 	int _activities[MAX_CONSTRAINT_ACTIVITIES_SAME_ROOM];
@@ -519,9 +824,9 @@ public:
 	*/
 	ConstraintActivitiesSameRoom(double w, bool c, int n_act, const int act[]);
 
-	void computeInternalStructure(Rules& r);
+	bool computeInternalStructure(Rules& r);
 
-	QString getXMLDescription(Rules& r);
+	QString getXmlDescription(Rules& r);
 
 	QString getDescription(Rules& r);
 
@@ -533,6 +838,409 @@ public:
 	Removes useless activities from the _activities and activitiesId array
 	*/
 	void removeUseless(Rules& r);
+	
+	bool isRelatedToActivity(Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToSubjectTag(SubjectTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+
+	bool isRelatedToEquipment(Equipment* e);
+
+	bool isRelatedToBuilding(Building* b);
+
+	bool isRelatedToRoom(Room* r);
 };
+
+/**
+This is a constraint. Its purpose: a subject+subject tag must be taught in
+a certain room.
+*/
+class ConstraintSubjectSubjectTagPreferredRoom: public SpaceConstraint{
+public:
+	
+	//The number of activities referred to by this constraint
+	int _nActivities;
+
+	//The list of activities referred to by this constraint.
+	//This is a list of indices in the rules internal activities list.
+	int _activities[MAX_ACTIVITIES_FOR_A_SUBJECT];
+	
+	// The index of the room
+	int _room;
+	
+public:
+
+	QString subjectName;
+
+	QString subjectTagName;
+
+	QString roomName;
+
+	ConstraintSubjectSubjectTagPreferredRoom();
+
+	ConstraintSubjectSubjectTagPreferredRoom(double w, bool c, const QString& subj, const QString& subt, const QString& rm);
+
+	bool computeInternalStructure(Rules& r);
+
+	QString getXmlDescription(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	int fitness(SpaceChromosome& c, Rules& r, const int days[/*MAX_ACTIVITIES*/], const int hours[/*MAX_ACTIVITIES*/], QString* conflictsString=NULL);
+	
+	bool isRelatedToActivity(Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToSubjectTag(SubjectTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+
+	bool isRelatedToEquipment(Equipment* e);
+
+	bool isRelatedToBuilding(Building* b);
+
+	bool isRelatedToRoom(Room* r);
+};
+
+/**
+This is a constraint. Its purpose: a subject+subject tag must be taught in
+certain rooms.
+*/
+class ConstraintSubjectSubjectTagPreferredRooms: public SpaceConstraint{
+public:
+	
+	//The number of activities referred to by this constraint
+	int _nActivities;
+
+	//The list of activities referred to by this constraint.
+	//This is a list of indices in the rules internal activities list.
+	int _activities[MAX_ACTIVITIES_FOR_A_SUBJECT];
+	
+	//The number of preferred rooms
+	int _n_preferred_rooms;
+	
+	//The indexes of the rooms
+	int _rooms[MAX_CONSTRAINT_SUBJECT_SUBJECT_TAG_PREFERRED_ROOMS];
+	
+public:
+
+	QString subjectName;
+
+	QString subjectTagName;
+
+	QStringList roomsNames;
+
+	ConstraintSubjectSubjectTagPreferredRooms();
+
+	ConstraintSubjectSubjectTagPreferredRooms(double w, bool c, const QString& subj, const QString& subt, const QStringList& rms);
+
+	bool computeInternalStructure(Rules& r);
+
+	QString getXmlDescription(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	int fitness(SpaceChromosome& c, Rules& r, const int days[/*MAX_ACTIVITIES*/], const int hours[/*MAX_ACTIVITIES*/], QString* conflictsString=NULL);
+	
+	bool isRelatedToActivity(Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToSubjectTag(SubjectTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+
+	bool isRelatedToEquipment(Equipment* e);
+
+	bool isRelatedToBuilding(Building* b);
+
+	bool isRelatedToRoom(Room* r);
+};
+
+/**
+This is a constraint. Its purpose: a subject must be taught in
+a certain room.
+*/
+class ConstraintSubjectPreferredRoom: public SpaceConstraint{
+public:
+	
+	//The number of activities referred to by this constraint
+	int _nActivities;
+
+	//The list of activities referred to by this constraint.
+	//This is a list of indices in the rules internal activities list.
+	int _activities[MAX_ACTIVITIES_FOR_A_SUBJECT];
+	
+	// The index of the room
+	int _room;
+	
+public:
+
+	QString subjectName;
+
+	QString roomName;
+
+	ConstraintSubjectPreferredRoom();
+
+	ConstraintSubjectPreferredRoom(double w, bool c, const QString& subj, const QString& rm);
+
+	bool computeInternalStructure(Rules& r);
+
+	QString getXmlDescription(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	int fitness(SpaceChromosome& c, Rules& r, const int days[/*MAX_ACTIVITIES*/], const int hours[/*MAX_ACTIVITIES*/], QString* conflictsString=NULL);
+	
+	bool isRelatedToActivity(Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToSubjectTag(SubjectTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+
+	bool isRelatedToEquipment(Equipment* e);
+
+	bool isRelatedToBuilding(Building* b);
+
+	bool isRelatedToRoom(Room* r);
+};
+
+/**
+This is a constraint. Its purpose: a subject must be taught in
+certain rooms.
+*/
+class ConstraintSubjectPreferredRooms: public SpaceConstraint{
+public:
+	
+	//The number of activities referred to by this constraint
+	int _nActivities;
+
+	//The list of activities referred to by this constraint.
+	//This is a list of indices in the rules internal activities list.
+	int _activities[MAX_ACTIVITIES_FOR_A_SUBJECT];
+	
+	//The number of preferred rooms
+	int _n_preferred_rooms;
+	
+	//The indexes of the rooms
+	int _rooms[MAX_CONSTRAINT_SUBJECT_PREFERRED_ROOMS];
+	
+public:
+
+	QString subjectName;
+
+	QStringList roomsNames;
+
+	ConstraintSubjectPreferredRooms();
+
+	ConstraintSubjectPreferredRooms(double w, bool c, const QString& subj, const QStringList& rms);
+
+	bool computeInternalStructure(Rules& r);
+
+	QString getXmlDescription(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	int fitness(SpaceChromosome& c, Rules& r, const int days[/*MAX_ACTIVITIES*/], const int hours[/*MAX_ACTIVITIES*/], QString* conflictsString=NULL);
+	
+	bool isRelatedToActivity(Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToSubjectTag(SubjectTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+
+	bool isRelatedToEquipment(Equipment* e);
+
+	bool isRelatedToBuilding(Building* b);
+
+	bool isRelatedToRoom(Room* r);
+};
+
+/**
+This is constraint not allowing more than max building changes per day
+for teachers. This constraint may also be used to minimize the number
+of building changes in each day, if you put maxBuildingChanges=0.
+*/
+class ConstraintMaxBuildingChangesPerDayForTeachers: public SpaceConstraint{
+public:
+	int maxBuildingChanges;
+
+	ConstraintMaxBuildingChangesPerDayForTeachers();
+
+	ConstraintMaxBuildingChangesPerDayForTeachers(double w, bool c, int max_building_changes);
+
+	bool computeInternalStructure(Rules& r);
+
+	QString getXmlDescription(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	int fitness(SpaceChromosome& c, Rules& r, const int days[/*MAX_ACTIVITIES*/], const int hours[/*MAX_ACTIVITIES*/], QString* conflictsString=NULL);
+	
+	bool isRelatedToActivity(Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToSubjectTag(SubjectTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+
+	bool isRelatedToEquipment(Equipment* e);
+
+	bool isRelatedToBuilding(Building* b);
+
+	bool isRelatedToRoom(Room* r);
+};
+
+/**
+This is constraint not allowing more than max building changes per day
+for students. This constraint may also be used to minimize the number
+of building changes in each day, if you put maxBuildingChanges=0.
+*/
+class ConstraintMaxBuildingChangesPerDayForStudents: public SpaceConstraint{
+public:
+	int maxBuildingChanges;
+
+	ConstraintMaxBuildingChangesPerDayForStudents();
+
+	ConstraintMaxBuildingChangesPerDayForStudents(double w, bool c, int max_building_changes);
+
+	bool computeInternalStructure(Rules& r);
+
+	QString getXmlDescription(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	int fitness(SpaceChromosome& c, Rules& r, const int days[/*MAX_ACTIVITIES*/], const int hours[/*MAX_ACTIVITIES*/], QString* conflictsString=NULL);
+	
+	bool isRelatedToActivity(Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToSubjectTag(SubjectTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+
+	bool isRelatedToEquipment(Equipment* e);
+
+	bool isRelatedToBuilding(Building* b);
+
+	bool isRelatedToRoom(Room* r);
+};
+
+/**
+This is constraint not allowing more than max room changes per day
+for teachers. This constraint may also be used to minimize the number
+of room changes in each day, if you put maxRoomChanges=0.
+*/
+class ConstraintMaxRoomChangesPerDayForTeachers: public SpaceConstraint{
+public:
+	int maxRoomChanges;
+
+	ConstraintMaxRoomChangesPerDayForTeachers();
+
+	ConstraintMaxRoomChangesPerDayForTeachers(double w, bool c, int max_room_changes);
+
+	bool computeInternalStructure(Rules& r);
+
+	QString getXmlDescription(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	int fitness(SpaceChromosome& c, Rules& r, const int days[/*MAX_ACTIVITIES*/], const int hours[/*MAX_ACTIVITIES*/], QString* conflictsString=NULL);
+	
+	bool isRelatedToActivity(Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToSubjectTag(SubjectTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+
+	bool isRelatedToEquipment(Equipment* e);
+
+	bool isRelatedToBuilding(Building* b);
+
+	bool isRelatedToRoom(Room* r);
+};
+
+/**
+This is constraint not allowing more than max room changes per day
+for students. This constraint may also be used to minimize the number
+of room changes in each day, if you put maxRoomChanges=0.
+*/
+class ConstraintMaxRoomChangesPerDayForStudents: public SpaceConstraint{
+public:
+	int maxRoomChanges;
+
+	ConstraintMaxRoomChangesPerDayForStudents();
+
+	ConstraintMaxRoomChangesPerDayForStudents(double w, bool c, int max_room_changes);
+
+	bool computeInternalStructure(Rules& r);
+
+	QString getXmlDescription(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	int fitness(SpaceChromosome& c, Rules& r, const int days[/*MAX_ACTIVITIES*/], const int hours[/*MAX_ACTIVITIES*/], QString* conflictsString=NULL);
+	
+	bool isRelatedToActivity(Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToSubjectTag(SubjectTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+
+	bool isRelatedToEquipment(Equipment* e);
+
+	bool isRelatedToBuilding(Building* b);
+
+	bool isRelatedToRoom(Room* r);
+};
+
 
 #endif

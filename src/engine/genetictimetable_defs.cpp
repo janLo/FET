@@ -21,7 +21,7 @@
 /**
 FET version
 */
-const QString FET_VERSION="3.12.30";
+const QString FET_VERSION="3.17.1";
 
 /**
 FET language
@@ -62,3 +62,14 @@ int METHOD2_MUTATION2_PROBABILITY;
 Probability for Evolution2 propagation, in percents
 */
 int METHOD2_PROPAGATION_PROBABILITY;
+
+QString protect(const QString& str)
+{
+	QString p=str;
+	p.replace("&", "&amp;");
+	p.replace("\"", "&quot;");
+	p.replace(">", "&gt;");
+	p.replace("<", "&lt;");
+	p.replace("'", "&apos;");
+	return p;
+}

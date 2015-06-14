@@ -30,6 +30,11 @@ public:
 	void updateRoomsTimetableTable();
 
 	void detailActivity(int row, int col);
+	
+	void lock();
+	void lock(bool lockTime, bool lockSpace);
+	void lockTime();
+	void lockSpace();
 };
 
 #endif

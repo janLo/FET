@@ -12,6 +12,7 @@
 //
 
 #include "equipment.h"
+#include "rules.h"
 
 Equipment::Equipment()
 {
@@ -36,12 +37,30 @@ QString Equipment::getDetailedDescription()
 	return s;
 }
 
-QString Equipment::getXMLDescription()
+QString Equipment::getXmlDescription()
 {
 	QString s="<Equipment>\n";
-	s+="	<Name>"; s+=this->name; s+="</Name>\n";
+	s+="	<Name>"; s+=protect(this->name); s+="</Name>\n";
 	s+="</Equipment>\n";
 	
+	return s;
+}
+
+QString Equipment::getDetailedDescriptionWithConstraints(Rules& r)
+{
+	QString s=this->getDetailedDescription();
+
+	s+="--------------------------------------------------\n";
+	s+=QObject::tr("Space constraints directly related to this equipment:");
+	s+="\n";
+	for(SpaceConstraint* c=r.spaceConstraintsList.first(); c; c=r.spaceConstraintsList.next()){
+		if(c->isRelatedToEquipment(this)){
+			s+="\n";
+			s+=c->getDetailedDescription(r);
+		}
+	}
+	s+="--------------------------------------------------\n";
+
 	return s;
 }
 

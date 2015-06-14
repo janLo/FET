@@ -19,7 +19,7 @@
         <property name="name">
             <cstring>unnamed</cstring>
         </property>
-        <widget class="QPushButton" row="1" column="0">
+        <widget class="QPushButton" row="2" column="0">
             <property name="name">
                 <cstring>addRoomPushButton</cstring>
             </property>
@@ -27,12 +27,54 @@
                 <string>Add room</string>
             </property>
         </widget>
-        <widget class="QPushButton" row="1" column="1">
+        <widget class="QPushButton" row="2" column="1">
             <property name="name">
                 <cstring>removeRoomPushButton</cstring>
             </property>
             <property name="text">
                 <string>Remove current</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="5" column="0" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>closePushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Close</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="4" column="0" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>roomsEquipmentsPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Rooms' equipments</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="3" column="1">
+            <property name="name">
+                <cstring>sortRoomsPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Sort by name</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="3" column="0">
+            <property name="name">
+                <cstring>modifyRoomPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Modify current</string>
+            </property>
+        </widget>
+        <widget class="QListBox" row="0" column="0" rowspan="2" colspan="1">
+            <item>
+                <property name="text">
+                    <string>New Item</string>
+                </property>
+            </item>
+            <property name="name">
+                <cstring>roomsListBox</cstring>
             </property>
         </widget>
         <widget class="QTextEdit" row="0" column="1">
@@ -43,47 +85,44 @@
                 <bool>true</bool>
             </property>
         </widget>
-        <widget class="QListBox" row="0" column="0">
-            <item>
-                <property name="text">
-                    <string>New Item</string>
+        <widget class="QGroupBox" row="1" column="1">
+            <property name="name">
+                <cstring>filterGroupBox</cstring>
+            </property>
+            <property name="title">
+                <string>Filter</string>
+            </property>
+            <grid>
+                <property name="name">
+                    <cstring>unnamed</cstring>
                 </property>
-            </item>
-            <property name="name">
-                <cstring>roomsListBox</cstring>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="4" column="0" rowspan="1" colspan="2">
-            <property name="name">
-                <cstring>closePushButton</cstring>
-            </property>
-            <property name="text">
-                <string>Close</string>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="3" column="0" rowspan="1" colspan="2">
-            <property name="name">
-                <cstring>roomsEquipmentsPushButton</cstring>
-            </property>
-            <property name="text">
-                <string>Rooms' equipments</string>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="2" column="1">
-            <property name="name">
-                <cstring>sortRoomsPushButton</cstring>
-            </property>
-            <property name="text">
-                <string>Sort by name</string>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="2" column="0">
-            <property name="name">
-                <cstring>modifyRoomPushButton</cstring>
-            </property>
-            <property name="text">
-                <string>Modify current</string>
-            </property>
+                <widget class="QComboBox" row="5" column="0">
+                    <property name="name">
+                        <cstring>typesComboBox</cstring>
+                    </property>
+                </widget>
+                <widget class="QComboBox" row="7" column="0">
+                    <property name="name">
+                        <cstring>buildingsComboBox</cstring>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="4" column="0">
+                    <property name="name">
+                        <cstring>typesTextLabel</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Type</string>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="6" column="0">
+                    <property name="name">
+                        <cstring>buildingsTextLabel</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Building</string>
+                    </property>
+                </widget>
+            </grid>
         </widget>
     </grid>
 </widget>
@@ -130,6 +169,18 @@
         <receiver>RoomsForm_template</receiver>
         <slot>sortRooms()</slot>
     </connection>
+    <connection>
+        <sender>typesComboBox</sender>
+        <signal>activated(const QString&amp;)</signal>
+        <receiver>RoomsForm_template</receiver>
+        <slot>filterChanged()</slot>
+    </connection>
+    <connection>
+        <sender>buildingsComboBox</sender>
+        <signal>activated(const QString&amp;)</signal>
+        <receiver>RoomsForm_template</receiver>
+        <slot>filterChanged()</slot>
+    </connection>
 </connections>
 <tabstops>
     <tabstop>addRoomPushButton</tabstop>
@@ -148,6 +199,7 @@
     <slot>roomsEquipments()</slot>
     <slot>sortRooms()</slot>
     <slot>modifyRoom()</slot>
+    <slot>filterChanged()</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

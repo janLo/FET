@@ -19,6 +19,7 @@
 #include <qptrlist.h>
 
 class SubjectTag;
+class Rules;
 
 class SubjectTagsList: public QPtrList<SubjectTag>
 {
@@ -37,7 +38,9 @@ public:
 	SubjectTag();
 	~SubjectTag();
 
-	QString getXMLDescription();
+	QString getXmlDescription();
+	QString getDetailedDescription();
+	QString getDetailedDescriptionWithConstraints(Rules& r);
 };
 
 #endif

@@ -18,17 +18,52 @@
 #include "modifyroomform.h"
 
 #include <qlineedit.h>
+#include <qcombobox.h>
 
-ModifyRoomForm::ModifyRoomForm(const QString& initialRoomName, const QString& initialRoomType, int initialRoomCapacity)
+ModifyRoomForm::ModifyRoomForm(const QString& initialRoomName, const QString& initialRoomType, const QString& initialRoomBuilding, int initialRoomCapacity)
 {
 	this->_initialRoomName=initialRoomName;
 	this->_initialRoomType=initialRoomType;
+	this->_initialRoomBuilding=initialRoomBuilding;
 	this->_initialRoomCapacity=initialRoomCapacity;
 	capacitySpinBox->setValue(initialRoomCapacity);
 	nameLineEdit->setText(initialRoomName);
 	nameLineEdit->selectAll();
 	nameLineEdit->setFocus();
-	typeLineEdit->setText(initialRoomType);	
+	
+	typesComboBox->clear();
+	typesComboBox->setDuplicatesEnabled(false);
+	int i=0, j=-1;
+	for(Room* rm=gt.rules.roomsList.first(); rm; rm=gt.rules.roomsList.next()){
+		int k;
+		for(k=0; k<typesComboBox->count(); k++)
+			if(typesComboBox->text(k)==rm->type)
+				break;
+		if(k==typesComboBox->count()){
+			typesComboBox->insertItem(rm->type);
+
+			if(rm->type==initialRoomType)
+				j=i;
+				
+			i++;
+		}
+	}
+	assert(j>=0);
+	typesComboBox->setCurrentItem(j);
+
+	i=0;j=-1;
+	buildingsComboBox->clear();
+	buildingsComboBox->insertItem("");
+	if(initialRoomBuilding=="")
+		j=i;
+	i++;
+	for(Building* bu=gt.rules.buildingsList.first(); bu; bu=gt.rules.buildingsList.next(), i++){
+		buildingsComboBox->insertItem(bu->name);
+		if(bu->name==initialRoomBuilding)
+			j=i;
+	}
+	assert(j>=0);
+	buildingsComboBox->setCurrentItem(j);
 }
 
 ModifyRoomForm::~ModifyRoomForm()
@@ -46,8 +81,12 @@ void ModifyRoomForm::ok()
 		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Incorrect name"));
 		return;
 	}
-	if(typeLineEdit->text().isEmpty()){
+	if(typesComboBox->currentText().isEmpty()){
 		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Incorrect type"));
+		return;
+	}
+	if(buildingsComboBox->currentItem()<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Incorrect building"));
 		return;
 	}
 	if(this->_initialRoomName!=nameLineEdit->text() && gt.rules.searchRoom(nameLineEdit->text())>=0){
@@ -55,7 +94,7 @@ void ModifyRoomForm::ok()
 		return;
 	}
 	
-	bool t=gt.rules.modifyRoom(this->_initialRoomName, nameLineEdit->text(), typeLineEdit->text(), capacitySpinBox->value());
+	bool t=gt.rules.modifyRoom(this->_initialRoomName, nameLineEdit->text(), typesComboBox->currentText(), buildingsComboBox->currentText(), capacitySpinBox->value());
 	assert(t);
 	
 	this->close();

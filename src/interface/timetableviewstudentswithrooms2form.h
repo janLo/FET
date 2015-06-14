@@ -32,6 +32,11 @@ public:
 	void updateStudentsTimetableTable();
 	
 	void detailActivity(int row, int col);
+	
+	void lock();
+	void lockTime();
+	void lockSpace();
+	void lock(bool time, bool space);
 };
 
 #endif

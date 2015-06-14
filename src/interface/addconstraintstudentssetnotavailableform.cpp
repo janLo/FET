@@ -52,7 +52,7 @@ void AddConstraintStudentsSetNotAvailableForm::updateStudentsSetComboBox()
 
 void AddConstraintStudentsSetNotAvailableForm::updatePeriodGroupBox(){
 	startHourComboBox->clear();
-	for(int i=0; i<=gt.rules.nHoursPerDay; i++)
+	for(int i=0; i<gt.rules.nHoursPerDay; i++)
 		startHourComboBox->insertItem(gt.rules.hoursOfTheDay[i]);
 
 	endHourComboBox->clear();

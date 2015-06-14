@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>573</width>
-            <height>505</height>
+            <width>579</width>
+            <height>540</height>
         </rect>
     </property>
     <property name="caption">
@@ -25,16 +25,6 @@
             </property>
             <property name="text">
                 <string>Activities</string>
-            </property>
-        </widget>
-        <widget class="QListBox" row="1" column="0" rowspan="2" colspan="2">
-            <item>
-                <property name="text">
-                    <string>New Item</string>
-                </property>
-            </item>
-            <property name="name">
-                <cstring>activitiesListBox</cstring>
             </property>
         </widget>
         <widget class="QLabel" row="0" column="2" rowspan="1" colspan="2">
@@ -53,12 +43,46 @@
                 <bool>true</bool>
             </property>
         </widget>
+        <widget class="QPushButton" row="3" column="0">
+            <property name="name">
+                <cstring>addActivityPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Add</string>
+            </property>
+        </widget>
         <widget class="QPushButton" row="3" column="3">
             <property name="name">
                 <cstring>closePushButton</cstring>
             </property>
             <property name="text">
                 <string>Close</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="3" column="1">
+            <property name="name">
+                <cstring>modifyActivityPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Modify</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="3" column="2">
+            <property name="name">
+                <cstring>removeActivityPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Remove</string>
+            </property>
+        </widget>
+        <widget class="QListBox" row="1" column="0" rowspan="2" colspan="2">
+            <item>
+                <property name="text">
+                    <string>New Item</string>
+                </property>
+            </item>
+            <property name="name">
+                <cstring>activitiesListBox</cstring>
             </property>
         </widget>
         <widget class="QGroupBox" row="2" column="2" rowspan="1" colspan="2">
@@ -82,14 +106,6 @@
                         <cstring>teachersComboBox</cstring>
                     </property>
                 </widget>
-                <widget class="QLabel" row="0" column="0">
-                    <property name="name">
-                        <cstring>teachersTextLabel</cstring>
-                    </property>
-                    <property name="text">
-                        <string>Teacher</string>
-                    </property>
-                </widget>
                 <widget class="QLabel" row="2" column="0">
                     <property name="name">
                         <cstring>studentsTextLabel</cstring>
@@ -103,6 +119,11 @@
                         <cstring>subjectsComboBox</cstring>
                     </property>
                 </widget>
+                <widget class="QComboBox" row="7" column="0">
+                    <property name="name">
+                        <cstring>subjectTagsComboBox</cstring>
+                    </property>
+                </widget>
                 <widget class="QLabel" row="4" column="0">
                     <property name="name">
                         <cstring>subjectsTextLabel</cstring>
@@ -111,31 +132,23 @@
                         <string>Subject</string>
                     </property>
                 </widget>
+                <widget class="QLabel" row="0" column="0">
+                    <property name="name">
+                        <cstring>teachersTextLabel</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Teacher</string>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="6" column="0">
+                    <property name="name">
+                        <cstring>subjectTagsTextLabel</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Subject tag</string>
+                    </property>
+                </widget>
             </grid>
-        </widget>
-        <widget class="QPushButton" row="3" column="0">
-            <property name="name">
-                <cstring>addActivityPushButton</cstring>
-            </property>
-            <property name="text">
-                <string>Add</string>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="3" column="2">
-            <property name="name">
-                <cstring>removeActivityPushButton</cstring>
-            </property>
-            <property name="text">
-                <string>Remove</string>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="3" column="1">
-            <property name="name">
-                <cstring>modifyActivityPushButton</cstring>
-            </property>
-            <property name="text">
-                <string>Modify</string>
-            </property>
         </widget>
     </grid>
 </widget>
@@ -187,6 +200,12 @@
         <signal>clicked()</signal>
         <receiver>ActivitiesForm_template</receiver>
         <slot>modifyActivity()</slot>
+    </connection>
+    <connection>
+        <sender>subjectTagsComboBox</sender>
+        <signal>activated(const QString&amp;)</signal>
+        <receiver>ActivitiesForm_template</receiver>
+        <slot>filterChanged()</slot>
     </connection>
 </connections>
 <slots>

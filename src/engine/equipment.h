@@ -20,6 +20,7 @@
 #include <qstringlist.h>
 
 class Equipment;
+class Rules;
 
 class EquipmentsList: public QPtrList<Equipment>
 {
@@ -37,9 +38,10 @@ public:
 	Equipment();
 	~Equipment();
 
+	QString getXmlDescription();
 	QString getDescription();
 	QString getDetailedDescription();
-	QString getXMLDescription();
+	QString getDetailedDescriptionWithConstraints(Rules& r);
 };
 
 #endif

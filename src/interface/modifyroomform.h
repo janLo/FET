@@ -34,9 +34,10 @@
 class ModifyRoomForm : public ModifyRoomForm_template {
 	QString _initialRoomName;
 	QString _initialRoomType;
+	QString _initialRoomBuilding;
 	int _initialRoomCapacity;
 public: 
-	ModifyRoomForm(const QString& initialRoomName, const QString& initialRoomType, int initialRoomCapacity);
+	ModifyRoomForm(const QString& initialRoomName, const QString& initialRoomType, const QString& initialRoomBuilding, int initialRoomCapacity);
 	~ModifyRoomForm();
 
 	void ok();

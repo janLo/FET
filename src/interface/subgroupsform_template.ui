@@ -9,7 +9,7 @@
             <x>0</x>
             <y>0</y>
             <width>688</width>
-            <height>545</height>
+            <height>544</height>
         </rect>
     </property>
     <property name="caption">
@@ -95,22 +95,6 @@
                 <string>Remove current</string>
             </property>
         </widget>
-        <widget class="QPushButton" row="3" column="1" rowspan="1" colspan="2">
-            <property name="name">
-                <cstring>removeSubgroupPushButton_2</cstring>
-            </property>
-            <property name="text">
-                <string>Sort current subgroups</string>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="4" column="1" rowspan="1" colspan="2">
-            <property name="name">
-                <cstring>closePushButton</cstring>
-            </property>
-            <property name="text">
-                <string>Close</string>
-            </property>
-        </widget>
         <widget class="QLabel" row="0" column="2">
             <property name="name">
                 <cstring>subgroupsTextLabel</cstring>
@@ -133,6 +117,38 @@
             </property>
             <property name="readOnly">
                 <bool>true</bool>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="4" column="0" rowspan="1" colspan="3">
+            <property name="name">
+                <cstring>activateStudentsPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Activate all activities for selected students subgroup</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="5" column="0" rowspan="1" colspan="3">
+            <property name="name">
+                <cstring>deactivateStudentsPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>De-activate all activities for selected students subgroup</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="3" column="0" rowspan="1" colspan="3">
+            <property name="name">
+                <cstring>removeSubgroupPushButton_2</cstring>
+            </property>
+            <property name="text">
+                <string>Sort current subgroups</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="6" column="0" rowspan="1" colspan="3">
+            <property name="name">
+                <cstring>closePushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Close</string>
             </property>
         </widget>
     </grid>
@@ -186,6 +202,18 @@
         <receiver>SubgroupsForm_template</receiver>
         <slot>sortSubgroups()</slot>
     </connection>
+    <connection>
+        <sender>activateStudentsPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>SubgroupsForm_template</receiver>
+        <slot>activateStudents()</slot>
+    </connection>
+    <connection>
+        <sender>deactivateStudentsPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>SubgroupsForm_template</receiver>
+        <slot>deactivateStudents()</slot>
+    </connection>
 </connections>
 <slots>
     <slot>addSubgroup()</slot>
@@ -195,6 +223,8 @@
     <slot>subgroupChanged(const QString&amp;)</slot>
     <slot>sortSubgroups()</slot>
     <slot>modifySubgroup()</slot>
+    <slot>activateStudents()</slot>
+    <slot>deactivateStudents()</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>
