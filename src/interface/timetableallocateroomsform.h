@@ -3,7 +3,7 @@
                              -------------------
     begin                : Tue Apr 22 2003
     copyright            : (C) 2003 by Lalescu Liviu
-    email                : liviu@lalescu.ro
+    email                : Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)
  ***************************************************************************/
 
 /***************************************************************************
@@ -76,15 +76,30 @@ public:
 	void writeRoomsTimetableXml(const QString& xmlfilename);
 
 	/**
-	Function writing the students' timetable (with rooms) in html format, to a file
+	Function writing the students' timetable (with rooms) in html format, to a file.
+	Days horizontal.
 	*/
-	void writeStudentsTimetableWithRoomsHtml(const QString& htmlfilename);
+	void writeStudentsTimetableWithRoomsDaysHorizontalHtml(const QString& htmlfilename);
+
+	/**
+	Function writing the students' timetable (with rooms) in html format, to a file.
+	Days vertical.
+	*/
+	void writeStudentsTimetableWithRoomsDaysVerticalHtml(const QString& htmlfilename);
 
 	/**
 	Function writing the teachers' timetable (with rooms) in html format, to a file
 	Variant 1.
+	Days horizontal.
 	*/
-	void writeTeachersTimetableWithRooms1Html(const QString& htmlfilename);
+	void writeTeachersTimetableWithRooms1DaysHorizontalHtml(const QString& htmlfilename);
+
+	/**
+	Function writing the teachers' timetable (with rooms) in html format, to a file
+	Variant 1.
+	Days vertical.
+	*/
+	void writeTeachersTimetableWithRooms1DaysVerticalHtml(const QString& htmlfilename);
 
 	/**
 	Function writing the teachers' timetable (with rooms) in html format, to a file
@@ -93,9 +108,16 @@ public:
 	void writeTeachersTimetableWithRooms2Html(const QString& htmlfilename);
 
 	/**
-	Function writing the rooms' timetable in html format, to a file
+	Function writing the rooms' timetable in html format, to a file.
+	Days horizontal.
 	*/
-	void writeRoomsTimetableHtml(const QString& htmlfilename);
+	void writeRoomsTimetableDaysHorizontalHtml(const QString& htmlfilename);
+
+	/**
+	Function writing the rooms' timetable in html format, to a file.
+	Days vertical.
+	*/
+	void writeRoomsTimetableDaysVerticalHtml(const QString& htmlfilename);
 
 	void getRoomsTimetable(SpaceChromosome& c);
 

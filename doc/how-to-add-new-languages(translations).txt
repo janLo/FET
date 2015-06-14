@@ -1,6 +1,9 @@
 FET - How to add new translations (languages)
 ---------------------------------------------
 
+These instructions are for GNU/Linux users, who have the source
+version of FET. Windows users please e-mail the author for details.
+
 STEP 1.
 
 Modify the file "fet-x.x.x/src/interface/interface.pro", by adding a line
@@ -27,16 +30,8 @@ From Qt Linguist, release the translation as "fet-x.x.x/translations/fet_**.qm"
 
 STEP 5.
 
-Send all the three modified files to the author (for now). You will be added 
+Send all the three modified files to the author. You will be added 
 as a contributor, of course.
 
-
-Current stage of the translation:
-
-Romanian translation done by Liviu Lalescu (liviu@lalescu.ro, http://lalescu.ro/liviu/).
-French translation done by Jerome Durand (fetfr@free.fr, http://fetfr.free.fr/).
-Catalan translation done by Miguel Gea Milvaques.
-Malay translation done by Abdul Hadi Kamel.
-Polish translation done by Radoslaw Pasiok (zapala@konto.pl).
 
 Of course, anyone can redo/improve current translations. The best variants will be chosen.

@@ -3,7 +3,7 @@
                              -------------------
     begin                : Tue Apr 22 2003
     copyright            : (C) 2003 by Lalescu Liviu
-    email                : liviu@lalescu.ro
+    email                : Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)
  ***************************************************************************/
 
 /***************************************************************************
@@ -81,9 +81,17 @@ public:
 
 	/**
 	Function writing the students' timetable html format, to a file
-	(variant 1)
+	(variant 1).
+	Days horizontal version.
 	*/
-	void writeStudentsTimetable1Html(const QString& htmlfilename);
+	void writeStudentsTimetable1DaysHorizontalHtml(const QString& htmlfilename);
+
+	/**
+	Function writing the students' timetable html format, to a file
+	(variant 1).
+	Days vertical version.
+	*/
+	void writeStudentsTimetable1DaysVerticalHtml(const QString& htmlfilename);
 
 	/**
 	Function writing the students' timetable html format, to a file
@@ -92,9 +100,16 @@ public:
 	void writeStudentsTimetable2Html(const QString& htmlfilename);
 
 	/**
-	Function writing the teachers' timetable in html format, version 1
+	Function writing the teachers' timetable in html format, version 1.
+	Days horizontal version
 	*/
-	void writeTeachersTimetable1Html(const QString& htmlfilename);
+	void writeTeachersTimetable1DaysHorizontalHtml(const QString& htmlfilename);
+
+	/**
+	Function writing the teachers' timetable in html format, version 1.
+	Days vertical version
+	*/
+	void writeTeachersTimetable1DaysVerticalHtml(const QString& htmlfilename);
 
 	/**
 	Function writing the teachers' timetable in html format, version 2

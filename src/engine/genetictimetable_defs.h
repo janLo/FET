@@ -3,7 +3,7 @@
                              -------------------
     begin                : Sat Mar 15 2003
     copyright            : (C) 2003 by Lalescu Liviu
-    email                : liviu@lalescu.ro
+    email                : Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)
  ***************************************************************************/
 
 /***************************************************************************
@@ -18,7 +18,7 @@
 
 #ifndef GENETICTIMETABLE_DEFS
 #define GENETICTIMETABLE_DEFS
-
+//#define WIN32
 #ifdef NDEBUG
 #undef NDEBUG
 #endif
@@ -376,8 +376,16 @@ const QString ROOMS_TIMETABLE_FILENAME_XML="roomstimetable.xml";
 /**
 An output file containing the timetable for each subgroup,
 arranged in html format. Version 1 - flyers for each subgroup
+Days horizontal version.
 */
-const QString STUDENTS_TIMETABLE_1_FILENAME_HTML="studentstimetable1.html";
+const QString STUDENTS_TIMETABLE_1_DAYS_HORIZONTAL_FILENAME_HTML="studentstimetable1dayshorizontal.html";
+
+/**
+An output file containing the timetable for each subgroup,
+arranged in html format. Version 1 - flyers for each subgroup
+Days vertical version.
+*/
+const QString STUDENTS_TIMETABLE_1_DAYS_VERTICAL_FILENAME_HTML="studentstimetable1daysvertical.html";
 
 /**
 An output file containing the timetable for each subgroup,
@@ -388,8 +396,16 @@ const QString STUDENTS_TIMETABLE_2_FILENAME_HTML="studentstimetable2.html";
 /**
 An output file containing the timetable for each teacher,
 arranged in html format. Version 1 - flyers for each teacher
+Days horizontal version.
 */
-const QString TEACHERS_TIMETABLE_1_FILENAME_HTML="teacherstimetable1.html";
+const QString TEACHERS_TIMETABLE_1_DAYS_HORIZONTAL_FILENAME_HTML="teacherstimetable1dayshorizontal.html";
+
+/**
+An output file containing the timetable for each teacher,
+arranged in html format. Version 1 - flyers for each teacher
+Days vertical version.
+*/
+const QString TEACHERS_TIMETABLE_1_DAYS_VERTICAL_FILENAME_HTML="teacherstimetable1daysvertical.html";
 
 /**
 An output file containing the timetable for each teacher,
@@ -400,14 +416,30 @@ const QString TEACHERS_TIMETABLE_2_FILENAME_HTML="teacherstimetable2.html";
 /**
 An output file containing the timetable for each room,
 arranged in html format.
+Days horizontal version.
 */
-const QString ROOMS_TIMETABLE_FILENAME_HTML="roomstimetable.html";
+const QString ROOMS_TIMETABLE_DAYS_HORIZONTAL_FILENAME_HTML="roomstimetabledayshorizontal.html";
 
 /**
 An output file containing the timetable for each room,
-arranged in html format. Version 1 - flyers for each room
+arranged in html format.
+Days vertical version.
 */
-const QString ROOMS_TIMETABLE_1_FILENAME_HTML="roomstimetable1.html";
+const QString ROOMS_TIMETABLE_DAYS_VERTICAL_FILENAME_HTML="roomstimetabledaysvertical.html";
+
+/**
+An output file containing the timetable for each room,
+arranged in html format. Version 1 - flyers for each room.
+Days horizontal.
+*/
+const QString ROOMS_TIMETABLE_1_DAYS_HORIZONTAL_FILENAME_HTML="roomstimetable1dayshorizontal.html";
+
+/**
+An output file containing the timetable for each room,
+arranged in html format. Version 1 - flyers for each room.
+Days vertical.
+*/
+const QString ROOMS_TIMETABLE_1_DAYS_VERTICAL_FILENAME_HTML="roomstimetable1daysvertical.html";
 
 /**
 An output file containing the timetable for each room,
@@ -417,27 +449,52 @@ const QString ROOMS_TIMETABLE_2_FILENAME_HTML="roomstimetable2.html";
 
 /**
 An output file containing the timetable (with rooms) for each subgroup,
-arranged in html format.
+arranged in html format. Version 1 - flyers for each subgroup.
+Days horizontal version.
 */
-const QString STUDENTS_TIMETABLE_WITH_ROOMS_FILENAME_HTML="studentstimetablewithrooms.html";
+const QString STUDENTS_TIMETABLE_WITH_ROOMS_1_DAYS_HORIZONTAL_FILENAME_HTML="studentstimetablewithrooms1dayshorizontal.html";
 
 /**
 An output file containing the timetable (with rooms) for each subgroup,
-arranged in html format. Version 1 - flyers for each subgroup
+arranged in html format. Version 1 - flyers for each subgroup.
+Days vertical version.
 */
-const QString STUDENTS_TIMETABLE_WITH_ROOMS_1_FILENAME_HTML="studentstimetablewithrooms1.html";
+const QString STUDENTS_TIMETABLE_WITH_ROOMS_1_DAYS_VERTICAL_FILENAME_HTML="studentstimetablewithrooms1daysvertical.html";
 
 /**
 An output file containing the timetable (with rooms) for each subgroup,
-arranged in html format. Version 2 - overall
+arranged in html format. Version 2 - overall.
+Days horizontal version.
 */
 const QString STUDENTS_TIMETABLE_WITH_ROOMS_2_FILENAME_HTML="studentstimetablewithrooms2.html";
 
 /**
-An output file containing the timetable for each teacher (with rooms),
-arranged in html format. Version 1 - flyers for each teacher
+An output file containing the timetable (with rooms) for each subgroup,
+arranged in html format.
+Days horizontal version.
 */
-const QString TEACHERS_TIMETABLE_WITH_ROOMS_1_FILENAME_HTML="teacherstimetablewithrooms1.html";
+const QString STUDENTS_TIMETABLE_WITH_ROOMS_DAYS_HORIZONTAL_FILENAME_HTML="studentstimetablewithroomsdayshorizontal.html";
+
+/**
+An output file containing the timetable (with rooms) for each subgroup,
+arranged in html format.
+Days vertical version.
+*/
+const QString STUDENTS_TIMETABLE_WITH_ROOMS_DAYS_VERTICAL_FILENAME_HTML="studentstimetablewithroomsdaysvertical.html";
+
+/**
+An output file containing the timetable for each teacher (with rooms),
+arranged in html format. Version 1 - flyers for each teacher.
+Days horizontal version.
+*/
+const QString TEACHERS_TIMETABLE_WITH_ROOMS_1_DAYS_HORIZONTAL_FILENAME_HTML="teacherstimetablewithrooms1dayshorizontal.html";
+
+/**
+An output file containing the timetable for each teacher (with rooms),
+arranged in html format. Version 1 - flyers for each teacher.
+Days vertical version.
+*/
+const QString TEACHERS_TIMETABLE_WITH_ROOMS_1_DAYS_VERTICAL_FILENAME_HTML="teacherstimetablewithrooms1daysvertical.html";
 
 /**
 An output file containing the timetable for each teacher (with rooms),
@@ -504,5 +561,28 @@ extern int METHOD2_PROPAGATION_PROBABILITY;
 A function used in xml saving
 */
 QString protect(const QString& str);
+
+/**
+A function used in html saving
+*/
+QString protect2(const QString& str);
+
+/**
+A function used in iCal saving
+*/
+QString protect3(const QString& str);
+
+//functions below are used in iCal exporting functions
+bool isLeapYear(int year);
+
+bool isCorrectDay(const QString day);
+
+bool isCorrectHour(const QString hour);
+
+QString nextDay(const QString day);
+
+bool sumHours(const QString hour1, const QString hour2, QString& result);
+
+QString iCalFolding(const QString s);
 
 #endif

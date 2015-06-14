@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>416</width>
-            <height>279</height>
+            <width>401</width>
+            <height>233</height>
         </rect>
     </property>
     <property name="caption">
@@ -27,7 +27,7 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>416</width>
+            <width>401</width>
             <height>48</height>
         </rect>
     </property>
@@ -114,6 +114,8 @@
             <action name="dataSpaceConstraintsMaxBuildingsChangesPerDayForTeachersAction"/>
             <action name="dataSpaceConstraintsMaxRoomChangesPerDayForStudentsAction"/>
             <action name="dataSpaceConstraintMaxRoomChangesPerDayForTeachersAction"/>
+            <action name="dataSpaceConstraintsMinimizeNumberOfRoomsForStudentsAction"/>
+            <action name="dataSpaceConstraintsMinimizeNumberOfRoomsForTeachersAction"/>
             <action name="dataSpaceConstraintsRoomTypeNotAllowedSubjectsAction"/>
             <action name="dataSpaceConstraintsSubjectPreferredRoomAction"/>
             <action name="dataSpaceConstraintsSubjectPreferredRoomsAction"/>
@@ -125,7 +127,7 @@
             <action name="dataSpaceConstraintsTeacherSubjectRequireRoomAction"/>
         </item>
         <action name="dataSpace_constraints_roomsAction"/>
-        <item text="Space constraints (rooms)" name="PopupMenuEditor_79" accel="">
+        <item text="Space constraints (rooms)" name="PopupMenuEditor_83" accel="">
             <action name="dataSpaceConstraintsRoomNotAvailableAction"/>
         </item>
     </item>
@@ -151,7 +153,18 @@
         <action name="timetableViewRooms2Action"/>
         <action name="timetableShowConflictsTimeSpaceAction"/>
         <separator/>
-        <action name="timetableExportAction"/>
+        <action name="timetableExportXmlHtmlAction"/>
+        <action name="timetableExportiCalAction"/>
+        <item text="Export to i&amp;Calendar" name="PopupMenuEditor_105" accel="">
+            <action name="timetableExportiCalTeachersAction"/>
+            <action name="timetableExportiCalStudentsAction"/>
+            <separator/>
+            <action name="timetableExportiCalTeachersWithRooms1Action"/>
+            <action name="timetableExportiCalStudentsWithRooms1Action"/>
+            <separator/>
+            <action name="timetableExportiCalTeachersWithRooms2Action"/>
+            <action name="timetableExportiCalStudentsWithRooms2Action"/>
+        </item>
     </item>
     <item text="&amp;Language" name="languageMenu">
         <action name="languageEnglishAction"/>
@@ -160,6 +173,8 @@
         <action name="languageRomanianAction"/>
         <action name="languageMalayAction"/>
         <action name="languagePolishAction"/>
+        <action name="languageTurkishAction"/>
+        <action name="languageDutchAction"/>
     </item>
     <item text="&amp;Help" name="helpMenu">
         <action name="helpFAQAction"/>
@@ -371,13 +386,13 @@
     </action>
     <action>
         <property name="name">
-            <cstring>timetableExportAction</cstring>
+            <cstring>timetableExportXmlHtmlAction</cstring>
         </property>
         <property name="text">
-            <string>Export</string>
+            <string>Export to xml and html</string>
         </property>
         <property name="menuText">
-            <string>E&amp;xport</string>
+            <string>Export to &amp;xml and html</string>
         </property>
     </action>
     <action>
@@ -1181,6 +1196,87 @@
             <string>Max room changes per day for students</string>
         </property>
     </action>
+    <action>
+        <property name="name">
+            <cstring>languageTurkishAction</cstring>
+        </property>
+        <property name="text">
+            <string>TR</string>
+        </property>
+        <property name="menuText">
+            <string>&amp;TR</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>languageDutchAction</cstring>
+        </property>
+        <property name="text">
+            <string>NL</string>
+        </property>
+        <property name="menuText">
+            <string>&amp;NL</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>timetableExportiCalAction</cstring>
+        </property>
+        <property name="text">
+            <string>Export to iCalendar</string>
+        </property>
+        <property name="menuText">
+            <string>Export to i&amp;Calendar</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>timetableExportiCalStudentsAction</cstring>
+        </property>
+        <property name="text">
+            <string>Students</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>timetableExportiCalTeachersAction</cstring>
+        </property>
+        <property name="text">
+            <string>Teachers</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>timetableExportiCalTeachersWithRooms1Action</cstring>
+        </property>
+        <property name="text">
+            <string>Teachers with rooms (1)</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>timetableExportiCalStudentsWithRooms1Action</cstring>
+        </property>
+        <property name="text">
+            <string>Students with rooms (1)</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>timetableExportiCalTeachersWithRooms2Action</cstring>
+        </property>
+        <property name="text">
+            <string>Teachers with rooms (2)</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>timetableExportiCalStudentsWithRooms2Action</cstring>
+        </property>
+        <property name="text">
+            <string>Students with rooms (2)</string>
+        </property>
+    </action>
 </actions>
 <images>
     <image name="image0">
@@ -1387,10 +1483,10 @@
         <slot>dataTimeConstraintsActivitiesSameStartingTime()</slot>
     </connection>
     <connection>
-        <sender>timetableExportAction</sender>
+        <sender>timetableExportXmlHtmlAction</sender>
         <signal>activated()</signal>
         <receiver>FetMainForm_template</receiver>
-        <slot>timetableExport()</slot>
+        <slot>timetableExportXmlHtml()</slot>
     </connection>
     <connection>
         <sender>timetableViewTeachersWithRoomsAction</sender>
@@ -1764,9 +1860,57 @@
         <receiver>FetMainForm_template</receiver>
         <slot>dataSpaceConstraintsMaxRoomChangesPerDayForStudents()</slot>
     </connection>
+    <connection>
+        <sender>languageTurkishAction</sender>
+        <signal>activated()</signal>
+        <receiver>FetMainForm_template</receiver>
+        <slot>languageTurkish()</slot>
+    </connection>
+    <connection>
+        <sender>languageDutchAction</sender>
+        <signal>activated()</signal>
+        <receiver>FetMainForm_template</receiver>
+        <slot>languageDutch()</slot>
+    </connection>
+    <connection>
+        <sender>timetableExportiCalStudentsWithRooms2Action</sender>
+        <signal>activated()</signal>
+        <receiver>FetMainForm_template</receiver>
+        <slot>timetableExportiCalStudentsWithRooms2()</slot>
+    </connection>
+    <connection>
+        <sender>timetableExportiCalStudentsAction</sender>
+        <signal>activated()</signal>
+        <receiver>FetMainForm_template</receiver>
+        <slot>timetableExportiCalStudents()</slot>
+    </connection>
+    <connection>
+        <sender>timetableExportiCalStudentsWithRooms1Action</sender>
+        <signal>activated()</signal>
+        <receiver>FetMainForm_template</receiver>
+        <slot>timetableExportiCalStudentsWithRooms1()</slot>
+    </connection>
+    <connection>
+        <sender>timetableExportiCalTeachersAction</sender>
+        <signal>activated()</signal>
+        <receiver>FetMainForm_template</receiver>
+        <slot>timetableExportiCalTeachers()</slot>
+    </connection>
+    <connection>
+        <sender>timetableExportiCalTeachersWithRooms1Action</sender>
+        <signal>activated()</signal>
+        <receiver>FetMainForm_template</receiver>
+        <slot>timetableExportiCalTeachersWithRooms1()</slot>
+    </connection>
+    <connection>
+        <sender>timetableExportiCalTeachersWithRooms2Action</sender>
+        <signal>activated()</signal>
+        <receiver>FetMainForm_template</receiver>
+        <slot>timetableExportiCalTeachersWithRooms2()</slot>
+    </connection>
 </connections>
 <slots>
-    <slot>timetableExport()</slot>
+    <slot>timetableExportXmlHtml()</slot>
     <slot>dataDays()</slot>
     <slot>dataGroups()</slot>
     <slot>dataSubgroups()</slot>
@@ -1864,6 +2008,15 @@
     <slot>dataSpaceConstraintsMinimizeNumberOfRoomsForTeachers()</slot>
     <slot>dataSpaceConstraintsMaxRoomChangesPerDayForTeachers()</slot>
     <slot>dataSpaceConstraintsMaxRoomChangesPerDayForStudents()</slot>
+    <slot>languageTurkish()</slot>
+    <slot>languageDutch()</slot>
+    <slot>timetableExportiCal()</slot>
+    <slot>timetableExportiCalTeachers()</slot>
+    <slot>timetableExportiCalStudents()</slot>
+    <slot>timetableExportiCalTeachersWithRooms1()</slot>
+    <slot>timetableExportiCalStudentsWithRooms1()</slot>
+    <slot>timetableExportiCalStudentsWithRooms2()</slot>
+    <slot>timetableExportiCalTeachersWithRooms2()</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

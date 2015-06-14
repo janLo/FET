@@ -217,7 +217,8 @@ void readSimulationParameters(){
 		cout<<"Read: language="<<FET_LANGUAGE<<endl;
 		if(FET_LANGUAGE!="EN" && FET_LANGUAGE!="FR" 
 		 && FET_LANGUAGE!="RO" && FET_LANGUAGE!="CA" 
-		 && FET_LANGUAGE!="MY" && FET_LANGUAGE!="PL"){
+		 && FET_LANGUAGE!="MY" && FET_LANGUAGE!="PL"
+		 && FET_LANGUAGE!="TR" && FET_LANGUAGE!="NL"){
 			cout<<"Invalid language - making it english"<<endl;
 			FET_LANGUAGE="EN";
 		}
@@ -367,8 +368,8 @@ int main(int argc, char **argv){
 #endif
 
 	//make sure that the output directory exists
-	if(!dir.exists(OUTPUT_DIR))
-		dir.mkdir(OUTPUT_DIR);
+	/*if(!dir.exists(OUTPUT_DIR))
+		dir.mkdir(OUTPUT_DIR);*/
 
 	readSimulationParameters();
 

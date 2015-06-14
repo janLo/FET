@@ -1,4 +1,5 @@
 GENERAL:
+- Change "Equipments" into "Equipment"
 - Check the memory leaks. In Valgrind it shows some leakage, I don't know where from
 - Add translation in other languages
 - Command line options.
@@ -132,3 +133,10 @@ propagation, at the end, when all the chromosomes are similar, mutation
 becomes more valuable.  At least this might be a solution to a situation 
 where a simulation has stalled with over 60 conflicts.
 (Liviu: the mutation rate is stored in the fet.ini file).
+
+8----------------------------------------------------------
+From Paulo Carrasco:
+Also it will be interesting to have some graphical output of the
+simulation of the GA (ex. Constraint violation per evolution step, mean of
+population fitness, etc.)
+

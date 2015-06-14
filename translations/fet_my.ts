@@ -4746,11 +4746,11 @@ tuple)</source>
     </message>
     <message>
         <source>Export</source>
-        <translation>Ekspot</translation>
+        <translation type="obsolete">Ekspot</translation>
     </message>
     <message>
         <source>E&amp;xport</source>
-        <translation>E&amp;kspot</translation>
+        <translation type="obsolete">E&amp;kspot</translation>
     </message>
     <message>
         <source>Show conflicts (time)</source>
@@ -5164,6 +5164,58 @@ tuple)</source>
         <source>Max room changes per day for students</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>TR</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;TR</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>NL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;NL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export to i&amp;Cal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export to xml and html</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export to &amp;xml and html</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export to iCal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Students</source>
+        <translation type="unfinished">Kumpulan pelajar</translation>
+    </message>
+    <message>
+        <source>Teachers with rooms (1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Students with rooms (1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teachers with rooms (2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Students with rooms (2)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>GroupsForm_template</name>
@@ -5261,42 +5313,52 @@ tuple)</source>
         <translation>Buku pelawat</translation>
     </message>
     <message>
-        <source>FET is free software for automatically scheduling the timetable of a school, high-school or faculty.
+        <source>In chronological order:
 
-Version: 3.17.1 (August 2005)
+Sebastian Canagaratna, Department of Chemistry, Ohio Northern University
 
-Licensed under GNU/GPL.
+Raita Mihail Doru
 
-Author: Liviu Lalescu, liviu@lalescu.ro, http://lalescu.ro/liviu/
-
-Web page: http://lalescu.ro/liviu/fet/ (for now)
-
-This project is open source. You are invited to contribute to this software and your feed-back would be greatly appreciated.
-
-Please support this project by making a donation. You can contact the author for that.</source>
+Tom Hosty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>French translation - by Jerome Durand 
 <byte value="x9"/>(fetfr@free.fr, http://fetfr.free.fr/ )
 
-Catalan translation - by Miguel Gea Milvaques
+Catalan translation - by Miguel Gea Milvaques 
+<byte value="x9"/>(debian@miguelgea.com)
 
 Romanian translation - by Liviu Lalescu 
-<byte value="x9"/>(liviu@lalescu.ro, http://lalescu.ro/liviu/ )
+<byte value="x9"/>(Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address))
 
 Malay translation - by Abdul Hadi Kamel
+<byte value="x9"/>(hadikamel@perlis.uitm.edu.my)
 
 Polish translation - by Radoslaw Pasiok
-<byte value="x9"/>(zapala@konto.pl)</source>
+<byte value="x9"/>(zapala@konto.pl)
+
+Turkish translation - by Mehmet Gezmisoglu
+<byte value="x9"/>(m_gezmisoglu@hotmail.com)
+
+Dutch translation - by Niels Fikse
+<byte value="x9"/>(k.fikse AT student.utwente.nl)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>In chronological order:
+        <source>FET is free software for automatically scheduling the timetable of a school, high-school or faculty.
 
-Sebastian Canagaratna, Department of Chemistry, Ohio Northern University
+Version: 3.18.1 (January 2006)
 
-Andreea Mihailescu</source>
+Licensed under GNU/GPL.
+
+Author: Liviu Lalescu, Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)
+
+FET web page: http://lalescu.ro/liviu/fet/
+
+This project is open source. You are invited to contribute to this software and your feed-back would be greatly appreciated.
+
+Please support this project by making a donation. You can contact the author or a translator for that.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5347,7 +5409,7 @@ Frank de Bruijn - bug reported.
 
 Radoslaw Pasiok - Polish translation.
 
-Daan Huntjens - bug reported, sample file, suggestions.
+Daan Huntjens - bug reported, sample file, suggestions, partial Dutch translation.
 
 Yush Yuen - sample file.
 
@@ -5357,11 +5419,61 @@ Dragos Petrascu - suggestions.
 
 Daniel S. - suggestions, help files for the constraints.
 
-Gianluca Salvo - suggested Constraint2ActivitiesOrdered.</source>
+Gianluca Salvo - suggested Constraint2ActivitiesOrdered.
+
+Sebastian O&apos;Halloran - suggestions.
+
+Mehmet Gezmisoglu - Turkish translation.
+
+Tom Hosty (tomhosty@hotmail.com) - sample file, bugs reported, user&apos;s guide.
+
+Niels Fikse - Dutch translation.
+
+Simon Bohlin - suggestions.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>---------------------------------------------------------------------
+        <source>sathia silan (thrilosyen81@yahoo.com)   (2006-01-09 10:45:34+02) (Rating: 5 stars out of 5)
+<byte value="x9"/>
+its good piece of G/A software...help me in studying G/A more..
+
+---------------------------------------------------------------------
+
+Tom Hosty (tomhosty@hotmail.com)   (2005-11-20 23:29:05+02) (Rating: 5 stars out of 5)
+<byte value="x9"/>
+I am a teacher with 30+ years experience. This is an excellent program, written by a young man who is obviously a genius. He welcomes your ideas and responds immediately. And it&apos;s free! (I tried a couple of commercial programs first - an English one costing 675 English pounds and a Finnish one costing over 300 English pounds).
+
+---------------------------------------------------------------------
+
+Nakul Dhotre (mail_me@rock.com)   (2005-10-29 22:45:08+03) (Rating: 4 stars out of 5)
+<byte value="x9"/>
+This is a great piece of software and a very good example of the huge potential genetic algorithms have.
+
+I never thaught making timetables might be such a difficult task when i was a kid .. but with this thing even a kid can make timetable for the whole school.
+
+---------------------------------------------------------------------
+
+drew (DrDrew@Gmail.com)   (2005-10-10 14:42:38+03)
+<byte value="x9"/>
+Do you know konosys ?
+That&apos;s the best timetable generator. Fet seems to be arranged !!
+
+---------------------------------------------------------------------
+
+Raita Mihail (mircea8844@yahoo.com)   (2005-09-14 21:50:20+03) (Rating: 5 stars out of 5)
+<byte value="x9"/>
+Este super!
+
+---------------------------------------------------------------------
+
+Rica (aurelian.pavel@email.ro)   (2005-09-11 12:46:05+03) (Rating: 5 stars out of 5)
+<byte value="x9"/>
+Este un program superb. L-am recomandat calduros tuturor. Multumim!
+
+Aurelian Pavel,
+Gr. Sc. de Ind. Usoara, Sighisoara
+
+---------------------------------------------------------------------
 
 radu (sunt@acasa.ro)   (2005-08-03 23:40:27+03)
 <byte value="x9"/>
@@ -8916,7 +9028,7 @@ in order, separated by commas.</source>
     <name>QOBject</name>
     <message>
         <source>FET information</source>
-        <translation type="unfinished">Maklumat FET</translation>
+        <translation type="obsolete">Maklumat FET</translation>
     </message>
 </context>
 <context>
@@ -9494,7 +9606,7 @@ Press button to continue.</source>
     </message>
     <message>
         <source>Please input at least two activities before allocating hours</source>
-        <translation>Sila masukkan sekurang-kurangnya dua aktiviti sebelum memperuntukan masa</translation>
+        <translation type="obsolete">Sila masukkan sekurang-kurangnya dua aktiviti sebelum memperuntukan masa</translation>
     </message>
     <message>
         <source>Please allocate the hours, firstly</source>
@@ -9518,7 +9630,7 @@ Press button to continue.</source>
     </message>
     <message>
         <source>Please input at least two activities and a room before allocating hours and rooms</source>
-        <translation>Sila masukkan sekurang-kurangnya dua aktiviti dan satu bilik sebelum memperuntukkan masa dan bilik</translation>
+        <translation type="obsolete">Sila masukkan sekurang-kurangnya dua aktiviti dan satu bilik sebelum memperuntukkan masa dan bilik</translation>
     </message>
     <message>
         <source>Please enter the directory &quot;%1&quot;
@@ -9526,7 +9638,7 @@ and you will find the exported .xml and .html files.
 You can translate the .xml files into .tex or .html
 using the files &quot;fetxml2latex.py&quot; or &quot;students.xsl&quot;, 
  &quot;teachers.xsl&quot; and &quot;rooms.xsl&quot; </source>
-        <translation>Please enter the directory &quot;%1&quot;(new line)
+        <translation type="obsolete">Please enter the directory &quot;%1&quot;(new line)
 and you will find the exported .xml and .html files.(new line)
 You can translate the .xml files into .tex or .html(new line)
 using the files &quot;fetxml2latex.py&quot; or &quot;students.xsl&quot;, (new line)
@@ -9795,7 +9907,7 @@ of old constraints using erased days
     </message>
     <message>
         <source>This increases the conflicts factor with %1</source>
-        <translation>Ini akan meningkatkan faktor konflik sebanyak %1</translation>
+        <translation type="obsolete">Ini akan meningkatkan faktor konflik sebanyak %1</translation>
     </message>
     <message>
         <source>teacher with name %1 has more than one allocated activity on day %2, hour %3</source>
@@ -9959,7 +10071,7 @@ of old constraints using erased days
     </message>
     <message>
         <source>. This increases the conflicts factor with %1</source>
-        <translation>. Ini menambahkan faktor konflik sebanyak %1</translation>
+        <translation type="obsolete">. Ini menambahkan faktor konflik sebanyak %1</translation>
     </message>
     <message>
         <source>Teachers no more than %1 hours daily</source>
@@ -9991,7 +10103,7 @@ of old constraints using erased days
     </message>
     <message>
         <source>This increases the conflicts factor with</source>
-        <translation>Ini menambahkan faktor konflik sebanyak</translation>
+        <translation type="obsolete">Ini menambahkan faktor konflik sebanyak</translation>
     </message>
     <message>
         <source>Teacher max days per week</source>
@@ -10167,7 +10279,7 @@ of old constraints using erased days
     <message>
         <source>Time constraint activity preferred time broken for activity with id=%1, increases conflicts factor with %2
 </source>
-        <translation>Kekangan masa keutamaan masa bg aktiviti tidak dipenuhi: id=%1, meningkatkan faktor konflik sebanyak %2</translation>
+        <translation type="obsolete">Kekangan masa keutamaan masa bg aktiviti tidak dipenuhi: id=%1, meningkatkan faktor konflik sebanyak %2</translation>
     </message>
     <message>
         <source>must be scheduled at:
@@ -10177,7 +10289,7 @@ of old constraints using erased days
     <message>
         <source>Time constraint activity preferred times broken for activity with id=%1, increases conflicts factor with %2
 </source>
-        <translation>Kekangan keutamaan masa bg aktiviti tidak dipenuhi: id=%1, meningkatkan faktor konflik sebanyak %2</translation>
+        <translation type="obsolete">Kekangan keutamaan masa bg aktiviti tidak dipenuhi: id=%1, meningkatkan faktor konflik sebanyak %2</translation>
     </message>
     <message>
         <source>must end the day</source>
@@ -10190,7 +10302,7 @@ of old constraints using erased days
     <message>
         <source>Time constraint activity ends day broken for activity with id=%1, increases conflicts factor with %2
 </source>
-        <translation>Kekangan aktiviti di penghujung hari tidak dipenuhi: Id aktiviti=%1, meningkatkan faktor konflik sebanyak %2</translation>
+        <translation type="obsolete">Kekangan aktiviti di penghujung hari tidak dipenuhi: Id aktiviti=%1, meningkatkan faktor konflik sebanyak %2</translation>
     </message>
     <message>
         <source>act. id 1:%1</source>
@@ -10207,7 +10319,7 @@ of old constraints using erased days
     <message>
         <source>Time constraint 2 activities consecutive broken for activities with id=%1 and id=%2, increases conflicts factor with %3
 </source>
-        <translation>Kekangan 2 aktiviti berturutan tidak dipenuhi untuk aktiviti dgn id=%1 dan id=%2, meningkat faktor konflik sebanyak %3</translation>
+        <translation type="obsolete">Kekangan 2 aktiviti berturutan tidak dipenuhi untuk aktiviti dgn id=%1 dan id=%2, meningkat faktor konflik sebanyak %3</translation>
     </message>
     <message>
         <source>must be followed by/follow activity with id=%1</source>
@@ -10216,7 +10328,7 @@ of old constraints using erased days
     <message>
         <source>Time constraint 2 activities grouped broken for activities with id=%1 and id=%2, increases conflicts factor with %3
 </source>
-        <translation>Kekangan 2 aktiviti digabungkan tidak dipenuhi untuk aktiviti id=%1 dan id=%2, meningkat faktor konflik sebanyak %3</translation>
+        <translation type="obsolete">Kekangan 2 aktiviti digabungkan tidak dipenuhi untuk aktiviti id=%1 dan id=%2, meningkat faktor konflik sebanyak %3</translation>
     </message>
     <message>
         <source>Activities with </source>
@@ -10302,7 +10414,7 @@ of old constraints using erased days
     </message>
     <message>
         <source> - this increases the conflicts factor with %1</source>
-        <translation>- ini menambah konflik dgn faktor %1</translation>
+        <translation type="obsolete">- ini menambah konflik dgn faktor %1</translation>
     </message>
     <message>
         <source>Space constraint basic compulsory: room %1 has allocated activity with id %2 and the capacity of the room is overloaded</source>
@@ -11116,7 +11228,7 @@ If you really need that, please talk to the author
     <message>
         <source>Time constraint activities preferred times broken for activity with id=%1,  increases conflicts factor with %2
 </source>
-        <translation>Keutamaan masa untuk aktiviti %1 tidak dipenuhi menambah faktor konflik sebyk %2</translation>
+        <translation type="obsolete">Keutamaan masa untuk aktiviti %1 tidak dipenuhi menambah faktor konflik sebyk %2</translation>
     </message>
     <message>
         <source>Invalid teacher(s)</source>
@@ -11146,11 +11258,6 @@ Please fix that</source>
     </message>
     <message>
         <source>must be followed (at arbitrary distance) by activity with id=%1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Time constraint 2 activities ordered broken for activities with id=%1 and id=%2, increases conflicts factor with %3
-</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -11359,16 +11466,139 @@ Please talk to the author or increase variable MAX_ACTIVITIES</source>
         <source>De-activated a number of %1 activities</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Please input at least two active activities before allocating hours</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please input at least two active activities and a room before allocating hours and rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This activity will be split into %1 lessons per week</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Timetable generated with FET %1 on %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This increases the conflicts total by %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>. This increases the conflicts total by %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This increases the conflicts total by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time constraint activity preferred time broken for activity with id=%1, increases conflicts total by %2
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time constraint activity preferred times broken for activity with id=%1, increases conflicts total by %2
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time constraint activity ends day broken for activity with id=%1, increases conflicts total by %2
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time constraint 2 activities consecutive broken for activities with id=%1 and id=%2, increases conflicts total by %3
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time constraint 2 activities ordered broken for activities with id=%1 and id=%2, increases conflicts total by %3
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time constraint 2 activities grouped broken for activities with id=%1 and id=%2, increases conflicts total by %3
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time constraint activities preferred times broken for activity with id=%1,  increases conflicts total by %2
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> - this increases the conflicts total by %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unallocated activity with id=%1</source>
+        <translation type="unfinished">Aktiviti tidak diperuntukkan dgn id=%1</translation>
+    </message>
+    <message>
+        <source>Invalid start hour.
+Please modify it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid lesson length.
+Please modify it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid break length.
+Please modify it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lessons for a specific day do not fit in a single day - impossible</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid start date.
+Please modify it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>teacher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>iCal (*.ics) files written (one for each teacher).
+Please check the %1 directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Results are exported to xml and html
+automatically from the allocate menu.
+Please enter the directory &quot;%1&quot;
+and you will find the exported .xml and .html files.
+You can translate the .xml files into .tex or .html
+using the files &quot;fetxml2latex.py&quot; or &quot;students.xsl&quot;, 
+ &quot;teachers.xsl&quot; and &quot;rooms.xsl&quot; </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>subgroup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>iCal (*.ics) files written (one for each subgroup).
+Please check the %1 directory</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QObject::QObject</name>
     <message>
         <source>unallocated activity with id=%1</source>
-        <translation>Aktiviti tidak diperuntukkan dgn id=%1</translation>
+        <translation type="obsolete">Aktiviti tidak diperuntukkan dgn id=%1</translation>
     </message>
     <message>
         <source> - this increases the conflicts factor with %1</source>
-        <translation>- ini menambah konflik dgn faktor %1</translation>
+        <translation type="obsolete">- ini menambah konflik dgn faktor %1</translation>
     </message>
 </context>
 <context>
@@ -11776,6 +12006,216 @@ the automatic generation from the saved position)</source>
     <message>
         <source>Initialize (randomly)</source>
         <translation>Memulakan secara rawak</translation>
+    </message>
+</context>
+<context>
+    <name>TimetableExportiCalStudentsForm_template</name>
+    <message>
+        <source>FET - timetable export iCal students form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please enter the start hour of each day,
+in the form hhmm (4 digits)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please enter the length of each lesson,
+in the form hhmm (4 digits)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please enter the length of each break,
+in the form hhmm (4 digits)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please enter the starting day,
+in the form yyyymmdd (8 digits)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export to iCal files</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TimetableExportiCalStudentsWithRooms1Form_template</name>
+    <message>
+        <source>FET - timetable export iCal students with rooms 1 form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please enter the start hour of each day,
+in the form hhmm (4 digits)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please enter the length of each lesson,
+in the form hhmm (4 digits)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please enter the length of each break,
+in the form hhmm (4 digits)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please enter the starting day,
+in the form yyyymmdd (8 digits)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export to iCal files</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TimetableExportiCalStudentsWithRooms2Form_template</name>
+    <message>
+        <source>FET - timetable export iCal students with rooms 2 form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please enter the start hour of each day,
+in the form hhmm (4 digits)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please enter the length of each lesson,
+in the form hhmm (4 digits)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please enter the length of each break,
+in the form hhmm (4 digits)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please enter the starting day,
+in the form yyyymmdd (8 digits)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export to iCal files</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TimetableExportiCalTeachersForm_template</name>
+    <message>
+        <source>FET - timetable export iCal teachers form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please enter the start hour of each day,
+in the form hhmm (4 digits)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please enter the length of each lesson,
+in the form hhmm (4 digits)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please enter the length of each break,
+in the form hhmm (4 digits)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please enter the starting day,
+in the form yyyymmdd (8 digits)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export to iCal files</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TimetableExportiCalTeachersWithRooms1Form_template</name>
+    <message>
+        <source>FET - timetable export iCal teachers with rooms 1 form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please enter the start hour of each day,
+in the form hhmm (4 digits)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please enter the length of each lesson,
+in the form hhmm (4 digits)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please enter the length of each break,
+in the form hhmm (4 digits)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please enter the starting day,
+in the form yyyymmdd (8 digits)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export to iCal files</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TimetableExportiCalTeachersWithRooms2Form_template</name>
+    <message>
+        <source>FET - timetable export iCal teachers with rooms 2 form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please enter the start hour of each day,
+in the form hhmm (4 digits)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please enter the length of each lesson,
+in the form hhmm (4 digits)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please enter the length of each break,
+in the form hhmm (4 digits)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please enter the starting day,
+in the form yyyymmdd (8 digits)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export to iCal files</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

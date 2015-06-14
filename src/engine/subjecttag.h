@@ -5,7 +5,7 @@
 // Description: 
 //
 //
-// Author: Liviu Lalescu <liviu@lalescu.ro>, (C) 2005
+// Author: Liviu Lalescu <Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)>, (C) 2005
 //
 // Copyright: See COPYING file that comes with this distribution
 //

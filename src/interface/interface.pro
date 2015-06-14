@@ -75,6 +75,12 @@ SOURCES += fet.cpp \
            subjectsform.cpp \
            subjecttagsform.cpp \
            teachersform.cpp \
+           timetableexporticalteachersform.cpp \
+           timetableexporticalstudentsform.cpp \
+           timetableexporticalteacherswithrooms1form.cpp \
+           timetableexporticalstudentswithrooms1form.cpp \
+           timetableexporticalteacherswithrooms2form.cpp \
+           timetableexporticalstudentswithrooms2form.cpp \
            timetableallocatehoursform.cpp \
            timetableallocateroomsform.cpp \
            timetableallocatehoursroomsform.cpp \
@@ -290,6 +296,12 @@ HEADERS += fet.h \
            subjectsform.h \
            subjecttagsform.h \
            teachersform.h \
+           timetableexporticalteachersform.h \
+           timetableexporticalstudentsform.h \
+           timetableexporticalteacherswithrooms1form.h \
+           timetableexporticalstudentswithrooms1form.h \
+           timetableexporticalteacherswithrooms2form.h \
+           timetableexporticalstudentswithrooms2form.h \
            timetableallocatehoursform.h \
            timetableallocateroomsform.h \
            timetableallocatehoursroomsform.h \
@@ -437,7 +449,9 @@ TRANSLATIONS += ../../translations/fet_ro.ts \
 				../../translations/fet_ca.ts \
                 ../../translations/fet_fr.ts \
                 ../../translations/fet_my.ts \
-                ../../translations/fet_pl.ts
+                ../../translations/fet_pl.ts \
+                ../../translations/fet_tr.ts \
+                ../../translations/fet_nl.ts
 FORMS += helpaboutform_template.ui \
          helpfaqform_template.ui \
          helptimeconstraintsform_template.ui \
@@ -509,6 +523,12 @@ FORMS += helpaboutform_template.ui \
          subjectsform_template.ui \
          subjecttagsform_template.ui \
          teachersform_template.ui \
+         timetableexporticalteachersform_template.ui \
+         timetableexporticalstudentsform_template.ui \
+         timetableexporticalteacherswithrooms1form_template.ui \
+         timetableexporticalstudentswithrooms1form_template.ui \
+         timetableexporticalteacherswithrooms2form_template.ui \
+         timetableexporticalstudentswithrooms2form_template.ui \
          timetableallocatehoursform_template.ui \
          timetableallocateroomsform_template.ui \
          timetableallocatehoursroomsform_template.ui \

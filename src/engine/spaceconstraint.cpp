@@ -298,7 +298,7 @@ int ConstraintBasicCompulsorySpace::fitness(
 							(*conflictsString)+=r.daysOfTheWeek[j];
 							(*conflictsString)+=", hour ";
 							(*conflictsString)+=QString::number(k);
-							(*conflictsString)+=". This increases the fitness factor with ";
+							(*conflictsString)+=". This increases the conflicts total by ";
 							(*conflictsString)+=QString::number(tmp*weight);
 							(*conflictsString)+="\n";
 						}
@@ -320,7 +320,7 @@ int ConstraintBasicCompulsorySpace::fitness(
 				//(an unallocated activity for a year is more important than an unallocated activity for a subgroup)
 				if(conflictsString!=NULL){
 					(*conflictsString) += QObject::tr("Space constraint basic compulsory: unallocated activity with id=%1").arg(r.internalActivitiesList[i].id);
-					(*conflictsString) += QObject::tr(" - this increases the conflicts factor with %1")
+					(*conflictsString) += QObject::tr(" - this increases the conflicts total by %1")
 						.arg(weight* /*r.internalActivitiesList[i].duration * r.internalActivitiesList[i].nSubgroups * */ 10000);
 					(*conflictsString) += "\n";
 				}
@@ -366,7 +366,7 @@ int ConstraintBasicCompulsorySpace::fitness(
 								.arg(r.daysOfTheWeek[j])
 								.arg(r.hoursOfTheDay[k]);
 							(*conflictsString)+=" ";
-							(*conflictsString)+=QObject::tr("This increases the conflicts factor with %1").arg(tmp*weight);
+							(*conflictsString)+=QObject::tr("This increases the conflicts total by %1").arg(tmp*weight);
 							(*conflictsString)+="\n";
 						}
 						nre+=tmp;
@@ -557,7 +557,7 @@ int ConstraintRoomNotAvailable::fitness(
 						.arg(r.daysOfTheWeek[j])
 						.arg(k));
 					*conflictsString += ". ";
-					*conflictsString += (QObject::tr("This increases the conflicts factor with %1").arg(roomsMatrix[i][j][k]*weight));
+					*conflictsString += (QObject::tr("This increases the conflicts total by %1").arg(roomsMatrix[i][j][k]*weight));
 					*conflictsString += "\n";
 				}
 				nbroken+=roomsMatrix[i][j][k];
@@ -792,7 +792,7 @@ int ConstraintRoomTypeNotAllowedSubjects::fitness(
 						.arg(r.internalRoomsList[rm]->name)
 						.arg(r.internalActivitiesList[ac].id));
 					*conflictsString += ". ";
-					*conflictsString += (QObject::tr("This increases the conflicts factor with %1").arg(parity*weight));
+					*conflictsString += (QObject::tr("This increases the conflicts total by %1").arg(parity*weight));
 					*conflictsString += "\n";
 				}
 	
@@ -1050,7 +1050,7 @@ int ConstraintSubjectRequiresEquipments::fitness(
 						.arg(r.internalRoomsList[rm]->name)
 						.arg(r.internalActivitiesList[ac].id));
 					*conflictsString += ". ";
-					*conflictsString += (QObject::tr("This increases the conflicts factor with %1").arg(weight*parity));
+					*conflictsString += (QObject::tr("This increases the conflicts total by %1").arg(weight*parity));
 					*conflictsString += "\n";
 				}
 
@@ -1313,7 +1313,7 @@ int ConstraintSubjectSubjectTagRequireEquipments::fitness(
 						.arg(r.internalRoomsList[rm]->name)
 						.arg(r.internalActivitiesList[ac].id));
 					*conflictsString += ". ";
-					*conflictsString += (QObject::tr("This increases the conflicts factor with %1").arg(weight*parity));
+					*conflictsString += (QObject::tr("This increases the conflicts total by %1").arg(weight*parity));
 					*conflictsString += "\n";
 				}
 
@@ -1521,7 +1521,7 @@ int ConstraintTeacherRequiresRoom::fitness(
 						.arg(this->roomName)
 						.arg(r.internalActivitiesList[ac].id));
 					*conflictsString += ". ";
-					*conflictsString += (QObject::tr("This increases the conflicts factor with %1").arg(weight*parity));
+					*conflictsString += (QObject::tr("This increases the conflicts total by %1").arg(weight*parity));
 					*conflictsString += "\n";
 				}
 
@@ -1741,7 +1741,7 @@ int ConstraintTeacherSubjectRequireRoom::fitness(
 						.arg(this->roomName)
 						.arg(r.internalActivitiesList[ac].id));
 					*conflictsString += ". ";
-					*conflictsString += (QObject::tr("This increases the conflicts factor with %1").arg(weight*parity));
+					*conflictsString += (QObject::tr("This increases the conflicts total by %1").arg(weight*parity));
 					*conflictsString += "\n";
 				}
 
@@ -1967,7 +1967,7 @@ int ConstraintMinimizeNumberOfRoomsForStudents::fitness(
 						.arg(r.internalSubgroupsList[i]->name)
 						.arg(total[i]);
 					*conflictsString += ". ";
-					*conflictsString += (QObject::tr("This increases the conflicts factor with %1").arg(weight*(total[i]-1)));
+					*conflictsString += (QObject::tr("This increases the conflicts total by %1").arg(weight*(total[i]-1)));
 					*conflictsString += "\n";
 				}
 			}
@@ -2192,7 +2192,7 @@ int ConstraintMinimizeNumberOfRoomsForTeachers::fitness(
 						.arg(r.internalTeachersList[i]->name)
 						.arg(total[i]);
 					*conflictsString += ". ";
-					*conflictsString += (QObject::tr("This increases the conflicts factor with %1").arg(weight*(total[i]-1)));
+					*conflictsString += (QObject::tr("This increases the conflicts total by %1").arg(weight*(total[i]-1)));
 					*conflictsString += "\n";
 				}
 			}
@@ -2401,7 +2401,7 @@ int ConstraintActivityPreferredRoom::fitness(
 					.arg(this->activityId)
 					.arg(this->roomName));
 				*conflictsString += ". ";
-				*conflictsString += (QObject::tr("This increases the conflicts factor with %1").arg(weight*parity));
+				*conflictsString += (QObject::tr("This increases the conflicts total by %1").arg(weight*parity));
 				*conflictsString += "\n";
 			}
 
@@ -2624,7 +2624,7 @@ int ConstraintActivityPreferredRooms::fitness(
 						(QObject::tr("Space constraint activity preferred rooms broken for activity with id=%1")
 						.arg(this->activityId));
 					*conflictsString += ". ";
-					*conflictsString += (QObject::tr("This increases the conflicts factor with %1").arg(weight*parity));
+					*conflictsString += (QObject::tr("This increases the conflicts total by %1").arg(weight*parity));
 					*conflictsString += "\n";
 				}
 
@@ -3117,7 +3117,7 @@ int ConstraintSubjectSubjectTagPreferredRoom::fitness(
 						(QObject::tr("Space constraint subject subject tag preferred room broken for activity with id %1")
 						.arg(r.internalActivitiesList[ac].id));
 					*conflictsString += ". ";
-					*conflictsString += (QObject::tr("This increases the conflicts factor with %1").arg(weight*parity));
+					*conflictsString += (QObject::tr("This increases the conflicts total by %1").arg(weight*parity));
 					*conflictsString += "\n";
 				}
 
@@ -3361,7 +3361,7 @@ int ConstraintSubjectSubjectTagPreferredRooms::fitness(
 						(QObject::tr("Space constraint subject subject tag preferred room broken for activity with id %1")
 						.arg(r.internalActivitiesList[ac].id));
 					*conflictsString += ". ";
-					*conflictsString += (QObject::tr("This increases the conflicts factor with %1").arg(weight*parity));
+					*conflictsString += (QObject::tr("This increases the conflicts total by %1").arg(weight*parity));
 					*conflictsString += "\n";
 				}
 
@@ -3578,7 +3578,7 @@ int ConstraintSubjectPreferredRoom::fitness(
 						(QObject::tr("Space constraint subject preferred room broken for activity with id %1")
 						.arg(r.internalActivitiesList[ac].id));
 					*conflictsString += ". ";
-					*conflictsString += (QObject::tr("This increases the conflicts factor with %1").arg(weight*parity));
+					*conflictsString += (QObject::tr("This increases the conflicts total by %1").arg(weight*parity));
 					*conflictsString += "\n";
 				}
 
@@ -3818,7 +3818,7 @@ int ConstraintSubjectPreferredRooms::fitness(
 						(QObject::tr("Space constraint subject preferred room broken for activity with id %1")
 						.arg(r.internalActivitiesList[ac].id));
 					*conflictsString += ". ";
-					*conflictsString += (QObject::tr("This increases the conflicts factor with %1").arg(weight*parity));
+					*conflictsString += (QObject::tr("This increases the conflicts total by %1").arg(weight*parity));
 					*conflictsString += "\n";
 				}
 

@@ -3,7 +3,7 @@
                              -------------------
     begin                : Feb 14, 2005
     copyright            : (C) 2005 by Lalescu Liviu
-    email                : liviu@lalescu.ro
+    email                : Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)
  ***************************************************************************/
 
 /***************************************************************************
@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TIMETABLEALLOCATHOURSROOMSFORM_H
+#ifndef TIMETABLEALLOCATEHOURSROOMSFORM_H
 #define TIMETABLEALLOCATEHOURSROOMSFORM_H
 
 #include "timetableallocatehoursroomsform_template.h"
@@ -87,9 +87,17 @@ public:
 
 	/**
 	Function writing the students' timetable (with rooms) in html format, to a file
-	Variant 1
+	Variant 1.
+	Days horizontal version.
 	*/
-	void writeStudentsTimetableWithRooms1Html(const QString& htmlfilename);
+	void writeStudentsTimetableWithRooms1DaysHorizontalHtml(const QString& htmlfilename);
+
+	/**
+	Function writing the students' timetable (with rooms) in html format, to a file
+	Variant 1.
+	Days vertical version.
+	*/
+	void writeStudentsTimetableWithRooms1DaysVerticalHtml(const QString& htmlfilename);
 
 	/**
 	Function writing the students' timetable (with rooms) in html format, to a file
@@ -100,8 +108,16 @@ public:
 	/**
 	Function writing the teachers' timetable (with rooms) in html format, to a file
 	Variant 1.
+	Days horizontal.
 	*/
-	void writeTeachersTimetableWithRooms1Html(const QString& htmlfilename);
+	void writeTeachersTimetableWithRooms1DaysHorizontalHtml(const QString& htmlfilename);
+
+	/**
+	Function writing the teachers' timetable (with rooms) in html format, to a file
+	Variant 1.
+	Days vertical.
+	*/
+	void writeTeachersTimetableWithRooms1DaysVerticalHtml(const QString& htmlfilename);
 
 	/**
 	Function writing the teachers' timetable (with rooms) in html format, to a file
@@ -111,9 +127,17 @@ public:
 
 	/**
 	Function writing the rooms' timetable in html format, to a file
-	Variant 1
+	Variant 1.
+	Days horizontal.
 	*/
-	void writeRoomsTimetable1Html(const QString& htmlfilename);
+	void writeRoomsTimetable1DaysHorizontalHtml(const QString& htmlfilename);
+
+	/**
+	Function writing the rooms' timetable in html format, to a file
+	Variant 1.
+	Days vertical.
+	*/
+	void writeRoomsTimetable1DaysVerticalHtml(const QString& htmlfilename);
 
 	/**
 	Function writing the rooms' timetable in html format, to a file

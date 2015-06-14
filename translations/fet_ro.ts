@@ -216,7 +216,7 @@ oricare pereche de subactivitati</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation>Sterge</translation>
+        <translation>Sterge tot</translation>
     </message>
     <message>
         <source>Active</source>
@@ -615,7 +615,7 @@ cate una pentru fiecare grup corespunzator)</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation>Sterge</translation>
+        <translation>Sterge tot</translation>
     </message>
 </context>
 <context>
@@ -2968,7 +2968,7 @@ separated by commas (maximum 20 for now).
     <name>ConstraintActivitiesPreferredTimesForm_template</name>
     <message>
         <source>FET - ConstraintActivitiesPreferredTimes</source>
-        <translation>FET - Constrangeri activitati timp preferat</translation>
+        <translation>FET - Constrangeri activitati timpi preferati</translation>
     </message>
     <message>
         <source>Close</source>
@@ -5185,11 +5185,11 @@ separated by commas (maximum 20 for now).
     </message>
     <message>
         <source>Export</source>
-        <translation>Exporta</translation>
+        <translation type="obsolete">Exporta</translation>
     </message>
     <message>
         <source>E&amp;xport</source>
-        <translation>E&amp;xporta</translation>
+        <translation type="obsolete">E&amp;xporta</translation>
     </message>
     <message>
         <source>View (teachers-with rooms)</source>
@@ -5544,6 +5544,58 @@ Studenti - n ore zilnic</translation>
         <source>Max room changes per day for students</source>
         <translation>Max schimbari de sala pe zi pentru studenti</translation>
     </message>
+    <message>
+        <source>TR</source>
+        <translation>TR</translation>
+    </message>
+    <message>
+        <source>&amp;TR</source>
+        <translation>&amp;TR</translation>
+    </message>
+    <message>
+        <source>NL</source>
+        <translation>NL</translation>
+    </message>
+    <message>
+        <source>&amp;NL</source>
+        <translation>&amp;NL</translation>
+    </message>
+    <message>
+        <source>Export to i&amp;Cal</source>
+        <translation>Exporta in i&amp;Cal</translation>
+    </message>
+    <message>
+        <source>Export to xml and html</source>
+        <translation>Exporta in xml si html</translation>
+    </message>
+    <message>
+        <source>Export to &amp;xml and html</source>
+        <translation>Exporta in &amp;xml si html</translation>
+    </message>
+    <message>
+        <source>Export to iCal</source>
+        <translation>Exporta in iCal</translation>
+    </message>
+    <message>
+        <source>Students</source>
+        <translation>Studenti</translation>
+    </message>
+    <message>
+        <source>Teachers with rooms (1)</source>
+        <translation>Profesori cu sali (1)</translation>
+    </message>
+    <message>
+        <source>Students with rooms (1)</source>
+        <translation>Studenti cu sali (1)</translation>
+    </message>
+    <message>
+        <source>Teachers with rooms (2)</source>
+        <translation>Profesori cu sali (2)</translation>
+    </message>
+    <message>
+        <source>Students with rooms (2)</source>
+        <translation>Studenti cu sali (2)</translation>
+    </message>
 </context>
 <context>
     <name>GroupsForm_template</name>
@@ -5637,59 +5689,69 @@ Studenti - n ore zilnic</translation>
         <translation>Carte de oaspeti</translation>
     </message>
     <message>
-        <source>FET is free software for automatically scheduling the timetable of a school, high-school or faculty.
-
-Version: 3.17.1 (August 2005)
-
-Licensed under GNU/GPL.
-
-Author: Liviu Lalescu, liviu@lalescu.ro, http://lalescu.ro/liviu/
-
-Web page: http://lalescu.ro/liviu/fet/ (for now)
-
-This project is open source. You are invited to contribute to this software and your feed-back would be greatly appreciated.
-
-Please support this project by making a donation. You can contact the author for that.</source>
-        <translation>FET este software liber pentru automatizarea crearii orarului pentru scoli primare, licee sau facultati
-
-Versiunea: 3.17.1 (august 2005)
-
-Program sub licenta GNU/GPL
-
-Autor: Liviu Lalescu, liviu@lalescu.ro, http://lalescu.ro/liviu/
-
-Pagina de internet: http://lalescu.ro/liviu/fet/ (in prezent)
-
-Acest proiect este liber. Sunteti invitati sa contribuiti la imbunatatirea lui si orice comentariu constructiv sau remarca vor fi foarte apreciate.
-
-Va rugam sustineti acest proiect facand o donatie. Puteti contacta autorul pentru aceasta.</translation>
-    </message>
-    <message>
         <source>Sponsors</source>
         <translation>Sponsori</translation>
-    </message>
-    <message>
-        <source>French translation - by Jerome Durand 
-<byte value="x9"/>(fetfr@free.fr, http://fetfr.free.fr/ )
-
-Catalan translation - by Miguel Gea Milvaques
-
-Romanian translation - by Liviu Lalescu 
-<byte value="x9"/>(liviu@lalescu.ro, http://lalescu.ro/liviu/ )
-
-Malay translation - by Abdul Hadi Kamel
-
-Polish translation - by Radoslaw Pasiok
-<byte value="x9"/>(zapala@konto.pl)</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>In chronological order:
 
 Sebastian Canagaratna, Department of Chemistry, Ohio Northern University
 
-Andreea Mihailescu</source>
+Raita Mihail Doru
+
+Tom Hosty</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>French translation - by Jerome Durand 
+<byte value="x9"/>(fetfr@free.fr, http://fetfr.free.fr/ )
+
+Catalan translation - by Miguel Gea Milvaques 
+<byte value="x9"/>(debian@miguelgea.com)
+
+Romanian translation - by Liviu Lalescu 
+<byte value="x9"/>(Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address))
+
+Malay translation - by Abdul Hadi Kamel
+<byte value="x9"/>(hadikamel@perlis.uitm.edu.my)
+
+Polish translation - by Radoslaw Pasiok
+<byte value="x9"/>(zapala@konto.pl)
+
+Turkish translation - by Mehmet Gezmisoglu
+<byte value="x9"/>(m_gezmisoglu@hotmail.com)
+
+Dutch translation - by Niels Fikse
+<byte value="x9"/>(k.fikse AT student.utwente.nl)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FET is free software for automatically scheduling the timetable of a school, high-school or faculty.
+
+Version: 3.18.1 (January 2006)
+
+Licensed under GNU/GPL.
+
+Author: Liviu Lalescu, Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)
+
+FET web page: http://lalescu.ro/liviu/fet/
+
+This project is open source. You are invited to contribute to this software and your feed-back would be greatly appreciated.
+
+Please support this project by making a donation. You can contact the author or a translator for that.</source>
+        <translation>FET este software liber pentru automatizarea crearii orarului unei scoli, liceu sau facultate.
+
+Versiunea: 3.18.1 (Ianuarie 2006)
+
+Program sub licenta GNU/GPL
+
+Autor: Liviu Lalescu. Va rog vizitati http://lalescu.ro/liviu/ pentru detalii despre cum puteti sa il contactati pe Liviu Lalescu (in particular, veti gasi acolo si adresa de e-mail)
+
+FET: pagina de internet: http://lalescu.ro/liviu/fet/
+
+Acest proiect este cu surse deschise. Sunteti invitat sa contribuiti la acest program si feed-back-ul dvs. ar fi foarte apreciat.
+
+Va rugam sustineti acest program facand o donatie. Puteti contacta autorul sau un translator pentru aceasta.</translation>
     </message>
     <message>
         <source>(chronologically)
@@ -5739,7 +5801,7 @@ Frank de Bruijn - bug reported.
 
 Radoslaw Pasiok - Polish translation.
 
-Daan Huntjens - bug reported, sample file, suggestions.
+Daan Huntjens - bug reported, sample file, suggestions, partial Dutch translation.
 
 Yush Yuen - sample file.
 
@@ -5749,11 +5811,61 @@ Dragos Petrascu - suggestions.
 
 Daniel S. - suggestions, help files for the constraints.
 
-Gianluca Salvo - suggested Constraint2ActivitiesOrdered.</source>
+Gianluca Salvo - suggested Constraint2ActivitiesOrdered.
+
+Sebastian O&apos;Halloran - suggestions.
+
+Mehmet Gezmisoglu - Turkish translation.
+
+Tom Hosty (tomhosty@hotmail.com) - sample file, bugs reported, user&apos;s guide.
+
+Niels Fikse - Dutch translation.
+
+Simon Bohlin - suggestions.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>---------------------------------------------------------------------
+        <source>sathia silan (thrilosyen81@yahoo.com)   (2006-01-09 10:45:34+02) (Rating: 5 stars out of 5)
+<byte value="x9"/>
+its good piece of G/A software...help me in studying G/A more..
+
+---------------------------------------------------------------------
+
+Tom Hosty (tomhosty@hotmail.com)   (2005-11-20 23:29:05+02) (Rating: 5 stars out of 5)
+<byte value="x9"/>
+I am a teacher with 30+ years experience. This is an excellent program, written by a young man who is obviously a genius. He welcomes your ideas and responds immediately. And it&apos;s free! (I tried a couple of commercial programs first - an English one costing 675 English pounds and a Finnish one costing over 300 English pounds).
+
+---------------------------------------------------------------------
+
+Nakul Dhotre (mail_me@rock.com)   (2005-10-29 22:45:08+03) (Rating: 4 stars out of 5)
+<byte value="x9"/>
+This is a great piece of software and a very good example of the huge potential genetic algorithms have.
+
+I never thaught making timetables might be such a difficult task when i was a kid .. but with this thing even a kid can make timetable for the whole school.
+
+---------------------------------------------------------------------
+
+drew (DrDrew@Gmail.com)   (2005-10-10 14:42:38+03)
+<byte value="x9"/>
+Do you know konosys ?
+That&apos;s the best timetable generator. Fet seems to be arranged !!
+
+---------------------------------------------------------------------
+
+Raita Mihail (mircea8844@yahoo.com)   (2005-09-14 21:50:20+03) (Rating: 5 stars out of 5)
+<byte value="x9"/>
+Este super!
+
+---------------------------------------------------------------------
+
+Rica (aurelian.pavel@email.ro)   (2005-09-11 12:46:05+03) (Rating: 5 stars out of 5)
+<byte value="x9"/>
+Este un program superb. L-am recomandat calduros tuturor. Multumim!
+
+Aurelian Pavel,
+Gr. Sc. de Ind. Usoara, Sighisoara
+
+---------------------------------------------------------------------
 
 radu (sunt@acasa.ro)   (2005-08-03 23:40:27+03)
 <byte value="x9"/>
@@ -7082,7 +7194,7 @@ this documentation by Daniel S.</source>
     </message>
     <message>
         <source>Clear</source>
-        <translation>Sterge</translation>
+        <translation>Sterge tot</translation>
     </message>
     <message>
         <source>Active</source>
@@ -9411,7 +9523,7 @@ in ordine, separate prin virgula.</translation>
     <name>QOBject</name>
     <message>
         <source>FET information</source>
-        <translation>FET - informatie</translation>
+        <translation type="obsolete">FET - informatie</translation>
     </message>
 </context>
 <context>
@@ -10208,20 +10320,20 @@ pentru ca profesorul este invalid</translation>
     </message>
     <message>
         <source>This increases the conflicts factor with %1</source>
-        <translation>Aceasta mareste factorul de conflicte cu %1</translation>
+        <translation type="obsolete">Aceasta mareste factorul de conflicte cu %1</translation>
     </message>
     <message>
         <source>. This increases the conflicts factor with %1</source>
-        <translation>- Aceasta mareste factorul de conflicte cu %1</translation>
+        <translation type="obsolete">- Aceasta mareste factorul de conflicte cu %1</translation>
     </message>
     <message>
         <source>This increases the conflicts factor with</source>
-        <translation>Aceasta mareste factorul de conflicte cu</translation>
+        <translation type="obsolete">Aceasta mareste factorul de conflicte cu</translation>
     </message>
     <message>
         <source>Time constraint activity preferred time broken for activity with id=%1, increases conflicts factor with %2
 </source>
-        <translation>Constrangere de timp - timpul preferat al activitatii - nerespectata pentru activitatea cu id=%1, mareste factorul de conflicte cu %2
+        <translation type="obsolete">Constrangere de timp - timpul preferat al activitatii - nerespectata pentru activitatea cu id=%1, mareste factorul de conflicte cu %2
 
 </translation>
     </message>
@@ -10544,7 +10656,7 @@ Studenti - n ore zilnic</translation>
     <message>
         <source>Time constraint activity preferred times broken for activity with id=%1, increases conflicts factor with %2
 </source>
-        <translation>Constrangere de timp - timpul preferat al activitatii - nerespectata pt. activitatea cu id=%1, mareste factorul de conflicte cu %2
+        <translation type="obsolete">Constrangere de timp - timpul preferat al activitatii - nerespectata pt. activitatea cu id=%1, mareste factorul de conflicte cu %2
 </translation>
     </message>
     <message>
@@ -10558,7 +10670,7 @@ Studenti - n ore zilnic</translation>
     <message>
         <source>Time constraint activity ends day broken for activity with id=%1, increases conflicts factor with %2
 </source>
-        <translation>Constrangere de timp - activitatea incheie ziua - nerespectata pt. activitatea cu id=%1, mareste factorul de conflicte cu %2
+        <translation type="obsolete">Constrangere de timp - activitatea incheie ziua - nerespectata pt. activitatea cu id=%1, mareste factorul de conflicte cu %2
 </translation>
     </message>
     <message>
@@ -10699,7 +10811,7 @@ va rog abandonati acum si dati-i un alt nume
     </message>
     <message>
         <source>Please input at least two activities before allocating hours</source>
-        <translation>Va rog introduceti cel putin doua activitati inainte de alocarea orelor</translation>
+        <translation type="obsolete">Va rog introduceti cel putin doua activitati inainte de alocarea orelor</translation>
     </message>
     <message>
         <source>Total number of students=%1</source>
@@ -10890,7 +11002,7 @@ va rog abandonati acum si dati-i un alt nume
     <message>
         <source>Time constraint 2 activities consecutive broken for activities with id=%1 and id=%2, increases conflicts factor with %3
 </source>
-        <translation>Constrangere temporala 2 activitati consecutive nerespectata pentru activitatile cu id=%1 si id=%2,
+        <translation type="obsolete">Constrangere temporala 2 activitati consecutive nerespectata pentru activitatile cu id=%1 si id=%2,
 mareste factorul de conflicte cu %3
 </translation>
     </message>
@@ -10901,7 +11013,7 @@ mareste factorul de conflicte cu %3
     <message>
         <source>Time constraint 2 activities grouped broken for activities with id=%1 and id=%2, increases conflicts factor with %3
 </source>
-        <translation>Constrangere temporala 2 activitati grupate nerespectata pentru activitatile cu id=%1 si id=%2,
+        <translation type="obsolete">Constrangere temporala 2 activitati grupate nerespectata pentru activitatile cu id=%1 si id=%2,
 mareste factorul de conflicte cu %3
 </translation>
     </message>
@@ -11101,7 +11213,7 @@ and you will find the exported .xml and .html files.
 You can translate the .xml files into .tex or .html
 using the files &quot;fetxml2latex.py&quot; or &quot;students.xsl&quot;, 
  &quot;teachers.xsl&quot; and &quot;rooms.xsl&quot; </source>
-        <translation>Va rog intrati in directorul &quot;%1&quot;
+        <translation type="obsolete">Va rog intrati in directorul &quot;%1&quot;
 si veti gasi fisierele exportate .xml si .html.
 Puteti traduce aceste fisiere .xml in .tex sau .html
 folosind fisierele &quot;fetxml2latex.py&quot; sau &quot;students.xsl&quot;,
@@ -11293,7 +11405,7 @@ MAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME trebuie crescuta (aveti prea multe 
     </message>
     <message>
         <source>Please input at least two activities and a room before allocating hours and rooms</source>
-        <translation>Va rog introduceti cel putin 2 activitati si o sala inainte de a aloca orele si salile</translation>
+        <translation type="obsolete">Va rog introduceti cel putin 2 activitati si o sala inainte de a aloca orele si salile</translation>
     </message>
     <message>
         <source>Not yet implemented for this kind of constraint</source>
@@ -11451,7 +11563,7 @@ MAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_HOUR trebuie crescuta (aveti prea multe 
     </message>
     <message>
         <source> - this increases the conflicts factor with %1</source>
-        <translation>- aceasta mareste factorul de conflicte cu %1</translation>
+        <translation type="obsolete">- aceasta mareste factorul de conflicte cu %1</translation>
     </message>
     <message>
         <source>Space constraint basic compulsory: room with name %1 has more than one allocated activity on day %2, hour %3.</source>
@@ -11933,7 +12045,7 @@ Daca aveti nevoie neaparat, vorbiti cu autorul</translation>
     <message>
         <source>Time constraint activities preferred times broken for activity with id=%1,  increases conflicts factor with %2
 </source>
-        <translation>Constrangere de timp activitati perioade preferate nerespectata pentru activitatea cu id=%1, mareste factorul de conflicte cu %2
+        <translation type="obsolete">Constrangere de timp activitati perioade preferate nerespectata pentru activitatea cu id=%1, mareste factorul de conflicte cu %2
 </translation>
     </message>
     <message>
@@ -11971,7 +12083,7 @@ Va rugam reparati aceasta</translation>
     <message>
         <source>Time constraint 2 activities ordered broken for activities with id=%1 and id=%2, increases conflicts factor with %3
 </source>
-        <translation>Constrangere temporala 2 activitati ordonate nerespectata pentru activitatile cu id=%1 si id=%2,
+        <translation type="obsolete">Constrangere temporala 2 activitati ordonate nerespectata pentru activitatile cu id=%1 si id=%2,
 mareste factorul de conflicte cu %3
 </translation>
     </message>
@@ -12231,16 +12343,162 @@ Va rugam vorbiti cu autorul sau mariti variabila MAX_ACTIVITIES</translation>
         <source>De-activated a number of %1 activities</source>
         <translation>Au fost dezactivate %1 activitati</translation>
     </message>
-</context>
-<context>
-    <name>QObject::QObject</name>
+    <message>
+        <source>Please input at least two active activities before allocating hours</source>
+        <translation>Va rog introduceti cel putin 2 activitati active inainte de alocarea orelor</translation>
+    </message>
+    <message>
+        <source>Please input at least two active activities and a room before allocating hours and rooms</source>
+        <translation>Va rog introduceti cel putin 2 activitati active si o sala inainte de alocarea orelor si salilor</translation>
+    </message>
+    <message>
+        <source>This activity will be split into %1 lessons per week</source>
+        <translation>Aceasta activitate va fi impartita in %1 lectii pe saptamana</translation>
+    </message>
+    <message>
+        <source>Timetable generated with FET %1 on %2</source>
+        <translation>Orar generat cu FET %1 la %2</translation>
+    </message>
+    <message>
+        <source>This increases the conflicts total by %1</source>
+        <translation>Aceasta mareste totalul de conflicte cu %1</translation>
+    </message>
+    <message>
+        <source>. This increases the conflicts total by %1</source>
+        <translation>. Aceasta mareste totalul de conflicte cu %1</translation>
+    </message>
+    <message>
+        <source>This increases the conflicts total by</source>
+        <translation>Aceasta mareste totalul de conflicte cu</translation>
+    </message>
+    <message>
+        <source>Time constraint activity preferred time broken for activity with id=%1, increases conflicts total by %2
+</source>
+        <translation>Constrangere de timp timpul preferat al activitatii nerespectata pentru activitatea cu id=%1, mareste totalul conflictelor cu %2
+</translation>
+    </message>
+    <message>
+        <source>Time constraint activity preferred times broken for activity with id=%1, increases conflicts total by %2
+</source>
+        <translation>Constrangere de timp timpii preferati al activitatii nerespectata pentru activitatea cu id=%1, mareste totalul conflictelor cu %2
+</translation>
+    </message>
+    <message>
+        <source>Time constraint activity ends day broken for activity with id=%1, increases conflicts total by %2
+</source>
+        <translation>Constrangere de timp activitatea incheie ziua nerespectata pentru activitatea cu id=%1, mareste totalul conflictelor cu %2
+</translation>
+    </message>
+    <message>
+        <source>Time constraint 2 activities consecutive broken for activities with id=%1 and id=%2, increases conflicts total by %3
+</source>
+        <translation>Constrangere de timp 2 activitati consecutive nerespectata pentru activitatile cu id=%1 si id=%2, mareste totalul conflictelor cu %3
+</translation>
+    </message>
+    <message>
+        <source>Time constraint 2 activities ordered broken for activities with id=%1 and id=%2, increases conflicts total by %3
+</source>
+        <translation>Constrangere de timp 2 activitati ordonate nerespectata pentru activitatile cu id=%1 si id=%2, mareste totalul conflictelor cu %3
+</translation>
+    </message>
+    <message>
+        <source>Time constraint 2 activities grouped broken for activities with id=%1 and id=%2, increases conflicts total by %3
+</source>
+        <translation>Constrangere de timp 2 activitati grupate nerespectata pentru activitatile cu id=%1 si id=%2, mareste totalul conflictelor cu %3
+</translation>
+    </message>
+    <message>
+        <source>Time constraint activities preferred times broken for activity with id=%1,  increases conflicts total by %2
+</source>
+        <translation>Constrangere de timp timpii preferati al activitatilor nerespectata pentru activitatea cu id=%1, mareste totalul conflictelor cu %2
+</translation>
+    </message>
+    <message>
+        <source> - this increases the conflicts total by %1</source>
+        <translation>- aceasta mareste totalul de conflicte cu %1</translation>
+    </message>
     <message>
         <source>unallocated activity with id=%1</source>
         <translation>activitate cu id=%1 nealocata</translation>
     </message>
     <message>
+        <source>Invalid start hour.
+Please modify it.</source>
+        <translation>Ora de start invalida.
+Va rugam modificati-o.</translation>
+    </message>
+    <message>
+        <source>Invalid lesson length.
+Please modify it.</source>
+        <translation>Durata invalida a lectiilor.
+Va rugam modificati-o.</translation>
+    </message>
+    <message>
+        <source>Invalid break length.
+Please modify it.</source>
+        <translation>Lungimea pauzei invalida.
+Va rugam modificati-o.</translation>
+    </message>
+    <message>
+        <source>Lessons for a specific day do not fit in a single day - impossible</source>
+        <translation>Lectiile pentru o zi specifica nu se incadreaza intr-o singura zi - imposibil</translation>
+    </message>
+    <message>
+        <source>Invalid start date.
+Please modify it.</source>
+        <translation>Data de start invalida.
+Va rugam modificati-o.</translation>
+    </message>
+    <message>
+        <source>teacher</source>
+        <translation>profesor</translation>
+    </message>
+    <message>
+        <source>iCal (*.ics) files written (one for each teacher).
+Please check the %1 directory</source>
+        <translation>Fisierele iCal(*.ics) au fost scrise (cate unul pentru fiecare profesor).
+Va rugam verificati directorul %1</translation>
+    </message>
+    <message>
+        <source>Results are exported to xml and html
+automatically from the allocate menu.
+Please enter the directory &quot;%1&quot;
+and you will find the exported .xml and .html files.
+You can translate the .xml files into .tex or .html
+using the files &quot;fetxml2latex.py&quot; or &quot;students.xsl&quot;, 
+ &quot;teachers.xsl&quot; and &quot;rooms.xsl&quot; </source>
+        <translation>Rezultatele sunt exportate in xml si html
+automat din meniul de alocare.
+Va rugam intrati in directorul &quot;%1&quot;
+si veti gasi fisierele exportate .xml si .html.
+Puteti traduce fisierele .xml in .tex sau .html
+folosind fisierele &quot;fetxml2latex.py&quot; sau &quot;students.xsl&quot;,
+&quot;teachers.xsl&quot; si &quot;rooms.xsl&quot;</translation>
+    </message>
+    <message>
+        <source>subgroup</source>
+        <translation>subgrup</translation>
+    </message>
+    <message>
+        <source>iCal (*.ics) files written (one for each subgroup).
+Please check the %1 directory</source>
+        <translation>Fisierele iCal(*.ics) au fost scrise (cate unul pentru fiecare subgrup).
+Va rugam verificati directorul %1</translation>
+    </message>
+</context>
+<context>
+    <name>QObject::QObject</name>
+    <message>
+        <source>unallocated activity with id=%1</source>
+        <translation type="obsolete">activitate cu id=%1 nealocata</translation>
+    </message>
+    <message>
         <source> - this increases the conflicts factor with %1</source>
-        <translation>- aceasta mareste factorul de conflicte cu %1</translation>
+        <translation type="obsolete">- aceasta mareste factorul de conflicte cu %1</translation>
+    </message>
+    <message>
+        <source> - this increases the conflicts total by %1</source>
+        <translation type="obsolete">- aceasta mareste totalul de conflicte cu %1</translation>
     </message>
 </context>
 <context>
@@ -12850,6 +13108,240 @@ generarea automata de la pozitia salvata)</translation>
     <message>
         <source>Initialize (randomly)</source>
         <translation>Initializeaza (aleator)</translation>
+    </message>
+</context>
+<context>
+    <name>TimetableExportiCalStudentsForm_template</name>
+    <message>
+        <source>FET - timetable export iCal students form</source>
+        <translation>FET - exporta orarul studentilor in forma iCal</translation>
+    </message>
+    <message>
+        <source>Please enter the start hour of each day,
+in the form hhmm (4 digits)</source>
+        <translation>Va rugam introduceti ora de inceput a fiecarei zile,
+in forma hhmm (4 cifre)</translation>
+    </message>
+    <message>
+        <source>Please enter the length of each lesson,
+in the form hhmm (4 digits)</source>
+        <translation>Va rugam introduceti lungime fiecarei lectii,
+in forma hhmm (4 cifre)</translation>
+    </message>
+    <message>
+        <source>Please enter the length of each break,
+in the form hhmm (4 digits)</source>
+        <translation>Va rugam introduceti lungimea fiecarei pauze,
+in forma hhmm (4 cifre)</translation>
+    </message>
+    <message>
+        <source>Please enter the starting day,
+in the form yyyymmdd (8 digits)</source>
+        <translation>Va rugam introduceti ziua de inceput,
+in forma yyyymmdd (8 cifre)</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Anuleaza</translation>
+    </message>
+    <message>
+        <source>Export to iCal files</source>
+        <translation>Exporta in fisierele iCal</translation>
+    </message>
+</context>
+<context>
+    <name>TimetableExportiCalStudentsWithRooms1Form_template</name>
+    <message>
+        <source>FET - timetable export iCal students with rooms 1 form</source>
+        <translation>FET - exporta orarul in studentilor cu sali in forma iCal</translation>
+    </message>
+    <message>
+        <source>Please enter the start hour of each day,
+in the form hhmm (4 digits)</source>
+        <translation>Va rugam introduceti ora de inceput a fiecarei zile,
+in forma hhmm (4 cifre)</translation>
+    </message>
+    <message>
+        <source>Please enter the length of each lesson,
+in the form hhmm (4 digits)</source>
+        <translation>Va rugam introduceti lungime fiecarei lectii,
+in forma hhmm (4 cifre)</translation>
+    </message>
+    <message>
+        <source>Please enter the length of each break,
+in the form hhmm (4 digits)</source>
+        <translation>Va rugam introduceti lungimea fiecarei pauze,
+in forma hhmm (4 cifre)</translation>
+    </message>
+    <message>
+        <source>Please enter the starting day,
+in the form yyyymmdd (8 digits)</source>
+        <translation>Va rugam introduceti ziua de inceput,
+in forma yyyymmdd (8 cifre)</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Anuleaza</translation>
+    </message>
+    <message>
+        <source>Export to iCal files</source>
+        <translation>Exporta in fisierele iCal</translation>
+    </message>
+</context>
+<context>
+    <name>TimetableExportiCalStudentsWithRooms2Form_template</name>
+    <message>
+        <source>FET - timetable export iCal students with rooms 2 form</source>
+        <translation>FET - exporta orarul studentilor cu sali 2 in forma iCal</translation>
+    </message>
+    <message>
+        <source>Please enter the start hour of each day,
+in the form hhmm (4 digits)</source>
+        <translation>Va rugam introduceti ora de inceput a fiecarei zile,
+in forma hhmm (4 cifre)</translation>
+    </message>
+    <message>
+        <source>Please enter the length of each lesson,
+in the form hhmm (4 digits)</source>
+        <translation>Va rugam introduceti lungime fiecarei lectii,
+in forma hhmm (4 cifre)</translation>
+    </message>
+    <message>
+        <source>Please enter the length of each break,
+in the form hhmm (4 digits)</source>
+        <translation>Va rugam introduceti lungimea fiecarei pauze,
+in forma hhmm (4 cifre)</translation>
+    </message>
+    <message>
+        <source>Please enter the starting day,
+in the form yyyymmdd (8 digits)</source>
+        <translation>Va rugam introduceti ziua de inceput,
+in forma yyyymmdd (8 cifre)</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Anuleaza</translation>
+    </message>
+    <message>
+        <source>Export to iCal files</source>
+        <translation>Exporta in fisierele iCal</translation>
+    </message>
+</context>
+<context>
+    <name>TimetableExportiCalTeachersForm_template</name>
+    <message>
+        <source>FET - timetable export iCal teachers form</source>
+        <translation>FET - dialogul de exportare profesori in iCal</translation>
+    </message>
+    <message>
+        <source>Please enter the start hour of each day,
+in the form hhmm (4 digits)</source>
+        <translation>Va rugam introduceti ora de inceput a fiecarei zile,
+in forma hhmm (4 cifre)</translation>
+    </message>
+    <message>
+        <source>Please enter the length of each lesson,
+in the form hhmm (4 digits)</source>
+        <translation>Va rugam introduceti lungime fiecarei lectii,
+in forma hhmm (4 cifre)</translation>
+    </message>
+    <message>
+        <source>Please enter the length of each break,
+in the form hhmm (4 digits)</source>
+        <translation>Va rugam introduceti lungimea fiecarei pauze,
+in forma hhmm (4 cifre)</translation>
+    </message>
+    <message>
+        <source>Please enter the starting day,
+in the form yyyymmdd (8 digits)</source>
+        <translation>Va rugam introduceti ziua de inceput,
+in forma yyyymmdd (8 cifre)</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Anuleaza</translation>
+    </message>
+    <message>
+        <source>Export to iCal files</source>
+        <translation>Exporta in fisierele iCal</translation>
+    </message>
+</context>
+<context>
+    <name>TimetableExportiCalTeachersWithRooms1Form_template</name>
+    <message>
+        <source>FET - timetable export iCal teachers with rooms 1 form</source>
+        <translation>FET - exporta orarul profesorilor cu sali 1 in forma iCal</translation>
+    </message>
+    <message>
+        <source>Please enter the start hour of each day,
+in the form hhmm (4 digits)</source>
+        <translation>Va rugam introduceti ora de inceput a fiecarei zile,
+in forma hhmm (4 cifre)</translation>
+    </message>
+    <message>
+        <source>Please enter the length of each lesson,
+in the form hhmm (4 digits)</source>
+        <translation>Va rugam introduceti lungime fiecarei lectii,
+in forma hhmm (4 cifre)</translation>
+    </message>
+    <message>
+        <source>Please enter the length of each break,
+in the form hhmm (4 digits)</source>
+        <translation>Va rugam introduceti lungimea fiecarei pauze,
+in forma hhmm (4 cifre)</translation>
+    </message>
+    <message>
+        <source>Please enter the starting day,
+in the form yyyymmdd (8 digits)</source>
+        <translation>Va rugam introduceti ziua de inceput,
+in forma yyyymmdd (8 cifre)</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Anuleaza</translation>
+    </message>
+    <message>
+        <source>Export to iCal files</source>
+        <translation>Exporta in fisierele iCal</translation>
+    </message>
+</context>
+<context>
+    <name>TimetableExportiCalTeachersWithRooms2Form_template</name>
+    <message>
+        <source>FET - timetable export iCal teachers with rooms 2 form</source>
+        <translation>FET - exporta orarul profesorilor cu sali 2 in forma iCal</translation>
+    </message>
+    <message>
+        <source>Please enter the start hour of each day,
+in the form hhmm (4 digits)</source>
+        <translation>Va rugam introduceti ora de inceput a fiecarei zile,
+in forma hhmm (4 cifre)</translation>
+    </message>
+    <message>
+        <source>Please enter the length of each lesson,
+in the form hhmm (4 digits)</source>
+        <translation>Va rugam introduceti lungime fiecarei lectii,
+in forma hhmm (4 cifre)</translation>
+    </message>
+    <message>
+        <source>Please enter the length of each break,
+in the form hhmm (4 digits)</source>
+        <translation>Va rugam introduceti lungimea fiecarei pauze,
+in forma hhmm (4 cifre)</translation>
+    </message>
+    <message>
+        <source>Please enter the starting day,
+in the form yyyymmdd (8 digits)</source>
+        <translation>Va rugam introduceti ziua de inceput,
+in forma yyyymmdd (8 cifre)</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Anuleaza</translation>
+    </message>
+    <message>
+        <source>Export to iCal files</source>
+        <translation>FET - dialogul de exportare orar profesori in iCal</translation>
     </message>
 </context>
 <context>

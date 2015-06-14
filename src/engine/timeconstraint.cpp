@@ -254,9 +254,9 @@ int ConstraintBasicCompulsoryTime::fitness(TimeChromosome& c, Rules& r, QString*
 				if(conflictsString!=NULL){
 					(*conflictsString) += QObject::tr("Time constraint basic compulsory");
 					(*conflictsString) += ": ";
-					(*conflictsString) += QObject::tr(QObject::tr("unallocated activity with id=%1").arg(r.internalActivitiesList[i].id));
-					(*conflictsString) += QObject::tr(QObject::tr(" - this increases the conflicts factor with %1")
-						.arg(weight * /*r.internalActivitiesList[i].duration*r.internalActivitiesList[i].nSubgroups * */10000));
+					(*conflictsString) += QObject::tr("unallocated activity with id=%1").arg(r.internalActivitiesList[i].id);
+					(*conflictsString) += QObject::tr(" - this increases the conflicts total by %1")
+						.arg(weight * /*r.internalActivitiesList[i].duration*r.internalActivitiesList[i].nSubgroups * */10000);
 					(*conflictsString) += "\n";
 				}
 			}
@@ -284,7 +284,7 @@ int ConstraintBasicCompulsoryTime::fitness(TimeChromosome& c, Rules& r, QString*
 						(*conflictsString)+=QObject::tr("activity with id=%1 is late.")
 							.arg(r.internalActivitiesList[i].id);
 						(*conflictsString)+=" ";
-						(*conflictsString)+=QObject::tr("This increases the conflicts factor with %1")
+						(*conflictsString)+=QObject::tr("This increases the conflicts total by %1")
 							.arg((h+dd-r.nHoursPerDay)*tmp*r.internalActivitiesList[i].nSubgroups*weight);
 						(*conflictsString)+="\n";
 					}
@@ -312,7 +312,7 @@ int ConstraintBasicCompulsoryTime::fitness(TimeChromosome& c, Rules& r, QString*
 								.arg(r.daysOfTheWeek[j])
 								.arg(r.hoursOfTheDay[k]);
 							(*conflictsString)+=". ";
-							(*conflictsString)+=QObject::tr("This increases the conflicts factor with %1")
+							(*conflictsString)+=QObject::tr("This increases the conflicts total by %1")
 								.arg(tmp*weight);
 							(*conflictsString)+="\n";
 						}
@@ -336,7 +336,7 @@ int ConstraintBasicCompulsoryTime::fitness(TimeChromosome& c, Rules& r, QString*
 								.arg(r.daysOfTheWeek[j])
 								.arg(r.hoursOfTheDay[k]);
 							*conflictsString+=". ";
-							*conflictsString+=QObject::tr("This increases the conflicts factor with %1")
+							*conflictsString+=QObject::tr("This increases the conflicts total by %1")
 								.arg((subgroupsMatrix[i][j][k]-2)*weight);
 							*conflictsString+="\n";
 						}
@@ -500,7 +500,7 @@ int ConstraintTeacherNotAvailable::fitness(TimeChromosome& c, Rules& r, QString 
 						.arg(r.daysOfTheWeek[j])
 						.arg(r.hoursOfTheDay[k]));
 					*conflictsString += ". ";
-					*conflictsString += (QObject::tr("This increases the conflicts factor with %1").arg(teachersMatrix[i][j][k]*weight));
+					*conflictsString += (QObject::tr("This increases the conflicts total by %1").arg(teachersMatrix[i][j][k]*weight));
 					*conflictsString += "\n";
 				}
 				nbroken+=teachersMatrix[i][j][k];
@@ -700,7 +700,7 @@ int ConstraintStudentsSetNotAvailable::fitness(TimeChromosome& c, Rules& r, QStr
 							.arg(r.daysOfTheWeek[j])
 							.arg(r.hoursOfTheDay[k]));
 						*conflictsString += ". ";
-						*conflictsString += (QObject::tr("This increases the conflicts factor with %1")
+						*conflictsString += (QObject::tr("This increases the conflicts total by %1")
 							.arg(subgroupsMatrix[i][j][k]*weight));
 						*conflictsString += "\n";
 					}
@@ -1669,7 +1669,7 @@ int ConstraintTeachersMaxHoursContinuously::fitness(TimeChromosome& c, Rules& r,
 									.arg(QString::number(h))
 									)
 									+
-								 	(QObject::tr(". This increases the conflicts factor with %1").arg(QString::number(2*weight)))
+								 	(QObject::tr(". This increases the conflicts total by %1").arg(QString::number(2*weight)))
 									+ "\n";
 							}
 						}
@@ -1838,7 +1838,7 @@ int ConstraintTeachersMaxHoursDaily::fitness(TimeChromosome& c, Rules& r, QStrin
 							.arg(r.daysOfTheWeek[d])
 							)
 							+
-							(QObject::tr(". This increases the conflicts factor with %1").arg(QString::number(2*weight)))
+							(QObject::tr(". This increases the conflicts total by %1").arg(QString::number(2*weight)))
 							+ "\n";
 					}
 				}
@@ -2018,7 +2018,7 @@ int ConstraintTeachersSubgroupsMaxHoursDaily::fitness(TimeChromosome& c, Rules& 
 									.arg(r.internalSubgroupsList[s]->name)
 									.arg(QString::number(this->maxHoursDaily));
 								*conflictsString+="; ";
-								*conflictsString+=QObject::tr("This increases the conflicts factor with")+
+								*conflictsString+=QObject::tr("This increases the conflicts total by")+
 									QString::number((tmp-2*this->maxHoursDaily)*weight)+
 									"\n";
 							}
@@ -2216,7 +2216,7 @@ int ConstraintTeacherMaxDaysPerWeek::fitness(TimeChromosome& c, Rules& r, QStrin
 			*conflictsString += " ";
 			*conflictsString += QObject::tr("teacher: %1.")
 				.arg(r.internalTeachersList[t]->name);
-			*conflictsString += QObject::tr("This increases the conflicts factor with %1")
+			*conflictsString += QObject::tr("This increases the conflicts total by %1")
 				.arg(nbroken*weight);
 			*conflictsString += "\n";
 		}
@@ -2592,7 +2592,7 @@ int ConstraintBreak::fitness(TimeChromosome& c, Rules& r, QString* conflictsStri
 							.arg(r.hoursOfTheDay[k]))
 							;
 						*conflictsString+=". ";
-						*conflictsString+=QObject::tr("This increases the conflicts factor with");
+						*conflictsString+=QObject::tr("This increases the conflicts total by");
 						*conflictsString+=" "+QString::number(teachersMatrix[i][j][k]*weight)+
 						 "\n";
 					}
@@ -3244,7 +3244,7 @@ int ConstraintStudentsEarly::fitness(TimeChromosome& c, Rules& r, QString* confl
 				if(k<r.nHoursPerDay && weekly>0){ //this day is not empty
 					free+=2*weekly;
 					*conflictsString+=
-						QString("Constraint students early broken for subgroup %1, on day %2, increases conflicts factor with %3\n")
+						QString("Constraint students early broken for subgroup %1, on day %2, increases conflicts total by %3\n")
 						.arg(r.internalSubgroupsList[i]->name)
 						.arg(r.daysOfTheWeek[j])
 						.arg(2*weekly*weight);
@@ -3954,7 +3954,7 @@ int ConstraintStudentsSetIntervalMaxDaysPerWeek::fitness(TimeChromosome& c, Rule
 			*conflictsString += " ";
 			*conflictsString += QObject::tr("subgroup: %1.")
 				.arg(r.internalSubgroupsList[m]->name);
-			*conflictsString += QObject::tr("This increases the conflicts factor with %1")
+			*conflictsString += QObject::tr("This increases the conflicts total by %1")
 				.arg(nbroken_partial*weight);
 			*conflictsString += "\n";
 
@@ -4143,7 +4143,7 @@ int ConstraintActivityPreferredTime::fitness(TimeChromosome& c, Rules& r, QStrin
 
 	if(conflictsString!=NULL && nbroken>0){
 		*conflictsString+=
-			(QObject::tr("Time constraint activity preferred time broken for activity with id=%1, increases conflicts factor with %2\n")
+			(QObject::tr("Time constraint activity preferred time broken for activity with id=%1, increases conflicts total by %2\n")
 			.arg(this->activityId)
 			.arg(weight*nbroken));
 	}
@@ -4343,7 +4343,7 @@ int ConstraintActivityPreferredTimes::fitness(TimeChromosome& c, Rules& r, QStri
 
 	if(conflictsString!=NULL && nbroken>0){
 		*conflictsString+=
-			(QObject::tr("Time constraint activity preferred times broken for activity with id=%1, increases conflicts factor with %2\n")
+			(QObject::tr("Time constraint activity preferred times broken for activity with id=%1, increases conflicts total by %2\n")
 			.arg(this->activityId)
 			.arg(weight*nbroken));
 	}
@@ -4511,7 +4511,7 @@ int ConstraintActivityEndsDay::fitness(TimeChromosome& c, Rules& r, QString* con
 
 	if(conflictsString!=NULL && nbroken>0){
 		*conflictsString+=
-			(QObject::tr("Time constraint activity ends day broken for activity with id=%1, increases conflicts factor with %2\n")
+			(QObject::tr("Time constraint activity ends day broken for activity with id=%1, increases conflicts total by %2\n")
 			.arg(this->activityId)
 			.arg(weight*nbroken));
 	}
@@ -4682,7 +4682,7 @@ int Constraint2ActivitiesConsecutive::fitness(TimeChromosome& c, Rules& r, QStri
 
 	if(conflictsString!=NULL && nbroken>0){
 		*conflictsString+=
-			(QObject::tr("Time constraint 2 activities consecutive broken for activities with id=%1 and id=%2, increases conflicts factor with %3\n")
+			(QObject::tr("Time constraint 2 activities consecutive broken for activities with id=%1 and id=%2, increases conflicts total by %3\n")
 			.arg(this->firstActivityId)
 			.arg(this->secondActivityId)
 			.arg(weight*nbroken));
@@ -4857,7 +4857,7 @@ int Constraint2ActivitiesOrdered::fitness(TimeChromosome& c, Rules& r, QString* 
 
 	if(conflictsString!=NULL && nbroken>0){
 		*conflictsString+=
-			(QObject::tr("Time constraint 2 activities ordered broken for activities with id=%1 and id=%2, increases conflicts factor with %3\n")
+			(QObject::tr("Time constraint 2 activities ordered broken for activities with id=%1 and id=%2, increases conflicts total by %3\n")
 			.arg(this->firstActivityId)
 			.arg(this->secondActivityId)
 			.arg(weight*nbroken));
@@ -5045,7 +5045,7 @@ int Constraint2ActivitiesGrouped::fitness(TimeChromosome& c, Rules& r, QString* 
 
 	if(conflictsString!=NULL && nbroken>0){
 		*conflictsString+=
-			(QObject::tr("Time constraint 2 activities grouped broken for activities with id=%1 and id=%2, increases conflicts factor with %3\n")
+			(QObject::tr("Time constraint 2 activities grouped broken for activities with id=%1 and id=%2, increases conflicts total by %3\n")
 			.arg(this->firstActivityId)
 			.arg(this->secondActivityId)
 			.arg(weight*nbroken));
@@ -5355,7 +5355,7 @@ int ConstraintActivitiesPreferredTimes::fitness(TimeChromosome& c, Rules& r, QSt
 				*conflictsString+=
 					QObject::tr("Time constraint activities preferred times broken"
 						" for activity with id=%1, "
-						" increases conflicts factor with %2\n")
+						" increases conflicts total by %2\n")
 					.arg(r.internalActivitiesList[ai].id)
 					.arg(weight*tmp);
 			}
@@ -5850,7 +5850,7 @@ int ConstraintTeachersSubjectTagsMaxHoursContinuously::fitness(TimeChromosome& c
 										.arg(r.hoursOfTheDay[h])
 										)
 										+
-								 		(QObject::tr(". This increases the conflicts factor with %1").arg(QString::number(2*weight)))
+								 		(QObject::tr(". This increases the conflicts total by %1").arg(QString::number(2*weight)))
 										+ "\n";
 								}
 							}
@@ -6087,7 +6087,7 @@ int ConstraintTeachersSubjectTagMaxHoursContinuously::fitness(TimeChromosome& c,
 									.arg(r.hoursOfTheDay[h])
 									)
 									+
-							 		(QObject::tr(". This increases the conflicts factor with %1").arg(QString::number(2*weight)))
+							 		(QObject::tr(". This increases the conflicts total by %1").arg(QString::number(2*weight)))
 									+ "\n";
 							}
 						}

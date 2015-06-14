@@ -3,7 +3,7 @@
                              -------------------
     begin                : January 9, 2004
     copyright            : (C) 2004 by Lalescu Liviu
-    email                : liviu@lalescu.ro
+    email                : Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)
  ***************************************************************************/
 
 /***************************************************************************

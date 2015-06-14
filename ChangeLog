@@ -1,14 +1,14 @@
-Versions 0.1 - 0.57 - liviu@lalescu.ro
+Versions 0.1 - 0.57 - Liviu Lalescu
 - Versions 0.1 - 0.57 - no user interface, plenty of bugs.
 -------------------------------------------------------------------------------
-Versions 1.0 - 1.17 - liviu@lalescu.ro
+Versions 1.0 - 1.17 - Liviu Lalescu
 - Version 1 and above - added text menu.
 - Version 1.5 and above - added Qt GUI.
 - Version 1.8 and above - removed the text menu :-)
 - Version 1.12 - used valgrind to track down an annoying crashing bug. Thanx!
 	This was not the only time I used valgrind to hunt for bugs
 -------------------------------------------------------------------------------
-Versions 2.0 - 2.6 - liviu@lalescu.ro
+Versions 2.0 - 2.6 - Liviu Lalescu
 - Version 2.0 and above - better Qt GUI.
 - Version 2.1
 - Version 2.2
@@ -17,7 +17,7 @@ Versions 2.0 - 2.6 - liviu@lalescu.ro
 - Version 2.5 - crash bugs fixed.
 - Version 2.6 - crash bugs fixed.
 -------------------------------------------------------------------------------
-Versions 2.7.0 - 2.7.8 - liviu@lalescu.ro
+Versions 2.7.0 - 2.7.8 - Liviu Lalescu
 - Version 2.7.0 - added CHRActivitiesNotSameDay;
 	- added split activities (for high-schools);
 	- changed numbering of the versions (Carsten's suggestion).
@@ -36,7 +36,7 @@ Versions 2.7.0 - 2.7.8 - liviu@lalescu.ro
 - Version 2.7.8 - small improvement in students view timetable form
 	- now, the user can click on the table to see details about the activity
 -------------------------------------------------------------------------------
-Versions 2.8.0 - 2.8.5 - liviu@lalescu.ro
+Versions 2.8.0 - 2.8.5 - Liviu Lalescu
 - Version 2.8.0 - bug fixes
 	- added CSRActivityPreferredTime (user may specify for each activity a preferred 
 	time) - (suggested by Sajith V. K.)
@@ -52,7 +52,7 @@ Versions 2.8.0 - 2.8.5 - liviu@lalescu.ro
 - Version 2.8.5 - changed the name to FET (or fet)
 	- added break periods (with CHRBreak)
 -------------------------------------------------------------------------------
-Versions 2.9.0 - 2.9.6 - liviu@lalescu.ro
+Versions 2.9.0 - 2.9.6 - Liviu Lalescu
 - Version 2.9.0 - bug fix in ConstraintStudentsYearNotAvailable
 	- changed Restriction into Constraint, now you can implement any constraint 
 	as compulsory or not
@@ -64,12 +64,12 @@ Versions 2.9.0 - 2.9.6 - liviu@lalescu.ro
 - Version 2.9.5 - bug fix, new activity is added with correct index
 - Version 2.9.6 - bug fixes
 -------------------------------------------------------------------------------
-- Version 2.10.0 - liviu@lalescu.ro
+- Version 2.10.0 - Liviu Lalescu
 	- bug fixes (maybe added a few new ones :-)
 	- FET now uses QString, QValueStack, QDomDocument, QFile and QTextStream classes
 	 (Imre Nagy's suggestion).
 -------------------------------------------------------------------------------
-- Version 3.0.0 pre1 - liviu@lalescu.ro
+- Version 3.0.0 pre1 - Liviu Lalescu
 	- activities list is now a qt list (QPtrList)
 	- constraints list is now a qt list (QPtrList)
 	- bug fixes
@@ -77,16 +77,16 @@ Versions 2.9.0 - 2.9.6 - liviu@lalescu.ro
 	- removed population initialization method from the ini file and added it 
 	into the GUI
 	- made the simulation somewhat faster, by getting rid of function realTimes(i)
-- Version 3.0.0 pre2 - liviu@lalescu.ro
+- Version 3.0.0 pre2 - Liviu Lalescu
 	- subjects, teachers, students are now QPtrList.
 	- the file open/saveas dialog now open in working directory
-- Version 3.0.0 pre3 - liviu@lalescu.ro
+- Version 3.0.0 pre3 - Liviu Lalescu
 	- improved speed by modifying a bit the fitness calculation.
-- Version 3.0.0 pre4 - liviu@lalescu.ro
+- Version 3.0.0 pre4 - Liviu Lalescu
 	- improved structure of the output xml files
 	- began working at space allocation
 -------------------------------------------------------------------------------
-Versions 3.1.0 - 3.1.4 - liviu@lalescu.ro
+Versions 3.1.0 - 3.1.4 - Liviu Lalescu
 - Version 3.1.0
 	- now the years and groups can have overlapping subgroups (uff)
 	- the activities support more than one set of students (year, group or subgroup)
@@ -107,7 +107,7 @@ Versions 3.1.0 - 3.1.4 - liviu@lalescu.ro
 	- fixed activity bug: comparing 2 activities for equality now works
 	- now the user can see whether the activities have daily exclusion or not
 -------------------------------------------------------------------------------
-Versions 3.2.0 - 3.2.9 - liviu@lalescu.ro
+Versions 3.2.0 - 3.2.9 - Liviu Lalescu
 - Version 3.2.0
 	- changed the GUI: the user can see all constituent activities and constraints
 	- saving now even basic constraints
@@ -142,13 +142,13 @@ Versions 3.2.0 - 3.2.9 - liviu@lalescu.ro
 - Version 3.2.9
 	- bug fix in ConstraintActivityPreferredTime (thanks to Michael Towers)
 -------------------------------------------------------------------------------
-Versions 3.3.0 - 3.3.1 - liviu@lalescu.ro
+Versions 3.3.0 - 3.3.1 - Liviu Lalescu
 - Version 3.3.0
 	- small bug fixes in the interface
 - Version 3.3.1
 	- bug fix when reading ConstraintStudentsNotAvailable
 -------------------------------------------------------------------------------
-Versions 3.4.0 - 3.4.8 - liviu@lalescu.ro
+Versions 3.4.0 - 3.4.8 - Liviu Lalescu
 - Version 3.4.0 (pre1 and pre2)
 	- Each activity supports several teachers (3, but this can be easily extended)
 	- Now, the default population size is 2048 (Michael Towers's suggestion).
@@ -182,7 +182,7 @@ Versions 3.4.0 - 3.4.8 - liviu@lalescu.ro
 - Version 3.4.8
 	- FET allows now to use two ConstraintMinNDaysBetweenActivities for the same activities
 -------------------------------------------------------------------------------
-Versions 3.5.0 - 3.5.4 - liviu@lalescu.ro
+Versions 3.5.0 - 3.5.4 - Liviu Lalescu
 - Version 3.5.0
 	- Added ConstraintActivityPreferredTimes (suggested by Michael Towers)
 	- Added ConstraintStudentsSetIntervalMaxDaysPerWeek (suggested by Simon Getti)
@@ -198,7 +198,7 @@ Versions 3.5.0 - 3.5.4 - liviu@lalescu.ro
 	- When viewing the timetable, it shows the subject for the students and the
 	students for the teachers (suggested by Sajith V. K.)
 --------------------------------------------------------------------------------
-Versions 3.6.0 - 3.6.7 - liviu@lalescu.ro
+Versions 3.6.0 - 3.6.7 - Liviu Lalescu
 - Version 3.6.0
 	- Each room is now represented by name, type and capacity
 	- Added ConstraintRoomNotAvailable
@@ -222,7 +222,7 @@ Versions 3.6.0 - 3.6.7 - liviu@lalescu.ro
 - Version 3.6.7
 	- Small bug fixes in the add activity dialog
 ---------------------------------------------------------------------------------
-Versions 3.7.0 - 3.7.2 - liviu@lalescu.ro
+Versions 3.7.0 - 3.7.2 - Liviu Lalescu
 - Version 3.7.0
 	- Added the number of students for each students set
 	- The basic space constraints now include the requirement that each room's capacity
@@ -234,7 +234,7 @@ Versions 3.7.0 - 3.7.2 - liviu@lalescu.ro
 	- small bug fix in the interface (when adding ConstraintStudentsSetIntervalMaxDaysPerWeek,
 	the maximum number of days of the spin box is now updated correctly)
 ---------------------------------------------------------------------------------
-Versions 3.8.0 - 3.8.5 - liviu@lalescu.ro
+Versions 3.8.0 - 3.8.5 - Liviu Lalescu
 - Version 3.8.0
 	- Added equipments list
 	- Added ConstraintSubjectRequiresEquipment
@@ -258,7 +258,7 @@ Versions 3.8.0 - 3.8.5 - liviu@lalescu.ro
 	- Now you can write the timetable after initialization or loading the internal state,
 	without starting the simulation
 ---------------------------------------------------------------------------------
-Versions 3.9.0 - 3.9.23 - liviu@lalescu.ro, French translation by Jerome Durand (fetfr@free.fr),
+Versions 3.9.0 - 3.9.23 - Liviu Lalescu, French translation by Jerome Durand (fetfr@free.fr),
 	2 conversion scripts by Jerome Durand and Vimal Joseph.
 - Version 3.9.0
 	- Bug fix - medium fitness now is shown correctly (no more negative values). Reported
@@ -342,7 +342,7 @@ Versions 3.9.0 - 3.9.23 - liviu@lalescu.ro, French translation by Jerome Durand 
 	- The space allocation is somewhat faster, by getting rid of the logging part and an 
 	unnecessary sorting.
 ---------------------------------------------------------------------------------
-Versions 3.10.0 - 3.10.5 - liviu@lalescu.ro
+Versions 3.10.0 - 3.10.5 - Liviu Lalescu
 - Version 3.10.0
 	- Added ConstraintMinimizeNumberOfRoomsForStudents (suggested by Sebastian Canagaratna)
 - Version 3.10.1
@@ -362,7 +362,7 @@ Versions 3.10.0 - 3.10.5 - liviu@lalescu.ro
 - Version 3.10.5
 	- Small bug fix in the interface
 ---------------------------------------------------------------------------------
-Versions 3.11.0 - 3.11.6 - liviu@lalescu.ro
+Versions 3.11.0 - 3.11.6 - Liviu Lalescu
 - Version 3.11.0
 	- Improved the interface - Data / time constraints
 - Version 3.11.1
@@ -380,7 +380,7 @@ Versions 3.11.0 - 3.11.6 - liviu@lalescu.ro
 - Version 3.11.6
 	- Improved Romanian translation
 ---------------------------------------------------------------------------------
-Versions 3.12.0 - 3.12.32 - liviu@lalescu.ro, 
+Versions 3.12.0 - 3.12.32 - Liviu Lalescu, 
 	French translation by Jerome Durand (fetfr@free.fr),
 	Catalan translation by Miguel Gea Milvaques, 
 	Malay translation by Abdul Hadi Kamel.
@@ -467,7 +467,7 @@ Versions 3.12.0 - 3.12.32 - liviu@lalescu.ro,
 - Version 3.12.32
 	- Added Malay translation (thanks to Abdul Hadi Kamel)
 ---------------------------------------------------------------------------------
-Versions 3.13.0 - 3.13.8 - liviu@lalescu.ro, 
+Versions 3.13.0 - 3.13.8 - Liviu Lalescu, 
 - Version 3.13.0
 	- Added ConstraintSubjectSubjectTagPreferredRoom(s) and ConstraintSubjectPreferredRoom(s)
 	(suggested by Abdul Hadi Kamel).
@@ -494,7 +494,7 @@ Versions 3.13.0 - 3.13.8 - liviu@lalescu.ro,
 	- Small bug fix (when adding a new ConstraintActivityPreferredTime).
 ---------------------------------------------------------------------------------
 Versions 3.14.0 - 3.14.21
-	- liviu@lalescu.ro, 
+	- Liviu Lalescu, 
 	- Polish translation by Radoslaw Pasiok,
 	- Malay translation update by Abdul Hadi Kamel.
 - Version 3.14.0
@@ -560,7 +560,7 @@ Versions 3.14.0 - 3.14.21
 	- Small bug fixes (when showing the conflicts, now the hours are shown properly).
 ---------------------------------------------------------------------------------
 Versions 3.15.0 - 3.15.4
-	- liviu@lalescu.ro,
+	- Liviu Lalescu,
 	- constraints and constraints subtags help files by Daniel S.
 - Version 3.15.0
 	- When adding or modifying an activity, the dialog contains a list box for teachers and
@@ -582,7 +582,7 @@ Versions 3.15.0 - 3.15.4
 	for an activity.
 ---------------------------------------------------------------------------------
 Versions 3.16.0 - 3.16.9
-	- liviu@lalescu.ro
+	- Liviu Lalescu
 - Version 3.16.0
 	- Added buildings
 	- Added filters for rooms dialog
@@ -612,11 +612,52 @@ Versions 3.16.0 - 3.16.9
 	- Bug fix in ConstraintActivityPreferredTime (suggested by Yush Yuen).
 	- The weight of the constraints can be 0 (suggested by Yush Yuen).
 ---------------------------------------------------------------------------------
-Versions 3.17.0 - 3.17.x
-	- liviu@lalescu.ro
+Versions 3.17.0 - 3.17.12
+	- Liviu Lalescu, Polish translation by Radoslaw Pasiok,
+	Turkish translation by Mehmet Gezmisoglu,
+	Dutch translation by Niels Fikse.
 - Version 3.17.0
 	- Small bug fixes.
 	- The user can now select a list of active activities to build the schedule upon.
 - Version 3.17.1
 	- Improved the saving in .html of the teachers' timetable (suggested
 	by Sebastian O'Halloran).
+- Version 3.17.2
+	- Improvement in Polish translation (by Radoslaw Pasiok)
+- Version 3.17.3
+	- Improvement in Polish translation (by Radoslaw Pasiok)
+- Version 3.17.4
+	- Improvement in Romanian translation (by Liviu Lalescu)
+- Version 3.17.5
+	- Added a new sample, number 9 (sent by Cristian Gherman)
+	- Now each generated timetable html file contains an ending tag, mentioning the date 
+	and the time the timetable was generated
+- Version 3.17.6
+	- Improvement: the interface now contains the constraints to minimize the number of
+	rooms for students and for teachers.
+	- Improved the sample number 9.
+- Version 3.17.7
+	- Added Turkish translation (by Mehmet Gezmisoglu).
+- Version 3.17.8
+	- Bug fix: renaming or deleting the "results" directory during program operation
+	is now handled correctly (reported by Tom Hosty).
+- Version 3.17.9
+	- Bug fix: handling amperstand now works correctly with hmtl generated
+	files in Microsoft Explorer (reported by Tom Hosty).
+- Version 3.17.10
+	- Now saving the timetable both in days horizontal and days vertical versions in html files.
+	(suggested by Tom Hosty).
+- Version 3.17.11
+	- Improvement in conflicts reporting English language: instead of "this increases the
+	conflicts factor with" we have "this increases the conflicts total by" (reported by
+	Tom Hosty).
+- Version 3.17.12
+	- Added the e-mails of the translators and changed contact information for Liviu Lalescu.
+	- Began Dutch translation (by Niels Fikse).
+---------------------------------------------------------------------------------
+Versions 3.18.0 - 3.18.x
+	- Liviu Lalescu
+- Version 3.18.0
+	- Added the possibility to export to iCalendar (suggested by Simon Bohlin).
+- Version 3.18.1
+	- Small bug fix.

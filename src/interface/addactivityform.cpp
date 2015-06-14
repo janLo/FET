@@ -3,7 +3,7 @@
                              -------------------
     begin                : Wed Apr 23 2003
     copyright            : (C) 2003 by Lalescu Liviu
-    email                : liviu@lalescu.ro
+    email                : Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)
  ***************************************************************************/
 
 /***************************************************************************
@@ -309,7 +309,7 @@ void AddActivityForm::activityChanged()
 		}
 	}
 	else{
-		s+=QObject::tr(QString("This activity will be split into %1 lessons per week").arg(splitSpinBox->value()));
+		s+=QObject::tr("This activity will be split into %1 lessons per week").arg(splitSpinBox->value());
 		s+="\n";
 		if(minDayDistanceSpinBox->value()>0){
 			s+=QObject::tr("The distance between any pair of subactivities must be at least %1 days").arg(minDayDistanceSpinBox->value());

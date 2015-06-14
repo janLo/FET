@@ -5,7 +5,7 @@
 // Description:
 //
 //
-// Author: Lalescu Liviu <liviu@lalescu.ro>, (C) 2003
+// Author: Lalescu Liviu <Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)>, (C) 2003
 //
 // Copyright: See COPYING file that comes with this distribution
 //
@@ -27,6 +27,12 @@
 #include "timetableshowconflictsspaceform.h"
 #include "timetableviewrooms2form.h"
 #include "timetableshowconflictstimespaceform.h"
+#include "timetableexporticalteachersform.h"
+#include "timetableexporticalstudentsform.h"
+#include "timetableexporticalteacherswithrooms1form.h"
+#include "timetableexporticalstudentswithrooms1form.h"
+#include "timetableexporticalteacherswithrooms2form.h"
+#include "timetableexporticalstudentswithrooms2form.h"
 #include "institutionnameform.h"
 #include "commentsform.h"
 #include "daysform.h"
@@ -145,6 +151,10 @@ FetMainForm::FetMainForm() : FetMainForm_template()
 		this->languageMalay();
 	else if(FET_LANGUAGE=="PL")
 		this->languagePolish();
+	else if(FET_LANGUAGE=="TR")
+		this->languageTurkish();
+	else if(FET_LANGUAGE=="NL")
+		this->languageDutch();
 
 	//new data
 	if(gt.rules.initialized)
@@ -1272,15 +1282,83 @@ void FetMainForm::timetableAllocateHoursRooms()
 	timetableAllocateHoursRoomsForm->show();
 }
 
-void FetMainForm::timetableExport()
+void FetMainForm::timetableExportXmlHtml()
 {
 	QMessageBox::information(this, QObject::tr("FET information"), 
-	  QObject::tr("Please enter the directory \"%1\"\n"
+	  QObject::tr("Results are exported to xml and html\n"
+	  "automatically from the allocate menu.\n"
+	  "Please enter the directory \"%1\"\n"
 	  "and you will find the exported .xml and .html files.\n"
 	  "You can translate the .xml files into .tex or .html\n"
 	  "using the files \"fetxml2latex.py\" or \"students.xsl\", \n"
 	  " \"teachers.xsl\" and \"rooms.xsl\" "
 	  ).arg(OUTPUT_DIR));
+}
+
+void FetMainForm::timetableExportiCalTeachers()
+{
+	if(!(students_schedule_ready && teachers_schedule_ready)){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Please allocate the hours, firstly"));
+		return;
+	}
+	
+	TimetableExportiCalTeachersForm* form=new TimetableExportiCalTeachersForm();
+	form->exec();
+}
+
+void FetMainForm::timetableExportiCalStudents()
+{
+	if(!(students_schedule_ready && teachers_schedule_ready)){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Please allocate the hours, firstly"));
+		return;
+	}
+	
+	TimetableExportiCalStudentsForm* form=new TimetableExportiCalStudentsForm();
+	form->exec();
+}
+
+void FetMainForm::timetableExportiCalTeachersWithRooms1()
+{
+	if(!rooms_schedule_ready){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Please allocate the rooms, firstly"));
+		return;
+	}
+	
+	TimetableExportiCalTeachersWithRooms1Form* form=new TimetableExportiCalTeachersWithRooms1Form();
+	form->exec();
+}
+
+void FetMainForm::timetableExportiCalStudentsWithRooms1()
+{
+	if(!rooms_schedule_ready){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Please allocate the rooms, firstly"));
+		return;
+	}
+
+	TimetableExportiCalStudentsWithRooms1Form* form=new TimetableExportiCalStudentsWithRooms1Form();
+	form->exec();
+}
+
+void FetMainForm::timetableExportiCalTeachersWithRooms2()
+{
+	if(!rooms_schedule_ready2){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Please allocate the hours and the rooms, firstly"));
+		return;
+	}
+
+	TimetableExportiCalTeachersWithRooms2Form* form=new TimetableExportiCalTeachersWithRooms2Form();
+	form->exec();
+}
+
+void FetMainForm::timetableExportiCalStudentsWithRooms2()
+{
+	if(!rooms_schedule_ready2){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Please allocate the hours and the rooms, firstly"));
+		return;
+	}
+
+	TimetableExportiCalStudentsWithRooms2Form* form=new TimetableExportiCalStudentsWithRooms2Form();
+	form->exec();
 }
 
 void FetMainForm::languageEnglish()
@@ -1299,6 +1377,8 @@ void FetMainForm::languageEnglish()
 	languageMenu->setItemChecked(languageMenu->idAt(3), false);
 	languageMenu->setItemChecked(languageMenu->idAt(4), false);
 	languageMenu->setItemChecked(languageMenu->idAt(5), false);
+	languageMenu->setItemChecked(languageMenu->idAt(6), false);
+	languageMenu->setItemChecked(languageMenu->idAt(7), false);
 }
 
 void FetMainForm::languageRomanian()
@@ -1325,6 +1405,8 @@ void FetMainForm::languageRomanian()
 	languageMenu->setItemChecked(languageMenu->idAt(3), true);
 	languageMenu->setItemChecked(languageMenu->idAt(4), false);
 	languageMenu->setItemChecked(languageMenu->idAt(5), false);
+	languageMenu->setItemChecked(languageMenu->idAt(6), false);
+	languageMenu->setItemChecked(languageMenu->idAt(7), false);
 }
 
 void FetMainForm::languageFrench()
@@ -1352,6 +1434,8 @@ void FetMainForm::languageFrench()
 	languageMenu->setItemChecked(languageMenu->idAt(3), false);
 	languageMenu->setItemChecked(languageMenu->idAt(4), false);
 	languageMenu->setItemChecked(languageMenu->idAt(5), false);
+	languageMenu->setItemChecked(languageMenu->idAt(6), false);
+	languageMenu->setItemChecked(languageMenu->idAt(7), false);
 }
 
 void FetMainForm::languageCatalan()
@@ -1379,6 +1463,8 @@ void FetMainForm::languageCatalan()
 	languageMenu->setItemChecked(languageMenu->idAt(3), false);
 	languageMenu->setItemChecked(languageMenu->idAt(4), false);
 	languageMenu->setItemChecked(languageMenu->idAt(5), false);
+	languageMenu->setItemChecked(languageMenu->idAt(6), false);
+	languageMenu->setItemChecked(languageMenu->idAt(7), false);
 }
 
 void FetMainForm::languageMalay()
@@ -1406,6 +1492,8 @@ void FetMainForm::languageMalay()
 	languageMenu->setItemChecked(languageMenu->idAt(3), false);
 	languageMenu->setItemChecked(languageMenu->idAt(4), true);
 	languageMenu->setItemChecked(languageMenu->idAt(5), false);
+	languageMenu->setItemChecked(languageMenu->idAt(6), false);
+	languageMenu->setItemChecked(languageMenu->idAt(7), false);
 }
 
 void FetMainForm::languagePolish()
@@ -1433,6 +1521,66 @@ void FetMainForm::languagePolish()
 	languageMenu->setItemChecked(languageMenu->idAt(3), false);
 	languageMenu->setItemChecked(languageMenu->idAt(4), false);
 	languageMenu->setItemChecked(languageMenu->idAt(5), true);
+	languageMenu->setItemChecked(languageMenu->idAt(6), false);
+	languageMenu->setItemChecked(languageMenu->idAt(7), false);
+}
+
+void FetMainForm::languageTurkish()
+{
+	bool existing=true;
+	if(ptranslator==NULL){
+		existing=false;
+		ptranslator=new QTranslator(0);
+	}
+
+	QDir d("/usr/share/fet/translations");
+	if(d.exists())
+		ptranslator->load("fet_tr", "/usr/share/fet/translations");
+	else
+		ptranslator->load("fet_tr", "translations");
+
+	if(!existing)
+		pqapplication->installTranslator(ptranslator);
+	
+	FET_LANGUAGE="TR";
+	
+	languageMenu->setItemChecked(languageMenu->idAt(0), false);
+	languageMenu->setItemChecked(languageMenu->idAt(1), false);
+	languageMenu->setItemChecked(languageMenu->idAt(2), false);
+	languageMenu->setItemChecked(languageMenu->idAt(3), false);
+	languageMenu->setItemChecked(languageMenu->idAt(4), false);
+	languageMenu->setItemChecked(languageMenu->idAt(5), false);
+	languageMenu->setItemChecked(languageMenu->idAt(6), true);
+	languageMenu->setItemChecked(languageMenu->idAt(7), false);
+}
+
+void FetMainForm::languageDutch()
+{
+	bool existing=true;
+	if(ptranslator==NULL){
+		existing=false;
+		ptranslator=new QTranslator(0);
+	}
+
+	QDir d("/usr/share/fet/translations");
+	if(d.exists())
+		ptranslator->load("fet_nl", "/usr/share/fet/translations");
+	else
+		ptranslator->load("fet_nl", "translations");
+
+	if(!existing)
+		pqapplication->installTranslator(ptranslator);
+	
+	FET_LANGUAGE="NL";
+	
+	languageMenu->setItemChecked(languageMenu->idAt(0), false);
+	languageMenu->setItemChecked(languageMenu->idAt(1), false);
+	languageMenu->setItemChecked(languageMenu->idAt(2), false);
+	languageMenu->setItemChecked(languageMenu->idAt(3), false);
+	languageMenu->setItemChecked(languageMenu->idAt(4), false);
+	languageMenu->setItemChecked(languageMenu->idAt(5), false);
+	languageMenu->setItemChecked(languageMenu->idAt(6), false);
+	languageMenu->setItemChecked(languageMenu->idAt(7), true);
 }
 
 void FetMainForm::parametersPopulationNumber()

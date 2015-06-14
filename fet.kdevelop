@@ -2,8 +2,8 @@
 <kdevelop>
   <general>
     <author>Liviu Lalescu</author>
-    <email>liviu@lalescu.ro</email>
-    <version>3.17.1</version>
+    <email>see http://lalescu.ro/liviu/ to find the e-mail</email>
+    <version>3.18.1</version>
     <projectmanagement>KDevTrollProject</projectmanagement>
     <primarylanguage>C++</primarylanguage>
     <keywords>
@@ -76,7 +76,7 @@
       <autocompile>true</autocompile>
     </run>
     <general>
-      <activedir>src/interface</activedir>
+      <activedir>src</activedir>
     </general>
     <make>
       <abortonerror>false</abortonerror>

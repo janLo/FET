@@ -5,7 +5,7 @@
 // Description:
 //
 //
-// Author: Lalescu Liviu <liviu@lalescu.ro>, (C) 2003
+// Author: Lalescu Liviu <Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)>, (C) 2003
 //
 // Copyright: See COPYING file that comes with this distribution
 //
@@ -117,7 +117,13 @@ public:
 	void timetableShowConflictsSpace();
 	void timetableShowConflictsTimeSpace();
 	void timetableAllocateHoursRooms();
-	void timetableExport();
+	void timetableExportXmlHtml();
+	void timetableExportiCalTeachers();
+	void timetableExportiCalStudents();
+	void timetableExportiCalTeachersWithRooms1();
+	void timetableExportiCalStudentsWithRooms1();
+	void timetableExportiCalTeachersWithRooms2();
+	void timetableExportiCalStudentsWithRooms2();
 	
 	void languageEnglish();
 	void languageFrench();
@@ -125,6 +131,8 @@ public:
 	void languageRomanian();
 	void languageMalay();
 	void languagePolish();
+	void languageTurkish();
+	void languageDutch();
 	
 	void parametersPopulationNumber();
 };

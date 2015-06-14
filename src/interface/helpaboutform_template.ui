@@ -55,17 +55,17 @@
                         <property name="text">
                             <string>FET is free software for automatically scheduling the timetable of a school, high-school or faculty.
 
-Version: 3.17.1 (August 2005)
+Version: 3.18.1 (January 2006)
 
 Licensed under GNU/GPL.
 
-Author: Liviu Lalescu, liviu@lalescu.ro, http://lalescu.ro/liviu/
+Author: Liviu Lalescu, Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)
 
-Web page: http://lalescu.ro/liviu/fet/ (for now)
+FET web page: http://lalescu.ro/liviu/fet/
 
 This project is open source. You are invited to contribute to this software and your feed-back would be greatly appreciated.
 
-Please support this project by making a donation. You can contact the author for that.</string>
+Please support this project by making a donation. You can contact the author or a translator for that.</string>
                         </property>
                     </widget>
                 </grid>
@@ -89,15 +89,23 @@ Please support this project by making a donation. You can contact the author for
                             <string>French translation - by Jerome Durand 
 	(fetfr@free.fr, http://fetfr.free.fr/ )
 
-Catalan translation - by Miguel Gea Milvaques
+Catalan translation - by Miguel Gea Milvaques 
+	(debian@miguelgea.com)
 
 Romanian translation - by Liviu Lalescu 
-	(liviu@lalescu.ro, http://lalescu.ro/liviu/ )
+	(Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address))
 
 Malay translation - by Abdul Hadi Kamel
+	(hadikamel@perlis.uitm.edu.my)
 
 Polish translation - by Radoslaw Pasiok
-	(zapala@konto.pl)</string>
+	(zapala@konto.pl)
+
+Turkish translation - by Mehmet Gezmisoglu
+	(m_gezmisoglu@hotmail.com)
+
+Dutch translation - by Niels Fikse
+	(k.fikse AT student.utwente.nl)</string>
                         </property>
                     </widget>
                 </grid>
@@ -192,7 +200,7 @@ Frank de Bruijn - bug reported.
 
 Radoslaw Pasiok - Polish translation.
 
-Daan Huntjens - bug reported, sample file, suggestions.
+Daan Huntjens - bug reported, sample file, suggestions, partial Dutch translation.
 
 Yush Yuen - sample file.
 
@@ -204,7 +212,15 @@ Daniel S. - suggestions, help files for the constraints.
 
 Gianluca Salvo - suggested Constraint2ActivitiesOrdered.
 
-Sebastian O'Halloran - suggestions.</string>
+Sebastian O'Halloran - suggestions.
+
+Mehmet Gezmisoglu - Turkish translation.
+
+Tom Hosty (tomhosty@hotmail.com) - sample file, bugs reported, user's guide.
+
+Niels Fikse - Dutch translation.
+
+Simon Bohlin - suggestions.</string>
                         </property>
                     </widget>
                 </grid>
@@ -229,7 +245,9 @@ Sebastian O'Halloran - suggestions.</string>
 
 Sebastian Canagaratna, Department of Chemistry, Ohio Northern University
 
-Andreea Mihailescu</string>
+Raita Mihail Doru
+
+Tom Hosty</string>
                         </property>
                     </widget>
                 </grid>
@@ -250,7 +268,47 @@ Andreea Mihailescu</string>
                             <cstring>textBrowser5</cstring>
                         </property>
                         <property name="text">
-                            <string>---------------------------------------------------------------------
+                            <string>sathia silan (thrilosyen81@yahoo.com)   (2006-01-09 10:45:34+02) (Rating: 5 stars out of 5)
+	
+its good piece of G/A software...help me in studying G/A more..
+
+---------------------------------------------------------------------
+
+Tom Hosty (tomhosty@hotmail.com)   (2005-11-20 23:29:05+02) (Rating: 5 stars out of 5)
+	
+I am a teacher with 30+ years experience. This is an excellent program, written by a young man who is obviously a genius. He welcomes your ideas and responds immediately. And it's free! (I tried a couple of commercial programs first - an English one costing 675 English pounds and a Finnish one costing over 300 English pounds).
+
+---------------------------------------------------------------------
+
+Nakul Dhotre (mail_me@rock.com)   (2005-10-29 22:45:08+03) (Rating: 4 stars out of 5)
+	
+This is a great piece of software and a very good example of the huge potential genetic algorithms have.
+
+I never thaught making timetables might be such a difficult task when i was a kid .. but with this thing even a kid can make timetable for the whole school.
+
+---------------------------------------------------------------------
+
+drew (DrDrew@Gmail.com)   (2005-10-10 14:42:38+03)
+	
+Do you know konosys ?
+That's the best timetable generator. Fet seems to be arranged !!
+
+---------------------------------------------------------------------
+
+Raita Mihail (mircea8844@yahoo.com)   (2005-09-14 21:50:20+03) (Rating: 5 stars out of 5)
+	
+Este super!
+
+---------------------------------------------------------------------
+
+Rica (aurelian.pavel@email.ro)   (2005-09-11 12:46:05+03) (Rating: 5 stars out of 5)
+	
+Este un program superb. L-am recomandat calduros tuturor. Multumim!
+
+Aurelian Pavel,
+Gr. Sc. de Ind. Usoara, Sighisoara
+
+---------------------------------------------------------------------
 
 radu (sunt@acasa.ro)   (2005-08-03 23:40:27+03)
 	
