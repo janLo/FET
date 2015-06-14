@@ -15,13 +15,13 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QMessageBox>
+
 #include "longtextmessagebox.h"
 
 #include "constraintsubactivitiespreferredtimeslotsform.h"
 #include "addconstraintsubactivitiespreferredtimeslotsform.h"
 #include "modifyconstraintsubactivitiespreferredtimeslotsform.h"
-
-#include <QDesktopWidget>
 
 ConstraintSubactivitiesPreferredTimeSlotsForm::ConstraintSubactivitiesPreferredTimeSlotsForm()
 {
@@ -79,8 +79,10 @@ bool ConstraintSubactivitiesPreferredTimeSlotsForm::filterOk(TimeConstraint* ctr
 
 void ConstraintSubactivitiesPreferredTimeSlotsForm::constraintChanged(int index)
 {
-	if(index<0)
+	if(index<0){
+		currentConstraintTextEdit->setText("");
 		return;
+	}
 	QString s;
 	assert(index<this->visibleConstraintsList.size());
 	TimeConstraint* ctr=this->visibleConstraintsList.at(index);

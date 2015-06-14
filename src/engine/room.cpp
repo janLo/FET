@@ -1,15 +1,22 @@
 //
 //
-// C++ Implementation: $MODULE$
-//
-// Description: 
+// Description: This file is part of FET
 //
 //
-// Author: Liviu Lalescu <Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)>, (C) 2003
+// Author: Liviu Lalescu <Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)>
+// Copyright (C) 2003 Liviu Lalescu <http://lalescu.ro/liviu/>
 //
-// Copyright: See COPYING file that comes with this distribution
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+  ***************************************************************************/
 //
 //
+
 #include "room.h"
 #include "rules.h"
 
@@ -22,25 +29,6 @@ Room::Room()
 Room::~Room()
 {
 }
-
-/*void Room::addEquipment(const QString& equipmentName)
-{
-	this->equipments.append(equipmentName);	
-}
-
-void Room::removeEquipment(const QString& equipmentName)
-{
-	this->equipments.remove(equipmentName);
-}
-
-bool Room::searchEquipment(const QString& equipmentName)
-{
-	int tmp=this->equipments.findIndex(equipmentName);
-	if(tmp>=0)
-		return true;
-	else
-		return false;
-}*/
 
 void Room::computeInternalStructure(Rules& r)
 {
@@ -55,11 +43,11 @@ void Room::computeInternalStructure(Rules& r)
 QString Room::getDescription()
 {
 	QString s=tr("N:%1", "Name of room").arg(this->name);
-	s+=",";
+	s+=", ";
 	
 	if(this->building!=""){
 		s+=tr("B:%1", "Building").arg(this->building);
-		s+=",";
+		s+=", ";
 	}
 	/*s+=tr("T:");
 	s+=this->type;
@@ -75,7 +63,9 @@ QString Room::getDescription()
 
 QString Room::getDetailedDescription()
 {
-	QString s=tr("Name=%1", "The name of the room").arg(this->name);
+	QString s=tr("Room");
+	s+="\n";
+	s+=tr("Name=%1", "The name of the room").arg(this->name);
 	s+="\n";
 
 	if(this->building!=""){

@@ -1,13 +1,19 @@
 //
 //
-// C++ Implementation: $MODULE$
-//
-// Description: 
+// Description: This file is part of FET
 //
 //
-// Author: Liviu Lalescu <Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)>, (C) 2003
+// Author: Liviu Lalescu <Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)>
+// Copyright (C) 2003 Liviu Lalescu <http://lalescu.ro/liviu/>
 //
-// Copyright: See COPYING file that comes with this distribution
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 //
 //
 
@@ -17,10 +23,7 @@
 #include "addbuildingform.h"
 #include "modifybuildingform.h"
 
-#include <q3listbox.h>
-#include <qinputdialog.h>
-
-#include <QDesktopWidget>
+#include <QInputDialog>
 
 #include <QMessageBox>
 
@@ -71,7 +74,8 @@ void BuildingsForm::filterChanged()
 	for(int i=0; i<gt.rules.buildingsList.size(); i++){
 		Building* bu=gt.rules.buildingsList[i];
 		if(this->filterOk(bu)){
-			s=bu->getDescription();
+			//s=bu->getDescription();
+			s=bu->name;
 			visibleBuildingsList.append(bu);
 			buildingsListBox->insertItem(s);
 		}
@@ -88,7 +92,13 @@ void BuildingsForm::addBuilding()
 	
 	filterChanged();
 	
-	buildingsListBox->setCurrentItem(ind);
+	//buildingsListBox->setCurrentItem(ind);
+	Q_UNUSED(ind);
+	int i=buildingsListBox->count()-1;
+	if(i>=0){
+		buildingsListBox->setCurrentItem(i);
+		buildingChanged(i);
+	}
 }
 
 void BuildingsForm::removeBuilding()
@@ -120,7 +130,8 @@ void BuildingsForm::removeBuilding()
 void BuildingsForm::buildingChanged(int index)
 {
 	if(index<0){
-		currentBuildingTextEdit->setText(tr("Invalid building"));
+		//currentBuildingTextEdit->setText(tr("Invalid building"));
+		currentBuildingTextEdit->setText("");
 		return;
 	}
 

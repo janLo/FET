@@ -21,13 +21,7 @@
 #include "addconstraintthreeactivitiesgroupedform.h"
 #include "modifyconstraintthreeactivitiesgroupedform.h"
 
-#include <QDesktopWidget>
-
 #include <QMessageBox>
-
-#include <q3listbox.h>
-#include <q3combobox.h>
-#include <q3groupbox.h>
 
 ConstraintThreeActivitiesGroupedForm::ConstraintThreeActivitiesGroupedForm()
 {
@@ -74,12 +68,17 @@ void ConstraintThreeActivitiesGroupedForm::filterChanged()
 			constraintsListBox->insertItem(ctr->getDescription(gt.rules));
 		}
 	}
+	
+	constraintsListBox->setCurrentItem(0);
+	this->constraintChanged(constraintsListBox->currentItem());
 }
 
 void ConstraintThreeActivitiesGroupedForm::constraintChanged(int index)
 {
-	if(index<0)
+	if(index<0){
+		currentConstraintTextEdit->setText("");
 		return;
+	}
 	assert(index<this->visibleConstraintsList.size());
 	TimeConstraint* ctr=this->visibleConstraintsList.at(index);
 	assert(ctr!=NULL);

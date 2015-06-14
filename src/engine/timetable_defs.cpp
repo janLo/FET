@@ -1,3 +1,7 @@
+/*
+File timetable_defs.cpp
+*/
+
 /***************************************************************************
                           timetable_defs.cpp  -  description
                              -------------------
@@ -20,7 +24,7 @@
 
 #include <ctime>
 
-#include <QByteArray>
+//#include <QByteArray>
 #include <QHash>
 
 int checkForUpdates;
@@ -30,12 +34,12 @@ QString internetVersion;
 /**
 FET version
 */
-const QString FET_VERSION="5.11.0";
+const QString FET_VERSION="5.14.3";
 
 /**
 FET language
 */
-QString FET_LANGUAGE="en_GB";
+QString FET_LANGUAGE="en_US";
 
 /**
 The output directory. Please be careful when editing it,
@@ -63,6 +67,8 @@ int TIMETABLE_HTML_LEVEL;
 
 bool PRINT_NOT_AVAILABLE_TIME_SLOTS;
 
+bool PRINT_BREAK_TIME_SLOTS;
+
 bool PRINT_ACTIVITIES_WITH_SAME_STARTING_TIME;
 
 bool DIVIDE_HTML_TIMETABLES_WITH_TIME_AXIS_BY_DAYS;
@@ -79,7 +85,7 @@ QHash<QString, QString> hashDayIDs;
 /**
 A log file explaining how the xml input file was parsed
 */
-const QString XML_PARSING_LOG_FILENAME="xml_reading_log.txt";
+const QString XML_PARSING_LOG_FILENAME="file_open.log";
 
 
 
@@ -165,179 +171,10 @@ QString protect3(const QString& str) //used for iCal
 	return p;
 }
 
-/*
-bool isLeapYear(int year)
-{
-	bool leap=false;
-	if(year%4==0){
-		leap=true;
-		if(year%100==0){
-			leap=false;
-			if(year%400==0)
-				leap=true;
-		}
-	}
-
-	return leap;
-}
-
-bool isCorrectDay(const QString sday)
-{
-	QByteArray day=sday.toAscii();
-
-	if(day.length()!=8)
-		return false;
-
-	int nDays[13]={0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-	int y=(day[0]-'0')*1000+(day[1]-'0')*100+(day[2]-'0')*10+(day[3]-'0');
-	if(y<1 || y>=10000)
-		return false;
-	if(isLeapYear(y))
-		nDays[2]=29;
-	int m=(day[4]-'0')*10+(day[5]-'0');
-	if(m>12 || m<1)
-		return false;
-	int d=(day[6]-'0')*10+(day[7]-'0');
-	if(d>nDays[m] || d<1)
-		return false;
-
-	return true;
-}
-
-bool isCorrectHour(const QString shour)
-{
-	QByteArray hour=shour.toAscii();
-
-	if(hour.length()!=4)
-		return false;
-	int h=(hour[0]-'0')*10+(hour[1]-'0');
-	if(h<0 || h>23)
-		return false;
-	int m=(hour[2]-'0')*10+(hour[3]-'0');
-	if(m<0 || h>59)
-		return false;
-
-	return true;
-}
-
-QString nextDay(const QString sday)
-{
-	QByteArray day=sday.toAscii();
-
-	int nDays[13]={0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-	int y=(day[0]-'0')*1000+(day[1]-'0')*100+(day[2]-'0')*10+(day[3]-'0');
-	if(isLeapYear(y))
-		nDays[2]=29;
-	int m=(day[4]-'0')*10+(day[5]-'0');
-	assert(m<=12);
-	int d=(day[6]-'0')*10+(day[7]-'0');
-	assert(d<=nDays[m]);
-	if(d==nDays[m]){
-		if(m==12){
-			y++;
-			m=1;
-			d=1;
-		}
-		else{
-			d=1;
-			m++;
-		}
-	}
-	else
-		d++;
-
-	char tmp[9];
-	QString nday;
-
-	tmp[0]=y/1000+'0';
-	y%=1000;
-	tmp[1]=y/100+'0';
-	y%=100;
-	tmp[2]=y/10+'0';
-	y%=10;
-	tmp[3]=y+'0';
-
-	tmp[4]=m/10+'0';
-	m%=10;
-	tmp[5]=m+'0';
-
-	tmp[6]=d/10+'0';
-	d%=10;
-	tmp[7]=d+'0';
-
-	tmp[8]='\0';
-
-	nday=tmp;
-
-	return nday;
-}
-
-bool sumHours(const QString shour1, const QString shour2, QString& result)
-{
-	QByteArray hour1=shour1.toAscii();
-	QByteArray hour2=shour2.toAscii();
-
-	//Sums the hour1 with hour2 and outputs the sum in "result".
-	//Returns true if the result is the next day
-	assert(isCorrectHour(hour1));
-	assert(isCorrectHour(hour2));
-
-	int h1=(hour1[0]-'0')*10+(hour1[1]-'0');
-	int m1=(hour1[2]-'0')*10+(hour1[3]-'0');
-
-	int h2=(hour2[0]-'0')*10+(hour2[1]-'0');
-	int m2=(hour2[2]-'0')*10+(hour2[3]-'0');
-
-	int rh=h1+h2+(m1+m2)/60;
-	int rm=(m1+m2)%60;
-
-	bool nextDay;
-
-	if(rh>=24){
-		nextDay=true;
-		rh-=24;
-	}
-	else
-		nextDay=false;
-
-	char res[5];
-
-	res[0]=rh/10+'0';
-	rh%=10;
-	res[1]=rh+'0';
-	res[2]=rm/10+'0';
-	rm%=10;
-	res[3]=rm+'0';
-	res[4]='\0';
-
-	result=res;
-
-	assert(isCorrectHour(result));
-
-	return nextDay;
-}
-
-QString iCalFolding(const QString s)
-{
-	//makes the (long) string conform tu iCalendar standard
-	//by adding after each 75 characters a CRLF + SPACE
-	QString t;
-	for(int i=0; i<s.length(); i++){
-		if(i!=0 && i%75==0){
-#ifdef Q_OS_WIN
-			t.append(char(13));
-#endif
-			t.append(char(10));
-			t.append(char(32));
-		}
-		t.append(s.at(i));
-	}
-
-	return t;
-}
-*/
 
 int XX;
+int YY;
+int ZZ;
 
 //random routines
 void initRandomKnuth()
@@ -346,20 +183,115 @@ void initRandomKnuth()
 	assert(AA==48271);
 	assert(QQ==44488);
 	assert(RR==3399);
-				
-	XX=1+((unsigned(time(NULL)))%(MM-1));
-	assert(XX<MM);
-}
 	
-int randomKnuth()
+	assert(MMM==2147483399);
+	assert(MMM==MM-248);
+	assert(AAA==40692);
+	assert(QQQ==52774);
+	assert(RRR==3791);
+	
+	//a few tests
+	XX=123; YY=123;
+	int tttt=randomKnuth1MM1();
+	assert(XX==5937333);
+	assert(YY==5005116);
+	assert(tttt==932217);
+
+	XX=4321; YY=54321;
+	tttt=randomKnuth1MM1();
+	assert(XX==208578991);
+	assert(YY==62946733);
+	assert(tttt==145632258);
+
+	XX=87654321; YY=987654321;
+	tttt=randomKnuth1MM1();
+	assert(XX==618944401);
+	assert(YY==1625301246);
+	assert(tttt==1141126801);
+
+	XX=1; YY=1;
+	tttt=randomKnuth1MM1();
+	assert(XX==48271);
+	assert(YY==40692);
+	assert(tttt==7579);
+
+	XX=MM-1; YY=MMM-1;
+	tttt=randomKnuth1MM1();
+	assert(XX==2147435376);
+	assert(YY==2147442707);
+	assert(tttt==2147476315);
+
+	XX=100; YY=1000;
+	tttt=randomKnuth1MM1();
+	assert(XX==4827100);
+	assert(YY==40692000);
+	assert(tttt==2111618746);
+	//////////
+	
+	//unsigned tt=unsigned(time(NULL));
+	qint64 tt=qint64(time(NULL));
+	
+	//XX is the current time
+	//XX = 1 + ( (unsigned(tt)) % (unsigned(MM-1)) );
+	XX = 1 + int( tt%(qint64(MM-1)) );
+	assert(XX>0);
+	assert(XX<MM);
+
+	//YY is the next random, after initializing YY with the current time
+	//YY = 1 + ( (unsigned(tt)) % (unsigned(MMM-1)) );
+	YY = 1 + int( tt%(qint64(MMM-1)) );
+	assert(YY>0);
+	assert(YY<MMM);
+	YY=AAA*(YY%QQQ)-RRR*(YY/QQQ);
+	if(YY<0)
+		YY+=MMM;
+	assert(YY>0);
+	assert(YY<MMM);
+	
+	ZZ=XX-YY;
+	if(ZZ<=0)
+		ZZ+=MM-1; //-1 is not written in Knuth TAOCP vol. 2 third edition, I think it should. (Later edit: yes, the author confirmed that).
+	assert(ZZ>0);
+	assert(ZZ<MM); //again, modified from Knuth TAOCP vol. 2 third edition, ZZ is strictly lower than MM (the author confirmed that, too).
+}
+
+int randomKnuth1MM1()
 {
-	//assert(XX!=0);
 	assert(XX>0);
 	assert(XX<MM);
 
 	XX=AA*(XX%QQ)-RR*(XX/QQ);
 	if(XX<0)
 		XX+=MM;
-		
-	return XX;
+
+	assert(XX>0);
+	assert(XX<MM);
+
+	assert(YY>0);
+	assert(YY<MMM);
+
+	YY=AAA*(YY%QQQ)-RRR*(YY/QQQ);
+	if(YY<0)
+		YY+=MMM;
+	
+	assert(YY>0);
+	assert(YY<MMM);
+
+	ZZ=XX-YY;
+	if(ZZ<=0)
+		ZZ+=MM-1; //-1 is not written in Knuth TAOCP vol. 2 third edition, I think it should. (Later edit: yes, the author confirmed that).
+	assert(ZZ>0);
+	assert(ZZ<MM); //again, modified from Knuth TAOCP vol. 2 third edition, ZZ is strictly lower than MM (the author confirmed that, too).
+	
+	return ZZ;
+}
+
+int randomKnuth(int k)
+{
+	//like in Knuth TAOCP vol.2, reject some numbers (very few), so that the distribution is perfectly uniform
+	for(;;){
+		int U=randomKnuth1MM1();
+		if( U <= k * ((MM-1)/k) )
+			return U%k;
+	}
 }

@@ -15,13 +15,14 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QMessageBox>
+
 #include "longtextmessagebox.h"
 
 #include "constraintstudentssethomeroomsform.h"
 #include "addconstraintstudentssethomeroomsform.h"
 #include "modifyconstraintstudentssethomeroomsform.h"
 
-#include <QDesktopWidget>
 
 ConstraintStudentsSetHomeRoomsForm::ConstraintStudentsSetHomeRoomsForm()
 {
@@ -113,8 +114,10 @@ bool ConstraintStudentsSetHomeRoomsForm::filterOk(SpaceConstraint* ctr)
 
 void ConstraintStudentsSetHomeRoomsForm::constraintChanged(int index)
 {
-	if(index<0)
+	if(index<0){
+		currentConstraintTextEdit->setText("");
 		return;
+	}
 	QString s;
 	assert(index<this->visibleConstraintsList.size());
 	SpaceConstraint* ctr=this->visibleConstraintsList.at(index);

@@ -15,13 +15,13 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QMessageBox>
+
 #include "longtextmessagebox.h"
 
 #include "constraintactivitiessamestartingdayform.h"
 #include "addconstraintactivitiessamestartingdayform.h"
 #include "modifyconstraintactivitiessamestartingdayform.h"
-
-#include <QDesktopWidget>
 
 ConstraintActivitiesSameStartingDayForm::ConstraintActivitiesSameStartingDayForm()
 {
@@ -79,8 +79,10 @@ bool ConstraintActivitiesSameStartingDayForm::filterOk(TimeConstraint* ctr)
 
 void ConstraintActivitiesSameStartingDayForm::constraintChanged(int index)
 {
-	if(index<0)
+	if(index<0){
+		currentConstraintTextEdit->setText("");
 		return;
+	}
 	QString s;
 	assert(index<this->visibleConstraintsList.size());
 	TimeConstraint* ctr=this->visibleConstraintsList.at(index);

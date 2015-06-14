@@ -1,15 +1,22 @@
 //
 //
-// C++ Implementation: $MODULE$
-//
-// Description:
+// Description: This file is part of FET
 //
 //
-// Author: Lalescu Liviu <Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)>, (C) 2003
+// Author: Lalescu Liviu <Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)>
+// Copyright (C) 2003 Liviu Lalescu <http://lalescu.ro/liviu/>
 //
-// Copyright: See COPYING file that comes with this distribution
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 //
 //
+
 #include "timetable_defs.h"
 #include "timetable.h"
 #include "fet.h"
@@ -19,11 +26,7 @@
 #include "teacher.h"
 #include "subject.h"
 
-#include <q3listbox.h>
-#include <qinputdialog.h>
-#include <q3textedit.h>
-
-#include <QDesktopWidget>
+#include <QInputDialog>
 
 #include <QMessageBox>
 
@@ -170,7 +173,8 @@ void SubjectsForm::sortSubjects()
 void SubjectsForm::subjectChanged(int index)
 {
 	if(index<0){
-		currentSubjectTextEdit->setText(tr("Invalid subject"));
+		//currentSubjectTextEdit->setText(tr("Invalid subject"));
+		currentSubjectTextEdit->setText("");
 		return;
 	}
 	

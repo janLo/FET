@@ -15,13 +15,13 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QMessageBox>
+
 #include "longtextmessagebox.h"
 
 #include "constraintactivitiespreferredstartingtimesform.h"
 #include "addconstraintactivitiespreferredstartingtimesform.h"
 #include "modifyconstraintactivitiespreferredstartingtimesform.h"
-
-#include <QDesktopWidget>
 
 ConstraintActivitiesPreferredStartingTimesForm::ConstraintActivitiesPreferredStartingTimesForm()
 {
@@ -77,8 +77,10 @@ bool ConstraintActivitiesPreferredStartingTimesForm::filterOk(TimeConstraint* ct
 
 void ConstraintActivitiesPreferredStartingTimesForm::constraintChanged(int index)
 {
-	if(index<0)
+	if(index<0){
+		currentConstraintTextEdit->setText("");
 		return;
+	}
 	QString s;
 	assert(index<this->visibleConstraintsList.size());
 	TimeConstraint* ctr=this->visibleConstraintsList.at(index);

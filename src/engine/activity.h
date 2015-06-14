@@ -29,8 +29,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #include "timetable_defs.h"
 
-#include <qfile.h>
-
 #include <QString>
 #include <QList>
 #include <QSet>
@@ -41,20 +39,6 @@ class Activity;
 
 typedef QList<Activity*> ActivitiesList;
 
-/**
-Used for an activity's parity, if it was not yet initialized.
-*/
-//const int PARITY_NOT_INITIALIZED=-1;
-
-/**
-Used for an activity, if it is weekly.
-*/
-//const int PARITY_WEEKLY=0;
-
-/**
-Used for an activity, if it is occuring once at two weeks.
-*/
-//const int PARITY_FORTNIGHTLY=1;
 
 /**
 This class represents an activity.
@@ -210,6 +194,23 @@ public:
 		bool _computeNTotalStudents,
 		int _nTotalStudents);
 		
+	//this is used only when reading a file (Rules), so that the computed number of students is known faster
+	Activity(
+		Rules& r,
+		int _id,
+		int _activityGroupId,
+		const QStringList& _teachersNames,
+		const QString& _subjectName,
+		const QStringList& _activityTagsNames,
+		const QStringList& _studentsNames,
+		int _duration,
+		int _totalDuration,
+		//int _parity,
+		bool _active,
+		bool _computeNTotalStudents,
+		int _nTotalStudents,
+		int _computedNumberOfStudents);
+		
 	bool searchTeacher(const QString& teacherName);
 
 	/**
@@ -230,10 +231,9 @@ public:
 	bool removeStudents(Rules& r, const QString& studentsName, int nStudents);
 
 	/**
-	Renames this students set in the list of students
-	The assumption is that the number of students in this renamed set remain the same
+	Renames this students set in the list of students and possibly modifies the number of students for the activity, if initialNumberOfStudents!=finalNumberOfStudents
 	*/
-	void renameStudents(Rules& r, const QString& initialStudentsName, const QString& finalStudentsName);
+	void renameStudents(Rules& r, const QString& initialStudentsName, const QString& finalStudentsName, int initialNumberOfStudents, int finalNumberOfStudents);
 
 	/**
 	Computes the internal structure

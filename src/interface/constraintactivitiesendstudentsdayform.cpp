@@ -15,13 +15,13 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QMessageBox>
+
 #include "longtextmessagebox.h"
 
 #include "constraintactivitiesendstudentsdayform.h"
 #include "addconstraintactivitiesendstudentsdayform.h"
 #include "modifyconstraintactivitiesendstudentsdayform.h"
-
-#include <QDesktopWidget>
 
 ConstraintActivitiesEndStudentsDayForm::ConstraintActivitiesEndStudentsDayForm()
 {
@@ -78,8 +78,10 @@ bool ConstraintActivitiesEndStudentsDayForm::filterOk(TimeConstraint* ctr)
 
 void ConstraintActivitiesEndStudentsDayForm::constraintChanged(int index)
 {
-	if(index<0)
+	if(index<0){
+		currentConstraintTextEdit->setText("");
 		return;
+	}
 	QString s;
 	assert(index<this->visibleConstraintsList.size());
 	TimeConstraint* ctr=this->visibleConstraintsList.at(index);

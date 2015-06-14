@@ -1,3 +1,7 @@
+/*
+File timetable_defs.h
+*/
+
 /***************************************************************************
                           timetable_defs.h  -  description
                              -------------------
@@ -16,32 +20,19 @@
  ***************************************************************************/
 
 
-#ifndef TIMETABLE_DEFS
-#define TIMETABLE_DEFS
-//#define WIN32
+#ifndef TIMETABLE_DEFS_H
+#define TIMETABLE_DEFS_H
+
 #ifdef NDEBUG
 #undef NDEBUG
 #endif
-#include <assert.h>
+#include <cassert>
 
-/*#ifdef WIN32
-#define for		if(0);else for
-#endif*/
-
-//#include <stdio.h>
-//#include <string.h>
-//#include <stdlib.h>
-//#include <ctype.h>
-//#include <math.h>
-//#include <time.h>
-//#include <stdlib.h>
 
 #include <QString>
 
 class QWidget;
 
-//#include <qtranslator.h>
-//#include <qdir.h>
 
 /**
 The version number
@@ -52,9 +43,6 @@ extern const QString FET_VERSION;
 The language
 */
 extern QString FET_LANGUAGE;
-
-//English has to be counted also
-//extern const int NUMBER_OF_LANGUAGES;
 
 extern bool LANGUAGE_STYLE_RIGHT_TO_LEFT;
 
@@ -67,69 +55,66 @@ extern int TIMETABLE_HTML_LEVEL;
 
 extern bool PRINT_NOT_AVAILABLE_TIME_SLOTS;
 
+extern bool PRINT_BREAK_TIME_SLOTS;
+
 extern bool DIVIDE_HTML_TIMETABLES_WITH_TIME_AXIS_BY_DAYS;
 
 extern bool PRINT_ACTIVITIES_WITH_SAME_STARTING_TIME;
 
 extern bool USE_GUI_COLORS;
 
+extern bool SHOW_SHORTCUTS_ON_MAIN_WINDOW;
+
 extern bool ENABLE_ACTIVITY_TAG_MAX_HOURS_DAILY;
 extern bool ENABLE_STUDENTS_MAX_GAPS_PER_DAY;
 
 extern bool SHOW_WARNING_FOR_NOT_PERFECT_CONSTRAINTS;
 
-/**
-The maximum number of different years of students
-*/
-//const int MAX_YEARS=15000;
+extern bool ENABLE_STUDENTS_MIN_HOURS_DAILY_WITH_ALLOW_EMPTY_DAYS;
+extern bool SHOW_WARNING_FOR_STUDENTS_MIN_HOURS_DAILY_WITH_ALLOW_EMPTY_DAYS;
 
-/**
-Maximum number of allowed groups per year of students
-*/
-//const int MAX_GROUPS_PER_YEAR=15000;
-
-/**
-Maximum number of allowed subgroups per group of students
-*/
-//const int MAX_SUBGROUPS_PER_GROUP=15000;
-
-/**
-The maximum total number of different groups of students
-*/
-//const int MAX_TOTAL_GROUPS=15000;
+extern bool CONFIRM_ACTIVITY_PLANNING;
+extern bool CONFIRM_SPREAD_ACTIVITIES;
+extern bool CONFIRM_REMOVE_REDUNDANT;
 
 /**
 The maximum total number of different subgroups of students
 */
-const int MAX_TOTAL_SUBGROUPS=15000;//MAX_YEARS*MAX_GROUPS_PER_YEAR*MAX_SUBGROUPS_PER_GROUP;
+const int MAX_TOTAL_SUBGROUPS=30000;//MAX_YEARS*MAX_GROUPS_PER_YEAR*MAX_SUBGROUPS_PER_GROUP;
 
-const int MAX_ROOM_CAPACITY=15000;
+const int MAX_ROOM_CAPACITY=30000;
 
 
 /**
 The maximum number of different teachers
 */
-const int MAX_TEACHERS=700;
+const int MAX_TEACHERS=6000;
 
 /**
 The maximum number of different subjects
 */
-const int MAX_SUBJECTS=1000;
+const int MAX_SUBJECTS=6000;
 
 /**
 The maximum number of activities
+IMPORTANT: must be qint16 (max 32767), because we are using qint16 for each activity index and for unallocated activity = max_activities
 */
-const int MAX_ACTIVITIES=5000;
+const int MAX_ACTIVITIES=30000;
+
+//if you want to increase this, you also need to modify the add/modify activity dialogs, to permit larger values
+//(add more pages in the subactivities tab).
+const int MAX_SPLIT_OF_AN_ACTIVITY=35;
 
 /**
 The maximum number of rooms
+IMPORTANT: max_rooms+1 must be qint16 (max 32766 for max_rooms), because we are using qint16 for each room index and for unallocated space = max_rooms and for unspecified room = max_rooms+1
 */
-const int MAX_ROOMS=1000;
+const int MAX_ROOMS=6000;
 
 /**
 The maximum number of buildings
 */
-const int MAX_BUILDINGS=100;
+const int MAX_BUILDINGS=6000;
 
 /**
 This constant represents an unallocated activity
@@ -138,13 +123,17 @@ const qint16 UNALLOCATED_ACTIVITY = MAX_ACTIVITIES;
 
 /**
 The maximum number of working hours per day.
+IMPORTANT: max hours per day * max days per week = max hours per week must be qint16 (max 32767),
+because each time is qint16 and unallocated time is qint16
 */
 const int MAX_HOURS_PER_DAY=60;
 
 /**
 The maximum number of working days per week.
+IMPORTANT: max hours per day * max days per week = max hours per week must be qint16 (max 32767)
+because each time is qint16 and unallocated time is qint16
 */
-const int MAX_DAYS_PER_WEEK=28;
+const int MAX_DAYS_PER_WEEK=35;
 
 /**
 The predefined names of the days of the week
@@ -162,6 +151,9 @@ hours in a week are arranged like this:
 3-4        15 16 17 18 19
 4-5        20 21 22 23 24
 5-6        25 26 27 28 29 etc.
+
+IMPORTANT: max hours per day * max days per week = max hours per week must be qint16 (max 32767)
+because each time is qint16 and unallocated time is qint16
 */
 const int MAX_HOURS_PER_WEEK = MAX_HOURS_PER_DAY * MAX_DAYS_PER_WEEK;
 
@@ -181,81 +173,36 @@ const qint16 UNSPECIFIED_ROOM = MAX_ROOMS+1;
 /**
 The maximum number of time constraints
 */
-const int MAX_TIME_CONSTRAINTS = 10000;
+const int MAX_TIME_CONSTRAINTS = 60000;
 
 /**
 The maximum number of space constraints
 */
-const int MAX_SPACE_CONSTRAINTS = 10000;
+const int MAX_SPACE_CONSTRAINTS = 60000;
 
 /**
 The maximum number of preferred times that can be considered
 in this kind of constraint
 */
-const int MAX_N_CONSTRAINT_ACTIVITY_PREFERRED_TIME_SLOTS = MAX_HOURS_PER_WEEK;
+//const int MAX_N_CONSTRAINT_ACTIVITY_PREFERRED_TIME_SLOTS = MAX_HOURS_PER_WEEK;
 
 /**
 The maximum number of preferred times that can be considered
 in this kind of constraint
 */
-const int MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_TIME_SLOTS = MAX_HOURS_PER_WEEK;
+//const int MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_TIME_SLOTS = MAX_HOURS_PER_WEEK;
 
-const int MAX_N_CONSTRAINT_ACTIVITY_PREFERRED_STARTING_TIMES = MAX_HOURS_PER_WEEK;
-const int MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_STARTING_TIMES = MAX_HOURS_PER_WEEK;
+//const int MAX_N_CONSTRAINT_ACTIVITY_PREFERRED_STARTING_TIMES = MAX_HOURS_PER_WEEK;
+//const int MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_STARTING_TIMES = MAX_HOURS_PER_WEEK;
 
-const int MAX_N_CONSTRAINT_SUBACTIVITIES_PREFERRED_TIME_SLOTS = MAX_HOURS_PER_WEEK;
-const int MAX_N_CONSTRAINT_SUBACTIVITIES_PREFERRED_STARTING_TIMES = MAX_HOURS_PER_WEEK;
-
-/**
-The maximum number of activities that can be put in
-a constraint of type ConstraintActivitiesMinDaysBetweenActivities
-I guess this variable must disappear and the
-restriction modified to allocate dynamically the
-necessary memory.
-*/
-const int MAX_CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES = 100;
-
-const int MAX_CONSTRAINT_MAX_DAYS_BETWEEN_ACTIVITIES = 400;
-
-/**
-The maximum number of activities for a single
-constraint of type
-ConstraintActivitiesSameStartingTime
-*/
-const int MAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME=200;
-
-/**
-The maximum number of activities for a single
-constraint of type
-ConstraintActivitiesSameStartingHour
-*/
-const int MAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_HOUR=200;
-
-/**
-The maximum number of activities for a single
-constraint of type
-ConstraintActivitiesSameStartingHour
-*/
-const int MAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_DAY=200;
-
-/**
-The maximum number of activities for a single
-constraint of type
-ConstraintActivitiesNotOverlapping
-*/
-const int MAX_CONSTRAINT_ACTIVITIES_NOT_OVERLAPPING=400;
+//const int MAX_N_CONSTRAINT_SUBACTIVITIES_PREFERRED_TIME_SLOTS = MAX_HOURS_PER_WEEK;
+//const int MAX_N_CONSTRAINT_SUBACTIVITIES_PREFERRED_STARTING_TIMES = MAX_HOURS_PER_WEEK;
 
 
 /**
 File and directory separator
 */
 extern const QString FILE_SEP;
-
-
-/**
-The XML tag used for identification of the input file (old)
-*/
-//extern const QString INPUT_FILE_TAG_3_6_1;
 
 
 /**
@@ -273,14 +220,6 @@ The import directory
 */
 extern QString IMPORT_DIRECTORY;
 
-/**
-The initialization file for timetable program
-*/
-/*#ifdef WIN32
-const QString INI_FILENAME="fet.ini";
-#else
-const QString INI_FILENAME=QDir::homeDirPath()+"/.fet/fet.ini";
-#endif*/
 
 //OUTPUT FILES
 
@@ -355,20 +294,6 @@ const int TEACHERS_FREE_PERIODS_N_CATEGORIES=9;
 
 
 
-/*
-//functions below are used in iCal exporting functions
-bool isLeapYear(int year);
-
-bool isCorrectDay(const QString day);
-
-bool isCorrectHour(const QString hour);
-
-QString nextDay(const QString day);
-
-bool sumHours(const QString hour1, const QString hour2, QString& result);
-
-QString iCalFolding(const QString s);*/
-
 extern int checkForUpdates;
 
 extern QString internetVersion;
@@ -382,15 +307,24 @@ int maxRecommendedWidth(QWidget* widget);
 //for random Knuth - from Knuth TAOCP Vol. 2 Seminumerical Algorithms section 3.6
 //these numbers are really important - please do not change them, NEVER!!!
 //if you want, write a new random number generator routine, with other name
-//extern int X;
+//I think I found a minor error in Knuth TAOCP, the author said: if(Z<=0) then Z+=MM,
+//but I think it should be: if(Z<=0) then Z+=MM-1.
+//extern int XX;
+//extern int YY;
 const int MM=2147483647;
 const int AA=48271;
 const int QQ=44488;
 const int RR=3399;
 
+const int MMM=2147483399;
+const int AAA=40692;
+const int QQQ=52774;
+const int RRR=3791;
+
 
 void initRandomKnuth();
-int randomKnuth();
-	
+int randomKnuth1MM1(); //a random between 1 and MM-1
+int randomKnuth(int k); //a random between 0 and k-1
+
 
 #endif

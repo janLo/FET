@@ -15,13 +15,13 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QMessageBox>
+
 #include "longtextmessagebox.h"
 
 #include "constraintmingapsbetweenactivitiesform.h"
 #include "addconstraintmingapsbetweenactivitiesform.h"
 #include "modifyconstraintmingapsbetweenactivitiesform.h"
-
-#include <QDesktopWidget>
 
 #include <QInputDialog>
 
@@ -200,16 +200,21 @@ void ConstraintMinGapsBetweenActivitiesForm::filterChanged()
 			constraintsListBox->insertItem(ctr->getDescription(gt.rules));
 		}
 	}
-	if(visibleConstraintsList.count()>0)
+
+	constraintsListBox->setCurrentItem(0);
+	this->constraintChanged(constraintsListBox->currentItem());
+
+	/*if(visibleConstraintsList.count()>0)
 		constraintChanged(0);
 	else
-		constraintChanged(-1);
+		constraintChanged(-1);*/
 }
 
 void ConstraintMinGapsBetweenActivitiesForm::constraintChanged(int index)
 {
 	if(index<0){
-		currentConstraintTextEdit->setText(tr("Invalid constraint"));
+		currentConstraintTextEdit->setText("");
+		//currentConstraintTextEdit->setText(tr("Invalid constraint"));
 	
 		return;
 	}
@@ -277,8 +282,11 @@ void ConstraintMinGapsBetweenActivitiesForm::removeConstraint()
 void ConstraintMinGapsBetweenActivitiesForm::help()
 {
 	QString s=tr("Please make sure that the selected activities are not forced to be"
-		" consecutive by other constraint min days between activities (with"
-		" consecutive if same day true) or by a constraint 2 activities consecutive");
+		" consecutive by some other constraint 'min days between activities' (with"
+		" 'consecutive if same day' true), by a constraint 'two activities consecutive',"
+		" or by a constraint 'two activities grouped' (also, if you have a constraint"
+		" 'three activities grouped' related to the selected activities, make sure that the"
+		" constraints do not contradict).");
 		
 	LongTextMessageBox::information(this, tr("FET help"), s);
 }

@@ -15,13 +15,13 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QMessageBox>
+
 #include "longtextmessagebox.h"
 
 #include "constraintteacherminhoursdailyform.h"
 #include "addconstraintteacherminhoursdailyform.h"
 #include "modifyconstraintteacherminhoursdailyform.h"
-
-#include <QDesktopWidget>
 
 ConstraintTeacherMinHoursDailyForm::ConstraintTeacherMinHoursDailyForm()
 {
@@ -81,12 +81,17 @@ void ConstraintTeacherMinHoursDailyForm::filterChanged()
 			constraintsListBox->insertItem(ctr->getDescription(gt.rules));
 		}
 	}
+
+	constraintsListBox->setCurrentItem(0);
+	this->constraintChanged(constraintsListBox->currentItem());
 }
 
 void ConstraintTeacherMinHoursDailyForm::constraintChanged(int index)
 {
-	if(index<0)
+	if(index<0){
+		currentConstraintTextEdit->setText("");
 		return;
+	}
 	assert(index<this->visibleConstraintsList.size());
 	TimeConstraint* ctr=this->visibleConstraintsList.at(index);
 	assert(ctr!=NULL);

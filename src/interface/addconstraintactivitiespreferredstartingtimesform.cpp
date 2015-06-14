@@ -15,18 +15,16 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QMessageBox>
+
+#include <cstdio>
+
 #include "tablewidgetupdatebug.h"
 
 #include "longtextmessagebox.h"
 
 #include "addconstraintactivitiespreferredstartingtimesform.h"
 #include "timeconstraint.h"
-
-#include <qradiobutton.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-
-#include <QDesktopWidget>
 
 #include <QHeaderView>
 #include <QTableWidget>
@@ -336,13 +334,15 @@ void AddConstraintActivitiesPreferredStartingTimesForm::addConstraint()
 				return;
 	}
 
-	int days[MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_STARTING_TIMES];
-	int hours[MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_STARTING_TIMES];
+	QList<int> days_L;
+	QList<int> hours_L;
+	//int days[MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_STARTING_TIMES];
+	//int hours[MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_STARTING_TIMES];
 	int n=0;
 	for(int j=0; j<gt.rules.nDaysPerWeek; j++)
 		for(int i=0; i<gt.rules.nHoursPerDay; i++)
 			if(preferredTimesTable->item(i, j)->text()==YES){
-				if(n>=MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_STARTING_TIMES){
+				/*if(n>=MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_STARTING_TIMES){
 					QString s=tr("Not enough slots (too many \"Yes\" values).");
 					s+="\n";
 					s+=tr("Please increase the variable MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_STARTING_TIMES");
@@ -351,10 +351,10 @@ void AddConstraintActivitiesPreferredStartingTimesForm::addConstraint()
 					QMessageBox::warning(this, tr("FET information"), s);
 					
 					return;
-				}
+				}*/
 				
-				days[n]=j;
-				hours[n]=i;
+				days_L.append(j);
+				hours_L.append(i);
 				n++;
 			}
 
@@ -367,7 +367,7 @@ void AddConstraintActivitiesPreferredStartingTimesForm::addConstraint()
 				return;
 	}
 
-	ctr=new ConstraintActivitiesPreferredStartingTimes(weight, /*compulsory,*/ teacher, students, subject, activityTag, n, days, hours);
+	ctr=new ConstraintActivitiesPreferredStartingTimes(weight, /*compulsory,*/ teacher, students, subject, activityTag, n, days_L, hours_L);
 
 	bool tmp2=gt.rules.addTimeConstraint(ctr);
 	if(tmp2){

@@ -15,13 +15,13 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QMessageBox>
+
 #include "longtextmessagebox.h"
 
 #include "constraintteachersmaxdaysperweekform.h"
 #include "addconstraintteachersmaxdaysperweekform.h"
 #include "modifyconstraintteachersmaxdaysperweekform.h"
-
-#include <QDesktopWidget>
 
 ConstraintTeachersMaxDaysPerWeekForm::ConstraintTeachersMaxDaysPerWeekForm()
 {
@@ -77,12 +77,17 @@ void ConstraintTeachersMaxDaysPerWeekForm::filterChanged()
 			constraintsListBox->insertItem(ctr->getDescription(gt.rules));
 		}
 	}
+
+	constraintsListBox->setCurrentItem(0);
+	this->constraintChanged(constraintsListBox->currentItem());
 }
 
 void ConstraintTeachersMaxDaysPerWeekForm::constraintChanged(int index)
 {
-	if(index<0)
+	if(index<0){
+		currentConstraintTextEdit->setText("");
 		return;
+	}
 	assert(index<this->visibleConstraintsList.size());
 	TimeConstraint* ctr=this->visibleConstraintsList.at(index);
 	assert(ctr!=NULL);

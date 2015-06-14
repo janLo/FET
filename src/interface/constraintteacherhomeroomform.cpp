@@ -15,13 +15,13 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QMessageBox>
+
 #include "longtextmessagebox.h"
 
 #include "constraintteacherhomeroomform.h"
 #include "addconstraintteacherhomeroomform.h"
 #include "modifyconstraintteacherhomeroomform.h"
-
-#include <QDesktopWidget>
 
 ConstraintTeacherHomeRoomForm::ConstraintTeacherHomeRoomForm()
 {
@@ -88,12 +88,17 @@ void ConstraintTeacherHomeRoomForm::filterChanged()
 			constraintsListBox->insertItem(ctr->getDescription(gt.rules));
 		}
 	}
+
+	constraintsListBox->setCurrentItem(0);
+	this->constraintChanged(constraintsListBox->currentItem());
 }
 
 void ConstraintTeacherHomeRoomForm::constraintChanged(int index)
 {
-	if(index<0)
+	if(index<0){
+		currentConstraintTextEdit->setText("");
 		return;
+	}
 	assert(index<this->visibleConstraintsList.size());
 	SpaceConstraint* ctr=this->visibleConstraintsList.at(index);
 	assert(ctr!=NULL);

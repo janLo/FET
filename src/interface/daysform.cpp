@@ -1,31 +1,39 @@
 //
 //
-// C++ Implementation: $MODULE$
-//
-// Description: 
+// Description: This file is part of FET
 //
 //
-// Author: Lalescu Liviu <Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)>, (C) 2003
+// Author: Lalescu Liviu <Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)>
+// Copyright (C) 2003 Liviu Lalescu <http://lalescu.ro/liviu/>
 //
-// Copyright: See COPYING file that comes with this distribution
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 //
 //
+
 #include "timetable_defs.h"
 #include "timetable.h"
 #include "fet.h"
 
 #include "daysform.h"
 
-#include <qspinbox.h>
-#include <qlineedit.h>
-#include <qmessagebox.h>
-
-#include <QDesktopWidget>
+#include <QLineEdit>
+#include <QMessageBox>
 
 extern Timetable gt;
 
-QLineEdit* daysNames[28];
-int nDays;
+static QLineEdit* daysNames[35];
+static int nDays;
+
+extern bool students_schedule_ready;
+extern bool teachers_schedule_ready;
+extern bool rooms_schedule_ready;
 
 DaysForm::DaysForm()
  : DaysForm_template()
@@ -77,11 +85,19 @@ DaysForm::DaysForm()
 	daysNames[26]=day27LineEdit;
 	daysNames[27]=day28LineEdit;
 
+	daysNames[28]=day29LineEdit;
+	daysNames[29]=day30LineEdit;
+	daysNames[30]=day31LineEdit;
+	daysNames[31]=day32LineEdit;
+	daysNames[32]=day33LineEdit;
+	daysNames[33]=day34LineEdit;
+	daysNames[34]=day35LineEdit;
+
 	daysSpinBox->setMinValue(1);
-	daysSpinBox->setMaxValue(28/*MAX_DAYS_PER_WEEK*/);
+	daysSpinBox->setMaxValue(35/*MAX_DAYS_PER_WEEK*/);
 	daysSpinBox->setValue(gt.rules.nDaysPerWeek);
 
-	for(int i=0; i<28; i++)
+	for(int i=0; i<35; i++)
 		if(i<nDays){
 			daysNames[i]->setEnabled(true);
 			daysNames[i]->setText(gt.rules.daysOfTheWeek[i]);
@@ -99,7 +115,7 @@ void DaysForm::daysChanged()
 {
 	nDays=daysSpinBox->value();
 	assert(nDays <= MAX_DAYS_PER_WEEK);
-	for(int i=0; i<28; i++)
+	for(int i=0; i<35; i++)
 		if(i<nDays)
 			daysNames[i]->setEnabled(true);
 		else
@@ -126,6 +142,12 @@ void DaysForm::ok()
 		tr("Please note that FET will NOT take care "
 		"of old constraints using erased days "
 		"(only renamed days will be handled correctly)"));
+		
+	if(gt.rules.nDaysPerWeek!=nDays){
+		students_schedule_ready=false;
+		teachers_schedule_ready=false;
+		rooms_schedule_ready=false;
+	}
 		
 	//remove old names
 	for(int i=nDays; i<gt.rules.nDaysPerWeek; i++)

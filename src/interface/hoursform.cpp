@@ -1,15 +1,23 @@
 //
 //
-// C++ Implementation: $MODULE$
-//
-// Description: 
+// Description: This file is part of FET
 //
 //
-// Author: Lalescu Liviu <Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)>, (C) 2003
+// Author: Lalescu Liviu <Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)>
+// Copyright (C) 2003 Liviu Lalescu <http://lalescu.ro/liviu/>
 //
-// Copyright: See COPYING file that comes with this distribution
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 //
 //
+
+#include <QMessageBox>
 
 #include "timetable_defs.h"
 #include "timetable.h"
@@ -17,16 +25,16 @@
 
 #include "hoursform.h"
 
-#include <qspinbox.h>
-#include <qmessagebox.h>
-#include <qlineedit.h>
-
-#include <QDesktopWidget>
+#include <QLineEdit>
 
 extern Timetable gt;
 
-QLineEdit* hoursNames[60];
-int nHours;
+static QLineEdit* hoursNames[60];
+static int nHours;
+
+extern bool students_schedule_ready;
+extern bool teachers_schedule_ready;
+extern bool rooms_schedule_ready;
 
 HoursForm::HoursForm()
  : HoursForm_template()
@@ -167,6 +175,12 @@ void HoursForm::ok()
 		);		
 	if(t==QMessageBox::Cancel)
 		return;*/
+		
+	if(gt.rules.nHoursPerDay!=nHours){
+		students_schedule_ready=false;
+		teachers_schedule_ready=false;
+		rooms_schedule_ready=false;
+	}
 
 	//remove old names
 	for(int i=nHours; i<gt.rules.nHoursPerDay; i++)

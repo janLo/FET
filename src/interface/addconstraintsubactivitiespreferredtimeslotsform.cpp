@@ -15,18 +15,16 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QMessageBox>
+
+#include <cstdio>
+
 #include "tablewidgetupdatebug.h"
 
 #include "longtextmessagebox.h"
 
 #include "addconstraintsubactivitiespreferredtimeslotsform.h"
 #include "timeconstraint.h"
-
-#include <qradiobutton.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-
-#include <QDesktopWidget>
 
 #include <QHeaderView>
 #include <QTableWidget>
@@ -102,7 +100,7 @@ AddConstraintSubactivitiesPreferredTimeSlotsForm::AddConstraintSubactivitiesPref
 	preferredTimesTable->setSelectionMode(QAbstractItemView::NoSelection);
 			
 	componentNumberSpinBox->setMinValue(1);
-	componentNumberSpinBox->setMaxValue(99);
+	componentNumberSpinBox->setMaxValue(MAX_SPLIT_OF_AN_ACTIVITY);
 	componentNumberSpinBox->setValue(1);
 
 	tableWidgetUpdateBug(preferredTimesTable);
@@ -319,13 +317,15 @@ void AddConstraintSubactivitiesPreferredTimeSlotsForm::addConstraint()
 				return;
 	}*/
 
-	int days[MAX_N_CONSTRAINT_SUBACTIVITIES_PREFERRED_TIME_SLOTS];
-	int hours[MAX_N_CONSTRAINT_SUBACTIVITIES_PREFERRED_TIME_SLOTS];
+	QList<int> days_L;
+	QList<int> hours_L;
+	//int days[MAX_N_CONSTRAINT_SUBACTIVITIES_PREFERRED_TIME_SLOTS];
+	//int hours[MAX_N_CONSTRAINT_SUBACTIVITIES_PREFERRED_TIME_SLOTS];
 	int n=0;
 	for(int j=0; j<gt.rules.nDaysPerWeek; j++)
 		for(int i=0; i<gt.rules.nHoursPerDay; i++)
 			if(preferredTimesTable->item(i, j)->text()==YES){
-				if(n>=MAX_N_CONSTRAINT_SUBACTIVITIES_PREFERRED_TIME_SLOTS){
+				/*if(n>=MAX_N_CONSTRAINT_SUBACTIVITIES_PREFERRED_TIME_SLOTS){
 					QString s=tr("Not enough slots (too many \"Yes\" values).");
 					s+="\n";
 					s+=tr("Please increase the variable MAX_N_CONSTRAINT_SUBACTIVITIES_PREFERRED_TIME_SLOTS");
@@ -334,10 +334,10 @@ void AddConstraintSubactivitiesPreferredTimeSlotsForm::addConstraint()
 					QMessageBox::warning(this, tr("FET information"), s);
 					
 					return;
-				}
+				}*/
 				
-				days[n]=j;
-				hours[n]=i;
+				days_L.append(j);
+				hours_L.append(i);
 				n++;
 			}
 
@@ -350,7 +350,7 @@ void AddConstraintSubactivitiesPreferredTimeSlotsForm::addConstraint()
 				return;
 	}
 
-	ctr=new ConstraintSubactivitiesPreferredTimeSlots(weight, componentNumberSpinBox->value(),/*compulsory,*/ teacher, students, subject, activityTag, n, days, hours);
+	ctr=new ConstraintSubactivitiesPreferredTimeSlots(weight, componentNumberSpinBox->value(),/*compulsory,*/ teacher, students, subject, activityTag, n, days_L, hours_L);
 
 	bool tmp2=gt.rules.addTimeConstraint(ctr);
 	if(tmp2){

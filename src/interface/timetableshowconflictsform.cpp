@@ -1,13 +1,19 @@
 //
 //
-// C++ Implementation: $MODULE$
-//
-// Description: 
+// Description: This file is part of FET
 //
 //
-// Author: Lalescu Liviu <Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)>, (C) 2003
+// Author: Lalescu Liviu <Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)>
+// Copyright (C) 2003 Liviu Lalescu <http://lalescu.ro/liviu/>
 //
-// Copyright: See COPYING file that comes with this distribution
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 //
 //
 
@@ -15,12 +21,10 @@
 
 #include "timetable.h"
 
-#include <q3textedit.h>
-#include <qstring.h>
-
-#include <QDesktopWidget>
+#include <QString>
 
 extern Timetable gt;
+extern QString conflictsStringTitle;
 extern QString conflictsString;
 
 TimetableShowConflictsForm::TimetableShowConflictsForm()
@@ -39,6 +43,7 @@ TimetableShowConflictsForm::TimetableShowConflictsForm()
 	move(xx, yy);*/
 	centerWidgetOnScreen(this);
 	
+	setWindowTitle(conflictsStringTitle);
 	conflictsTextEdit->setText(conflictsString);
 }
 

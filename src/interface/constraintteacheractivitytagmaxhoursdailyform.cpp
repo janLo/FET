@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QMessageBox>
+
 #include "helponimperfectconstraints.h"
 
 #include "longtextmessagebox.h"
@@ -22,8 +24,6 @@
 #include "constraintteacheractivitytagmaxhoursdailyform.h"
 #include "addconstraintteacheractivitytagmaxhoursdailyform.h"
 #include "modifyconstraintteacheractivitytagmaxhoursdailyform.h"
-
-#include <QDesktopWidget>
 
 ConstraintTeacherActivityTagMaxHoursDailyForm::ConstraintTeacherActivityTagMaxHoursDailyForm()
 {
@@ -94,12 +94,17 @@ void ConstraintTeacherActivityTagMaxHoursDailyForm::filterChanged()
 			constraintsListBox->insertItem(ctr->getDescription(gt.rules));
 		}
 	}
+
+	constraintsListBox->setCurrentItem(0);
+	this->constraintChanged(constraintsListBox->currentItem());
 }
 
 void ConstraintTeacherActivityTagMaxHoursDailyForm::constraintChanged(int index)
 {
-	if(index<0)
+	if(index<0){
+		currentConstraintTextEdit->setText("");
 		return;
+	}
 	assert(index<this->visibleConstraintsList.size());
 	TimeConstraint* ctr=this->visibleConstraintsList.at(index);
 	assert(ctr!=NULL);

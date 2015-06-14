@@ -1,3 +1,7 @@
+/*
+File export.cpp
+*/
+
 /***************************************************************************
                                 FET
                           -------------------
@@ -11,7 +15,7 @@
                          : http://www.timetabling.de/
  ***************************************************************************
  *                                                                         *
- *   NULL program is free software; you can redistribute it and/or modify  *
+ *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
@@ -44,6 +48,7 @@ extern bool students_schedule_ready;
 extern bool rooms_schedule_ready;
 
 const char CSVActivities[]="activities.csv";
+const char CSVActivitiesStatistic[]="statistics_activities.csv";
 const char CSVActivityTags[]="activity_tags.csv";
 const char CSVRoomsAndBuildings[]="rooms_and_buildings.csv";
 const char CSVSubjects[]="subjects.csv";
@@ -89,8 +94,10 @@ bool Export::okToWrite(const QString& file, QMessageBox::StandardButton& msgBoxB
 			else
 				return true;
 		}
-		else
+		else{
 			assert(0);
+			return false;
+		}
 	}
 	else
 		return true;
@@ -135,21 +142,7 @@ void Export::exportCSV(){
 	if(!ok){
 		lastWarnings.insert(0,Export::tr("Export aborted")+"\n");
 	} else {
-		bool okat, okr, oks, okt, okst, okact, oktim;
-		/*if(ok)
-			ok=exportCSVActivityTags(lastWarnings, textquote, head, setSeparator);
-		if(ok)
-			ok=exportCSVRoomsAndBuildings(lastWarnings, textquote, fieldSeparator, head);
-		if(ok)
-			ok=exportCSVSubjects(lastWarnings, textquote, head);
-		if(ok)
-			ok=exportCSVTeachers(lastWarnings, textquote, head, setSeparator);
-		if(ok)
-			ok=exportCSVStudents(lastWarnings, textquote, fieldSeparator, head, setSeparator);
-		if(ok)
-			ok=exportCSVActivities(lastWarnings, textquote, fieldSeparator, head);
-		if(ok)
-			ok=exportCSVTimetable(lastWarnings, textquote, fieldSeparator, head);*/
+		bool okat, okr, oks, okt, okst, okact, okacts, oktim;
 
 		QMessageBox::StandardButton msgBoxButton=QMessageBox::NoButton;
 
@@ -159,9 +152,10 @@ void Export::exportCSV(){
 		okt=exportCSVTeachers(lastWarnings, textquote, head, setSeparator, msgBoxButton);
 		okst=exportCSVStudents(lastWarnings, textquote, fieldSeparator, head, setSeparator, msgBoxButton);
 		okact=exportCSVActivities(lastWarnings, textquote, fieldSeparator, head, msgBoxButton);
+		okacts=exportCSVActivitiesStatistic(lastWarnings, textquote, fieldSeparator, head, msgBoxButton);
 		oktim=exportCSVTimetable(lastWarnings, textquote, fieldSeparator, head, msgBoxButton);
 		
-		ok=okat && okr && oks && okt && okst && okact && oktim;
+		ok=okat && okr && oks && okt && okst && okact && okacts && oktim;
 			
 		lastWarnings.insert(0,Export::tr("CSV files were exported to directory %1.").arg(QDir::toNativeSeparators(DIRECTORY_CSV))+"\n");
 		if(ok)
@@ -958,6 +952,88 @@ bool Export::exportCSVActivities(QString& lastWarnings, const QString textquote,
 
 
 
+
+bool Export::exportCSVActivitiesStatistic(QString& lastWarnings, const QString textquote, const QString fieldSeparator, const bool head, QMessageBox::StandardButton& msgBoxButton){
+	QString s2=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);	//TODO: remove s2, because to long filenames!
+
+	if(s2.right(4)==".fet")
+		s2=s2.left(s2.length()-4);
+	//else if(INPUT_FILENAME_XML!="")
+	//	cout<<"Minor problem - input file does not end in .fet extension - might be a problem when saving the timetables"<<" (file:"<<__FILE__<<", line:"<<__LINE__<<")"<<endl;
+
+	QString UNDERSCORE="_";
+	if(INPUT_FILENAME_XML=="")
+		UNDERSCORE="";
+	QString file=PREFIX_CSV+s2+UNDERSCORE+CSVActivitiesStatistic;
+
+	if(!Export::okToWrite(file, msgBoxButton))
+		return false;
+	
+	QFile fileExport(file);
+	if(!fileExport.open(QIODevice::WriteOnly)){
+		lastWarnings+=Export::tr("FET critical. Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(file)+"\n";
+		return false;
+		assert(0);
+	}
+	QTextStream tosExport(&fileExport);
+	tosExport.setCodec("UTF-8");
+	tosExport.setGenerateByteOrderMark(true);	//default is "true", but openOffice have problems to open those files
+	
+	if(head)
+		tosExport	<<textquote<<"Students Sets"<<textquote<<fieldSeparator
+				<<textquote<<"Subject"<<textquote<<fieldSeparator
+				<<textquote<<"Teachers"<<textquote<<fieldSeparator
+				<<textquote<<"Total Duration"<<textquote<<"\n";
+
+
+
+	Activity* acti;
+	int countExportedActivities=0;
+	QMap<QString, int> tmpIdentDuration;	//not QHash, because i want a nice order of the activities
+	for(int ai=0; ai<gt.rules.activitiesList.size(); ai++){
+		acti=gt.rules.activitiesList[ai];
+		if(acti->active){
+			int tmpD=acti->duration;
+			QString tmpIdent=textquote;
+			if(acti->studentsNames.size()>0){
+				for(QStringList::Iterator it=acti->studentsNames.begin(); it!=acti->studentsNames.end(); it++){
+					tmpIdent+=protectCSV(*it);
+					if(it!=acti->studentsNames.end()-1)
+						tmpIdent+="+";
+				}
+			}
+			tmpIdent+=textquote+fieldSeparator+textquote+protectCSV(acti->subjectName)+textquote+fieldSeparator+textquote;
+			if(acti->teachersNames.size()>0){
+				for(QStringList::Iterator it=acti->teachersNames.begin(); it!=acti->teachersNames.end(); it++){
+					tmpIdent+=protectCSV(*it);
+					if(it!=acti->teachersNames.end()-1)
+						tmpIdent+="+";
+				}
+			}
+			tmpIdent+=textquote+fieldSeparator;
+			tmpD+=tmpIdentDuration.value(tmpIdent);
+			tmpIdentDuration.insert(tmpIdent, tmpD);
+		}
+	}
+	QMapIterator<QString, int> it(tmpIdentDuration);
+	while(it.hasNext()){
+		countExportedActivities++;
+		it.next();
+		tosExport<<it.key();
+		tosExport<<textquote<<QString::number(it.value())<<textquote<<"\n";
+	}
+
+	lastWarnings+=Export::tr("%1 active activities statistics exported.").arg(countExportedActivities)+"\n";
+	if(fileExport.error()>0){
+		lastWarnings+=Export::tr("FET critical. Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(file).arg(fileExport.error())+"\n";
+		return false;
+	}
+	fileExport.close();
+	return true;
+}
+
+
+
 bool Export::exportCSVTimetable(QString& lastWarnings, const QString textquote, const QString fieldSeparator, const bool head, QMessageBox::StandardButton& msgBoxButton){
 	QString s2=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);	//TODO: remove s2, because to long filenames!
 
@@ -984,13 +1060,16 @@ bool Export::exportCSVTimetable(QString& lastWarnings, const QString textquote, 
 	tosExport.setCodec("UTF-8");
 	tosExport.setGenerateByteOrderMark(true);	//default is "true", but openOffice have problems to open those files
 	
+	//section "Activity Id" was added by Liviu on 2010-01-26, as suggested on the forum
 	if(head)
-		tosExport	<<textquote<<"Day"<<textquote<<fieldSeparator
-				<<textquote<<"Period"<<textquote<<fieldSeparator
+		tosExport
+				<<textquote<<"Activity Id"<<textquote<<fieldSeparator
+				<<textquote<<"Day"<<textquote<<fieldSeparator
+				<<textquote<<"Hour"<<textquote<<fieldSeparator
 				<<textquote<<"Students Sets"<<textquote<<fieldSeparator
 				<<textquote<<"Subject"<<textquote<<fieldSeparator
 				<<textquote<<"Teachers"<<textquote<<fieldSeparator
-				<<textquote<<"Activity Tag"<<textquote<<fieldSeparator
+				<<textquote<<"Activity Tags"<<textquote<<fieldSeparator
 				<<textquote<<"Room"<<textquote<<endl;
 
 	if(gt.rules.initialized && gt.rules.internalStructureComputed
@@ -1006,6 +1085,10 @@ bool Export::exportCSVTimetable(QString& lastWarnings, const QString textquote, 
 				int r=best_solution.rooms[i];
 				for(int dd=0; dd < act->duration; dd++){
 					assert(hour+dd<gt.rules.nHoursPerDay);
+					
+					//Activity id - added by Liviu on 2010-01-26
+					tosExport<<textquote<<QString::number(act->id)<<textquote<<fieldSeparator;
+					
 					//Day
 					tosExport<<textquote<<protectCSV(gt.rules.daysOfTheWeek[day])<<textquote<<fieldSeparator;
 					//Period
@@ -1039,6 +1122,9 @@ bool Export::exportCSVTimetable(QString& lastWarnings, const QString textquote, 
 						assert(best_solution.rooms[i]>=0 && best_solution.rooms[i]<gt.rules.nInternalRooms);
 						tosExport<<textquote<<protectCSV(gt.rules.internalRoomsList[r]->name)<<textquote;
 					}
+					else{ //added by Liviu on 2010-01-26
+						tosExport<<textquote<<textquote;
+					}
 					tosExport<<endl;
 				}
 			}
@@ -1052,276 +1138,5 @@ bool Export::exportCSVTimetable(QString& lastWarnings, const QString textquote, 
 		return false;
 	}
 	fileExport.close();
-	return true;
-}
-
-
-
-bool Export::exportSchILD(QString& lastWarnings){ 
-
-/////////////////TODO: REMOVE OR COMMENT OUT qPrintable, just output QString::number
-
-
-	//assert(gt.rules.initialized && gt.rules.internalStructureComputed); //i think i don't need that, or?
-
-	//TODO:
-	QString directoryname=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);
-
-	if(directoryname.right(4)==".fet")
-		directoryname=directoryname.left(directoryname.length()-4);
-	else if(INPUT_FILENAME_XML!="")
-		cout<<"Minor problem - input file does not end in .fet extension - might be a problem when saving the timetables"<<" (file:"<<__FILE__<<", line:"<<__LINE__<<")"<<endl;
-
-	int ret=QMessageBox::question(NULL, "Export to SchILD?", "Do you want to export dat-files for SchILD?\nSchiILD is the school administration software of NRW (Germany).\nhttp://www.svws.nrw.de/\nThis will create following files:\n- Exportprotokoll.log\n- Kurse.dat\n- KurseLehrkraefte.dat\n- LehrkraefteSonderzeiten.dat\n- LehrkraefteSonderzeiten.dat", QMessageBox::Yes | QMessageBox::No);
-
-	if(ret==QMessageBox::Yes){
-		bool ok;
-		//TODO: write just ONE form with both questions
-		int jahr=QInputDialog::getInteger(NULL, "FET question", "Please specify the year of the current data set:",QDate::currentDate().year(),2000,3000,1,&ok);
-		int abschnitt=1;
-		if(ok) abschnitt=QInputDialog::getInteger(NULL, "FET question", "Please specify the semester of the current data set:",1,1,4,1,&ok);
-		if(ok){
-			int not_active=0;
-			bool kurs=false;
-			QString kursbezeichnung;
-			QString tmp;
-			bool nurEinJahrgang;
-			bool added=false;
-			QFile fileK(directoryname+"Kurse.dat");
-			if(!fileK.open(QIODevice::WriteOnly)){
-				lastWarnings+=Export::tr("FET critical. Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(directoryname)+"\n";
-				return false;
-				assert(0);
-			}
-			QTextStream tosK(&fileK);
-			//tosK.setCodec("UTF-8");
-			//tosK.setGenerateByteOrderMark(true);
-		
-			QFile fileKL(directoryname+"KurseLehrkraefte.dat");
-			if(!fileKL.open(QIODevice::WriteOnly)){
-				lastWarnings+=Export::tr("FET critical. Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(directoryname+"\n");
-				return false;
-				assert(0);
-			}
-			QTextStream tosKL(&fileKL);
-			//tosKL.setCodec("UTF-8");
-			//tosKL.setGenerateByteOrderMark(true);
-		
-			QFile fileLS(directoryname+"LehrkraefteSonderzeiten.dat");
-			if(!fileLS.open(QIODevice::WriteOnly)){
-				lastWarnings+=Export::tr("FET critical. Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(directoryname)+"\n";
-				return false;
-				assert(0);
-			}
-			QTextStream tosLS(&fileLS);
-			//tosLS.setCodec("UTF-8");
-			//tosLS.setGenerateByteOrderMark(true);
-		
-			QFile fileE(directoryname+"Exportprotokoll.log");
-			if(!fileE.open(QIODevice::WriteOnly)){
-				lastWarnings+=Export::tr("FET critical. Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(directoryname)+"\n";
-				return false;
-				assert(0);
-			}
-			QTextStream tosE(&fileE);
-			//tosE.setCodec("UTF-8");
-			//tosE.setGenerateByteOrderMark(true);
-	
-			tosE<<"Hinweis: Kursbezeichnungen wurden evt. verändert."<<endl;
-			tosE<<"         Kurse.dat und KurseLehrkraefte.dat wird zum import der UV benötigt."<<endl;
-			tosE<<"         LehrkraefteSonderzeiten.dat kann zum Import der Soderzeiten für die Statistik benutzt werden."<<endl;
-			tosE<<"          Dazu muss die Kennzeichnung des Unterrichts (Aktivität) die 3 stellige ASD Schlüsselnummer sein."<<endl<<endl;
-			tosE<<"Warnung: LehrkraefteSonderzeiten.dat enthält keine Jahrgangs und Abschnittsdaten!"<<endl;
-			tosE<<"         Die Sonderzeiten werden immer dem in SchILD eingestelltem aktuellen Jahrgang & Abschnitt zugeordnet!"<<endl<<endl;
-		
-			tosK<<"KursBez|Jahr|Abschnitt|Jahrgang|Fach|Kursart|Wochenstd.|Wochenstd. KL|Kursleiter"<<endl;
-			tosKL<<"KursBez|Jahr|Abschnitt|Lehrkraft|Wochenstd"<<endl;
-			tosLS<<"Lehrkraft|Zeitart|Grund|Anzahl Stunden"<<endl;
-			Activity* acti;
-			for(int ai=0; ai<gt.rules.activitiesList.size(); ai++){
-				acti=gt.rules.activitiesList[ai];
-				if(acti->active){
-					if((acti->activityGroupId==acti->id)||(acti->activityGroupId==0)){
-						added=false;
-						if((acti->studentsNames.size()>0) && (acti->teachersNames.size()>0) ){
-							added=true;
-							kurs=false;
-							nurEinJahrgang=true;
-							kursbezeichnung.clear();
-							for(int s=0; s<acti->studentsNames.size(); s++){
-								tmp.clear();
-								tmp=acti->studentsNames[s];
-								tmp.remove(' ');
-								tmp=tmp.toUpper();
-								assert(tmp.size()>0);	// I am not sure. is that possible?
-								if((tmp.at(0)<'0')||(tmp.at(0)>'9'))
-									tosE<<"Warnung: Bei Aktivität "<<acti->id<<" beginnt der Jahrgang nicht mit einer Zahl!"<<endl;
-								if(tmp.size()>1){
-									if((tmp.at(1)<'0')||(tmp.at(1)>'9')){
-										tmp="0"+tmp;
-										if(acti->studentsNames[s].size()>2)
-											kurs=true;
-									} else {
-										if(acti->studentsNames[s].size()>3||acti->studentsNames[s].size()==2)
-											kurs=true;
-									}
-								} else {
-									tmp="0"+tmp;
-									kurs=true;
-								}
-								if(s==0)
-									kursbezeichnung=tmp;
-								else
-									kursbezeichnung+="_"+tmp;
-								if(tmp.at(0)!=kursbezeichnung.at(0)||tmp.at(1)!=kursbezeichnung.at(1)){
-									kurs=true;
-									nurEinJahrgang=false;
-								}
-							}
-							if(acti->studentsNames.size()>1)
-								kurs=true;
-							if(kurs)
-								kursbezeichnung+="_"+acti->subjectName;		//TODO: dann sind auch AGs WP?! ***
-							if(kursbezeichnung.size()>20){
-								tosE<<"Warnung: Bei Aktivität "<<acti->id<<" ist die Kurzbezeichnung zu groß."<<endl;
-								tosK<<qPrintable(kursbezeichnung.left(20));
-							}
-							else tosK<<qPrintable(kursbezeichnung);
-							tosK<<"|";
-							tosK<<jahr;
-							tosK<<"|";
-							tosK<<abschnitt;
-							tosK<<"|";
-							if(nurEinJahrgang)
-								tosK<<qPrintable(kursbezeichnung.left(2));
-							tosK<<"|";
-							if(acti->subjectName.size()>20){
-								tosE<<"Warnung: Bei Aktivität "<<acti->id<<" ist das Unterrichtsfach zu groß."<<endl;
-								tosK<<qPrintable(acti->subjectName.left(20));
-							}
-							else tosK<<qPrintable(acti->subjectName);
-							tosK<<"|";
-							if(kurs){
-								if(kursbezeichnung.contains(acti->subjectName)) //TODO: dann sind auch AGs WP?! ***
-									tosK<<"WP";
-								else tosK<<"PUT";
-							}
-							tosK<<"|";
-							tosK<<acti->totalDuration;
-							tosK<<"|";
-							// Wochenstunden des Kursleiters
-							tosK<<"|";
-							if(acti->teachersNames[0].size()>10){
-								tosE<<"Warnung: Bei Aktivität "<<acti->id<<" ist der Lehrername zu groß."<<endl;
-								tosK<<qPrintable(acti->teachersNames[0].left(10));
-							}
-							else tosK<<qPrintable(acti->teachersNames[0]);
-							for(int t=1; t<acti->teachersNames.size(); t++){ // This is correct, not the first teacher!
-								if(kurs){
-									if(kursbezeichnung.size()>20){
-										tosKL<<qPrintable(kursbezeichnung.left(20));
-									}
-									else tosKL<<qPrintable(kursbezeichnung);
-									tosKL<<"|";
-									tosKL<<jahr;
-									tosKL<<"|";
-									tosKL<<abschnitt;
-									tosKL<<"|";
-									if(acti->teachersNames[t].size()>10){
-										tosE<<"Warnung: Bei Aktivität "<<acti->id<<" ist ein Lehrername zu groß."<<endl;
-										tosKL<<qPrintable(acti->teachersNames[t].left(10));
-									} else tosKL<<qPrintable(acti->teachersNames[t]);
-									tosKL<<"|";
-									tosKL<<acti->totalDuration;
-									tosKL<<endl;
-								} else tosE<<"Warnung: Aktivität "<<acti->id<<" wurde nicht hinzugefügt."<<" Klassenteamteaching!"<<endl;
-							}
-							tosK<<"|";
-							if(kurs)
-								tosK<<"N";
-							else tosK<<"J";
-							tosK<<endl;
-						}
-						//rethink, because of multible activity tags
-						/*if(acti->activityTagName.size()==3 && (acti->teachersNames.size()>0)){
-							if((acti->activityTagName.at(0)>='0')&&(acti->activityTagName.at(0)<='9')
-							&&(acti->activityTagName.at(1)>='0')&&(acti->activityTagName.at(1)<='9')
-							&&(acti->activityTagName.at(2)>='0')&&(acti->activityTagName.at(2)<='9')){
-								added=true;
-								for(int t=0; t<acti->teachersNames.size(); t++){ 
-									if(acti->teachersNames[t].size()>10){
-										tosE<<"Warnung: Bei Aktivität "<<acti->id<<" ist ein Lehrername zu groß."<<endl;
-										tosLS<<qPrintable(acti->teachersNames[t].left(10));
-									} else tosLS<<qPrintable(acti->teachersNames[t]);
-									tosLS<<"|";
-									if(acti->studentsNames.size()>0)	//validiere MEHRLEISTUNG ANRECHNUNG oder MINDERLEISTUNG anhand des ASD-Schlüssels
-										tosLS<<"MEHRLEISTUNG";
-									else tosLS<<"MINDERLEISTUNG";
-									tosLS<<"|";
-									tosLS<<qPrintable(acti->activityTagName);	//ASD-Schlüssel
-									tosLS<<"|";
-									tosLS<<acti->totalDuration;
-									tosLS<<endl;
-								}
-							}
-						}*/
-						if((acti->studentsNames.size()>0) && (acti->teachersNames.size()==0) ){	//TODO: care about that activities!
-							//added=true;
-							tosE<<"Warnung: Aktivität "<<acti->id<<" wurde nicht hinzugefügt."<<" Schülerkopplung?"<<endl;
-						}
-						if((acti->studentsNames.size()==0) && (acti->teachersNames.size()==0) ){ //TODO: care about that activities!
-							//added=true;
-							tosE<<"Warnung: Aktivität "<<acti->id<<" wurde nicht hinzugefügt."<<" Raumkopplung?"<<endl;
-						}
-						if((acti->studentsNames.size()==0) && (acti->teachersNames.size()>0) ){	//TODO: care about that activities!
-							if(added==false){
-								//added=true;
-								tosE<<"Warnung: Aktivität "<<acti->id<<" wurde nicht hinzugefügt."<<" Lehrerkopplung?"<<endl;
-							} else tosE<<"Hinweis: Aktivität "<<acti->id<<" wurde nur in LehrkraefteSonderzeiten.dat hinzugefügt."<<" Zusätzlich Lehrerkopplung?"<<endl;
-						}
-					}
-				} else not_active++;
-				
-			}
-			if(not_active!=0)
-				tosE<<endl<<"Hinweis: "<<not_active<<" Aktivitäten sind nicht aktiv."<<endl;
-			tosE<<endl<<"Ende der Datei."<<endl<<endl;
-		
-			//TODO: If i output 2 or more same activities like this:
-			// 05a|2008|1|05|MA||4||Tanja|
-			// 05a|2008|1|05|MA||1||Tanja|
-			// then i need to care about that this is just output as a single activity like this:
-			// 05a|2008|1|05|MA||5||Tanja|
-			// I don't need to care about that, if activities are enterd with an matrix!
-			//TODO: check same starting time
-		
-		
-			if(fileE.error()>0){
-				lastWarnings+=Export::tr("FET critical. Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(directoryname).arg(fileE.error())+"\n";
-				return false;
-			}
-			fileE.close();
-		
-			if(fileLS.error()>0){
-				lastWarnings+=Export::tr("FET critical. Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(directoryname).arg(fileLS.error())+"\n";
-				return false;
-			}
-			fileLS.close();
-		
-			if(fileKL.error()>0){
-				lastWarnings+=Export::tr("FET critical. Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(directoryname).arg(fileKL.error())+"\n";
-				return false;
-			}
-			fileKL.close();
-		
-			if(fileK.error()>0){
-				lastWarnings+=Export::tr("FET critical. Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(directoryname).arg(fileK.error())+"\n";
-				return false;
-			}
-			fileK.close();
-		}
-		if(ok) QMessageBox::information(NULL, tr("FET information"), Export::tr("TODO: write content of file \"Exportprotokoll.log\" here."));
-		else QMessageBox::warning(NULL, tr("FET warning"), Export::tr("User abort export"));
-	}
 	return true;
 }

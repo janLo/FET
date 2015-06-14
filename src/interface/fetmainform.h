@@ -1,23 +1,29 @@
 //
 //
-// C++ Interface: $MODULE$
-//
-// Description:
+// Description: This file is part of FET
 //
 //
-// Author: Lalescu Liviu <Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)>, (C) 2003
+// Author: Lalescu Liviu <Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)>
+// Copyright (C) 2003 Liviu Lalescu <http://lalescu.ro/liviu/>
 //
-// Copyright: See COPYING file that comes with this distribution
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 //
 //
+
 #ifndef FETMAINFORM_H
 #define FETMAINFORM_H
 
 #include "ui_fetmainform_template.h"
 
-#include <qmutex.h>
-#include <qthread.h>
-#include <qmessagebox.h>
+#include <QMutex>
+#include <QThread>
 
 #include <QCloseEvent>
 
@@ -31,6 +37,8 @@
 
 #include <QResizeEvent>
 
+#include <QMenu>
+
 extern const QString COMPANY;
 extern const QString PROGRAM;
 
@@ -39,15 +47,19 @@ class RandomSeedDialog: public QDialog
 	Q_OBJECT
 	
 public:
-	QLabel* label;
+	QLabel* labelX;
+	QLabel* labelY;
 	
-	QLabel* valuesLabel;
+	QLabel* valuesLabelX;
+	QLabel* valuesLabelY;
 	
-	QLineEdit* lineEdit;
+	QLineEdit* lineEditX;
+	QLineEdit* lineEditY;
 	QPushButton* helpPB;
 	QPushButton* okPB;
 	QPushButton* cancelPB;
-	QHBoxLayout* seedLayout;
+	QGridLayout* seedLayoutX;
+	QGridLayout* seedLayoutY;
 	QHBoxLayout* buttonsLayout;
 	QVBoxLayout* mainLayout;
 
@@ -69,6 +81,11 @@ private:
 	
 	void setEnabledIcon(QAction* action, bool enabled);
 	
+	QMenu* shortcutBasicMenu;
+	QMenu* shortcutDataSpaceMenu;
+	QMenu* shortcutDataAdvancedMenu;
+	QMenu* shortcutAdvancedTimeMenu;
+	
 /*protected:
 	void resizeEvent(QResizeEvent* event);*/
 
@@ -81,6 +98,11 @@ public:
 	~FetMainForm();
 	
 //	void updateLogo();
+
+	void closeOtherWindows();
+	
+	bool fileSave();
+	bool fileSaveAs();
 	
 public slots:
 	void enableNotPerfectMessage();
@@ -116,10 +138,20 @@ public slots:
 	
 	void on_helpSettingsAction_activated();
 	void on_settingsUseColorsAction_toggled();
+	void on_settingsShowShortcutsOnMainWindowAction_toggled();
+
+	//////confirmations
+	void on_settingsConfirmActivityPlanningAction_toggled();
+	void on_settingsConfirmSpreadActivitiesAction_toggled();
+	void on_settingsConfirmRemoveRedundantAction_toggled();
+	//////
 	
 	void enableActivityTagMaxHoursDailyToggled(bool checked);
 	void enableStudentsMaxGapsPerDayToggled(bool checked);
 	void showWarningForNotPerfectConstraintsToggled(bool checked);
+
+	void enableStudentsMinHoursDailyWithAllowEmptyDaysToggled(bool checked);
+	void showWarningForStudentsMinHoursDailyWithAllowEmptyDaysToggled(bool checked);
 	
 	void on_dataActivitiesAction_activated();
 	void on_dataSubactivitiesAction_activated();
@@ -240,16 +272,23 @@ public slots:
 	void on_dataTimeConstraintsStudentsMinHoursDailyAction_activated();
 	void on_dataTimeConstraintsStudentsSetMinHoursDailyAction_activated();
 
+	void on_activityPlanningAction_activated();
 	void on_spreadActivitiesAction_activated();
 	void on_removeRedundantConstraintsAction_activated();
 
+	//about
 	void on_helpAboutAction_activated();
+	//offline
 	void on_helpFAQAction_activated();
 	void on_helpTipsAction_activated();
 	void on_helpInstructionsAction_activated();
-	void on_helpManualAction_activated();
-	void on_helpInOtherLanguagesAction_activated();
+	//online
+	void on_helpHomepageAction_activated();
+	void on_helpContentsAction_activated();
 	void on_helpForumAction_activated();
+	//void on_helpMailingListAction_activated();
+	//void on_helpContactsAction_activated();
+	void on_helpAddressesAction_activated();
 
 	void on_timetableGenerateAction_activated();
 	void on_timetableViewStudentsAction_activated();
@@ -279,6 +318,7 @@ public slots:
 
 	void on_settingsTimetableHtmlLevelAction_activated();
 	void on_settingsPrintNotAvailableSlotsAction_toggled();
+	void on_settingsPrintBreakSlotsAction_toggled();
 
 	void on_settingsPrintActivitiesWithSameStartingTimeAction_toggled();
 
@@ -287,6 +327,48 @@ public slots:
 	void httpDone(bool error);
 	
 	void on_statisticsExportToDiskAction_activated();
+	
+	void on_shortcutAllTimeConstraintsPushButton_clicked();
+	//void on_shortcutMiscTimeConstraintsPushButton_clicked();
+	void on_shortcutBreakTimeConstraintsPushButton_clicked();
+	void on_shortcutTeachersTimeConstraintsPushButton_clicked();
+	void on_shortcutStudentsTimeConstraintsPushButton_clicked();
+	void on_shortcutActivitiesTimeConstraintsPushButton_clicked();
+	void on_shortcutAdvancedTimeConstraintsPushButton_clicked();
+
+	void on_shortcutAllSpaceConstraintsPushButton_clicked();
+	//void on_shortcutMiscSpaceConstraintsPushButton_clicked();
+	void on_shortcutRoomsSpaceConstraintsPushButton_clicked();
+	void on_shortcutTeachersSpaceConstraintsPushButton_clicked();
+	void on_shortcutStudentsSpaceConstraintsPushButton_clicked();
+	void on_shortcutSubjectsSpaceConstraintsPushButton_clicked();
+	void on_shortcutActivityTagsSpaceConstraintsPushButton_clicked();
+	void on_shortcutSubjectsAndActivityTagsSpaceConstraintsPushButton_clicked();
+	void on_shortcutActivitiesSpaceConstraintsPushButton_clicked();
+	
+	void on_shortcutGeneratePushButton_clicked();
+	void on_shortcutGenerateMultiplePushButton_clicked();
+	void on_shortcutViewTeachersPushButton_clicked();
+	void on_shortcutViewStudentsPushButton_clicked();
+	void on_shortcutViewRoomsPushButton_clicked();
+	void on_shortcutShowSoftConflictsPushButton_clicked();
+	
+	void on_shortcutBasicPushButton_clicked();
+	void on_shortcutSubjectsPushButton_clicked();
+	void on_shortcutActivityTagsPushButton_clicked();
+	void on_shortcutTeachersPushButton_clicked();
+	void on_shortcutStudentsPushButton_clicked();
+	void on_shortcutActivitiesPushButton_clicked();
+	void on_shortcutSubactivitiesPushButton_clicked();
+	//void on_shortcutBuildingsPushButton_clicked();
+	//void on_shortcutRoomsPushButton_clicked();
+	void on_shortcutDataAdvancedPushButton_clicked();
+	void on_shortcutDataSpacePushButton_clicked();
+
+	void on_shortcutOpenPushButton_clicked();
+	void on_shortcutNewPushButton_clicked();
+	void on_shortcutSavePushButton_clicked();
+	void on_shortcutSaveAsPushButton_clicked();
 	
 protected:
 	void closeEvent(QCloseEvent* event);

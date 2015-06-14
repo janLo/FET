@@ -15,13 +15,13 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QMessageBox>
+
 #include "longtextmessagebox.h"
 
 #include "constraintteachermaxbuildingchangesperweekform.h"
 #include "addconstraintteachermaxbuildingchangesperweekform.h"
 #include "modifyconstraintteachermaxbuildingchangesperweekform.h"
-
-#include <QDesktopWidget>
 
 ConstraintTeacherMaxBuildingChangesPerWeekForm::ConstraintTeacherMaxBuildingChangesPerWeekForm()
 {
@@ -78,12 +78,17 @@ void ConstraintTeacherMaxBuildingChangesPerWeekForm::filterChanged()
 			constraintsListBox->insertItem(ctr->getDescription(gt.rules));
 		}
 	}
+
+	constraintsListBox->setCurrentItem(0);
+	this->constraintChanged(constraintsListBox->currentItem());
 }
 
 void ConstraintTeacherMaxBuildingChangesPerWeekForm::constraintChanged(int index)
 {
-	if(index<0)
+	if(index<0){
+		currentConstraintTextEdit->setText("");
 		return;
+	}
 	assert(index<this->visibleConstraintsList.size());
 	SpaceConstraint* ctr=this->visibleConstraintsList.at(index);
 	assert(ctr!=NULL);

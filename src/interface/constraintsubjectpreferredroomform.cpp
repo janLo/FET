@@ -15,13 +15,13 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QMessageBox>
+
 #include "longtextmessagebox.h"
 
 #include "constraintsubjectpreferredroomform.h"
 #include "addconstraintsubjectpreferredroomform.h"
 #include "modifyconstraintsubjectpreferredroomform.h"
-
-#include <QDesktopWidget>
 
 ConstraintSubjectPreferredRoomForm::ConstraintSubjectPreferredRoomForm()
 {
@@ -92,12 +92,17 @@ void ConstraintSubjectPreferredRoomForm::filterChanged()
 			constraintsListBox->insertItem(ctr->getDescription(gt.rules));
 		}
 	}
+	
+	constraintsListBox->setCurrentItem(0);
+	this->constraintChanged(constraintsListBox->currentItem());
 }
 
 void ConstraintSubjectPreferredRoomForm::constraintChanged(int index)
 {
-	if(index<0)
+	if(index<0){
+		currentConstraintTextEdit->setText("");
 		return;
+	}
 	assert(index<this->visibleConstraintsList.size());
 	SpaceConstraint* ctr=this->visibleConstraintsList.at(index);
 	assert(ctr!=NULL);

@@ -1,3 +1,7 @@
+/*
+File timetableexport.cpp
+*/
+
 /***************************************************************************
                           timetableexport.cpp  -  description
                           -------------------
@@ -22,7 +26,7 @@
 //added features: - xhtml 1.0 strict valide
 //                - colspan and rowspan using
 //                - times vertical
-//                - table of content with hyperlinks
+//                - table of contents with hyperlinks
 //                - css and JavaScript support
 //                - print rooms timetable
 //                - TIMETABLE_HTML_LEVEL
@@ -40,17 +44,21 @@
 #include "timetableexport.h"
 #include "solution.h"
 
-#include <qstring.h>
-#include <qtextstream.h>
-#include <qfile.h>
-
-#include <QList>
-
-#include <QDesktopWidget>
+#include "matrix.h"
 
 #include <iostream>
 #include <fstream>
 using namespace std;
+
+#include <QString>
+#include <QTextStream>
+#include <QFile>
+
+#include <QList>
+
+#include <QHash>
+
+#include <QDesktopWidget>
 
 #include <QMessageBox>
 
@@ -72,20 +80,28 @@ extern bool LANGUAGE_STYLE_RIGHT_TO_LEFT;
 extern QString LANGUAGE_FOR_HTML;
 
 extern Timetable gt;
-extern qint16 teachers_timetable_weekly[MAX_TEACHERS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
+/*extern qint16 teachers_timetable_weekly[MAX_TEACHERS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
 extern qint16 students_timetable_weekly[MAX_TOTAL_SUBGROUPS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
-extern qint16 rooms_timetable_weekly[MAX_ROOMS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
+extern qint16 rooms_timetable_weekly[MAX_ROOMS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];*/
+extern Matrix3D<qint16> teachers_timetable_weekly;
+extern Matrix3D<qint16> students_timetable_weekly;
+extern Matrix3D<qint16> rooms_timetable_weekly;
 
-extern QList<qint16> teachers_free_periods_timetable_weekly[TEACHERS_FREE_PERIODS_N_CATEGORIES][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
+//extern QList<qint16> teachers_free_periods_timetable_weekly[TEACHERS_FREE_PERIODS_N_CATEGORIES][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
+extern Matrix3D<QList<qint16> > teachers_free_periods_timetable_weekly;
 
-extern bool breakDayHour[MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
-extern bool teacherNotAvailableDayHour[MAX_TEACHERS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
+//extern bool breakDayHour[MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
+extern Matrix2D<bool> breakDayHour;
+/*extern bool teacherNotAvailableDayHour[MAX_TEACHERS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
 extern double notAllowedRoomTimePercentages[MAX_ROOMS][MAX_HOURS_PER_WEEK];
-extern bool subgroupNotAvailableDayHour[MAX_TOTAL_SUBGROUPS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
+extern bool subgroupNotAvailableDayHour[MAX_TOTAL_SUBGROUPS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];*/
+extern Matrix3D<bool> teacherNotAvailableDayHour;
+extern Matrix2D<double> notAllowedRoomTimePercentages;
+extern Matrix3D<bool> subgroupNotAvailableDayHour;
 
-QList<qint16> activitiesForCurrentSubject[MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
+QList<int> activitiesForCurrentSubject[MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
 
-QList<qint16> activitiesAtTime[MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
+QList<int> activitiesAtTime[MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
 
 extern Rules rules2;
 
@@ -94,13 +110,10 @@ const QString STRING_EMPTY_SLOT="---";
 
 const QString STRING_SEVERAL_ACTIVITIES_IN_LESS_DETAILED_TABLES="???";
 
-const QString STRING_NOT_AVAILABLE_SLOT="-x-";
+const QString STRING_NOT_AVAILABLE_TIME_SLOT="-x-";
 
-//#define STRING_NOT_AVAILABLE_SLOT		( (PRINT_NOT_AVAILABLE_TIME_SLOTS) ? QString("-x-") : QString("---") )
+const QString STRING_BREAK_SLOT="-X-";
 
-//QString STRING_NOT_AVAILABLE_SLOT="-x-";				//TODO: do this extern
-//QString STRING_EMPTY_SLOT="---";					//TODO: do this extern
-//QString STRING_SEVERAL_ACTIVITIES_IN_LESS_DETAILED_TABLES="???";	//TODO: do this extern
 
 //this hashs are needed to get the IDs for html and css in timetableexport and statistics
 QHash<QString, QString> hashSubjectIDsTimetable;
@@ -174,6 +187,7 @@ const QString RANDOM_SEED_FILENAME="random_seed.txt";
 
 
 extern int XX;
+extern int YY;
 
 TimetableExport::TimetableExport()
 {
@@ -271,14 +285,6 @@ void TimetableExport::writeSimulationResults(){
 	writeActivitiesTimetableXml(s);
 
 	//now get the time. TODO: maybe write it in xml too? so do it a few lines earlier!
-	/*time_t ltime;
-	tzset();
-	time(&ltime);
-	QString sTime=ctime(&ltime);
-	//remove the endl, because it looks awful in html and css file(by Volker Dirr)
-	int sTs=sTime.size();sTs--;
-	if(sTime[sTs]=='\n')
-		sTime.remove(sTs,1);*/
 	QDate dat=QDate::currentDate();
 	QTime tim=QTime::currentTime();
 	QLocale loc(FET_LANGUAGE);
@@ -498,14 +504,6 @@ void TimetableExport::writeHighestStageResults(){
 	writeActivitiesTimetableXml(s);
 
 	//now get the time. TODO: maybe write it in xml too? so do it a few lines earlier!
-	/*time_t ltime;
-	tzset();
-	time(&ltime);
-	QString sTime=ctime(&ltime);
-	//remove the endl, because it looks awful in html and css file(by Volker Dirr)
-	int sTs=sTime.size();sTs--;
-	if(sTime[sTs]=='\n')
-		sTime.remove(sTs,1);*/
 	QDate dat=QDate::currentDate();
 	QTime tim=QTime::currentTime();
 	QLocale loc(FET_LANGUAGE);
@@ -731,7 +729,7 @@ void TimetableExport::writeRandomSeedFile(const QString& filename)
 	
 	tos<<tr("Generation started on: %1", "%1 is the time").arg(sTime);
 	tos<<endl<<endl;
-	tos<<tr("Random seed at the start of generation is: %1").arg(XX);
+	tos<<tr("Random seed at the start of generation is: X=%1, Y=%2", "The random seed has two components, X and Y").arg(XX).arg(YY);
 	tos<<endl<<endl;
 	tos<<tr("This file was automatically generated by FET %1.").arg(FET_VERSION);
 	tos<<endl;
@@ -993,14 +991,6 @@ void TimetableExport::writeSimulationResults(int n){
 	writeActivitiesTimetableXml(s);
 
 	//now get the time. TODO: maybe write it in xml too? so do it a few lines earlier!
-	/*time_t ltime;
-	tzset();
-	time(&ltime);
-	QString sTime=ctime(&ltime);
-	//remove the endl, because it looks awful in html and css file (by Volker Dirr)
-	int sTs=sTime.size();sTs--;
-	if(sTime[sTs]=='\n')
-		sTime.remove(sTs,1);*/
 	QDate dat=QDate::currentDate();
 	QTime tim=QTime::currentTime();
 	QLocale loc(FET_LANGUAGE);
@@ -1492,7 +1482,7 @@ void TimetableExport::writeConflictsTxt(const QString& filename, const QString& 
 		tos<<TimetableExport::tr("Soft conflicts list (in decreasing order):")<<endl<<endl;
 		foreach(QString t, best_solution.conflictsDescriptionList)
 			tos<<t<<endl;
-		tos<<endl<<TimetableExport::tr("End of file.")<<"\n\n";
+		tos<<endl<<TimetableExport::tr("End of file.")<<"\n";
 	}
 	else{
 		QString tt=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);
@@ -1507,7 +1497,7 @@ void TimetableExport::writeConflictsTxt(const QString& filename, const QString& 
 		tos<<TimetableExport::tr("Conflicts list (in decreasing order):")<<endl<<endl;
 		foreach(QString t, best_solution.conflictsDescriptionList)
 			tos<<t<<endl;
-		tos<<endl<<TimetableExport::tr("End of file.")<<"\n\n";
+		tos<<endl<<TimetableExport::tr("End of file.")<<"\n";
 	}
 	
 	if(file.error()>0){
@@ -1744,10 +1734,10 @@ void TimetableExport::writeIndexHtml(const QString& htmlfilename, const QString&
 //	tos<<"    </p>\n";
 //	tos<<"    <p>\n";
 
-	QString tmp1="<a href=\""+s2+bar+ACTIVITIES_TIMETABLE_FILENAME_XML+"\">"+tr("activities")+"</a>";
+	QString tmp1="<a href=\""+s2+bar+SUBGROUPS_TIMETABLE_FILENAME_XML+"\">"+tr("subgroups")+"</a>";
 	QString tmp2="<a href=\""+s2+bar+TEACHERS_TIMETABLE_FILENAME_XML+"\">"+tr("teachers")+"</a>";
-	QString tmp3="<a href=\""+s2+bar+SUBGROUPS_TIMETABLE_FILENAME_XML+"\">"+tr("subgroups")+"</a>";
-	QString tmp4=TimetableExport::tr("View XML: %1, %2, %3.", "%1, %2 and %3 are three files in XML format, activities, teachers and subgroups timetables. The user can click on one file to view it").arg(tmp1).arg(tmp2).arg(tmp3);
+	QString tmp3="<a href=\""+s2+bar+ACTIVITIES_TIMETABLE_FILENAME_XML+"\">"+tr("activities")+"</a>";
+	QString tmp4=TimetableExport::tr("View XML: %1, %2, %3.", "%1, %2 and %3 are three files in XML format, subgroups, teachers and activities timetables. The user can click on one file to view it").arg(tmp1).arg(tmp2).arg(tmp3);
 	tos<<"      "<<tmp4<<"\n";
 
 	tos<<"    </p>\n\n";
@@ -1825,7 +1815,7 @@ void TimetableExport::writeIndexHtml(const QString& htmlfilename, const QString&
 	tos<<"      </tbody>\n";
 	tos<<"    </table>\n";
 
-	tos<<"  </body>\n</html>\n\n";
+	tos<<"  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -1860,6 +1850,8 @@ void TimetableExport::writeStylesheetCss(const QString& htmlfilename, const QStr
 	QTextStream tos(&file);
 	tos.setCodec("UTF-8");
 	tos.setGenerateByteOrderMark(true);
+	
+	tos<<"@charset \"utf-8\";"<<"\n\n";
 
 	QString tt=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);
 	if(INPUT_FILENAME_XML=="")
@@ -1870,17 +1862,23 @@ void TimetableExport::writeStylesheetCss(const QString& htmlfilename, const QStr
 		tos<<"   "<<TimetableExport::tr("Warning! Only %1 out of %2 activities placed!").arg(placedActivities).arg(gt.rules.nInternalActivities)<<"\n";
 	tos<<"   "<<TimetableExport::tr("Stylesheet generated with FET %1 on %2", "%1 is FET version, %2 is date and time").arg(FET_VERSION).arg(saveTime)<<" */\n\n";
 
-	tos<<"/* "<<TimetableExport::tr("To do a page-break only after every second timetable, cut line %1 and paste it into line %2.").arg(8).arg(14)<<" */\n";
-	tos<<"/* "<<TimetableExport::tr("To hide an element just write the following phrase into the element")<<": display:none; */\n\n";
+	tos<<"/* "<<TimetableExport::tr("To do a page-break only after every second timetable, delete \"page-break-before: always;\" in \"table.even_table\".",
+		"Please keep fields in quotes as they are, untranslated.")<<" */\n";
+	tos<<"/* "<<TimetableExport::tr("To hide an element just write the following phrase into the element: %1 (without quotes).",
+		"%1 is a short phrase beginning and ending with quotes, and we want the user to be able to add it, but without quotes").arg("\"display:none;\"")<<" */\n\n";
 	tos<<"p.back {\n  margin-top: 4ex;\n  margin-bottom: 5ex;\n}\n\n";
-	tos<<"table {\n  page-break-before: always;\n  text-align: center;\n}\n\n";
-	tos<<"table.modulo2 {\n\n}\n\n";
+	tos<<"table {\n  text-align: center;\n}\n\n";
+	tos<<"table.odd_table {\n  page-break-before: always;\n}\n\n";
+	tos<<"table.even_table {\n  page-break-before: always;\n}\n\n";
 	tos<<"table.detailed {\n  margin-left:auto; margin-right:auto;\n  text-align: center;\n  border: 0px;\n  border-spacing: 0;\n  border-collapse: collapse;\n}\n\n";
 	tos<<"caption {\n\n}\n\n";
 	tos<<"thead {\n\n}\n\n";
+	
 	//workaround begin. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
-	tos<<"/* OpenOffice import the tfoot incorrect. So I used tr.foot instead of tfoot.\n";
-	tos<<"   compare http://www.openoffice.org/issues/show_bug.cgi?id=82600\n";
+	tos<<"/* "<<TimetableExport::tr("OpenOffice.org imports the \"tfoot\" incorrectly. So we use \"tr.foot\" instead of \"tfoot\".",
+		"Please keep tfoot and tr.foot untranslated, as they are in the original English phrase")<<"\n";
+	tos<<"   "<<TimetableExport::tr("See the link %1 for more details.").arg("http://www.openoffice.org/issues/show_bug.cgi?id=82600")<<"\n";
+
 	tos<<"tfoot {\n\n}*/\n\n";
 	tos<<"tr.foot {\n\n}\n\n";
 	//workaround end
@@ -1893,11 +1891,11 @@ void TimetableExport::writeStylesheetCss(const QString& htmlfilename, const QStr
 		tos<<"th.yAxis {\n  height: 8ex;\n}\n\n";
 	}
 	if(TIMETABLE_HTML_LEVEL>=4){ // must be written before LEVEL 3, because LEVEL 3 should have higher priority
-		for(int i=0; i<gt.rules.subjectsList.size(); i++){
-			tos << "span.s_"<<hashSubjectIDsTimetable.value(gt.rules.subjectsList[i]->name)<<" { /* subject "<<gt.rules.subjectsList[i]->name<<" */\n\n}\n\n";
+		for(int i=0; i<gt.rules.nInternalSubjects; i++){
+			tos << "span.s_"<<hashSubjectIDsTimetable.value(gt.rules.internalSubjectsList[i]->name)<<" { /* subject "<<gt.rules.internalSubjectsList[i]->name<<" */\n\n}\n\n";
 		}
-		for(int i=0; i<gt.rules.activityTagsList.size(); i++){
-			tos << "span.at_"<<hashActivityTagIDsTimetable.value(gt.rules.activityTagsList[i]->name)<<" { /* activity tag "<<gt.rules.activityTagsList[i]->name<<" */\n\n}\n\n";
+		for(int i=0; i<gt.rules.nInternalActivityTags; i++){
+			tos << "span.at_"<<hashActivityTagIDsTimetable.value(gt.rules.internalActivityTagsList[i]->name)<<" { /* activity tag "<<gt.rules.internalActivityTagsList[i]->name<<" */\n\n}\n\n";
 		}
 		for(int i=0; i<gt.rules.augmentedYearsList.size(); i++){
 			StudentsYear* sty=gt.rules.augmentedYearsList[i];
@@ -1924,10 +1922,16 @@ void TimetableExport::writeStylesheetCss(const QString& htmlfilename, const QStr
 	if(TIMETABLE_HTML_LEVEL>=3){
 		tos<<"span.subject {\n\n}\n\n";
 		tos<<"span.activitytag {\n\n}\n\n";
+
 		tos<<"span.empty {\n  color: gray;\n}\n\n";
 		tos<<"td.empty {\n  border-color:silver;\n  border-right-style:none;\n  border-bottom-style:none;\n  border-left-style:dotted;\n  border-top-style:dotted;\n}\n\n";
+
 		tos<<"span.notAvailable {\n  color: gray;\n}\n\n";
 		tos<<"td.notAvailable {\n  border-color:silver;\n  border-right-style:none;\n  border-bottom-style:none;\n  border-left-style:dotted;\n  border-top-style:dotted;\n}\n\n";
+
+		tos<<"span.break {\n  color: gray;\n}\n\n";
+		tos<<"td.break {\n  border-color:silver;\n  border-right-style:none;\n  border-bottom-style:none;\n  border-left-style:dotted;\n  border-top-style:dotted;\n}\n\n";
+
 		tos<<"td.student, div.student {\n\n}\n\n";
 		tos<<"td.teacher, div.teacher {\n\n}\n\n";
 		tos<<"td.room, div.room {\n\n}\n\n";
@@ -1937,12 +1941,12 @@ void TimetableExport::writeStylesheetCss(const QString& htmlfilename, const QStr
 		tos<<"tr.line3, div.line3 {\n  font-size: smaller;\n  color: silver;\n}\n\n";
 	}
 	if(TIMETABLE_HTML_LEVEL==6){
-		tos<<endl<<"/* "<<TimetableExport::tr("Be careful. You might get mutual and ambigous styles. CSS mean the last definition will be used.")<<" */\n\n";
-		for(int i=0; i<gt.rules.subjectsList.size(); i++){
-			tos << "td.s_"<<hashSubjectIDsTimetable.value(gt.rules.subjectsList[i]->name)<<" { /* subject "<<gt.rules.subjectsList[i]->name<<" */\n\n}\n\n";
+		tos<<endl<<"/* "<<TimetableExport::tr("Be careful. You might get mutual and ambiguous styles. CSS means that the last definition will be used.")<<" */\n\n";
+		for(int i=0; i<gt.rules.nInternalSubjects; i++){
+			tos << "td.s_"<<hashSubjectIDsTimetable.value(gt.rules.internalSubjectsList[i]->name)<<" { /* subject "<<gt.rules.internalSubjectsList[i]->name<<" */\n\n}\n\n";
 		}
-		for(int i=0; i<gt.rules.activityTagsList.size(); i++){
-			tos << "td.at_"<<hashActivityTagIDsTimetable.value(gt.rules.activityTagsList[i]->name)<<" { /* activity tag "<<gt.rules.activityTagsList[i]->name<<" */\n\n}\n\n";
+		for(int i=0; i<gt.rules.nInternalActivityTags; i++){
+			tos << "td.at_"<<hashActivityTagIDsTimetable.value(gt.rules.internalActivityTagsList[i]->name)<<" { /* activity tag "<<gt.rules.internalActivityTagsList[i]->name<<" */\n\n}\n\n";
 		}
 		for(int i=0; i<gt.rules.augmentedYearsList.size(); i++){
 			StudentsYear* sty=gt.rules.augmentedYearsList[i];
@@ -1983,7 +1987,7 @@ void TimetableExport::writeStylesheetCss(const QString& htmlfilename, const QStr
 		tos<<"div.TEACHER_HAS_A_FREE_DAY {\n  font-size: smaller;\n  color: red;\n}\n\n";
 		tos<<"div.TEACHER_IS_NOT_AVAILABLE {\n  font-size: smaller;\n  color: olive;\n}\n\n";
 	}
-	tos<<endl<<"/* "<<TimetableExport::tr("End of file.")<<" */\n\n";
+	tos<<endl<<"/* "<<TimetableExport::tr("End of file.")<<" */\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -2014,7 +2018,7 @@ void TimetableExport::writeSubgroupsTimetableDaysHorizontalHtml(const QString& h
 
 	tos<<writeHead(true, placedActivities, true);
 	
-	tos<<"    <p><strong>"<<TimetableExport::tr("Table of content")<<"</strong></p>\n";
+	tos<<"    <p><strong>"<<TimetableExport::tr("Table of contents")<<"</strong></p>\n";
 	tos<<"    <ul>\n";
 	for(int i=0; i<gt.rules.augmentedYearsList.size(); i++){
 		StudentsYear* sty=gt.rules.augmentedYearsList[i];
@@ -2035,7 +2039,8 @@ void TimetableExport::writeSubgroupsTimetableDaysHorizontalHtml(const QString& h
 	for(int subgroup=0; subgroup<gt.rules.nInternalSubgroups; subgroup++){
 		QString subgroup_name = gt.rules.internalSubgroupsList[subgroup]->name;
 		tos<<"    <table id=\"table_"<<hashStudentIDsTimetable.value(subgroup_name)<<"\" border=\"1\"";
-		if(subgroup%2==0) tos<<" class=\"modulo2\"";
+		if(subgroup%2==0) tos<<" class=\"odd_table\"";
+		else tos<<" class=\"even_table\"";
 		tos<<">\n";
 				
 		tos<<"      <caption>"<<protect2(gt.rules.institutionName)<<"</caption>\n";
@@ -2063,7 +2068,7 @@ void TimetableExport::writeSubgroupsTimetableDaysHorizontalHtml(const QString& h
 				tos<<"          <th>";
 			tos<<protect2(gt.rules.hoursOfTheDay[j])<<"</th>\n";
 			for(int k=0; k<gt.rules.nDaysPerWeek; k++){
-				QList<qint16> allActivities;
+				QList<int> allActivities;
 				allActivities.clear();
 				allActivities<<students_timetable_weekly[subgroup][k][j];
 				bool activitiesWithSameStartingtime=addActivitiesWithSameStartingTime(allActivities, j);
@@ -2082,7 +2087,7 @@ void TimetableExport::writeSubgroupsTimetableDaysHorizontalHtml(const QString& h
 		tos<<"    </table>\n\n";
 		tos<<"    <p class=\"back\"><a href=\""<<"#top\">"<<TimetableExport::tr("back to the top")<<"</a></p>\n\n";
 	}
-	tos<<"  </body>\n</html>\n\n";
+	tos<<"  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -2113,7 +2118,7 @@ void TimetableExport::writeSubgroupsTimetableDaysVerticalHtml(const QString& htm
 
 	tos<<writeHead(true, placedActivities, true);
 		
-	tos<<"    <p><strong>"<<TimetableExport::tr("Table of content")<<"</strong></p>\n";
+	tos<<"    <p><strong>"<<TimetableExport::tr("Table of contents")<<"</strong></p>\n";
 	tos<<"    <ul>\n";
 	for(int i=0; i<gt.rules.augmentedYearsList.size(); i++){
 		StudentsYear* sty=gt.rules.augmentedYearsList[i];
@@ -2134,7 +2139,8 @@ void TimetableExport::writeSubgroupsTimetableDaysVerticalHtml(const QString& htm
 	for(int subgroup=0; subgroup<gt.rules.nInternalSubgroups; subgroup++){
 		QString subgroup_name = gt.rules.internalSubgroupsList[subgroup]->name;
 		tos<<"    <table id=\"table_"<<hashStudentIDsTimetable.value(subgroup_name)<<"\" border=\"1\"";
-		if(subgroup%2==0) tos<<" class=\"modulo2\"";
+		if(subgroup%2==0) tos<<" class=\"odd_table\"";
+		else tos<<" class=\"even_table\"";
 		tos<<">\n";
 		
 		tos<<"      <caption>"<<protect2(gt.rules.institutionName)<<"</caption>\n";
@@ -2163,7 +2169,7 @@ void TimetableExport::writeSubgroupsTimetableDaysVerticalHtml(const QString& htm
 			tos<<protect2(gt.rules.daysOfTheWeek[k])<<"</th>\n";
 
 			for(int j=0; j<gt.rules.nHoursPerDay; j++){
-				QList<qint16> allActivities;
+				QList<int> allActivities;
 				allActivities.clear();
 				allActivities<<students_timetable_weekly[subgroup][k][j];
 				bool activitiesWithSameStartingtime=addActivitiesWithSameStartingTime(allActivities, j);
@@ -2183,7 +2189,7 @@ void TimetableExport::writeSubgroupsTimetableDaysVerticalHtml(const QString& htm
 		tos<<"    <p class=\"back\"><a href=\""<<"#top\">"<<TimetableExport::tr("back to the top")<<"</a></p>\n\n";
 	}
 
-	tos<<"  </body>\n</html>\n\n";
+	tos<<"  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -2242,7 +2248,7 @@ void TimetableExport::writeSubgroupsTimetableTimeVerticalHtml(const QString& htm
 				tos<<"          <th>";
 			tos << protect2(gt.rules.hoursOfTheDay[j]) << "</th>\n";
 			for(int subgroup=0; subgroup<gt.rules.nInternalSubgroups; subgroup++){
-				QList<qint16> allActivities;
+				QList<int> allActivities;
 				allActivities.clear();
 				allActivities<<students_timetable_weekly[subgroup][k][j];
 				bool activitiesWithSameStartingtime=addActivitiesWithSameStartingTime(allActivities, j);
@@ -2259,7 +2265,7 @@ void TimetableExport::writeSubgroupsTimetableTimeVerticalHtml(const QString& htm
 	tos<<"      <tr class=\"foot\"><td colspan=\"2\"></td><td colspan=\""<<gt.rules.nInternalSubgroups<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2", "%1 is FET version, %2 is the date and time of generation").arg(FET_VERSION).arg(saveTime)<<"</td></tr>\n";
 	//workaround end.
 	tos << "      </tbody>\n    </table>\n";
-	tos << "  </body>\n</html>\n\n";
+	tos << "  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -2321,7 +2327,7 @@ void TimetableExport::writeSubgroupsTimetableTimeHorizontalHtml(const QString& h
 		tos << gt.rules.internalSubgroupsList[subgroup]->name << "</th>\n";
 		for(int k=0; k<gt.rules.nDaysPerWeek; k++){
 			for(int j=0; j<gt.rules.nHoursPerDay; j++){
-				QList<qint16> allActivities;
+				QList<int> allActivities;
 				allActivities.clear();
 				allActivities<<students_timetable_weekly[subgroup][k][j];
 				bool activitiesWithSameStartingtime=addActivitiesWithSameStartingTime(allActivities, j);
@@ -2338,7 +2344,7 @@ void TimetableExport::writeSubgroupsTimetableTimeHorizontalHtml(const QString& h
 	tos<<"      <tr class=\"foot\"><td></td><td colspan=\""<<gt.rules.nHoursPerDay*gt.rules.nDaysPerWeek<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2", "%1 is FET version, %2 is the date and time of generation").arg(FET_VERSION).arg(saveTime)<<"</td></tr>\n";
 	//workaround end.
 	tos << "      </tbody>\n    </table>\n";
-	tos << "  </body>\n</html>\n\n";
+	tos << "  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -2399,7 +2405,7 @@ void TimetableExport::writeSubgroupsTimetableTimeVerticalDailyHtml(const QString
 				tos<<"          <th>";
 			tos << protect2(gt.rules.hoursOfTheDay[j]) << "</th>\n";
 			for(int subgroup=0; subgroup<gt.rules.nInternalSubgroups; subgroup++){
-				QList<qint16> allActivities;
+				QList<int> allActivities;
 				allActivities.clear();
 				allActivities<<students_timetable_weekly[subgroup][k][j];
 				bool activitiesWithSameStartingtime=addActivitiesWithSameStartingTime(allActivities, j);
@@ -2419,7 +2425,7 @@ void TimetableExport::writeSubgroupsTimetableTimeVerticalDailyHtml(const QString
 		tos<<"    <p class=\"back\"><a href=\""<<"#top\">"<<TimetableExport::tr("back to the top")<<"</a></p>\n\n";
 	}
 
-	tos << "  </body>\n</html>\n\n";
+	tos << "  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -2480,7 +2486,7 @@ void TimetableExport::writeSubgroupsTimetableTimeHorizontalDailyHtml(const QStri
 				tos<<"          <th>";
 			tos << gt.rules.internalSubgroupsList[subgroup]->name << "</th>\n";
 			for(int j=0; j<gt.rules.nHoursPerDay; j++){
-				QList<qint16> allActivities;
+				QList<int> allActivities;
 				allActivities.clear();
 				allActivities<<students_timetable_weekly[subgroup][k][j];
 				bool activitiesWithSameStartingtime=addActivitiesWithSameStartingTime(allActivities, j);
@@ -2499,7 +2505,7 @@ void TimetableExport::writeSubgroupsTimetableTimeHorizontalDailyHtml(const QStri
 		tos<<"    </table>\n\n";
 		tos<<"    <p class=\"back\"><a href=\""<<"#top\">"<<TimetableExport::tr("back to the top")<<"</a></p>\n\n";
 	}
-	tos << "  </body>\n</html>\n\n";
+	tos << "  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -2531,7 +2537,7 @@ void TimetableExport::writeGroupsTimetableDaysHorizontalHtml(const QString& html
 
 	tos<<writeHead(true, placedActivities, true);
 		
-	tos<<"    <p><strong>"<<TimetableExport::tr("Table of content")<<"</strong></p>\n";
+	tos<<"    <p><strong>"<<TimetableExport::tr("Table of contents")<<"</strong></p>\n";
 	tos<<"    <ul>\n";
 	for(int i=0; i<gt.rules.augmentedYearsList.size(); i++){
 		StudentsYear* sty=gt.rules.augmentedYearsList[i];
@@ -2557,7 +2563,8 @@ void TimetableExport::writeGroupsTimetableDaysHorizontalHtml(const QString& html
 				tos<<"    <table id=\"table_"<<hashStudentIDsTimetable.value(stg->name);
 				if(PRINT_DETAILED==true) tos<<"_DETAILED";
 				tos<<"\" border=\"1\"";
-				if(group%2==0) tos<<" class=\"modulo2\"";
+				if(group%2==0) tos<<" class=\"odd_table\"";
+				else tos<<" class=\"even_table\"";
 				tos<<">\n";
 						
 				tos<<"      <caption>"<<protect2(gt.rules.institutionName)<<"</caption>\n";
@@ -2585,7 +2592,7 @@ void TimetableExport::writeGroupsTimetableDaysHorizontalHtml(const QString& html
 						tos<<"          <th>";
 					tos<<protect2(gt.rules.hoursOfTheDay[j])<<"</th>\n";
 					for(int k=0; k<gt.rules.nDaysPerWeek; k++){
-						QList<qint16> allActivities;
+						QList<int> allActivities;
 						allActivities.clear();
 						bool isNotAvailable=true;
 						for(int sg=0; sg<stg->subgroupsList.size(); sg++){
@@ -2629,7 +2636,7 @@ void TimetableExport::writeGroupsTimetableDaysHorizontalHtml(const QString& html
 		if(PRINT_DETAILED==true) PRINT_DETAILED=false;
 		else PRINT_DETAILED=true;
 	} while(PRINT_DETAILED!=true);
-	tos<<"  </body>\n</html>\n\n";
+	tos<<"  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -2659,7 +2666,7 @@ void TimetableExport::writeGroupsTimetableDaysVerticalHtml(const QString& htmlfi
 
 	tos<<writeHead(true, placedActivities, true);
 		
-	tos<<"    <p><strong>"<<TimetableExport::tr("Table of content")<<"</strong></p>\n";
+	tos<<"    <p><strong>"<<TimetableExport::tr("Table of contents")<<"</strong></p>\n";
 	tos<<"    <ul>\n";
 	for(int i=0; i<gt.rules.augmentedYearsList.size(); i++){
 		StudentsYear* sty=gt.rules.augmentedYearsList[i];
@@ -2685,7 +2692,8 @@ void TimetableExport::writeGroupsTimetableDaysVerticalHtml(const QString& htmlfi
 				tos<<"    <table id=\"table_"<<hashStudentIDsTimetable.value(stg->name);
 				if(PRINT_DETAILED==true) tos<<"_DETAILED";
 				tos<<"\" border=\"1\"";
-				if(group%2==0) tos<<" class=\"modulo2\"";
+				if(group%2==0) tos<<" class=\"odd_table\"";
+				else tos<<" class=\"even_table\"";
 				tos<<">\n";
 						
 				tos<<"      <caption>"<<protect2(gt.rules.institutionName)<<"</caption>\n";
@@ -2713,7 +2721,7 @@ void TimetableExport::writeGroupsTimetableDaysVerticalHtml(const QString& htmlfi
 						tos<<"          <th>";
 					tos<<protect2(gt.rules.daysOfTheWeek[k])<<"</th>\n";
 					for(int j=0; j<gt.rules.nHoursPerDay; j++){
-						QList<qint16> allActivities;
+						QList<int> allActivities;
 						allActivities.clear();
 						bool isNotAvailable=true;
 						for(int sg=0; sg<stg->subgroupsList.size(); sg++){
@@ -2757,7 +2765,7 @@ void TimetableExport::writeGroupsTimetableDaysVerticalHtml(const QString& htmlfi
 		if(PRINT_DETAILED==true) PRINT_DETAILED=false;
 		else PRINT_DETAILED=true;
 	} while(PRINT_DETAILED!=true);
-	tos<<"  </body>\n</html>\n\n";
+	tos<<"  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -2832,7 +2840,7 @@ void TimetableExport::writeGroupsTimetableTimeVerticalHtml(const QString& htmlfi
 					StudentsYear* sty=gt.rules.augmentedYearsList[i];
 					for(int g=0; g<sty->groupsList.size(); g++){
 						StudentsGroup* stg=sty->groupsList[g];
-						QList<qint16> allActivities;
+						QList<int> allActivities;
 						allActivities.clear();
 						bool isNotAvailable=true;
 						for(int sg=0; sg<stg->subgroupsList.size(); sg++){
@@ -2875,7 +2883,7 @@ void TimetableExport::writeGroupsTimetableTimeVerticalHtml(const QString& htmlfi
 		if(PRINT_DETAILED==true) PRINT_DETAILED=false;
 		else PRINT_DETAILED=true;
 	} while(PRINT_DETAILED!=true);
-	tos << "  </body>\n</html>\n\n";
+	tos << "  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -2946,7 +2954,7 @@ void TimetableExport::writeGroupsTimetableTimeHorizontalHtml(const QString& html
 				tos << protect2(stg->name) << "</th>\n";
 				for(int k=0; k<gt.rules.nDaysPerWeek; k++){
 					for(int j=0; j<gt.rules.nHoursPerDay; j++){
-						QList<qint16> allActivities;
+						QList<int> allActivities;
 						allActivities.clear();
 						bool isNotAvailable=true;
 						for(int sg=0; sg<stg->subgroupsList.size(); sg++){
@@ -2989,7 +2997,7 @@ void TimetableExport::writeGroupsTimetableTimeHorizontalHtml(const QString& html
 		if(PRINT_DETAILED==true) PRINT_DETAILED=false;
 		else PRINT_DETAILED=true;
 	} while(PRINT_DETAILED!=true);
-	tos << "  </body>\n</html>\n\n";
+	tos << "  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -3064,7 +3072,7 @@ void TimetableExport::writeGroupsTimetableTimeVerticalDailyHtml(const QString& h
 					StudentsYear* sty=gt.rules.augmentedYearsList[i];
 					for(int g=0; g<sty->groupsList.size(); g++){
 						StudentsGroup* stg=sty->groupsList[g];
-						QList<qint16> allActivities;
+						QList<int> allActivities;
 						allActivities.clear();
 						bool isNotAvailable=true;
 						for(int sg=0; sg<stg->subgroupsList.size(); sg++){
@@ -3107,7 +3115,7 @@ void TimetableExport::writeGroupsTimetableTimeVerticalDailyHtml(const QString& h
 		if(PRINT_DETAILED==true) PRINT_DETAILED=false;
 		else PRINT_DETAILED=true;
 	} while(PRINT_DETAILED!=true);
-	tos << "  </body>\n</html>\n\n";
+	tos << "  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -3176,7 +3184,7 @@ void TimetableExport::writeGroupsTimetableTimeHorizontalDailyHtml(const QString&
 					tos << protect2(stg->name) << "</th>\n";
 				
 					for(int j=0; j<gt.rules.nHoursPerDay; j++){
-						QList<qint16> allActivities;
+						QList<int> allActivities;
 						allActivities.clear();
 						bool isNotAvailable=true;
 						for(int sg=0; sg<stg->subgroupsList.size(); sg++){
@@ -3219,7 +3227,7 @@ void TimetableExport::writeGroupsTimetableTimeHorizontalDailyHtml(const QString&
 		if(PRINT_DETAILED==true) PRINT_DETAILED=false;
 		else PRINT_DETAILED=true;
 	} while(PRINT_DETAILED!=true);
-	tos << "  </body>\n</html>\n\n";
+	tos << "  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -3251,7 +3259,7 @@ void TimetableExport::writeYearsTimetableDaysHorizontalHtml(const QString& htmlf
 
 	tos<<writeHead(true, placedActivities, true);
 		
-	tos<<"    <p><strong>"<<TimetableExport::tr("Table of content")<<"</strong></p>\n";
+	tos<<"    <p><strong>"<<TimetableExport::tr("Table of contents")<<"</strong></p>\n";
 	tos<<"    <ul>\n";
 	for(int i=0; i<gt.rules.augmentedYearsList.size(); i++){
 		StudentsYear* sty=gt.rules.augmentedYearsList[i];
@@ -3269,7 +3277,8 @@ void TimetableExport::writeYearsTimetableDaysHorizontalHtml(const QString& htmlf
 				tos<<"    <table id=\"table_"<<hashStudentIDsTimetable.value(sty->name);
 				if(PRINT_DETAILED==true) tos<<"_DETAILED";
 				tos<<"\" border=\"1\"";
-				if(year%2==0) tos<<" class=\"modulo2\"";
+				if(year%2==0)  tos<<" class=\"odd_table\"";
+				else tos<<" class=\"even_table\"";
 				tos<<">\n";
 						
 				tos<<"      <caption>"<<protect2(gt.rules.institutionName)<<"</caption>\n";
@@ -3297,7 +3306,7 @@ void TimetableExport::writeYearsTimetableDaysHorizontalHtml(const QString& htmlf
 						tos<<"          <th>";
 					tos<<protect2(gt.rules.hoursOfTheDay[j])<<"</th>\n";
 					for(int k=0; k<gt.rules.nDaysPerWeek; k++){
-						QList<qint16> allActivities;
+						QList<int> allActivities;
 						allActivities.clear();
 						bool isNotAvailable=true;
 						for(int g=0; g<sty->groupsList.size(); g++){
@@ -3342,7 +3351,7 @@ void TimetableExport::writeYearsTimetableDaysHorizontalHtml(const QString& htmlf
 		if(PRINT_DETAILED==true) PRINT_DETAILED=false;
 		else PRINT_DETAILED=true;
 	} while(PRINT_DETAILED!=true);
-	tos<<"  </body>\n</html>\n\n";
+	tos<<"  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -3372,7 +3381,7 @@ void TimetableExport::writeYearsTimetableDaysVerticalHtml(const QString& htmlfil
 
 	tos<<writeHead(true, placedActivities, true);
 		
-	tos<<"    <p><strong>"<<TimetableExport::tr("Table of content")<<"</strong></p>\n";
+	tos<<"    <p><strong>"<<TimetableExport::tr("Table of contents")<<"</strong></p>\n";
 	tos<<"    <ul>\n";
 	for(int i=0; i<gt.rules.augmentedYearsList.size(); i++){
 		StudentsYear* sty=gt.rules.augmentedYearsList[i];
@@ -3390,7 +3399,8 @@ void TimetableExport::writeYearsTimetableDaysVerticalHtml(const QString& htmlfil
 				tos<<"    <table id=\"table_"<<hashStudentIDsTimetable.value(sty->name);
 				if(PRINT_DETAILED==true) tos<<"_DETAILED";
 				tos<<"\" border=\"1\"";
-				if(year%2==0) tos<<" class=\"modulo2\"";
+				if(year%2==0)  tos<<" class=\"odd_table\"";
+				else tos<<" class=\"even_table\"";
 				tos<<">\n";
 						
 				tos<<"      <caption>"<<protect2(gt.rules.institutionName)<<"</caption>\n";
@@ -3419,7 +3429,7 @@ void TimetableExport::writeYearsTimetableDaysVerticalHtml(const QString& htmlfil
 					tos<<protect2(gt.rules.daysOfTheWeek[k])<<"</th>\n";
 
 					for(int j=0; j<gt.rules.nHoursPerDay; j++){
-						QList<qint16> allActivities;
+						QList<int> allActivities;
 						allActivities.clear();
 						bool isNotAvailable=true;
 						for(int g=0; g<sty->groupsList.size(); g++){
@@ -3464,7 +3474,7 @@ void TimetableExport::writeYearsTimetableDaysVerticalHtml(const QString& htmlfil
 		if(PRINT_DETAILED==true) PRINT_DETAILED=false;
 		else PRINT_DETAILED=true;
 	} while(PRINT_DETAILED!=true);
-	tos<<"  </body>\n</html>\n\n";
+	tos<<"  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -3532,7 +3542,7 @@ void TimetableExport::writeYearsTimetableTimeVerticalHtml(const QString& htmlfil
 				tos << protect2(gt.rules.hoursOfTheDay[j]) << "</th>\n";
 				for(int year=0; year<gt.rules.augmentedYearsList.size(); year++){
 						StudentsYear* sty=gt.rules.augmentedYearsList[year];
-						QList<qint16> allActivities;
+						QList<int> allActivities;
 						allActivities.clear();
 						bool isNotAvailable=true;
 						for(int g=0; g<sty->groupsList.size(); g++){
@@ -3577,7 +3587,7 @@ void TimetableExport::writeYearsTimetableTimeVerticalHtml(const QString& htmlfil
 		if(PRINT_DETAILED==true) PRINT_DETAILED=false;
 		else PRINT_DETAILED=true;
 	} while(PRINT_DETAILED!=true);
-	tos << "  </body>\n</html>\n\n";
+	tos << "  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -3646,7 +3656,7 @@ void TimetableExport::writeYearsTimetableTimeHorizontalHtml(const QString& htmlf
 				tos << protect2(sty->name) << "</th>\n";
 				for(int k=0; k<gt.rules.nDaysPerWeek; k++){
 					for(int j=0; j<gt.rules.nHoursPerDay; j++){
-						QList<qint16> allActivities;
+						QList<int> allActivities;
 						allActivities.clear();
 						bool isNotAvailable=true;
 						for(int g=0; g<sty->groupsList.size(); g++){
@@ -3691,7 +3701,7 @@ void TimetableExport::writeYearsTimetableTimeHorizontalHtml(const QString& htmlf
 		if(PRINT_DETAILED==true) PRINT_DETAILED=false;
 		else PRINT_DETAILED=true;
 	} while(PRINT_DETAILED!=true);
-	tos << "  </body>\n</html>\n\n";
+	tos << "  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -3759,7 +3769,7 @@ void TimetableExport::writeYearsTimetableTimeVerticalDailyHtml(const QString& ht
 				tos << protect2(gt.rules.hoursOfTheDay[j]) << "</th>\n";
 				for(int year=0; year<gt.rules.augmentedYearsList.size(); year++){
 						StudentsYear* sty=gt.rules.augmentedYearsList[year];
-						QList<qint16> allActivities;
+						QList<int> allActivities;
 						allActivities.clear();
 						bool isNotAvailable=true;
 						for(int g=0; g<sty->groupsList.size(); g++){
@@ -3804,7 +3814,7 @@ void TimetableExport::writeYearsTimetableTimeVerticalDailyHtml(const QString& ht
 		if(PRINT_DETAILED==true) PRINT_DETAILED=false;
 		else PRINT_DETAILED=true;
 	} while(PRINT_DETAILED!=true);
-	tos << "  </body>\n</html>\n\n";
+	tos << "  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -3872,7 +3882,7 @@ void TimetableExport::writeYearsTimetableTimeHorizontalDailyHtml(const QString& 
 					tos << protect2(sty->name) << "</th>\n";
 
 					for(int j=0; j<gt.rules.nHoursPerDay; j++){
-						QList<qint16> allActivities;
+						QList<int> allActivities;
 						allActivities.clear();
 						bool isNotAvailable=true;
 						for(int g=0; g<sty->groupsList.size(); g++){
@@ -3917,7 +3927,7 @@ void TimetableExport::writeYearsTimetableTimeHorizontalDailyHtml(const QString& 
 		if(PRINT_DETAILED==true) PRINT_DETAILED=false;
 		else PRINT_DETAILED=true;
 	} while(PRINT_DETAILED!=true);
-	tos << "  </body>\n</html>\n\n";
+	tos << "  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -3977,8 +3987,8 @@ void TimetableExport::writeAllActivitiesTimetableDaysHorizontalHtml(const QStrin
 		tos<<protect2(gt.rules.hoursOfTheDay[j])<<"</th>\n";
 		for(int k=0; k<gt.rules.nDaysPerWeek; k++){
 			if(activitiesAtTime[k][j].isEmpty()){
-				if((breakDayHour[k][j]) && PRINT_NOT_AVAILABLE_TIME_SLOTS){
-					tos<<writeNotAvailable("");
+				if(breakDayHour[k][j] && PRINT_BREAK_TIME_SLOTS){
+					tos<<writeBreakSlot("");
 				} else {
 					tos<<writeEmpty();
 				}
@@ -3993,7 +4003,7 @@ void TimetableExport::writeAllActivitiesTimetableDaysHorizontalHtml(const QStrin
 	//workaround end.
 	tos<<"      </tbody>\n";
 	tos<<"    </table>\n";
-	tos<<"  </body>\n</html>\n\n";
+	tos<<"  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -4049,8 +4059,8 @@ void TimetableExport::writeAllActivitiesTimetableDaysVerticalHtml(const QString&
 		tos<<protect2(gt.rules.daysOfTheWeek[k])<<"</th>\n";
 		for(int j=0; j<gt.rules.nHoursPerDay; j++){
 			if(activitiesAtTime[k][j].isEmpty()){
-				if((breakDayHour[k][j]) && PRINT_NOT_AVAILABLE_TIME_SLOTS){
-					tos<<writeNotAvailable("");
+				if(breakDayHour[k][j] && PRINT_BREAK_TIME_SLOTS){
+					tos<<writeBreakSlot("");
 				} else {
 					tos<<writeEmpty();
 				}
@@ -4065,7 +4075,7 @@ void TimetableExport::writeAllActivitiesTimetableDaysVerticalHtml(const QString&
 	//workaround end.
 	tos<<"      </tbody>\n";
 	tos<<"    </table>\n";
-	tos<<"  </body>\n</html>\n\n";
+	tos<<"  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -4120,8 +4130,8 @@ void TimetableExport::writeAllActivitiesTimetableTimeVerticalHtml(const QString&
 				tos<<"          <th>";
 			tos << protect2(gt.rules.hoursOfTheDay[j]) << "</th>\n";
 			if(activitiesAtTime[k][j].isEmpty()){
-				if((breakDayHour[k][j]) && PRINT_NOT_AVAILABLE_TIME_SLOTS){
-					tos<<writeNotAvailable("");
+				if(breakDayHour[k][j] && PRINT_BREAK_TIME_SLOTS){
+					tos<<writeBreakSlot("");
 				} else {
 					tos<<writeEmpty();
 				}
@@ -4136,7 +4146,7 @@ void TimetableExport::writeAllActivitiesTimetableTimeVerticalHtml(const QString&
 	//workaround end.
 	tos<<"      </tbody>\n";
 	tos<<"    </table>\n";
-	tos<<"  </body>\n</html>\n\n";
+	tos<<"  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -4196,8 +4206,8 @@ void TimetableExport::writeAllActivitiesTimetableTimeHorizontalHtml(const QStrin
 	for(int k=0; k<gt.rules.nDaysPerWeek; k++){
 		for(int j=0; j<gt.rules.nHoursPerDay; j++){
 			if(activitiesAtTime[k][j].isEmpty()){
-				if((breakDayHour[k][j]) && PRINT_NOT_AVAILABLE_TIME_SLOTS){
-					tos<<writeNotAvailable("");
+				if(breakDayHour[k][j] && PRINT_BREAK_TIME_SLOTS){
+					tos<<writeBreakSlot("");
 				} else {
 					tos<<writeEmpty();
 				}
@@ -4212,7 +4222,7 @@ void TimetableExport::writeAllActivitiesTimetableTimeHorizontalHtml(const QStrin
 	//workaround end.
 	tos<<"      </tbody>\n";
 	tos<<"    </table>\n";
-	tos<<"  </body>\n</html>\n\n";
+	tos<<"  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -4269,8 +4279,8 @@ void TimetableExport::writeAllActivitiesTimetableTimeVerticalDailyHtml(const QSt
 				tos<<"          <th>";
 			tos << protect2(gt.rules.hoursOfTheDay[j]) << "</th>\n";
 			if(activitiesAtTime[k][j].isEmpty()){
-				if((breakDayHour[k][j]) && PRINT_NOT_AVAILABLE_TIME_SLOTS){
-					tos<<writeNotAvailable("");
+				if(breakDayHour[k][j] && PRINT_BREAK_TIME_SLOTS){
+					tos<<writeBreakSlot("");
 				} else {
 					tos<<writeEmpty();
 				}
@@ -4286,7 +4296,7 @@ void TimetableExport::writeAllActivitiesTimetableTimeVerticalDailyHtml(const QSt
 		tos<<"    </table>\n\n";
 		tos<<"    <p class=\"back\"><a href=\""<<"#top\">"<<TimetableExport::tr("back to the top")<<"</a></p>\n\n";
 	}
-	tos<<"  </body>\n</html>\n\n";
+	tos<<"  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -4345,8 +4355,8 @@ void TimetableExport::writeAllActivitiesTimetableTimeHorizontalDailyHtml(const Q
 		tos << tr("All Activities") << "</th>\n";
 		for(int j=0; j<gt.rules.nHoursPerDay; j++){
 			if(activitiesAtTime[k][j].isEmpty()){
-				if((breakDayHour[k][j]) && PRINT_NOT_AVAILABLE_TIME_SLOTS){
-					tos<<writeNotAvailable("");
+				if(breakDayHour[k][j] && PRINT_BREAK_TIME_SLOTS){
+					tos<<writeBreakSlot("");
 				} else {
 					tos<<writeEmpty();
 				}
@@ -4363,7 +4373,7 @@ void TimetableExport::writeAllActivitiesTimetableTimeHorizontalDailyHtml(const Q
 		tos<<"    <p class=\"back\"><a href=\""<<"#top\">"<<TimetableExport::tr("back to the top")<<"</a></p>\n\n";
 	}
 
-	tos<<"  </body>\n</html>\n\n";
+	tos<<"  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -4398,7 +4408,7 @@ void TimetableExport::writeTeachersTimetableDaysHorizontalHtml(const QString& ht
 	
 	tos<<writeHead(true, placedActivities, true);
 		
-	tos<<"    <p><strong>"<<TimetableExport::tr("Table of content")<<"</strong></p>\n";
+	tos<<"    <p><strong>"<<TimetableExport::tr("Table of contents")<<"</strong></p>\n";
 	tos<<"    <ul>\n";
 	for(int teacher=0; teacher<gt.rules.nInternalTeachers; teacher++){
 		QString teacher_name = gt.rules.internalTeachersList[teacher]->name;
@@ -4409,7 +4419,8 @@ void TimetableExport::writeTeachersTimetableDaysHorizontalHtml(const QString& ht
 	for(int teacher=0; teacher<gt.rules.nInternalTeachers; teacher++){
 		QString teacher_name = gt.rules.internalTeachersList[teacher]->name;
 		tos<<"    <table id=\"table_"<<hashTeacherIDsTimetable.value(teacher_name)<<"\" border=\"1\"";
-		if(teacher%2==0) tos<<" class=\"modulo2\"";
+		if(teacher%2==0)  tos<<" class=\"odd_table\"";
+		else tos<<" class=\"even_table\"";
 		tos<<">\n";
 		
 		tos<<"      <caption>"<<protect2(gt.rules.institutionName)<<"</caption>\n";
@@ -4437,7 +4448,7 @@ void TimetableExport::writeTeachersTimetableDaysHorizontalHtml(const QString& ht
 				tos<<"          <th>";
 			tos<<protect2(gt.rules.hoursOfTheDay[j])<<"</th>\n";
 			for(int k=0; k<gt.rules.nDaysPerWeek; k++){
-				QList<qint16> allActivities;
+				QList<int> allActivities;
 				allActivities.clear();
 				allActivities<<teachers_timetable_weekly[teacher][k][j];
 				bool activitiesWithSameStartingtime=addActivitiesWithSameStartingTime(allActivities, j);
@@ -4456,7 +4467,7 @@ void TimetableExport::writeTeachersTimetableDaysHorizontalHtml(const QString& ht
 		tos<<"    </table>\n\n";
 		tos<<"    <p class=\"back\"><a href=\""<<"#top\">"<<TimetableExport::tr("back to the top")<<"</a></p>\n\n";
 	}
-	tos<<"  </body>\n</html>\n\n";
+	tos<<"  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -4486,7 +4497,7 @@ void TimetableExport::writeTeachersTimetableDaysVerticalHtml(const QString& html
 
 	tos<<writeHead(true, placedActivities, true); 
 		
-	tos<<"    <p><strong>"<<TimetableExport::tr("Table of content")<<"</strong></p>\n";
+	tos<<"    <p><strong>"<<TimetableExport::tr("Table of contents")<<"</strong></p>\n";
 	tos<<"    <ul>\n";
 	for(int teacher=0; teacher<gt.rules.nInternalTeachers; teacher++){
 		QString teacher_name = gt.rules.internalTeachersList[teacher]->name;
@@ -4497,7 +4508,8 @@ void TimetableExport::writeTeachersTimetableDaysVerticalHtml(const QString& html
 	for(int teacher=0; teacher<gt.rules.nInternalTeachers; teacher++){
 		QString teacher_name = gt.rules.internalTeachersList[teacher]->name;
 		tos<<"    <table id=\"table_"<<hashTeacherIDsTimetable.value(teacher_name)<<"\" border=\"1\"";
-		if(teacher%2==0) tos<<" class=\"modulo2\"";
+		if(teacher%2==0) tos<<" class=\"odd_table\"";
+		else tos<<" class=\"even_table\"";
 		tos<<">\n";
 		
 		tos<<"      <caption>"<<protect2(gt.rules.institutionName)<<"</caption>\n";
@@ -4526,7 +4538,7 @@ void TimetableExport::writeTeachersTimetableDaysVerticalHtml(const QString& html
 				tos<<"          <th>";
 			tos<<protect2(gt.rules.daysOfTheWeek[k])<<"</th>\n";
 			for(int j=0; j<gt.rules.nHoursPerDay; j++){
-				QList<qint16> allActivities;
+				QList<int> allActivities;
 				allActivities.clear();
 				allActivities<<teachers_timetable_weekly[teacher][k][j];
 				bool activitiesWithSameStartingtime=addActivitiesWithSameStartingTime(allActivities, j);
@@ -4545,7 +4557,7 @@ void TimetableExport::writeTeachersTimetableDaysVerticalHtml(const QString& html
 		tos<<"    </table>\n\n";
 		tos<<"    <p class=\"back\"><a href=\""<<"#top\">"<<TimetableExport::tr("back to the top")<<"</a></p>\n\n";
 	}
-	tos<<"  </body>\n</html>\n\n";
+	tos<<"  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -4602,7 +4614,7 @@ void TimetableExport::writeTeachersTimetableTimeVerticalHtml(const QString& html
 				tos<<"          <th>";
 			tos << protect2(gt.rules.hoursOfTheDay[j]) << "</th>\n";
 			for(int teacher=0; teacher<gt.rules.nInternalTeachers; teacher++){
-				QList<qint16> allActivities;
+				QList<int> allActivities;
 				allActivities.clear();
 				allActivities<<teachers_timetable_weekly[teacher][k][j];
 				bool activitiesWithSameStartingtime=addActivitiesWithSameStartingTime(allActivities, j);
@@ -4619,7 +4631,7 @@ void TimetableExport::writeTeachersTimetableTimeVerticalHtml(const QString& html
 	tos<<"      <tr class=\"foot\"><td colspan=\"2\"></td><td colspan=\""<<gt.rules.nInternalTeachers<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2", "%1 is FET version, %2 is the date and time of generation").arg(FET_VERSION).arg(saveTime)<<"</td></tr>\n";
 	//workaround end.
 	tos << "      </tbody>\n    </table>\n";
-	tos << "  </body>\n</html>\n\n";
+	tos << "  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -4680,7 +4692,7 @@ void TimetableExport::writeTeachersTimetableTimeHorizontalHtml(const QString& ht
 		tos << gt.rules.internalTeachersList[teacher]->name << "</th>\n";
 		for(int k=0; k<gt.rules.nDaysPerWeek; k++){
 			for(int j=0; j<gt.rules.nHoursPerDay; j++){
-				QList<qint16> allActivities;
+				QList<int> allActivities;
 				allActivities.clear();
 				allActivities<<teachers_timetable_weekly[teacher][k][j];
 				bool activitiesWithSameStartingtime=addActivitiesWithSameStartingTime(allActivities, j);
@@ -4697,7 +4709,7 @@ void TimetableExport::writeTeachersTimetableTimeHorizontalHtml(const QString& ht
 	tos<<"      <tr class=\"foot\"><td></td><td colspan=\""<<gt.rules.nHoursPerDay*gt.rules.nDaysPerWeek<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2", "%1 is FET version, %2 is the date and time of generation").arg(FET_VERSION).arg(saveTime)<<"</td></tr>\n";
 	//workaround end.
 	tos << "      </tbody>\n    </table>\n";
-	tos << "  </body>\n</html>\n\n";
+	tos << "  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -4757,7 +4769,7 @@ void TimetableExport::writeTeachersTimetableTimeVerticalDailyHtml(const QString&
 				tos<<"          <th>";
 			tos << protect2(gt.rules.hoursOfTheDay[j]) << "</th>\n";
 			for(int teacher=0; teacher<gt.rules.nInternalTeachers; teacher++){
-				QList<qint16> allActivities;
+				QList<int> allActivities;
 				allActivities.clear();
 				allActivities<<teachers_timetable_weekly[teacher][k][j];
 				bool activitiesWithSameStartingtime=addActivitiesWithSameStartingTime(allActivities, j);
@@ -4776,7 +4788,7 @@ void TimetableExport::writeTeachersTimetableTimeVerticalDailyHtml(const QString&
 		tos<<"    </table>\n\n";
 		tos<<"    <p class=\"back\"><a href=\""<<"#top\">"<<TimetableExport::tr("back to the top")<<"</a></p>\n\n";
 	}
-	tos << "  </body>\n</html>\n\n";
+	tos << "  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -4836,7 +4848,7 @@ void TimetableExport::writeTeachersTimetableTimeHorizontalDailyHtml(const QStrin
 			tos << gt.rules.internalTeachersList[teacher]->name << "</th>\n";
 		
 			for(int j=0; j<gt.rules.nHoursPerDay; j++){
-				QList<qint16> allActivities;
+				QList<int> allActivities;
 				allActivities.clear();
 				allActivities<<teachers_timetable_weekly[teacher][k][j];
 				bool activitiesWithSameStartingtime=addActivitiesWithSameStartingTime(allActivities, j);
@@ -4856,7 +4868,7 @@ void TimetableExport::writeTeachersTimetableTimeHorizontalDailyHtml(const QStrin
 		tos<<"    <p class=\"back\"><a href=\""<<"#top\">"<<TimetableExport::tr("back to the top")<<"</a></p>\n\n";
 	}
 
-	tos << "  </body>\n</html>\n\n";
+	tos << "  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -4888,9 +4900,9 @@ void TimetableExport::writeRoomsTimetableDaysHorizontalHtml(const QString& htmlf
 	tos<<writeHead(true, placedActivities, true);	
 	
 	if(gt.rules.nInternalRooms==0)
-		tos<<"    <h1>"<<TimetableExport::tr("No rooms recorded in fet for %1.").arg(protect2(gt.rules.institutionName))<<"</h1>\n";
+		tos<<"    <h1>"<<TimetableExport::tr("No rooms recorded in FET for %1.", "%1 is the institution name").arg(protect2(gt.rules.institutionName))<<"</h1>\n";
 	else {
-		tos<<"    <p><strong>"<<TimetableExport::tr("Table of content")<<"</strong></p>\n";
+		tos<<"    <p><strong>"<<TimetableExport::tr("Table of contents")<<"</strong></p>\n";
 		tos<<"    <ul>\n";
 		for(int room=0; room<gt.rules.nInternalRooms; room++){
 			QString room_name = gt.rules.internalRoomsList[room]->name;
@@ -4901,7 +4913,8 @@ void TimetableExport::writeRoomsTimetableDaysHorizontalHtml(const QString& htmlf
 		for(int room=0; room<gt.rules.nInternalRooms; room++){
 			QString room_name = gt.rules.internalRoomsList[room]->name;
 			tos<<"    <table id=\"table_"<<hashRoomIDsTimetable.value(room_name)<<"\" border=\"1\"";
-			if(room%2==0) tos<<" class=\"modulo2\"";
+			if(room%2==0)  tos<<" class=\"odd_table\"";
+			else tos<<" class=\"even_table\"";
 			tos<<">\n";
 		
 			tos<<"      <caption>"<<protect2(gt.rules.institutionName)<<"</caption>\n";
@@ -4929,7 +4942,7 @@ void TimetableExport::writeRoomsTimetableDaysHorizontalHtml(const QString& htmlf
 					tos<<"          <th>";
 				tos<<protect2(gt.rules.hoursOfTheDay[j])<<"</th>\n";
 				for(int k=0; k<gt.rules.nDaysPerWeek; k++){
-					QList<qint16> allActivities;
+					QList<int> allActivities;
 					allActivities.clear();
 					allActivities<<rooms_timetable_weekly[room][k][j];
 					bool activitiesWithSameStartingtime=addActivitiesWithSameStartingTime(allActivities, j);
@@ -4949,7 +4962,7 @@ void TimetableExport::writeRoomsTimetableDaysHorizontalHtml(const QString& htmlf
 			tos<<"    <p class=\"back\"><a href=\""<<"#top\">"<<TimetableExport::tr("back to the top")<<"</a></p>\n\n";
 		}
 	}
-	tos<<"  </body>\n</html>\n\n";
+	tos<<"  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -4980,9 +4993,9 @@ void TimetableExport::writeRoomsTimetableDaysVerticalHtml(const QString& htmlfil
 	tos<<writeHead(true, placedActivities, true);
 		
 	if(gt.rules.nInternalRooms==0)
-		tos<<"    <h1>"<<TimetableExport::tr("No rooms recorded in fet for %1.").arg(protect2(gt.rules.institutionName))<<"</h1>\n";
+		tos<<"    <h1>"<<TimetableExport::tr("No rooms recorded in FET for %1.", "%1 is the institution name").arg(protect2(gt.rules.institutionName))<<"</h1>\n";
 	else {
-		tos<<"    <p><strong>"<<TimetableExport::tr("Table of content")<<"</strong></p>\n";
+		tos<<"    <p><strong>"<<TimetableExport::tr("Table of contents")<<"</strong></p>\n";
 		tos<<"    <ul>\n";
 		for(int room=0; room<gt.rules.nInternalRooms; room++){
 			QString room_name = gt.rules.internalRoomsList[room]->name;
@@ -4993,7 +5006,8 @@ void TimetableExport::writeRoomsTimetableDaysVerticalHtml(const QString& htmlfil
 		for(int room=0; room<gt.rules.nInternalRooms; room++){
 			QString room_name = gt.rules.internalRoomsList[room]->name;
 			tos<<"    <table id=\"table_"<<hashRoomIDsTimetable.value(room_name)<<"\" border=\"1\"";
-			if(room%2==0) tos<<" class=\"modulo2\"";
+			if(room%2==0)  tos<<" class=\"odd_table\"";
+			else tos<<" class=\"even_table\"";
 			tos<<">\n";
 			
 			tos<<"      <caption>"<<protect2(gt.rules.institutionName)<<"</caption>\n";
@@ -5022,7 +5036,7 @@ void TimetableExport::writeRoomsTimetableDaysVerticalHtml(const QString& htmlfil
 					tos<<"          <th>";
 				tos<<protect2(gt.rules.daysOfTheWeek[k])<<"</th>\n";
 				for(int j=0; j<gt.rules.nHoursPerDay; j++){
-					QList<qint16> allActivities;
+					QList<int> allActivities;
 					allActivities.clear();
 					allActivities<<rooms_timetable_weekly[room][k][j];
 					bool activitiesWithSameStartingtime=addActivitiesWithSameStartingTime(allActivities, j);
@@ -5042,7 +5056,7 @@ void TimetableExport::writeRoomsTimetableDaysVerticalHtml(const QString& htmlfil
 			tos<<"    <p class=\"back\"><a href=\""<<"#top\">"<<TimetableExport::tr("back to the top")<<"</a></p>\n\n";
 		}
 	}
-	tos<<"  </body>\n</html>\n\n";
+	tos<<"  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -5073,7 +5087,7 @@ void TimetableExport::writeRoomsTimetableTimeVerticalHtml(const QString& htmlfil
 	tos<<writeHead(true, placedActivities, false);
 	
 	if(gt.rules.nInternalRooms==0)
-		tos<<"    <h1>"<<TimetableExport::tr("No rooms recorded in fet for %1.").arg(protect2(gt.rules.institutionName))<<"</h1>\n";
+		tos<<"    <h1>"<<TimetableExport::tr("No rooms recorded in FET for %1.", "%1 is the institution name").arg(protect2(gt.rules.institutionName))<<"</h1>\n";
 	else {
 		tos<<"    <table border=\"1\">\n";
 		tos<<"      <caption>"<<protect2(gt.rules.institutionName)<<"</caption>\n";
@@ -5103,7 +5117,7 @@ void TimetableExport::writeRoomsTimetableTimeVerticalHtml(const QString& htmlfil
 					tos<<"          <th>";
 				tos << protect2(gt.rules.hoursOfTheDay[j]) << "</th>\n";
 				for(int room=0; room<gt.rules.nInternalRooms; room++){
-					QList<qint16> allActivities;
+					QList<int> allActivities;
 					allActivities.clear();
 					allActivities<<rooms_timetable_weekly[room][k][j];
 					bool activitiesWithSameStartingtime=addActivitiesWithSameStartingTime(allActivities, j);
@@ -5121,7 +5135,7 @@ void TimetableExport::writeRoomsTimetableTimeVerticalHtml(const QString& htmlfil
 		//workaround end.
 		tos << "      </tbody>\n    </table>\n";
 	}
-	tos << "  </body>\n</html>\n\n";
+	tos << "  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -5152,7 +5166,7 @@ void TimetableExport::writeRoomsTimetableTimeHorizontalHtml(const QString& htmlf
 	tos<<writeHead(true, placedActivities, false);
 	
 	if(gt.rules.nInternalRooms==0)
-		tos<<"    <h1>"<<TimetableExport::tr("No rooms recorded in fet for %1.").arg(protect2(gt.rules.institutionName))<<"</h1>\n";
+		tos<<"    <h1>"<<TimetableExport::tr("No rooms recorded in FET for %1.", "%1 is the institution name").arg(protect2(gt.rules.institutionName))<<"</h1>\n";
 	else {
 		tos<<"    <table border=\"1\">\n";
 		tos<<"      <caption>"<<protect2(gt.rules.institutionName)<<"</caption>\n";
@@ -5185,7 +5199,7 @@ void TimetableExport::writeRoomsTimetableTimeHorizontalHtml(const QString& htmlf
 			tos << gt.rules.internalRoomsList[room]->name << "</th>\n";
 			for(int k=0; k<gt.rules.nDaysPerWeek; k++){
 				for(int j=0; j<gt.rules.nHoursPerDay; j++){
-					QList<qint16> allActivities;
+					QList<int> allActivities;
 					allActivities.clear();
 					allActivities<<rooms_timetable_weekly[room][k][j];
 					bool activitiesWithSameStartingtime=addActivitiesWithSameStartingTime(allActivities, j);
@@ -5203,7 +5217,7 @@ void TimetableExport::writeRoomsTimetableTimeHorizontalHtml(const QString& htmlf
 		//workaround end.
 		tos << "      </tbody>\n    </table>\n";
 	}
-	tos << "  </body>\n</html>\n\n";
+	tos << "  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -5235,7 +5249,7 @@ void TimetableExport::writeRoomsTimetableTimeVerticalDailyHtml(const QString& ht
 	tos<<writeTOCDays(false);
 	
 	if(gt.rules.nInternalRooms==0)
-		tos<<"    <h1>"<<TimetableExport::tr("No rooms recorded in fet for %1.").arg(protect2(gt.rules.institutionName))<<"</h1>\n";
+		tos<<"    <h1>"<<TimetableExport::tr("No rooms recorded in FET for %1.", "%1 is the institution name").arg(protect2(gt.rules.institutionName))<<"</h1>\n";
 	else {
 		for(int k=0; k<gt.rules.nDaysPerWeek; k++){
 			tos<<"    <table id=\"table_"<<hashDayIDsTimetable.value(gt.rules.daysOfTheWeek[k])<<"\" border=\"1\">\n";
@@ -5266,7 +5280,7 @@ void TimetableExport::writeRoomsTimetableTimeVerticalDailyHtml(const QString& ht
 					tos<<"          <th>";
 				tos << protect2(gt.rules.hoursOfTheDay[j]) << "</th>\n";
 				for(int room=0; room<gt.rules.nInternalRooms; room++){
-					QList<qint16> allActivities;
+					QList<int> allActivities;
 					allActivities.clear();
 					allActivities<<rooms_timetable_weekly[room][k][j];
 					bool activitiesWithSameStartingtime=addActivitiesWithSameStartingTime(allActivities, j);
@@ -5286,7 +5300,7 @@ void TimetableExport::writeRoomsTimetableTimeVerticalDailyHtml(const QString& ht
 			tos<<"    <p class=\"back\"><a href=\""<<"#top\">"<<TimetableExport::tr("back to the top")<<"</a></p>\n\n";
 		}
 	}
-	tos << "  </body>\n</html>\n\n";
+	tos << "  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -5318,7 +5332,7 @@ void TimetableExport::writeRoomsTimetableTimeHorizontalDailyHtml(const QString& 
 	tos<<writeTOCDays(false);
 	
 	if(gt.rules.nInternalRooms==0)
-		tos<<"    <h1>"<<TimetableExport::tr("No rooms recorded in fet for %1.").arg(protect2(gt.rules.institutionName))<<"</h1>\n";
+		tos<<"    <h1>"<<TimetableExport::tr("No rooms recorded in FET for %1.", "%1 is the institution name").arg(protect2(gt.rules.institutionName))<<"</h1>\n";
 	else {
 		for(int k=0; k<gt.rules.nDaysPerWeek; k++){
 			tos<<"    <table id=\"table_"<<hashDayIDsTimetable.value(gt.rules.daysOfTheWeek[k])<<"\" border=\"1\">\n";
@@ -5349,7 +5363,7 @@ void TimetableExport::writeRoomsTimetableTimeHorizontalDailyHtml(const QString& 
 					tos<<"          <th>";
 				tos << gt.rules.internalRoomsList[room]->name << "</th>\n";
 				for(int j=0; j<gt.rules.nHoursPerDay; j++){
-					QList<qint16> allActivities;
+					QList<int> allActivities;
 					allActivities.clear();
 					allActivities<<rooms_timetable_weekly[room][k][j];
 					bool activitiesWithSameStartingtime=addActivitiesWithSameStartingTime(allActivities, j);
@@ -5370,7 +5384,7 @@ void TimetableExport::writeRoomsTimetableTimeHorizontalDailyHtml(const QString& 
 		}
 
 	}
-	tos << "  </body>\n</html>\n\n";
+	tos << "  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -5402,17 +5416,17 @@ void TimetableExport::writeSubjectsTimetableDaysHorizontalHtml(const QString& ht
 
 	tos<<writeHead(true, placedActivities, true);
 
-	tos<<"    <p><strong>"<<TimetableExport::tr("Table of content")<<"</strong></p>\n";
+	tos<<"    <p><strong>"<<TimetableExport::tr("Table of contents")<<"</strong></p>\n";
 	tos<<"    <ul>\n";
-	for(int i=0; i<gt.rules.subjectsList.size(); i++){
+	for(int i=0; i<gt.rules.nInternalSubjects; i++){
 		tos<<"      <li>\n        "<<TimetableExport::tr("Subject");
-		tos<<" <a href=\""<<"#table_"<<hashSubjectIDsTimetable.value(gt.rules.subjectsList[i]->name)<<"\">"<<gt.rules.subjectsList[i]->name<<"</a>\n";
+		tos<<" <a href=\""<<"#table_"<<hashSubjectIDsTimetable.value(gt.rules.internalSubjectsList[i]->name)<<"\">"<<gt.rules.internalSubjectsList[i]->name<<"</a>\n";
 		tos<<"      </li>\n";
 	}
 	tos<<"    </ul>\n    <p>&nbsp;</p>\n\n";
 
 
-	for(int subject=0; subject<gt.rules.subjectsList.size(); subject++){
+	for(int subject=0; subject<gt.rules.nInternalSubjects; subject++){
 		///////Liviu here
 		for(int d=0; d<gt.rules.nDaysPerWeek; d++)
 			for(int h=0; h<gt.rules.nHoursPerDay; h++)
@@ -5427,14 +5441,15 @@ void TimetableExport::writeSubjectsTimetableDaysHorizontalHtml(const QString& ht
 			}
 		///////end Liviu
 	
-		tos<<"    <table id=\"table_"<<hashSubjectIDsTimetable.value(gt.rules.subjectsList[subject]->name);
+		tos<<"    <table id=\"table_"<<hashSubjectIDsTimetable.value(gt.rules.internalSubjectsList[subject]->name);
 		tos<<"\" border=\"1\"";
-		if(subject%2==0) tos<<" class=\"modulo2\"";
+		if(subject%2==0)  tos<<" class=\"odd_table\"";
+		else tos<<" class=\"even_table\"";
 		tos<<">\n";
 
 		tos<<"      <caption>"<<protect2(gt.rules.institutionName)<<"</caption>\n";
 
-		tos<<"      <thead>\n        <tr><td rowspan=\"2\"></td><th colspan=\""<<gt.rules.nDaysPerWeek<<"\">"<<protect2(gt.rules.subjectsList[subject]->name)<<"</th></tr>\n";
+		tos<<"      <thead>\n        <tr><td rowspan=\"2\"></td><th colspan=\""<<gt.rules.nDaysPerWeek<<"\">"<<protect2(gt.rules.internalSubjectsList[subject]->name)<<"</th></tr>\n";
 		tos<<"        <tr>\n          <!-- span -->\n";
 		for(int j=0; j<gt.rules.nDaysPerWeek; j++){
 			if(TIMETABLE_HTML_LEVEL>=2)
@@ -5457,7 +5472,7 @@ void TimetableExport::writeSubjectsTimetableDaysHorizontalHtml(const QString& ht
 				tos<<"          <th>";
 			tos<<protect2(gt.rules.hoursOfTheDay[j])<<"</th>\n";
 			for(int k=0; k<gt.rules.nDaysPerWeek; k++){
-				QList<qint16> allActivities;
+				QList<int> allActivities;
 				
 				//Liviu:
 				allActivities=activitiesForCurrentSubject[k][j];
@@ -5468,7 +5483,7 @@ void TimetableExport::writeSubjectsTimetableDaysHorizontalHtml(const QString& ht
 				for(int subgroup=0; subgroup<gt.rules.nInternalSubgroups; subgroup++){
 					if(students_timetable_weekly[subgroup][k][j]!=UNALLOCATED_ACTIVITY){
 						Activity* act=&gt.rules.internalActivitiesList[students_timetable_weekly[subgroup][k][j]];
-						if(act->subjectName==gt.rules.subjectsList[subject]->name)
+						if(act->subjectName==gt.rules.internalSubjectsList[subject]->name)
 							if(!(allActivities.contains(students_timetable_weekly[subgroup][k][j]))){
 								allActivities<<students_timetable_weekly[subgroup][k][j];
 							}
@@ -5478,7 +5493,7 @@ void TimetableExport::writeSubjectsTimetableDaysHorizontalHtml(const QString& ht
 				for(int teacher=0; teacher<gt.rules.nInternalTeachers; teacher++){
 					if(teachers_timetable_weekly[teacher][k][j]!=UNALLOCATED_ACTIVITY){
 						Activity* act=&gt.rules.internalActivitiesList[teachers_timetable_weekly[teacher][k][j]];
-						if(act->subjectName==gt.rules.subjectsList[subject]->name)
+						if(act->subjectName==gt.rules.internalSubjectsList[subject]->name)
 							if(!(allActivities.contains(teachers_timetable_weekly[teacher][k][j]))){
 								assert(act->studentsNames.isEmpty());
 								allActivities<<teachers_timetable_weekly[teacher][k][j];
@@ -5497,7 +5512,7 @@ void TimetableExport::writeSubjectsTimetableDaysHorizontalHtml(const QString& ht
 		tos<<"    </table>\n\n";
 		tos<<"    <p class=\"back\"><a href=\""<<"#top\">"<<TimetableExport::tr("back to the top")<<"</a></p>\n\n";
 	}
-	tos<<"  </body>\n</html>\n\n";
+	tos<<"  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -5527,16 +5542,16 @@ void TimetableExport::writeSubjectsTimetableDaysVerticalHtml(const QString& html
 
 	tos<<writeHead(true, placedActivities, true);
 
-	tos<<"    <p><strong>"<<TimetableExport::tr("Table of content")<<"</strong></p>\n";
+	tos<<"    <p><strong>"<<TimetableExport::tr("Table of contents")<<"</strong></p>\n";
 	tos<<"    <ul>\n";
-	for(int i=0; i<gt.rules.subjectsList.size(); i++){
+	for(int i=0; i<gt.rules.nInternalSubjects; i++){
 		tos<<"      <li>\n        "<<TimetableExport::tr("Subject");
-		tos<<" <a href=\""<<"#table_"<<hashSubjectIDsTimetable.value(gt.rules.subjectsList[i]->name)<<"\">"<<gt.rules.subjectsList[i]->name<<"</a>\n";
+		tos<<" <a href=\""<<"#table_"<<hashSubjectIDsTimetable.value(gt.rules.internalSubjectsList[i]->name)<<"\">"<<gt.rules.internalSubjectsList[i]->name<<"</a>\n";
 		tos<<"      </li>\n";
 	}
 	tos<<"    </ul>\n    <p>&nbsp;</p>\n\n";
 
-	for(int subject=0; subject<gt.rules.subjectsList.size(); subject++){
+	for(int subject=0; subject<gt.rules.nInternalSubjects; subject++){
 		///////Liviu here
 		for(int d=0; d<gt.rules.nDaysPerWeek; d++)
 			for(int h=0; h<gt.rules.nHoursPerDay; h++)
@@ -5551,14 +5566,15 @@ void TimetableExport::writeSubjectsTimetableDaysVerticalHtml(const QString& html
 			}
 		///////end Liviu
 
-		tos<<"    <table id=\"table_"<<hashSubjectIDsTimetable.value(gt.rules.subjectsList[subject]->name);
+		tos<<"    <table id=\"table_"<<hashSubjectIDsTimetable.value(gt.rules.internalSubjectsList[subject]->name);
 		tos<<"\" border=\"1\"";
-		if(subject%2==0) tos<<" class=\"modulo2\"";
+		if(subject%2==0) tos<<" class=\"odd_table\"";
+		else tos<<" class=\"even_table\"";
 		tos<<">\n";
 
 		tos<<"      <caption>"<<protect2(gt.rules.institutionName)<<"</caption>\n";
 
-		tos<<"      <thead>\n        <tr><td rowspan=\"2\"></td><th colspan=\""<<gt.rules.nHoursPerDay<<"\">"<<protect2(gt.rules.subjectsList[subject]->name)<<"</th></tr>\n";
+		tos<<"      <thead>\n        <tr><td rowspan=\"2\"></td><th colspan=\""<<gt.rules.nHoursPerDay<<"\">"<<protect2(gt.rules.internalSubjectsList[subject]->name)<<"</th></tr>\n";
 		tos<<"        <tr>\n          <!-- span -->\n";
 		for(int j=0; j<gt.rules.nHoursPerDay; j++){
 			if(TIMETABLE_HTML_LEVEL>=2)
@@ -5581,7 +5597,7 @@ void TimetableExport::writeSubjectsTimetableDaysVerticalHtml(const QString& html
 				tos<<"          <th>";
 			tos<<protect2(gt.rules.daysOfTheWeek[k])<<"</th>\n";
 			for(int j=0; j<gt.rules.nHoursPerDay; j++){
-				QList<qint16> allActivities;
+				QList<int> allActivities;
 
 				//Liviu:
 				allActivities=activitiesForCurrentSubject[k][j];
@@ -5592,7 +5608,7 @@ void TimetableExport::writeSubjectsTimetableDaysVerticalHtml(const QString& html
 				for(int subgroup=0; subgroup<gt.rules.nInternalSubgroups; subgroup++){
 					if(students_timetable_weekly[subgroup][k][j]!=UNALLOCATED_ACTIVITY){
 						Activity* act=&gt.rules.internalActivitiesList[students_timetable_weekly[subgroup][k][j]];
-						if(act->subjectName==gt.rules.subjectsList[subject]->name)
+						if(act->subjectName==gt.rules.internalSubjectsList[subject]->name)
 							if(!(allActivities.contains(students_timetable_weekly[subgroup][k][j]))){
 								allActivities<<students_timetable_weekly[subgroup][k][j];
 							}
@@ -5602,7 +5618,7 @@ void TimetableExport::writeSubjectsTimetableDaysVerticalHtml(const QString& html
 				for(int teacher=0; teacher<gt.rules.nInternalTeachers; teacher++){
 					if(teachers_timetable_weekly[teacher][k][j]!=UNALLOCATED_ACTIVITY){
 						Activity* act=&gt.rules.internalActivitiesList[teachers_timetable_weekly[teacher][k][j]];
-						if(act->subjectName==gt.rules.subjectsList[subject]->name)
+						if(act->subjectName==gt.rules.internalSubjectsList[subject]->name)
 							if(!(allActivities.contains(teachers_timetable_weekly[teacher][k][j]))){
 								assert(act->studentsNames.isEmpty());
 								allActivities<<teachers_timetable_weekly[teacher][k][j];
@@ -5622,7 +5638,7 @@ void TimetableExport::writeSubjectsTimetableDaysVerticalHtml(const QString& html
 		tos<<"    </table>\n\n";
 		tos<<"    <p class=\"back\"><a href=\""<<"#top\">"<<TimetableExport::tr("back to the top")<<"</a></p>\n\n";
 	}
-	tos << "  </body>\n</html>\n\n";
+	tos << "  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -5657,22 +5673,23 @@ void TimetableExport::writeSubjectsTimetableTimeVerticalHtml(const QString& html
 	tos<<"      <caption>"<<protect2(gt.rules.institutionName)<<"</caption>\n";
 
 	tos<<"      <thead>\n        <tr><td colspan=\"2\"></td>";
-	for(int i=0; i<gt.rules.subjectsList.size(); i++){
+	for(int i=0; i<gt.rules.nInternalSubjects; i++){
 			if(TIMETABLE_HTML_LEVEL>=2)
 				tos<<"          <th class=\"xAxis\">";
 			else
 				tos<<"          <th>";
-			tos << gt.rules.subjectsList[i]->name << "</th>";
+			tos << gt.rules.internalSubjectsList[i]->name << "</th>";
 	}
 		
 	tos<<"</tr>\n      </thead>\n";
 	/*workaround. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
-	tos<<"      <tfoot><tr><td colspan=\"2\"></td><td colspan=\""<<gt.rules.subjectsList.size()<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2", "%1 is FET version, %2 is the date and time of generation").arg(FET_VERSION).arg(saveTime)<<"</td></tr></tfoot>\n";
+	tos<<"      <tfoot><tr><td colspan=\"2\"></td><td colspan=\""<<gt.rules.internalSubjectsList.size()<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2", "%1 is FET version, %2 is the date and time of generation").arg(FET_VERSION).arg(saveTime)<<"</td></tr></tfoot>\n";
 	*/
 	tos<<"      <tbody>\n";
 
 	//LIVIU										//maybe TODO: write a function for this
-	for(int k=0; k<gt.rules.nDaysPerWeek; k++)
+	//already computed
+	/*for(int k=0; k<gt.rules.nDaysPerWeek; k++)
 		for(int j=0; j<gt.rules.nHoursPerDay; j++)
 			activitiesAtTime[k][j].clear();
 	for(int i=0; i<gt.rules.nInternalActivities; i++) {
@@ -5683,7 +5700,7 @@ void TimetableExport::writeSubjectsTimetableTimeVerticalHtml(const QString& html
 			for(int dd=0; dd < act->duration && hour+dd < gt.rules.nHoursPerDay; dd++)
 				activitiesAtTime[day][hour+dd].append(i);
 		}
-	}
+	}*/
 	///////
 
 	for(int k=0; k<gt.rules.nDaysPerWeek; k++){
@@ -5699,8 +5716,8 @@ void TimetableExport::writeSubjectsTimetableTimeVerticalHtml(const QString& html
 			tos << protect2(gt.rules.hoursOfTheDay[j]) << "</th>\n";
 
 
-			for(int subject=0; subject<gt.rules.subjectsList.size(); subject++){
-				QList<qint16> allActivities;
+			for(int subject=0; subject<gt.rules.nInternalSubjects; subject++){
+				QList<int> allActivities;
 				allActivities.clear();
 				
 				foreach(int ai, gt.rules.activitiesForSubject[subject])
@@ -5713,7 +5730,7 @@ void TimetableExport::writeSubjectsTimetableTimeVerticalHtml(const QString& html
 				for(int subgroup=0; subgroup<gt.rules.nInternalSubgroups; subgroup++){
 					if(students_timetable_weekly[subgroup][k][j]!=UNALLOCATED_ACTIVITY){
 						Activity* act=&gt.rules.internalActivitiesList[students_timetable_weekly[subgroup][k][j]];
-						if(act->subjectName==gt.rules.subjectsList[subject]->name)
+						if(act->subjectName==gt.rules.internalSubjectsList[subject]->name)
 							if(!(allActivities.contains(students_timetable_weekly[subgroup][k][j]))){
 								allActivities<<students_timetable_weekly[subgroup][k][j];
 							}
@@ -5723,7 +5740,7 @@ void TimetableExport::writeSubjectsTimetableTimeVerticalHtml(const QString& html
 				for(int teacher=0; teacher<gt.rules.nInternalTeachers; teacher++){
 					if(teachers_timetable_weekly[teacher][k][j]!=UNALLOCATED_ACTIVITY){
 						Activity* act=&gt.rules.internalActivitiesList[teachers_timetable_weekly[teacher][k][j]];
-						if(act->subjectName==gt.rules.subjectsList[subject]->name)
+						if(act->subjectName==gt.rules.internalSubjectsList[subject]->name)
 							if(!(allActivities.contains(teachers_timetable_weekly[teacher][k][j]))){
 								assert(act->studentsNames.isEmpty());
 								allActivities<<teachers_timetable_weekly[teacher][k][j];
@@ -5737,10 +5754,10 @@ void TimetableExport::writeSubjectsTimetableTimeVerticalHtml(const QString& html
 		}
 	}
 	//workaround begin. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
-	tos<<"        <tr class=\"foot\"><td colspan=\"2\"></td><td colspan=\""<<gt.rules.subjectsList.size()<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2", "%1 is FET version, %2 is the date and time of generation").arg(FET_VERSION).arg(saveTime)<<"</td></tr>\n";
+	tos<<"        <tr class=\"foot\"><td colspan=\"2\"></td><td colspan=\""<<gt.rules.nInternalSubjects<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2", "%1 is FET version, %2 is the date and time of generation").arg(FET_VERSION).arg(saveTime)<<"</td></tr>\n";
 	//workaround end.
 	tos<<"      </tbody>\n    </table>\n";
-	tos << "  </body>\n</html>\n\n";
+	tos << "  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -5793,12 +5810,12 @@ void TimetableExport::writeSubjectsTimetableTimeHorizontalHtml(const QString& ht
 	tos<<"      <tfoot><tr><td colspan=\"2\"></td><td colspan=\""<<gt.rules.nInternalSubgroups<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2", "%1 is FET version, %2 is the date and time of generation").arg(FET_VERSION).arg(saveTime)<<"</td></tr></tfoot>\n";
 	*/
 	tos<<"      <tbody>\n";
-	for(int subject=0; subject<gt.rules.subjectsList.size(); subject++){
+	for(int subject=0; subject<gt.rules.nInternalSubjects; subject++){
 		tos << "        <tr>\n";
 		if(TIMETABLE_HTML_LEVEL>=2)
-			tos << "        <th class=\"yAxis\">" << protect2(gt.rules.subjectsList[subject]->name) << "</th>\n";
+			tos << "        <th class=\"yAxis\">" << protect2(gt.rules.internalSubjectsList[subject]->name) << "</th>\n";
 		else
-			tos << "        <th>" << protect2(gt.rules.subjectsList[subject]->name) << "</th>\n";
+			tos << "        <th>" << protect2(gt.rules.internalSubjectsList[subject]->name) << "</th>\n";
 
 		///////Liviu here
 		for(int d=0; d<gt.rules.nDaysPerWeek; d++)
@@ -5816,7 +5833,7 @@ void TimetableExport::writeSubjectsTimetableTimeHorizontalHtml(const QString& ht
 
 		for(int k=0; k<gt.rules.nDaysPerWeek; k++){
 			for(int j=0; j<gt.rules.nHoursPerDay; j++){
-				QList<qint16> allActivities;
+				QList<int> allActivities;
 
 				allActivities=activitiesForCurrentSubject[k][j];
 
@@ -5826,7 +5843,7 @@ void TimetableExport::writeSubjectsTimetableTimeHorizontalHtml(const QString& ht
 				for(int subgroup=0; subgroup<gt.rules.nInternalSubgroups; subgroup++){
 					if(students_timetable_weekly[subgroup][k][j]!=UNALLOCATED_ACTIVITY){
 						Activity* act=&gt.rules.internalActivitiesList[students_timetable_weekly[subgroup][k][j]];
-						if(act->subjectName==gt.rules.subjectsList[subject]->name)
+						if(act->subjectName==gt.rules.internalSubjectsList[subject]->name)
 							if(!(allActivities.contains(students_timetable_weekly[subgroup][k][j]))){
 								allActivities<<students_timetable_weekly[subgroup][k][j];
 							}
@@ -5836,7 +5853,7 @@ void TimetableExport::writeSubjectsTimetableTimeHorizontalHtml(const QString& ht
 				for(int teacher=0; teacher<gt.rules.nInternalTeachers; teacher++){
 					if(teachers_timetable_weekly[teacher][k][j]!=UNALLOCATED_ACTIVITY){
 						Activity* act=&gt.rules.internalActivitiesList[teachers_timetable_weekly[teacher][k][j]];
-						if(act->subjectName==gt.rules.subjectsList[subject]->name)
+						if(act->subjectName==gt.rules.internalSubjectsList[subject]->name)
 							if(!(allActivities.contains(teachers_timetable_weekly[teacher][k][j]))){
 								assert(act->studentsNames.isEmpty());
 								allActivities<<teachers_timetable_weekly[teacher][k][j];
@@ -5853,7 +5870,7 @@ void TimetableExport::writeSubjectsTimetableTimeHorizontalHtml(const QString& ht
 	tos<<"        <tr class=\"foot\"><td></td><td colspan=\""<<gt.rules.nHoursPerDay*gt.rules.nDaysPerWeek<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2", "%1 is FET version, %2 is the date and time of generation").arg(FET_VERSION).arg(saveTime)<<"</td></tr>\n";
 	//workaround end.
 	tos<<"      </tbody>\n    </table>\n";
-	tos << "  </body>\n</html>\n\n";
+	tos << "  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -5885,7 +5902,8 @@ void TimetableExport::writeSubjectsTimetableTimeVerticalDailyHtml(const QString&
 	tos<<writeTOCDays(false);
 
 	//LIVIU										//maybe TODO: write a function for this
-	for(int k=0; k<gt.rules.nDaysPerWeek; k++)
+	//already computed
+	/*for(int k=0; k<gt.rules.nDaysPerWeek; k++)
 		for(int j=0; j<gt.rules.nHoursPerDay; j++)
 			activitiesAtTime[k][j].clear();
 	for(int i=0; i<gt.rules.nInternalActivities; i++) {
@@ -5896,7 +5914,7 @@ void TimetableExport::writeSubjectsTimetableTimeVerticalDailyHtml(const QString&
 			for(int dd=0; dd < act->duration && hour+dd < gt.rules.nHoursPerDay; dd++)
 				activitiesAtTime[day][hour+dd].append(i);
 		}
-	}
+	}*/
 	///////
 
 
@@ -5904,16 +5922,16 @@ void TimetableExport::writeSubjectsTimetableTimeVerticalDailyHtml(const QString&
 		tos<<"    <table id=\"table_"<<hashDayIDsTimetable.value(gt.rules.daysOfTheWeek[k])<<"\" border=\"1\">\n";
 		tos<<"      <caption>"<<protect2(gt.rules.institutionName)<<"</caption>\n";
 		tos<<"      <thead>\n        <tr><td colspan=\"2\"></td>";
-		for(int i=0; i<gt.rules.subjectsList.size(); i++){
+		for(int i=0; i<gt.rules.nInternalSubjects; i++){
 				if(TIMETABLE_HTML_LEVEL>=2)
 					tos<<"          <th class=\"xAxis\">";
 				else
 					tos<<"          <th>";
-				tos << gt.rules.subjectsList[i]->name << "</th>";
+				tos << gt.rules.internalSubjectsList[i]->name << "</th>";
 		}
 		tos<<"</tr>\n      </thead>\n";
 		/*workaround. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
-		tos<<"      <tfoot><tr><td colspan=\"2\"></td><td colspan=\""<<gt.rules.subjectsList.size()<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2", "%1 is FET version, %2 is the date and time of generation").arg(FET_VERSION).arg(saveTime)<<"</td></tr></tfoot>\n";
+		tos<<"      <tfoot><tr><td colspan=\"2\"></td><td colspan=\""<<gt.rules.internalSubjectsList.size()<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2", "%1 is FET version, %2 is the date and time of generation").arg(FET_VERSION).arg(saveTime)<<"</td></tr></tfoot>\n";
 		*/
 		tos<<"      <tbody>\n";
 		for(int j=0; j<gt.rules.nHoursPerDay; j++){
@@ -5928,8 +5946,8 @@ void TimetableExport::writeSubjectsTimetableTimeVerticalDailyHtml(const QString&
 			tos << protect2(gt.rules.hoursOfTheDay[j]) << "</th>\n";
 
 
-			for(int subject=0; subject<gt.rules.subjectsList.size(); subject++){
-				QList<qint16> allActivities;
+			for(int subject=0; subject<gt.rules.nInternalSubjects; subject++){
+				QList<int> allActivities;
 				allActivities.clear();
 				
 				foreach(int ai, gt.rules.activitiesForSubject[subject])
@@ -5942,7 +5960,7 @@ void TimetableExport::writeSubjectsTimetableTimeVerticalDailyHtml(const QString&
 				for(int subgroup=0; subgroup<gt.rules.nInternalSubgroups; subgroup++){
 					if(students_timetable_weekly[subgroup][k][j]!=UNALLOCATED_ACTIVITY){
 						Activity* act=&gt.rules.internalActivitiesList[students_timetable_weekly[subgroup][k][j]];
-						if(act->subjectName==gt.rules.subjectsList[subject]->name)
+						if(act->subjectName==gt.rules.internalSubjectsList[subject]->name)
 							if(!(allActivities.contains(students_timetable_weekly[subgroup][k][j]))){
 								allActivities<<students_timetable_weekly[subgroup][k][j];
 							}
@@ -5952,7 +5970,7 @@ void TimetableExport::writeSubjectsTimetableTimeVerticalDailyHtml(const QString&
 				for(int teacher=0; teacher<gt.rules.nInternalTeachers; teacher++){
 					if(teachers_timetable_weekly[teacher][k][j]!=UNALLOCATED_ACTIVITY){
 						Activity* act=&gt.rules.internalActivitiesList[teachers_timetable_weekly[teacher][k][j]];
-						if(act->subjectName==gt.rules.subjectsList[subject]->name)
+						if(act->subjectName==gt.rules.internalSubjectsList[subject]->name)
 							if(!(allActivities.contains(teachers_timetable_weekly[teacher][k][j]))){
 								assert(act->studentsNames.isEmpty());
 								allActivities<<teachers_timetable_weekly[teacher][k][j];
@@ -5965,14 +5983,14 @@ void TimetableExport::writeSubjectsTimetableTimeVerticalDailyHtml(const QString&
 			tos<<"        </tr>\n";
 		}
 		//workaround begin. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
-		tos<<"        <tr class=\"foot\"><td colspan=\"2\"></td><td colspan=\""<<gt.rules.subjectsList.size()<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2", "%1 is FET version, %2 is the date and time of generation").arg(FET_VERSION).arg(saveTime)<<"</td></tr>\n";
+		tos<<"        <tr class=\"foot\"><td colspan=\"2\"></td><td colspan=\""<<gt.rules.nInternalSubjects<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2", "%1 is FET version, %2 is the date and time of generation").arg(FET_VERSION).arg(saveTime)<<"</td></tr>\n";
 		//workaround end.
 		tos<<"      </tbody>\n";
 		tos<<"    </table>\n\n";
 		tos<<"    <p class=\"back\"><a href=\""<<"#top\">"<<TimetableExport::tr("back to the top")<<"</a></p>\n\n";
 	}
 
-	tos << "  </body>\n</html>\n\n";
+	tos << "  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -6023,12 +6041,12 @@ void TimetableExport::writeSubjectsTimetableTimeHorizontalDailyHtml(const QStrin
 		tos<<"      <tfoot><tr><td colspan=\"2\"></td><td colspan=\""<<gt.rules.nHoursPerDay<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2", "%1 is FET version, %2 is the date and time of generation").arg(FET_VERSION).arg(saveTime)<<"</td></tr></tfoot>\n";
 		*/
 		tos<<"      <tbody>\n";
-		for(int subject=0; subject<gt.rules.subjectsList.size(); subject++){
+		for(int subject=0; subject<gt.rules.nInternalSubjects; subject++){
 			tos << "        <tr>\n";
 			if(TIMETABLE_HTML_LEVEL>=2)
-				tos << "        <th class=\"yAxis\">" << protect2(gt.rules.subjectsList[subject]->name) << "</th>\n";
+				tos << "        <th class=\"yAxis\">" << protect2(gt.rules.internalSubjectsList[subject]->name) << "</th>\n";
 			else
-				tos << "        <th>" << protect2(gt.rules.subjectsList[subject]->name) << "</th>\n";
+				tos << "        <th>" << protect2(gt.rules.internalSubjectsList[subject]->name) << "</th>\n";
 	
 			///////Liviu here
 			for(int d=0; d<gt.rules.nDaysPerWeek; d++)
@@ -6045,7 +6063,7 @@ void TimetableExport::writeSubjectsTimetableTimeHorizontalDailyHtml(const QStrin
 			///////end Liviu
 
 			for(int j=0; j<gt.rules.nHoursPerDay; j++){
-				QList<qint16> allActivities;
+				QList<int> allActivities;
 
 				allActivities=activitiesForCurrentSubject[k][j];
 
@@ -6055,7 +6073,7 @@ void TimetableExport::writeSubjectsTimetableTimeHorizontalDailyHtml(const QStrin
 				for(int subgroup=0; subgroup<gt.rules.nInternalSubgroups; subgroup++){
 					if(students_timetable_weekly[subgroup][k][j]!=UNALLOCATED_ACTIVITY){
 						Activity* act=&gt.rules.internalActivitiesList[students_timetable_weekly[subgroup][k][j]];
-						if(act->subjectName==gt.rules.subjectsList[subject]->name)
+						if(act->subjectName==gt.rules.internalSubjectsList[subject]->name)
 							if(!(allActivities.contains(students_timetable_weekly[subgroup][k][j]))){
 								allActivities<<students_timetable_weekly[subgroup][k][j];
 							}
@@ -6065,7 +6083,7 @@ void TimetableExport::writeSubjectsTimetableTimeHorizontalDailyHtml(const QStrin
 				for(int teacher=0; teacher<gt.rules.nInternalTeachers; teacher++){
 					if(teachers_timetable_weekly[teacher][k][j]!=UNALLOCATED_ACTIVITY){
 						Activity* act=&gt.rules.internalActivitiesList[teachers_timetable_weekly[teacher][k][j]];
-						if(act->subjectName==gt.rules.subjectsList[subject]->name)
+						if(act->subjectName==gt.rules.internalSubjectsList[subject]->name)
 							if(!(allActivities.contains(teachers_timetable_weekly[teacher][k][j]))){
 								assert(act->studentsNames.isEmpty());
 								allActivities<<teachers_timetable_weekly[teacher][k][j];
@@ -6084,7 +6102,7 @@ void TimetableExport::writeSubjectsTimetableTimeHorizontalDailyHtml(const QStrin
 		tos<<"    </table>\n\n";
 		tos<<"    <p class=\"back\"><a href=\""<<"#top\">"<<TimetableExport::tr("back to the top")<<"</a></p>\n\n";
 	}
-	tos << "  </body>\n</html>\n\n";
+	tos << "  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -6094,7 +6112,8 @@ void TimetableExport::writeSubjectsTimetableTimeHorizontalDailyHtml(const QStrin
 }
 
 
-// Now print the teachers free periods. Code by Volker Dirr (http://timetabling.de/) ------------------------------------------------------------------------------------------------------------
+// Now print the teachers free periods. Code by Volker Dirr (http://timetabling.de/)
+// ---------------------------------------------------------------------------------
 void TimetableExport::writeTeachersFreePeriodsTimetableDaysHorizontalHtml(const QString& htmlfilename, const QString& saveTime, int placedActivities){
 	assert(gt.rules.initialized && gt.rules.internalStructureComputed);
 	//assert(gt.timePopulation.initialized);
@@ -6239,7 +6258,7 @@ void TimetableExport::writeTeachersFreePeriodsTimetableDaysHorizontalHtml(const 
 		if(PRINT_DETAILED==true) PRINT_DETAILED=false;
 		else PRINT_DETAILED=true;
 	} while(PRINT_DETAILED!=true);
-	tos<<"  </body>\n</html>\n\n";
+	tos<<"  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -6392,7 +6411,7 @@ void TimetableExport::writeTeachersFreePeriodsTimetableDaysVerticalHtml(const QS
 		if(PRINT_DETAILED==true) PRINT_DETAILED=false;
 		else PRINT_DETAILED=true;
 	} while(PRINT_DETAILED!=true);
-	tos<<"  </body>\n</html>\n\n";
+	tos<<"  </body>\n</html>\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, tr("FET critical"),
@@ -6401,9 +6420,11 @@ void TimetableExport::writeTeachersFreePeriodsTimetableDaysVerticalHtml(const QS
 	file.close();
 }
 
-//--------------------------------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------
+//------------------------------------------------------------------
 
-void TimetableExport::computeHashForIDsTimetable(){		// by Volker Dirr
+void TimetableExport::computeHashForIDsTimetable(){
+// by Volker Dirr
 
 //TODO if an use a relational data base this is unneded, because we can use the primary key id of the database 
 //This is very similar to statistics compute hash. so always check it if you change something here!
@@ -6446,12 +6467,12 @@ void TimetableExport::computeHashForIDsTimetable(){		// by Volker Dirr
 	}
 
 	hashSubjectIDsTimetable.clear();
-	for(int i=0; i<gt.rules.subjectsList.size(); i++){
-		hashSubjectIDsTimetable.insert(gt.rules.subjectsList[i]->name, QString::number(i+1));
+	for(int i=0; i<gt.rules.nInternalSubjects; i++){
+		hashSubjectIDsTimetable.insert(gt.rules.internalSubjectsList[i]->name, QString::number(i+1));
 	}
 	hashActivityTagIDsTimetable.clear();
-	for(int i=0; i<gt.rules.activityTagsList.size(); i++){
-		hashActivityTagIDsTimetable.insert(gt.rules.activityTagsList[i]->name, QString::number(i+1));
+	for(int i=0; i<gt.rules.nInternalActivityTags; i++){
+		hashActivityTagIDsTimetable.insert(gt.rules.internalActivityTagsList[i]->name, QString::number(i+1));
 	}
 	hashTeacherIDsTimetable.clear();
 	for(int i=0; i<gt.rules.nInternalTeachers; i++){
@@ -6472,7 +6493,7 @@ void TimetableExport::computeActivitiesAtTime(){		// by Liviu Lalescu
 	for(int k=0; k<gt.rules.nDaysPerWeek; k++)
 		for(int j=0; j<gt.rules.nHoursPerDay; j++)
 			activitiesAtTime[k][j].clear();
-	for(int i=0; i<gt.rules.nInternalActivities; i++) {		//maybe TODO: maybe it is better to do this sorted by studnets or teachers?
+	for(int i=0; i<gt.rules.nInternalActivities; i++) {		//maybe TODO: maybe it is better to do this sorted by students or teachers?
 		Activity* act=&gt.rules.internalActivitiesList[i];
 		if(best_solution.times[i]!=UNALLOCATED_TIME) {
 			int hour=best_solution.times[i]/gt.rules.nDaysPerWeek;
@@ -6484,7 +6505,8 @@ void TimetableExport::computeActivitiesAtTime(){		// by Liviu Lalescu
 }
 
 
-void TimetableExport::computeActivitiesWithSameStartingTime(){		// by Volker Dirr
+void TimetableExport::computeActivitiesWithSameStartingTime(){
+// by Volker Dirr
 	activitiesWithSameStartingTime.clear();
 
 	if(PRINT_ACTIVITIES_WITH_SAME_STARTING_TIME){
@@ -6525,12 +6547,12 @@ void TimetableExport::computeActivitiesWithSameStartingTime(){		// by Volker Dir
 	}
 }
 
-
-bool TimetableExport::addActivitiesWithSameStartingTime(QList<qint16>& allActivities, int hour){			// by Volker Dirr
+bool TimetableExport::addActivitiesWithSameStartingTime(QList<int>& allActivities, int hour){
+// by Volker Dirr
 	if(PRINT_ACTIVITIES_WITH_SAME_STARTING_TIME){
 		bool activitiesWithSameStartingtime=false;
-		QList<qint16> allActivitiesNew;
-		foreach(qint16 tmpAct, allActivities){
+		QList<int> allActivitiesNew;
+		foreach(int tmpAct, allActivities){
 			allActivitiesNew<<tmpAct;
 			if(activitiesWithSameStartingTime.contains(tmpAct)){
 				QList<int> sameTimeList=activitiesWithSameStartingTime.value(tmpAct);
@@ -6559,8 +6581,8 @@ bool TimetableExport::addActivitiesWithSameStartingTime(QList<qint16>& allActivi
 }
 
 
-
-QString TimetableExport::writeHead(bool java, int placedActivities, bool printInstitution){		// by Volker Dirr
+QString TimetableExport::writeHead(bool java, int placedActivities, bool printInstitution){
+// by Volker Dirr
 	QString tmp;
 	tmp+="<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n";
 	tmp+="  \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n\n";
@@ -6613,9 +6635,11 @@ QString TimetableExport::writeHead(bool java, int placedActivities, bool printIn
 	return tmp;
 }
 
-QString TimetableExport::writeTOCDays(bool detailed){		// by Volker Dirr
+
+QString TimetableExport::writeTOCDays(bool detailed){
+// by Volker Dirr
 	QString tmp;
-	tmp+="    <p><strong>"+TimetableExport::tr("Table of content")+"</strong></p>\n";
+	tmp+="    <p><strong>"+TimetableExport::tr("Table of contents")+"</strong></p>\n";
 	tmp+="    <ul>\n";
 	for(int k=0; k<gt.rules.nDaysPerWeek; k++){
 		tmp+="      <li>\n        ";
@@ -6634,7 +6658,9 @@ QString TimetableExport::writeTOCDays(bool detailed){		// by Volker Dirr
 	return tmp;
 }
 
-QString TimetableExport::writeStartTagTDofActivities(const Activity* act, bool detailed, bool colspan, bool rowspan){		// by Volker Dirr
+
+QString TimetableExport::writeStartTagTDofActivities(const Activity* act, bool detailed, bool colspan, bool rowspan){
+// by Volker Dirr
 	QString tmp;
 	assert(!(colspan && rowspan));
 	if(detailed)
@@ -6679,7 +6705,7 @@ QString TimetableExport::writeStartTagTDofActivities(const Activity* act, bool d
 }
 
 
-		// by Volker Dirr
+// by Volker Dirr
 QString TimetableExport::writeSubjectAndActivityTags(const Activity* act, const QString& startTag, const QString& startTagAttribute, bool activityTagsOnly){
 	QString tmp;
 	if(act->subjectName.size()>0||act->activityTagsNames.size()>0){
@@ -6698,7 +6724,9 @@ QString TimetableExport::writeSubjectAndActivityTags(const Activity* act, const 
 			}
 		}
 		if(act->activityTagsNames.size()>0){
-			tmp+="<span class=\"activitytag\">";
+			if(TIMETABLE_HTML_LEVEL>=3){
+				tmp+="<span class=\"activitytag\">";
+			}
 			foreach(QString atn, act->activityTagsNames){
 				switch(TIMETABLE_HTML_LEVEL){
 					case 3 : tmp+=protect2(atn); break;
@@ -6710,7 +6738,9 @@ QString TimetableExport::writeSubjectAndActivityTags(const Activity* act, const 
 				tmp+=", ";
 			}
 			tmp.remove(tmp.size()-2, 2);
-			tmp+="</span>";
+			if(TIMETABLE_HTML_LEVEL>=3){
+				tmp+="</span>";
+			}
 		}
 		if(startTag=="div"){
 			if(TIMETABLE_HTML_LEVEL>=3)
@@ -6721,7 +6751,9 @@ QString TimetableExport::writeSubjectAndActivityTags(const Activity* act, const 
 	return tmp;
 }
 
-QString TimetableExport::writeStudents(const Activity* act, const QString& startTag, const QString& startTagAttribute){		// by Volker Dirr
+
+QString TimetableExport::writeStudents(const Activity* act, const QString& startTag, const QString& startTagAttribute){
+// by Volker Dirr
 	QString tmp;
 	if(act->studentsNames.size()>0){
 		if(startTag=="div" && TIMETABLE_HTML_LEVEL>=3)
@@ -6745,7 +6777,9 @@ QString TimetableExport::writeStudents(const Activity* act, const QString& start
 	return tmp;
 }
 
-QString TimetableExport::writeTeachers(const Activity* act, const QString& startTag, const QString& startTagAttribute){		// by Volker Dirr
+
+QString TimetableExport::writeTeachers(const Activity* act, const QString& startTag, const QString& startTagAttribute){
+// by Volker Dirr
 	QString tmp;
 	if(act->teachersNames.size()>0){
 		if(startTag=="div" && TIMETABLE_HTML_LEVEL>=3)
@@ -6769,7 +6803,9 @@ QString TimetableExport::writeTeachers(const Activity* act, const QString& start
 	return tmp;
 }
 
-QString TimetableExport::writeRoom(int ai, const QString& startTag, const QString& startTagAttribute){		// by Volker Dirr
+
+QString TimetableExport::writeRoom(int ai, const QString& startTag, const QString& startTagAttribute){
+// by Volker Dirr
 	QString tmp;
 	int r=best_solution.rooms[ai];
 	if(r!=UNALLOCATED_SPACE && r!=UNSPECIFIED_ROOM){
@@ -6790,20 +6826,37 @@ QString TimetableExport::writeRoom(int ai, const QString& startTag, const QStrin
 	return tmp;
 }
 
-QString TimetableExport::writeNotAvailable(const QString& weight){		// by Volker Dirr
+
+QString TimetableExport::writeNotAvailableSlot(const QString& weight){
+// by Volker Dirr
 	QString tmp;
 	//weight=" "+weight;
 	switch(TIMETABLE_HTML_LEVEL){
 		case 3 : ;
-		case 4 : tmp="          <td class=\"notAvailable\"><span class=\"notAvailable\">"+protect2(STRING_NOT_AVAILABLE_SLOT)+weight+"</span></td>\n"; break;
+		case 4 : tmp="          <td class=\"notAvailable\"><span class=\"notAvailable\">"+protect2(STRING_NOT_AVAILABLE_TIME_SLOT)+weight+"</span></td>\n"; break;
 		case 5 : ;
-		case 6 : tmp="          <td class=\"notAvailable\"><span class=\"notAvailable\" onmouseover=\"highlight('notAvailable')\">"+protect2(STRING_NOT_AVAILABLE_SLOT)+weight+"</span></td>\n"; break;
-		default: tmp="          <td>"+protect2(STRING_NOT_AVAILABLE_SLOT)+weight+"</td>\n";
+		case 6 : tmp="          <td class=\"notAvailable\"><span class=\"notAvailable\" onmouseover=\"highlight('notAvailable')\">"+protect2(STRING_NOT_AVAILABLE_TIME_SLOT)+weight+"</span></td>\n"; break;
+		default: tmp="          <td>"+protect2(STRING_NOT_AVAILABLE_TIME_SLOT)+weight+"</td>\n";
 	}
 	return tmp;
 }
 
-QString TimetableExport::writeEmpty(){		// by Volker Dirr
+QString TimetableExport::writeBreakSlot(const QString& weight){
+// by Volker Dirr
+	QString tmp;
+	//weight=" "+weight;
+	switch(TIMETABLE_HTML_LEVEL){
+		case 3 : ;
+		case 4 : tmp="          <td class=\"break\"><span class=\"break\">"+protect2(STRING_BREAK_SLOT)+weight+"</span></td>\n"; break;
+		case 5 : ;
+		case 6 : tmp="          <td class=\"break\"><span class=\"break\" onmouseover=\"highlight('break')\">"+protect2(STRING_BREAK_SLOT)+weight+"</span></td>\n"; break;
+		default: tmp="          <td>"+protect2(STRING_BREAK_SLOT)+weight+"</td>\n";
+	}
+	return tmp;
+}
+
+QString TimetableExport::writeEmpty(){
+// by Volker Dirr
 	QString tmp;
 	switch(TIMETABLE_HTML_LEVEL){
 		case 3 : ;
@@ -6816,9 +6869,8 @@ QString TimetableExport::writeEmpty(){		// by Volker Dirr
 }
 
 
-
-
-QString TimetableExport::writeActivityStudents(int ai, int day, int hour, bool notAvailable, bool colspan, bool rowspan){	//by Volker Dirr
+QString TimetableExport::writeActivityStudents(int ai, int day, int hour, bool notAvailable, bool colspan, bool rowspan){
+//by Volker Dirr
 	QString tmp;
 	int currentTime=day+gt.rules.nDaysPerWeek*hour;
 	if(ai!=UNALLOCATED_ACTIVITY){
@@ -6832,9 +6884,13 @@ QString TimetableExport::writeActivityStudents(int ai, int day, int hour, bool n
 		} else
 			tmp+="          <!-- span -->\n";
 	} else {
-		if((notAvailable || breakDayHour[day][hour]) && PRINT_NOT_AVAILABLE_TIME_SLOTS){
-			tmp+=writeNotAvailable("");
-		} else {
+		if(notAvailable && PRINT_NOT_AVAILABLE_TIME_SLOTS){
+			tmp+=writeNotAvailableSlot("");
+		}
+		else if(breakDayHour[day][hour] && PRINT_BREAK_TIME_SLOTS){
+			tmp+=writeBreakSlot("");
+		}
+		else{
 			tmp+=writeEmpty();
 		}
 	}
@@ -6842,8 +6898,8 @@ QString TimetableExport::writeActivityStudents(int ai, int day, int hour, bool n
 }
 
 
-
-QString TimetableExport::writeActivitiesStudents(const QList<qint16>& allActivities){	//by Volker Dirr
+QString TimetableExport::writeActivitiesStudents(const QList<int>& allActivities){
+//by Volker Dirr
 	QString tmp;
 	if(TIMETABLE_HTML_LEVEL>=1)
 		tmp+="          <td><table class=\"detailed\">";
@@ -6854,8 +6910,8 @@ QString TimetableExport::writeActivitiesStudents(const QList<qint16>& allActivit
 	else	tmp+="<tr>";
 	for(int a=0; a<allActivities.size(); a++){
 		int ai=allActivities[a];
-		Activity* act=&gt.rules.internalActivitiesList[ai];
 		if(ai!=UNALLOCATED_ACTIVITY){
+			Activity* act=&gt.rules.internalActivitiesList[ai];
 			tmp+=writeStartTagTDofActivities(act, true, false, false)+writeStudents(act, "", "")+"</td>";
 		}
 	}
@@ -6865,8 +6921,8 @@ QString TimetableExport::writeActivitiesStudents(const QList<qint16>& allActivit
 	else	tmp+="<tr>";
 	for(int a=0; a<allActivities.size(); a++){
 		int ai=allActivities[a];
-		Activity* act=&gt.rules.internalActivitiesList[ai];
 		if(ai!=UNALLOCATED_ACTIVITY){
+			Activity* act=&gt.rules.internalActivitiesList[ai];
 			tmp+=writeStartTagTDofActivities(act, true, false, false)+writeSubjectAndActivityTags(act, "", "", false)+"</td>";
 		}
 	}
@@ -6876,8 +6932,8 @@ QString TimetableExport::writeActivitiesStudents(const QList<qint16>& allActivit
 	else	tmp+="<tr>";
 	for(int a=0; a<allActivities.size(); a++){
 		int ai=allActivities[a];
-		Activity* act=&gt.rules.internalActivitiesList[ai];
 		if(ai!=UNALLOCATED_ACTIVITY){
+			Activity* act=&gt.rules.internalActivitiesList[ai];
 			tmp+=writeStartTagTDofActivities(act, true, false, false)+writeTeachers(act, "", "")+"</td>";
 		}
 	}
@@ -6898,7 +6954,8 @@ QString TimetableExport::writeActivitiesStudents(const QList<qint16>& allActivit
 }
 
 
-QString TimetableExport::writeActivityTeacher(int teacher, int day, int hour, bool colspan, bool rowspan){	//by Volker Dirr
+QString TimetableExport::writeActivityTeacher(int teacher, int day, int hour, bool colspan, bool rowspan){
+//by Volker Dirr
 	QString tmp;
 	int ai=teachers_timetable_weekly[teacher][day][hour];
 	int currentTime=day+gt.rules.nDaysPerWeek*hour;
@@ -6913,9 +6970,13 @@ QString TimetableExport::writeActivityTeacher(int teacher, int day, int hour, bo
 		} else
 			tmp+="          <!-- span -->\n";
 	} else {
-		if((teacherNotAvailableDayHour[teacher][day][hour] || breakDayHour[day][hour]) && PRINT_NOT_AVAILABLE_TIME_SLOTS){
-			tmp+=writeNotAvailable("");
-		} else {
+		if(teacherNotAvailableDayHour[teacher][day][hour] && PRINT_NOT_AVAILABLE_TIME_SLOTS){
+			tmp+=writeNotAvailableSlot("");
+		}
+		else if(breakDayHour[day][hour] && PRINT_BREAK_TIME_SLOTS){
+			tmp+=writeBreakSlot("");
+		}
+		else{
 			tmp+=writeEmpty();
 		}
 	}
@@ -6923,7 +6984,8 @@ QString TimetableExport::writeActivityTeacher(int teacher, int day, int hour, bo
 }
 
 
-QString TimetableExport::writeActivitiesTeachers(const QList<qint16>& allActivities){	//by Volker Dirr
+QString TimetableExport::writeActivitiesTeachers(const QList<int>& allActivities){
+//by Volker Dirr
 	QString tmp;
 	if(TIMETABLE_HTML_LEVEL>=1)
 		tmp+="          <td><table class=\"detailed\">";
@@ -6934,8 +6996,8 @@ QString TimetableExport::writeActivitiesTeachers(const QList<qint16>& allActivit
 	else	tmp+="<tr>";
 	for(int a=0; a<allActivities.size(); a++){
 		int ai=allActivities[a];
-		Activity* act=&gt.rules.internalActivitiesList[ai];
 		if(ai!=UNALLOCATED_ACTIVITY){
+			Activity* act=&gt.rules.internalActivitiesList[ai];
 			tmp+=writeStartTagTDofActivities(act, true, false, false)+writeTeachers(act, "", "")+"</td>";
 		}
 	}
@@ -6945,8 +7007,8 @@ QString TimetableExport::writeActivitiesTeachers(const QList<qint16>& allActivit
 	else	tmp+="<tr>";
 	for(int a=0; a<allActivities.size(); a++){
 		int ai=allActivities[a];
-		Activity* act=&gt.rules.internalActivitiesList[ai];
 		if(ai!=UNALLOCATED_ACTIVITY){
+			Activity* act=&gt.rules.internalActivitiesList[ai];
 			tmp+=writeStartTagTDofActivities(act, true, false, false)+writeStudents(act, "", "")+"</td>";
 		}
 	}
@@ -6956,8 +7018,8 @@ QString TimetableExport::writeActivitiesTeachers(const QList<qint16>& allActivit
 	else	tmp+="<tr>";
 	for(int a=0; a<allActivities.size(); a++){
 		int ai=allActivities[a];
-		Activity* act=&gt.rules.internalActivitiesList[ai];
 		if(ai!=UNALLOCATED_ACTIVITY){
+			Activity* act=&gt.rules.internalActivitiesList[ai];
 			tmp+=writeStartTagTDofActivities(act, true, false, false)+writeSubjectAndActivityTags(act, "", "", false)+"</td>";
 		}
 	}
@@ -6979,7 +7041,8 @@ QString TimetableExport::writeActivitiesTeachers(const QList<qint16>& allActivit
 }
 
 
-QString TimetableExport::writeActivityRoom(int room, int day, int hour, bool colspan, bool rowspan){	//by Volker Dirr
+QString TimetableExport::writeActivityRoom(int room, int day, int hour, bool colspan, bool rowspan){
+//by Volker Dirr
 	QString tmp;
 	int ai=rooms_timetable_weekly[room][day][hour];
 	int currentTime=day+gt.rules.nDaysPerWeek*hour;
@@ -6994,15 +7057,13 @@ QString TimetableExport::writeActivityRoom(int room, int day, int hour, bool col
 		} else
 			tmp+="          <!-- span -->\n";
 	} else {
-		if((notAllowedRoomTimePercentages[room][day+hour*gt.rules.nDaysPerWeek]>=0 || breakDayHour[day][hour]) && PRINT_NOT_AVAILABLE_TIME_SLOTS){
-			QString weight="";
-			if(notAllowedRoomTimePercentages[room][day+hour*gt.rules.nDaysPerWeek]>=0 && 
-			notAllowedRoomTimePercentages[room][day+hour*gt.rules.nDaysPerWeek]<100.0 && !breakDayHour[day][hour]){
-				weight="<br />"+QString::number(notAllowedRoomTimePercentages[room][day+hour*gt.rules.nDaysPerWeek])+" %";
-			}
-			weight=""; //not printing the weight
-			tmp+=writeNotAvailable("");
-		} else {
+		if(notAllowedRoomTimePercentages[room][day+hour*gt.rules.nDaysPerWeek]>=0 && PRINT_NOT_AVAILABLE_TIME_SLOTS){
+			tmp+=writeNotAvailableSlot("");
+		}
+		else if(breakDayHour[day][hour] && PRINT_BREAK_TIME_SLOTS){
+			tmp+=writeBreakSlot("");
+		}
+		else{
 			tmp+=writeEmpty();
 		}
 	}
@@ -7010,7 +7071,8 @@ QString TimetableExport::writeActivityRoom(int room, int day, int hour, bool col
 }
 
 
-QString TimetableExport::writeActivitiesRooms(const QList<qint16>& allActivities){	//by Volker Dirr
+QString TimetableExport::writeActivitiesRooms(const QList<int>& allActivities){
+//by Volker Dirr
 	QString tmp;
 	if(TIMETABLE_HTML_LEVEL>=1)
 		tmp+="          <td><table class=\"detailed\">";
@@ -7032,8 +7094,8 @@ QString TimetableExport::writeActivitiesRooms(const QList<qint16>& allActivities
 	else	tmp+="<tr>";
 	for(int a=0; a<allActivities.size(); a++){
 		int ai=allActivities[a];
-		Activity* act=&gt.rules.internalActivitiesList[ai];
 		if(ai!=UNALLOCATED_ACTIVITY){
+			Activity* act=&gt.rules.internalActivitiesList[ai];
 			tmp+=writeStartTagTDofActivities(act, true, false, false)+writeStudents(act, "", "")+"</td>";
 		}
 	}
@@ -7043,8 +7105,8 @@ QString TimetableExport::writeActivitiesRooms(const QList<qint16>& allActivities
 	else	tmp+="<tr>";
 	for(int a=0; a<allActivities.size(); a++){
 		int ai=allActivities[a];
-		Activity* act=&gt.rules.internalActivitiesList[ai];
 		if(ai!=UNALLOCATED_ACTIVITY){
+			Activity* act=&gt.rules.internalActivitiesList[ai];
 			tmp+=writeStartTagTDofActivities(act, true, false, false)+writeTeachers(act, "", "")+"</td>";
 		}
 	}
@@ -7054,8 +7116,8 @@ QString TimetableExport::writeActivitiesRooms(const QList<qint16>& allActivities
 	else	tmp+="<tr>";
 	for(int a=0; a<allActivities.size(); a++){
 		int ai=allActivities[a];
-		Activity* act=&gt.rules.internalActivitiesList[ai];
 		if(ai!=UNALLOCATED_ACTIVITY){
+			Activity* act=&gt.rules.internalActivitiesList[ai];
 			tmp+=writeStartTagTDofActivities(act, true, false, false)+writeSubjectAndActivityTags(act, "", "", false)+"</td>";
 		}
 	}
@@ -7066,7 +7128,8 @@ QString TimetableExport::writeActivitiesRooms(const QList<qint16>& allActivities
 }
 
 
-QString TimetableExport::writeActivitiesSubjects(const QList<qint16>& allActivities){	//by Volker Dirr
+QString TimetableExport::writeActivitiesSubjects(const QList<int>& allActivities){
+//by Volker Dirr
 	QString tmp;
 	if(allActivities.isEmpty()){
 		tmp+=writeEmpty();
@@ -7080,7 +7143,7 @@ QString TimetableExport::writeActivitiesSubjects(const QList<qint16>& allActivit
 		else	tmp+="<tr>";
 		for(int a=0; a<allActivities.size(); a++){
 			Activity* act=&gt.rules.internalActivitiesList[allActivities[a]];
-			tmp+=writeStartTagTDofActivities(act, true, false, false)+writeSubjectAndActivityTags(act, "", "", false)+"</td>";
+			tmp+=writeStartTagTDofActivities(act, true, false, false)+writeSubjectAndActivityTags(act, "", "", true)+"</td>";
 		}
 		tmp+="</tr>";
 		if(TIMETABLE_HTML_LEVEL>=3)

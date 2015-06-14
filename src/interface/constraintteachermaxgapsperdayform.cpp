@@ -15,13 +15,13 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QMessageBox>
+
 #include "longtextmessagebox.h"
 
 #include "constraintteachermaxgapsperdayform.h"
 #include "addconstraintteachermaxgapsperdayform.h"
 #include "modifyconstraintteachermaxgapsperdayform.h"
-
-#include <QDesktopWidget>
 
 ConstraintTeacherMaxGapsPerDayForm::ConstraintTeacherMaxGapsPerDayForm()
 {
@@ -81,12 +81,17 @@ void ConstraintTeacherMaxGapsPerDayForm::filterChanged()
 			constraintsListBox->insertItem(ctr->getDescription(gt.rules));
 		}
 	}
+
+	constraintsListBox->setCurrentItem(0);
+	this->constraintChanged(constraintsListBox->currentItem());
 }
 
 void ConstraintTeacherMaxGapsPerDayForm::constraintChanged(int index)
 {
-	if(index<0)
+	if(index<0){
+		currentConstraintTextEdit->setText("");
 		return;
+	}
 	assert(index<this->visibleConstraintsList.size());
 	TimeConstraint* ctr=this->visibleConstraintsList.at(index);
 	assert(ctr!=NULL);

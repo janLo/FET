@@ -15,13 +15,13 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QMessageBox>
+
 #include "longtextmessagebox.h"
 
 #include "constraintsubjectactivitytagpreferredroomsform.h"
 #include "addconstraintsubjectactivitytagpreferredroomsform.h"
 #include "modifyconstraintsubjectactivitytagpreferredroomsform.h"
-
-#include <QDesktopWidget>
 
 ConstraintSubjectActivityTagPreferredRoomsForm::ConstraintSubjectActivityTagPreferredRoomsForm()
 {
@@ -105,8 +105,10 @@ bool ConstraintSubjectActivityTagPreferredRoomsForm::filterOk(SpaceConstraint* c
 
 void ConstraintSubjectActivityTagPreferredRoomsForm::constraintChanged(int index)
 {
-	if(index<0)
+	if(index<0){
+		currentConstraintTextEdit->setText("");
 		return;
+	}
 	QString s;
 	assert(index<this->visibleConstraintsList.size());
 	SpaceConstraint* ctr=this->visibleConstraintsList.at(index);

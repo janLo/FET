@@ -15,18 +15,16 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QMessageBox>
+
+#include <cstdio>
+
 #include "tablewidgetupdatebug.h"
 
 #include "longtextmessagebox.h"
 
 #include "addconstraintactivitiespreferredtimeslotsform.h"
 #include "timeconstraint.h"
-
-#include <qradiobutton.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-
-#include <QDesktopWidget>
 
 #include <QHeaderView>
 #include <QTableWidget>
@@ -336,13 +334,15 @@ void AddConstraintActivitiesPreferredTimeSlotsForm::addConstraint()
 				return;
 	}
 
-	int days[MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_TIME_SLOTS];
-	int hours[MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_TIME_SLOTS];
+	QList<int> days_L;
+	QList<int> hours_L;
+	/*int days[MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_TIME_SLOTS];
+	int hours[MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_TIME_SLOTS];*/
 	int n=0;
 	for(int j=0; j<gt.rules.nDaysPerWeek; j++)
 		for(int i=0; i<gt.rules.nHoursPerDay; i++)
 			if(preferredTimesTable->item(i, j)->text()==YES){
-				if(n>=MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_TIME_SLOTS){
+				/*if(n>=MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_TIME_SLOTS){
 					QString s=tr("Not enough slots (too many \"Yes\" values).");
 					s+="\n";
 					s+=tr("Please increase the variable MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_TIME_SLOTS");
@@ -351,10 +351,10 @@ void AddConstraintActivitiesPreferredTimeSlotsForm::addConstraint()
 					QMessageBox::warning(this, tr("FET information"), s);
 					
 					return;
-				}
+				}*/
 				
-				days[n]=j;
-				hours[n]=i;
+				days_L.append(j);
+				hours_L.append(i);
 				n++;
 			}
 
@@ -367,7 +367,7 @@ void AddConstraintActivitiesPreferredTimeSlotsForm::addConstraint()
 				return;
 	}
 
-	ctr=new ConstraintActivitiesPreferredTimeSlots(weight, /*compulsory,*/ teacher, students, subject, activityTag, n, days, hours);
+	ctr=new ConstraintActivitiesPreferredTimeSlots(weight, /*compulsory,*/ teacher, students, subject, activityTag, n, days_L, hours_L);
 
 	bool tmp2=gt.rules.addTimeConstraint(ctr);
 	if(tmp2){

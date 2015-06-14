@@ -1,3 +1,7 @@
+/*
+File import.h
+*/
+
 /***************************************************************************
                                 FET
                           -------------------
@@ -11,7 +15,7 @@
                          : http://www.timetabling.de/
  ***************************************************************************
  *                                                                         *
- *   NULL program is free software; you can redistribute it and/or modify  *
+ *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
@@ -25,6 +29,15 @@
 
 #include "timetable.h"
 #include "timetable_defs.h"
+
+class QGroupBox;
+class QLineEdit;
+class QRadioButton;
+class QComboBox;
+class QPushButton;
+class QSpinBox;
+class QHBoxLayout;
+
 
 static const int DO_NOT_IMPORT=-2;
 static const int IMPORT_DEFAULT_ITEM=-1;
@@ -62,9 +75,7 @@ static const int FIELD_MIN_DAYS_CONSECUTIVE=20;
 
 static const int NUMBER_OF_FIELDS=21;
 
-
-
-class Import: public QDialog{
+class Import: public QObject{
 	Q_OBJECT
 
 	static int chooseWidth(int w);
@@ -89,17 +100,9 @@ private:
 };
 
 
-#include <QDialog>
-class QGroupBox;
-class QLineEdit;
-class QRadioButton;
-class QComboBox;
-class QPushButton;
-class QSpinBox;
-class QHBoxLayout;
-
 class ChooseFieldsDialog: public QDialog{
-        Q_OBJECT
+	Q_OBJECT
+	
 public:							//can i do that privat too?
 	ChooseFieldsDialog(QWidget *parent = 0);
 private:
@@ -126,7 +129,8 @@ private slots:
 
 
 class LastWarningsDialog: public QDialog{
-        Q_OBJECT
+	Q_OBJECT
+	
 public:							//can i do that privat too?
 	LastWarningsDialog(QWidget *parent = 0);
 };

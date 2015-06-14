@@ -669,7 +669,7 @@ Versions 4.0.0 - 4.0.9
 	- Changed MY into MS (Malay language).
 	- Improved the languages menu.
 	- Improved Polish translation (by Radoslaw Pasiok).
-	- Bug fix (when pressing the "Write results",FET crashed
+	- Bug fix (when pressing the "Write results",FET crashed)
 	- Began porting to Qt 4
 	- Improved the threads code in the allocate menus
 	- Made MAX_SUBGROUPS_PER_GROUP=100 (suggested by Andreas Goranson)
@@ -811,7 +811,7 @@ Versions 4.2.0 - 4.2.x
 	- Bug fix - students n hours daily (observed by Liviu Lalescu).
 ---------------------------------------------------------------------------------
 Versions 5.0.0 - 5.0.2
-	- Liviu Lalescu (http://lalescu.ro/liviu/);
+	- Liviu Lalescu,
 	- xhtml form of saving timetables by Volker Dirr (timetabling.de)
 - Version 5.0.0-preview1 
 	- new algorithm
@@ -1102,31 +1102,31 @@ Versions 5.4.0 - 5.4.18
 	and is viable). This can be considered important bug fix
 	- Greek translation by Dimitrios Ropokis
 - Version 5.4.11
-	- Arabic translation (partial), by Hatim Ali
+	- Arabic translation (partial), by Silver
 	- Small bug fixes in export to html by Volker Dirr
 - Version 5.4.12
 	- Greek translation update by Dimitrios Ropokis
 	- Arabic better support
-	- Arabic translation update by Hatim Ali
+	- Arabic translation update by Silver
 	- Code cleanup
 	- Switched to Qt 4.3.2
 - Version 5.4.13
 	- Small bug fixes in html generated timetable by Volker Dirr
 	- Indonesian translation by Nirwan Yus
 	- Italian translation by Marco Barsotti
-	- Arabic translation update by Hatim Ali
+	- Arabic translation update by Silver
 - Version 5.4.14
 	- Minor interface improvement - in add rooms dialog, pressing Enter now works better, it adds a room,
 	not displays Help
 - Version 5.4.15
-	- Added an Arabic sample file by Hatim Ali
+	- Added an Arabic sample file by Silver
 	- Various translations updates
 	- Update of README file
 	- MAX_ACTIVITIES is now 5000
 - Version 5.4.16
 	- Groups and years timetables contain dashed lines in cells which contain more activities 
-	(suggested by Hatim Ali, done by Volker Dirr)
-	- Arabic translation update by Hatim Ali
+	(suggested by Silver, done by Volker Dirr)
+	- Arabic translation update by Silver
 - Version 5.4.17
 	- Faster precomputation
 	- Significant speed improvement in saving html timetables by Liviu Lalescu
@@ -1195,7 +1195,7 @@ Versions 5.5.0 - 5.5.9
 	- Arabic, Romanian, Spanish, Italian translations update.
 	- Added an option to select all slots available or not available for constraints break, not available and preferred times
 	(suggested by didit).
-	- Added another Arabic sample by Hatim Alahmadi
+	- Added another Arabic sample by Silver
 - Version 5.5.7
 	- Added 2 samples from Namibia (by Bobby Wise).
 	- Added 1 sample from Namibia (by Willy Henckert).
@@ -1237,7 +1237,7 @@ Versions 5.6.0 - 5.6.4
 	- Indonesian, Romanian, Italian, German translations updates.
 - Version 5.6.2
 	- Added constraint teacher(s) and students (set) interval max days per week, to specify an hourly interval
-	and the maximum number of days per week for teachers (students) to work in this interval (suggested by Hatim Alahmadi).
+	and the maximum number of days per week for teachers (students) to work in this interval (suggested by Silver).
 	This constraint is very useful, for instance specify that teachers and students must not work more than 2
 	times per week in the last hour of the day.
 	- Added constraint a set of activities end students day - to specify for a group of activities that they
@@ -1274,7 +1274,7 @@ Versions 5.7.0 - 5.7.7
 	- Modified a bit the spreading activities dialog, now the activities split into 2 and 3 not in consecutive days
 	is by default NOT checked, because this might lead to impossible timetables for difficult files. If you want
 	spreading for these activities, you need to manually select this option.
-	- Arabic translation update by Hatim Alahmadi
+	- Arabic translation update by Silver
 - Version 5.7.4
 	- Minor bug fix - if searching for updates at startup is enabled, it gave segmentation fault when exiting FET, under GNU/Linux.
 	Probably unnoticed bug.
@@ -1332,7 +1332,7 @@ Versions 5.9.0 - 5.9.4
 	- Added multiple activity tags for a single activity.
 	- It is now possible to edit a single subactivity.
 	- Added constraints teacher(s) or students (set) activity tag max hours continuously (to specify that
-	a teacher or a students set must have maximum n hours continuously for an activity tag) - suggested by Hatim Ali,
+	a teacher or a students set must have maximum n hours continuously for an activity tag) - suggested by Silver,
 	George Miliotis and Volker Dirr.
 	- Improved a bit the memory consumption.
 	- To avoid Windows problems with very large filenames, the sample file names were shortened.
@@ -1415,7 +1415,7 @@ Versions 5.10.0 - 5.10.3
 	- Code cleanup.
 	- Added a new Italian sample file, by Marco.
 ---------------------------------------------------------------------------------
-Versions 5.11.0 - 5.11.x
+Version 5.11.0
 - Version 5.11.0
 	- Updated to Qt 4.5.2
 	- Converted all dialogs to Qt 4 Designer files - suggested by George Miliotis.
@@ -1437,10 +1437,111 @@ Versions 5.11.0 - 5.11.x
 	- Rewritten the Catalan translation by Silvia. It is very complete, check it out.
 	- Added a new Greek sample file, by George Miliotis.
 	- Updated and improved Persian translation by sally sat.
-	- Dropped <!DOCTYPE FET> tag in the .fet files - following general recommendations, and changed FET tag to fet tag. Of course you can open older files.
+	- Dropped !DOCTYPE FET tag in the .fet files - following general recommendations, and changed FET tag to fet tag. Of course you can open older files.
 	- Improved activities simple description (suggested by Massimo Mancini and alfaromeo).
 	- Added possibility to save the highest stage timetable (suggested by alfaromeo, pinco and Massimo Mancini).
 	- Added a new Romanian sample file, by Horatiu Halmajan.
 	- Updated translations: Russian, German, Romanian, Italian, Spanish.
 	- The timetable view dialogs now have resizeable widgets (you can drag the sections with the mouse) - suggested by Ben Bauer.
-	
+---------------------------------------------------------------------------------
+Versions 5.12.0 - 5.12.3
+- Version 5.12.0
+	- Added shortcut buttons on the main form (suggested by more users, especially: daviodan, Massimo Mancini, Paolo Cataldi). They can be deactivated from Settings - Interface menu.
+	- Increased max activities to 15,000, max days per 'week' to 35, and other limits, and improved memory management. Now you don't need to have much virtual memory and memory usage is lower.
+	This better memory management may bring a small slowdown of the generation, although in rare cases the new version may be faster. Speed variation depends also on the platform.
+	More details about the possible slowdown: I compared times by starting parallel generations with the same random seed, which produces the same timetables in identical steps.
+	I noticed usually less than 10% increased generating time, but in rare cases for some unusual files a bit more, maximum 17%.
+	From the official examples, the worst situation is for the file Hungary/Bethlen/2007-2008-difficult/Bethlen_2007_2008.fet, with about 17% slowdown from FET version 5.11.0 to FET 5.12.0.
+	I apologise for this "downgrade" of speed, but it is necessary.
+	- Updated to Qt 4.6.0
+	- Improved add activity dialog, by Volker Dirr: if in activities dialog, you select a filter and then try to add an activity, the values in this filter
+	will be selected in the add activity dialog (this was also suggested by daviodan).
+	- Minor interface improvements.
+	- Changed help management (added links to online help).
+	- Corrected/updated translations.
+	- Code cleanup.
+- Version 5.12.1
+	- Added Ukrainian translation (by Andriy Melnyk).
+	- Bug fix: when modifying the number of students in a students set, the related activities will show the correct number of students, but the generation
+	will consider the old number of students until the user saves and loads again the file.
+	- Bug fix when adding/modifying a group's/subgroup's number of students, now all groups/subgroups with same name will have the same (new) number of students.
+	- Improved speed of loading for large files and blocked user input while loading a larger file, because otherwise the user could obtain an incomplete file
+	(minor bug reported by Volker Dirr).
+	- Minor interface improvement: when exiting FET and choosing Save file, if you press Cancel, FET will not exit anymore - reported by Soyeb Aswat
+	- Minor interface improvement: added a shortcut button to advanced functions in Time shortcuts section.
+	- Minor leak fixed (when removing a group or subgroup).
+	- Other minor bug fixes, when removing a group or a year.
+- Version 5.12.2
+	- Updated to Qt 4.6.1 .
+	- Minor interface improvement: since a person reported he accidentally removed the basic constraints, it was added additional user confirmation for this, and more user information.
+	- Corrected a possible compiling crash bug under MinGW (this is not a FET bug, it is a MinGW bug). It was made a hack to overpass this bug.
+	- Improved export of timetable as CSV, by adding the id-s of the activities (suggested by m).
+- Version 5.12.3
+	- Crash bug fix for a rare situation, in which you have constraints (sub)activities preferred starting times or time slots and they refer to no activity (reported by George Miliotis).
+---------------------------------------------------------------------------------
+Versions 5.13.0 - 5.13.5
+- Version 5.13.0
+	- Updated to Qt 4.6.2.
+	- For constraints students (set) min hours daily is now possible to allow empty days (in advanced usage) - suggested by Horatiu Halmajan and Catalin Maican.
+	- Added a simple activity planning form, by Volker Dirr (see Advanced menu).
+	- Now it is allowed to have 3 constraints of type interval max days per week for each students subgroup or teacher (it was maximum 2 previously).
+	- Added export of active activities, by Volker Dirr.
+	- Added Brazilian Portuguese translation (partial, incomplete yet), by Werner Bruns and Frank Martin.
+	- Added Danish translation (partial, only the main form and a few other forms), by David Lamhauge.
+	- Improved a bit the memory consumption.
+	- The tables contain now an -x- (lowercase) if the teacher/students set/room is not available and -X- (uppercase) for a break (suggested by George Miliotis).
+	Also, you can configure separately if you want breaks displayed and/or not available displayed.
+	- Removed some useless messages, improving speed for some rare cases under GNU/Linux operating system and similar.
+	- Added a few new sample files (by Christoph Schilling, Horatiu Halmajan and aliponte).
+	- Changed default language/locale to en_US (instead of en_GB, which is non-standard).
+- Version 5.13.1
+	- Corrected a generation bug (probably very rare, it gave impossible timetable). Bug may have appeared if using
+	constraints students (set) early with max beginnings at second hour >= 1 and generating on a locked file.
+	- Increased maximum number of teachers, subjects, rooms and buildings to 6000 (they were 3000 previously).
+	- Corrected some HTML minor problems, by Volker Dirr.
+	- Added a new sample file, by alfaromeo (from Morocco). This user also describes tricks to use official FET for Moroccan schools.
+- Version 5.13.2
+	- Increased max activities from 15,000 to 30,000 (suggested by murad). Also, increased max time constraints from 30,000 to 60,000 and max space constraints from 30,000 to 60,000.
+	- Added a partial Sinhala translation (only the main menu), by Achini Duisna.
+	- Updated the Indonesian translation, by Nirwan Yus.
+	- Very rare crash bugs fixed.
+	- Code cleanup.
+- Version 5.13.3
+	- Updated the Indonesian translation, by Nirwan Yus.
+	- Rare minor bug fixed, reported by Frans on the forum.
+	- Code cleanup.
+- Version 5.13.4
+	- Added a Slovak translation, by Ondrej Gregor.
+- Version 5.13.5
+	- Corrected a bug, under newer versions of GNOME (the locked/unlocked icons for the special constraints were not shown in the menus).
+	- Very rare bug fix (crash in import if some fields in a line are missing, reported by murad).
+	- Other minor bug fixes in import (if an imported line was incorrect, the report message didn't specify this line number, in some cases).
+	- Updated the Indonesian translation, by Nirwan Yus.
+	- Updated the Spanish translation, by Jose Cesar Fernandez Lopez.
+	- Code cleanup
+---------------------------------------------------------------------------------
+Versions 5.14.0 - 5.14.x
+- Version 5.14.0
+	- Improved the random number generator, so that potential cycling problems are avoided (though probably nobody met such problems).
+	The new random number generator has a much longer period and is better. The command line parameters for specifying the random
+	seed are changed and you need to change your script if you use FET command line and if you want to specify the random seed.
+	See the README file for the new command line parameters for specifying the random seed.
+	- Improved memory consumption on constraints activity/activities/subactivities preferred starting times/preferred time slots.
+	- Minor interface improvements.
+	- Updates in the Arabic translation, by Silver.
+- Version 5.14.1
+	- Speed improvement in the generation algorithm (this speed improvement is better observable as the number of hours per week is larger).
+	- Added a partial Hebrew translation, by Yotam Medini (only the main menu).
+- Version 5.14.2
+	- A rare possible problem is improved (not completely solved). This problem was reported by Marco Barsotti: for some fixed timetables the generation
+	may report incorrectly an impossible timetable. This problem cannot be solved perfectly, only patched, and this will hopefully solve the problem
+	in all practical situations.
+	- An activity can now be split into 35 (it was previously only 10) - suggested by mohd on the forum.
+	- Improved a bit the add/modify activity dialogs (inactive tabs for the components of a subactivity are disabled).
+	- Updated the Slovak translation, by Ondrej Gregor.
+	- Added a new sample file, by Marco Barsotti.
+- Version 5.14.3
+	- Upgraded to Qt 4.7.0.
+	- Improved the Greek translation, by Dimitris Kanatas.
+	- Minor interface improvements.
+	- Added two new sample files, by Massimo Mancini and Dimitris Kanatas.

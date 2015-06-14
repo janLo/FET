@@ -15,16 +15,15 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QMessageBox>
+
+#include <cstdio>
+
 #include "longtextmessagebox.h"
 
 #include "addconstraintstudentssetmaxbuildingchangesperdayform.h"
 #include "spaceconstraint.h"
 
-#include <qradiobutton.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-
-#include <QDesktopWidget>
 
 AddConstraintStudentsSetMaxBuildingChangesPerDayForm::AddConstraintStudentsSetMaxBuildingChangesPerDayForm()
 {
@@ -48,7 +47,7 @@ AddConstraintStudentsSetMaxBuildingChangesPerDayForm::AddConstraintStudentsSetMa
 	Q_UNUSED(tmp2);
 	
 	maxChangesSpinBox->setMinValue(0);
-	maxChangesSpinBox->setMaxValue(10);
+	maxChangesSpinBox->setMaxValue(gt.rules.nHoursPerDay);
 	maxChangesSpinBox->setValue(1);
 
 	updateStudentsSetComboBox();

@@ -25,19 +25,19 @@
 #include "fet.h"
 #include "timetableexport.h"
 
-#include <qpushbutton.h>
-
-#include <QDesktopWidget>
-
 #include <QTextEdit>
 
 #include <iostream>
 #include <fstream>
 using namespace std;
 
+#include <ctime>
+
 #include <QMessageBox>
 
 #include <QMutex>
+
+#include <QScrollBar>
 
 #include <QDir>
 
@@ -63,6 +63,7 @@ static int timeLimit;
 
 extern Solution best_solution;
 
+extern QString conflictsStringTitle;
 extern QString conflictsString;
 
 static time_t start_time;
@@ -213,7 +214,7 @@ void TimetableGenerateMultipleForm::help()
 	 " this might help.")
 	 +"\n\n"
 	 +tr("You can limit the search time, by specifying the maximum number of minutes allowed to spend for each timetable (option %1).").arg("'"+tr("Limit for each timetable")+"'")
-	 +" "+tr("The maximum and also the predefined value is %1 minutes, which means %2 hours, so virtually unlimited.").arg(1200).arg(20)
+	 +" "+tr("The maximum and also the predefined value is %1 minutes, which means %2 hours, so virtually unlimited.").arg(60000).arg(1000)
 	 ;
 	 
 	 LongTextMessageBox::largeInformation(this, tr("FET information"), s);
@@ -278,7 +279,7 @@ void TimetableGenerateMultipleForm::start(){
 	bool ok=genMulti.precompute();
 	if(!ok){
 		currentResultsTextEdit->setText(TimetableGenerateMultipleForm::tr("Cannot optimize - please modify your data"));
-		currentResultsTextEdit->repaint();
+		currentResultsTextEdit->update();
 
 		QMessageBox::information(this, TimetableGenerateMultipleForm::tr("FET information"),
 		 TimetableGenerateMultipleForm::tr("Your data cannot be processed - please modify it as instructed"
@@ -312,10 +313,12 @@ void TimetableGenerateMultipleForm::timetableStarted(int timetable)
 
 void TimetableGenerateMultipleForm::timetableGenerated(int timetable, const QString& description, bool ok)
 {
+	int pv=currentResultsTextEdit->verticalScrollBar()->value();
 	QString s=currentResultsTextEdit->text();
 	s+=tr("Timetable no: %1 => %2").arg(timetable).arg(description);
 	s+="\n";
 	currentResultsTextEdit->setText(s);
+	currentResultsTextEdit->verticalScrollBar()->setValue(pv);
 
 	if(ok){
 		//needed to get the conflicts string
@@ -331,12 +334,13 @@ void TimetableGenerateMultipleForm::timetableGenerated(int timetable, const QStr
 		TimetableExport::writeSimulationResults(timetable);
 
 		//update the string representing the conflicts
+		conflictsStringTitle=tr("Soft conflicts", "Title of dialog");
 		conflictsString = "";
 		conflictsString+=tr("Total soft conflicts:");
 		conflictsString+=" ";
 		conflictsString+=QString::number(best_solution.conflictsTotal);
 		conflictsString+="\n";
-		conflictsString += tr("Soft conflicts listing (in decreasing order):\n");
+		conflictsString += tr("Soft conflicts listing (in decreasing order):")+"\n";
 
 		foreach(QString t, best_solution.conflictsDescriptionList)
 			conflictsString+=t+"\n";

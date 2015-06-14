@@ -1,3 +1,7 @@
+/*
+File import.cpp
+*/
+
 /***************************************************************************
                                 FET
                           -------------------
@@ -11,7 +15,7 @@
                          : http://www.timetabling.de/
  ***************************************************************************
  *                                                                         *
- *   NULL program is free software; you can redistribute it and/or modify  *
+ *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
@@ -32,8 +36,8 @@ void centerWidgetOnScreen(QWidget* widget);
 #include <QDesktopWidget> //needed?
 #include <QProgressDialog>
 
-#include <iostream>
-using namespace std;
+/*#include <iostream>
+using namespace std;*/
 
 extern Timetable gt;
 
@@ -82,7 +86,6 @@ int Import::chooseHeight(int h)
 
 Import::Import()
 {
-	centerWidgetOnScreen(this);
 }
 
 Import::~Import()
@@ -825,11 +828,11 @@ int Import::readFields(){
 
 	qint64 size=file.size();
 	QProgressDialog progress(NULL);
-	//progress.setMinimumDuration(2000);
+	progress.setWindowTitle(tr("Importing", "Title of a progress dialog"));
 	progress.setLabelText(tr("Loading file"));
 	progress.setModal(true);
 	progress.setRange(0, size);
-	cout<<"progress in readFields starts"<<endl;
+	//cout<<"progress in readFields starts"<<endl;
 	qint64 crt=0;
 
 	QStringList fields;
@@ -947,7 +950,7 @@ int Import::readFields(){
 								if(!itemOfField[FIELD_TOTAL_DURATION].isEmpty()){
 									int totalInt=itemOfField[FIELD_TOTAL_DURATION].toInt(&ok, 10);
 									if(ok && totalInt>=1){
-										if(totalInt<=10){							// TODO: make 10 a global variable?!
+										if(totalInt<=MAX_SPLIT_OF_AN_ACTIVITY){
 											QString tmpString;
 											for(int n=0; n<totalInt; n++){
 												if(n!=0)
@@ -969,7 +972,7 @@ int Import::readFields(){
 								}
 							} else {
 								QStringList splittedList;
-								if(itemOfField[FIELD_SPLIT_DURATION].count("+")<10){					// TODO: make 10 a global variable?!
+								if(itemOfField[FIELD_SPLIT_DURATION].count("+")<MAX_SPLIT_OF_AN_ACTIVITY){
 									splittedList = itemOfField[FIELD_SPLIT_DURATION].split("+");
 									int tmpInt=0;
 									QString splitted;
@@ -1011,7 +1014,10 @@ int Import::readFields(){
 							} else if(i==FIELD_TOTAL_DURATION){
 								 assert(true);
 							}else{
-								assert(false);
+								ok=false;
+								warnText+=Import::tr("Skipped line %1: Field '%2' doesn't contain an integer value.").arg(lineNumber).arg(fieldName[i])+"\n";
+								//because of bug reported by murad on 25 May 2010, crash when importing rooms, if capacity is empty
+								//assert(false);
 							}
 						}
 						if(ok && i==FIELD_MIN_DAYS_WEIGHT){
@@ -1075,7 +1081,7 @@ int Import::readFields(){
 		}
 	}
 	progress.setValue(size);
-	cout<<"progress in readFields ends"<<endl;
+	//cout<<"progress in readFields ends"<<endl;
 	int max=0;
 	for(int i=0; i<NUMBER_OF_FIELDS; i++){
 		if(max==0)
@@ -1103,7 +1109,7 @@ int Import::showFieldsAndWarnings(){
 		else{
 			if(i!=FIELD_TEACHER_NAME){		//needed for activities!
 				//assert(fieldList[i].isEmpty());
-				; //because of bug reported 17.03.2008. Please add again?! compare add activities function
+				//because of bug reported 17.03.2008. Please add again?! compare add activities function
 			}
 		}
 	}
@@ -1147,7 +1153,7 @@ FILE_STRIPPED_NAME
 	if(max!=0)
 		headTableText->setText(Import::tr("Following data found in the file:"));
 	else
-		headTableText->setText(Import::tr("There is no useable data in the file."));
+		headTableText->setText(Import::tr("There is no usable data in the file."));
 
 	QTableWidget* fieldsTable= new QTableWidget;
 	fieldsTable->setRowCount(max);
@@ -1272,7 +1278,7 @@ void Import::importCSVActivityTags(){
 	//check empty fields (start)
 	for(int i=0; i<fieldList[FIELD_ACTIVITY_TAG_NAME].size(); i++){
 		if(fieldList[FIELD_ACTIVITY_TAG_NAME][i].isEmpty())
-			warnText+=Import::tr("Skipped line %1: Field '%2' is empty.").arg(fieldName[FIELD_LINE_NUMBER]).arg(fieldName[FIELD_ACTIVITY_TAG_NAME])+"\n";
+			warnText+=Import::tr("Skipped line %1: Field '%2' is empty.").arg(fieldList[FIELD_LINE_NUMBER][i]).arg(fieldName[FIELD_ACTIVITY_TAG_NAME])+"\n";
 	}
 	//check empty fields (end)
 
@@ -1338,7 +1344,7 @@ void Import::importCSVRoomsAndBuildings(){
 	if(fieldNumber[FIELD_ROOM_NAME]!=DO_NOT_IMPORT)
 		for(int i=0; i<fieldList[FIELD_ROOM_NAME].size(); i++)
 			if(duplicatesCheck.contains(fieldList[FIELD_ROOM_NAME][i]))
-				warnText+=Import::tr("Skipped line %1: Field '%2' is already in a previous line.").arg(fieldName[FIELD_LINE_NUMBER]).arg(fieldName[FIELD_ROOM_NAME])+"\n";
+				warnText+=Import::tr("Skipped line %1: Field '%2' is already in a previous line.").arg(fieldList[FIELD_LINE_NUMBER][i]).arg(fieldName[FIELD_ROOM_NAME])+"\n";
 			else
 				duplicatesCheck<<fieldList[FIELD_ROOM_NAME][i];
 	duplicatesCheck.clear();
@@ -1346,7 +1352,7 @@ void Import::importCSVRoomsAndBuildings(){
 	if(fieldNumber[FIELD_ROOM_NAME]==DO_NOT_IMPORT&&fieldNumber[FIELD_BUILDING_NAME]!=DO_NOT_IMPORT)
 		for(int i=0; i<fieldList[FIELD_BUILDING_NAME].size(); i++)
 			if(duplicatesCheck.contains(fieldList[FIELD_BUILDING_NAME][i]))
-				warnText+=Import::tr("Skipped line %1: Field '%2' is already in a previous line.").arg(fieldName[FIELD_LINE_NUMBER]).arg(fieldName[FIELD_BUILDING_NAME])+"\n";
+				warnText+=Import::tr("Skipped line %1: Field '%2' is already in a previous line.").arg(fieldList[FIELD_LINE_NUMBER][i]).arg(fieldName[FIELD_BUILDING_NAME])+"\n";
 			else
 				duplicatesCheck<<fieldList[FIELD_BUILDING_NAME][i];
 	duplicatesCheck.clear();
@@ -1354,13 +1360,13 @@ void Import::importCSVRoomsAndBuildings(){
 	if(fieldNumber[FIELD_ROOM_NAME!=DO_NOT_IMPORT])
 		for(int i=0; i<fieldList[FIELD_ROOM_NAME].size(); i++)
 			if(fieldList[FIELD_ROOM_NAME][i].isEmpty())
-				warnText+=Import::tr("Skipped line %1: Field '%2' is empty.").arg(fieldName[FIELD_LINE_NUMBER]).arg(fieldName[FIELD_ROOM_NAME])+"\n";
+				warnText+=Import::tr("Skipped line %1: Field '%2' is empty.").arg(fieldList[FIELD_LINE_NUMBER][i]).arg(fieldName[FIELD_ROOM_NAME])+"\n";
 	//check empty rooms (end)
 	//check empty buildings (start)
 	if((fieldNumber[FIELD_ROOM_NAME]==DO_NOT_IMPORT||fieldNumber[FIELD_ROOM_NAME]==IMPORT_DEFAULT_ITEM)&&fieldNumber[FIELD_BUILDING_NAME!=DO_NOT_IMPORT])
 		for(int i=0; i<fieldList[FIELD_BUILDING_NAME].size(); i++)
 			if(fieldList[FIELD_BUILDING_NAME][i].isEmpty())
-				warnText+=Import::tr("Skipped line %1: Field '%2' is empty.").arg(fieldName[FIELD_LINE_NUMBER]).arg(fieldName[FIELD_BUILDING_NAME])+"\n";
+				warnText+=Import::tr("Skipped line %1: Field '%2' is empty.").arg(fieldList[FIELD_LINE_NUMBER][i]).arg(fieldName[FIELD_BUILDING_NAME])+"\n";
 	//check empty buildings (end)
 
 	//check if rooms are already in memory (start)
@@ -1457,7 +1463,7 @@ void Import::importCSVSubjects(){
 	//check empty fields (start)
 	for(int i=0; i<fieldList[FIELD_SUBJECT_NAME].size(); i++){
 		if(fieldList[FIELD_SUBJECT_NAME][i].isEmpty())
-			warnText+=Import::tr("Skipped line %1: Field '%2' is empty.").arg(fieldName[FIELD_LINE_NUMBER]).arg(fieldName[FIELD_SUBJECT_NAME])+"\n";
+			warnText+=Import::tr("Skipped line %1: Field '%2' is empty.").arg(fieldList[FIELD_LINE_NUMBER][i]).arg(fieldName[FIELD_SUBJECT_NAME])+"\n";
 	}
 	//check empty fields (end)
 
@@ -1519,7 +1525,7 @@ void Import::importCSVTeachers(){
 	//check empty fields (start)
 	for(int i=0; i<fieldList[FIELD_TEACHER_NAME].size(); i++){
 		if(fieldList[FIELD_TEACHER_NAME][i].isEmpty())
-			warnText+=Import::tr("Skipped line %1: Field '%2' is empty.").arg(fieldName[FIELD_LINE_NUMBER]).arg(fieldName[FIELD_TEACHER_NAME])+"\n";
+			warnText+=Import::tr("Skipped line %1: Field '%2' is empty.").arg(fieldList[FIELD_LINE_NUMBER][i]).arg(fieldName[FIELD_TEACHER_NAME])+"\n";
 	}
 	//check empty fields (end)
 
@@ -1593,8 +1599,8 @@ void Import::importCSVStudents(){
 
 	//check csv
 	QProgressDialog progress(NULL);
-	cout<<"progress in importCSVStudents starts, range="<<fieldList[FIELD_YEAR_NAME].size()<<endl;
-//	progress.setMinimumDuration(2000);
+	progress.setWindowTitle(tr("Importing", "Title of a progress dialog"));
+	//cout<<"progress in importCSVStudents starts, range="<<fieldList[FIELD_YEAR_NAME].size()<<endl;
 	progress.setLabelText(tr("Checking CSV"));
 	progress.setModal(true);
 	progress.setRange(0, fieldList[FIELD_YEAR_NAME].size());
@@ -1646,15 +1652,15 @@ void Import::importCSVStudents(){
 		}
 	}
 	progress.setValue(fieldList[FIELD_YEAR_NAME].size());
-	cout<<"progress in importCSVStudents ends"<<endl;
+	//cout<<"progress in importCSVStudents ends"<<endl;
 
 	//check current data
 	QProgressDialog progress2(NULL);
-//	progress2.setMinimumDuration(2000);
+	progress2.setWindowTitle(tr("Importing", "Title of a progress dialog"));
 	progress2.setLabelText(tr("Checking data"));
 	progress2.setModal(true);
 	progress2.setRange(0, fieldList[FIELD_YEAR_NAME].size());
-	cout<<"progress2 in importCSVStudents starts, range="<<fieldList[FIELD_YEAR_NAME].size()<<endl;
+	//cout<<"progress2 in importCSVStudents starts, range="<<fieldList[FIELD_YEAR_NAME].size()<<endl;
 	int kk=0;
 	for(int i=0; i<gt.rules.yearsList.size(); i++){
 		progress2.setValue(kk);
@@ -1705,7 +1711,7 @@ void Import::importCSVStudents(){
 		}
 	}
 	progress2.setValue(fieldList[FIELD_YEAR_NAME].size());
-	cout<<"progress2 in importCSVStudents ends"<<endl;
+	//cout<<"progress2 in importCSVStudents ends"<<endl;
 
 	ok = showFieldsAndWarnings();
 	if(!ok) return;
@@ -1716,11 +1722,11 @@ void Import::importCSVStudents(){
 	int addedGroups=0;
 	int addedSubgroups=0;
 	QProgressDialog progress3(NULL);
-//	progress3.setMinimumDuration(2000);
+	progress3.setWindowTitle(tr("Importing", "Title of a progress dialog"));
 	progress3.setLabelText(tr("Importing data"));
 	progress3.setModal(true);
 	progress3.setRange(0, fieldList[FIELD_YEAR_NAME].size());
-	cout<<"progress3 in importCSVStudents starts, range="<<fieldList[FIELD_YEAR_NAME].size()<<endl;
+	//cout<<"progress3 in importCSVStudents starts, range="<<fieldList[FIELD_YEAR_NAME].size()<<endl;
 	
 	for(int i=0; i<fieldList[FIELD_YEAR_NAME].size(); i++){
 		progress3.setValue(i);
@@ -1850,7 +1856,7 @@ void Import::importCSVStudents(){
 		}
 	}
 	progress3.setValue(fieldList[FIELD_YEAR_NAME].size());
-	cout<<"progress3 in importCSVStudents ends"<<endl;
+	//cout<<"progress3 in importCSVStudents ends"<<endl;
 	//add students (end) - similar to adding items by Liviu modified by Volker
 	
 ifUserCanceledProgress3:
@@ -2178,7 +2184,7 @@ void Import::importCSVActivities(){
 	}
 	activityid++;
 	QProgressDialog progress4(NULL);
-//	progress4.setMinimumDuration(2000);
+	progress4.setWindowTitle(tr("Importing", "Title of a progress dialog"));
 	progress4.setLabelText(tr("Importing activities"));
 	progress4.setModal(true);
 	progress4.setRange(0, fieldList[FIELD_SUBJECT_NAME].size());
@@ -2247,8 +2253,8 @@ void Import::importCSVActivities(){
 		}
 		else{ //split activity
 			int totalduration;
-			int durations[10];						// TODO: make 10 a global variable?! AND do it the same in addactivityfor.cpp
-			bool active[10];						// TODO: make 10 a global variable?! AND do it the same in addactivityfor.cpp
+			int durations[MAX_SPLIT_OF_AN_ACTIVITY];
+			bool active[MAX_SPLIT_OF_AN_ACTIVITY];
 	
 			totalduration=0;
 			for(int s=0; s<nsplit; s++){

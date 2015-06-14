@@ -15,13 +15,15 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QMessageBox>
+
 #include "longtextmessagebox.h"
 
 #include "constraintstudentsminhoursdailyform.h"
 #include "addconstraintstudentsminhoursdailyform.h"
 #include "modifyconstraintstudentsminhoursdailyform.h"
 
-#include <QDesktopWidget>
+#include "helponstudentsminhoursdaily.h"
 
 ConstraintStudentsMinHoursDailyForm::ConstraintStudentsMinHoursDailyForm()
 {
@@ -33,6 +35,8 @@ ConstraintStudentsMinHoursDailyForm::ConstraintStudentsMinHoursDailyForm()
     connect(removeConstraintPushButton, SIGNAL(clicked()), this /*ConstraintStudentsMinHoursDailyForm_template*/, SLOT(removeConstraint()));
     connect(modifyConstraintPushButton, SIGNAL(clicked()), this /*ConstraintStudentsMinHoursDailyForm_template*/, SLOT(modifyConstraint()));
     connect(constraintsListBox, SIGNAL(selected(QString)), this /*ConstraintStudentsMinHoursDailyForm_template*/, SLOT(modifyConstraint()));
+
+	connect(helpPushButton, SIGNAL(clicked()), this, SLOT(help()));
 
 
 	//setWindowFlags(Qt::Window);
@@ -69,12 +73,17 @@ void ConstraintStudentsMinHoursDailyForm::filterChanged()
 			constraintsListBox->insertItem(ctr->getDescription(gt.rules));
 		}
 	}
+
+	constraintsListBox->setCurrentItem(0);
+	this->constraintChanged(constraintsListBox->currentItem());
 }
 
 void ConstraintStudentsMinHoursDailyForm::constraintChanged(int index)
 {
-	if(index<0)
+	if(index<0){
+		currentConstraintTextEdit->setText("");
 		return;
+	}
 	assert(index<this->visibleConstraintsList.size());
 	TimeConstraint* ctr=this->visibleConstraintsList.at(index);
 	assert(ctr!=NULL);
@@ -134,4 +143,9 @@ void ConstraintStudentsMinHoursDailyForm::removeConstraint()
 	if((uint)(i) >= constraintsListBox->count())
 		i=constraintsListBox->count()-1;
 	constraintsListBox->setCurrentItem(i);
+}
+
+void ConstraintStudentsMinHoursDailyForm::help()
+{
+	HelpOnStudentsMinHoursDaily::help();
 }

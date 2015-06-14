@@ -15,13 +15,13 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QMessageBox>
+
 #include "longtextmessagebox.h"
 
 #include "constraintactivityendsstudentsdayform.h"
 #include "addconstraintactivityendsstudentsdayform.h"
 #include "modifyconstraintactivityendsstudentsdayform.h"
-
-#include <QDesktopWidget>
 
 ConstraintActivityEndsStudentsDayForm::ConstraintActivityEndsStudentsDayForm()
 {
@@ -177,16 +177,21 @@ void ConstraintActivityEndsStudentsDayForm::filterChanged()
 		}
 	}
 
-	if(visibleConstraintsList.count()>0)
+	constraintsListBox->setCurrentItem(0);
+	this->constraintChanged(constraintsListBox->currentItem());
+	
+	/*if(visibleConstraintsList.count()>0)
 		constraintChanged(0);
 	else
-		constraintChanged(-1);
+		constraintChanged(-1);*/
 }
 
 void ConstraintActivityEndsStudentsDayForm::constraintChanged(int index)
 {
-	if(index<0)
+	if(index<0){
+		currentConstraintTextEdit->setText("");
 		return;
+	}
 	assert(index<this->visibleConstraintsList.size());
 	TimeConstraint* ctr=this->visibleConstraintsList.at(index);
 	assert(ctr!=NULL);

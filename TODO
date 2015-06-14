@@ -1,10 +1,32 @@
+TODO:
+
+In the Help of constraints min gaps between activities, besides warn if min days with consecutive if same day
+and 2 activities consecutive, add warn about 2 activities grouped.
+
+---------------------------------------------------------------
+
+In generate.cpp, improve the stack memory for variables using int[MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY]
+and int[MAX_HOURS_PER_WEEK].
+
+---------------------------------------------------------------
+
 In the initial order, in nIncompatible, put also teacher(students)intervalMaxDaysPerWeek, like in teacherMaxDaysPerWeek
+
+---------------------------------------------------------------
+
+From Volker Dirr:
+
+Disable menues and shortcuts (in FET main form) if they are currently not
+useable. For example: Disable teacher constraints, if there is no teacher
+in the dataset. Disable space constraints if there is no room in the
+dataset. ... (Disable mean: Just make them unavailable/gray. Don't hide
+them. Do it like OpenOffice.org, Firefox, ...)
 
 ---------------------------------------------------------------
 
 From Horatiu Halmajan:
 
-Students max gaps per day
+Students max gaps per day (done, not-perfectly).
 
 Students set max days per week (but you can use for the moment students (set) interval max days per week).
 
@@ -141,9 +163,6 @@ currently solved.
 
 From Volker Dirr:
 
-missing constraint:
-CONSTRAINT_TEACHERS_MAX_DAYS_PER_WEEK
-
 for code cleanup always use the same style:
 some constraint c have
 c->teacher_ID
@@ -272,25 +291,6 @@ Change remove redundant to deactivate redundant
 
 --------------------------------------------------------------------------------
 
-
-From alfaromeo:
-
-But, again I came across the same FET behaviour:
-
-After 4 munites, FET reaches : 321 out of 323 activities placed
-It is a good partial result !!
-unfortuanatlly, I didnot stop it, hopping FET can go further to  reach 323 out of 323 activities placed
-Sadly, after a while this number continualy decrease toward 319, 318, 316 , .... 301...
-Now if I  decide to stop this decreasing process, I will get a partial timetable with only 301 placed activities   Embarrassed  FET shows a list containing the most 301 difficult placed  activities
-Now:
-1-Is it possible for FET to save and update the ever best timetable in a simulation session ?
-For example, when it reached: 321 out of 323 activities placed, I can easily place those 2 remaining activties manualy by breaking some constraints
-2- Where I can find Ids of those 2 remaining activties !?
-
-Point 2 is available - see initial list of activities in timetable generate form.
-
---------------------------------------------------------------------------------
-
 From Volker Dirr
 
 i also get today a mail from a guy, that had trouble to find the correct
@@ -351,9 +351,6 @@ From Maciej Deorowicz:
 > I have idea for two features. First: possibility to disable contraint
 > without removing it. Such 'Active' checkbox like on activities dialog.
 
---------------------------------------------------------------------------------
-
-to save results in a format that can reload and modify later. - partially done
 
 --------------------------------------------------------------------------------
 
@@ -361,7 +358,7 @@ Multiple processor - split multiple timetable generation on multiple processors
 
 --------------------------------------------------------------------------------
 
-From Hatim Ali:
+From Silver:
 
 > Dear all
 > please can you add "A set teachers has same timetabe (day+hour)" to make 2
@@ -376,49 +373,6 @@ From Volker Dirr
 >> room hours" and maybe also "maximum special room hours" in the teacher
 >> statistics? because a timetable maker (maybe) need that for his
 >> planning.
-
-----------------------------------------------------------------------------------
-
-From Abdul Hadi Kamel Abdullah
-
-Why did you remove the "Teachers-subjecttags max hours continously"
-constraint in the new version of FET. It's very important to us.
-
-Without that , the results I got was not so conducive, where a teacher has
-to give theoretical lectures (the ones with subject_tag = 'S' for more than
-two hours.
-
-The existing two constraints that for teachers which are 'Teachers no more
-than X hours continously' and 'Teachers no more than X hours daily' cannot
-prevent a teacher to have more than certain number of hours for a
-particular subject_tag.
-
-For example:
-
-lets say,
-
-It's better to for a teacher have a timetable on monday as the following :
-CASE A
-
-Time : 8am -10 am subject: CSC134   subject_tag : S (means
-theoretical-lecture session)
-Time : 10am -12pm       subject: CSC203   subject_tag : M (means lab
-session)
-Time : 2 pm - 4 pm      subject: ITT300         subject_tag : S (means
-theoretical-lecture session)
-
-than the following:
-CASE B
-
-Time : 8am -10 am subject: CSC134   subject_tag : S (means
-theoretical-lecture session)
-Time : 10 am - 12 pm    subject: ITT300         subject_tag : S (means
-theoretical-lecture session)
-Time : 2pm -4pm   subject: CSC203   subject_tag : M (means lab session)
-
-where the teacher in CASE B has to a give theoretical-lectures (in other
-words give a continous speech) for 4 hours continously, which most of
-teachers don't like.
 
 ----------------------------------------------------------------------------------
 
@@ -518,8 +472,7 @@ maybe it's possible to do XXX::setLayoutDirection(XXX::LeftToRight) only to the 
 From Volker Dirr (16 September 2007):
 
 > i saw at les timetable, that he call hour==period.
-> also at wikipedia it´s called period. (compare
-> http://en.wikipedia.org/wiki/School_timetables   chapter terminilogy)
+> also at wikipedia it´s called period. (see School_timetables chapter, terminology)
 >
 > i am not sure about that. in german we have the also the word "peridode",
 > but we don´t use it for timetables. we say hour.
@@ -636,20 +589,7 @@ in the most phases it´s better to replace "lessons" by "subactivities"
 12. maybe:
 "invalid activity" is better "no activity selected"
 
-13. very low priority maybe:
-in mainform->data is this order:
-1) instutionname and comment
-2) days and hours
-3) a) teachers
-   b) subjects and subject tag
-   c) years/groups/subgroups
-4) ...
-
-maybe change order 3 a) with 3 b)
-so first subject and sunject tag.
-then teachers.
-resason: every activity have a subject. so subject is more importent,
-because not every activity has a techer or subgroup.
+13. done
 
 14. that is also why i already asked you to change english translations,
 because some phrases can be shorten.
@@ -822,7 +762,7 @@ software ?
 
 7---------------------------------------------------------
 From Volker Dirr:
-If you think that other people don�t like this default constaint how about
+If you think that other people don't like this default constaint how about
 making a menu "default settings". there you can add "langurage" and my
 defalut wish. maybe there are other parameters, that can be set in this
 settings. i guess that there a people who want set duration to 2 or 4 by
@@ -834,10 +774,10 @@ it would be nice to have something like "time constraints (subjects) - max n hou
 so compulsory min n days between activities is nearly similar to compulsory max n hours per day the same subject (except subjects with duration 2 and more)
 but non-compulsory min n days between activities is somhing very diffrent then non-compulsory max n hours per day the same subject.
 i look forwad to a option like "non-compulsory max n hours per day the same subject".
-because it isn�t not to bad if it happen (having a lesson twice a day" only a few times.
+because it isn't not to bad if it happen (having a lesson twice a day" only a few times.
 
 or do something like "time constraints (activities) - max n activities with same subject per day"
-or "time constraints (activities) - max n (grouped) activities with same subject per day". (but he have to differ between activities and subactivities. is�t nonsens to subactivities, it has just sense with activities.)
+or "time constraints (activities) - max n (grouped) activities with same subject per day". (but he have to differ between activities and subactivities. is't nonsens to subactivities, it has just sense with activities.)
 
 10---------------------------------------------------------
 From kdsayang
@@ -1306,35 +1246,7 @@ So, the best of the best is:
 so we can re-assign new teachers to groups
 
 34---------------------------------------------------------
-From Volker Dirr:
-
-Volker:
-i thought one more about the "min n hours per day" problem again, because we had a similar discuss at my school.
-
-i think there is "just" a "min days per week for teacherS" constraint needed. doesn't solve that the problem in a good way?
-
-so if you want a min n hours == 1 constraint, then you just add a "min n days per week" constraint.
-
-if you want a min n hours ==2 constraint with allowed free days, then you add a "min n hours per day == 2" constraint.
-
-if you want a min n hours == 2 constraint without free days, then you add a "min n hours per day ==2" and a "min n days per week == daysPerWeek" constraint.
-
-hmm... i am currently just not sure how difficult to code that constraint.
-
-Liviu:
-It is easy to code. Just make the teacher(s) min hours daily non-intelligent. But I don't want to add alternative to min hours daily to have intelligent or non-intelligent, because people might obtain impossible timetables. I can tell you what to modify to make this. You'll have to compile your own FET.
-
-I refer to latest snapshot 5.11.0:
-
-In generate.cpp, lines: 7050, 7079, 7113, 7142. Make the tests already true (like add 1|| oldcondition).
-
-This way, you can add min 1 hours daily for necessary teachers. You also need to modify the dialog of min n days, to accept 1 hour (because it only accepts >=2 values). Also, you need to modify in generate_pre.cpp, because FET complains if below 2 min hours.
-
-Volker:
-no, i think you didn't understood my idea 100%, because with my variant it is also possible that a teacher still have a definied number of free days, while your solution mean a teacher will never have a free day.
-(the number of free days is just 0 if you do a "min n day == daysPerWeek" constraint. but of course it should be also possible to use lower values.
-so currently things like that are only possible by workarounds with min hours per day or min n days bewteen activities.
-with a min n days per week you don't need that workarounds anymore.
+From Volker Dirr: - done (teachers min days per week).
 
 35---------------------------------------------------------
 From Massimo Mancini:
@@ -1521,3 +1433,625 @@ complicated... you can use a tab widget, a tab for the current situation
 another for history... the right answer is: GREAT! I add it in TODO! ;-))). 
 In general an history file should be a great thing and the base for
 undo/rollup features.
+
+42---------------------------------------------------------
+From George Milliotis:
+
+For this, I propose the ability to sort constraints by:
+1. Type [so single ones - ones that you can't add twice - go to the top]
+2. ID of activity
+3. room / day
+and so on
+
+This could also be done for activities. If I add two activities for the 
+same subject, why do I need to have one at the bottom (id 200) and the 
+other at the top (id 5)?
+
+BTW, I haven't used the menu once since I got this new version. I like 
+the basic concept of the shortcuts. If the dialogs were not modal I'd be 
+opening all sorts of windows and working much faster. If I could HIDE 
+buttons selectively I'd even be able to get the secretaries to do the 
+schedule and save ALL my time.
+
+43---------------------------------------------------------
+From Frans:
+
+I refer to the Data menu, space constraints and say students, set of home rooms and then add.
+In this box I select the students and then the individual venues.
+
+If I for example already defined an activity tag for Large rooms, I want to add the activity tag
+instead of the individual venues.
+
+Now that I think again I doubt if it will be possible, because FET has to make a distiction between
+general activity tags and "room" activity tags as the room activity tags must also appear in the rooms
+list so that it can be selected. How will FET know this.
+
+44---------------------------------------------------------
+From Volker Dirr:
+
+an other usefull feature is:
+modifing in settings the default min n day constraint (for add activity).
+
+because we nearly always use 100%, not 95%.
+
+modifing later all to 100% isn't the best, because there are a few
+activities with min n day = 0%.
+
+45---------------------------------------------------------
+From Volker Dirr:
+
+i saw there is a small problem in our new timetable this year. (but we
+have luck. it is very easy to fix without regenerating.)
+but i currently think about to avoid this bug next time.
+
+like you know we use teacher rooms and some teachers need to share a room.
+and of course some special rooms like gym, physics, ...
+
+the bug was this:
+the timetable maker add 2 more team teaching activities. (so 2 teachers in
+a single activity).
+but he forgot that the home room constraint doesn't "work" to that
+activities.
+
+if you check the timetable, then it look nice, because nearly all
+activities have room. just 2 haven't. that is hard to see manualy.
+
+so my idea is this:
+
+add in the settings an option with:
+"check if each activity has a room".
+
+if that is checked, then you will get before (or maybe after) generating a
+warning with all activities that will (or might) not get a room.
+
+what do you thing about that?
+i think it is not to difficult to write and it is good/needed to all
+schools that set rooms to every activity.
+
+Answer Liviu:
+1) a trick to check that: lock the timetable. Check all space constraints, filter
+for activity preferred room, 100%. The number of constraints should be = with the number of activities.
+2) a better trick, to get each activity without room: check activities.xml for <Room></Room>
+
+46---------------------------------------------------------
+From Frans:
+
+I came across the following:
+
+Let say one define the number of FET hours per day as 11. Now I enter preffered starting slots, not available constraints etc. and set the timetable.
+
+Next I change the number of FET hours per day from 11 to 10 and try to generate again. A timetable is now impossible.
+
+In changing the number FET hours from 11 to 10 the constraints were not automatically adjusted. I must now go to each constraint and change. Sometimes I had to remove the constraint and re-enter.
+
+I just want to know it it must be like that or if FET cannot change the constraints automatically.
+
+47---------------------------------------------------------
+From Volker Dirr:
+
+> our timetablemaker played a bit with fet. he done several changes in the
+> dataset, sadly he used the fet file with locked activities.
+> he tried to generated, but of course it failed, because of the changes in
+> dataset, but locked times/rooms.
+> 
+> of course easy to solve, just remove all locking constraint.
+> i tried with the unlock all activities feature, but it was not possible,
+> because fet complain it must be generated first. but why? can't we unlock
+> even it is not generated?
+> (yes, i know i can remove constraints manualy. i just mean: unlocking a
+> special day and unlocking all activities is possible, even if table is not
+> generated.)
+
+It is of course not possible, you must generate a timetable firstly. I'll add 
+this in the TODO. It is complicated to change, because of the way I conceived 
+this lock/unlock.
+
+He must unlock manually the exact activity(ies) at which FET stops.
+
+48---------------------------------------------------------
+From aliponte:
+
+Suggestion 3: An activity tag can be assigned the property not to count the underlying activities.
+
+---
+
+Please consider also this flag to affect the constraints with "days". A pseudo activity should not increase the number of days (if it is the only 
+activity of a day). A pseudo activity should be "invisible" for all countings concerning constraints, and for countings concerning statistics (teachers, students, subjects).
+
+49---------------------------------------------------------
+From aliponte:
+
+There are many suggestions from FET users to improve FET's UI. It will be nearly impossible to find a UI that meets everybody's needs, I know. But let me just present, what was confusing me for a while. Maybe I'm not the only one.
+
+Dialogue "Modify Activity":
+Changing the state of the check box "Active" does not change the active/passive state of all subactivities that belong to the same activity. It affects only the single subactivity that shows in the tab (= the one that has been highlighted bevor the dialog was opened). If I want to activate the whole activity I have to click through all of the tabs. (It took some time until I understood this.)
+
+Since there are two dialogs, one for activities and one for subactivities the (novice) user does not expect the possibility of editing individual subactivity properties in the activities dialog (because individual activation and individual duration of subactivities can be chosen in the subactivities dialog).
+
+By the way, is it really necessary to have two dialogs? I could imagine a check box "subactivity only" in a common dialog for both, activities and subactivities. This would make this comment obsolete.
+
+50---------------------------------------------------------
+From alfaromeo:
+
+-Min hours DAILY with an activity tag (to count real activities only leaving pseudo activities out of count)
+-Min hours continuously with an activity tag 
+
+51---------------------------------------------------------
+From Gert Veltink:
+
+	Hi,
+	
+	I would be very pleased, if in a future version it would be possible to specify the number of students for an activity as an extra column in the activities.csv.
+	
+	Rationale: I mainly use FET for planning examinations. In this setting the number of calculated participants and actual participants differs significantly, because students have to repeat examinations or do not register for  examinations.
+	
+	Many thanks in advance!
+	
+	Regards,
+
+52---------------------------------------------------------
+From Mr Robo:
+
+In the Time tab, Break button, leading to the dialogue to set up break times... At the moment, I set up one break time constraint that has morning breaks and lunch breaks combined.
+
+If I set up two (one for break and one for lunch) and I could attach a label that would be displayed in the unavailable slots in the finished timetable, such as 'Break' or 'Lunch', it would save me having to edit each Student, Teacher and Room timetable before they can be printed, etc. It's quite manual at the moment because '-X-' is used throughout and I can't do a global search and replace.
+
+53---------------------------------------------------------
+From George Miliotis:
+
+About the "Show years", "Show groups", "Show subgroups" check boxes in add/modify activity and
+modify subactivity dialogs:
+
+I'd be more interested in FET actually remembering these settings
+globally (not even per form) for each session, no need to actually store
+to disk.
+
+54---------------------------------------------------------
+From George Miliotis:
+
+Is there a way to add a constraint that forces all activities to have a 
+room? This would help a lot. For example, I keep getting caught by the 
+'student set has home room' constraint, which works for let's say A1 and 
+A2 separately but not for activities with A1+A2 simultaneously. These 
+end up with no room and I have to manually check each activity is placed 
+in a room...
+
+>
+>>> An easy/fast check: in activities.xml, search for the string
+>>> "<Room></Room>". This represents an activity without room.
+>>>
+>>> Please tell me if this works for you.
+>> Yes I can work with that. However, it'd be nice if we could get a class
+>> "noroom" or something in the html output for those activities with no
+>> room, then I can style them and make them red or something. This way
+>> non-technical people can see if an activity is 'dangling'.
+> Non-technical persons I think cannot modify the css, but I am not the best
+> person to talk about HTML. Volker maybe could answer here.
+>
+Well, yes, they can't but it's much easier to just bundle a css file (or 
+a patch) and send it off to the secretaries automatically (I'm working 
+on automatic timetable generation for our department).
+
+In any case, I think it would be a useful default to highlight 
+activities with no rooms or just to add a small option in the output 
+menu about this.
+
+55---------------------------------------------------------
+From Frans (on forum):
+
+Frans:
+
+I came across the following, it is possible that you know about this:
+
+I generate a timetable with constraints such as minimum hours daily for a students set
+
+Next from the data, students, groups or subgroup menu I de-activate all activities for one group. This group has the constraint minimum hours.
+
+I generate again and then Fet- gives an error message and stops, namely you have too little activities to respect the constraint minimum hours ....
+
+In other words I must go to minimum hours and delete the constraint. It is not de-activated automatically.
+
+As said I do not know if it must be like this. Other constraints such as same starting time are automatically de-acticted.
+
+------------
+
+Liviu:
+
+It is normal to be like that, because it is hard to take care of such constraints, and because you don't deactivate a students set, but a set of activities. The constraint min hours daily is for a students set, not for a set of activities.
+
+------------
+
+Frans:
+
+I understand what you say, but I am not talking about deactivating activities.  In my case however I had to deactivate a complete studens set and this one can only do from the data menu. In other words everything for a students set must be de-activated.
+
+Studens go out to work in private practice for a few months. During that period they are not on campus and everythig must therefore be deactivated as another students set takes their place and must be scheduled.
+
+If it was possible to deactivate everything only when one uses the data menu.
+
+------------
+
+Liviu:
+
+Yes, you are right in a way, but there are many problems which may appear if I do like you say, and the things are complicated.
+
+For instance, user deactivates a students set's activities, then activates only one activity for this user. Or if there is an activity with more students sets, of which some are deactivated and some are activated. Or there might be a global constraint min hours daily for all students.
+
+The perfect approach might be to add a flag to each teacher, subject, activity tag, students set -> active or not active. I'll add this in the TODO.
+It would be kind of tedious and difficult to change now, as it was not designed from the beginning.
+
+56---------------------------------------------------------
+From Anwarul Alam (on guestbook):
+
+found time-tabling software excellent, but how to get a quick print-out?
+
+57---------------------------------------------------------
+From Jason (on guestbook):
+
+Ask for new feature:
+
+- Auto generated after allow user to manual adjust timetable (Drag and Drop in view timetable)
+
+58---------------------------------------------------------
+From Zsolt Udvari (on forum):
+
+If I de-activity all activities of a whole year (student set), FET will not ignore "min hours daily" constraint.
+So I've two suggestion immedi:
+- when FET checks this (and similar) constraints, would tolerate this
+- can deactivite the students set (and related activities, constraints, etc.)
+
+59---------------------------------------------------------
+From Zsolt Udvari (on forum):
+
+It would be nice when can filter in activities list by "no teacher" and "no students".
+
+60---------------------------------------------------------
+From Zsolt Udvari (on forum):
+
+Activity planning? Hm, this is a very good and useful feature Smiley
+Only a suggestion to this: save the checkboxes state (I should click every time on "Swap axes", "Add activity",...). 
+
+61---------------------------------------------------------
+From Zsolt Udvari (on forum):
+
+It would be nice when can pair teachers with his/her subjects and can filter in the activity dialog.
+So, what do I think? I'm teaching Math and Phisycs. So to my name can add these subjects and when I add a new activity and select Literature, my name will not shown, only those teachers who teaches Literature. 
+
+62---------------------------------------------------------
+From Zsolt Udvari (on forum):
+
+Teacher must work at specified time
+
+Can I do this? So e.g. TeacherA should have monday first hour. This is irrelevant, which activity. 
+
+63---------------------------------------------------------
+From alfaromeo (on forum):
+
+Clone activities or constraints:
+
+Is it possible to clone activities for one student set to another?
+Last year, Year 1S had 3 student sets
+Now Two new student sets have been added
+Student sets from same year have same activities and of course same time constraints
+So how it is possible to do an activities Clone from 1S03 to both 1S04 and 1S05 with or without assigned teachers ? 
+
+64---------------------------------------------------------
+From alfaromeo (on forum):
+
+Filter "Modify multiple constraints at once":
+
+For Min days between activities constraint, there is a button for Modify multiple constraints at once
+Is it possible to have a filter by Subject, teacher, ...
+The most important filter is the nunmber of subactivities
+For example an activities splitted into 2 have 3 days Min
+an activities splitted into 3 should have 2 days Min
+activities from Subject Gymnastics should have 2 days Min..etc 
+
+65---------------------------------------------------------
+From Zsolt Udvari (on forum):
+
+Default settings per subject:
+
+Is there any chance to make it? In my school the all "English" subject is 4 per week (and there are more similar subjects). So it would be nice, when I don't should set these settings (activities per week, tags).
+
+66---------------------------------------------------------
+From nomad (on forum):
+
+Constraint a set of activities have the same room (he wants to use it to schedule the timetable for two weeks, with fortnightly activities).
+
+67---------------------------------------------------------
+From alfaromeo (on forum):
+
+Save button on Activity Planing Window:
+
+For users working with Activity Planing windiw, thy will^probabely  spend most of the time on it
+But this Window is lacking a save button, so users have to close it from time to time to get access to FET main window to save work
+Can a save button be added to Activity planing window?
+
+68---------------------------------------------------------
+From alfaromeo (on forum):
+
+About constraint min gaps between a set of activities:
+
+Now, how about applying this contraint globally? I mean every activities with subject (or tag) Math sould be 2 hours apart from an activity with subject (or tag) Physics?
+Entering all activities, one by one is tedious
+How it is easy/possible to add: Min gaps between a set of activites with a tag ?
+
+or better:
+Min gaps between two subjects/tag
+
+69---------------------------------------------------------
+From alfaromeo (on forum):
+
+Filter for Modify multiple constraints at once:
+
+In the Min days between activities window
+there is an option for: Modify multiple constraints at once
+Is it possible to add a standart filter: teacher, student set, sunject, tag ?
+So I can multi-change only those activities with a given subject or techer...etc?
+
+70---------------------------------------------------------
+From alfaromeo (on forum):
+
+Filter teachers:
+
+Students are easily filtered because they are grouped using years then groups
+So at Students set not available time window, we can, for example, apply unvailability to only one year, thus affecting  groups under that year
+We can also apply unvailability to group, thus affecting  Subgroups under that group.
+
+Unfortunately , teachers are treated either indivdually or totally (constraints for ALL teachers): ONE or ALL
+Zsolt Udvari already wrote:
+http://lalescu.ro/liviu/fet/forum/YaBB.pl?num=1282207824 :
+Quote:
+It would be nice when can pair teachers with his/her subjects and can filter in the activity dialog.
+So, what do I think? I'm teaching Math and Phisycs. So to my name can add these subjects and when I add a new activity and select Literature, my name will not shown, only those teachers who teaches Literature
+.
+
+So it would be very practicall, less time consuming, to treat teachers per groups based on
+- Home subject
+or
+- any other artificial tag like :
+-part_time_teachers,
+- team teachers,
+-..etc 
+
+71---------------------------------------------------------
+From alfaromeo (on forum):
+
+More statistics after generation:
+
+FET has a stastics menu
+What about adding statistics after generation accessible from statistics menu
+(for teachers and students sets as well)
+- Total free days
+- Total working days
+- Total gaps
+
+Because the quality of a timetable depends on overall total of free days and gap
+
+72---------------------------------------------------------
+From Massimo Mancini:
+
+When I inspect the generated timetable by teacher or by students, would be possible to highligh
+all the occourences of the same students group in teacher's week and of the
+same subject in student's week,  to have an immediate glance on distribution of lessons? 
+If I remember this is a style option of html timetable. Perhaps it is
+possible in QT4 also...
+
+73---------------------------------------------------------
+From Valdo (on forum):
+
+Details: he has many teachers, and almost all should have max 2 gaps per week, with 2 exceptions, who may have more gaps. He
+does not want to add manually that many constraints. So, he suggests that FET should add constraints for all teachers,
+with a selected number of max gaps per week, and then the user can modify each one by hand.
+
+74---------------------------------------------------------
+From Massimo Mancini:
+
+1. Constraint hours not avalaible teacher
+2. I put a name in filter and I see there's any constraint of this kind on
+that teacher
+3. Then I press Add .  I expect the teacher field filled with the name I used in
+filter...but currently FET propose always the first teacher in list.
+
+75---------------------------------------------------------
+From Massimo Mancini:
+
+Consider this:
+
+1. the max num of hours for day is 5 for ALL teachers, the max num for teacher X is 3: this
+works
+
+2. the max num of hours for day is 4 for ALL teachers, the max num for teacher X is 5: this
+NOT works as expected. FET simply refuse the exception. The exception does
+not override the global in any case. 
+
+I remember we discussed this "strange" logic (imho an exception is an
+exception and always override a global condition) last year, it seems that
+the workaround is to manage this scenario using only individual constraints
+(isn't it?), very tedious. If so I suggest a button in the form of global
+constraint to automatically generate all the individual constraints one
+needs.
+
+From alfaromeo (same subject):
+
+My suggestion was not only about adding a teacher one by one
+It is about get rid of double menu entries
+For example, for Teachers and students, and for every constaint, FET has double entry like this:
+-Max days per week for a teacher
+-Max days per week for all teachers
+-Min days per week for a teacher
+-Main days per week for all teachers
+...etc
+My idea is to make a single entry for any constraint like this :
+-Max days per week for teacher (s)
+
+-Min days per week for teacher (s)
+
+This has another advantage:
+user will be presented by a window like described in my screenshot, where he can press Add all button
+Now suppose, like user X, that I have 50 teachers or 50 student sets
+I can easily add them all into Min days per week =5
+then on the right pan double click on 5 teachers to deselect them before clicking Add constraint
+Then add another Min days per week =3 for those 5 teachers !!
+If we have tags for teachers (and rooms) it will even more easier
+
+This concept is already used in FET in two places:
+- Set all available, Set all not available
+- subject has a set of prefered rooms 
+
+76---------------------------------------------------------
+From Massimo Mancini:
+
+many forms (constraints list and timetable views by example) popups with
+insufficient size, can you create an option for this to modify the default?
+
+Also consider the form that lists the constraint "teacher non avalaible",
+the list is useless if you does not enlarge the window. To avoid it enough
+change the line format from DESC CONSTRAINT + TEACHER'S NAME to
+TEACHER+CONSTRAINT or, better, codify desc constraint using some string of
+fixed size like so:
+
+HTNA - NAME .....
+
+I know the problem of translation (you may omit the desc at all, it is
+useful only when you display ALL constraints), but I think that a code is less boring
+than a long and incomplete description repeated at beginning of all lines.
+
+77---------------------------------------------------------
+From Andres Chandia (on forum):
+
+Is there a way to tag teachers, for different purposes like, a group of teachers can only work in the morning, or an activity can only be given by a teacher of certain group, etc.
+
+78---------------------------------------------------------
+From Massimo Mancini:
+
+a problem that we discussed in the past is about the description of
+constraints (specially in the list of constraints or in the list of
+conflicts): they are too long and meaningless if displayed in the window of
+default size. The modality of windows forces to expand them repeatedly (with
+non modal windows the sit could appear different, but Liviu answered this
+is a very difficult thing. 
+You must well understand that the unlucky timetable maker need to see the
+troubles at a glance: reading long sentences with absolutely redundant
+parts is very difficult and time consuming.
+This is a problem in english but the solution can be achieved also and only in
+translations... (a buon intenditor...;-)
+
+So in attachement you will find an example of that I think is a good list.
+Of course is only my opinion. But, trust me, is a useful one
+
+---
+
+Attachment:
+
+----- NOW --------------------------------------------------
+
+Conflitti lievi totali: 13.7
+Elenco dei conflitti leggeri (in ordine decrescente):
+Vincolo di tempo infranto Numero minimo di giorni tra attività: l'attività con id= 290 (I:PANS, M:FRA, S:AMM_1 B) è in conflitto con l'attività con id= 289 (I:PANS, M:FRA, S:AMM_1 B), essendo 1 giorni troppo vicine, nei giorni Martedì e Martedì, incremento dei conflitti= 0.99. Le attività sono collocate consecutive nell'orario, perchè hai scelto questa opzione nel caso che esse capitassero nello stesso giorno
+Vincolo di tempo numero massimo 4 ore consecutive infranto per l'insegnante DIRU il giorno Mercoledì durata=5.  Questo incrementa la conflittualità di 0.99
+Vincolo di tempo numero massimo 4 ore consecutive infranto per l'insegnante GADO il giorno Sabato durata=5.  Questo incrementa la conflittualità di 0.99
+Vincolo di tempo numero massimo 4 ore consecutive infranto per l'insegnante MALG il giorno Sabato durata=5.  Questo incrementa la conflittualità di 0.99
+Vincolo di tempo numero massimo 4 ore consecutive infranto per l'insegnante MESS il giorno Sabato durata=5.  Questo incrementa la conflittualità di 0.99
+Vincolo di tempo numero massimo 4 ore consecutive infranto per l'insegnante OSIO il giorno Lunedì durata=5.  Questo incrementa la conflittualità di 0.99
+Vincolo di tempo numero massimo 4 ore consecutive infranto per l'insegnante POLE il giorno Venerdì durata=5.  Questo incrementa la conflittualità di 0.99
+Vincolo di tempo numero massimo 4 ore consecutive infranto per l'insegnante PULI il giorno Mercoledì durata=5.  Questo incrementa la conflittualità di 0.99
+Vincolo di tempo numero massimo 4 ore consecutive infranto per l'insegnante RAPE il giorno Sabato durata=5.  Questo incrementa la conflittualità di 0.99
+Vincolo di tempo numero massimo 4 ore consecutive infranto per l'insegnante xAZ1 il giorno Sabato durata=5.  Questo incrementa la conflittualità di 0.99
+Vincolo di tempo infranto Numero minimo di giorni tra attività: l'attività con id= 416 (I:LUCH, M:DIR, S:IGE_2 C) è in conflitto con l'attività con id= 415 (I:LUCH, M:DIR, S:IGE_2 C), essendo 1 giorni troppo vicine, nei giorni Sabato e Sabato, incremento dei conflitti= 0.95. Le attività sono collocate consecutive nell'orario, perchè hai scelto questa opzione nel caso che esse capitassero nello stesso giorno
+Vincolo di tempo infranto Numero minimo di giorni tra attività: l'attività con id= 521 (I:LUZZ, M:EAZ, S:IGE_5 A) è in conflitto con l'attività con id= 517 (I:LUZZ, M:EAZ, S:IGE_5 A), essendo 1 giorni troppo vicine, nei giorni Martedì e Martedì, incremento dei conflitti= 0.95. Le attività sono collocate consecutive nell'orario, perchè hai scelto questa opzione nel caso che esse capitassero nello stesso giorno
+Vincolo di tempo infranto Numero minimo di giorni tra attività: l'attività con id= 617 (I:xAZ2, M:EAZ, S:IGE_3 B) è in conflitto con l'attività con id= 615 (I:xAZ2, M:EAZ, S:IGE_3 B), essendo 1 giorni troppo vicine, nei giorni Sabato e Sabato, incremento dei conflitti= 0.95. Le attività sono collocate consecutive nell'orario, perchè hai scelto questa opzione nel caso che esse capitassero nello stesso giorno
+Vincolo di tempo infranto Numero minimo di giorni tra attività: l'attività con id= 718 (I:CARU, M:COS_DIS, S:GEO_3 A) è in conflitto con l'attività con id= 715 (I:CARU, M:COS_DIS, ChA:info4, S:GEO_3 A), essendo 1 giorni troppo vicine, nei giorni Sabato e Sabato, incremento dei conflitti= 0.95. Le attività sono collocate consecutive nell'orario, perchè hai scelto questa opzione nel caso che esse capitassero nello stesso giorno
+
+----TOMORROW I HOPE ()IMHO)-------------------------------------------------
+
+Conflitti lievi totali: 13.7
+Elenco dei conflitti leggeri (in ordine decrescente):
+VT: Num.min.gg, tra attiv.: AttID= 290 (I:PANS, M:FRA, S:AMM_1 B) vs. AttID= 289 (I:PANS, M:FRA, S:AMM_1 B): +1 Mar -Mar : +0.99
+VT: Num.max. 4 h consec. :  DIRU : Mer : 5 : +0.99
+VT: Num.max. 4 h consec. :  GADO : Sab : 5 : +0.99
+VT: Num.max. 4 h consec. :  MALG : Sab : 5 : +0.99
+VT: Num.max. 4 h consec. :  MESS : Sab : 5 : +0.99
+VT: Num.max. 4 h consec. :  OSIO : Lun : 5 : +0.99
+VT: Num.max. 4 h consec. :  POLE : Ven : 5 : +0.99
+VT: Num.max. 4 h consec. :  PULI : Mer : 5 : +0.99
+VT: Num.max. 4 h consec. :  RAPE : Sab : 5 : +0.99
+VT: Num.max. 4 h consec. :  xAZ1 : Sab : 5 : +0.99
+VT: Num.min.gg, tra attiv.: id.416 (I:LUCH, M:DIR, S:IGE_2 C) / id.415 (I:LUCH, M:DIR, S:IGE_2 C): +1 Sab-Sab : +0.95
+VT: Num.min.gg, tra attiv.: id.521 (I:LUZZ, M:EAZ, S:IGE_5 A) / id.517 (I:LUZZ, M:EAZ, S:IGE_5 A): +1 Mar-Mar : +0.95
+VT: Num.min.gg, tra attiv.: id.617 (I:xAZ2, M:EAZ, S:IGE_3 B) / id.615 (I:xAZ2, M:EAZ, S:IGE_3 B): +1 Sab-Sab : +0.95
+VT: Num.min.gg, tra attiv.: id.718 (I:CARU, M:COS_DIS, S:GEO_3 A) / id.715 (I:CARU, M:COS_DIS, ChA:info4, S:GEO_3 A): +1 Sab-Sab : +0.95
+
+79---------------------------------------------------------
+From Volker Dirr:
+
+students set max gaps per week
+and
+students set begins early
+
+need a filter/checkbox show only O year O group O subgroup
+because there are so many students (subgroups) and it is usefull to add
+that counstraints for lower years. but the list is so long, so it is very
+difficult to find the years.
+
+that filter is also usefull for students set not available.
+
+80---------------------------------------------------------
+From Paolo (on forum):
+
+Well, for me it would be very very (very) important thinking over the constraints while fet is working.
+
+So i ask, kindly, if it is possible getting a print function of all constraints (at least of time constraints).
+
+Temporary solution: open two FET-s :-)
+
+81---------------------------------------------------------
+From alfaromeo (on forum):
+
+What about adding filter feature to the command: Modify Multiple Constraints at once
+For example, I would like to change Min days value for all  activities, not glolabally,  but form one subjct only (e.g Physical education)
+of all ctivities from one or to teachers ..etc or from a given tag...
+
+82---------------------------------------------------------
+From daviodan:
+
+Possibility to edit the timetable after generation, drag-drop of activities.
+
+83---------------------------------------------------------
+From Yush Yuen:
+
+Sometimes we have 3 teachers available to teach the same "kind" of
+class. For example, Teacher A, B C may teach either one of Math for
+7A, 7B, and 7C. It is possible that one combination may yield a
+timetable that is easier than another. So, it would be nice if we can
+have an option to generate "alternative" scenarios with the different
+combination.
+
+A possible way to do that may be:
+- adding a "teachers-activities pool" dialogue.
+- activities of the same pool may swap teacher
+- each pool may be enabled or disabled at timetable generating time
+(you may not need all combination all the time)
+- all generation time, make an option for "generating alternatives"
+and save each alternative in a different folder or something
+
+Or:
+- activities are created without teachers
+- adding a "teacher can teach: activity tag" dialogue
+- at generation time, teachers are assigned to activities based on
+which teacher has the right "teacher can teach tag"
+
+Or, another way of doing this (perhaps a more elegant way) is to make
+a "preferred teacher" constraint like the preferred room constraint.
+However, also add an "same room/teacher" option. That is, room/teacher
+may be selected from list of preferred rooms/teachers, however, the
+same room/teachers must be assigned to the same activities.
+
+84---------------------------------------------------------
+From Silver (on forum):
+
+i hope you can add "Min gaps between activites in the day for teacher".
+i mean like this :
+when i select Min gaps = 2
+saturday:   activity - gap - gap - activity - gap - gap - activity

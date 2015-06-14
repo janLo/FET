@@ -1,3 +1,7 @@
+/*
+File export.h
+*/
+
 /***************************************************************************
                                 FET
                           -------------------
@@ -11,7 +15,7 @@
                          : http://www.timetabling.de/
  ***************************************************************************
  *                                                                         *
- *   NULL program is free software; you can redistribute it and/or modify  *
+ *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
@@ -28,7 +32,7 @@
 
 #include <QMessageBox>
 
-class Export: public QDialog{
+class Export: public QObject{
 	Q_OBJECT
 
 public:
@@ -47,19 +51,19 @@ private:
 	static bool selectSeparatorAndTextquote(QString& textquote, QString& fieldSeparator, bool& head);
 
 	static bool exportCSVActivities(QString& lastWarnings, const QString textquote, const QString fieldSeparator, const bool head, QMessageBox::StandardButton& msgBoxButton);
+	static bool exportCSVActivitiesStatistic(QString& lastWarnings, const QString textquote, const QString fieldSeparator, const bool head, QMessageBox::StandardButton& msgBoxButton);
 	static bool exportCSVActivityTags(QString& lastWarnings, const QString textquote, const bool head, const QString setSeparator, QMessageBox::StandardButton& msgBoxButton);
 	static bool exportCSVRoomsAndBuildings(QString& lastWarnings, const QString textquote, const QString fieldSeparator, const bool head, QMessageBox::StandardButton& msgBoxButton);
 	static bool exportCSVSubjects(QString& lastWarnings, const QString textquote, const bool head, QMessageBox::StandardButton& msgBoxButton);
 	static bool exportCSVTeachers(QString& lastWarnings, const QString textquote, const bool head, const QString setSeparator, QMessageBox::StandardButton& msgBoxButton);
 	static bool exportCSVStudents(QString& lastWarnings, const QString textquote, const QString fieldSeparator, const bool head, const QString setSeparator, QMessageBox::StandardButton& msgBoxButton);
 	static bool exportCSVTimetable(QString& lastWarnings, const QString textquote, const QString fieldSeparator, const bool head, QMessageBox::StandardButton& msgBoxButton);
-
-	static bool exportSchILD(QString& lastWarnings);
 };
 
 class LastWarningsDialogE: public QDialog{
-        Q_OBJECT
-public:							//can i do that privat too?
+	Q_OBJECT
+	
+public:				//can i do that privat too?
 	LastWarningsDialogE(QString lastWarning, QWidget *parent = 0);
 };
 

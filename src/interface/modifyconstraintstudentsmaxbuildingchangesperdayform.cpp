@@ -15,14 +15,12 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QMessageBox>
+
+#include <cstdio>
+
 #include "modifyconstraintstudentsmaxbuildingchangesperdayform.h"
 #include "spaceconstraint.h"
-
-#include <qradiobutton.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-
-#include <QDesktopWidget>
 
 ModifyConstraintStudentsMaxBuildingChangesPerDayForm::ModifyConstraintStudentsMaxBuildingChangesPerDayForm(ConstraintStudentsMaxBuildingChangesPerDay* ctr)
 {
@@ -47,8 +45,8 @@ ModifyConstraintStudentsMaxBuildingChangesPerDayForm::ModifyConstraintStudentsMa
 	weightLineEdit->setText(QString::number(ctr->weightPercentage));
 	
 	maxChangesSpinBox->setMinValue(0);
-	maxChangesSpinBox->setMaxValue(10);
-	maxChangesSpinBox->setValue(ctr->maxBuildingChangesPerDay);	
+	maxChangesSpinBox->setMaxValue(gt.rules.nHoursPerDay);
+	maxChangesSpinBox->setValue(ctr->maxBuildingChangesPerDay);
 		
 	constraintChanged();
 }

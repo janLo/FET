@@ -20,16 +20,15 @@
 #include "subject.h"
 #include "studentsset.h"
 
-#include <qlabel.h>
-#include <qtabwidget.h>
+#include "activityplanningform.h"
 
-#include <QDesktopWidget>
+#include <QMessageBox>
 
 ModifySubactivityForm::ModifySubactivityForm(int id, int activityGroupId)
 {
     setupUi(this);
 
-    connect(subjectsComboBox, SIGNAL(activated(QString)), this /*ModifySubactivityForm_template*/, SLOT(subjectChanged(QString)));
+    connect(subjectsComboBox, SIGNAL(activated(QString)), this, SLOT(subjectChanged(QString)));
     connect(cancelPushButton, SIGNAL(clicked()), this, SLOT(cancel()));
     connect(okPushButton, SIGNAL(clicked()), this, SLOT(ok()));
     connect(clearTeacherPushButton, SIGNAL(clicked()), this, SLOT(clearTeachers()));
@@ -92,6 +91,7 @@ ModifySubactivityForm::ModifySubactivityForm(int id, int activityGroupId)
 	this->_activityTags = this->_activity->activityTagsNames;
 	this->_students=this->_activity->studentsNames;
 	
+	durationSpinBox->setMaxValue(gt.rules.nHoursPerDay);
 	durationSpinBox->setValue(this->_activity->duration);
 	activeCheckBox->setChecked(this->_activity->active);
 
@@ -518,6 +518,8 @@ void ModifySubactivityForm::ok()
 		 activity_tags_names,students_names, durationSpinBox->value(), activeCheckBox->isChecked(),
 		 (nStudentsSpinBox->value()==-1), nStudentsSpinBox->value());
 	}
+	
+	PlanningChanged::increasePlanningCommunicationSpinBox();
 	
 	this->accept();
 }

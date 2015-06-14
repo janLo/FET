@@ -15,13 +15,13 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QMessageBox>
+
 #include "longtextmessagebox.h"
 
 #include "constraintstudentssetmaxhoursdailyform.h"
 #include "addconstraintstudentssetmaxhoursdailyform.h"
 #include "modifyconstraintstudentssetmaxhoursdailyform.h"
-
-#include <QDesktopWidget>
 
 ConstraintStudentsSetMaxHoursDailyForm::ConstraintStudentsSetMaxHoursDailyForm()
 {
@@ -90,12 +90,17 @@ void ConstraintStudentsSetMaxHoursDailyForm::filterChanged()
 			constraintsListBox->insertItem(ctr->getDescription(gt.rules));
 		}
 	}
+
+	constraintsListBox->setCurrentItem(0);
+	this->constraintChanged(constraintsListBox->currentItem());
 }
 
 void ConstraintStudentsSetMaxHoursDailyForm::constraintChanged(int index)
 {
-	if(index<0)
+	if(index<0){
+		currentConstraintTextEdit->setText("");
 		return;
+	}
 	assert(index<this->visibleConstraintsList.size());
 	TimeConstraint* ctr=this->visibleConstraintsList.at(index);
 	assert(ctr!=NULL);

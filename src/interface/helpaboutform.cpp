@@ -19,8 +19,6 @@
 
 #include "timetable_defs.h"
 
-#include <QDesktopWidget>
-
 HelpAboutForm::HelpAboutForm()
 {
 	setupUi(this);
@@ -34,6 +32,9 @@ HelpAboutForm::HelpAboutForm()
 	centerWidgetOnScreen(this);
 		
 	tabWidget->setCurrentIndex(0);
+	
+	authorsTextBrowser->setOpenExternalLinks(true);
+	referencesTextBrowser->setOpenExternalLinks(true);
 }
 
 HelpAboutForm::~HelpAboutForm()

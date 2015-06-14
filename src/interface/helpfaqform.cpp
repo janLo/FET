@@ -19,8 +19,6 @@
 
 #include "timetable_defs.h"
 
-#include <QDesktopWidget>
-
 HelpFaqForm::HelpFaqForm()
 {
     setupUi(this);
@@ -39,7 +37,8 @@ HelpFaqForm::HelpFaqForm()
 	
 	s+=tr("FET FAQ:");
 	s+="\n\n";
-	s+=tr("this documentation by Liviu Lalescu, reviewed and modified - 12 October 2009 (new additions are written with date, most are at the end)");
+	s+=tr("This documentation by Liviu Lalescu, reviewed and modified on %1 (new additions are written with date, most are at the end)", "%1 is the date of last modification")
+		.arg(tr("27 February 2010", "Date of modification of FAQ"));
 	s+="\n\n";
 	s+="--------";
 	s+="\n\n";
@@ -65,7 +64,58 @@ HelpFaqForm::HelpFaqForm()
 	s+="\n\n";
 	s+="-------------------------------------------------------------------------------";
 	s+="\n\n";
+
+	//s+=tr("Entry added on 20 Nov. 2009.");
+	//s+="\n\n";
+	s+=tr("Q: What are the maximum limits FET can handle?");
+	s+="\n\n";
+	s+=tr("A: There are indeed maximum limits for the generation algorithm (all these limits can be increased on demand, as a custom version, because this requires a bit more memory).");
+	s+="\n\n";
+	s+=tr("These limits are:");
 	
+	s+="\n- ";
+	s+=tr("Maximum total number of hours (periods) per day: %1").arg(MAX_HOURS_PER_DAY);
+	s+="\n- ";
+	s+=tr("Maximum number of working days per week: %1").arg(MAX_DAYS_PER_WEEK);
+	s+="\n- ";
+	s+=tr("Maximum total number of teachers: %1").arg(MAX_TEACHERS);
+	s+="\n- ";
+	s+=tr("Maximum total number of sets of students: %1").arg(MAX_TOTAL_SUBGROUPS);
+	s+="\n- ";
+	s+=tr("Maximum total number of subjects: %1").arg(MAX_SUBJECTS);
+	s+="\n- ";
+	s+=tr("Virtually unlimited number of activity tags");
+	s+="\n- ";
+	s+=tr("Maximum number of activities: %1").arg(MAX_ACTIVITIES);
+	s+="\n- ";
+	s+=tr("Maximum number of rooms: %1").arg(MAX_ROOMS);
+	s+="\n- ";
+	s+=tr("Maximum number of buildings: %1").arg(MAX_BUILDINGS);
+	s+="\n- ";
+	s+=tr("Virtually unlimited number of teachers and students sets for each activity");
+	s+="\n- ";
+	s+=tr("Maximum number of time constraints: %1").arg(MAX_TIME_CONSTRAINTS);
+	s+="\n- ";
+	s+=tr("Maximum number of space constraints: %1").arg(MAX_SPACE_CONSTRAINTS);
+	
+	/*s+="\n\n";
+	s+=tr("Other limits referring to constraints:");
+	s+="\n- ";
+	s+=tr("Maximum number of activities in a single constraint min days between activities: %1").arg(MAX_CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES);
+	s+="\n- ";
+	//s+=tr("Maximum number of activities in a single constraint max days between activities: %1").arg(MAX_CONSTRAINT_MAX_DAYS_BETWEEN_ACTIVITIES);
+	//s+="\n- ";
+	s+=tr("Maximum number of activities in a single constraint activities same starting time: %1").arg(MAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME);
+	s+="\n- ";
+	s+=tr("Maximum number of activities in a single constraint activities same starting day: %1").arg(MAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_DAY);
+	s+="\n- ";
+	s+=tr("Maximum number of activities in a single constraint activities same starting hour: %1").arg(MAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_HOUR);
+	s+="\n- ";
+	s+=tr("Maximum number of activities in a single constraint activities not overlapping: %1").arg(MAX_CONSTRAINT_ACTIVITIES_NOT_OVERLAPPING);*/
+
+	s+="\n\n";
+	s+="-------------------------------------------------------------------------------";
+	s+="\n\n";
 
 	s+=tr("Q: Why some activities appear indented while others not?\n\n"
 		"A: The activities are indented for easier visualization. The non-indented ones are the representatives of a "
@@ -352,7 +402,7 @@ HelpFaqForm::HelpFaqForm()
 	s+="\n\n";
 
 
-	s+=tr("Q: With max 5 hours per day and 2 max gaps per week, in 4 cases it resulted 3 lesson+2  gaps + 2 lesson that is not acceptable,"
+	s+=tr("Q: With max 5 hours per day and 2 max gaps per week, in 4 cases it resulted 3 lesson+2 gaps + 2 lesson that is not acceptable,"
 		" cause other day only 2 lesson, I mean I don't want gaps on same day, and gaps only in extra cases extend the hours, "
 		"how can I keep the balance in this?\n\n"
 		"A: Then you have to add 2 extra activities for a teacher, each with duration 1 and students empty and dummy subject"
@@ -385,14 +435,6 @@ HelpFaqForm::HelpFaqForm()
 		"prevent other activities in other days at hour 0, then add students set not available to prevent other "
 		"students set from having hours at this hour 0. Or variants of this.\n\n"
 		"Mr. Zsolt Udvari used another trick: considered the last hour to be hour 0. But this is not always applicable.");
-
-	s+="\n\n";
-	s+="-------------------------------------------------------------------------------";
-	s+="\n\n";
-
-	s+=tr("Q: What is constraint teacher(s) min hours daily?\n\n"
-		"A: If teachers are getting days with only one hour of work, you might want to add constraint teacher(s) min hours daily "
-		"(probably with 2 hours), but please make sure your timetable is possible. This constraint is smart, it only considers non-empty days.");
 
 	s+="\n\n";
 	s+="-------------------------------------------------------------------------------";
@@ -725,7 +767,7 @@ HelpFaqForm::HelpFaqForm()
 	s+=tr("Text added on 16 August 2008:");
 	s+="\n\n";
 	s+=tr("Q: At our school there are a lot of teachers which work only a few hours a week. Of course it "
-		"is really nasty to drive for one our to the school. So we  set the constraint, that every teacher "
+		"is really nasty to drive for one our to the school. So we set the constraint, that every teacher "
 		"should work at least 2 hours a day. Unfortunately we have this year a teacher which only works 1h a "
 		"week. As a result of this FET doesn't start to create a timetable. Any suggestions how "
 		"to fix the problem without defining a constraint for every singular teacher?\n\n"
@@ -905,6 +947,73 @@ HelpFaqForm::HelpFaqForm()
 		" Students max gaps per day can be implemented perfectly, but it would change the algorithm for students a lot and I am afraid to change"
 		" something that is working well. Very much testing would be needed, and I have not enough sample files. While changing the algorithm, it would be"
 		" easy to make critical bugs and some files may not solve anymore.");
+
+	s+="\n\n";
+	s+="-------------------------------------------------------------------------------";
+	s+="\n\n";
+	
+	s+=tr("Entry added on 19 Nov. 2009.");
+	s+="\n\n";
+	s+=tr("Q: Help on shortcut buttons in the main form.");
+	s+="\n\n";
+	s+=tr("A: More users asked for shortcut buttons for the most commonly used functions. It is possible to show such buttons, if you select the corresponding option"
+		" from the Settings->Interface menu (shortcuts are shown, by default).");
+
+	s+="\n\n";
+	s+="-------------------------------------------------------------------------------";
+	s+="\n\n";
+	
+	s+=tr("Entry added on 29 Jan. 2010.");
+	s+="\n\n";
+	s+=tr("This is an advanced question which probably will never appear in practice, you may skip it at first reading.");
+	s+="\n\n";
+	s+=tr("Q: This is a problem that probably will never appear in practice, but it is possible. Say the user generates a timetable successfully, "
+		"locks a few activities, then tries to generate again, but FET stops at a certain activity and reports impossible timetable.\n\n"
+		"A: Indeed, this is a potential problem in FET (but probably will never show up in practice). It may happen if you have constraints with weight under 100%, which may be broken "
+		"when you generate the timetable.\n\n"
+		"Here is an example to explain this (it is an impractical example, but it is better as it is very simple): you have 4 students sets (Y1, Y2, Y3, Y4). "
+		"5 activities: A1 (Y1,Y2,Y3,Y4), A2 (Y1), A3 (Y2), A4 (Y3), A5 (Y4). You have a single day per week and 2 hours per day. You add a constraint students "
+		"max hours daily, max 1 hour, 95% weight percetange.\n"
+		"1) Start to generate. After a while (maybe a few minutes), FET will be able to find a solution (with the max hours daily broken for all students sets).\n"
+		"2) Then, you lock A2, A3, A4 and A5 and try to generate again. In some cases FET will report impossible activity A1.\n"
+		"3) If you lock A1, A2, A3, A4 and A5, FET will be able to find a timetable very fast.\n\n"
+		"1) Why can FET schedule the timetable the first time? Because in some cases FET will be able to break one-by-one all the 4 constraints max hours daily for A2, A3, A4 and A5 "
+		"(no activity is locked, so it may try more times to place/replace the activities, and it will find a way to put A1, then put the rest of the activities).\n\n"
+		"2) Why sometimes FET cannot schedule the timetable the second time (with locked A2, A3, A4 and A5)? "
+		"Because: A2, A3, A4 and A5 are locked and are scheduled firstly. Then FET tries to put A1. But to put A1, it means "
+		"to break a 95% constraint 4 times, because there are 4 students sets in A1. Weight 95% 4 times in a row is equivalent with a constraint with weight "
+		"100%-(5%^4)=99.99999375%, which is a very strong constraint, which is very hardly broken. "
+		"FET will retry more times for activity A1, so in some cases it will find a schedule even in these conditions.\n\n"
+		"3) Why can FET find a timetable the third time (with locked A1, A2, A3, A4 and A5)? Because activities with more students sets are scheduled firstly (in general, locked activities"
+		" are placed in descending order of the sum of the number of teachers and subgroups) and a locked activity is never rescheduled. "
+		"So, FET puts A1 first, then A2, A3, A4 and A5. Since it retries more times separately for each activity, it is able to find a timetable easily.\n\n"
+		"Practical solution to case 2)? Reduce weights of constraints which have weight below 100% or lock (to a corresponding slot) the activity which corresponds to A1 in your data file.");
+	
+	s+="\n\n";
+	s+="-------------------------------------------------------------------------------";
+	s+="\n\n";
+
+	s+=tr("Entry added on 15 Feb. 2010.");
+	s+="\n\n";
+	s+=tr("Q: I need constraint students (set) max days per week, similar to existing teacher(s) max days per week constraint.");
+	s+="\n\n";
+	s+=tr("A: Maybe it will be implemented in the future. Until then, please use constraint students (set) interval max days per week, interval = whole day.");
+	
+	s+="\n\n";
+	s+="-------------------------------------------------------------------------------";
+	s+="\n\n";
+
+	s+=tr("Entry added on 27 Feb. 2010.");
+	s+="\n\n";
+	s+=tr("Q: I tried to work on a fixed timetable, to move an activity to another time slot. Now I got stuck - FET says: impossible to generate.");
+	s+="\n\n";
+	s+=tr("A: There is this potential problem. Suppose you have max hours daily for students = 4 hours, 99%. You generated successfully (maybe you got some days with more"
+		" than 4 hours, it does not matter for our discussion)."
+		" Now, if you have a day with 4 hours and try to move another activity"
+		" to this day, some students will have 5 hours in this day. If in this day all activities have more students sets, FET may report an impossible timetable. Why?"
+		" Because if you have an activity with say 4 subgroups, 99% is assumed for each subgroup, resulting in a very strong constraint for this activity."
+		" (100%-(1%^4)). Even if FET retries more times for each activity, it is not enough.\n\n"
+		" A solution: lower the weight of this constraint from 99% to 90% or less.");
 	
 	textBrowser->setText(s);
 }

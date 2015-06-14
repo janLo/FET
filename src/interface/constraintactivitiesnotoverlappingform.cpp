@@ -15,13 +15,13 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QMessageBox>
+
 #include "longtextmessagebox.h"
 
 #include "constraintactivitiesnotoverlappingform.h"
 #include "addconstraintactivitiesnotoverlappingform.h"
 #include "modifyconstraintactivitiesnotoverlappingform.h"
-
-#include <QDesktopWidget>
 
 ConstraintActivitiesNotOverlappingForm::ConstraintActivitiesNotOverlappingForm()
 {
@@ -199,16 +199,22 @@ void ConstraintActivitiesNotOverlappingForm::filterChanged()
 			constraintsListBox->insertItem(ctr->getDescription(gt.rules));
 		}
 	}
-	if(visibleConstraintsList.count()>0)
+	
+	constraintsListBox->setCurrentItem(0);
+	this->constraintChanged(constraintsListBox->currentItem());
+	
+	/*if(visibleConstraintsList.count()>0)
 		constraintChanged(0);
 	else
-		constraintChanged(-1);
+		constraintChanged(-1);*/
 }
 
 void ConstraintActivitiesNotOverlappingForm::constraintChanged(int index)
 {
-	if(index<0)
+	if(index<0){
+		currentConstraintTextEdit->setText("");
 		return;
+	}
 	assert(index<this->visibleConstraintsList.size());
 	TimeConstraint* ctr=this->visibleConstraintsList.at(index);
 	assert(ctr!=NULL);

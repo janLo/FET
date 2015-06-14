@@ -1,44 +1,38 @@
-I did not put the e-mail of the listed persons, I do not know if they agree (Liviu).
-If you are on this list and want your e-mail listed, please write me!
+Thanks to (chronologically):
 
-
-People who helped me (chronologically)
---------------------------------------
-
-Costin Badica	- my teacher. He actually made me begin this project and provided me with 
-	documentation and advices.
+Costin Badica - he advised Liviu Lalescu to begin this project, offered suggestions and provided him with documentation.
 
 Carsten Niehaus - suggestions.
 
-Imre Nagy 	- e-mail list (does not work anymore), suggestions.
+Imre Nagy - e-mail list (does not work anymore), suggestions.
 
 Sajith V. K. - suggestions
 
-Michael Towers	- lots of bugs reported, sample files, suggestions, front/back-end.
+Michael Towers - lots of bugs reported, sample files, suggestions, front/back-end.
 
-Antti Leppik	- sample file, suggestions.
+Antti Leppik - sample file, suggestions.
 
-Ian Fantom	- sample file, suggestions.
+Ian Fantom - sample file, suggestions.
 
-Simon Ghetti	- sample files, suggestions.
+Simon Ghetti - sample files, suggestions.
 
 Gibbon Tamba - sample file, bug reported.
 
-Jerome Durand - bug reported, French translation (fetfr@free.fr, please also see http://fetfr.free.fr/).
+Jerome Durand - bug reported, French translation.
 
 Marek Jaszuk - bugs reported, suggestions, sample file.
 
 Ramanathan Srinivasan - suggested Constraint2ActivitiesConsecutive and Constraint2ActivitiesGrouped.
 
-Vimal Joseph - suggestins, a script to convert the .xml results into .tex.
+Vimal Joseph - suggestions, a script to convert the .xml results into .tex.
 
 Cristian Gherman - bugs reported, suggestions.
-				
+
 Nicholas Robinson - suggestions.
 
 Radu Spineanu - Debian package.
 
-Morten Piil	- bug reported, sample file.
+Morten Piil - bug reported, sample file.
 
 Sebastian Canagaratna - lots of suggestions, bugs reported, sample files.
 
@@ -66,14 +60,13 @@ Sebastian O'Halloran - suggestions.
 
 Mehmet Gezmisoglu - Turkish translation.
 
-Tom Hosty (tomhosty@hotmail.com) - sample file, bugs reported, user's guide.
+Tom Hosty - sample file, bugs reported, user's guide.
 
 Niels Fikse - Dutch translation.
 
 Simon Bohlin - suggestions.
 
-Volker Dirr - German translation, bug reports, suggestions, 
-2-point and uniform crossover implementation and testing.
+Volker Dirr - German translation, bug reports, suggestions, 2-point and uniform crossover implementation and testing.
 
 Les Richardson - Update of the FAQ.
 
@@ -89,8 +82,7 @@ Andres Chandia - icons.
 
 Zoran Zdravkovski - bug reports, Macedonian translation.
 
-Constantin Romulus - bug reports, sample file (private), small
-improvements in Romanian translation, testing, fet forum logo.
+Constantin Romulus - bug reports, sample file (private), small improvements in Romanian translation, testing, fet forum logo.
 
 L. W. Johnstone - suggestions, sample file.
 
@@ -104,7 +96,7 @@ bb - suggestions.
 
 Maciej Deorowicz - suggestions.
 
-Jose Cesar Fernandez Lopez - Spanish translation.
+José César Fernández López - Spanish translation.
 
 Daniel Chiriac - suggestions.
 
@@ -118,7 +110,7 @@ Nirwan Yus - Indonesian translation.
 
 Marco Barsotti - Italian translation, testing.
 
-Hatim Alahmadi - Arabic translation, sample file.
+Silver - Arabic translation, sample file.
 
 kdsayang - suggestions.
 
@@ -136,7 +128,7 @@ Darius Staigys - Lithuanian translation.
 
 George Miliotis [Ionio] - suggestions.
 
-Silvia - suggestions, sample file.
+Sílvia - suggestions, sample file.
 
 alfaromeo - suggestions, testing.
 
@@ -183,3 +175,49 @@ Ben Bauer - suggestions.
 Rodica Lalescu - suggestions.
 
 Gigica Nedelcu - icons design.
+
+Paolo Cataldi - suggestions.
+
+Gerrit Jan Veltink - sample file, suggestions.
+
+Soyeb Aswat - suggestions.
+
+Andriy Melnyk - Ukrainian translation.
+
+Frans - suggestions.
+
+m - suggestions.
+
+Christoph Schilling - sample file.
+
+Frank Mártin - Brazilian Portuguese translation.
+
+Werner Bruns - Brazilian Portuguese translation.
+
+aliponte - sample file.
+
+David Lamhauge - Danish translation.
+
+murad - suggestions.
+
+Achini Duisna - Sinhala translation.
+
+Ondrej Gregor - Slovak translation.
+
+Karel Rodríguez Varona - bug report.
+
+Remus Turea - help with the FET homepage.
+
+Joachim - suggestions.
+
+Chichi Lalescu - suggestions.
+
+Iftekhar Ahmad - suggestions.
+
+DT - suggestions.
+
+Yotam Medini - Hebrew translation.
+
+mohd - suggestions.
+
+Dimitris Kanatas - Greek translation update.
