@@ -4810,19 +4810,19 @@ tuple)</source>
     </message>
     <message>
         <source>EN</source>
-        <translation>EN</translation>
+        <translation type="obsolete">EN</translation>
     </message>
     <message>
         <source>&amp;EN</source>
-        <translation>&amp;ENG</translation>
+        <translation type="obsolete">&amp;ENG</translation>
     </message>
     <message>
         <source>RO</source>
-        <translation>RO</translation>
+        <translation type="obsolete">RO</translation>
     </message>
     <message>
         <source>&amp;RO</source>
-        <translation>&amp;RO</translation>
+        <translation type="obsolete">&amp;RO</translation>
     </message>
     <message>
         <source>Population number</source>
@@ -4866,11 +4866,11 @@ tuple)</source>
     </message>
     <message>
         <source>FR</source>
-        <translation>FR</translation>
+        <translation type="obsolete">FR</translation>
     </message>
     <message>
         <source>&amp;FR</source>
-        <translation>&amp;FR</translation>
+        <translation type="obsolete">&amp;FR</translation>
     </message>
     <message>
         <source>Activities same starting time</source>
@@ -5070,19 +5070,19 @@ tuple)</source>
     </message>
     <message>
         <source>CA</source>
-        <translation>CA</translation>
+        <translation type="obsolete">CA</translation>
     </message>
     <message>
         <source>&amp;CA</source>
-        <translation>&amp;CA</translation>
+        <translation type="obsolete">&amp;CA</translation>
     </message>
     <message>
         <source>MY</source>
-        <translation>MY</translation>
+        <translation type="obsolete">MY</translation>
     </message>
     <message>
         <source>&amp;MY</source>
-        <translation>&amp;MY</translation>
+        <translation type="obsolete">&amp;MY</translation>
     </message>
     <message>
         <source>Subject preferred room</source>
@@ -5121,14 +5121,6 @@ tuple)</source>
         <translation>Pengajar-subkumpulan bil jam maksima sehari</translation>
     </message>
     <message>
-        <source>PL</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;PL</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Teacher subject require room</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5165,35 +5157,11 @@ tuple)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>TR</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;TR</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>NL</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;NL</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export to i&amp;Cal</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Export to xml and html</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Export to &amp;xml and html</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export to iCal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5214,6 +5182,78 @@ tuple)</source>
     </message>
     <message>
         <source>Students with rooms (2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export to i&amp;Calendar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export to iCalendar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>en_GB (British English)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;en_GB (British English)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ro (Romanian)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;ro (Romanian)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>fr (French)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;fr (French)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ca (Catalan)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;ca (Catalan)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ms (Malay)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;ms (Malay)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pl (Polish)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;pl (Polish)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>tr (Turkish)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;tr (Turkish)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>nl (Dutch)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;nl (Dutch)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5348,7 +5388,7 @@ Dutch translation - by Niels Fikse
     <message>
         <source>FET is free software for automatically scheduling the timetable of a school, high-school or faculty.
 
-Version: 3.18.1 (January 2006)
+Version: 3.18.2 (January 2006)
 
 Licensed under GNU/GPL.
 

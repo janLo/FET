@@ -3,7 +3,7 @@
   <general>
     <author>Liviu Lalescu</author>
     <email>see http://lalescu.ro/liviu/ to find the e-mail</email>
-    <version>3.18.1</version>
+    <version>3.18.2</version>
     <projectmanagement>KDevTrollProject</projectmanagement>
     <primarylanguage>C++</primarylanguage>
     <keywords>

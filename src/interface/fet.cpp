@@ -208,19 +208,19 @@ void readSimulationParameters(){
 	tmp=fetch_line(in, s);
 	if(tmp!=1){
 		//older than version 3.12.21 - has no language saved
-		FET_LANGUAGE="EN";
+		FET_LANGUAGE="en_GB";
 	}
 	else{
 		char ss[100];
 		sscanf(s, "%s", ss);
 		FET_LANGUAGE=ss;
 		cout<<"Read: language="<<FET_LANGUAGE<<endl;
-		if(FET_LANGUAGE!="EN" && FET_LANGUAGE!="FR" 
-		 && FET_LANGUAGE!="RO" && FET_LANGUAGE!="CA" 
-		 && FET_LANGUAGE!="MY" && FET_LANGUAGE!="PL"
-		 && FET_LANGUAGE!="TR" && FET_LANGUAGE!="NL"){
+		if(FET_LANGUAGE!="en_GB" && FET_LANGUAGE!="fr" 
+		 && FET_LANGUAGE!="ro" && FET_LANGUAGE!="ca" 
+		 && FET_LANGUAGE!="ms" && FET_LANGUAGE!="pl"
+		 && FET_LANGUAGE!="tr" && FET_LANGUAGE!="nl"){
 			cout<<"Invalid language - making it english"<<endl;
-			FET_LANGUAGE="EN";
+			FET_LANGUAGE="en_GB";
 		}
 	}
 }
@@ -368,8 +368,8 @@ int main(int argc, char **argv){
 #endif
 
 	//make sure that the output directory exists
-	/*if(!dir.exists(OUTPUT_DIR))
-		dir.mkdir(OUTPUT_DIR);*/
+	if(!dir.exists(OUTPUT_DIR))
+		dir.mkdir(OUTPUT_DIR);
 
 	readSimulationParameters();
 

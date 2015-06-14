@@ -448,7 +448,7 @@ HEADERS += fet.h \
 TRANSLATIONS += ../../translations/fet_ro.ts \
 				../../translations/fet_ca.ts \
                 ../../translations/fet_fr.ts \
-                ../../translations/fet_my.ts \
+                ../../translations/fet_ms.ts \
                 ../../translations/fet_pl.ts \
                 ../../translations/fet_tr.ts \
                 ../../translations/fet_nl.ts

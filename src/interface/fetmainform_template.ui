@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>401</width>
-            <height>233</height>
+            <width>406</width>
+            <height>269</height>
         </rect>
     </property>
     <property name="caption">
@@ -27,7 +27,7 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>401</width>
+            <width>406</width>
             <height>48</height>
         </rect>
     </property>
@@ -477,10 +477,10 @@
             <cstring>languageEnglishAction</cstring>
         </property>
         <property name="text">
-            <string>EN</string>
+            <string>en_GB (British English)</string>
         </property>
         <property name="menuText">
-            <string>&amp;EN</string>
+            <string>&amp;en_GB (British English)</string>
         </property>
     </action>
     <action>
@@ -488,10 +488,10 @@
             <cstring>languageRomanianAction</cstring>
         </property>
         <property name="text">
-            <string>RO</string>
+            <string>ro (Romanian)</string>
         </property>
         <property name="menuText">
-            <string>&amp;RO</string>
+            <string>&amp;ro (Romanian)</string>
         </property>
     </action>
     <action>
@@ -576,10 +576,10 @@
             <cstring>languageFrenchAction</cstring>
         </property>
         <property name="text">
-            <string>FR</string>
+            <string>fr (French)</string>
         </property>
         <property name="menuText">
-            <string>&amp;FR</string>
+            <string>&amp;fr (French)</string>
         </property>
     </action>
     <action>
@@ -1040,10 +1040,10 @@
             <cstring>languageCatalanAction</cstring>
         </property>
         <property name="text">
-            <string>CA</string>
+            <string>ca (Catalan)</string>
         </property>
         <property name="menuText">
-            <string>&amp;CA</string>
+            <string>&amp;ca (Catalan)</string>
         </property>
     </action>
     <action>
@@ -1051,10 +1051,10 @@
             <cstring>languageMalayAction</cstring>
         </property>
         <property name="text">
-            <string>MY</string>
+            <string>ms (Malay)</string>
         </property>
         <property name="menuText">
-            <string>&amp;MY</string>
+            <string>&amp;ms (Malay)</string>
         </property>
     </action>
     <action>
@@ -1110,10 +1110,10 @@
             <cstring>languagePolishAction</cstring>
         </property>
         <property name="text">
-            <string>PL</string>
+            <string>pl (Polish)</string>
         </property>
         <property name="menuText">
-            <string>&amp;PL</string>
+            <string>&amp;pl (Polish)</string>
         </property>
     </action>
     <action>
@@ -1201,10 +1201,10 @@
             <cstring>languageTurkishAction</cstring>
         </property>
         <property name="text">
-            <string>TR</string>
+            <string>tr (Turkish)</string>
         </property>
         <property name="menuText">
-            <string>&amp;TR</string>
+            <string>&amp;tr (Turkish)</string>
         </property>
     </action>
     <action>
@@ -1212,10 +1212,10 @@
             <cstring>languageDutchAction</cstring>
         </property>
         <property name="text">
-            <string>NL</string>
+            <string>nl (Dutch)</string>
         </property>
         <property name="menuText">
-            <string>&amp;NL</string>
+            <string>&amp;nl (Dutch)</string>
         </property>
     </action>
     <action>

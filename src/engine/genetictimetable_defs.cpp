@@ -21,12 +21,12 @@
 /**
 FET version
 */
-const QString FET_VERSION="3.18.1";
+const QString FET_VERSION="3.18.2";
 
 /**
 FET language
 */
-QString FET_LANGUAGE="EN";
+QString FET_LANGUAGE="en_GB";
 
 /**
 Probability for Evolution1 Crossover, in percents

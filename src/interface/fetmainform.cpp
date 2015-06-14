@@ -139,21 +139,21 @@ FetMainForm::FetMainForm() : FetMainForm_template()
 
 	fetMainForm_pointer=this;
 	
-	if(FET_LANGUAGE=="EN")
+	if(FET_LANGUAGE=="en_GB")
 		this->languageEnglish();
-	else if(FET_LANGUAGE=="FR")
+	else if(FET_LANGUAGE=="fr")
 		this->languageFrench();
-	else if(FET_LANGUAGE=="RO")
+	else if(FET_LANGUAGE=="ro")
 		this->languageRomanian();
-	else if(FET_LANGUAGE=="CA")
+	else if(FET_LANGUAGE=="ca")
 		this->languageCatalan();
-	else if(FET_LANGUAGE=="MY")
+	else if(FET_LANGUAGE=="ms")
 		this->languageMalay();
-	else if(FET_LANGUAGE=="PL")
+	else if(FET_LANGUAGE=="pl")
 		this->languagePolish();
-	else if(FET_LANGUAGE=="TR")
+	else if(FET_LANGUAGE=="tr")
 		this->languageTurkish();
-	else if(FET_LANGUAGE=="NL")
+	else if(FET_LANGUAGE=="nl")
 		this->languageDutch();
 
 	//new data
@@ -1369,7 +1369,7 @@ void FetMainForm::languageEnglish()
 		ptranslator=NULL;
 	}
 	
-	FET_LANGUAGE="EN";
+	FET_LANGUAGE="en_GB";
 	
 	languageMenu->setItemChecked(languageMenu->idAt(0), true);
 	languageMenu->setItemChecked(languageMenu->idAt(1), false);
@@ -1397,7 +1397,7 @@ void FetMainForm::languageRomanian()
 	if(!existing)
 		pqapplication->installTranslator(ptranslator);
 	
-	FET_LANGUAGE="RO";
+	FET_LANGUAGE="ro";
 	
 	languageMenu->setItemChecked(languageMenu->idAt(0), false);
 	languageMenu->setItemChecked(languageMenu->idAt(1), false);
@@ -1426,7 +1426,7 @@ void FetMainForm::languageFrench()
 	if(!existing)
 		pqapplication->installTranslator(ptranslator);
 	
-	FET_LANGUAGE="FR";
+	FET_LANGUAGE="fr";
 	
 	languageMenu->setItemChecked(languageMenu->idAt(0), false);
 	languageMenu->setItemChecked(languageMenu->idAt(1), true);
@@ -1455,7 +1455,7 @@ void FetMainForm::languageCatalan()
 	if(!existing)
 		pqapplication->installTranslator(ptranslator);
 	
-	FET_LANGUAGE="CA";
+	FET_LANGUAGE="ca";
 	
 	languageMenu->setItemChecked(languageMenu->idAt(0), false);
 	languageMenu->setItemChecked(languageMenu->idAt(1), false);
@@ -1477,14 +1477,14 @@ void FetMainForm::languageMalay()
 
 	QDir d("/usr/share/fet/translations");
 	if(d.exists())
-		ptranslator->load("fet_my", "/usr/share/fet/translations");
+		ptranslator->load("fet_ms", "/usr/share/fet/translations");
 	else
-		ptranslator->load("fet_my", "translations");
+		ptranslator->load("fet_ms", "translations");
 
 	if(!existing)
 		pqapplication->installTranslator(ptranslator);
 	
-	FET_LANGUAGE="MY";
+	FET_LANGUAGE="ms";
 	
 	languageMenu->setItemChecked(languageMenu->idAt(0), false);
 	languageMenu->setItemChecked(languageMenu->idAt(1), false);
@@ -1513,7 +1513,7 @@ void FetMainForm::languagePolish()
 	if(!existing)
 		pqapplication->installTranslator(ptranslator);
 	
-	FET_LANGUAGE="PL";
+	FET_LANGUAGE="pl";
 	
 	languageMenu->setItemChecked(languageMenu->idAt(0), false);
 	languageMenu->setItemChecked(languageMenu->idAt(1), false);
@@ -1542,7 +1542,7 @@ void FetMainForm::languageTurkish()
 	if(!existing)
 		pqapplication->installTranslator(ptranslator);
 	
-	FET_LANGUAGE="TR";
+	FET_LANGUAGE="tr";
 	
 	languageMenu->setItemChecked(languageMenu->idAt(0), false);
 	languageMenu->setItemChecked(languageMenu->idAt(1), false);
@@ -1571,7 +1571,7 @@ void FetMainForm::languageDutch()
 	if(!existing)
 		pqapplication->installTranslator(ptranslator);
 	
-	FET_LANGUAGE="NL";
+	FET_LANGUAGE="nl";
 	
 	languageMenu->setItemChecked(languageMenu->idAt(0), false);
 	languageMenu->setItemChecked(languageMenu->idAt(1), false);

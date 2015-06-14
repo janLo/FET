@@ -4521,22 +4521,6 @@ alle deelactiviteiten een beperking worden aangemaakt.)</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>EN</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;EN</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>RO</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;RO</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Population number</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4574,14 +4558,6 @@ alle deelactiviteiten een beperking worden aangemaakt.)</translation>
     </message>
     <message>
         <source>Activities preferred times</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>FR</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;FR</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4781,22 +4757,6 @@ alle deelactiviteiten een beperking worden aangemaakt.)</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>CA</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;CA</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>MY</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;MY</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Subject preferred room</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4818,14 +4778,6 @@ alle deelactiviteiten een beperking worden aangemaakt.)</translation>
     </message>
     <message>
         <source>Teachers-subject tag max hours continuously</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>PL</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;PL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4865,35 +4817,11 @@ alle deelactiviteiten een beperking worden aangemaakt.)</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>TR</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;TR</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>NL</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;NL</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export to i&amp;Cal</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Export to xml and html</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Export to &amp;xml and html</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export to iCal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4914,6 +4842,78 @@ alle deelactiviteiten een beperking worden aangemaakt.)</translation>
     </message>
     <message>
         <source>Students with rooms (2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export to i&amp;Calendar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export to iCalendar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>en_GB (British English)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;en_GB (British English)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ro (Romanian)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;ro (Romanian)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>fr (French)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;fr (French)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ca (Catalan)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;ca (Catalan)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ms (Malay)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;ms (Malay)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pl (Polish)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;pl (Polish)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>tr (Turkish)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;tr (Turkish)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>nl (Dutch)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;nl (Dutch)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5048,7 +5048,7 @@ Dutch translation - by Niels Fikse
     <message>
         <source>FET is free software for automatically scheduling the timetable of a school, high-school or faculty.
 
-Version: 3.18.1 (January 2006)
+Version: 3.18.2 (January 2006)
 
 Licensed under GNU/GPL.
 

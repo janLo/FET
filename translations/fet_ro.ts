@@ -5029,11 +5029,11 @@ separated by commas (maximum 20 for now).
     </message>
     <message>
         <source>&amp;EN</source>
-        <translation>&amp;EN</translation>
+        <translation type="obsolete">&amp;EN</translation>
     </message>
     <message>
         <source>&amp;RO</source>
-        <translation>&amp;RO</translation>
+        <translation type="obsolete">&amp;RO</translation>
     </message>
     <message>
         <source>&amp;Frequently asked questions</source>
@@ -5141,11 +5141,11 @@ separated by commas (maximum 20 for now).
     </message>
     <message>
         <source>EN</source>
-        <translation>EN</translation>
+        <translation type="obsolete">EN</translation>
     </message>
     <message>
         <source>RO</source>
-        <translation>RO</translation>
+        <translation type="obsolete">RO</translation>
     </message>
     <message>
         <source>Population number</source>
@@ -5173,11 +5173,11 @@ separated by commas (maximum 20 for now).
     </message>
     <message>
         <source>FR</source>
-        <translation>FR</translation>
+        <translation type="obsolete">FR</translation>
     </message>
     <message>
         <source>&amp;FR</source>
-        <translation>&amp;FR</translation>
+        <translation type="obsolete">&amp;FR</translation>
     </message>
     <message>
         <source>Activities same starting time</source>
@@ -5426,19 +5426,19 @@ Studenti - n ore zilnic</translation>
     </message>
     <message>
         <source>CA</source>
-        <translation>CA</translation>
+        <translation type="obsolete">CA</translation>
     </message>
     <message>
         <source>&amp;CA</source>
-        <translation>&amp;CA</translation>
+        <translation type="obsolete">&amp;CA</translation>
     </message>
     <message>
         <source>MY</source>
-        <translation>MY</translation>
+        <translation type="obsolete">MY</translation>
     </message>
     <message>
         <source>&amp;MY</source>
-        <translation>&amp;MY</translation>
+        <translation type="obsolete">&amp;MY</translation>
     </message>
     <message>
         <source>Subject preferred room</source>
@@ -5482,11 +5482,11 @@ Studenti - n ore zilnic</translation>
     </message>
     <message>
         <source>PL</source>
-        <translation>PL</translation>
+        <translation type="obsolete">PL</translation>
     </message>
     <message>
         <source>&amp;PL</source>
-        <translation>&amp;PL</translation>
+        <translation type="obsolete">&amp;PL</translation>
     </message>
     <message>
         <source>Teacher subject require room</source>
@@ -5546,23 +5546,23 @@ Studenti - n ore zilnic</translation>
     </message>
     <message>
         <source>TR</source>
-        <translation>TR</translation>
+        <translation type="obsolete">TR</translation>
     </message>
     <message>
         <source>&amp;TR</source>
-        <translation>&amp;TR</translation>
+        <translation type="obsolete">&amp;TR</translation>
     </message>
     <message>
         <source>NL</source>
-        <translation>NL</translation>
+        <translation type="obsolete">NL</translation>
     </message>
     <message>
         <source>&amp;NL</source>
-        <translation>&amp;NL</translation>
+        <translation type="obsolete">&amp;NL</translation>
     </message>
     <message>
         <source>Export to i&amp;Cal</source>
-        <translation>Exporta in i&amp;Cal</translation>
+        <translation type="obsolete">Exporta in i&amp;Cal</translation>
     </message>
     <message>
         <source>Export to xml and html</source>
@@ -5574,7 +5574,7 @@ Studenti - n ore zilnic</translation>
     </message>
     <message>
         <source>Export to iCal</source>
-        <translation>Exporta in iCal</translation>
+        <translation type="obsolete">Exporta in iCal</translation>
     </message>
     <message>
         <source>Students</source>
@@ -5595,6 +5595,86 @@ Studenti - n ore zilnic</translation>
     <message>
         <source>Students with rooms (2)</source>
         <translation>Studenti cu sali (2)</translation>
+    </message>
+    <message>
+        <source>Export to i&amp;Calendar</source>
+        <translation>Exporta in i&amp;Calendar</translation>
+    </message>
+    <message>
+        <source>Export to iCalendar</source>
+        <translation>Exporta in iCalendar</translation>
+    </message>
+    <message>
+        <source>MS</source>
+        <translation type="obsolete">MS</translation>
+    </message>
+    <message>
+        <source>&amp;MS</source>
+        <translation type="obsolete">&amp;MS</translation>
+    </message>
+    <message>
+        <source>en_GB (British English)</source>
+        <translation>en_GB (British English)</translation>
+    </message>
+    <message>
+        <source>&amp;en_GB (British English)</source>
+        <translation>&amp;en_GB (British English)</translation>
+    </message>
+    <message>
+        <source>ro (Romanian)</source>
+        <translation>ro (Romanian)</translation>
+    </message>
+    <message>
+        <source>&amp;ro (Romanian)</source>
+        <translation>&amp;ro (Romanian)</translation>
+    </message>
+    <message>
+        <source>fr (French)</source>
+        <translation>fr (French)</translation>
+    </message>
+    <message>
+        <source>&amp;fr (French)</source>
+        <translation>&amp;fr (French)</translation>
+    </message>
+    <message>
+        <source>ca (Catalan)</source>
+        <translation>ca (Catalan)</translation>
+    </message>
+    <message>
+        <source>&amp;ca (Catalan)</source>
+        <translation>&amp;ca (Catalan)</translation>
+    </message>
+    <message>
+        <source>ms (Malay)</source>
+        <translation>ms (Malay)</translation>
+    </message>
+    <message>
+        <source>&amp;ms (Malay)</source>
+        <translation>&amp;ms (Malay)</translation>
+    </message>
+    <message>
+        <source>pl (Polish)</source>
+        <translation>pl (Polish)</translation>
+    </message>
+    <message>
+        <source>&amp;pl (Polish)</source>
+        <translation>&amp;pl (Polish)</translation>
+    </message>
+    <message>
+        <source>tr (Turkish)</source>
+        <translation>tr (Turkish)</translation>
+    </message>
+    <message>
+        <source>&amp;tr (Turkish)</source>
+        <translation>&amp;tr (Turkish)</translation>
+    </message>
+    <message>
+        <source>nl (Dutch)</source>
+        <translation>nl (Dutch)</translation>
+    </message>
+    <message>
+        <source>&amp;nl (Dutch)</source>
+        <translation>&amp;nl (Dutch)</translation>
     </message>
 </context>
 <context>
@@ -5728,7 +5808,7 @@ Dutch translation - by Niels Fikse
     <message>
         <source>FET is free software for automatically scheduling the timetable of a school, high-school or faculty.
 
-Version: 3.18.1 (January 2006)
+Version: 3.18.2 (January 2006)
 
 Licensed under GNU/GPL.
 
@@ -5741,7 +5821,7 @@ This project is open source. You are invited to contribute to this software and 
 Please support this project by making a donation. You can contact the author or a translator for that.</source>
         <translation>FET este software liber pentru automatizarea crearii orarului unei scoli, liceu sau facultate.
 
-Versiunea: 3.18.1 (Ianuarie 2006)
+Versiunea: 3.18.2 (Ianuarie 2006)
 
 Program sub licenta GNU/GPL
 

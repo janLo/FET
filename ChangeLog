@@ -656,8 +656,13 @@ Versions 3.17.0 - 3.17.12
 	- Began Dutch translation (by Niels Fikse).
 ---------------------------------------------------------------------------------
 Versions 3.18.0 - 3.18.x
-	- Liviu Lalescu
+	- Liviu Lalescu,
+	Polish translation update by Radoslaw Pasiok
 - Version 3.18.0
 	- Added the possibility to export to iCalendar (suggested by Simon Bohlin).
 - Version 3.18.1
 	- Small bug fix.
+- Version 3.18.2
+	- Changed MY into MS (Malay language).
+	- Improved the languages menu.
+	- Improved Polish translation (by Radoslaw Pasiok).
