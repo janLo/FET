@@ -11,6 +11,7 @@
 //
 //
 #include "addstudentsgroupform.h"
+#include "modifystudentsgroupform.h"
 #include "groupsform.h"
 #include "genetictimetable_defs.h"
 #include "genetictimetable.h"
@@ -110,4 +111,50 @@ void GroupsForm::groupChanged(const QString &groupName)
 		return;
 	StudentsGroup* sg=(StudentsGroup*)ss;
 	groupTextEdit->setText(sg->getDetailedDescription());
+}
+
+void GroupsForm::sortGroups()
+{
+	if(yearsListBox->currentItem()<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected year"));
+		return;
+	}
+	int yearIndex=gt.rules.searchYear(yearsListBox->currentText());
+	assert(yearIndex>=0);
+	
+	gt.rules.sortGroupsAlphabetically(yearsListBox->currentText());
+
+	yearChanged(yearsListBox->currentText());
+}
+
+void GroupsForm::modifyGroup()
+{
+	if(yearsListBox->currentItem()<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected year"));
+		return;
+	}
+	
+	QString yearName=yearsListBox->currentText();
+	
+	int yearIndex=gt.rules.searchYear(yearsListBox->currentText());
+	assert(yearIndex>=0);
+	
+	int ci=groupsListBox->currentItem();
+	if(groupsListBox->currentItem()<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected group"));
+		return;
+	}
+
+	QString groupName=groupsListBox->currentText();
+	int groupIndex=gt.rules.searchGroup(yearsListBox->currentText(), groupName);
+	assert(groupIndex>=0);
+
+	int numberOfStudents=gt.rules.searchStudentsSet(groupName)->numberOfStudents;
+	
+	ModifyStudentsGroupForm* modifyStudentsGroupForm=new ModifyStudentsGroupForm(yearName, groupName, numberOfStudents);
+	modifyStudentsGroupForm->exec();
+
+	yearChanged(yearsListBox->currentText());
+	
+	groupsListBox->setCurrentItem(ci);
 }

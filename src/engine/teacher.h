@@ -20,12 +20,16 @@
 
 class Teacher;
 
-typedef QPtrList<Teacher> TeachersList;
+class TeachersList: public QPtrList<Teacher>
+{
+	int compareItems(QPtrCollection::Item,QPtrCollection::Item);
+};
 
 /**
 @author Liviu Lalescu
 */
-class Teacher{
+class Teacher
+{
 public:
 	QString name;
 

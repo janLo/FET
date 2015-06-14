@@ -71,6 +71,11 @@ public:
 	QString subjectName;
 
 	/**
+	The name of the subject tag.
+	*/
+	QString subjectTagName;
+
+	/**
 	The names of the sets of students involved in this activity (years, groups or subgroups).
 	*/
 	QStringList studentsNames;
@@ -163,6 +168,7 @@ public:
 		int _activityGroupId,
 		const QStringList& _teachersNames,
 		const QString& _subjectName,
+		const QString& _subjectTagName,
 		const QStringList& _studentsNames,
 		int _duration,
 		int _totalDuration,
@@ -174,9 +180,19 @@ public:
 	void removeTeacher(const QString& teacherName);
 
 	/**
+	Renames this teacher in the list of teachers
+	*/
+	void renameTeacher(const QString& initialTeacherName, const QString& finalTeacherName);
+
+	/**
 	Removes this students set from the list of students
 	*/
 	void removeStudents(const QString& studentsName);
+
+	/**
+	Renames this students set in the list of students
+	*/
+	void renameStudents(const QString& initialStudentsName, const QString& finalStudentsName);
 
 	/**
 	Computes the internal structure

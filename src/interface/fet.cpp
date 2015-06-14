@@ -151,6 +151,10 @@ void readSimulationParameters(){
 	assert(tmp==1);
 	tmp=sscanf(s, "%d", &population_number);
 	assert(tmp==1);
+	if(population_number>MAX_POPULATION_SIZE){
+		population_number=MAX_POPULATION_SIZE;
+		cout<<"Population too large ("<<population_number<<"), making it MAX_POPULATION_SIZE="<<MAX_POPULATION_SIZE<<endl;
+	}
 	assert(population_number>0 && population_number<=MAX_POPULATION_SIZE);
 	cout<<"Read: population number for the simulation="<<population_number<<endl;
 
@@ -200,6 +204,22 @@ void readSimulationParameters(){
 	cout<<"Read: method2 propagation probability="<<METHOD2_PROPAGATION_PROBABILITY<<endl;
 
 	assert(METHOD2_MUTATION1_PROBABILITY+METHOD2_MUTATION2_PROBABILITY+METHOD2_CROSSOVER_PROBABILITY+METHOD2_PROPAGATION_PROBABILITY==100);
+	
+	tmp=fetch_line(in, s);
+	if(tmp!=1){
+		//older than version 3.12.21 - has no language saved
+		FET_LANGUAGE="EN";
+	}
+	else{
+		char ss[100];
+		sscanf(s, "%s", ss);
+		FET_LANGUAGE=ss;
+		cout<<"Read: language="<<FET_LANGUAGE<<endl;
+		if(FET_LANGUAGE!="EN" && FET_LANGUAGE!="FR" && FET_LANGUAGE!="RO" && FET_LANGUAGE!="CA"){
+			cout<<"Invalid language - making it english"<<endl;
+			FET_LANGUAGE="EN";
+		}
+	}
 }
 
 void writeSimulationParameters(){
@@ -212,10 +232,10 @@ void writeSimulationParameters(){
 	cout<<"Writing parameters to file "<<INI_FILENAME<<endl;
 
 	//read main parameters of the simulation
-	out<<"# This is FET's configuration file"<<endl<<endl<<endl;
+	out<<"# This is FET's configuration file (FET version="<<(const char*)(FET_VERSION)<<")"<<endl<<endl<<endl;
 
 	out<<"# This is the working directory (used in open/save as file dialog)"<<endl;
-	out<<WORKING_DIRECTORY<<endl<<endl<<endl;
+	out<<(const char*)(WORKING_DIRECTORY)<<endl<<endl<<endl;
 
 	out<<"# The time limit that the program is allowed to search for the solution (in seconds). Minimum"<<endl;
 	out<<"# recommended value is 600"<<endl;
@@ -259,9 +279,12 @@ void writeSimulationParameters(){
 	out<<METHOD2_CROSSOVER_PROBABILITY<<endl;
 
 	out<<"#Evolution 2 - Propagation probability"<<endl;
-	out<<METHOD2_PROPAGATION_PROBABILITY<<endl;
+	out<<METHOD2_PROPAGATION_PROBABILITY<<endl<<endl<<endl;
 
 	assert(METHOD2_MUTATION1_PROBABILITY+METHOD2_MUTATION2_PROBABILITY+METHOD2_CROSSOVER_PROBABILITY+METHOD2_PROPAGATION_PROBABILITY==100);
+	
+	out<<"#FET Language"<<endl;
+	out<<(const char*)(FET_LANGUAGE)<<endl;
 }
 
 void writeDefaultSimulationParameters(){
@@ -274,18 +297,18 @@ void writeDefaultSimulationParameters(){
 	cout<<"Writing parameters to file "<<INI_FILENAME<<endl;
 
 	//read main parameters of the simulation
-	out<<"# This is FET's configuration file"<<endl<<endl<<endl;
+	out<<"# This is FET's configuration file (FET version="<<(const char*)(FET_VERSION)<<")"<<endl<<endl<<endl;
 
 	out<<"# This is the working directory (used in open/save as file dialog)"<<endl;
-	cout<<"Home dir path="<<QDir::homeDirPath()<<endl;
+	cout<<"Home dir path="<<(const char*)(QDir::homeDirPath())<<endl;
 	out<<"sample_inputs"<<endl<<endl<<endl;
 
 	out<<"# The time limit that the program is allowed to search for the solution (in seconds). Minimum"<<endl;
 	out<<"# recommended value is 600"<<endl;
-	out<<3600000<<endl<<endl<<endl;
+	out<<2000000000<<endl<<endl<<endl;
 
 	out<<"# The maximum number of allowed generations"<<endl;
-	out<<100000000<<endl<<endl<<endl;
+	out<<2000000000<<endl<<endl<<endl;
 
 	out<<"# The population number (minimum recommended: 512, maximum: "<<MAX_POPULATION_SIZE<<")"<<endl;
 	out<<"# (variable MAX_POPULATION_SIZE in file genetictimetable_defs.h)"<<endl;
@@ -320,7 +343,10 @@ void writeDefaultSimulationParameters(){
 	out<<20<<endl;
 
 	out<<"#Evolution 2 - Propagation probability"<<endl;
-	out<<10<<endl;
+	out<<10<<endl<<endl<<endl;
+
+	out<<"#FET Language"<<endl;
+	out<<(const char*)(FET_LANGUAGE)<<endl;
 }
 
 /**

@@ -89,3 +89,13 @@ QString Room::getXMLDescription()
 
 	return s;
 }
+
+int RoomsList::compareItems(QPtrCollection::Item item1, QPtrCollection::Item item2)
+{
+	if(((Room*)item1)->name > ((Room*)item2)->name)
+		return 1;
+	else if(((Room*)item1)->name < ((Room*)item2)->name)
+		return -1;
+	else
+		return 0;
+}

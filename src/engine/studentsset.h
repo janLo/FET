@@ -32,9 +32,20 @@ class StudentsYear;
 class StudentsGroup;
 class StudentsSubgroup;
 
-typedef QPtrList<StudentsYear> StudentsYearsList;
-typedef QPtrList<StudentsGroup> StudentsGroupsList;
-typedef QPtrList<StudentsSubgroup> StudentsSubgroupsList;
+class StudentsYearsList: public QPtrList<StudentsYear>
+{
+	int compareItems(QPtrCollection::Item, QPtrCollection::Item);
+};
+
+class StudentsGroupsList: public QPtrList<StudentsGroup>
+{
+	int compareItems(QPtrCollection::Item, QPtrCollection::Item);
+};
+
+class StudentsSubgroupsList: public QPtrList<StudentsSubgroup>
+{
+	int compareItems(QPtrCollection::Item, QPtrCollection::Item);
+};
 
 class StudentsSet
 {
@@ -72,7 +83,6 @@ public:
 	QString getDescription();
 	QString getDetailedDescription();
 };
-
 
 class StudentsSubgroup: public StudentsSet
 {

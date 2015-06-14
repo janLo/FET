@@ -43,6 +43,7 @@ public:
 
 	void constraintChanged(int index);
 	void addConstraint();
+	void modifyConstraint();
 	void removeConstraint();
 	
 	void refreshConstraintsListBox();

@@ -64,6 +64,7 @@ AddActivityForm::AddActivityForm()
 	updateStudentsComboBox();
 	updateTeachersComboBox();
 	updateSubjectsComboBox();
+	updateSubjectTagsComboBox();
 
 	minDayDistanceSpinBox->setMaxValue(gt.rules.nDaysPerWeek-1);
 	minDayDistanceSpinBox->setMinValue(0);
@@ -110,6 +111,18 @@ void AddActivityForm::updateSubjectsComboBox()
 		subjectsComboBox->insertItem(sbj->name);
 
 	subjectChanged(subjectsComboBox->currentText());
+}
+
+void AddActivityForm::updateSubjectTagsComboBox()
+{
+	subjectTagsComboBox->clear();
+	subjectTagsComboBox->insertItem("");
+	for(SubjectTag* sbt=gt.rules.subjectTagsList.first(); sbt; sbt=gt.rules.subjectTagsList.next())
+		subjectTagsComboBox->insertItem(sbt->name);
+		
+	subjectTagsComboBox->setCurrentItem(0);
+
+	subjectTagChanged(subjectTagsComboBox->currentText());
 }
 
 void AddActivityForm::showYearsChanged()
@@ -231,6 +244,14 @@ void AddActivityForm::subjectChanged(const QString& dummy)
 	activityChanged();
 }
 
+void AddActivityForm::subjectTagChanged(const QString& dummy)
+{
+	if(dummy=="")
+		;
+
+	activityChanged();
+}
+
 void AddActivityForm::studentsChanged(const QString& dummy)
 {
 	if(dummy=="")
@@ -269,6 +290,9 @@ void AddActivityForm::activityChanged()
 		s+="\n";
 	}
 	s+=QObject::tr(QString("Subject=%1").arg(subjectsComboBox->currentText()));s+="\n";
+	if(subjectTagsComboBox->currentText()!=""){
+		s+=QObject::tr(QString("Subject tag=%1").arg(subjectTagsComboBox->currentText()));s+="\n";
+	}
 	s+=QObject::tr(QString("Students=%1").arg(students1ComboBox->currentText()));s+="\n";
 	if(students2ComboBox->currentItem()!=0){
 		s+=QObject::tr(QString("Students=%1").arg(students2ComboBox->currentText()));
@@ -363,6 +387,15 @@ void AddActivityForm::addActivity()
 		return;
 	}
 
+	//subject tag
+	QString subject_tag_name=subjectTagsComboBox->currentText();
+	int subject_tag_index=gt.rules.searchSubjectTag(subject_tag_name);
+	if(subject_tag_index<0 && subject_tag_name!=""){
+		QMessageBox::warning(this, QObject::tr("FET information"),
+			QObject::tr("Invalid subject tag"));
+		return;
+	}
+
 	//students
 	QStringList students_names;
 	if(students1ComboBox->currentItem()<0 || students1ComboBox->currentText()==""){
@@ -416,7 +449,7 @@ void AddActivityForm::addActivity()
 			if(act->id > activityid)
 				activityid = act->id;
 		activityid++;
-		Activity a(gt.rules, activityid, 0, teachers_names, subject_name, students_names,
+		Activity a(gt.rules, activityid, 0, teachers_names, subject_name, subject_tag_name, students_names,
 			duration, duration, parity);
 
 		bool already_existing=false;
@@ -433,7 +466,7 @@ void AddActivityForm::addActivity()
 				return;
 		}
 
-		bool tmp=gt.rules.addSimpleActivity(activityid, 0, teachers_names, subject_name,
+		bool tmp=gt.rules.addSimpleActivity(activityid, 0, teachers_names, subject_name, subject_tag_name,
 			students_names,	duration, duration, parity, preferred_day, preferred_hour);
 		if(tmp)
 			QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Activity added"));
@@ -442,10 +475,10 @@ void AddActivityForm::addActivity()
 	}
 	else{ //split activity
 		int totalduration;
-		int durations[MAX_CONSTRAINT_MIN_N_DAYS_BETWEEN_ACTIVITIES];
-		int parities[MAX_CONSTRAINT_MIN_N_DAYS_BETWEEN_ACTIVITIES];
-		int preferred_days[MAX_CONSTRAINT_MIN_N_DAYS_BETWEEN_ACTIVITIES];
-		int preferred_hours[MAX_CONSTRAINT_MIN_N_DAYS_BETWEEN_ACTIVITIES];
+		int durations[8];
+		int parities[8];
+		int preferred_days[8];
+		int preferred_hours[8];
 		int nsplit=splitSpinBox->value();
 
 		totalduration=0;
@@ -470,7 +503,7 @@ void AddActivityForm::addActivity()
 
 		int minD=minDayDistanceSpinBox->value();
 		bool tmp=gt.rules.addSplitActivity(firstactivityid, firstactivityid,
-			teachers_names, subject_name, students_names,
+			teachers_names, subject_name, subject_tag_name, students_names,
 			nsplit, totalduration, durations,
 			parities, minD, preferred_days, preferred_hours);
 		if(tmp)

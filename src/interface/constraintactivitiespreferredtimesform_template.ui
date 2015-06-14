@@ -35,14 +35,6 @@
                 <string>Close</string>
             </property>
         </widget>
-        <widget class="QPushButton" row="2" column="0">
-            <property name="name">
-                <cstring>addConstraintPushButton</cstring>
-            </property>
-            <property name="text">
-                <string>Add</string>
-            </property>
-        </widget>
         <widget class="QPushButton" row="2" column="3">
             <property name="name">
                 <cstring>removeConstraintPushButton</cstring>
@@ -83,6 +75,22 @@
                 <cstring>constraintsListBox</cstring>
             </property>
         </widget>
+        <widget class="QPushButton" row="2" column="0">
+            <property name="name">
+                <cstring>addConstraintPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Add</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="2" column="1" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>modifyConstraintPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Modify</string>
+            </property>
+        </widget>
     </grid>
 </widget>
 <connections>
@@ -110,11 +118,18 @@
         <receiver>ConstraintActivitiesPreferredTimesForm_template</receiver>
         <slot>removeConstraint()</slot>
     </connection>
+    <connection>
+        <sender>modifyConstraintPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>ConstraintActivitiesPreferredTimesForm_template</receiver>
+        <slot>modifyConstraint()</slot>
+    </connection>
 </connections>
 <slots>
     <slot>addConstraint()</slot>
     <slot>constraintChanged(int)</slot>
     <slot>removeConstraint()</slot>
+    <slot>modifyConstraint()</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

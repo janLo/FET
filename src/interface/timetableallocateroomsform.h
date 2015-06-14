@@ -71,9 +71,31 @@ public:
 	void writeSimulationResults(SpaceChromosome& c);
 
 	/**
-	Function writing the rooms' timetable xml format, to a file
+	Function writing the rooms' timetable in xml format, to a file
 	*/
-	void writeRoomsTimetable(const QString& xmlfilename);
+	void writeRoomsTimetableXml(const QString& xmlfilename);
+
+	/**
+	Function writing the students' timetable (with rooms) in html format, to a file
+	*/
+	void writeStudentsTimetableWithRoomsHtml(const QString& htmlfilename);
+
+	/**
+	Function writing the teachers' timetable (with rooms) in html format, to a file
+	Variant 1.
+	*/
+	void writeTeachersTimetableWithRooms1Html(const QString& htmlfilename);
+
+	/**
+	Function writing the teachers' timetable (with rooms) in html format, to a file
+	Variant 2.
+	*/
+	void writeTeachersTimetableWithRooms2Html(const QString& htmlfilename);
+
+	/**
+	Function writing the rooms' timetable in html format, to a file
+	*/
+	void writeRoomsTimetableHtml(const QString& htmlfilename);
 
 	void getRoomsTimetable(SpaceChromosome& c);
 

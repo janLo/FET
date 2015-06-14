@@ -3,7 +3,7 @@
   <general>
     <author>Liviu Lalescu</author>
     <email>liviu@lalescu.ro</email>
-    <version>3.9.21</version>
+    <version>3.12.30</version>
     <projectmanagement>KDevTrollProject</projectmanagement>
     <primarylanguage>C++</primarylanguage>
     <keywords>
@@ -11,7 +11,7 @@
     </keywords>
     <projectdirectory>.</projectdirectory>
     <absoluteprojectpath>false</absoluteprojectpath>
-    <description></description>
+    <description/>
     <ignoreparts/>
     <secondaryLanguages/>
   </general>
@@ -48,16 +48,16 @@
   </kdevdoctreeview>
   <kdevdebugger>
     <general>
-      <dbgshell></dbgshell>
+      <dbgshell/>
       <breakpoints/>
-      <programargs></programargs>
+      <programargs/>
       <gdbpath>/usr/bin/</gdbpath>
       <breakonloadinglibs>true</breakonloadinglibs>
       <separatetty>false</separatetty>
       <floatingtoolbar>false</floatingtoolbar>
-      <configGdbScript></configGdbScript>
-      <runShellScript></runShellScript>
-      <runGdbScript></runGdbScript>
+      <configGdbScript/>
+      <runShellScript/>
+      <runGdbScript/>
     </general>
     <display>
       <staticmembers>false</staticmembers>
@@ -68,7 +68,7 @@
   <kdevtrollproject>
     <run>
       <mainprogram>fet</mainprogram>
-      <programargs></programargs>
+      <programargs/>
       <terminal>false</terminal>
       <envvars/>
       <directoryradio>executable</directoryradio>
@@ -82,7 +82,7 @@
       <abortonerror>false</abortonerror>
       <numberofjobs>1</numberofjobs>
       <dontact>false</dontact>
-      <makebin></makebin>
+      <makebin/>
       <envvars/>
     </make>
     <subclassing/>

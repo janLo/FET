@@ -12,6 +12,7 @@
 //
 
 #include "addstudentsyearform.h"
+#include "modifystudentsyearform.h"
 #include "genetictimetable_defs.h"
 #include "genetictimetable.h"
 #include "fet.h"
@@ -74,4 +75,33 @@ void YearsForm::yearChanged()
 		return;
 	StudentsYear* sty=gt.rules.yearsList.at(yearsListBox->currentItem());
 	detailsTextEdit->setText(sty->getDetailedDescription());
+}
+
+void YearsForm::sortYears()
+{
+	gt.rules.sortYearsAlphabetically();
+
+	yearsListBox->clear();
+	for(StudentsYear* year=gt.rules.yearsList.first(); year; year=gt.rules.yearsList.next())
+		yearsListBox->insertItem(year->name);
+}
+
+void YearsForm::modifyYear()
+{
+	int ci=yearsListBox->currentItem();
+	if(yearsListBox->currentItem()<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected year"));
+		return;
+	}
+	QString yearName=yearsListBox->currentText();
+	int numberOfStudents=gt.rules.searchStudentsSet(yearName)->numberOfStudents;
+	
+	ModifyStudentsYearForm* modifyStudentsYearForm=new ModifyStudentsYearForm(yearName, numberOfStudents);
+	modifyStudentsYearForm->exec();
+
+	yearsListBox->clear();
+	for(StudentsYear* year=gt.rules.yearsList.first(); year; year=gt.rules.yearsList.next())
+		yearsListBox->insertItem(year->name);
+		
+	yearsListBox->setCurrentItem(ci);
 }

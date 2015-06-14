@@ -13,7 +13,6 @@
 #ifndef EQUIPMENTSFORM_H
 #define EQUIPMENTSFORM_H
 
-#include "addequipmentform.h"
 #include "equipmentsform_template.h"
 
 /**
@@ -29,6 +28,10 @@ public:
 	void addEquipment();
 
 	void removeEquipment();
+
+	void modifyEquipment();
+
+	void sortEquipments();
 
 	void equipmentChanged(int index);
 };

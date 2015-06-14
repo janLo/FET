@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.2" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
 <class>RoomsForm_template</class>
 <widget class="QDialog">
     <property name="name">
@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>535</width>
-            <height>535</height>
+            <width>533</width>
+            <height>561</height>
         </rect>
     </property>
     <property name="caption">
@@ -53,7 +53,7 @@
                 <cstring>roomsListBox</cstring>
             </property>
         </widget>
-        <widget class="QPushButton" row="3" column="0" rowspan="1" colspan="2">
+        <widget class="QPushButton" row="4" column="0" rowspan="1" colspan="2">
             <property name="name">
                 <cstring>closePushButton</cstring>
             </property>
@@ -61,12 +61,28 @@
                 <string>Close</string>
             </property>
         </widget>
-        <widget class="QPushButton" row="2" column="0" rowspan="1" colspan="2">
+        <widget class="QPushButton" row="3" column="0" rowspan="1" colspan="2">
             <property name="name">
                 <cstring>roomsEquipmentsPushButton</cstring>
             </property>
             <property name="text">
                 <string>Rooms' equipments</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="2" column="1">
+            <property name="name">
+                <cstring>sortRoomsPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Sort by name</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="2" column="0">
+            <property name="name">
+                <cstring>modifyRoomPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Modify current</string>
             </property>
         </widget>
     </grid>
@@ -102,12 +118,36 @@
         <receiver>RoomsForm_template</receiver>
         <slot>close()</slot>
     </connection>
+    <connection>
+        <sender>modifyRoomPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>RoomsForm_template</receiver>
+        <slot>modifyRoom()</slot>
+    </connection>
+    <connection>
+        <sender>sortRoomsPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>RoomsForm_template</receiver>
+        <slot>sortRooms()</slot>
+    </connection>
 </connections>
+<tabstops>
+    <tabstop>addRoomPushButton</tabstop>
+    <tabstop>removeRoomPushButton</tabstop>
+    <tabstop>modifyRoomPushButton</tabstop>
+    <tabstop>sortRoomsPushButton</tabstop>
+    <tabstop>roomsEquipmentsPushButton</tabstop>
+    <tabstop>closePushButton</tabstop>
+    <tabstop>roomsListBox</tabstop>
+    <tabstop>currentRoomTextEdit</tabstop>
+</tabstops>
 <slots>
     <slot>addRoom()</slot>
     <slot>removeRoom()</slot>
     <slot>roomChanged(int)</slot>
     <slot>roomsEquipments()</slot>
+    <slot>sortRooms()</slot>
+    <slot>modifyRoom()</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

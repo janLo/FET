@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.1" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
 <class>SubjectsForm_template</class>
 <widget class="QDialog">
     <property name="name">
@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>421</width>
-            <height>480</height>
+            <width>447</width>
+            <height>512</height>
         </rect>
     </property>
     <property name="caption">
@@ -33,14 +33,6 @@
                 <string>Remove current</string>
             </property>
         </widget>
-        <widget class="QPushButton" row="2" column="0">
-            <property name="name">
-                <cstring>closePushButton</cstring>
-            </property>
-            <property name="text">
-                <string>Close</string>
-            </property>
-        </widget>
         <widget class="QPushButton" row="1" column="0">
             <property name="name">
                 <cstring>addSubjectPushButton</cstring>
@@ -57,6 +49,30 @@
             </item>
             <property name="name">
                 <cstring>subjectsListBox</cstring>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="3" column="0">
+            <property name="name">
+                <cstring>closePushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Close</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="2" column="0">
+            <property name="name">
+                <cstring>renameSubjectPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Rename current</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="2" column="1">
+            <property name="name">
+                <cstring>sortSubjectsPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Sort alphabetically</string>
             </property>
         </widget>
     </grid>
@@ -80,10 +96,32 @@
         <receiver>SubjectsForm_template</receiver>
         <slot>removeSubject()</slot>
     </connection>
+    <connection>
+        <sender>renameSubjectPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>SubjectsForm_template</receiver>
+        <slot>renameSubject()</slot>
+    </connection>
+    <connection>
+        <sender>sortSubjectsPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>SubjectsForm_template</receiver>
+        <slot>sortSubjects()</slot>
+    </connection>
 </connections>
+<tabstops>
+    <tabstop>subjectsListBox</tabstop>
+    <tabstop>addSubjectPushButton</tabstop>
+    <tabstop>removeSubjectPushButton</tabstop>
+    <tabstop>renameSubjectPushButton</tabstop>
+    <tabstop>sortSubjectsPushButton</tabstop>
+    <tabstop>closePushButton</tabstop>
+</tabstops>
 <slots>
     <slot>addSubject()</slot>
     <slot>removeSubject()</slot>
+    <slot>renameSubject()</slot>
+    <slot>sortSubjects()</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

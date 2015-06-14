@@ -23,6 +23,8 @@ public:
 
 	void addYear();
 	void removeYear();
+	void modifyYear();
+	void sortYears();
 	void yearChanged();
 };
 

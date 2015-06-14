@@ -29,6 +29,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include "rules.h"
 #include "timepopulation.h"
 #include "spacepopulation.h"
+#include "timespacepopulation.h"
 
 /**
 This class represents the main interface for the library.
@@ -53,6 +54,8 @@ public:
 	The part referring to space (rooms).
 	*/
 	SpacePopulation spacePopulation;
+	
+	TimeSpacePopulation timeSpacePopulation;
 };
 
 #endif

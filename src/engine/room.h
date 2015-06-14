@@ -21,7 +21,10 @@
 
 class Room;
 
-typedef QPtrList<Room> RoomsList;
+class RoomsList: public QPtrList<Room>
+{
+	int compareItems(QPtrCollection::Item, QPtrCollection::Item);
+};
 
 /**
 This class represents a room

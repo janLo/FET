@@ -35,7 +35,7 @@
 #include <qtextstream.h>
 #include <qfile.h>
 
-const bool SIMULATION_LOGGING=false; //warning: making "true" here slows down the program,
+static const bool SIMULATION_LOGGING=false; //warning: making "true" here slows down the program,
 	//introducing an additional sorting if the evolution method is three-tournament.
 
 #include <iostream>
@@ -84,7 +84,6 @@ void TimeSolvingThread::run()
 	callingForm->startPushButton->setDisabled(TRUE);
 	callingForm->stopPushButton->setEnabled(TRUE);
 	callingForm->pausePushButton->setEnabled(TRUE);
-	//callingForm->writeResultsPushButton->setEnabled(TRUE);
 	callingForm->savePositionPushButton->setEnabled(TRUE);
 	callingForm->loadPositionPushButton->setDisabled(TRUE);
 	callingForm->initializeUnallocatedPushButton->setDisabled(TRUE);
@@ -100,7 +99,6 @@ void TimeSolvingThread::run()
 	callingForm->startPushButton->setEnabled(TRUE);
 	callingForm->stopPushButton->setDisabled(TRUE);
 	callingForm->pausePushButton->setDisabled(TRUE);
-	//callingForm->writeResultsPushButton->setDisabled(TRUE);
 	callingForm->savePositionPushButton->setDisabled(TRUE);
 	callingForm->loadPositionPushButton->setEnabled(TRUE);
 	callingForm->initializeUnallocatedPushButton->setEnabled(TRUE);
@@ -253,7 +251,9 @@ void TimetableAllocateHoursForm::simulationRunning(){
 		mutex.lock();
 		if(simulation_save_position){
 			simulation_save_position=false;
-			gt.timePopulation.write(gt.rules, OUTPUT_DIR+FILE_SEP+"time_population_state.txt");
+			
+			QString s=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);
+			gt.timePopulation.write(gt.rules, OUTPUT_DIR+FILE_SEP+s+"_time_population_state.txt");
 			mutex.unlock();
 			pqapplication->lock();
 #ifdef WIN32
@@ -334,9 +334,11 @@ void TimetableAllocateHoursForm::writeSimulationResults(TimeChromosome &c){
 	assert(students_schedule_ready && teachers_schedule_ready);
 
 	QString s;
+	
+	QString s2=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);
 
 	//write the time conflicts - in txt mode
-	s=OUTPUT_DIR+FILE_SEP+TIME_CONFLICTS_FILENAME;
+	s=OUTPUT_DIR+FILE_SEP+s2+"_"+TIME_CONFLICTS_FILENAME;
 	QFile file(s);
 	if(!file.open(IO_WriteOnly))
 		assert(0);
@@ -345,11 +347,21 @@ void TimetableAllocateHoursForm::writeSimulationResults(TimeChromosome &c){
 	file.close();
 	//now write the solution in xml files
 	//students
-	s=OUTPUT_DIR+FILE_SEP+STUDENTS_TIMETABLE_FILENAME_XML;
-	writeStudentsTimetable(s);
+	s=OUTPUT_DIR+FILE_SEP+s2+"_"+STUDENTS_TIMETABLE_FILENAME_XML;
+	writeStudentsTimetableXml(s);
 	//teachers
-	s=OUTPUT_DIR+FILE_SEP+TEACHERS_TIMETABLE_FILENAME_XML;
-	writeTeachersTimetable(s);
+	s=OUTPUT_DIR+FILE_SEP+s2+"_"+TEACHERS_TIMETABLE_FILENAME_XML;
+	writeTeachersTimetableXml(s);
+
+	//now write the solution in html files
+	//students
+	s=OUTPUT_DIR+FILE_SEP+s2+"_"+STUDENTS_TIMETABLE_FILENAME_HTML;
+	writeStudentsTimetableHtml(s);
+	//teachers
+	s=OUTPUT_DIR+FILE_SEP+s2+"_"+TEACHERS_TIMETABLE_1_FILENAME_HTML;
+	writeTeachersTimetable1Html(s);
+	s=OUTPUT_DIR+FILE_SEP+s2+"_"+TEACHERS_TIMETABLE_2_FILENAME_HTML;
+	writeTeachersTimetable2Html(s);
 
 	cout<<"Writing simulation results to disk completed successfully"<<endl;
 }
@@ -375,7 +387,7 @@ void TimetableAllocateHoursForm::getTeachersTimetable(TimeChromosome &c){
 /**
 Function writing the students' timetable in xml format to a file
 */
-void TimetableAllocateHoursForm::writeStudentsTimetable(const QString& xmlfilename)
+void TimetableAllocateHoursForm::writeStudentsTimetableXml(const QString& xmlfilename)
 {
 	assert(gt.rules.initialized && gt.rules.internalStructureComputed);
 	assert(gt.timePopulation.initialized);
@@ -405,6 +417,7 @@ void TimetableAllocateHoursForm::writeStudentsTimetable(const QString& xmlfilena
 					for(QStringList::Iterator it=act->teachersNames.begin(); it!=act->teachersNames.end(); it++)
 						tos<<" <Teacher name=\""<<(*it)<<"\"></Teacher>";
 					tos<<"<Subject name=\""<<act->subjectName<<"\"></Subject>";
+					tos<<"<Subject_Tag name=\""<<act->subjectTagName<<"\"></Subject_Tag>";
 				}
 				tos<<"</Week1>\n";
 				tos<<"     <Week2>";
@@ -414,6 +427,7 @@ void TimetableAllocateHoursForm::writeStudentsTimetable(const QString& xmlfilena
 					for(QStringList::Iterator it=act->teachersNames.begin(); it!=act->teachersNames.end(); it++)
 						tos<<" <Teacher name=\""<<(*it)<<"\"></Teacher>";
 					tos<<"<Subject name=\""<<act->subjectName<<"\"></Subject>";
+					tos<<"<Subject_Tag name=\""<<act->subjectTagName<<"\"></Subject_Tag>";
 				}
 
 				tos<<"</Week2>\n";
@@ -433,7 +447,7 @@ void TimetableAllocateHoursForm::writeStudentsTimetable(const QString& xmlfilena
 /**
 Function writing the teachers' timetable xml format to a file
 */
-void TimetableAllocateHoursForm::writeTeachersTimetable(const QString& xmlfilename)
+void TimetableAllocateHoursForm::writeTeachersTimetableXml(const QString& xmlfilename)
 {
 	assert(gt.rules.initialized && gt.rules.internalStructureComputed);
 	assert(gt.timePopulation.initialized);
@@ -457,17 +471,21 @@ void TimetableAllocateHoursForm::writeTeachersTimetable(const QString& xmlfilena
 				tos<<"     <Week1>";
 				int ai=teachers_timetable_week1[i][k][j]; //activity index
 				Activity* act=gt.rules.activitiesList.at(ai);
-				if(ai!=UNALLOCATED_ACTIVITY)
+				if(ai!=UNALLOCATED_ACTIVITY){
+					tos<<"<Subject name=\""<<act->subjectName<<"\"></Subject>";
 					for(QStringList::Iterator it=act->studentsNames.begin(); it!=act->studentsNames.end(); it++)
 						tos << "<Students name=\"" << *it << "\"></Students>";
+				}
 				tos<<"</Week1>\n";
 
 				tos<<"     <Week2>";
 				ai=teachers_timetable_week2[i][k][j]; //activity index
 				act=gt.rules.activitiesList.at(ai);
-				if(ai!=UNALLOCATED_ACTIVITY)
+				if(ai!=UNALLOCATED_ACTIVITY){
+					tos<<"<Subject name=\""<<act->subjectName<<"\"></Subject>";
 					for(QStringList::Iterator it=act->studentsNames.begin(); it!=act->studentsNames.end(); it++)
 						tos << "<Students name=\"" << *it << "\"></Students>";
+				}
 				tos<<"</Week2>\n";
 
 				tos << "    </Hour>\n";
@@ -479,6 +497,192 @@ void TimetableAllocateHoursForm::writeTeachersTimetable(const QString& xmlfilena
 
 	tos<<"\n";
 	tos << "</" << TEACHERS_TIMETABLE_TAG << ">\n";
+
+	file.close();
+}
+
+/**
+Function writing the students' timetable in html format to a file
+*/
+void TimetableAllocateHoursForm::writeStudentsTimetableHtml(const QString& htmlfilename)
+{
+	assert(gt.rules.initialized && gt.rules.internalStructureComputed);
+	assert(gt.timePopulation.initialized);
+	assert(students_schedule_ready && teachers_schedule_ready);
+
+	//Now we print the results to an HTML file
+	QFile file(htmlfilename);
+	if(!file.open(IO_WriteOnly))
+		assert(0);
+	QTextStream tos(&file);
+
+	tos<<"<html>\n";
+	tos<<"<title>"<<gt.rules.institutionName<<"</title>\n";
+	tos<<"<body>\n";
+	
+	tos<<"<center><h3>"<<gt.rules.institutionName<<"</h3></center><br>\n";
+
+	for(int subgroup=0; subgroup<gt.rules.nInternalSubgroups; subgroup++){
+		QString subgroup_name = gt.rules.internalSubgroupsList[subgroup]->name;
+		tos<<"<p align=\"center\">"<<subgroup_name<<"</p>\n";		
+		tos<<"<table border=\"1\" cellpadding=\"6\">"<<endl;
+
+		tos<<"<tr>\n<td></td>\n";
+		for(int j=0; j<gt.rules.nHoursPerDay; j++)
+			tos<<"<td>"<<gt.rules.hoursOfTheDay[j]<<"</td>\n";		
+		tos<<"</tr>\n";
+
+		for(int k=0; k<gt.rules.nDaysPerWeek; k++){
+			tos<<"<tr>\n";
+			tos<<"<td>"<<gt.rules.daysOfTheWeek[k]<<"</td>\n";
+			
+			for(int j=0; j<gt.rules.nHoursPerDay; j++){
+				tos<<"<td style=\"width:14em;\">\n";
+				
+				int ai=students_timetable_week1[subgroup][k][j]; //activity index
+				if(ai!=UNALLOCATED_ACTIVITY){
+					Activity* act=gt.rules.activitiesList.at(ai);
+					for(QStringList::Iterator it=act->teachersNames.begin(); it!=act->teachersNames.end(); it++)
+						tos<<(*it)<<"<br/>";
+					tos<<act->subjectName<<" "<<act->subjectTagName<<"<br/>";
+				}
+				else
+					tos<<"&nbsp;";
+				ai=students_timetable_week2[subgroup][k][j]; //activity index
+				if(ai!=UNALLOCATED_ACTIVITY){
+					tos<<"/<br/>";
+					Activity* act=gt.rules.activitiesList.at(ai);
+					for(QStringList::Iterator it=act->teachersNames.begin(); it!=act->teachersNames.end(); it++)
+						tos<<(*it)<<"<br/>";
+					tos<<act->subjectName<<" "<<act->subjectTagName<<"<br/>";
+				}
+				tos<<"</td>\n";
+			}			
+			tos<<"</tr>\n";
+		}		
+		tos<<"</table>\n";
+	}
+
+	tos<<"</body>\n</html>\n";
+
+	file.close();
+}
+
+/**
+Function writing the teachers' timetable html format to a file (var. 1)
+*/
+void TimetableAllocateHoursForm::writeTeachersTimetable1Html(const QString& htmlfilename)
+{
+	assert(gt.rules.initialized && gt.rules.internalStructureComputed);
+	assert(gt.timePopulation.initialized);
+	assert(students_schedule_ready && teachers_schedule_ready);
+
+	//Writing the timetable in xml format
+	QFile file(htmlfilename);
+	if(!file.open(IO_WriteOnly))
+		assert(0);
+	QTextStream tos(&file);
+	tos<<"<html>\n<title>"<<gt.rules.institutionName<<"</title>\n";
+	tos<<"<body>\n";
+	tos<<"<center><h3>"<<gt.rules.institutionName<<"</h3></center><br>\n";
+
+	for(int i=0; i<gt.rules.nInternalTeachers; i++){
+		tos<<"<p align=\"center\">"<<gt.rules.internalTeachersList[i]->name<<"</p>\n";
+		tos<<"<table width=\"100%\" border=\"1\" cellpadding=\"6\">\n";
+
+		tos<<"<tr>\n<td></td>\n";
+		for(int j=0; j<gt.rules.nHoursPerDay; j++)
+			tos << "<td>" << gt.rules.hoursOfTheDay[j] << "</td>\n";
+		tos<<"</tr>\n";
+		
+		for(int k=0; k<gt.rules.nDaysPerWeek; k++){
+			tos<<"<tr>\n";
+			
+			tos<<"<td>"<<gt.rules.daysOfTheWeek[k]<<"</td>\n";
+			for(int j=0; j<gt.rules.nHoursPerDay; j++){
+				tos<<"<td style=\"width:14em;\">";
+
+				int ai=teachers_timetable_week1[i][k][j]; //activity index
+				Activity* act=gt.rules.activitiesList.at(ai);
+				if(ai!=UNALLOCATED_ACTIVITY)
+					for(QStringList::Iterator it=act->studentsNames.begin(); it!=act->studentsNames.end(); it++)
+						tos << *it << "<br/>";
+				else
+					tos<<"&nbsp;";
+
+				ai=teachers_timetable_week2[i][k][j]; //activity index
+				act=gt.rules.activitiesList.at(ai);
+				if(ai!=UNALLOCATED_ACTIVITY){
+					tos<<"/<br/>\n";
+					for(QStringList::Iterator it=act->studentsNames.begin(); it!=act->studentsNames.end(); it++)
+						tos << *it << "<br/>";
+				}
+				tos<<"</td>\n";
+			}
+			tos << "</tr>\n";
+		}
+		tos<<"</table>\n";
+	}
+	tos<<"</body>\n</html>\n";
+
+	file.close();
+}
+
+/**
+Function writing the teachers' timetable html format to a file (var. 2)
+*/
+void TimetableAllocateHoursForm::writeTeachersTimetable2Html(const QString& htmlfilename)
+{
+	assert(gt.rules.initialized && gt.rules.internalStructureComputed);
+	assert(gt.timePopulation.initialized);
+	assert(students_schedule_ready && teachers_schedule_ready);
+
+	//Writing the timetable in xml format
+	QFile file(htmlfilename);
+	if(!file.open(IO_WriteOnly))
+		assert(0);
+	QTextStream tos(&file);
+	tos << "<html>\n<body>\n<table border=\"1\">\n";
+	
+	tos<<"<tr><td></td>\n";
+	for(int k=0; k<gt.rules.nDaysPerWeek; k++)
+		tos << "<td align=\"center\" colspan=\"" << gt.rules.nHoursPerDay <<"\">" << gt.rules.daysOfTheWeek[k] << "</td>\n";
+	tos<<"</tr>\n";
+
+	tos<<"<tr>\n";
+	tos<<"<td></td>\n";
+	for(int k=0; k<gt.rules.nDaysPerWeek; k++)
+		for(int j=0; j<gt.rules.nHoursPerDay; j++)
+			tos << "<td>" << gt.rules.hoursOfTheDay[j] << "</td>\n";
+
+	for(int i=0; i<gt.rules.nInternalTeachers; i++){
+		tos<<"<tr>\n";
+		tos << "<td>" << gt.rules.internalTeachersList[i]->name << "</td>\n";
+		for(int k=0; k<gt.rules.nDaysPerWeek; k++){
+			for(int j=0; j<gt.rules.nHoursPerDay; j++){
+				tos<<"<td>";
+				int ai=teachers_timetable_week1[i][k][j]; //activity index
+				Activity* act=gt.rules.activitiesList.at(ai);
+				if(ai!=UNALLOCATED_ACTIVITY)
+					for(QStringList::Iterator it=act->studentsNames.begin(); it!=act->studentsNames.end(); it++)
+						tos<<*it<<"<br/>";
+				else
+					tos<<"&nbsp;";
+
+				ai=teachers_timetable_week2[i][k][j]; //activity index
+				act=gt.rules.activitiesList.at(ai);
+				if(ai!=UNALLOCATED_ACTIVITY){
+					tos<<"/<br/>";
+					for(QStringList::Iterator it=act->studentsNames.begin(); it!=act->studentsNames.end(); it++)
+						tos << *it <<"<br/>";
+				}
+				tos<<"</td>\n";
+			}
+		}
+		tos<<"</tr>\n";
+	}
+
+	tos<<"</table>\n</body>\n</html>\n";
 
 	file.close();
 }
@@ -561,10 +765,14 @@ void TimetableAllocateHoursForm::loadPosition()
 		return;
 	}
 
-	gt.rules.computeInternalStructure();
+	if(!gt.rules.computeInternalStructure())
+		return;
 	bool prev_state=gt.timePopulation.initialized;
 	gt.timePopulation.init(gt.rules, population_number);
-	bool existing_file=gt.timePopulation.read(gt.rules, OUTPUT_DIR+FILE_SEP+"time_population_state.txt");
+	QString s=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);
+	bool existing_file=gt.timePopulation.read(gt.rules, OUTPUT_DIR+FILE_SEP+s+"_time_population_state.txt");
+	if(existing_file==false) //for versions older or equal with 3.9.21
+		existing_file=gt.timePopulation.read(gt.rules, OUTPUT_DIR+FILE_SEP+"time_population_state.txt");
 	if(existing_file==false){
 		QMessageBox::warning(this, QObject::tr("FET information"),
 			QObject::tr("You did not save any internal state yet - aborting operation"));
@@ -594,7 +802,8 @@ void TimetableAllocateHoursForm::initializeUnallocated()
 	}
 
 	if(!gt.rules.internalStructureComputed)
-		gt.rules.computeInternalStructure();
+		if(!gt.rules.computeInternalStructure())
+			return;
 	gt.timePopulation.init(gt.rules, population_number);
 
 	gt.timePopulation.makeTimesUnallocated(gt.rules);
@@ -621,7 +830,8 @@ void TimetableAllocateHoursForm::initializeRandomly()
 	}
 
 	if(!gt.rules.internalStructureComputed)
-		gt.rules.computeInternalStructure();
+		if(!gt.rules.computeInternalStructure())
+			return;
 	gt.timePopulation.init(gt.rules, population_number);
 
 	gt.timePopulation.makeTimesRandom(gt.rules);

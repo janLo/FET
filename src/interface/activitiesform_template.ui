@@ -19,7 +19,7 @@
         <property name="name">
             <cstring>unnamed</cstring>
         </property>
-        <widget class="QLabel" row="0" column="0">
+        <widget class="QLabel" row="0" column="0" rowspan="1" colspan="2">
             <property name="name">
                 <cstring>activitiesTextLabel</cstring>
             </property>
@@ -59,14 +59,6 @@
             </property>
             <property name="text">
                 <string>Close</string>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="3" column="1" rowspan="1" colspan="2">
-            <property name="name">
-                <cstring>removeActivityPushButton</cstring>
-            </property>
-            <property name="text">
-                <string>Remove</string>
             </property>
         </widget>
         <widget class="QGroupBox" row="2" column="2" rowspan="1" colspan="2">
@@ -129,6 +121,22 @@
                 <string>Add</string>
             </property>
         </widget>
+        <widget class="QPushButton" row="3" column="2">
+            <property name="name">
+                <cstring>removeActivityPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Remove</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="3" column="1">
+            <property name="name">
+                <cstring>modifyActivityPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Modify</string>
+            </property>
+        </widget>
     </grid>
 </widget>
 <connections>
@@ -174,12 +182,19 @@
         <receiver>ActivitiesForm_template</receiver>
         <slot>filterChanged()</slot>
     </connection>
+    <connection>
+        <sender>modifyActivityPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>ActivitiesForm_template</receiver>
+        <slot>modifyActivity()</slot>
+    </connection>
 </connections>
 <slots>
     <slot>addActivity()</slot>
     <slot>removeActivity()</slot>
     <slot>activityChanged( int )</slot>
     <slot>filterChanged()</slot>
+    <slot>modifyActivity()</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

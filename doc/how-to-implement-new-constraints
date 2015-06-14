@@ -50,18 +50,15 @@ solution is getting closer to a global solution, the conflicts factor must decre
 	- rules.cpp, function "read"
 	- rules.cpp - when erasing activities, teachers, students or rooms referring to your
 	constraint, you must take care to erase also your constraint or a part of it.
+	- rules.cpp - when renaming teachers etc.
 	- there are some special kinds of constraints, which hopefully you can avoid.
 	For instance, compulsory ConstraintActivitiesSameTime and ConstraintActivityPreferredTime
-	work by repairing and ConstraintSubjectRequiresEquipments necessitates some
-	precalculation. Please see their implementation for details.
+	work by repairing.
 
 	interface:
-	- timeconstraintsform.cpp, timeconstraintsform.h, timeconstraintsform_template.ui
-	- addtimeconstraintform.cpp, addtimeconstraintform.h, addtimeconstraintform_template.ui
-(I hope I have enumerated all of them)
-	->I HAVE MODIFIED A BIT THE ORGANIZATION (14 May 2004) - you will have to modify
-	fetmainform_template.ui, fetmainform.h and fetmainform.cpp and add some new files,
-	named correspondigly (e-mail me if uncertain).
+	- you will have to modify fetmainform_template.ui, fetmainform.h and fetmainform.cpp 
+	and add some new files,	named correspondigly (e-mail me if uncertain).
+	- you will have to modify alltimeconstraintsform.cpp.
 
 
 SPACE CONSTRAINTS:

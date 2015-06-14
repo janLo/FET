@@ -30,6 +30,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include "studentsset.h"
 #include "teacher.h"
 #include "subject.h"
+#include "subjecttag.h"
 #include "equipment.h"
 #include "room.h"
 
@@ -47,6 +48,16 @@ timetable (all the input)
 */
 class Rules{
 public:
+	/**
+	The name of the institution
+	*/
+	QString institutionName;
+	
+	/**
+	The comments
+	*/
+	QString comments;
+
 	/**
 	The number of hours per day
 	*/
@@ -81,6 +92,11 @@ public:
 	The list of subjects
 	*/
 	SubjectsList subjectsList;
+
+	/**
+	The list of subject tags
+	*/
+	SubjectTagsList subjectTagsList;
 
 	/**
 	The list of students (groups and subgroups included).
@@ -129,19 +145,34 @@ public:
 	
 	/**
 	This array specifies, for each activity (1), a reference to
-	another activity (2). The starting time of activity 1 is taken
-	as the starting time of activity 2.
+	another activity (2). The starting day of activity 1 is taken
+	as the starting day of activity 2.
 	-1 means that the activity is independent of other activities.
 	*/
-	int sameTime[MAX_ACTIVITIES];
+	int sameDay[MAX_ACTIVITIES];
 	
 	/**
 	This array specifies, for each activity (1), a reference to
-	another activity (2). The starting time of activity 1 is taken
-	as the ending time of activity 2.
+	another activity (2). The starting hour of activity 1 is taken
+	as the starting hour of activity 2.
 	-1 means that the activity is independent of other activities.
 	*/
-	int consecutiveTime[MAX_ACTIVITIES];
+	int sameHour[MAX_ACTIVITIES];
+	
+	/**
+	This is the array which specifies a fixed room
+	for some activities.
+	-1 means that this activity has no fixed room
+	*/
+	int16 fixedRoom[MAX_ACTIVITIES];
+	
+	/**
+	This array specifies, for each activity (1), a reference to
+	another activity (2). The room of activity 1 is taken
+	as the room of activity 2.
+	-1 means that the activity is independent of other activities.
+	*/
+	int sameRoom[MAX_ACTIVITIES];
 	
 	//The following variables contain redundant data and are used internally
 	////////////////////////////////////////////////////////////////////////
@@ -170,17 +201,7 @@ public:
 	int nInternalSpaceConstraints;
 	SpaceConstraint* internalSpaceConstraintsList[MAX_SPACE_CONSTRAINTS];
 
-	/**
-	This matrix represents true if a certain room has the necessary equipment
-	to support an activity.
-	This matrix is initialized with true in function "Rules::computeInternalStructure"
-	This matrix is calculated by the "computeInternalStructure"
-	function of all the ConstraintSubjectRequiresEquipments-s.
-	This matrix is used only by ConstraintSubjectRequiresEquipments-s.
-	New adding: 2 matrices, one for compulsory and the other for non-compulsory constraints.
-	*/
-	bool roomHasActivityEquipmentsCompulsory[MAX_ROOMS][MAX_ACTIVITIES];
-	bool roomHasActivityEquipmentsNonCompulsory[MAX_ROOMS][MAX_ACTIVITIES];
+	bool roomHasEquipment[MAX_ROOMS][MAX_EQUIPMENTS];
 
 	////////////////////////////////////////////////////////////////////////
 
@@ -203,12 +224,12 @@ public:
 	Internal structure initializer.
 	<p>
 	After any modification of the activities or students or teachers
-	or restrictions, there is a need to call this subroutine
+	or constraints, there is a need to call this subroutine
 	*/
-	void computeInternalStructure();
+	bool computeInternalStructure();
 
 	/**
-	Terminator - basically clears the memory for the restrictions.
+	Terminator - basically clears the memory for the constraints.
 	*/
 	void kill();
 
@@ -236,6 +257,17 @@ public:
 	bool removeTeacher(const QString& teacherName);
 
 	/**
+	Modifies (renames) this teacher and takes care of all related activities and constraints.
+	Returns true on success, false on failure (if not found)
+	*/
+	bool modifyTeacher(const QString& initialTeacherName, const QString& finalTeacherName);
+
+	/**
+	A function to sort the teachers alphabetically
+	*/
+	void sortTeachersAlphabetically();
+
+	/**
 	Adds a new subject to the list of subjects
 	(if not already in the list).
 	Returns false/true (unsuccessful/successful).
@@ -256,6 +288,49 @@ public:
 	bool removeSubject(const QString& subjectName);
 
 	/**
+	Modifies (renames) this subject and takes care of all related activities and constraints.
+	Returns true on success, false on failure (if not found)
+	*/
+	bool modifySubject(const QString& initialSubjectName, const QString& finalSubjectName);
+
+	/**
+	A function to sort the subjects alphabetically
+	*/
+	void sortSubjectsAlphabetically();
+
+	/**
+	Adds a new subject tag to the list of subject tags
+	(if not already in the list).
+	Returns false/true (unsuccessful/successful).
+	*/
+	bool addSubjectTag(SubjectTag* subjectTag);
+
+	/**
+	Returns the index of this subject tag in the subjectTagsList,
+	or -1 if not found.
+	*/
+	int searchSubjectTag(const QString& subjectTagName);
+
+	/**
+	Removes this subject tag. In the list of activities, the subject tag will 
+	be removed from all activities which posess it.
+	It returns false on failure.
+	If successful, returns true.
+	*/
+	bool removeSubjectTag(const QString& subjectTagName);
+
+	/**
+	Modifies (renames) this subject tag and takes care of all related activities.
+	Returns true on success, false on failure (if not found)
+	*/
+	bool modifySubjectTag(const QString& initialSubjectTagName, const QString& finalSubjectTagName);
+
+	/**
+	A function to sort the subject tags alphabetically
+	*/
+	void sortSubjectTagsAlphabetically();
+
+	/**
 	Returns a pointer to the structure containing this student container
 	(year, group or subgroup) or NULL.
 	*/
@@ -274,6 +349,17 @@ public:
 	int searchYear(const QString& yearName);
 
 	/**
+	Modifies this students year (name, number of students) and takes care of all related 
+	activities and constraints.	Returns true on success, false on failure (if not found)
+	*/
+	bool modifyYear(const QString& initialYearName, const QString& finalYearName, int finalNumberOfStudents);
+	
+	/**
+	A function to sort the years alphabetically
+	*/
+	void sortYearsAlphabetically();
+
+	/**
 	Adds a new group in a certain year of study to the academic structure
 	*/
 	bool addGroup(const QString& yearName, StudentsGroup* group);
@@ -285,6 +371,17 @@ public:
 	of this year.
 	*/
 	int searchGroup(const QString& yearName, const QString& groupName);
+
+	/**
+	Modifies this students group (name, number of students) and takes care of all related 
+	activities and constraints.	Returns true on success, false on failure (if not found)
+	*/
+	bool modifyGroup(const QString& yearName, const QString& initialGroupName, const QString& finalGroupName, int finalNumberOfStudents);
+	
+	/**
+	A function to sort the groups of this year alphabetically
+	*/
+	void sortGroupsAlphabetically(const QString& yearName);
 
 	/**
 	Adds a new subgroup to a certain group in a certain year of study to
@@ -300,6 +397,17 @@ public:
 	int searchSubgroup(const QString& yearName, const QString& groupName, const QString& subgroupName);
 
 	/**
+	Modifies this students subgroup (name, number of students) and takes care of all related 
+	activities and constraints.	Returns true on success, false on failure (if not found)
+	*/
+	bool modifySubgroup(const QString& yearName, const QString& groupName, const QString& initialSubgroupName, const QString& finalSubgroupName, int finalNumberOfStudents);
+	
+	/**
+	A function to sort the subgroups of this group alphabetically
+	*/
+	void sortSubgroupsAlphabetically(const QString& yearName, const QString& groupName);
+
+	/**
 	Adds a new indivisible activity (not split) to the list of activities.
 	(It can add a subactivity of a split activity)
 	Returns true if successful or false if the maximum
@@ -311,6 +419,7 @@ public:
 		int _activityGroupId,
 		const QStringList& _teachersNames,
 		const QString& _subjectName,
+		const QString& _subjectTagName,
 		const QStringList& _studentsNames,
 		int _duration, /*duration, in hours*/
 		int _totalDuration,
@@ -331,6 +440,7 @@ public:
 		int _activityGroupId,
 		const QStringList& _teachersNames,
 		const QString& _subjectName,
+		const QString& _subjectTagName,
 		const QStringList& _studentsNames,
 		int _nSplits,
 		int _totalDuration,
@@ -352,6 +462,24 @@ public:
 	For split activities, it removes all the sub-activities that are contained in it.
 	*/
 	void removeActivity(int _id, int _activityGroupId);
+	
+	/**
+	A function to modify the information of a certain activity.
+	If this is a sub-activity of a split activity,
+	all the sub-activities will be modified.
+	*/
+	void modifyActivity(
+		int _id, 
+		int _activityGroupId, 
+		const QStringList& _teachersNames,
+		const QString& _subjectName, 
+		const QString& _subjectTagName, 
+		const QStringList& _studentsNames,
+		int _nTotalStudents,
+	 	int _nSplits,
+		int _totalDuration,
+		int _durations[],
+		int _parities[]);
 
 	/**
 	Adds a new equipment (already allocated).
@@ -371,6 +499,17 @@ public:
 	bool removeEquipment(const QString& equipmentName);
 	
 	/**
+	Modifies (renames) this equipment and takes care of all related constraints.
+	Returns true on success, false on failure (if not found)
+	*/
+	bool modifyEquipment(const QString& initialEquipmentName, const QString& finalEquipmentName);
+
+	/**
+	A function to sort the equipments alphabetically
+	*/
+	void sortEquipmentsAlphabetically();
+
+	/**
 	Adds a new room (already allocated).
 	Returns true on success, false for already existing rooms (same name).
 	*/
@@ -387,6 +526,18 @@ public:
 	*/
 	bool removeRoom(const QString& roomName);
 	
+	/**
+	Modifies this room and takes care of all related constraints.
+	Returns true on success, false on failure (if not found)
+	It does not alter the list of equipments.
+	*/
+	bool modifyRoom(const QString& initialRoomName, const QString& finalRoomName, const QString& type, int capacity);
+
+	/**
+	A function to sort the room alphabetically, by name
+	*/
+	void sortRoomsAlphabetically();
+
 	/**
 	Adds a new time constraint (already allocated).
 	Returns true on success, false for already existing constraints.

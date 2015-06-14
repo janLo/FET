@@ -24,6 +24,8 @@ public:
 
 	void addTeacher();
 	void removeTeacher();
+	void renameTeacher();
+	void sortTeachers();
 };
 
 #endif

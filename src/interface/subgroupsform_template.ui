@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.2" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
 <class>SubgroupsForm_template</class>
 <widget class="QDialog">
     <property name="name">
@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>691</width>
-            <height>474</height>
+            <width>688</width>
+            <height>545</height>
         </rect>
     </property>
     <property name="caption">
@@ -25,14 +25,6 @@
         <property name="spacing">
             <number>6</number>
         </property>
-        <widget class="QLabel" row="0" column="3">
-            <property name="name">
-                <cstring>subgroupTextLabel</cstring>
-            </property>
-            <property name="text">
-                <string>Details</string>
-            </property>
-        </widget>
         <widget class="QLabel" row="0" column="0">
             <property name="name">
                 <cstring>yearTextLabel</cstring>
@@ -47,24 +39,6 @@
             </property>
             <property name="text">
                 <string>Group</string>
-            </property>
-        </widget>
-        <widget class="QListBox" row="1" column="2">
-            <item>
-                <property name="text">
-                    <string>New Item</string>
-                </property>
-            </item>
-            <property name="name">
-                <cstring>subgroupsListBox</cstring>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="2" column="0">
-            <property name="name">
-                <cstring>addSubgroupPushButton</cstring>
-            </property>
-            <property name="text">
-                <string>Add subgroup</string>
             </property>
         </widget>
         <widget class="QListBox" row="1" column="1">
@@ -87,12 +61,54 @@
                 <cstring>yearsListBox</cstring>
             </property>
         </widget>
+        <widget class="QPushButton" row="2" column="0">
+            <property name="name">
+                <cstring>addSubgroupPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Add subgroup</string>
+            </property>
+        </widget>
         <widget class="QPushButton" row="2" column="1">
+            <property name="name">
+                <cstring>modifySubgroupPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Modify current</string>
+            </property>
+        </widget>
+        <widget class="QListBox" row="1" column="2">
+            <item>
+                <property name="text">
+                    <string>New Item</string>
+                </property>
+            </item>
+            <property name="name">
+                <cstring>subgroupsListBox</cstring>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="2" column="2">
             <property name="name">
                 <cstring>removeSubgroupPushButton</cstring>
             </property>
             <property name="text">
                 <string>Remove current</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="3" column="1" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>removeSubgroupPushButton_2</cstring>
+            </property>
+            <property name="text">
+                <string>Sort current subgroups</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="4" column="1" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>closePushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Close</string>
             </property>
         </widget>
         <widget class="QLabel" row="0" column="2">
@@ -103,12 +119,12 @@
                 <string>Subgroup</string>
             </property>
         </widget>
-        <widget class="QPushButton" row="2" column="2">
+        <widget class="QLabel" row="0" column="3">
             <property name="name">
-                <cstring>closePushButton</cstring>
+                <cstring>subgroupTextLabel</cstring>
             </property>
             <property name="text">
-                <string>Close</string>
+                <string>Details</string>
             </property>
         </widget>
         <widget class="QTextEdit" row="1" column="3">
@@ -158,6 +174,18 @@
         <receiver>SubgroupsForm_template</receiver>
         <slot>subgroupChanged(const QString&amp;)</slot>
     </connection>
+    <connection>
+        <sender>modifySubgroupPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>SubgroupsForm_template</receiver>
+        <slot>modifySubgroup()</slot>
+    </connection>
+    <connection>
+        <sender>removeSubgroupPushButton_2</sender>
+        <signal>clicked()</signal>
+        <receiver>SubgroupsForm_template</receiver>
+        <slot>sortSubgroups()</slot>
+    </connection>
 </connections>
 <slots>
     <slot>addSubgroup()</slot>
@@ -165,6 +193,8 @@
     <slot>removeSubgroup()</slot>
     <slot>yearChanged(const QString&amp;)</slot>
     <slot>subgroupChanged(const QString&amp;)</slot>
+    <slot>sortSubgroups()</slot>
+    <slot>modifySubgroup()</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

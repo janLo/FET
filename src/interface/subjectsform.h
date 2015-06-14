@@ -24,6 +24,8 @@ public:
 
 	void addSubject();
 	void removeSubject();
+	void renameSubject();
+	void sortSubjects();
 };
 
 #endif

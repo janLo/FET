@@ -177,3 +177,33 @@ QString StudentsSubgroup::getDetailedDescription()
 
 	return s;
 }
+
+int StudentsYearsList::compareItems(QPtrCollection::Item item1, QPtrCollection::Item item2)
+{
+	if(((StudentsYear*)item1)->name > ((StudentsYear*)item2)->name)
+		return 1;
+	else if(((StudentsYear*)item1)->name < ((StudentsYear*)item2)->name)
+		return -1;
+	else
+		return 0;
+}
+
+int StudentsGroupsList::compareItems(QPtrCollection::Item item1, QPtrCollection::Item item2)
+{
+	if(((StudentsGroup*)item1)->name > ((StudentsGroup*)item2)->name)
+		return 1;
+	else if(((StudentsGroup*)item1)->name < ((StudentsGroup*)item2)->name)
+		return -1;
+	else
+		return 0;
+}
+
+int StudentsSubgroupsList::compareItems(QPtrCollection::Item item1, QPtrCollection::Item item2)
+{
+	if(((StudentsSubgroup*)item1)->name > ((StudentsSubgroup*)item2)->name)
+		return 1;
+	else if(((StudentsSubgroup*)item1)->name < ((StudentsSubgroup*)item2)->name)
+		return -1;
+	else
+		return 0;
+}

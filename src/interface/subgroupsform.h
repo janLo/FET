@@ -23,6 +23,8 @@ public:
 
 	void addSubgroup();
 	void removeSubgroup();
+	void modifySubgroup();
+	void sortSubgroups();
 	void yearChanged(const QString &yearName);
 	void groupChanged(const QString &groupName);
 	void subgroupChanged(const QString &subgroupName);

@@ -1,0 +1,115 @@
+/***************************************************************************
+                          constraintactivitypreferredroomsform.cpp  -  description
+                             -------------------
+    begin                : 28 March 2005
+    copyright            : (C) 2005 by Lalescu Liviu
+    email                : liviu@lalescu.ro
+ ***************************************************************************/
+
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
+#include "constraintactivitypreferredroomsform.h"
+#include "addconstraintactivitypreferredroomsform.h"
+#include "modifyconstraintactivitypreferredroomsform.h"
+
+ConstraintActivityPreferredRoomsForm::ConstraintActivityPreferredRoomsForm()
+{
+	this->refreshConstraintsListBox();
+}
+
+ConstraintActivityPreferredRoomsForm::~ConstraintActivityPreferredRoomsForm()
+{
+}
+
+void ConstraintActivityPreferredRoomsForm::refreshConstraintsListBox()
+{
+	this->visibleConstraintsList.setAutoDelete(false);
+	this->visibleConstraintsList.clear();
+	constraintsListBox->clear();
+	for(SpaceConstraint* ctr=gt.rules.spaceConstraintsList.first(); ctr; ctr=gt.rules.spaceConstraintsList.next())
+		if(filterOk(ctr)){
+			QString s;
+			s=ctr->getDescription(gt.rules);
+			visibleConstraintsList.append(ctr);
+			constraintsListBox->insertItem(s);
+		}
+
+	constraintsListBox->setCurrentItem(0);
+	this->constraintChanged(constraintsListBox->currentItem());
+}
+
+bool ConstraintActivityPreferredRoomsForm::filterOk(SpaceConstraint* ctr)
+{
+	if(ctr->type==CONSTRAINT_ACTIVITY_PREFERRED_ROOMS)
+		return true;
+	else
+		return false;
+}
+
+void ConstraintActivityPreferredRoomsForm::constraintChanged(int index)
+{
+	if(index<0)
+		return;
+	QString s;
+	assert((uint)(index)<this->visibleConstraintsList.count());
+	SpaceConstraint* ctr=this->visibleConstraintsList.at(index);
+	assert(ctr!=NULL);
+	s=ctr->getDetailedDescription(gt.rules);
+	currentConstraintTextEdit->setText(s);
+}
+
+void ConstraintActivityPreferredRoomsForm::addConstraint()
+{
+	AddConstraintActivityPreferredRoomsForm *addConstraintActivityPreferredRoomsForm=new AddConstraintActivityPreferredRoomsForm();
+	addConstraintActivityPreferredRoomsForm->exec();
+
+	this->refreshConstraintsListBox();
+}
+
+void ConstraintActivityPreferredRoomsForm::modifyConstraint()
+{
+	int i=constraintsListBox->currentItem();
+	if(i<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected constraint"));
+		return;
+	}
+	SpaceConstraint* ctr=this->visibleConstraintsList.at(i);
+
+	ModifyConstraintActivityPreferredRoomsForm *modifyConstraintActivityPreferredRoomsForm=new ModifyConstraintActivityPreferredRoomsForm((ConstraintActivityPreferredRooms*)ctr);
+	modifyConstraintActivityPreferredRoomsForm->exec();
+
+	this->refreshConstraintsListBox();
+	
+	constraintsListBox->setCurrentItem(i);
+}
+
+void ConstraintActivityPreferredRoomsForm::removeConstraint()
+{
+	int i=constraintsListBox->currentItem();
+	if(i<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected constraint"));
+		return;
+	}
+	SpaceConstraint* ctr=this->visibleConstraintsList.at(i);
+	QString s;
+	s=QObject::tr("Removing constraint:\n");
+	s+=ctr->getDetailedDescription(gt.rules);
+	s+=QObject::tr("\nAre you sure?");
+
+	switch( QMessageBox::warning( this, QObject::tr("FET warning"),
+		s, QObject::tr("OK"), QObject::tr("Cancel"), 0, 0, 1 ) ){
+	case 0: // The user clicked the OK again button or pressed Enter
+		gt.rules.removeSpaceConstraint(ctr);
+		this->refreshConstraintsListBox();
+		break;
+	case 1: // The user clicked the Cancel or pressed Escape
+		break;
+	}
+}

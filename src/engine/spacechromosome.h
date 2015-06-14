@@ -73,7 +73,7 @@ public:
 	void copy(Rules& r, SpaceChromosome& c);
 
 	/**
-	Initializes a chromosome, marking all activities as unscheduled (time)
+	Initializes a chromosome, marking all activities as unscheduled (space)
 	*/
 	void init(Rules& r);
 

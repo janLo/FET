@@ -43,6 +43,8 @@ static Rules* crt_rules=NULL;
 
 static int16 roomsMatrix[MAX_ROOMS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
 
+static bool subgroupsRooms[MAX_TOTAL_SUBGROUPS][MAX_ROOMS]; //used only for ConstraintMinimizeNumberOfRoomsForStudents::fitness
+
 //////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -93,7 +95,9 @@ QString ConstraintBasicCompulsorySpace::getXMLDescription(Rules& r)
 
 	QString s = "<ConstraintBasicCompulsorySpace>\n";
 	s += "	<Weight>"+QString::number(this->weight)+"</Weight>\n";
-	s += "	<Compulsory>yes</Compulsory>\n";
+	s+="	<Compulsory>";
+	s+=yesNo(this->compulsory);
+	s+="</Compulsory>\n";
 	s += "</ConstraintBasicCompulsorySpace>\n";
 	return s;
 }
@@ -103,8 +107,11 @@ QString ConstraintBasicCompulsorySpace::getDescription(Rules& r)
 	if(&r!=NULL)
 		;
 	
-	return "Basic compulsory constraints (space), W:"
-		+ QString::number(this->weight);
+	QString s = QObject::tr("Basic compulsory constraints (space), W:%1").arg(this->weight);
+	s+=", ";
+	s += QObject::tr("C:%1").arg(yesNoTranslated(this->compulsory));
+	
+	return s;
 }
 
 QString ConstraintBasicCompulsorySpace::getDetailedDescription(Rules& r)
@@ -112,9 +119,10 @@ QString ConstraintBasicCompulsorySpace::getDetailedDescription(Rules& r)
 	if(&r!=NULL)
 		;
 
-	QString s="These are the basic compulsory constraints \n";
-	s+="(referring to space allocation) for any timetable\n";
-	s+="Weight="; s+=QString::number(this->weight); s+="\n";
+	QString s=QObject::tr("These are the basic compulsory constraints \n"
+			"(referring to space allocation) for any timetable\n");
+	s+=QObject::tr("Weight=%1").arg(this->weight);s+="\n";
+	s+=QObject::tr("Compulsory=%1").arg(yesNoTranslated(this->compulsory));s+="\n";
 
 	s+=QObject::tr("The basic space constraints try to avoid:\n");
 	s+=QObject::tr("- unallocated activities\n");
@@ -222,12 +230,9 @@ else{
 			unallocated += /*r.internalActivitiesList[i].duration * r.internalActivitiesList[i].nSubgroups * */ 10000;
 			//(an unallocated activity for a year is more important than an unallocated activity for a subgroup)
 			if(conflictsString!=NULL){
-				(*conflictsString) += "Space constraint basic compulsory: unallocated";
-				(*conflictsString) += " activity with id=";
-				(*conflictsString) += QString::number(r.internalActivitiesList[i].id);
-				(*conflictsString) += " - this increases the fitness factor with ";
-				(*conflictsString) += QString::number(weight* r.internalActivitiesList[i].duration *
-					r.internalActivitiesList[i].nSubgroups * 10000);
+				(*conflictsString) += QObject::tr("Space constraint basic compulsory: unallocated activity with id=%1").arg(r.internalActivitiesList[i].id);
+				(*conflictsString) += QObject::tr(" - this increases the conflicts factor with %1")
+					.arg(weight* /*r.internalActivitiesList[i].duration * r.internalActivitiesList[i].nSubgroups * */ 10000);
 				(*conflictsString) += "\n";
 			}
 		}
@@ -267,16 +272,12 @@ else{
 				int tmp=roomsMatrix[i][j][k]-2;
 				if(tmp>0){
 					if(conflictsString!=NULL){
-						(*conflictsString)+="Space constraint basic ";
-						(*conflictsString)+="compulsory: rooms with name ";
-						(*conflictsString)+=r.internalRoomsList[i]->name;
-						(*conflictsString)+=" has more than one allocated activity on";
-						(*conflictsString)+=" day ";
-						(*conflictsString)+=r.daysOfTheWeek[j];
-						(*conflictsString)+=", hour ";
-						(*conflictsString)+=QString::number(k);
-						(*conflictsString)+=". This increases the fitness factor with ";
-						(*conflictsString)+=QString::number(tmp*weight);
+						(*conflictsString)+=QObject::tr("Space constraint basic compulsory: room with name %1 has more than one allocated activity on day %2, hour %3.")
+							.arg(r.internalRoomsList[i]->name)
+							.arg(r.daysOfTheWeek[j])
+							.arg(r.hoursOfTheDay[k]);
+						(*conflictsString)+=" ";
+						(*conflictsString)+=QObject::tr("This increases the conflicts factor with %1").arg(tmp*weight);
 						(*conflictsString)+="\n";
 					}
 					nre+=tmp;
@@ -599,31 +600,21 @@ ConstraintSubjectRequiresEquipments::ConstraintSubjectRequiresEquipments(double 
 void ConstraintSubjectRequiresEquipments::computeInternalStructure(Rules& r)
 {
 	//This procedure computes the internal list of all the activities
-	//which correspond to the subject of the constraint,
-	//and also updates the matrix roomHasActivityEquipment.
+	//which correspond to the subject of the constraint.
+	//Computes also the internal list of indices of equipments
 	
 	this->_nActivities=0;
 	for(int ac=0; ac<r.nInternalActivities; ac++)
 		if(r.internalActivitiesList[ac].subjectName == this->subjectName){
 			assert(this->_nActivities<MAX_ACTIVITIES_FOR_A_SUBJECT);
 			this->_activities[this->_nActivities++]=ac;
-			
-			for(int rm=0; rm<r.nInternalRooms; rm++){
-				bool ok=true;
-				//Check whether this room has all the necessary equipments
-				for(QStringList::Iterator it=this->equipmentsNames.begin(); it!=this->equipmentsNames.end(); it++){
-					bool found=r.internalRoomsList[rm]->searchEquipment(*it);
-					if(!found){
-						ok=false;
-						break;
-					}
-				}
-				
-				if(this->compulsory==true)
-					r.roomHasActivityEquipmentsCompulsory[rm][ac]=ok;
-				else
-					r.roomHasActivityEquipmentsNonCompulsory[rm][ac]=ok;
-			}
+		}
+		
+	this->_nEquipments=0;
+	for(int eq=0; eq<r.nInternalEquipments; eq++)
+		if(this->searchRequiredEquipment(r.internalEquipmentsList[eq]->name)){
+			assert(this->_nEquipments<MAX_EQUIPMENTS_FOR_A_CONSTRAINT);
+			this->_equipments[this->_nEquipments++]=eq;
 		}
 }
 
@@ -715,71 +706,263 @@ int ConstraintSubjectRequiresEquipments::fitness(
 		crt_rules = &r;
 	}
 
-	//Calculates the number of conflicts
+	//Calculates the number of conflicts.
 	//The fastest way seems to iterate over all activities
 	//involved in this constraint (share the subject of this constraint),
 	//find the scheduled room and check to see if this
-	//room is accepted or not (in the precalculated matrix Rules::roomHasActivityEquipments).
+	//room is accepted or not.
 
 	int nbroken;
 
 	//without logging
 if(conflictsString==NULL){
 	nbroken=0;
-	for(int i=0; i<this->_nActivities; i++){
+	for(int i=0; i<this->_nActivities; i++){	
 		int ac=this->_activities[i];
 		int rm=c.rooms[ac];
 		if(rm==UNALLOCATED_SPACE)
 			continue;
+		
+		bool ok=true;
+		for(int j=0; j<this->_nEquipments; j++){
+			int eq=this->_equipments[j];
+			if(!r.roomHasEquipment[rm][eq]){
+				ok=false;
+				break;
+			}
+		}
 
-		if(this->compulsory){
-			if(r.roomHasActivityEquipmentsCompulsory[rm][ac] == false)
-				nbroken++;
-		}
-		else{
-			if(r.roomHasActivityEquipmentsNonCompulsory[rm][ac] == false)
-				nbroken++;
-		}
+		if(!ok)
+			nbroken++;
 	}
 }
 	//with logging
 else{
 	nbroken=0;
-	for(int i=0; i<this->_nActivities; i++){
+	for(int i=0; i<this->_nActivities; i++){	
 		int ac=this->_activities[i];
 		int rm=c.rooms[ac];
 		if(rm==UNALLOCATED_SPACE)
 			continue;
-
-		if(this->compulsory){
-			if(r.roomHasActivityEquipmentsCompulsory[rm][ac] == false){
-				if(conflictsString!=NULL){
-					*conflictsString+=
-						(QObject::tr("Space constraint subject requires equipments broken for room %1, activity with id %2")
-						.arg(r.internalRoomsList[rm]->name)
-						.arg(r.internalActivitiesList[ac].id));
-					*conflictsString += ". ";
-					*conflictsString += (QObject::tr("This increases the conflicts factor with %1").arg(weight));
-					*conflictsString += "\n";
-				}
-
-				nbroken++;
+		
+		bool ok=true;
+		for(int j=0; j<this->_nEquipments; j++){
+			int eq=this->_equipments[j];
+			if(!r.roomHasEquipment[rm][eq]){
+				ok=false;
+				break;
 			}
 		}
-		else{
-			if(r.roomHasActivityEquipmentsNonCompulsory[rm][ac] == false){
-				if(conflictsString!=NULL){
-					*conflictsString+=
-						(QObject::tr("Space constraint subject requires equipments broken for room %1, activity with id %2")
-						.arg(r.internalRoomsList[rm]->name)
-						.arg(r.internalActivitiesList[ac].id));
-					*conflictsString += ". ";
-					*conflictsString += (QObject::tr("This increases the conflicts factor with %1").arg(weight));
-					*conflictsString += "\n";
-				}
 
-				nbroken++;
+		if(!ok){
+			if(conflictsString!=NULL){
+				*conflictsString+=
+					(QObject::tr("Space constraint subject requires equipments broken for room %1, activity with id %2")
+					.arg(r.internalRoomsList[rm]->name)
+					.arg(r.internalActivitiesList[ac].id));
+				*conflictsString += ". ";
+				*conflictsString += (QObject::tr("This increases the conflicts factor with %1").arg(weight));
+				*conflictsString += "\n";
 			}
+
+			nbroken++;
+		}
+	}
+}
+
+	return int (ceil ( weight * nbroken ) );
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+ConstraintSubjectSubjectTagRequireEquipments::ConstraintSubjectSubjectTagRequireEquipments()
+	: SpaceConstraint()
+{
+	this->type=CONSTRAINT_SUBJECT_SUBJECT_TAG_REQUIRE_EQUIPMENTS;
+}
+
+ConstraintSubjectSubjectTagRequireEquipments::ConstraintSubjectSubjectTagRequireEquipments(double w, bool c, const QString& subj, const QString& subt)
+	: SpaceConstraint(w, c)
+{
+	this->type=CONSTRAINT_SUBJECT_SUBJECT_TAG_REQUIRE_EQUIPMENTS;
+	this->subjectName=subj;
+	this->subjectTagName=subt;
+}
+
+void ConstraintSubjectSubjectTagRequireEquipments::computeInternalStructure(Rules& r)
+{
+	//This procedure computes the internal list of all the activities
+	//which correspond to the subject of the constraint.
+	//Computes also the internal list of indices of equipments
+	
+	this->_nActivities=0;
+	for(int ac=0; ac<r.nInternalActivities; ac++)
+		if(r.internalActivitiesList[ac].subjectName == this->subjectName
+		 &&r.internalActivitiesList[ac].subjectTagName==this->subjectTagName){
+			assert(this->_nActivities<MAX_ACTIVITIES_FOR_A_SUBJECT);
+			this->_activities[this->_nActivities++]=ac;
+		}
+		
+	this->_nEquipments=0;
+	for(int eq=0; eq<r.nInternalEquipments; eq++)
+		if(this->searchRequiredEquipment(r.internalEquipmentsList[eq]->name)){
+			assert(this->_nEquipments<MAX_EQUIPMENTS_FOR_A_CONSTRAINT);
+			this->_equipments[this->_nEquipments++]=eq;
+		}
+}
+
+void ConstraintSubjectSubjectTagRequireEquipments::addRequiredEquipment(const QString& equip)
+{
+	this->equipmentsNames.append(equip);
+}
+
+int ConstraintSubjectSubjectTagRequireEquipments::removeRequiredEquipment(const QString& equip)
+{
+	int tmp=this->equipmentsNames.remove(equip);
+	return tmp;
+}
+
+bool ConstraintSubjectSubjectTagRequireEquipments::searchRequiredEquipment(const QString& equip)
+{
+	int tmp=this->equipmentsNames.findIndex(equip);
+	if(tmp>=0)
+		return true;
+	else
+		return false;
+}
+
+QString ConstraintSubjectSubjectTagRequireEquipments::getXMLDescription(Rules& r){
+	if(&r!=NULL)
+		;
+
+	QString s="<ConstraintSubjectSubjectTagRequireEquipments>\n";
+	s+="	<Weight>"+QString::number(weight)+"</Weight>\n";
+	s+="	<Compulsory>";
+	s+=yesNo(this->compulsory);
+	s+="</Compulsory>\n";
+	s+="	<Subject>"+this->subjectName+"</Subject>\n";
+	s+="	<Subject_Tag>"+this->subjectTagName+"</Subject_Tag>\n";
+
+	for(QStringList::Iterator it=this->equipmentsNames.begin(); it!=this->equipmentsNames.end(); it++)
+		s+="	<Equipment>"+(*it)+"</Equipment>\n";
+		
+	s+="</ConstraintSubjectSubjectTagRequireEquipments>\n";
+
+	return s;
+}
+
+QString ConstraintSubjectSubjectTagRequireEquipments::getDescription(Rules& r){
+	if(&r!=NULL)
+		;
+
+	QString s="Subject subject tag require equipments"; s+=", ";
+	s+=QObject::tr("W:%1").arg(this->weight);s+=", ";
+	s+=QObject::tr("C:%1").arg(yesNoTranslated(this->compulsory));s+=", ";
+	s+=QObject::tr("S:%1").arg(this->subjectName);s+=",";
+	s+=QObject::tr("ST:%1").arg(this->subjectTagName);s+=",";
+
+	for(QStringList::Iterator it=this->equipmentsNames.begin(); it!=this->equipmentsNames.end(); it++)
+		s+=QObject::tr("E:%1").arg(*it); s+=",";
+
+	return s;
+}
+
+QString ConstraintSubjectSubjectTagRequireEquipments::getDetailedDescription(Rules& r){
+	if(&r!=NULL)
+		;
+
+	QString s=QObject::tr("Space constraint"); s+="\n";
+	s+=QObject::tr("Subject subject tag require equipments"); s+="\n";
+	s+=QObject::tr("Weight=%1").arg(this->weight);s+="\n";
+	s+=QObject::tr("Compulsory=%1").arg(yesNoTranslated(this->compulsory));s+="\n";
+	s+=QObject::tr("Subject=%1").arg(this->subjectName);s+="\n";
+	s+=QObject::tr("Subject tag=%1").arg(this->subjectTagName);s+="\n";
+
+	for(QStringList::Iterator it=this->equipmentsNames.begin(); it!=this->equipmentsNames.end(); it++){
+		s+=QObject::tr("Equipment=%1").arg(*it); 
+		s+="\n";
+	}
+
+	return s;
+}
+
+//critical function here - must be optimized for speed
+int ConstraintSubjectSubjectTagRequireEquipments::fitness(
+	SpaceChromosome& c,
+	Rules& r,
+	const int days[/*MAX_ACTIVITIES*/],
+	const int hours[/*MAX_ACTIVITIES*/],
+	QString* conflictsString)
+{
+	//if the matrix roomsMatrix is already calculated, do not calculate it again!
+	if(crt_chrom!=&c || crt_rules!=&r){
+		c.getRoomsMatrix(r, days, hours, roomsMatrix);
+
+		crt_chrom = &c;
+		crt_rules = &r;
+	}
+
+	//Calculates the number of conflicts.
+	//The fastest way seems to iterate over all activities
+	//involved in this constraint (share the subject of this constraint),
+	//find the scheduled room and check to see if this
+	//room is accepted or not.
+
+	int nbroken;
+
+	//without logging
+if(conflictsString==NULL){
+	nbroken=0;
+	for(int i=0; i<this->_nActivities; i++){	
+		int ac=this->_activities[i];
+		int rm=c.rooms[ac];
+		if(rm==UNALLOCATED_SPACE)
+			continue;
+		
+		bool ok=true;
+		for(int j=0; j<this->_nEquipments; j++){
+			int eq=this->_equipments[j];
+			if(!r.roomHasEquipment[rm][eq]){
+				ok=false;
+				break;
+			}
+		}
+
+		if(!ok)
+			nbroken++;
+	}
+}
+	//with logging
+else{
+	nbroken=0;
+	for(int i=0; i<this->_nActivities; i++){	
+		int ac=this->_activities[i];
+		int rm=c.rooms[ac];
+		if(rm==UNALLOCATED_SPACE)
+			continue;
+		
+		bool ok=true;
+		for(int j=0; j<this->_nEquipments; j++){
+			int eq=this->_equipments[j];
+			if(!r.roomHasEquipment[rm][eq]){
+				ok=false;
+				break;
+			}
+		}
+
+		if(!ok){
+			if(conflictsString!=NULL){
+				*conflictsString+=
+					(QObject::tr("Space constraint subject subject tag require equipments broken for room %1, activity with id %2")
+					.arg(r.internalRoomsList[rm]->name)
+					.arg(r.internalActivitiesList[ac].id));
+				*conflictsString += ". ";
+				*conflictsString += (QObject::tr("This increases the conflicts factor with %1").arg(weight));
+				*conflictsString += "\n";
+			}
+
+			nbroken++;
 		}
 	}
 }
@@ -932,3 +1115,633 @@ else{
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
+
+ConstraintMinimizeNumberOfRoomsForStudents::ConstraintMinimizeNumberOfRoomsForStudents()
+	: SpaceConstraint()
+{
+	this->type=CONSTRAINT_MINIMIZE_NUMBER_OF_ROOMS_FOR_STUDENTS;
+}
+
+ConstraintMinimizeNumberOfRoomsForStudents::ConstraintMinimizeNumberOfRoomsForStudents(double w, bool c)
+	: SpaceConstraint(w, c)
+{
+	this->type=CONSTRAINT_MINIMIZE_NUMBER_OF_ROOMS_FOR_STUDENTS;
+}
+
+void ConstraintMinimizeNumberOfRoomsForStudents::computeInternalStructure(Rules& r)
+{
+	if(&r!=NULL)
+		;
+	/*do nothing*/
+}
+
+QString ConstraintMinimizeNumberOfRoomsForStudents::getXMLDescription(Rules& r)
+{
+	if(&r!=NULL)
+		;
+
+	QString s = "<ConstraintMinimizeNumberOfRoomsForStudents>\n";
+	s += "	<Weight>"+QString::number(this->weight)+"</Weight>\n";
+	s += "	<Compulsory>";
+	s += yesNo(this->compulsory);
+	s += "</Compulsory>\n";
+	s += "</ConstraintMinimizeNumberOfRoomsForStudents>\n";
+	return s;
+}
+
+QString ConstraintMinimizeNumberOfRoomsForStudents::getDescription(Rules& r)
+{
+	if(&r!=NULL)
+		;
+
+	QString s=QObject::tr("Minimize number of rooms for students");s+=",";
+	s+=(QObject::tr("W:%1").arg(this->weight));s+=", ";
+	s+=(QObject::tr("C:%1").arg(yesNoTranslated(this->compulsory)));s+=", ";
+
+	return s;
+}
+
+QString ConstraintMinimizeNumberOfRoomsForStudents::getDetailedDescription(Rules& r)
+{
+	if(&r!=NULL)
+		;
+
+	QString s=QObject::tr("Space constraint");s+="\n";
+	s+=QObject::tr("Minimize number of rooms for each students set");s+="\n";
+	s+=(QObject::tr("Weight=%1").arg(this->weight));s+="\n";
+	s+=(QObject::tr("Compulsory=%1").arg(yesNoTranslated(this->compulsory)));s+="\n";
+
+	return s;
+}
+
+//critical function here - must be optimized for speed
+int ConstraintMinimizeNumberOfRoomsForStudents::fitness(
+	SpaceChromosome& c,
+	Rules& r,
+	const int days[/*MAX_ACTIVITIES*/],
+	const int hours[/*MAX_ACTIVITIES*/],
+	QString* conflictsString)
+	{
+
+	//if the matrix roomsMatrix is already calculated, do not calculate it again!
+	if(crt_chrom!=&c || crt_rules!=&r){
+		c.getRoomsMatrix(r, days, hours, roomsMatrix);
+
+		crt_chrom = &c;
+		crt_rules = &r;
+	}
+
+	assert(r.internalStructureComputed);
+
+	int nbroken=0;
+	
+	//without logging
+if(conflictsString==NULL){
+	nbroken=0;
+	
+	for(int i=0; i<r.nInternalSubgroups; i++)
+		for(int j=0; j<r.nInternalRooms; j++)
+			subgroupsRooms[i][j]=false;
+			
+	for(int i=0; i<r.nInternalActivities; i++){
+		if(c.rooms[i]!=UNALLOCATED_SPACE){
+			for(int j=0; j<r.internalActivitiesList[i].nSubgroups; j++){
+				int k=r.internalActivitiesList[i].subgroups[j];
+				subgroupsRooms[k][c.rooms[i]]=true;
+			}
+		}
+	}
+	
+	int total[MAX_TOTAL_SUBGROUPS];
+	for(int i=0; i<r.nInternalSubgroups; i++)
+		total[i]=0;
+		
+	for(int i=0; i<r.nInternalSubgroups; i++)
+		for(int j=0; j<r.nInternalRooms; j++)
+			if(subgroupsRooms[i][j])
+				total[i]++;
+				
+	for(int i=0; i<r.nInternalSubgroups; i++)
+		if(total[i]>1)
+			nbroken+=total[i]-1;
+}
+	//with logging
+else{
+	nbroken=0;
+	
+	for(int i=0; i<r.nInternalSubgroups; i++)
+		for(int j=0; j<r.nInternalRooms; j++)
+			subgroupsRooms[i][j]=false;
+			
+	for(int i=0; i<r.nInternalActivities; i++){
+		if(c.rooms[i]!=UNALLOCATED_SPACE){
+			for(int j=0; j<r.internalActivitiesList[i].nSubgroups; j++){
+				int k=r.internalActivitiesList[i].subgroups[j];
+				subgroupsRooms[k][c.rooms[i]]=true;
+			}
+		}
+	}
+	
+	int total[MAX_TOTAL_SUBGROUPS];
+	for(int i=0; i<r.nInternalSubgroups; i++)
+		total[i]=0;
+		
+	for(int i=0; i<r.nInternalSubgroups; i++)
+		for(int j=0; j<r.nInternalRooms; j++)
+			if(subgroupsRooms[i][j])
+				total[i]++;
+				
+	for(int i=0; i<r.nInternalSubgroups; i++)
+		if(total[i]>1){
+			nbroken+=total[i]-1;
+	
+			if(conflictsString!=NULL){
+				*conflictsString+=
+					QObject::tr("Space constraint minimize number of rooms broken for subgroup %1, number of rooms=%2")
+					.arg(r.internalSubgroupsList[i]->name)
+					.arg(total[i]);
+				*conflictsString += ". ";
+				*conflictsString += (QObject::tr("This increases the conflicts factor with %1").arg(weight));
+				*conflictsString += "\n";
+			}
+		}
+}
+
+	return int (ceil ( weight * nbroken ) );
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+ConstraintActivityPreferredRoom::ConstraintActivityPreferredRoom()
+	: SpaceConstraint()
+{
+	this->type=CONSTRAINT_ACTIVITY_PREFERRED_ROOM;
+}
+
+ConstraintActivityPreferredRoom::ConstraintActivityPreferredRoom(double w, bool c, int aid, const QString& room)
+	: SpaceConstraint(w, c)
+{
+	this->type=CONSTRAINT_ACTIVITY_PREFERRED_ROOM;
+	this->activityId=aid;
+	this->roomName=room;
+}
+
+void ConstraintActivityPreferredRoom::computeInternalStructure(Rules& r)
+{
+	this->_activity=-1;
+	for(int ac=0; ac<r.nInternalActivities; ac++)
+		if(r.internalActivitiesList[ac].id==this->activityId){
+			assert(this->_activity==-1);
+			this->_activity=ac;
+		}
+		
+	this->_room = r.searchRoom(this->roomName);
+	assert(this->_room>=0);
+}
+
+QString ConstraintActivityPreferredRoom::getXMLDescription(Rules& r){
+	if(&r!=NULL)
+		;
+
+	QString s="<ConstraintActivityPreferredRoom>\n";
+	s+="	<Weight>"+QString::number(weight)+"</Weight>\n";
+	s+="	<Compulsory>";
+	s+=yesNo(this->compulsory);
+	s+="</Compulsory>\n";
+	s+="	<Activity_Id>"+QString::number(this->activityId)+"</Activity_Id>\n";
+	s+="	<Room>"+this->roomName+"</Room>\n";
+		
+	s+="</ConstraintActivityPreferredRoom>\n";
+
+	return s;
+}
+
+QString ConstraintActivityPreferredRoom::getDescription(Rules& r){
+	if(&r!=NULL)
+		;
+
+	QString s="Activity preferred room"; s+=", ";
+	s+=QObject::tr("W:%1").arg(this->weight);s+=", ";
+	s+=QObject::tr("C:%1").arg(yesNoTranslated(this->compulsory));s+=", ";
+	s+=QObject::tr("A:%1").arg(this->activityId);s+=", ";
+	s+=QObject::tr("R:%1").arg(this->roomName);
+
+	return s;
+}
+
+QString ConstraintActivityPreferredRoom::getDetailedDescription(Rules& r){
+	if(&r!=NULL)
+		;
+
+	QString s=QObject::tr("Space constraint"); s+="\n";
+	s+=QObject::tr("Activity preferred room"); s+="\n";
+	s+=QObject::tr("Weight=%1").arg(this->weight);s+="\n";
+	s+=QObject::tr("Compulsory=%1").arg(yesNoTranslated(this->compulsory));s+="\n";
+	s+=QObject::tr("Activity id=%1").arg(this->activityId);s+="\n";
+	s+=QObject::tr("Room=%1").arg(this->roomName);s+="\n";
+
+	return s;
+}
+
+//critical function here - must be optimized for speed
+int ConstraintActivityPreferredRoom::fitness(
+	SpaceChromosome& c,
+	Rules& r,
+	const int days[/*MAX_ACTIVITIES*/],
+	const int hours[/*MAX_ACTIVITIES*/],
+	QString* conflictsString)
+{
+	//if the matrix roomsMatrix is already calculated, do not calculate it again!
+	if(crt_chrom!=&c || crt_rules!=&r){
+		c.getRoomsMatrix(r, days, hours, roomsMatrix);
+
+		crt_chrom = &c;
+		crt_rules = &r;
+	}
+
+	//Calculates the number of conflicts
+
+	int nbroken;
+
+	//without logging
+if(conflictsString==NULL){
+	nbroken=0;
+	int parity=r.internalActivitiesList[this->_activity].parity==PARITY_WEEKLY?2:1;
+
+	int rm=c.rooms[this->_activity];
+	if(rm!=UNALLOCATED_SPACE && rm!=this->_room)
+		nbroken+=parity;
+}
+	//with logging
+else{
+	nbroken=0;
+	int parity=r.internalActivitiesList[this->_activity].parity==PARITY_WEEKLY?2:1;
+
+	int rm=c.rooms[this->_activity];
+	if(rm!=UNALLOCATED_SPACE && rm!=this->_room){
+		if(conflictsString!=NULL){
+			*conflictsString+=
+				(QObject::tr("Space constraint activity preferred room broken for activity with id=%1, room=%2")
+				.arg(this->activityId)
+				.arg(this->roomName));
+			*conflictsString += ". ";
+			*conflictsString += (QObject::tr("This increases the conflicts factor with %1").arg(weight*parity));
+			*conflictsString += "\n";
+		}
+
+		nbroken+=parity;
+	}
+}
+
+	return int (ceil ( weight * nbroken ) );
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+ConstraintActivityPreferredRooms::ConstraintActivityPreferredRooms()
+	: SpaceConstraint()
+{
+	this->type=CONSTRAINT_ACTIVITY_PREFERRED_ROOMS;
+}
+
+ConstraintActivityPreferredRooms::ConstraintActivityPreferredRooms(double w, bool c, int aid, const QStringList& roomsList)
+	: SpaceConstraint(w, c)
+{
+	this->type=CONSTRAINT_ACTIVITY_PREFERRED_ROOMS;
+	this->activityId=aid;
+	this->roomsNames=roomsList;
+	assert(roomsList.count()<=(uint)MAX_CONSTRAINT_ACTIVITY_PREFERRED_ROOMS);
+}
+
+void ConstraintActivityPreferredRooms::computeInternalStructure(Rules& r)
+{
+	this->_activity=-1;
+	for(int ac=0; ac<r.nInternalActivities; ac++)
+		if(r.internalActivitiesList[ac].id==this->activityId){
+			assert(this->_activity==-1);
+			this->_activity=ac;
+		}
+		
+	this->_n_preferred_rooms=this->roomsNames.count();
+	int i=0;
+	for(QStringList::Iterator it=this->roomsNames.begin(); it!=this->roomsNames.end(); it++){
+		this->_rooms[i] = r.searchRoom(*it);
+		assert(this->_rooms[i]>=0);
+		i++;
+	}
+}
+
+QString ConstraintActivityPreferredRooms::getXMLDescription(Rules& r){
+	if(&r!=NULL)
+		;
+
+	QString s="<ConstraintActivityPreferredRooms>\n";
+	s+="	<Weight>"+QString::number(weight)+"</Weight>\n";
+	s+="	<Compulsory>";
+	s+=yesNo(this->compulsory);
+	s+="</Compulsory>\n";
+	s+="	<Activity_Id>"+QString::number(this->activityId)+"</Activity_Id>\n";
+	s+="	<Number_of_Preferred_Rooms>"+QString::number(this->roomsNames.count())+"</Number_of_Preferred_Rooms>\n";
+	for(QStringList::Iterator it=this->roomsNames.begin(); it!=this->roomsNames.end(); it++)
+		s+="	<Preferred_Room>"+(*it)+"</Preferred_Room>\n";
+		
+	s+="</ConstraintActivityPreferredRooms>\n";
+
+	return s;
+}
+
+QString ConstraintActivityPreferredRooms::getDescription(Rules& r){
+	if(&r!=NULL)
+		;
+
+	QString s="Activity preferred rooms"; s+=", ";
+	s+=QObject::tr("W:%1").arg(this->weight);s+=", ";
+	s+=QObject::tr("C:%1").arg(yesNoTranslated(this->compulsory));s+=", ";
+	s+=QObject::tr("A:%1").arg(this->activityId);
+	for(QStringList::Iterator it=this->roomsNames.begin(); it!=this->roomsNames.end(); it++){
+		s+=", ";
+		s+=QObject::tr("R:%1").arg(*it);
+	}
+
+	return s;
+}
+
+QString ConstraintActivityPreferredRooms::getDetailedDescription(Rules& r){
+	if(&r!=NULL)
+		;
+
+	QString s=QObject::tr("Space constraint"); s+="\n";
+	s+=QObject::tr("Activity preferred rooms"); s+="\n";
+	s+=QObject::tr("Weight=%1").arg(this->weight);s+="\n";
+	s+=QObject::tr("Compulsory=%1").arg(yesNoTranslated(this->compulsory));s+="\n";
+	s+=QObject::tr("Activity id=%1").arg(this->activityId);s+="\n";
+	for(QStringList::Iterator it=this->roomsNames.begin(); it!=this->roomsNames.end(); it++){
+		s+=QObject::tr("Room=%1").arg(*it);
+		s+="\n";
+	}
+
+	return s;
+}
+
+//critical function here - must be optimized for speed
+int ConstraintActivityPreferredRooms::fitness(
+	SpaceChromosome& c,
+	Rules& r,
+	const int days[/*MAX_ACTIVITIES*/],
+	const int hours[/*MAX_ACTIVITIES*/],
+	QString* conflictsString)
+{
+	//if the matrix roomsMatrix is already calculated, do not calculate it again!
+	if(crt_chrom!=&c || crt_rules!=&r){
+		c.getRoomsMatrix(r, days, hours, roomsMatrix);
+
+		crt_chrom = &c;
+		crt_rules = &r;
+	}
+
+	//Calculates the number of conflicts
+
+	int nbroken;
+
+	//without logging
+if(conflictsString==NULL){
+	nbroken=0;
+	int parity=r.internalActivitiesList[this->_activity].parity==PARITY_WEEKLY?2:1;
+
+	int rm=c.rooms[this->_activity];
+	if(rm!=UNALLOCATED_SPACE){
+		int i;
+		for(i=0; i<this->_n_preferred_rooms; i++)
+			if(this->_rooms[i]==rm)
+				break;
+		if(i==this->_n_preferred_rooms)
+			nbroken+=parity;
+	}
+}
+	//with logging
+else{
+	nbroken=0;
+	int parity=r.internalActivitiesList[this->_activity].parity==PARITY_WEEKLY?2:1;
+
+	int rm=c.rooms[this->_activity];
+	if(rm!=UNALLOCATED_SPACE){
+		int i;
+		for(i=0; i<this->_n_preferred_rooms; i++)
+			if(this->_rooms[i]==rm)
+				break;
+		if(i==this->_n_preferred_rooms){
+			if(conflictsString!=NULL){
+				*conflictsString+=
+					(QObject::tr("Space constraint activity preferred rooms broken for activity with id=%1")
+					.arg(this->activityId));
+				*conflictsString += ". ";
+				*conflictsString += (QObject::tr("This increases the conflicts factor with %1").arg(weight*parity));
+				*conflictsString += "\n";
+			}
+
+			nbroken+=parity;
+		}
+	}
+}
+
+	return int (ceil ( weight * nbroken ) );
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+ConstraintActivitiesSameRoom::ConstraintActivitiesSameRoom()
+	: SpaceConstraint()
+{
+	type=CONSTRAINT_ACTIVITIES_SAME_ROOM;
+}
+
+ConstraintActivitiesSameRoom::ConstraintActivitiesSameRoom(double w, bool c, int nact, const int act[])
+ : SpaceConstraint(w, c)
+ {
+	assert(nact>=2 && nact<=MAX_CONSTRAINT_ACTIVITIES_SAME_ROOM);
+	this->n_activities=nact;
+	for(int i=0; i<nact; i++)
+		this->activitiesId[i]=act[i];
+
+	this->type=CONSTRAINT_ACTIVITIES_SAME_ROOM;
+}
+
+void ConstraintActivitiesSameRoom::computeInternalStructure(Rules &r)
+{
+	//compute the indices of the activities,
+	//based on their unique ID
+
+	for(int j=0; j<n_activities; j++)
+		this->_activities[j]=-1;
+
+	for(int i=0; i<this->n_activities; i++){
+		int j;
+		Activity* act;
+		for(j=0, act=r.activitiesList.first(); act; act=r.activitiesList.next(), j++)
+			if(act->id==this->activitiesId[i])
+				this->_activities[i]=j;
+	}
+
+	for(int j=0; j<this->n_activities; j++)
+		assert(this->_activities[j]>=0);
+}
+
+void ConstraintActivitiesSameRoom::removeUseless(Rules& r)
+{
+	//remove the activitiesId which no longer exist (used after the deletion of an activity)
+
+	for(int j=0; j<this->n_activities; j++)
+		this->_activities[j]=-1;
+
+	for(int i=0; i<this->n_activities; i++){
+		int j;
+		Activity* act;
+		for(j=0, act=r.activitiesList.first(); act; act=r.activitiesList.next(), j++)
+			if(act->id==this->activitiesId[i])
+				this->_activities[i]=j;
+	}
+
+	int i, j;
+	for(i=0, j=0; j<this->n_activities; j++)
+		if(this->_activities[j]>=0) //valid activity
+			this->activitiesId[i++]=this->activitiesId[j];
+	this->n_activities=i;
+}
+
+QString ConstraintActivitiesSameRoom::getXMLDescription(Rules& r){
+	if(&r!=NULL)
+		;
+
+	QString s="<ConstraintActivitiesSameRoom>\n";
+	s+="	<Weight>"+QString::number(this->weight)+"</Weight>\n";
+	s+="	<Compulsory>";s+=yesNo(this->compulsory);s+="</Compulsory>\n";
+	s+="	<Number_of_Activities>"+QString::number(this->n_activities)+"</Number_of_Activities>\n";
+	for(int i=0; i<this->n_activities; i++)
+		s+="	<Activity_Id>"+QString::number(this->activitiesId[i])+"</Activity_Id>\n";
+	s+="</ConstraintActivitiesSameRoom>\n";
+	return s;
+}
+
+QString ConstraintActivitiesSameRoom::getDescription(Rules& r){
+	if(&r!=NULL)
+		;
+
+	QString s;
+	s+=QObject::tr("Activities same room");s+=", ";
+	s+=(QObject::tr("W:%1").arg(this->weight));s+=", ";
+	s+=(QObject::tr("C:%1").arg(yesNoTranslated(this->compulsory)));s+=", ";
+	s+=(QObject::tr("NA:%1").arg(this->n_activities));s+=", ";
+	for(int i=0; i<this->n_activities; i++){
+		s+=(QObject::tr("ID:%1").arg(this->activitiesId[i]));s+=", ";
+	}
+
+	return s;
+}
+
+QString ConstraintActivitiesSameRoom::getDetailedDescription(Rules& r){
+	if(&r!=NULL)
+		;
+
+	QString s;
+	
+	s=QObject::tr("Space constraint");s+="\n";
+	s+=QObject::tr("Activities must have the same room");s+="\n";
+	s+=(QObject::tr("Weight=%1").arg(this->weight));s+="\n";
+	s+=(QObject::tr("Compulsory=%1").arg(yesNoTranslated(this->compulsory)));s+="\n";
+	s+=(QObject::tr("Number of activities=%1").arg(this->n_activities));s+="\n";
+	for(int i=0; i<this->n_activities; i++){
+		s+=(QObject::tr("Activity with id=%1").arg(this->activitiesId[i]));s+="\n";
+	}
+
+	return s;
+}
+
+//critical function here - must be optimized for speed
+int ConstraintActivitiesSameRoom::fitness(
+	SpaceChromosome& c,
+	Rules& r,
+	const int days[/*MAX_ACTIVITIES*/],
+	const int hours[/*MAX_ACTIVITIES*/],
+	QString* conflictsString)
+{
+	assert(r.internalStructureComputed);
+
+	//if the matrices roomsMatrix is already calculated, do not calculate it again!
+	if(crt_chrom!=&c || crt_rules!=&r){
+		c.getRoomsMatrix(r, days, hours, roomsMatrix);
+
+		crt_chrom = &c;
+		crt_rules = &r;
+	}
+
+	int nbroken;
+
+	//without logging
+	if(conflictsString==NULL){
+		nbroken=0;
+		for(int i=1; i<this->n_activities; i++){
+			int t1=c.rooms[this->_activities[i]];
+			if(t1!=UNALLOCATED_SPACE){
+				for(int j=0; j<i; j++){
+					int t2=c.rooms[this->_activities[j]];
+					if(t2!=UNALLOCATED_SPACE){
+						int tmp=0;
+
+						//activity weekly - counts as double
+						if(r.internalActivitiesList[this->_activities[i]].parity==PARITY_WEEKLY &&
+						 r.internalActivitiesList[this->_activities[j]].parity==PARITY_WEEKLY)
+							tmp = 4;
+						else if(r.internalActivitiesList[this->_activities[i]].parity==PARITY_WEEKLY ||
+						 r.internalActivitiesList[this->_activities[j]].parity==PARITY_WEEKLY)
+							tmp = 2;
+						else
+							tmp = 1;
+
+						nbroken+=tmp;
+					}
+				}
+			}
+		}
+	}
+	//with logging
+	else{
+		nbroken=0;
+		for(int i=1; i<this->n_activities; i++){
+			int t1=c.rooms[this->_activities[i]];
+			if(t1!=UNALLOCATED_SPACE){
+				for(int j=0; j<i; j++){
+					int t2=c.rooms[this->_activities[j]];
+					if(t2!=UNALLOCATED_SPACE){
+						int tmp=0;
+
+						//activity weekly - counts as double
+						if(r.internalActivitiesList[this->_activities[i]].parity==PARITY_WEEKLY &&
+						 r.internalActivitiesList[this->_activities[j]].parity==PARITY_WEEKLY)
+							tmp = 4;
+						else if(r.internalActivitiesList[this->_activities[i]].parity==PARITY_WEEKLY ||
+						 r.internalActivitiesList[this->_activities[j]].parity==PARITY_WEEKLY)
+							tmp = 2;
+						else
+							tmp = 1;
+
+						nbroken+=tmp;
+
+						if(tmp>0 && conflictsString!=NULL){
+							*conflictsString+=(QObject::tr("Space constraint activities same room broken, because activity with id=%1 is not in the same room with activity with id=%2")
+								.arg(this->activitiesId[i])
+								.arg(this->activitiesId[j]));
+							*conflictsString+=", ";
+							*conflictsString+=(QObject::tr("conflicts factor increase=%1").arg(tmp*weight));
+							*conflictsString+="\n";
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return int (ceil ( weight * nbroken ) );
+}

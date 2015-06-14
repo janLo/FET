@@ -1,7 +1,7 @@
 /***************************************************************************
                           addconstraintteacherrequiresroomform.h  -  description
                              -------------------
-    begin                : September 139, 2004
+    begin                : September 13, 2004
     copyright            : (C) 2004 by Lalescu Liviu
     email                : liviu@lalescu.ro
  ***************************************************************************/

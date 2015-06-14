@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.2" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
 <class>GroupsForm_template</class>
 <widget class="QDialog">
     <property name="name">
@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>574</width>
-            <height>483</height>
+            <width>570</width>
+            <height>431</height>
         </rect>
     </property>
     <property name="caption">
@@ -25,38 +25,6 @@
         <property name="spacing">
             <number>6</number>
         </property>
-        <widget class="QLabel" row="0" column="0">
-            <property name="name">
-                <cstring>yearTextLabel</cstring>
-            </property>
-            <property name="text">
-                <string>Year</string>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="2" column="1">
-            <property name="name">
-                <cstring>removeGroupPushButton</cstring>
-            </property>
-            <property name="text">
-                <string>Remove current</string>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="2" column="0">
-            <property name="name">
-                <cstring>addGroupPushButton</cstring>
-            </property>
-            <property name="text">
-                <string>Add group</string>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="2" column="2">
-            <property name="name">
-                <cstring>closePushButton</cstring>
-            </property>
-            <property name="text">
-                <string>Close</string>
-            </property>
-        </widget>
         <widget class="QTextEdit" row="1" column="2">
             <property name="name">
                 <cstring>groupTextEdit</cstring>
@@ -65,20 +33,14 @@
                 <bool>true</bool>
             </property>
         </widget>
-        <widget class="QLabel" row="0" column="2">
+        <widget class="QListBox" row="1" column="0">
+            <item>
+                <property name="text">
+                    <string>New Item</string>
+                </property>
+            </item>
             <property name="name">
-                <cstring>groupTextLabel</cstring>
-            </property>
-            <property name="text">
-                <string>Details</string>
-            </property>
-        </widget>
-        <widget class="QLabel" row="0" column="1">
-            <property name="name">
-                <cstring>groupsTextLabel</cstring>
-            </property>
-            <property name="text">
-                <string>Group</string>
+                <cstring>yearsListBox</cstring>
             </property>
         </widget>
         <widget class="QListBox" row="1" column="1">
@@ -91,14 +53,68 @@
                 <cstring>groupsListBox</cstring>
             </property>
         </widget>
-        <widget class="QListBox" row="1" column="0">
-            <item>
-                <property name="text">
-                    <string>New Item</string>
-                </property>
-            </item>
+        <widget class="QLabel" row="0" column="0">
             <property name="name">
-                <cstring>yearsListBox</cstring>
+                <cstring>yearTextLabel</cstring>
+            </property>
+            <property name="text">
+                <string>Year</string>
+            </property>
+        </widget>
+        <widget class="QLabel" row="0" column="1">
+            <property name="name">
+                <cstring>groupsTextLabel</cstring>
+            </property>
+            <property name="text">
+                <string>Group</string>
+            </property>
+        </widget>
+        <widget class="QLabel" row="0" column="2">
+            <property name="name">
+                <cstring>groupTextLabel</cstring>
+            </property>
+            <property name="text">
+                <string>Details</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="2" column="0">
+            <property name="name">
+                <cstring>addGroupPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Add group</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="2" column="1">
+            <property name="name">
+                <cstring>removeGroupPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Remove current</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="2" column="2">
+            <property name="name">
+                <cstring>modifyGroupPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Modify current</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="4" column="0" rowspan="1" colspan="3">
+            <property name="name">
+                <cstring>closePushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Close</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="3" column="0" rowspan="1" colspan="3">
+            <property name="name">
+                <cstring>sortGroupsPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Sort current groups alphabetically</string>
             </property>
         </widget>
     </grid>
@@ -134,12 +150,26 @@
         <receiver>GroupsForm_template</receiver>
         <slot>groupChanged(const QString&amp;)</slot>
     </connection>
+    <connection>
+        <sender>modifyGroupPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>GroupsForm_template</receiver>
+        <slot>modifyGroup()</slot>
+    </connection>
+    <connection>
+        <sender>sortGroupsPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>GroupsForm_template</receiver>
+        <slot>sortGroups()</slot>
+    </connection>
 </connections>
 <slots>
     <slot>addGroup()</slot>
     <slot>removeGroup()</slot>
     <slot>yearChanged(const QString&amp;)</slot>
     <slot>groupChanged(const QString&amp;)</slot>
+    <slot>modifyGroup()</slot>
+    <slot>sortGroups()</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

@@ -100,7 +100,6 @@ extern int16 students_timetable_week2[MAX_TOTAL_SUBGROUPS][MAX_DAYS_PER_WEEK][MA
 The timetable for the rooms, for the first week
 */
 extern int16 rooms_timetable_week1[MAX_ROOMS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
-
 /**
 The timetable for the rooms, for the second week
 */

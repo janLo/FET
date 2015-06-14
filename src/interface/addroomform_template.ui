@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.2" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
 <class>AddRoomForm_template</class>
 <widget class="QDialog">
     <property name="name">
@@ -15,134 +15,75 @@
     <property name="caption">
         <string>Add Room Dialog</string>
     </property>
-    <widget class="QLineEdit">
+    <grid>
         <property name="name">
-            <cstring>typeLineEdit</cstring>
+            <cstring>unnamed</cstring>
         </property>
-        <property name="geometry">
-            <rect>
-                <x>70</x>
-                <y>110</y>
-                <width>210</width>
-                <height>26</height>
-            </rect>
-        </property>
-    </widget>
-    <widget class="QLabel">
-        <property name="name">
-            <cstring>nameTextLabel</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>20</x>
-                <y>60</y>
-                <width>50</width>
-                <height>20</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>Name</string>
-        </property>
-    </widget>
-    <widget class="QLabel">
-        <property name="name">
-            <cstring>typeTextLabel</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>20</x>
-                <y>110</y>
-                <width>50</width>
-                <height>20</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>Type</string>
-        </property>
-    </widget>
-    <widget class="QLabel">
-        <property name="name">
-            <cstring>capacityTextLabel</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>20</x>
-                <y>170</y>
-                <width>70</width>
-                <height>20</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>Capacity</string>
-        </property>
-    </widget>
-    <widget class="QLineEdit">
-        <property name="name">
-            <cstring>nameLineEdit</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>70</x>
-                <y>60</y>
-                <width>210</width>
-                <height>26</height>
-            </rect>
-        </property>
-    </widget>
-    <widget class="QPushButton">
-        <property name="name">
-            <cstring>addRoomPushButton</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>30</x>
-                <y>240</y>
-                <width>101</width>
-                <height>31</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>Add room</string>
-        </property>
-    </widget>
-    <widget class="QPushButton">
-        <property name="name">
-            <cstring>closePushButton</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>180</x>
-                <y>240</y>
-                <width>101</width>
-                <height>31</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>Close</string>
-        </property>
-    </widget>
-    <widget class="QSpinBox">
-        <property name="name">
-            <cstring>capacitySpinBox</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>100</x>
-                <y>160</y>
-                <width>60</width>
-                <height>30</height>
-            </rect>
-        </property>
-        <property name="maxValue">
-            <number>1000</number>
-        </property>
-        <property name="minValue">
-            <number>1</number>
-        </property>
-        <property name="value">
-            <number>1000</number>
-        </property>
-    </widget>
+        <widget class="QLineEdit" row="1" column="1" rowspan="1" colspan="3">
+            <property name="name">
+                <cstring>typeLineEdit</cstring>
+            </property>
+        </widget>
+        <widget class="QLabel" row="0" column="0">
+            <property name="name">
+                <cstring>nameTextLabel</cstring>
+            </property>
+            <property name="text">
+                <string>Name</string>
+            </property>
+        </widget>
+        <widget class="QLabel" row="1" column="0">
+            <property name="name">
+                <cstring>typeTextLabel</cstring>
+            </property>
+            <property name="text">
+                <string>Type</string>
+            </property>
+        </widget>
+        <widget class="QLabel" row="2" column="0" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>capacityTextLabel</cstring>
+            </property>
+            <property name="text">
+                <string>Capacity</string>
+            </property>
+        </widget>
+        <widget class="QLineEdit" row="0" column="1" rowspan="1" colspan="3">
+            <property name="name">
+                <cstring>nameLineEdit</cstring>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="3" column="0" rowspan="1" colspan="3">
+            <property name="name">
+                <cstring>addRoomPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Add room</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="3" column="3">
+            <property name="name">
+                <cstring>closePushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Close</string>
+            </property>
+        </widget>
+        <widget class="QSpinBox" row="2" column="2">
+            <property name="name">
+                <cstring>capacitySpinBox</cstring>
+            </property>
+            <property name="maxValue">
+                <number>1000</number>
+            </property>
+            <property name="minValue">
+                <number>1</number>
+            </property>
+            <property name="value">
+                <number>1000</number>
+            </property>
+        </widget>
+    </grid>
 </widget>
 <connections>
     <connection>

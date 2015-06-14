@@ -5,9 +5,14 @@ Program's description:
 	
 Requirements:
 	FET is created in the following environment: Slackware 10.0 GNU/Linux distribution,
-	KDevelop 3.1.2, Qt 3.3.2, gcc 3.3.4, Linux 2.4.26, other great free tools.
+	KDevelop 3.2.0, Qt 3.3.2, gcc 3.3.4, Linux 2.4.26, other great free tools.
 	
+	GNU/Linux and similar OS's:
 	Software: gcc 3.3.4 or similar, Qt 3.3.2 ("./configure -thread") or compatible.
+	
+	Microsoft Windows:
+	For running, you need only the archive of FET compiled for Windows (which contains
+	the Qt .dll).
 
 Download:
 	You can download the latest version from http://lalescu.ro/liviu/fet/ (for now).
@@ -24,19 +29,28 @@ Compiling:
 	To remove the compiled objects/executable: "make clean" and/or "make distclean".
 	
 	Microsoft Windows: you will have to download and install Qt from trolltech.com.
+	Please modify the file src/engine/genetictimetable_defs.h -> line 21 becomes
+	"#define WIN32". The rest is automatic.
 	E-mail me for details.
 	
 Installing:
 	GNU/Linux and similar OS's:	
 	Please move the whole directory "fet-x.x.x" into the place where you like,
 	for instance to the directory "/usr/local/".
+	
+	Microsoft Windows:
+	Unzip the provided archive in a directory of your choice.
 
 Running:
+	GNU/Linux and similar OS's:
 	Run the executable named "/.../fet-x.x.x/fet" (x.x.x is the version).
 	
 	You can change various parameters in the file "~/.fet/fet.ini" (home 
 	directory, in .fet/fet.ini)
 	(yes, please play with them, try greater population size, etc.)
+	
+	Microsoft Windows:
+	Run the executable fet.exe. You can modify the file fet.ini.
 	
 Documentation:
 	Very primitive: some hints in the directory "/.../fet-x.x.x/doc/".

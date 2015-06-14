@@ -44,11 +44,13 @@ public:
 	void updateStudentsComboBox();
 	void updateTeachersComboBox();
 	void updateSubjectsComboBox();
+	void updateSubjectTagsComboBox();
 	void updatePreferredDaysComboBox();
 	void updatePreferredHoursComboBox();
 
 	void teacherChanged(const QString& dummy);
 	void subjectChanged(const QString& dummy);
+	void subjectTagChanged(const QString& dummy);
 	void studentsChanged(const QString& dummy);
 	void hourChanged();
 	void dayChanged();

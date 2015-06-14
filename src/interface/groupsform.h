@@ -23,6 +23,8 @@ public:
 
 	void addGroup();
 	void removeGroup();
+	void modifyGroup();
+	void sortGroups();
 	void yearChanged(const QString &yearName);
 	void groupChanged(const QString &groupName);
 };

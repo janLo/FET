@@ -70,7 +70,7 @@ void RoomsEquipmentsForm::addEquipment()
 		return;
 	QString equip=allEquipmentsListBox->currentText();
 	assert(equip!="");
-	int i;
+	uint i;
 	//duplicate?
 	for(i=0; i<roomEquipmentsListBox->count(); i++)
 		if(equip==roomEquipmentsListBox->text(i))

@@ -37,12 +37,17 @@ class SpaceConstraint;
 
 typedef QPtrList<SpaceConstraint> SpaceConstraintsList;
 
-const int CONSTRAINT_GENERIC_SPACE						=1001; //time constraints are beginning from 1
-const int CONSTRAINT_BASIC_COMPULSORY_SPACE				=1002; //space constraints from 1001
-const int CONSTRAINT_ROOM_TYPE_NOT_ALLOWED_SUBJECTS		=1003;
-const int CONSTRAINT_ROOM_NOT_AVAILABLE					=1004;
-const int CONSTRAINT_SUBJECT_REQUIRES_EQUIPMENTS		=1005;
-const int CONSTRAINT_TEACHER_REQUIRES_ROOM				=1006;
+const int CONSTRAINT_GENERIC_SPACE								=1001; //time constraints are beginning from 1
+const int CONSTRAINT_BASIC_COMPULSORY_SPACE						=1002; //space constraints from 1001
+const int CONSTRAINT_ROOM_TYPE_NOT_ALLOWED_SUBJECTS				=1003;
+const int CONSTRAINT_ROOM_NOT_AVAILABLE							=1004;
+const int CONSTRAINT_SUBJECT_REQUIRES_EQUIPMENTS				=1005;
+const int CONSTRAINT_SUBJECT_SUBJECT_TAG_REQUIRE_EQUIPMENTS		=1006;
+const int CONSTRAINT_TEACHER_REQUIRES_ROOM						=1007;
+const int CONSTRAINT_MINIMIZE_NUMBER_OF_ROOMS_FOR_STUDENTS		=1008;
+const int CONSTRAINT_ACTIVITY_PREFERRED_ROOM					=1009;
+const int CONSTRAINT_ACTIVITY_PREFERRED_ROOMS					=1010;
+const int CONSTRAINT_ACTIVITIES_SAME_ROOM						=1011;
 
 /**
 This class represents a space constraint
@@ -251,6 +256,12 @@ private:
 	//The list of activities referred to by this constraint.
 	//This is a list of indices in the rules internal activities list.
 	int _activities[MAX_ACTIVITIES_FOR_A_SUBJECT];
+	
+	//The number of equipments referred to by this constraint
+	int _nEquipments;
+	
+	//The indices of the equipments referred to by this constraint
+	int _equipments[MAX_EQUIPMENTS_FOR_A_CONSTRAINT];
 
 public:
 
@@ -287,11 +298,67 @@ public:
 };
 
 /**
+This is a constraint. Its purpose: a subject+subject tag must be taught in
+a room which has the necessary equipments.
+*/
+class ConstraintSubjectSubjectTagRequireEquipments: public SpaceConstraint{
+private:
+	
+	//The number of activities referred to by this constraint
+	int _nActivities;
+
+	//The list of activities referred to by this constraint.
+	//This is a list of indices in the rules internal activities list.
+	int _activities[MAX_ACTIVITIES_FOR_A_SUBJECT];
+	
+	//The number of equipments referred to by this constraint
+	int _nEquipments;
+	
+	//The indices of the equipments referred to by this constraint
+	int _equipments[MAX_EQUIPMENTS_FOR_A_CONSTRAINT];
+
+public:
+
+	QString subjectName;
+
+	QString subjectTagName;
+
+	QStringList equipmentsNames;
+
+	ConstraintSubjectSubjectTagRequireEquipments();
+
+	ConstraintSubjectSubjectTagRequireEquipments(double w, bool c, const QString& subj, const QString& subt);
+
+	void addRequiredEquipment(const QString& equip);
+
+	/**
+	Returns the number of removed equipments (must be 0 or 1, of course)
+	*/
+	int removeRequiredEquipment(const QString& equip);
+
+	/**
+	Returns true if the subject is in the list of required equipments,
+	false otherwise.
+	*/
+	bool searchRequiredEquipment(const QString& equip);
+
+	void computeInternalStructure(Rules& r);
+
+	QString getXMLDescription(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	int fitness(SpaceChromosome& c, Rules& r, const int days[/*MAX_ACTIVITIES*/], const int hours[/*MAX_ACTIVITIES*/], QString* conflictsString=NULL);
+};
+
+/**
 This is a constraint. Its purpose: a teacher must teach in
 his preferred room.
 */
 class ConstraintTeacherRequiresRoom: public SpaceConstraint{
-private:
+public:
 	
 	//The number of activities referred to by this constraint
 	int _nActivities;
@@ -303,7 +370,7 @@ private:
 	//The index of the room
 	int _room; 
 
-public:
+	//----------------------------------------------------------
 
 	QString teacherName;
 
@@ -322,6 +389,150 @@ public:
 	QString getDetailedDescription(Rules& r);
 
 	int fitness(SpaceChromosome& c, Rules& r, const int days[/*MAX_ACTIVITIES*/], const int hours[/*MAX_ACTIVITIES*/], QString* conflictsString=NULL);
+};
+
+/**
+This is a constraint aimed to minimize the number of rooms used
+for all the students.
+*/
+class ConstraintMinimizeNumberOfRoomsForStudents: public SpaceConstraint{
+public:
+	ConstraintMinimizeNumberOfRoomsForStudents();
+
+	ConstraintMinimizeNumberOfRoomsForStudents(double w, bool c);
+
+	void computeInternalStructure(Rules& r);
+
+	QString getXMLDescription(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	int fitness(SpaceChromosome& c, Rules& r, const int days[/*MAX_ACTIVITIES*/], const int hours[/*MAX_ACTIVITIES*/], QString* conflictsString=NULL);
+};
+
+/**
+This is a constraint. Its purpose: an activity must take part in
+the preferred room.
+*/
+class ConstraintActivityPreferredRoom: public SpaceConstraint{
+public:
+	
+	//The activity referred to by this constraint.
+	//This is an index in the rules internal activities list.
+	int _activity;
+	
+	//The index of the room
+	int _room; 
+
+	//----------------------------------------------------------
+
+	int activityId;
+
+	QString roomName;
+
+	ConstraintActivityPreferredRoom();
+
+	ConstraintActivityPreferredRoom(double w, bool c, int aid, const QString& room);
+
+	void computeInternalStructure(Rules& r);
+
+	QString getXMLDescription(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	int fitness(SpaceChromosome& c, Rules& r, const int days[/*MAX_ACTIVITIES*/], const int hours[/*MAX_ACTIVITIES*/], QString* conflictsString=NULL);
+};
+
+/**
+This is a constraint. Its purpose: an activity must take part in
+the preferred rooms.
+*/
+class ConstraintActivityPreferredRooms: public SpaceConstraint{
+public:
+	
+	//The activity referred to by this constraint.
+	//This is an index in the rules internal activities list.
+	int _activity;
+	
+	//The number of preferred rooms
+	int _n_preferred_rooms;
+	
+	//The indexes of the rooms
+	int _rooms[MAX_CONSTRAINT_ACTIVITY_PREFERRED_ROOMS];
+
+	//----------------------------------------------------------
+
+	int activityId;
+
+	QStringList roomsNames;
+
+	ConstraintActivityPreferredRooms();
+
+	ConstraintActivityPreferredRooms(double w, bool c, int aid, const QStringList& roomsList);
+
+	void computeInternalStructure(Rules& r);
+
+	QString getXMLDescription(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	int fitness(SpaceChromosome& c, Rules& r, const int days[/*MAX_ACTIVITIES*/], const int hours[/*MAX_ACTIVITIES*/], QString* conflictsString=NULL);
+};
+
+/**
+This is a constraint.
+It aims at scheduling a set of activities in the same room.
+The number of conflicts is considered the sum of x for all pairs,
+where x is 1 if 2 activities have different rooms and 0 if they
+have the same room.
+The compulsory constraints of this kind
+implement chromosome repairing, so no conflicts will be reported
+*/
+class ConstraintActivitiesSameRoom: public SpaceConstraint{
+public:
+	/**
+	The number of activities involved in this constraint
+	*/
+	int n_activities;
+
+	/**
+	The activities involved in this constraint (id)
+	*/
+	int activitiesId[MAX_CONSTRAINT_ACTIVITIES_SAME_ROOM];
+
+	/**
+	The activities involved in this constraint (indexes in the rules) - internal structure
+	*/
+	int _activities[MAX_CONSTRAINT_ACTIVITIES_SAME_ROOM];
+
+	ConstraintActivitiesSameRoom();
+
+	/**
+	Constructor, using:
+	the weight, the number of activities and the list of activities' id-s.
+	*/
+	ConstraintActivitiesSameRoom(double w, bool c, int n_act, const int act[]);
+
+	void computeInternalStructure(Rules& r);
+
+	QString getXMLDescription(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	int fitness(SpaceChromosome& c, Rules& r, const int days[/*MAX_ACTIVITIES*/], const int hours[/*MAX_ACTIVITIES*/], QString* conflictsString=NULL);
+
+	/**
+	Removes useless activities from the _activities and activitiesId array
+	*/
+	void removeUseless(Rules& r);
 };
 
 #endif

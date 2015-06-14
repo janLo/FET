@@ -44,3 +44,13 @@ QString Equipment::getXMLDescription()
 	
 	return s;
 }
+
+int EquipmentsList::compareItems(QPtrCollection::Item item1, QPtrCollection::Item item2)
+{
+	if(((Equipment*)item1)->name > ((Equipment*)item2)->name)
+		return 1;
+	else if(((Equipment*)item1)->name < ((Equipment*)item2)->name)
+		return -1;
+	else
+		return 0;
+}

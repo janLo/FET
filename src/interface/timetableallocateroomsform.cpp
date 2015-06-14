@@ -35,6 +35,9 @@
 #include <qtextstream.h>
 #include <qfile.h>
 
+static const bool SIMULATION_LOGGING=false; //warning: making "true" here slows down the program,
+	//introducing an additional sorting if the evolution method is three-tournament.
+
 #include <iostream>
 #include <fstream>
 using namespace std;
@@ -82,7 +85,6 @@ void SpaceSolvingThread::run()
 	callingForm->startPushButton->setDisabled(TRUE);
 	callingForm->stopPushButton->setEnabled(TRUE);
 	callingForm->pausePushButton->setEnabled(TRUE);
-	//callingForm->writeResultsPushButton->setEnabled(TRUE);
 	callingForm->savePositionPushButton->setEnabled(TRUE);
 	callingForm->loadPositionPushButton->setDisabled(TRUE);
 	callingForm->initializeUnallocatedPushButton->setDisabled(TRUE);
@@ -98,7 +100,6 @@ void SpaceSolvingThread::run()
 	callingForm->startPushButton->setEnabled(TRUE);
 	callingForm->stopPushButton->setDisabled(TRUE);
 	callingForm->pausePushButton->setDisabled(TRUE);
-	//callingForm->writeResultsPushButton->setDisabled(TRUE);
 	callingForm->savePositionPushButton->setDisabled(TRUE);
 	callingForm->loadPositionPushButton->setEnabled(TRUE);
 	callingForm->initializeUnallocatedPushButton->setEnabled(TRUE);
@@ -113,50 +114,52 @@ void TimetableAllocateRoomsForm::generationLogging(int generation){
 	assert(gt.spacePopulation.initialized);
 
 	SpaceChromosome& c1=gt.spacePopulation.bestChromosome(gt.rules);
-	SpaceChromosome& c2=gt.spacePopulation.worstChromosome(gt.rules);
-	SpaceChromosome& c3=gt.spacePopulation.medianChromosome(gt.rules);
-	double th=gt.spacePopulation.totalHardFitness(gt.rules);
-	double ts=gt.spacePopulation.totalSoftFitness(gt.rules);
+	if(SIMULATION_LOGGING==true){
+		SpaceChromosome& c2=gt.spacePopulation.worstChromosome(gt.rules);
+		SpaceChromosome& c3=gt.spacePopulation.medianChromosome(gt.rules);
+		double th=gt.spacePopulation.totalHardFitness(gt.rules);
+		double ts=gt.spacePopulation.totalSoftFitness(gt.rules);
 
-	//write to log file
-	logg<<"Generation number "<<generation+1<<endl;
+		//write to log file
+		logg<<"Generation number "<<generation+1<<endl;
 
-	logg<<"      Best chromosome:";
-	logg<<" HardFitness="<<c1.hardFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours);
-	logg<<", SoftFitness="<<c1.softFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours)<<endl;
+		logg<<"      Best chromosome:";
+		logg<<" HardFitness="<<c1.hardFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours);
+		logg<<", SoftFitness="<<c1.softFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours)<<endl;
 
-	logg<<"    Median chromosome:";
-	logg<<" HardFitness="<<c3.hardFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours);
-	logg<<", SoftFitness="<<c3.softFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours)<<endl;
+		logg<<"    Median chromosome:";
+		logg<<" HardFitness="<<c3.hardFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours);
+		logg<<", SoftFitness="<<c3.softFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours)<<endl;
 
-	logg<<"     Worst chromosome:";
-	logg<<" HardFitness="<<c2.hardFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours);
-	logg<<", SoftFitness="<<c2.softFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours)<<endl;
+		logg<<"     Worst chromosome:";
+		logg<<" HardFitness="<<c2.hardFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours);
+		logg<<", SoftFitness="<<c2.softFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours)<<endl;
 
-	logg<<"    Medium HardFitness="<<th/gt.spacePopulation.n;
-	logg<<", Medium SoftFitness="<<ts/gt.spacePopulation.n;
+		logg<<"    Medium HardFitness="<<th/gt.spacePopulation.n;
+		logg<<", Medium SoftFitness="<<ts/gt.spacePopulation.n;
 
-	logg<<endl<<flush;
+		logg<<endl<<flush;
 
-	//write to display
-	cout<<"Generation number "<<generation+1<<endl;
+		//write to display
+		cout<<"Generation number "<<generation+1<<endl;
 
-	cout<<"      Best chromosome:";
-	cout<<" HardFitness="<<c1.hardFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours);
-	cout<<", SoftFitness="<<c1.softFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours)<<endl;
+		cout<<"      Best chromosome:";
+		cout<<" HardFitness="<<c1.hardFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours);
+		cout<<", SoftFitness="<<c1.softFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours)<<endl;
 
-	cout<<"    Median chromosome:";
-	cout<<" HardFitness="<<c3.hardFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours);
-	cout<<", SoftFitness="<<c3.softFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours)<<endl;
+		cout<<"    Median chromosome:";
+		cout<<" HardFitness="<<c3.hardFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours);
+		cout<<", SoftFitness="<<c3.softFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours)<<endl;
 
-	cout<<"     Worst chromosome:";
-	cout<<" HardFitness="<<c2.hardFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours);
-	cout<<", SoftFitness="<<c2.softFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours)<<endl;
+		cout<<"     Worst chromosome:";
+		cout<<" HardFitness="<<c2.hardFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours);
+		cout<<", SoftFitness="<<c2.softFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours)<<endl;
 
-	cout<<"    Medium HardFitness="<<th/gt.spacePopulation.n;
-	cout<<", Medium SoftFitness="<<ts/gt.spacePopulation.n;
+		cout<<"    Medium HardFitness="<<th/gt.spacePopulation.n;
+		cout<<", Medium SoftFitness="<<ts/gt.spacePopulation.n;
 
-	cout<<endl<<flush;
+		cout<<endl<<flush;
+	}
 
 	//write to the Qt interface
 	QString s;
@@ -253,7 +256,8 @@ void TimetableAllocateRoomsForm::simulationRunning(){
 		mutex.lock();
 		if(simulation_save_position){
 			simulation_save_position=false;
-			gt.spacePopulation.write(gt.rules, OUTPUT_DIR+FILE_SEP+"space_population_state.txt");
+			QString s=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);
+			gt.spacePopulation.write(gt.rules, OUTPUT_DIR+FILE_SEP+s+"_space_population_state.txt");
 			mutex.unlock();
 			pqapplication->lock();
 #ifdef WIN32
@@ -332,19 +336,31 @@ void TimetableAllocateRoomsForm::writeSimulationResults(SpaceChromosome &c){
 	assert(rooms_schedule_ready);
 
 	QString s;
+	
+	QString s2=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);
 
 	//write the space conflicts - in txt mode
-	s=OUTPUT_DIR+FILE_SEP+SPACE_CONFLICTS_FILENAME;
+	s=OUTPUT_DIR+FILE_SEP+s2+"_"+SPACE_CONFLICTS_FILENAME;
 	QFile file(s);
 	if(!file.open(IO_WriteOnly))
 		assert(0);
 	QTextStream tos(&file);
 	tos<<spaceConflictsString<<endl;
 	file.close();
-	//now write the solution in xml files
-	//rooms
-	s=OUTPUT_DIR+FILE_SEP+ROOMS_TIMETABLE_FILENAME_XML;
-	writeRoomsTimetable(s);
+	//now write the solution in xml and html
+	//students - html
+	s=OUTPUT_DIR+FILE_SEP+s2+"_"+STUDENTS_TIMETABLE_WITH_ROOMS_FILENAME_HTML;
+	writeStudentsTimetableWithRoomsHtml(s);
+	//teachers - html
+	s=OUTPUT_DIR+FILE_SEP+s2+"_"+TEACHERS_TIMETABLE_WITH_ROOMS_1_FILENAME_HTML;
+	writeTeachersTimetableWithRooms1Html(s);
+	s=OUTPUT_DIR+FILE_SEP+s2+"_"+TEACHERS_TIMETABLE_WITH_ROOMS_2_FILENAME_HTML;
+	writeTeachersTimetableWithRooms2Html(s);
+	//rooms - xml and html
+	s=OUTPUT_DIR+FILE_SEP+s2+"_"+ROOMS_TIMETABLE_FILENAME_XML;
+	writeRoomsTimetableXml(s);
+	s=OUTPUT_DIR+FILE_SEP+s2+"_"+ROOMS_TIMETABLE_FILENAME_HTML;
+	writeRoomsTimetableHtml(s);
 
 	cout<<"Writing simulation results to disk completed successfully"<<endl;
 }
@@ -359,9 +375,9 @@ void TimetableAllocateRoomsForm::getRoomsTimetable(SpaceChromosome &c){
 }
 
 /**
-Function writing the rooms' timetable xml format to a file
+Function writing the rooms' timetable in xml format to a file
 */
-void TimetableAllocateRoomsForm::writeRoomsTimetable(const QString& xmlfilename)
+void TimetableAllocateRoomsForm::writeRoomsTimetableXml(const QString& xmlfilename)
 {
 	assert(gt.rules.initialized && gt.rules.internalStructureComputed);
 	assert(gt.spacePopulation.initialized);
@@ -408,6 +424,311 @@ void TimetableAllocateRoomsForm::writeRoomsTimetable(const QString& xmlfilename)
 
 	tos<<"\n";
 	tos << "</" << ROOMS_TIMETABLE_TAG << ">\n";
+
+	file.close();
+}
+
+/**
+Function writing the students' timetable (with rooms) in html format to a file
+*/
+void TimetableAllocateRoomsForm::writeStudentsTimetableWithRoomsHtml(const QString& htmlfilename)
+{
+	assert(gt.rules.initialized && gt.rules.internalStructureComputed);
+	assert(gt.timePopulation.initialized);
+	assert(students_schedule_ready && teachers_schedule_ready && rooms_schedule_ready);
+
+	SpaceChromosome& c=gt.spacePopulation.bestChromosome(gt.rules);
+
+	//Now we print the results to an HTML file
+	QFile file(htmlfilename);
+	if(!file.open(IO_WriteOnly))
+		assert(0);
+	QTextStream tos(&file);
+
+	tos<<"<html>\n";
+	tos<<"<title>"<<gt.rules.institutionName<<"</title>\n";
+	tos<<"<body>\n";
+	
+	tos<<"<center><h3>"<<gt.rules.institutionName<<"</h3></center><br>\n";
+
+	for(int subgroup=0; subgroup<gt.rules.nInternalSubgroups; subgroup++){
+		QString subgroup_name = gt.rules.internalSubgroupsList[subgroup]->name;
+		tos<<"<p align=\"center\">"<<subgroup_name<<"</p>\n";		
+		tos<<"<table border=\"1\" cellpadding=\"6\">"<<endl;
+
+		tos<<"<tr>\n<td></td>\n";
+		for(int j=0; j<gt.rules.nHoursPerDay; j++)
+			tos<<"<td>"<<gt.rules.hoursOfTheDay[j]<<"</td>\n";		
+		tos<<"</tr>\n";
+
+		for(int k=0; k<gt.rules.nDaysPerWeek; k++){
+			tos<<"<tr>\n";
+			tos<<"<td>"<<gt.rules.daysOfTheWeek[k]<<"</td>\n";
+			
+			for(int j=0; j<gt.rules.nHoursPerDay; j++){
+				tos<<"<td style=\"width:14em;\">\n";
+				
+				int ai=students_timetable_week1[subgroup][k][j]; //activity index
+				if(ai!=UNALLOCATED_ACTIVITY){
+					Activity* act=gt.rules.activitiesList.at(ai);
+					for(QStringList::Iterator it=act->teachersNames.begin(); it!=act->teachersNames.end(); it++)
+						tos<<(*it)<<"<br/>";
+					tos<<act->subjectName<<" "<<act->subjectTagName<<"<br/>";
+					
+					int ri=c.rooms[ai]; //room index
+					QString roomName;
+					if(ri==UNALLOCATED_SPACE)
+						roomName="UNALLOCATED_SPACE";
+					else
+						roomName=gt.rules.roomsList.at(ri)->name;
+					tos<<roomName<<"<br/>";
+				}
+				else
+					tos<<"&nbsp;";
+				ai=students_timetable_week2[subgroup][k][j]; //activity index
+				if(ai!=UNALLOCATED_ACTIVITY){
+					tos<<"/<br/>";
+					Activity* act=gt.rules.activitiesList.at(ai);
+					for(QStringList::Iterator it=act->teachersNames.begin(); it!=act->teachersNames.end(); it++)
+						tos<<(*it)<<"<br/>";
+					tos<<act->subjectName<<" "<<act->subjectTagName<<"<br/>";
+
+					int ri=c.rooms[ai]; //room index
+					QString roomName;
+					if(ri==UNALLOCATED_SPACE)
+						roomName="UNALLOCATED_SPACE";
+					else
+						roomName=gt.rules.roomsList.at(ri)->name;
+					tos<<roomName<<"<br/>";
+				}
+				tos<<"</td>\n";
+			}			
+			tos<<"</tr>\n";
+		}		
+		tos<<"</table>\n";
+	}
+
+	tos<<"</body>\n</html>\n";
+
+	file.close();
+}
+
+/**
+Function writing the teachers' timetable (with rooms) html format to a file (var. 1)
+*/
+void TimetableAllocateRoomsForm::writeTeachersTimetableWithRooms1Html(const QString& htmlfilename)
+{
+	assert(gt.rules.initialized && gt.rules.internalStructureComputed);
+	assert(gt.timePopulation.initialized);
+	assert(students_schedule_ready && teachers_schedule_ready && rooms_schedule_ready);
+
+	SpaceChromosome& c=gt.spacePopulation.bestChromosome(gt.rules);
+
+	//Writing the timetable in xml format
+	QFile file(htmlfilename);
+	if(!file.open(IO_WriteOnly))
+		assert(0);
+	QTextStream tos(&file);
+	tos<<"<html>\n<title>"<<gt.rules.institutionName<<"</title>\n";
+	tos<<"<body>\n";
+	tos<<"<center><h3>"<<gt.rules.institutionName<<"</h3></center><br>\n";
+
+	for(int i=0; i<gt.rules.nInternalTeachers; i++){
+		tos<<"<p align=\"center\">"<<gt.rules.internalTeachersList[i]->name<<"</p>\n";
+		tos<<"<table width=\"100%\" border=\"1\" cellpadding=\"6\">\n";
+
+		tos<<"<tr>\n<td></td>\n";
+		for(int j=0; j<gt.rules.nHoursPerDay; j++)
+			tos << "<td>" << gt.rules.hoursOfTheDay[j] << "</td>\n";
+		tos<<"</tr>\n";
+		
+		for(int k=0; k<gt.rules.nDaysPerWeek; k++){
+			tos<<"<tr>\n";
+			
+			tos<<"<td>"<<gt.rules.daysOfTheWeek[k]<<"</td>\n";
+			for(int j=0; j<gt.rules.nHoursPerDay; j++){
+				tos<<"<td style=\"width:14em;\">";
+
+				int ai=teachers_timetable_week1[i][k][j]; //activity index
+				Activity* act=gt.rules.activitiesList.at(ai);
+				if(ai!=UNALLOCATED_ACTIVITY){
+					for(QStringList::Iterator it=act->studentsNames.begin(); it!=act->studentsNames.end(); it++)
+						tos << *it << "<br/>";
+					
+					int ri=c.rooms[ai]; //room index
+					QString roomName;
+					if(ri==UNALLOCATED_SPACE)
+						roomName="UNALLOCATED_SPACE";
+					else
+						roomName=gt.rules.roomsList.at(ri)->name;
+					tos<<roomName<<"<br/>";
+				}
+				else
+					tos<<"&nbsp;";
+
+				ai=teachers_timetable_week2[i][k][j]; //activity index
+				act=gt.rules.activitiesList.at(ai);
+				if(ai!=UNALLOCATED_ACTIVITY){
+					tos<<"/<br/>\n";
+					for(QStringList::Iterator it=act->studentsNames.begin(); it!=act->studentsNames.end(); it++)
+						tos << *it << "<br/>";
+					
+					int ri=c.rooms[ai]; //room index
+					QString roomName;
+					if(ri==UNALLOCATED_SPACE)
+						roomName="UNALLOCATED_SPACE";
+					else
+						roomName=gt.rules.roomsList.at(ri)->name;
+					tos<<roomName<<"<br/>";
+				}
+				tos<<"</td>\n";
+			}
+			tos << "</tr>\n";
+		}
+		tos<<"</table>\n";
+	}
+	tos<<"</body>\n</html>\n";
+
+	file.close();
+}
+
+/**
+Function writing the teachers' timetable (with rooms) html format to a file (var. 2)
+*/
+void TimetableAllocateRoomsForm::writeTeachersTimetableWithRooms2Html(const QString& htmlfilename)
+{
+	assert(gt.rules.initialized && gt.rules.internalStructureComputed);
+	assert(gt.timePopulation.initialized);
+	assert(students_schedule_ready && teachers_schedule_ready && rooms_schedule_ready);
+
+	SpaceChromosome& c=gt.spacePopulation.bestChromosome(gt.rules);
+
+	//Writing the timetable in xml format
+	QFile file(htmlfilename);
+	if(!file.open(IO_WriteOnly))
+		assert(0);
+	QTextStream tos(&file);
+	tos << "<html>\n<body>\n<table border=\"1\">\n";
+	
+	tos<<"<tr><td></td>\n";
+	for(int k=0; k<gt.rules.nDaysPerWeek; k++)
+		tos << "<td align=\"center\" colspan=\"" << gt.rules.nHoursPerDay <<"\">" << gt.rules.daysOfTheWeek[k] << "</td>\n";
+	tos<<"</tr>\n";
+
+	tos<<"<tr>\n";
+	tos<<"<td></td>\n";
+	for(int k=0; k<gt.rules.nDaysPerWeek; k++)
+		for(int j=0; j<gt.rules.nHoursPerDay; j++)
+			tos << "<td>" << gt.rules.hoursOfTheDay[j] << "</td>\n";
+
+	for(int i=0; i<gt.rules.nInternalTeachers; i++){
+		tos<<"<tr>\n";
+		tos << "<td>" << gt.rules.internalTeachersList[i]->name << "</td>\n";
+		for(int k=0; k<gt.rules.nDaysPerWeek; k++){
+			for(int j=0; j<gt.rules.nHoursPerDay; j++){
+				tos<<"<td>";
+				int ai=teachers_timetable_week1[i][k][j]; //activity index
+				Activity* act=gt.rules.activitiesList.at(ai);
+				if(ai!=UNALLOCATED_ACTIVITY){
+					for(QStringList::Iterator it=act->studentsNames.begin(); it!=act->studentsNames.end(); it++)
+						tos<<*it<<"<br/>";
+
+					int ri=c.rooms[ai]; //room index
+					QString roomName;
+					if(ri==UNALLOCATED_SPACE)
+						roomName="UNALLOCATED_SPACE";
+					else
+						roomName=gt.rules.roomsList.at(ri)->name;
+					tos<<roomName<<"<br/>";
+				}
+				else
+					tos<<"&nbsp;";
+
+				ai=teachers_timetable_week2[i][k][j]; //activity index
+				act=gt.rules.activitiesList.at(ai);
+				if(ai!=UNALLOCATED_ACTIVITY){
+					tos<<"/<br/>";
+					for(QStringList::Iterator it=act->studentsNames.begin(); it!=act->studentsNames.end(); it++)
+						tos << *it <<"<br/>";
+
+					int ri=c.rooms[ai]; //room index
+					QString roomName;
+					if(ri==UNALLOCATED_SPACE)
+						roomName="UNALLOCATED_SPACE";
+					else
+						roomName=gt.rules.roomsList.at(ri)->name;
+					tos<<roomName<<"<br/>";
+				}
+				tos<<"</td>\n";
+			}
+		}
+		tos<<"</tr>\n";
+	}
+
+	tos<<"</table>\n</body>\n</html>\n";
+
+	file.close();
+}
+
+/**
+Function writing the rooms' timetable in html format to a file
+*/
+void TimetableAllocateRoomsForm::writeRoomsTimetableHtml(const QString& htmlfilename)
+{
+	assert(gt.rules.initialized && gt.rules.internalStructureComputed);
+	assert(gt.spacePopulation.initialized);
+	assert(students_schedule_ready && teachers_schedule_ready);
+	assert(rooms_schedule_ready);
+
+	//Writing the timetable in xml format
+	QFile file(htmlfilename);
+	if(!file.open(IO_WriteOnly))
+		assert(0);
+	QTextStream tos(&file);
+	tos<<"<html>\n";
+	tos<<"<title>"<<gt.rules.institutionName<<"</title>\n";
+	tos<<"<body>";
+	tos<<"<center><h3>"<<gt.rules.institutionName<<"</h3></center><br/>\n";
+
+	for(int i=0; i<gt.rules.nInternalRooms; i++){
+		tos<<"<p align=\"center\">"<<gt.rules.internalRoomsList[i]->name<<"</p>\n";
+		tos<<"<table border=\"1\" cellpadding=\"6\">\n";
+
+		tos<<"<tr>\n<td>&nbsp;</td>\n";
+		for(int j=0; j<gt.rules.nHoursPerDay; j++)
+			tos << "<td>" << gt.rules.hoursOfTheDay[j] << "</td>\n";
+		tos<<"</tr>\n";
+
+		for(int k=0; k<gt.rules.nDaysPerWeek; k++){
+			tos<<"<tr>\n";
+			tos << "<td>" << gt.rules.daysOfTheWeek[k] << "</td>\n";
+			for(int j=0; j<gt.rules.nHoursPerDay; j++){
+				tos << "<td>";
+
+				int ai=rooms_timetable_week1[i][k][j]; //activity index
+				Activity* act=gt.rules.activitiesList.at(ai);
+				if(ai!=UNALLOCATED_ACTIVITY)
+					for(QStringList::Iterator it=act->studentsNames.begin(); it!=act->studentsNames.end(); it++)
+						tos << *it << "<br/>";
+				else
+					tos<<"&nbsp;";
+
+				ai=rooms_timetable_week2[i][k][j]; //activity index
+				act=gt.rules.activitiesList.at(ai);
+				if(ai!=UNALLOCATED_ACTIVITY){
+					tos<<"/<br/>";
+					for(QStringList::Iterator it=act->studentsNames.begin(); it!=act->studentsNames.end(); it++)
+						tos << *it << "<br/>";
+				}
+
+				tos << "</td>\n";
+			}
+			tos << "</tr>\n";
+		}
+		tos<<"</table>\n";
+	}
+
+	tos<<"</body>\n</html>\n";
 
 	file.close();
 }
@@ -497,7 +818,10 @@ void TimetableAllocateRoomsForm::loadPosition()
 
 	bool prev_state=gt.spacePopulation.initialized;
 	gt.spacePopulation.init(gt.rules, population_number, gt.timePopulation.bestChromosome(gt.rules));
-	bool existing_file=gt.spacePopulation.read(gt.rules, OUTPUT_DIR+FILE_SEP+"space_population_state.txt");
+	QString s=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);
+	bool existing_file=gt.spacePopulation.read(gt.rules, OUTPUT_DIR+FILE_SEP+s+"_space_population_state.txt");
+	if(existing_file==false) //for versions older or equal to 3.9.21
+		existing_file=gt.spacePopulation.read(gt.rules, OUTPUT_DIR+FILE_SEP+"space_population_state.txt");
 	if(existing_file==false){
 		QMessageBox::warning(this, QObject::tr("FET information"),
 			QObject::tr("You did not save any internal state yet - aborting operation"));

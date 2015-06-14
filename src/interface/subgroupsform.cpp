@@ -11,6 +11,7 @@
 //
 //
 #include "addstudentssubgroupform.h"
+#include "modifystudentssubgroupform.h"
 #include "subgroupsform.h"
 #include "genetictimetable_defs.h"
 #include "genetictimetable.h"
@@ -142,4 +143,67 @@ void SubgroupsForm::subgroupChanged(const QString &subgroupName)
 		return;
 	StudentsSubgroup* s=(StudentsSubgroup*)ss;
 	subgroupTextEdit->setText(s->getDetailedDescription());
+}
+
+void SubgroupsForm::sortSubgroups()
+{
+	if(yearsListBox->currentItem()<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected year"));
+		return;
+	}
+	QString yearName=yearsListBox->currentText();
+	int yearIndex=gt.rules.searchYear(yearName);
+	assert(yearIndex>=0);
+
+	if(groupsListBox->currentItem()<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected group"));
+		return;
+	}
+	QString groupName=groupsListBox->currentText();
+	int groupIndex=gt.rules.searchGroup(yearName, groupName);
+	assert(groupIndex>=0);
+	
+	gt.rules.sortSubgroupsAlphabetically(yearName, groupName);
+	
+	groupChanged(groupName);
+}
+
+void SubgroupsForm::modifySubgroup()
+{
+	if(yearsListBox->currentItem()<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected year"));
+		return;
+	}
+	QString yearName=yearsListBox->currentText();
+	int yearIndex=gt.rules.searchYear(yearName);
+	assert(yearIndex>=0);
+
+	if(groupsListBox->currentItem()<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected group"));
+		return;
+	}
+	QString groupName=groupsListBox->currentText();
+	int groupIndex=gt.rules.searchGroup(yearName, groupName);
+	assert(groupIndex>=0);
+
+	int ci=subgroupsListBox->currentItem();
+	if(subgroupsListBox->currentItem()<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected subgroup"));
+		return;
+	}
+	QString subgroupName=subgroupsListBox->currentText();
+	int subgroupIndex=gt.rules.searchSubgroup(yearName, groupName, subgroupName);
+	if(subgroupIndex<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected subgroup"));
+		return;
+	}
+	
+	int numberOfStudents=gt.rules.searchStudentsSet(subgroupName)->numberOfStudents;
+	
+	ModifyStudentsSubgroupForm* modifyStudentsSubgroupForm=new ModifyStudentsSubgroupForm(yearName, groupName, subgroupName, numberOfStudents);
+	modifyStudentsSubgroupForm->exec();
+
+	groupChanged(groupName);
+	
+	subgroupsListBox->setCurrentItem(ci);
 }

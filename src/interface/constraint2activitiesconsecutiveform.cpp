@@ -17,6 +17,7 @@
 
 #include "constraint2activitiesconsecutiveform.h"
 #include "addconstraint2activitiesconsecutiveform.h"
+#include "modifyconstraint2activitiesconsecutiveform.h"
 
 Constraint2ActivitiesConsecutiveForm::Constraint2ActivitiesConsecutiveForm()
 {
@@ -57,7 +58,7 @@ void Constraint2ActivitiesConsecutiveForm::constraintChanged(int index)
 	if(index<0)
 		return;
 	QString s;
-	assert(index<this->visibleConstraintsList.count());
+	assert((uint)(index)<this->visibleConstraintsList.count());
 	TimeConstraint* ctr=this->visibleConstraintsList.at(index);
 	assert(ctr!=NULL);
 	s=ctr->getDetailedDescription(gt.rules);
@@ -94,4 +95,26 @@ void Constraint2ActivitiesConsecutiveForm::removeConstraint()
 	case 1: // The user clicked the Cancel or pressed Escape
 		break;
 	}
+	
+	if((uint)(i)>=constraintsListBox->count())
+		i=constraintsListBox->count()-1;
+	constraintsListBox->setCurrentItem(i);
+}
+
+void Constraint2ActivitiesConsecutiveForm::modifyConstraint()
+{
+	int i=constraintsListBox->currentItem();
+	if(i<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected constraint"));
+		return;
+	}
+	TimeConstraint* ctr=this->visibleConstraintsList.at(i);
+
+	ModifyConstraint2ActivitiesConsecutiveForm *modifyConstraint2ActivitiesConsecutiveForm=
+	 new ModifyConstraint2ActivitiesConsecutiveForm((Constraint2ActivitiesConsecutive*)ctr);
+	modifyConstraint2ActivitiesConsecutiveForm->exec();
+
+	this->refreshConstraintsListBox();
+	
+	constraintsListBox->setCurrentItem(i);
 }

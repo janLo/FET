@@ -13,9 +13,7 @@
 #ifndef ROOMSFORM_H
 #define ROOMSFORM_H
 
-#include "addroomform.h"
 #include "roomsform_template.h"
-#include "roomsequipmentsform.h"
 
 /**
 @author Liviu Lalescu
@@ -24,15 +22,13 @@ class RoomsForm : public RoomsForm_template
 {
 public:
 	RoomsForm();
-
 	~RoomsForm();
 
 	void addRoom();
-
 	void removeRoom();
-
+	void modifyRoom();
+	void sortRooms();
 	void roomChanged(int index);
-
 	void roomsEquipments();
 };
 

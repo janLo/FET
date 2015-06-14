@@ -19,6 +19,16 @@
 #include "genetictimetable_defs.h"
 
 /**
+FET version
+*/
+const QString FET_VERSION="3.12.30";
+
+/**
+FET language
+*/
+QString FET_LANGUAGE="EN";
+
+/**
 Probability for Evolution1 Crossover, in percents
 */
 int METHOD1_CROSSOVER_PROBABILITY;

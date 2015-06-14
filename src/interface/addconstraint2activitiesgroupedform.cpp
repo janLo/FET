@@ -41,16 +41,16 @@ void AddConstraint2ActivitiesGroupedForm::constraintChanged()
 	double weight;
 	QString tmp=weightLineEdit->text();
 	sscanf(tmp, "%lf", &weight);
-	s+=QObject::tr(QString("Weight=%1").arg(weight));
+	s+=QObject::tr("Weight=%1").arg(weight);
 	s+="\n";
 
 	bool compulsory=false;
 	if(compulsoryCheckBox->isChecked())
 		compulsory=true;
-	s+=QObject::tr(QString("Compulsory=%1").arg(yesNo(compulsory)));
+	s+=QObject::tr("Compulsory=%1").arg(yesNo(compulsory));
 	s+="\n";
 
-	s+=QObject::tr(QString("The activities with id's: %1 must be scheduled grouped (order is not important)").arg(activitiesIdsLineEdit->text()));
+	s+=QObject::tr("The activities with id's: %1 must be scheduled grouped (order is not important)").arg(activitiesIdsLineEdit->text());
 	s+="\n";
 
 	currentConstraintTextEdit->setText(s);
@@ -90,7 +90,7 @@ void AddConstraint2ActivitiesGroupedForm::addCurrentConstraint()
 			QObject::tr("Constraint added"));
 	else{
 		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Constraint NOT added - duplicate?"));
+			QObject::tr("Constraint NOT added - please report error"));
 		delete ctr;
 	}
 }

@@ -1,0 +1,1196 @@
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
+<class>ModifyActivityForm_template</class>
+<widget class="QDialog">
+    <property name="name">
+        <cstring>ModifyActivityForm_template</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>779</width>
+            <height>614</height>
+        </rect>
+    </property>
+    <property name="caption">
+        <string>FET - modify activity dialog</string>
+    </property>
+    <grid>
+        <property name="name">
+            <cstring>unnamed</cstring>
+        </property>
+        <widget class="QLabel" row="0" column="1" rowspan="2" colspan="1">
+            <property name="name">
+                <cstring>currentActivityTextLabel</cstring>
+            </property>
+            <property name="frameShape">
+                <enum>NoFrame</enum>
+            </property>
+            <property name="frameShadow">
+                <enum>Plain</enum>
+            </property>
+            <property name="text">
+                <string>Current activity</string>
+            </property>
+        </widget>
+        <widget class="QTextEdit" row="2" column="1" rowspan="7" colspan="2">
+            <property name="name">
+                <cstring>currentActivityTextEdit</cstring>
+            </property>
+            <property name="readOnly">
+                <bool>true</bool>
+            </property>
+        </widget>
+        <widget class="QGroupBox" row="9" column="1" rowspan="3" colspan="2">
+            <property name="name">
+                <cstring>splitGroupBox</cstring>
+            </property>
+            <property name="title">
+                <string>This activity is split into ... lessons per week.</string>
+            </property>
+            <widget class="QSpinBox">
+                <property name="name">
+                    <cstring>splitSpinBox</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>220</x>
+                        <y>30</y>
+                        <width>60</width>
+                        <height>26</height>
+                    </rect>
+                </property>
+                <property name="maxValue">
+                    <number>8</number>
+                </property>
+                <property name="minValue">
+                    <number>1</number>
+                </property>
+            </widget>
+        </widget>
+        <widget class="QTabWidget" row="12" column="1" rowspan="5" colspan="2">
+            <property name="name">
+                <cstring>subactivitiesTabWidget</cstring>
+            </property>
+            <widget class="QWidget">
+                <property name="name">
+                    <cstring>TabPage</cstring>
+                </property>
+                <attribute name="title">
+                    <string>1</string>
+                </attribute>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>duration1TextLabel</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>40</y>
+                            <width>90</width>
+                            <height>26</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Duration</string>
+                    </property>
+                </widget>
+                <widget class="QSpinBox">
+                    <property name="name">
+                        <cstring>duration1SpinBox</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>110</x>
+                            <y>40</y>
+                            <width>50</width>
+                            <height>26</height>
+                        </rect>
+                    </property>
+                    <property name="minValue">
+                        <number>1</number>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>parity1TextLabel</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>80</y>
+                            <width>90</width>
+                            <height>24</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Parity</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>parity1CheckBox</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>110</x>
+                            <y>80</y>
+                            <width>310</width>
+                            <height>24</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Bi-weekly (once at two weeks)</string>
+                    </property>
+                </widget>
+            </widget>
+            <widget class="QWidget">
+                <property name="name">
+                    <cstring>TabPage</cstring>
+                </property>
+                <attribute name="title">
+                    <string>2</string>
+                </attribute>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>duration1TextLabel_2</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>40</y>
+                            <width>90</width>
+                            <height>26</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Duration</string>
+                    </property>
+                </widget>
+                <widget class="QSpinBox">
+                    <property name="name">
+                        <cstring>duration2SpinBox</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>110</x>
+                            <y>40</y>
+                            <width>50</width>
+                            <height>26</height>
+                        </rect>
+                    </property>
+                    <property name="minValue">
+                        <number>1</number>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>parity1TextLabel_2</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>80</y>
+                            <width>90</width>
+                            <height>24</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Parity</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>parity2CheckBox</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>110</x>
+                            <y>80</y>
+                            <width>100</width>
+                            <height>24</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Bi-weekly</string>
+                    </property>
+                </widget>
+            </widget>
+            <widget class="QWidget">
+                <property name="name">
+                    <cstring>TabPage</cstring>
+                </property>
+                <attribute name="title">
+                    <string>3</string>
+                </attribute>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>duration1TextLabel_3</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>40</y>
+                            <width>90</width>
+                            <height>26</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Duration</string>
+                    </property>
+                </widget>
+                <widget class="QSpinBox">
+                    <property name="name">
+                        <cstring>duration3SpinBox</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>110</x>
+                            <y>40</y>
+                            <width>50</width>
+                            <height>26</height>
+                        </rect>
+                    </property>
+                    <property name="minValue">
+                        <number>1</number>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>parity1TextLabel_3</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>80</y>
+                            <width>90</width>
+                            <height>24</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Parity</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>parity3CheckBox</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>110</x>
+                            <y>80</y>
+                            <width>100</width>
+                            <height>24</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Bi-weekly</string>
+                    </property>
+                </widget>
+            </widget>
+            <widget class="QWidget">
+                <property name="name">
+                    <cstring>TabPage</cstring>
+                </property>
+                <attribute name="title">
+                    <string>4</string>
+                </attribute>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>duration1TextLabel_4</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>40</y>
+                            <width>90</width>
+                            <height>26</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Duration</string>
+                    </property>
+                </widget>
+                <widget class="QSpinBox">
+                    <property name="name">
+                        <cstring>duration4SpinBox</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>110</x>
+                            <y>40</y>
+                            <width>50</width>
+                            <height>26</height>
+                        </rect>
+                    </property>
+                    <property name="minValue">
+                        <number>1</number>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>parity1TextLabel_4</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>80</y>
+                            <width>90</width>
+                            <height>24</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Parity</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>parity4CheckBox</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>110</x>
+                            <y>80</y>
+                            <width>100</width>
+                            <height>24</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Bi-weekly</string>
+                    </property>
+                </widget>
+            </widget>
+            <widget class="QWidget">
+                <property name="name">
+                    <cstring>TabPage</cstring>
+                </property>
+                <attribute name="title">
+                    <string>5</string>
+                </attribute>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>duration1TextLabel_5</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>40</y>
+                            <width>90</width>
+                            <height>26</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Duration</string>
+                    </property>
+                </widget>
+                <widget class="QSpinBox">
+                    <property name="name">
+                        <cstring>duration5SpinBox</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>110</x>
+                            <y>40</y>
+                            <width>50</width>
+                            <height>26</height>
+                        </rect>
+                    </property>
+                    <property name="minValue">
+                        <number>1</number>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>parity1TextLabel_5</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>80</y>
+                            <width>90</width>
+                            <height>24</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Parity</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>parity5CheckBox</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>110</x>
+                            <y>80</y>
+                            <width>100</width>
+                            <height>24</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Bi-weekly</string>
+                    </property>
+                </widget>
+            </widget>
+            <widget class="QWidget">
+                <property name="name">
+                    <cstring>TabPage</cstring>
+                </property>
+                <attribute name="title">
+                    <string>6</string>
+                </attribute>
+                <widget class="QSpinBox">
+                    <property name="name">
+                        <cstring>duration6SpinBox</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>110</x>
+                            <y>40</y>
+                            <width>50</width>
+                            <height>26</height>
+                        </rect>
+                    </property>
+                    <property name="minValue">
+                        <number>1</number>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>duration1TextLabel_6</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>40</y>
+                            <width>90</width>
+                            <height>26</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Duration</string>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>parity1TextLabel_6</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>80</y>
+                            <width>90</width>
+                            <height>24</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Parity</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>parity6CheckBox</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>110</x>
+                            <y>80</y>
+                            <width>100</width>
+                            <height>24</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Bi-weekly</string>
+                    </property>
+                </widget>
+            </widget>
+            <widget class="QWidget">
+                <property name="name">
+                    <cstring>TabPage</cstring>
+                </property>
+                <attribute name="title">
+                    <string>7</string>
+                </attribute>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>duration1TextLabel_7</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>40</y>
+                            <width>90</width>
+                            <height>26</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Duration</string>
+                    </property>
+                </widget>
+                <widget class="QSpinBox">
+                    <property name="name">
+                        <cstring>duration7SpinBox</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>110</x>
+                            <y>40</y>
+                            <width>50</width>
+                            <height>26</height>
+                        </rect>
+                    </property>
+                    <property name="minValue">
+                        <number>1</number>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>parity1TextLabel_7</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>80</y>
+                            <width>90</width>
+                            <height>24</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Parity</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>parity7CheckBox</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>110</x>
+                            <y>80</y>
+                            <width>100</width>
+                            <height>24</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Bi-weekly</string>
+                    </property>
+                </widget>
+            </widget>
+            <widget class="QWidget">
+                <property name="name">
+                    <cstring>TabPage</cstring>
+                </property>
+                <attribute name="title">
+                    <string>8</string>
+                </attribute>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>duration1TextLabel_8</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>40</y>
+                            <width>90</width>
+                            <height>26</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Duration</string>
+                    </property>
+                </widget>
+                <widget class="QSpinBox">
+                    <property name="name">
+                        <cstring>duration8SpinBox</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>110</x>
+                            <y>40</y>
+                            <width>50</width>
+                            <height>26</height>
+                        </rect>
+                    </property>
+                    <property name="minValue">
+                        <number>1</number>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>parity1TextLabel_8</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>80</y>
+                            <width>90</width>
+                            <height>24</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Parity</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>parity8CheckBox</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>110</x>
+                            <y>80</y>
+                            <width>100</width>
+                            <height>24</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Bi-weekly</string>
+                    </property>
+                </widget>
+            </widget>
+        </widget>
+        <widget class="QPushButton" row="18" column="2">
+            <property name="name">
+                <cstring>cancelPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Cancel</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="18" column="1">
+            <property name="name">
+                <cstring>okPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Ok</string>
+            </property>
+        </widget>
+        <widget class="QLabel" row="12" column="0">
+            <property name="name">
+                <cstring>students1TextLabel</cstring>
+            </property>
+            <property name="text">
+                <string>Students set (1)</string>
+            </property>
+        </widget>
+        <widget class="QComboBox" row="13" column="0">
+            <property name="name">
+                <cstring>students1ComboBox</cstring>
+            </property>
+            <property name="editable">
+                <bool>false</bool>
+            </property>
+            <property name="insertionPolicy">
+                <enum>NoInsertion</enum>
+            </property>
+            <property name="autoCompletion">
+                <bool>false</bool>
+            </property>
+            <property name="duplicatesEnabled">
+                <bool>false</bool>
+            </property>
+        </widget>
+        <widget class="QLabel" row="14" column="0">
+            <property name="name">
+                <cstring>students2TextLabel</cstring>
+            </property>
+            <property name="text">
+                <string>Students set (2)</string>
+            </property>
+        </widget>
+        <widget class="QComboBox" row="15" column="0">
+            <property name="name">
+                <cstring>students2ComboBox</cstring>
+            </property>
+            <property name="editable">
+                <bool>false</bool>
+            </property>
+            <property name="insertionPolicy">
+                <enum>NoInsertion</enum>
+            </property>
+            <property name="autoCompletion">
+                <bool>false</bool>
+            </property>
+            <property name="duplicatesEnabled">
+                <bool>false</bool>
+            </property>
+        </widget>
+        <widget class="QLabel" row="16" column="0">
+            <property name="name">
+                <cstring>students3TextLabel</cstring>
+            </property>
+            <property name="text">
+                <string>Students set (3)</string>
+            </property>
+        </widget>
+        <widget class="QComboBox" row="17" column="0">
+            <property name="name">
+                <cstring>students3ComboBox</cstring>
+            </property>
+            <property name="editable">
+                <bool>false</bool>
+            </property>
+            <property name="insertionPolicy">
+                <enum>NoInsertion</enum>
+            </property>
+            <property name="autoCompletion">
+                <bool>false</bool>
+            </property>
+            <property name="duplicatesEnabled">
+                <bool>false</bool>
+            </property>
+        </widget>
+        <widget class="QLabel" row="18" column="0">
+            <property name="name">
+                <cstring>students4TextLabel</cstring>
+            </property>
+            <property name="text">
+                <string>Students set (4)</string>
+            </property>
+        </widget>
+        <widget class="QComboBox" row="19" column="0">
+            <property name="name">
+                <cstring>students4ComboBox</cstring>
+            </property>
+            <property name="editable">
+                <bool>false</bool>
+            </property>
+            <property name="insertionPolicy">
+                <enum>NoInsertion</enum>
+            </property>
+            <property name="autoCompletion">
+                <bool>false</bool>
+            </property>
+            <property name="duplicatesEnabled">
+                <bool>false</bool>
+            </property>
+        </widget>
+        <widget class="QLabel" row="0" column="0">
+            <property name="name">
+                <cstring>teachers1TextLabel</cstring>
+            </property>
+            <property name="text">
+                <string>Teacher (1)</string>
+            </property>
+        </widget>
+        <widget class="QComboBox" row="1" column="0" rowspan="2" colspan="1">
+            <property name="name">
+                <cstring>teachers1ComboBox</cstring>
+            </property>
+            <property name="editable">
+                <bool>false</bool>
+            </property>
+            <property name="insertionPolicy">
+                <enum>NoInsertion</enum>
+            </property>
+            <property name="autoCompletion">
+                <bool>false</bool>
+            </property>
+            <property name="duplicatesEnabled">
+                <bool>false</bool>
+            </property>
+        </widget>
+        <widget class="QLabel" row="3" column="0">
+            <property name="name">
+                <cstring>teachers2TextLabel</cstring>
+            </property>
+            <property name="text">
+                <string>Teacher (2)</string>
+            </property>
+        </widget>
+        <widget class="QComboBox" row="4" column="0">
+            <property name="name">
+                <cstring>teachers2ComboBox</cstring>
+            </property>
+            <property name="editable">
+                <bool>false</bool>
+            </property>
+            <property name="insertionPolicy">
+                <enum>NoInsertion</enum>
+            </property>
+            <property name="autoCompletion">
+                <bool>false</bool>
+            </property>
+            <property name="duplicatesEnabled">
+                <bool>false</bool>
+            </property>
+        </widget>
+        <widget class="QLabel" row="5" column="0">
+            <property name="name">
+                <cstring>teachers3TextLabel</cstring>
+            </property>
+            <property name="text">
+                <string>Teacher (3)</string>
+            </property>
+        </widget>
+        <widget class="QComboBox" row="6" column="0">
+            <property name="name">
+                <cstring>teachers3ComboBox</cstring>
+            </property>
+            <property name="editable">
+                <bool>false</bool>
+            </property>
+            <property name="insertionPolicy">
+                <enum>NoInsertion</enum>
+            </property>
+            <property name="autoCompletion">
+                <bool>false</bool>
+            </property>
+            <property name="duplicatesEnabled">
+                <bool>false</bool>
+            </property>
+        </widget>
+        <widget class="QComboBox" row="8" column="0" rowspan="2" colspan="1">
+            <property name="name">
+                <cstring>subjectsComboBox</cstring>
+            </property>
+            <property name="editable">
+                <bool>false</bool>
+            </property>
+            <property name="insertionPolicy">
+                <enum>NoInsertion</enum>
+            </property>
+            <property name="autoCompletion">
+                <bool>false</bool>
+            </property>
+            <property name="duplicatesEnabled">
+                <bool>false</bool>
+            </property>
+        </widget>
+        <widget class="QLabel" row="7" column="0">
+            <property name="name">
+                <cstring>subjectsTextLabel</cstring>
+            </property>
+            <property name="text">
+                <string>Subject</string>
+            </property>
+        </widget>
+        <widget class="QLabel" row="10" column="0">
+            <property name="name">
+                <cstring>subjectTagsTextLabel</cstring>
+            </property>
+            <property name="text">
+                <string>Subject tag</string>
+            </property>
+        </widget>
+        <widget class="QComboBox" row="11" column="0">
+            <property name="name">
+                <cstring>subjectTagsComboBox</cstring>
+            </property>
+            <property name="editable">
+                <bool>false</bool>
+            </property>
+            <property name="insertionPolicy">
+                <enum>NoInsertion</enum>
+            </property>
+            <property name="autoCompletion">
+                <bool>false</bool>
+            </property>
+            <property name="duplicatesEnabled">
+                <bool>false</bool>
+            </property>
+        </widget>
+    </grid>
+</widget>
+<connections>
+    <connection>
+        <sender>subjectsComboBox</sender>
+        <signal>activated(const QString&amp;)</signal>
+        <receiver>ModifyActivityForm_template</receiver>
+        <slot>subjectChanged(const QString&amp;)</slot>
+    </connection>
+    <connection>
+        <sender>students1ComboBox</sender>
+        <signal>activated(const QString&amp;)</signal>
+        <receiver>ModifyActivityForm_template</receiver>
+        <slot>studentsChanged(const QString&amp;)</slot>
+    </connection>
+    <connection>
+        <sender>teachers1ComboBox</sender>
+        <signal>activated(const QString&amp;)</signal>
+        <receiver>ModifyActivityForm_template</receiver>
+        <slot>teacherChanged(const QString&amp;)</slot>
+    </connection>
+    <connection>
+        <sender>students2ComboBox</sender>
+        <signal>activated(const QString&amp;)</signal>
+        <receiver>ModifyActivityForm_template</receiver>
+        <slot>studentsChanged(const QString&amp;)</slot>
+    </connection>
+    <connection>
+        <sender>students3ComboBox</sender>
+        <signal>activated(const QString&amp;)</signal>
+        <receiver>ModifyActivityForm_template</receiver>
+        <slot>studentsChanged(const QString&amp;)</slot>
+    </connection>
+    <connection>
+        <sender>students4ComboBox</sender>
+        <signal>activated(const QString&amp;)</signal>
+        <receiver>ModifyActivityForm_template</receiver>
+        <slot>studentsChanged(const QString&amp;)</slot>
+    </connection>
+    <connection>
+        <sender>teachers2ComboBox</sender>
+        <signal>activated(const QString&amp;)</signal>
+        <receiver>ModifyActivityForm_template</receiver>
+        <slot>teacherChanged(const QString&amp;)</slot>
+    </connection>
+    <connection>
+        <sender>teachers3ComboBox</sender>
+        <signal>activated(const QString&amp;)</signal>
+        <receiver>ModifyActivityForm_template</receiver>
+        <slot>teacherChanged(const QString&amp;)</slot>
+    </connection>
+    <connection>
+        <sender>parity8CheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>ModifyActivityForm_template</receiver>
+        <slot>activityChanged()</slot>
+    </connection>
+    <connection>
+        <sender>duration8SpinBox</sender>
+        <signal>valueChanged(int)</signal>
+        <receiver>ModifyActivityForm_template</receiver>
+        <slot>activityChanged()</slot>
+    </connection>
+    <connection>
+        <sender>parity7CheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>ModifyActivityForm_template</receiver>
+        <slot>activityChanged()</slot>
+    </connection>
+    <connection>
+        <sender>duration7SpinBox</sender>
+        <signal>valueChanged(int)</signal>
+        <receiver>ModifyActivityForm_template</receiver>
+        <slot>activityChanged()</slot>
+    </connection>
+    <connection>
+        <sender>parity6CheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>ModifyActivityForm_template</receiver>
+        <slot>activityChanged()</slot>
+    </connection>
+    <connection>
+        <sender>duration6SpinBox</sender>
+        <signal>valueChanged(int)</signal>
+        <receiver>ModifyActivityForm_template</receiver>
+        <slot>activityChanged()</slot>
+    </connection>
+    <connection>
+        <sender>parity5CheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>ModifyActivityForm_template</receiver>
+        <slot>activityChanged()</slot>
+    </connection>
+    <connection>
+        <sender>duration5SpinBox</sender>
+        <signal>valueChanged(int)</signal>
+        <receiver>ModifyActivityForm_template</receiver>
+        <slot>activityChanged()</slot>
+    </connection>
+    <connection>
+        <sender>parity4CheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>ModifyActivityForm_template</receiver>
+        <slot>activityChanged()</slot>
+    </connection>
+    <connection>
+        <sender>duration4SpinBox</sender>
+        <signal>valueChanged(int)</signal>
+        <receiver>ModifyActivityForm_template</receiver>
+        <slot>activityChanged()</slot>
+    </connection>
+    <connection>
+        <sender>parity3CheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>ModifyActivityForm_template</receiver>
+        <slot>activityChanged()</slot>
+    </connection>
+    <connection>
+        <sender>duration3SpinBox</sender>
+        <signal>valueChanged(int)</signal>
+        <receiver>ModifyActivityForm_template</receiver>
+        <slot>activityChanged()</slot>
+    </connection>
+    <connection>
+        <sender>parity2CheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>ModifyActivityForm_template</receiver>
+        <slot>activityChanged()</slot>
+    </connection>
+    <connection>
+        <sender>duration2SpinBox</sender>
+        <signal>valueChanged(int)</signal>
+        <receiver>ModifyActivityForm_template</receiver>
+        <slot>activityChanged()</slot>
+    </connection>
+    <connection>
+        <sender>duration1SpinBox</sender>
+        <signal>valueChanged(int)</signal>
+        <receiver>ModifyActivityForm_template</receiver>
+        <slot>activityChanged()</slot>
+    </connection>
+    <connection>
+        <sender>parity1CheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>ModifyActivityForm_template</receiver>
+        <slot>activityChanged()</slot>
+    </connection>
+    <connection>
+        <sender>cancelPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>ModifyActivityForm_template</receiver>
+        <slot>cancel()</slot>
+    </connection>
+    <connection>
+        <sender>okPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>ModifyActivityForm_template</receiver>
+        <slot>ok()</slot>
+    </connection>
+    <connection>
+        <sender>subjectTagsComboBox</sender>
+        <signal>activated(const QString&amp;)</signal>
+        <receiver>ModifyActivityForm_template</receiver>
+        <slot>subjectTagChanged(const QString&amp;)</slot>
+    </connection>
+</connections>
+<tabstops>
+    <tabstop>teachers1ComboBox</tabstop>
+    <tabstop>teachers2ComboBox</tabstop>
+    <tabstop>teachers3ComboBox</tabstop>
+    <tabstop>subjectsComboBox</tabstop>
+    <tabstop>students1ComboBox</tabstop>
+    <tabstop>students2ComboBox</tabstop>
+    <tabstop>students3ComboBox</tabstop>
+    <tabstop>students4ComboBox</tabstop>
+    <tabstop>currentActivityTextEdit</tabstop>
+    <tabstop>splitSpinBox</tabstop>
+    <tabstop>subactivitiesTabWidget</tabstop>
+    <tabstop>duration1SpinBox</tabstop>
+    <tabstop>parity1CheckBox</tabstop>
+    <tabstop>okPushButton</tabstop>
+    <tabstop>cancelPushButton</tabstop>
+    <tabstop>duration2SpinBox</tabstop>
+    <tabstop>parity2CheckBox</tabstop>
+    <tabstop>duration3SpinBox</tabstop>
+    <tabstop>parity3CheckBox</tabstop>
+    <tabstop>duration4SpinBox</tabstop>
+    <tabstop>parity4CheckBox</tabstop>
+    <tabstop>duration5SpinBox</tabstop>
+    <tabstop>parity5CheckBox</tabstop>
+    <tabstop>duration6SpinBox</tabstop>
+    <tabstop>parity6CheckBox</tabstop>
+    <tabstop>duration7SpinBox</tabstop>
+    <tabstop>parity7CheckBox</tabstop>
+    <tabstop>duration8SpinBox</tabstop>
+    <tabstop>parity8CheckBox</tabstop>
+</tabstops>
+<slots>
+    <slot>activityChanged()</slot>
+    <slot>ok()</slot>
+    <slot>subjectChanged( const QString &amp; )</slot>
+    <slot>teacherChanged( const QString &amp; )</slot>
+    <slot>studentsChanged( const QString &amp; )</slot>
+    <slot>cancel()</slot>
+    <slot>subjectTagChanged(const QString&amp;)</slot>
+</slots>
+<layoutdefaults spacing="6" margin="11"/>
+</UI>

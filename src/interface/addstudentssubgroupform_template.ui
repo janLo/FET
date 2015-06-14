@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.2" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
 <class>AddStudentsSubgroupForm_template</class>
 <widget class="QDialog">
     <property name="name">
@@ -15,169 +15,94 @@
     <property name="caption">
         <string>Add Students Subgroup Dialog</string>
     </property>
-    <widget class="QLabel">
+    <grid>
         <property name="name">
-            <cstring>yearTextLabel</cstring>
+            <cstring>unnamed</cstring>
         </property>
-        <property name="geometry">
-            <rect>
-                <x>20</x>
-                <y>40</y>
-                <width>50</width>
-                <height>20</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>Year</string>
-        </property>
-    </widget>
-    <widget class="QLineEdit">
-        <property name="name">
-            <cstring>yearNameLineEdit</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>70</x>
-                <y>40</y>
-                <width>210</width>
-                <height>26</height>
-            </rect>
-        </property>
-        <property name="readOnly">
-            <bool>true</bool>
-        </property>
-    </widget>
-    <widget class="QPushButton">
-        <property name="name">
-            <cstring>closePushButton</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>180</x>
-                <y>270</y>
-                <width>101</width>
-                <height>31</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>Close</string>
-        </property>
-    </widget>
-    <widget class="QPushButton">
-        <property name="name">
-            <cstring>addStudentsYearPushButton</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>30</x>
-                <y>270</y>
-                <width>101</width>
-                <height>31</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>Add</string>
-        </property>
-    </widget>
-    <widget class="QSpinBox">
-        <property name="name">
-            <cstring>numberSpinBox</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>220</x>
-                <y>190</y>
-                <width>60</width>
-                <height>30</height>
-            </rect>
-        </property>
-        <property name="maxValue">
-            <number>1000</number>
-        </property>
-        <property name="minValue">
-            <number>0</number>
-        </property>
-        <property name="value">
-            <number>0</number>
-        </property>
-    </widget>
-    <widget class="QLabel">
-        <property name="name">
-            <cstring>numberTextLabel</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>20</x>
-                <y>200</y>
-                <width>180</width>
-                <height>20</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>Number of students</string>
-        </property>
-    </widget>
-    <widget class="QLineEdit">
-        <property name="name">
-            <cstring>nameLineEdit</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>70</x>
-                <y>140</y>
-                <width>210</width>
-                <height>26</height>
-            </rect>
-        </property>
-    </widget>
-    <widget class="QLabel">
-        <property name="name">
-            <cstring>nameTextLabel</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>20</x>
-                <y>140</y>
-                <width>50</width>
-                <height>20</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>Name</string>
-        </property>
-    </widget>
-    <widget class="QLineEdit">
-        <property name="name">
-            <cstring>groupNameLineEdit</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>70</x>
-                <y>80</y>
-                <width>210</width>
-                <height>26</height>
-            </rect>
-        </property>
-        <property name="readOnly">
-            <bool>true</bool>
-        </property>
-    </widget>
-    <widget class="QLabel">
-        <property name="name">
-            <cstring>groupTextLabel</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>20</x>
-                <y>80</y>
-                <width>50</width>
-                <height>20</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>Group</string>
-        </property>
-    </widget>
+        <widget class="QLabel" row="0" column="0">
+            <property name="name">
+                <cstring>yearTextLabel</cstring>
+            </property>
+            <property name="text">
+                <string>Year</string>
+            </property>
+        </widget>
+        <widget class="QLineEdit" row="0" column="1" rowspan="1" colspan="3">
+            <property name="name">
+                <cstring>yearNameLineEdit</cstring>
+            </property>
+            <property name="readOnly">
+                <bool>true</bool>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="4" column="2" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>closePushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Close</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="4" column="0" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>addStudentsYearPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Add</string>
+            </property>
+        </widget>
+        <widget class="QSpinBox" row="3" column="3">
+            <property name="name">
+                <cstring>numberSpinBox</cstring>
+            </property>
+            <property name="maxValue">
+                <number>1000</number>
+            </property>
+            <property name="minValue">
+                <number>0</number>
+            </property>
+            <property name="value">
+                <number>0</number>
+            </property>
+        </widget>
+        <widget class="QLabel" row="3" column="0" rowspan="1" colspan="3">
+            <property name="name">
+                <cstring>numberTextLabel</cstring>
+            </property>
+            <property name="text">
+                <string>Number of students</string>
+            </property>
+        </widget>
+        <widget class="QLineEdit" row="2" column="1" rowspan="1" colspan="3">
+            <property name="name">
+                <cstring>nameLineEdit</cstring>
+            </property>
+        </widget>
+        <widget class="QLabel" row="2" column="0">
+            <property name="name">
+                <cstring>nameTextLabel</cstring>
+            </property>
+            <property name="text">
+                <string>Name</string>
+            </property>
+        </widget>
+        <widget class="QLineEdit" row="1" column="1" rowspan="1" colspan="3">
+            <property name="name">
+                <cstring>groupNameLineEdit</cstring>
+            </property>
+            <property name="readOnly">
+                <bool>true</bool>
+            </property>
+        </widget>
+        <widget class="QLabel" row="1" column="0">
+            <property name="name">
+                <cstring>groupTextLabel</cstring>
+            </property>
+            <property name="text">
+                <string>Group</string>
+            </property>
+        </widget>
+    </grid>
 </widget>
 <connections>
     <connection>

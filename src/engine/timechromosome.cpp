@@ -22,6 +22,8 @@ along with FET; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+#include <iostream>
+using namespace std;
 
 #include "genetictimetable_defs.h"
 #include "timechromosome.h"
@@ -150,7 +152,7 @@ int TimeChromosome::hardFitness(Rules& r, QString* conflictsString){
 		
 	//Repair the chromosome - we enter here with the assumption that
 	//the time constraints of type ConstraintActivityPreferredTime,
-	//ConstraintActivitiesSameTime and Constraint2ActivitiesConsecutive
+	//ConstraintActivitiesSameTime and ConstraintActivitiesSameStartingHour
 	//do not contradict one with each other.
 	//I had good reasons here not to repair activities that are scheduled too late
 	//(that is, have the hour+duration>nHoursPerDay.
@@ -170,28 +172,37 @@ int TimeChromosome::hardFitness(Rules& r, QString* conflictsString){
 			this->times[i] = (this->times[i]%r.nDaysPerWeek) + r.fixedHour[i]*r.nDaysPerWeek;
 		}
 	}
-	//2)same starting time
-	for(int i=0; i<r.nInternalActivities; i++)
-		if(r.sameTime[i]>=0)
-			this->times[i] = this->times[r.sameTime[i]];
-	//3)consecutive activities
-	for(int ai2=0; ai2<r.nInternalActivities; ai2++)
-		if(r.consecutiveTime[ai2]>=0){
-			int ai1=r.consecutiveTime[ai2];
-			int d=this->times[ai1]%r.nDaysPerWeek;
-			int h1=this->times[ai1]/r.nDaysPerWeek;
-			int h2 = h1+r.internalActivitiesList[ai1].duration;
-			if(h2 >= r.nHoursPerDay){
-				h2 = r.nHoursPerDay - 1;
-				h1 = h2 - r.internalActivitiesList[ai1].duration;
-				this->times[ai1] = d + h1*r.nDaysPerWeek;
-			}
-			this->times[ai2] = d + h2*r.nDaysPerWeek;
+	
+	//2)same starting day and/or hour
+	for(int i=0; i<r.nInternalActivities; i++){
+		if(r.sameDay[i]>=0 && r.sameHour[i]>=0 && this->times[r.sameDay[i]]!=UNALLOCATED_TIME && this->times[r.sameHour[i]]!=UNALLOCATED_TIME){
+			int d = this->times[r.sameDay[i]] % r.nDaysPerWeek;
+			int h = this->times[r.sameHour[i]] / r.nDaysPerWeek;
+			this->times[i] = d + h * r.nDaysPerWeek;
+			if(r.fixedDay[i]>=0)
+				assert(r.fixedDay[i]==d);
+			if(r.fixedHour[i]>=0)
+				assert(r.fixedHour[i]==h);
 		}
+		if(r.sameDay[i]>=0 && this->times[i]!=UNALLOCATED_SPACE && this->times[r.sameDay[i]]!=UNALLOCATED_TIME){
+			int d = this->times[r.sameDay[i]] % r.nDaysPerWeek;
+			int h = this->times[i] / r.nDaysPerWeek;
+			this->times[i] = d + h * r.nDaysPerWeek;
+			if(r.fixedDay[i]>=0)
+				assert(r.fixedDay[i]==d);
+		}
+		if(r.sameHour[i]>=0 && this->times[i]!=UNALLOCATED_SPACE && this->times[r.sameHour[i]]!=UNALLOCATED_TIME){
+			int d = this->times[i] % r.nDaysPerWeek;
+			int h = this->times[r.sameHour[i]] / r.nDaysPerWeek;
+			this->times[i] = d + h * r.nDaysPerWeek;
+			if(r.fixedHour[i]>=0)
+				assert(r.fixedHour[i]==h);
+		}
+	}
 	
 	this->_hardFitness=0;
 	//here we must not have compulsory activity preferred time nor 
-	//compulsory activities same time
+	//compulsory activities same time and/or hour
 	//Also, here I compute soft fitness (for faster results,
 	//I do not want to pass again through the constraints)
 	this->_softFitness=0;

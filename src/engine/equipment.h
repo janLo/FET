@@ -21,10 +21,13 @@
 
 class Equipment;
 
-typedef QPtrList<Equipment> EquipmentsList;
+class EquipmentsList: public QPtrList<Equipment>
+{
+	int compareItems(QPtrCollection::Item, QPtrCollection::Item);
+};
 
 /**
-This class represents an equipment (a special device)
+This class represents an equipment
 */
 class Equipment
 {

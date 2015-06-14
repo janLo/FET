@@ -79,3 +79,47 @@ void TeachersForm::removeTeacher()
 		teachersListBox->removeItem(teachersListBox->currentItem());
 	this->show();
 }
+
+void TeachersForm::renameTeacher()
+{
+	if(teachersListBox->currentItem()<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected teacher"));
+		return;
+	}
+
+	QString initialTeacherName=teachersListBox->currentText();
+	int teacher_ID=gt.rules.searchTeacher(initialTeacherName);
+	if(teacher_ID<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected teacher"));
+		return;
+	}
+
+	bool ok = FALSE;
+	QString finalTeacherName;
+	finalTeacherName = QInputDialog::getText( QObject::tr("User input"), QObject::tr("Please enter new teacher's name") ,
+                    QLineEdit::Normal, QString::null, &ok, this );
+
+	if ( ok && !(finalTeacherName.isEmpty())){
+		// user entered something and pressed OK
+		if(gt.rules.searchTeacher(finalTeacherName)>=0){
+			QMessageBox::information( this, QObject::tr("Teacher insertion dialog"),
+				QObject::tr("Could not modify item. New name must be a duplicate"));
+		}
+		else{
+			gt.rules.modifyTeacher(initialTeacherName, finalTeacherName);
+		}
+	}
+	
+	teachersListBox->clear();
+	for(Teacher* tch=gt.rules.teachersList.first(); tch; tch=gt.rules.teachersList.next())
+		teachersListBox->insertItem(tch->name);
+}
+
+void TeachersForm::sortTeachers()
+{
+	gt.rules.sortTeachersAlphabetically();
+
+	teachersListBox->clear();
+	for(Teacher* tch=gt.rules.teachersList.first(); tch; tch=gt.rules.teachersList.next())
+		teachersListBox->insertItem(tch->name);
+}

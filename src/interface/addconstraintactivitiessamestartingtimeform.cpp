@@ -36,7 +36,7 @@ void AddConstraintActivitiesSameStartingTimeForm::updateActivitiesListBox()
 {
 	activitiesListBox->clear();
 	simultaneousActivitiesListBox->clear();
-	
+
 	this->activitiesList.clear();
 	this->simultaneousActivitiesList.clear();
 
@@ -86,7 +86,18 @@ void AddConstraintActivitiesSameStartingTimeForm::addConstraint()
 			QObject::tr("Empty list of simultaneous activities"));
 		return;
 	}
+	if(this->simultaneousActivitiesList.count()==1){
+		QMessageBox::warning(this, QObject::tr("FET information"),
+			QObject::tr("Only one selected activity - impossible"));
+		return;
+	}
+	if(this->simultaneousActivitiesList.count()>=(uint)(MAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME)){
+		QMessageBox::warning(this, QObject::tr("FET information"),
+			QObject::tr("Too many activities - please report error\n(CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME too little)"));
+		return;
+	}
 	
+if(blockCheckBox->isChecked()){ //block constraints
 	///////////phase 1 - how many constraints will be added?
 	int nConstraints=0;
 	QValueList<int>::iterator it;
@@ -132,7 +143,7 @@ void AddConstraintActivitiesSameStartingTimeForm::addConstraint()
 	
 	/////////////phase 2 - compute the indices of all the (sub)activities
 #ifdef WIN32
-	int ids[10][MAX_ACTIVITIES];
+	int ids[10][MAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME];
 #else
 	int ids[nConstraints][this->simultaneousActivitiesList.count()];
 #endif
@@ -177,10 +188,35 @@ void AddConstraintActivitiesSameStartingTimeForm::addConstraint()
 		}
 		else{
 			QMessageBox::warning(this, QObject::tr("FET information"),
-				QObject::tr("Constraint NOT added - duplicate type?"));
+				QObject::tr("Constraint NOT added - please report error"));
 			delete ctr;
 		}
 	}
+}
+else{
+	int ids[MAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME];
+	QValueList<int>::iterator it;
+	int i;
+	for(i=0, it=this->simultaneousActivitiesList.begin(); it!=this->simultaneousActivitiesList.end(); i++,it++){
+		assert(i<MAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME);
+		ids[i]=*it;
+	}
+	ctr=new ConstraintActivitiesSameStartingTime(weight, compulsory, this->simultaneousActivitiesList.count(), ids);
+
+	bool tmp2=gt.rules.addTimeConstraint(ctr);
+		
+	if(tmp2){
+		QString s=QObject::tr("Constraint added:");
+		s+="\n";
+		s+=ctr->getDetailedDescription(gt.rules);
+		QMessageBox::information(this, QObject::tr("FET information"), s);
+	}
+	else{
+		QMessageBox::warning(this, QObject::tr("FET information"),
+			QObject::tr("Constraint NOT added - please report error"));
+		delete ctr;
+	}
+}
 }
 
 void AddConstraintActivitiesSameStartingTimeForm::addActivity()
@@ -192,7 +228,7 @@ void AddConstraintActivitiesSameStartingTimeForm::addActivity()
 	
 	QString actName=activitiesListBox->currentText();
 	assert(actName!="");
-	int i;
+	uint i;
 	//duplicate?
 	for(i=0; i<simultaneousActivitiesListBox->count(); i++)
 		if(actName==simultaneousActivitiesListBox->text(i))

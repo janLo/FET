@@ -20,7 +20,10 @@
 
 class Subject;
 
-typedef QPtrList<Subject> SubjectsList;
+class SubjectsList: public QPtrList<Subject>
+{
+	int compareItems(QPtrCollection::Item, QPtrCollection::Item);
+};
 
 /**
 This class represents a subject

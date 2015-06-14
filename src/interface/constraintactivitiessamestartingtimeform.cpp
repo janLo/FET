@@ -17,6 +17,7 @@
 
 #include "constraintactivitiessamestartingtimeform.h"
 #include "addconstraintactivitiessamestartingtimeform.h"
+#include "modifyconstraintactivitiessamestartingtimeform.h"
 
 ConstraintActivitiesSameStartingTimeForm::ConstraintActivitiesSameStartingTimeForm()
 {
@@ -57,7 +58,7 @@ void ConstraintActivitiesSameStartingTimeForm::constraintChanged(int index)
 	if(index<0)
 		return;
 	QString s;
-	assert(index<this->visibleConstraintsList.count());
+	assert((uint)(index)<this->visibleConstraintsList.count());
 	TimeConstraint* ctr=this->visibleConstraintsList.at(index);
 	assert(ctr!=NULL);
 	s=ctr->getDetailedDescription(gt.rules);
@@ -70,6 +71,23 @@ void ConstraintActivitiesSameStartingTimeForm::addConstraint()
 	addConstraintActivitiesSameStartingTimeForm->exec();
 
 	this->refreshConstraintsListBox();
+}
+
+void ConstraintActivitiesSameStartingTimeForm::modifyConstraint()
+{
+	int i=constraintsListBox->currentItem();
+	if(i<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected constraint"));
+		return;
+	}
+	TimeConstraint* ctr=this->visibleConstraintsList.at(i);
+
+	ModifyConstraintActivitiesSameStartingTimeForm *modifyConstraintActivitiesSameStartingTimeForm=new ModifyConstraintActivitiesSameStartingTimeForm((ConstraintActivitiesSameStartingTime*)ctr);
+	modifyConstraintActivitiesSameStartingTimeForm->exec();
+
+	this->refreshConstraintsListBox();
+	
+	constraintsListBox->setCurrentItem(i);
 }
 
 void ConstraintActivitiesSameStartingTimeForm::removeConstraint()

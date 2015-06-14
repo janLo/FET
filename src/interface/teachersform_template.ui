@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.0" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
 <class>TeachersForm_template</class>
 <widget class="QDialog">
     <property name="name">
@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>421</width>
-            <height>480</height>
+            <width>483</width>
+            <height>478</height>
         </rect>
     </property>
     <property name="caption">
@@ -25,15 +25,17 @@
         <property name="spacing">
             <number>6</number>
         </property>
-        <widget class="QPushButton" row="1" column="1">
+        <widget class="QListBox" row="0" column="0" rowspan="1" colspan="2">
+            <item>
+                <property name="text">
+                    <string>New Item</string>
+                </property>
+            </item>
             <property name="name">
-                <cstring>removeTeacherPushButton</cstring>
-            </property>
-            <property name="text">
-                <string>Remove current</string>
+                <cstring>teachersListBox</cstring>
             </property>
         </widget>
-        <widget class="QPushButton" row="2" column="0">
+        <widget class="QPushButton" row="3" column="0">
             <property name="name">
                 <cstring>closePushButton</cstring>
             </property>
@@ -49,30 +51,38 @@
                 <string>Add teacher</string>
             </property>
         </widget>
-        <widget class="QListBox" row="0" column="0" rowspan="1" colspan="2">
-            <item>
-                <property name="text">
-                    <string>New Item</string>
-                </property>
-            </item>
+        <widget class="QPushButton" row="1" column="1">
             <property name="name">
-                <cstring>teachersListBox</cstring>
+                <cstring>removeTeacherPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Remove current</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="2" column="1">
+            <property name="name">
+                <cstring>sortTeachersPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Sort alphabetically</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="2" column="0">
+            <property name="name">
+                <cstring>renameTeacherPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Rename current</string>
             </property>
         </widget>
     </grid>
 </widget>
 <connections>
     <connection>
-        <sender>addTeacherPushButton</sender>
+        <sender>renameTeacherPushButton</sender>
         <signal>clicked()</signal>
         <receiver>TeachersForm_template</receiver>
-        <slot>addTeacher()</slot>
-    </connection>
-    <connection>
-        <sender>removeTeacherPushButton</sender>
-        <signal>clicked()</signal>
-        <receiver>TeachersForm_template</receiver>
-        <slot>removeTeacher()</slot>
+        <slot>renameTeacher()</slot>
     </connection>
     <connection>
         <sender>closePushButton</sender>
@@ -80,10 +90,38 @@
         <receiver>TeachersForm_template</receiver>
         <slot>close()</slot>
     </connection>
+    <connection>
+        <sender>addTeacherPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>TeachersForm_template</receiver>
+        <slot>addTeacher()</slot>
+    </connection>
+    <connection>
+        <sender>sortTeachersPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>TeachersForm_template</receiver>
+        <slot>sortTeachers()</slot>
+    </connection>
+    <connection>
+        <sender>removeTeacherPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>TeachersForm_template</receiver>
+        <slot>removeTeacher()</slot>
+    </connection>
 </connections>
+<tabstops>
+    <tabstop>teachersListBox</tabstop>
+    <tabstop>addTeacherPushButton</tabstop>
+    <tabstop>removeTeacherPushButton</tabstop>
+    <tabstop>renameTeacherPushButton</tabstop>
+    <tabstop>sortTeachersPushButton</tabstop>
+    <tabstop>closePushButton</tabstop>
+</tabstops>
 <slots>
     <slot>addTeacher()</slot>
     <slot>removeTeacher()</slot>
+    <slot>renameTeacher()</slot>
+    <slot>sortTeachers()</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

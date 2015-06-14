@@ -28,3 +28,13 @@ QString Teacher::getXMLDescription()
 
 	return s;
 }
+
+int TeachersList::compareItems(QPtrCollection::Item item1,QPtrCollection::Item item2)
+{
+	if(((Teacher*)item1)->name>((Teacher*)item2)->name)
+		return 1;
+	else if(((Teacher*)item1)->name<((Teacher*)item2)->name)
+		return -1;
+	else
+		return 0;
+}

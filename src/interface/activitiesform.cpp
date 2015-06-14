@@ -21,6 +21,7 @@
 
 #include "activitiesform.h"
 #include "addactivityform.h"
+#include "modifyactivityform.h"
 
 #include <qstring.h>
 #include <qlistbox.h>
@@ -114,11 +115,15 @@ void ActivitiesForm::filterChanged()
 
 void ActivitiesForm::addActivity()
 {
+	int ind=activitiesListBox->currentItem();
+
 	AddActivityForm *addActivityForm=new AddActivityForm();
 	addActivityForm->exec();
 
 	//rebuild the activities list box
 	filterChanged();
+	
+	activitiesListBox->setCurrentItem(ind);
 }
 
 void ActivitiesForm::removeActivity()
@@ -151,6 +156,29 @@ void ActivitiesForm::removeActivity()
 	case 1: // The user clicked the Cancel or pressed Escape
 		break;
 	}
+	
+	if((uint)(ind) >= activitiesListBox->count())
+		ind = activitiesListBox->count()-1;
+	activitiesListBox->setCurrentItem(ind);
+}
+
+void ActivitiesForm::modifyActivity()
+{
+	int ind=activitiesListBox->currentItem();
+	if(ind<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected activity"));
+		return;
+	}
+
+	Activity* act=visibleActivitiesList.at(ind);
+	assert(act!=NULL);
+	
+	ModifyActivityForm* modifyActivityForm=new ModifyActivityForm(act->id, act->activityGroupId);
+	modifyActivityForm->exec();
+
+	filterChanged();
+	
+	activitiesListBox->setCurrentItem(ind);
 }
 
 void ActivitiesForm::activityChanged(int index)

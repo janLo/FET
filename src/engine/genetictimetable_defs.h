@@ -43,14 +43,14 @@
 typedef short int16;
 
 /**
-String representing the whole year
+The version number
 */
-const QString WHOLE_YEAR="WHOLE YEAR";
+extern const QString FET_VERSION;
 
 /**
-String representing the whole group
+The language
 */
-const QString WHOLE_GROUP="WHOLE GROUP";
+extern QString FET_LANGUAGE;
 
 /**
 The maximum dimension of the population
@@ -60,17 +60,17 @@ const int MAX_POPULATION_SIZE=8192;
 /**
 The maximum number of different years of students
 */
-const int MAX_YEARS=14;
+const int MAX_YEARS=70;
 
 /**
 Maximum number of allowed groups per year of students
 */
-const int MAX_GROUPS_PER_YEAR=15;
+const int MAX_GROUPS_PER_YEAR=100;
 
 /**
 Maximum number of allowed subgroups per group of students
 */
-const int MAX_SUBGROUPS_PER_GROUP=12;
+const int MAX_SUBGROUPS_PER_GROUP=50;
 
 /**
 The maximum total number of different groups of students
@@ -80,13 +80,13 @@ const int MAX_TOTAL_GROUPS=MAX_YEARS*MAX_GROUPS_PER_YEAR;
 /**
 The maximum total number of different subgroups of students
 */
-const int MAX_TOTAL_SUBGROUPS=MAX_YEARS*MAX_GROUPS_PER_YEAR*MAX_SUBGROUPS_PER_GROUP;
+const int MAX_TOTAL_SUBGROUPS=5000;//MAX_YEARS*MAX_GROUPS_PER_YEAR*MAX_SUBGROUPS_PER_GROUP;
 
 /**
 This constant represents the maximum number of total allowed subgroups
 for any activity.
 */
-const int MAX_SUBGROUPS_PER_ACTIVITY=MAX_SUBGROUPS_PER_GROUP * MAX_GROUPS_PER_YEAR;
+const int MAX_SUBGROUPS_PER_ACTIVITY=400;//MAX_SUBGROUPS_PER_GROUP * MAX_GROUPS_PER_YEAR;
 
 /**
 This constant represents the maximum number of teachers
@@ -94,32 +94,37 @@ for any activity.
 */
 const int MAX_TEACHERS_PER_ACTIVITY = 6;
 
-const int MAX_SUBGROUPS_PER_CONSTRAINT=MAX_SUBGROUPS_PER_GROUP * MAX_GROUPS_PER_YEAR;
+const int MAX_SUBGROUPS_PER_CONSTRAINT=100;//MAX_SUBGROUPS_PER_GROUP * MAX_GROUPS_PER_YEAR;
 
 /**
 The maximum number of different teachers
 */
-const int MAX_TEACHERS=200;
+const int MAX_TEACHERS=700;
 
 /**
 The maximum number of different subjects
 */
-const int MAX_SUBJECTS=400;
+const int MAX_SUBJECTS=1000;
 
 /**
 The maximum number of activities
 */
-const int MAX_ACTIVITIES=2500;
+const int MAX_ACTIVITIES=1250;
 
 /**
 The maximum number of equipments
 */
-const int MAX_EQUIPMENTS=200;
+const int MAX_EQUIPMENTS=300;
+
+/**
+The maximum number of equipments for a constraint subject requires equipments
+*/
+const int MAX_EQUIPMENTS_FOR_A_CONSTRAINT=50;
 
 /**
 The maximum number of rooms
 */
-const int MAX_ROOMS=200;
+const int MAX_ROOMS=300;
 
 /**
 This constant represents an unallocated activity
@@ -209,9 +214,30 @@ const int MAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME=20;
 /**
 The maximum number of activities for a single
 constraint of type
+ConstraintActivitiesSameStartingHour
+*/
+const int MAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_HOUR=20;
+
+/**
+The maximum number of activities for a single
+constraint of type
 ConstraintActivitiesNotOverlapping
 */
 const int MAX_CONSTRAINT_ACTIVITIES_NOT_OVERLAPPING=20;
+
+/**
+The maximum number of rooms for a single
+constraint of type
+ConstraintActivityPreferredRooms
+*/
+const int MAX_CONSTRAINT_ACTIVITY_PREFERRED_ROOMS=20;
+
+/**
+The maximum number of rooms for a single
+constraint of type
+ConstraintActivitiesSameRoom
+*/
+const int MAX_CONSTRAINT_ACTIVITIES_SAME_ROOM=20;
 
 /**
 The maximum number of activities which share the same subject name.
@@ -233,14 +259,9 @@ const QString FILE_SEP="/";
 
 
 /**
-The XML tag used for identification of the input file
-*/
-const QString INPUT_FILE_TAG="FET_VERSION_3_6_1_AND_ABOVE_TIMETABLE_DATA_FILE";
-
-/**
 The XML tag used for identification of the input file (old)
 */
-const QString INPUT_FILE_TAG_3_4_2="FET_VERSION_3_4_2_AND_ABOVE_TIMETABLE_DATA_FILE";
+const QString INPUT_FILE_TAG_3_6_1="FET_VERSION_3_6_1_AND_ABOVE_TIMETABLE_DATA_FILE";
 
 /**
 The XML tag used for identification of the output file
@@ -304,6 +325,11 @@ A log of the space simulation.
 const QString SPACE_LOG_FILENAME_TXT="space_log.txt";
 
 /**
+A log of the time and space simulation.
+*/
+const QString TIME_SPACE_LOG_FILENAME_TXT="time_space_log.txt";
+
+/**
 An output file containing the timetable for each subgroup,
 arranged in xml format
 */
@@ -322,6 +348,48 @@ arranged in xml format
 const QString ROOMS_TIMETABLE_FILENAME_XML="roomstimetable.xml";
 
 /**
+An output file containing the timetable for each subgroup,
+arranged in html format
+*/
+const QString STUDENTS_TIMETABLE_FILENAME_HTML="studentstimetable.html";
+
+/**
+An output file containing the timetable for each teacher,
+arranged in html format. Version 1 - flyers for each teacher
+*/
+const QString TEACHERS_TIMETABLE_1_FILENAME_HTML="teacherstimetable1.html";
+
+/**
+An output file containing the timetable for each teacher,
+arranged in html format. Version 2 - overall
+*/
+const QString TEACHERS_TIMETABLE_2_FILENAME_HTML="teacherstimetable2.html";
+
+/**
+An output file containing the timetable for each room,
+arranged in html format
+*/
+const QString ROOMS_TIMETABLE_FILENAME_HTML="roomstimetable.html";
+
+/**
+An output file containing the timetable (with rooms) for each subgroup,
+arranged in html format
+*/
+const QString STUDENTS_TIMETABLE_WITH_ROOMS_FILENAME_HTML="studentstimetablewithrooms.html";
+
+/**
+An output file containing the timetable for each teacher (with rooms),
+arranged in html format. Version 1 - flyers for each teacher
+*/
+const QString TEACHERS_TIMETABLE_WITH_ROOMS_1_FILENAME_HTML="teacherstimetablewithrooms1.html";
+
+/**
+An output file containing the timetable for each teacher (with rooms),
+arranged in html format. Version 2 - overall
+*/
+const QString TEACHERS_TIMETABLE_WITH_ROOMS_2_FILENAME_HTML="teacherstimetablewithrooms2.html";
+
+/**
 A log file explaining how the xml input file was parsed
 */
 const QString XML_PARSING_LOG_FILENAME="xmlreadinglog.txt";
@@ -336,6 +404,10 @@ A file containing the space conflicts
 */
 const QString SPACE_CONFLICTS_FILENAME="space_conflicts.txt";
 
+/**
+A file containing the time&space conflicts
+*/
+const QString TIME_SPACE_CONFLICTS_FILENAME="time_space_conflicts.txt";
 
 /**
 Probability for Evolution1 Crossover, in percents

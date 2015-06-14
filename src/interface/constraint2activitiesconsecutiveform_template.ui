@@ -83,6 +83,14 @@
                 <cstring>constraintsListBox</cstring>
             </property>
         </widget>
+        <widget class="QPushButton" row="2" column="1" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>modifyConstraintPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Modify</string>
+            </property>
+        </widget>
     </grid>
 </widget>
 <connections>
@@ -110,11 +118,26 @@
         <receiver>Constraint2ActivitiesConsecutiveForm_template</receiver>
         <slot>removeConstraint()</slot>
     </connection>
+    <connection>
+        <sender>modifyConstraintPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>Constraint2ActivitiesConsecutiveForm_template</receiver>
+        <slot>modifyConstraint()</slot>
+    </connection>
 </connections>
+<tabstops>
+    <tabstop>constraintsListBox</tabstop>
+    <tabstop>currentConstraintTextEdit</tabstop>
+    <tabstop>addConstraintPushButton</tabstop>
+    <tabstop>modifyConstraintPushButton</tabstop>
+    <tabstop>removeConstraintPushButton</tabstop>
+    <tabstop>closePushButton</tabstop>
+</tabstops>
 <slots>
     <slot>addConstraint()</slot>
     <slot>constraintChanged(int)</slot>
     <slot>removeConstraint()</slot>
+    <slot>modifyConstraint()</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

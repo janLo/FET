@@ -150,6 +150,18 @@ int SpaceChromosome::hardFitness(Rules& r, const int days[/*MAX_ACTIVITIES*/], c
 	//If you want to see the log, you have to recompute the fitness, even if it is
 	//already computed
 		return this->_hardFitness;
+		
+	//repair the chromosome
+	for(int i=0; i<r.nInternalActivities; i++)
+		if(r.fixedRoom[i]>=0)
+			this->rooms[i]=r.fixedRoom[i];
+
+	for(int i=0; i<r.nInternalActivities; i++)
+		if(r.sameRoom[i]>=0 && this->rooms[r.sameRoom[i]]!=UNALLOCATED_SPACE){
+			this->rooms[i]=this->rooms[r.sameRoom[i]];
+			if(r.fixedRoom[i]>=0)
+				assert(r.fixedRoom[i]==this->rooms[i]);
+		}
 
 	this->_hardFitness=0;
 	for(int i=0; i<r.nInternalSpaceConstraints; i++)

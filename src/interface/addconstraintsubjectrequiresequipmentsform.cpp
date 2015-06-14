@@ -81,7 +81,7 @@ void AddConstraintSubjectRequiresEquipmentsForm::addConstraint()
 
 	ctr=new ConstraintSubjectRequiresEquipments(weight, compulsory, subject);
 
-	for(int i=0; i<requiredEquipmentsListBox->count(); i++)
+	for(uint i=0; i<requiredEquipmentsListBox->count(); i++)
 		((ConstraintSubjectRequiresEquipments*)ctr)->addRequiredEquipment(requiredEquipmentsListBox->text(i));
 
 	bool tmp2=gt.rules.addSpaceConstraint(ctr);
@@ -104,7 +104,7 @@ void AddConstraintSubjectRequiresEquipmentsForm::addEquipment()
 		return;
 	QString equip=allEquipmentsListBox->currentText();
 	assert(equip!="");
-	int i;
+	uint i;
 	//duplicate?
 	for(i=0; i<requiredEquipmentsListBox->count(); i++)
 		if(equip==requiredEquipmentsListBox->text(i))

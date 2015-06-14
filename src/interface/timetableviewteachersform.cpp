@@ -97,7 +97,7 @@ void TimetableViewTeachersForm::updateTeachersTimetableTable(){
 				Activity* act=gt.rules.activitiesList.at(ai);
 				if(ai!=UNALLOCATED_ACTIVITY){
 					assert(act!=NULL);
-					s += act->subjectName+"\n"; //added in version 3_9_16, on 16 Oct. 2004; suggested by Nicholas Robinson
+					s += act->subjectName+" "+act->subjectTagName+"\n"; //added in version 3_9_16, on 16 Oct. 2004; suggested by Nicholas Robinson
 					for(QStringList::Iterator it=act->studentsNames.begin(); it!=act->studentsNames.end(); it++)
 						s += (*it) + " ";
 				}
@@ -107,7 +107,7 @@ void TimetableViewTeachersForm::updateTeachersTimetableTable(){
 					s += "/ ";
 				if(ai!=UNALLOCATED_ACTIVITY){
 					assert(act!=NULL);
-					s += act->subjectName+"\n"; //added in version 3_9_16, on 16 Oct. 2004; suggested by Nicholas Robinson
+					s += act->subjectName+" "+act->subjectTagName+"\n"; //added in version 3_9_16, on 16 Oct. 2004; suggested by Nicholas Robinson
 					for(QStringList::Iterator it=act->studentsNames.begin(); it!=act->studentsNames.end(); it++)
 						s += (*it) + " ";
 				}

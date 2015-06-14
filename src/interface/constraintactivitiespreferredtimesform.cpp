@@ -17,6 +17,7 @@
 
 #include "constraintactivitiespreferredtimesform.h"
 #include "addconstraintactivitiespreferredtimesform.h"
+#include "modifyconstraintactivitiespreferredtimesform.h"
 
 ConstraintActivitiesPreferredTimesForm::ConstraintActivitiesPreferredTimesForm()
 {
@@ -57,7 +58,7 @@ void ConstraintActivitiesPreferredTimesForm::constraintChanged(int index)
 	if(index<0)
 		return;
 	QString s;
-	assert(index<this->visibleConstraintsList.count());
+	assert((uint)(index)<this->visibleConstraintsList.count());
 	TimeConstraint* ctr=this->visibleConstraintsList.at(index);
 	assert(ctr!=NULL);
 	s=ctr->getDetailedDescription(gt.rules);
@@ -70,6 +71,23 @@ void ConstraintActivitiesPreferredTimesForm::addConstraint()
 	addConstraintActivitiesPreferredTimesForm->exec();
 
 	this->refreshConstraintsListBox();
+}
+
+void ConstraintActivitiesPreferredTimesForm::modifyConstraint()
+{
+	int i=constraintsListBox->currentItem();
+	if(i<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected constraint"));
+		return;
+	}
+	TimeConstraint* ctr=this->visibleConstraintsList.at(i);
+
+	ModifyConstraintActivitiesPreferredTimesForm *modifyConstraintActivitiesPreferredTimesForm=new ModifyConstraintActivitiesPreferredTimesForm((ConstraintActivitiesPreferredTimes*)ctr);
+	modifyConstraintActivitiesPreferredTimesForm->exec();
+
+	this->refreshConstraintsListBox();
+	
+	constraintsListBox->setCurrentItem(i);
 }
 
 void ConstraintActivitiesPreferredTimesForm::removeConstraint()

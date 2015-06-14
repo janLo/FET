@@ -100,7 +100,9 @@ QString ConstraintBasicCompulsoryTime::getXMLDescription(Rules& r)
 
 	QString s = "<ConstraintBasicCompulsoryTime>\n";
 	s += "	<Weight>"+QString::number(this->weight)+"</Weight>\n";
-	s += "	<Compulsory>yes</Compulsory>\n";
+	s+="	<Compulsory>";
+	s+=yesNo(this->compulsory);
+	s+="</Compulsory>\n";
 	s += "</ConstraintBasicCompulsoryTime>\n";
 	return s;
 }
@@ -111,7 +113,9 @@ QString ConstraintBasicCompulsoryTime::getDescription(Rules& r)
 		;
 
 	return QObject::tr("Basic compulsory constraints (time)") +
-		" " + QObject::tr(QString("W:%1").arg(this->weight));
+		" " + QObject::tr("W:%1").arg(this->weight) +
+		" " + QObject::tr("C:%1").arg(yesNoTranslated(this->compulsory));
+;
 }
 
 QString ConstraintBasicCompulsoryTime::getDetailedDescription(Rules& r)
@@ -123,6 +127,7 @@ QString ConstraintBasicCompulsoryTime::getDetailedDescription(Rules& r)
 		"(referring to time allocation) for any timetable\n");
 
 	s+=QObject::tr("Weight=%1").arg(this->weight);s+="\n";
+	s+=QObject::tr("Compulsory=%1").arg(yesNoTranslated(this->compulsory));s+="\n";
 	s+=QObject::tr("The basic time constraints try to avoid:\n");
 	s+=QObject::tr("- unallocated activities\n");
 	s+=QObject::tr("- activities scheduled too late\n");
@@ -1521,7 +1526,7 @@ int ConstraintTeachersNoMoreThanXHoursDaily::fitness(TimeChromosome& c, Rules& r
 ConstraintTeachersSubgroupsNoMoreThanXHoursDaily::ConstraintTeachersSubgroupsNoMoreThanXHoursDaily()
 	: TimeConstraint()
 {
-	type=CONSTRAINT_TEACHERS_SUBGROUPS_NO_MORE_THAN_X_HOURS_DAILY;
+	this->type=CONSTRAINT_TEACHERS_SUBGROUPS_NO_MORE_THAN_X_HOURS_DAILY;
 }
 
 ConstraintTeachersSubgroupsNoMoreThanXHoursDaily::ConstraintTeachersSubgroupsNoMoreThanXHoursDaily(double w, bool c, int maxhours)
@@ -1529,6 +1534,7 @@ ConstraintTeachersSubgroupsNoMoreThanXHoursDaily::ConstraintTeachersSubgroupsNoM
  {
 	assert(maxhours>0);
 	this->maxHoursDaily=maxhours;
+	this->type=CONSTRAINT_TEACHERS_SUBGROUPS_NO_MORE_THAN_X_HOURS_DAILY;
 }
 
 void ConstraintTeachersSubgroupsNoMoreThanXHoursDaily::computeInternalStructure(Rules& r)
@@ -3238,6 +3244,12 @@ void ConstraintActivityPreferredTime::computeInternalStructure(Rules& r)
 		if(act->id==this->activityId)
 			break;
 
+	if(!act){
+		cout<<"Error in this constraint:"<<endl;
+		cout<<this->getXMLDescription(r)<<endl;
+		assert(0);
+		exit(1);
+	}
 	assert(act);
 
 	this->activityIndex=i;
@@ -4079,4 +4091,200 @@ int ConstraintActivitiesPreferredTimes::fitness(TimeChromosome& c, Rules& r, QSt
 	}
 
 	return int(ceil(nbroken * weight));
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+ConstraintActivitiesSameStartingHour::ConstraintActivitiesSameStartingHour()
+	: TimeConstraint()
+{
+	type=CONSTRAINT_ACTIVITIES_SAME_STARTING_HOUR;
+}
+
+ConstraintActivitiesSameStartingHour::ConstraintActivitiesSameStartingHour(double w, bool c, int nact, const int act[])
+ : TimeConstraint(w, c)
+ {
+	assert(nact>=2 && nact<=MAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_HOUR);
+	this->n_activities=nact;
+	for(int i=0; i<nact; i++)
+		this->activitiesId[i]=act[i];
+
+	this->type=CONSTRAINT_ACTIVITIES_SAME_STARTING_HOUR;
+}
+
+void ConstraintActivitiesSameStartingHour::computeInternalStructure(Rules &r)
+{
+	//compute the indices of the activities,
+	//based on their unique ID
+
+	for(int j=0; j<n_activities; j++)
+		this->_activities[j]=-1;
+
+	for(int i=0; i<this->n_activities; i++){
+		int j;
+		Activity* act;
+		for(j=0, act=r.activitiesList.first(); act; act=r.activitiesList.next(), j++)
+			if(act->id==this->activitiesId[i])
+				this->_activities[i]=j;
+	}
+
+	for(int j=0; j<this->n_activities; j++)
+		assert(this->_activities[j]>=0);
+}
+
+void ConstraintActivitiesSameStartingHour::removeUseless(Rules& r)
+{
+	//remove the activitiesId which no longer exist (used after the deletion of an activity)
+
+	for(int j=0; j<this->n_activities; j++)
+		this->_activities[j]=-1;
+
+	for(int i=0; i<this->n_activities; i++){
+		int j;
+		Activity* act;
+		for(j=0, act=r.activitiesList.first(); act; act=r.activitiesList.next(), j++)
+			if(act->id==this->activitiesId[i])
+				this->_activities[i]=j;
+	}
+
+	int i, j;
+	for(i=0, j=0; j<this->n_activities; j++)
+		if(this->_activities[j]>=0) //valid activity
+			this->activitiesId[i++]=this->activitiesId[j];
+	this->n_activities=i;
+}
+
+QString ConstraintActivitiesSameStartingHour::getXMLDescription(Rules& r){
+	if(&r!=NULL)
+		;
+
+	QString s="<ConstraintActivitiesSameStartingHour>\n";
+	s+="	<Weight>"+QString::number(this->weight)+"</Weight>\n";
+	s+="	<Compulsory>";s+=yesNo(this->compulsory);s+="</Compulsory>\n";
+	s+="	<Number_of_Activities>"+QString::number(this->n_activities)+"</Number_of_Activities>\n";
+	for(int i=0; i<this->n_activities; i++)
+		s+="	<Activity_Id>"+QString::number(this->activitiesId[i])+"</Activity_Id>\n";
+	s+="</ConstraintActivitiesSameStartingHour>\n";
+	return s;
+}
+
+QString ConstraintActivitiesSameStartingHour::getDescription(Rules& r){
+	if(&r!=NULL)
+		;
+
+	QString s;
+	s+=QObject::tr("Activities same starting hour");s+=", ";
+	s+=(QObject::tr("W:%1").arg(this->weight));s+=", ";
+	s+=(QObject::tr("C:%1").arg(yesNoTranslated(this->compulsory)));s+=", ";
+	s+=(QObject::tr("NA:%1").arg(this->n_activities));s+=", ";
+	for(int i=0; i<this->n_activities; i++){
+		s+=(QObject::tr("ID:%1").arg(this->activitiesId[i]));s+=", ";
+	}
+
+	return s;
+}
+
+QString ConstraintActivitiesSameStartingHour::getDetailedDescription(Rules& r){
+	if(&r!=NULL)
+		;
+
+	QString s;
+	
+	s=QObject::tr("Time constraint");s+="\n";
+	s+=QObject::tr("Activities must have the same starting hour");s+="\n";
+	s+=(QObject::tr("Weight=%1").arg(this->weight));s+="\n";
+	s+=(QObject::tr("Compulsory=%1").arg(yesNoTranslated(this->compulsory)));s+="\n";
+	s+=(QObject::tr("Number of activities=%1").arg(this->n_activities));s+="\n";
+	for(int i=0; i<this->n_activities; i++){
+		s+=(QObject::tr("Activity with id=%1").arg(this->activitiesId[i]));s+="\n";
+	}
+
+	return s;
+}
+
+//critical function here - must be optimized for speed
+int ConstraintActivitiesSameStartingHour::fitness(TimeChromosome& c, Rules& r, QString* conflictsString)
+{
+	assert(r.internalStructureComputed);
+
+	int nbroken;
+
+	//We do not use the matrices 'subgroupsMatrix' nor 'teachersMatrix'.
+
+	//sum the differences in the scheduled hour for all pairs of activities.
+
+	//without logging
+	if(conflictsString==NULL){
+		nbroken=0;
+		for(int i=1; i<this->n_activities; i++){
+			int t1=c.times[this->_activities[i]];
+			if(t1!=UNALLOCATED_TIME){
+				//int day1=t1%r.nDaysPerWeek;
+				int hour1=t1/r.nDaysPerWeek;
+				for(int j=0; j<i; j++){
+					int t2=c.times[this->_activities[j]];
+					if(t2!=UNALLOCATED_TIME){
+						//int day2=t2%r.nDaysPerWeek;
+						int hour2=t2/r.nDaysPerWeek;
+						int tmp=0;
+
+						//activity weekly - counts as double
+						if(r.internalActivitiesList[this->_activities[i]].parity==PARITY_WEEKLY &&
+						 r.internalActivitiesList[this->_activities[j]].parity==PARITY_WEEKLY)
+							tmp = 4 * abs(hour1-hour2);
+						else if(r.internalActivitiesList[this->_activities[i]].parity==PARITY_WEEKLY ||
+						 r.internalActivitiesList[this->_activities[j]].parity==PARITY_WEEKLY)
+							tmp = 2 * abs(hour1-hour2);
+						else
+							tmp = abs(hour1-hour2);
+
+						nbroken+=tmp;
+					}
+				}
+			}
+		}
+	}
+	//with logging
+	else{
+		nbroken=0;
+		for(int i=1; i<this->n_activities; i++){
+			int t1=c.times[this->_activities[i]];
+			if(t1!=UNALLOCATED_TIME){
+				//int day1=t1%r.nDaysPerWeek;
+				int hour1=t1/r.nDaysPerWeek;
+				for(int j=0; j<i; j++){
+					int t2=c.times[this->_activities[j]];
+					if(t2!=UNALLOCATED_TIME){
+						//int day2=t2%r.nDaysPerWeek;
+						int hour2=t2/r.nDaysPerWeek;
+						int tmp=0;
+
+						//activity weekly - counts as double
+						if(r.internalActivitiesList[this->_activities[i]].parity==PARITY_WEEKLY &&
+						 r.internalActivitiesList[this->_activities[j]].parity==PARITY_WEEKLY)
+							tmp = 4 * abs(hour1-hour2);
+						else if(r.internalActivitiesList[this->_activities[i]].parity==PARITY_WEEKLY ||
+						 r.internalActivitiesList[this->_activities[j]].parity==PARITY_WEEKLY)
+							tmp = 2 * abs(hour1-hour2);
+						else
+							tmp = abs(hour1-hour2);
+
+						nbroken+=tmp;
+
+						if(tmp>0 && conflictsString!=NULL){
+							*conflictsString+=(QObject::tr("Time constraint activities same hour broken, because activity with id=%1 is not at the same hour with activity with id=%2")
+								.arg(this->activitiesId[i])
+								.arg(this->activitiesId[j]));
+							*conflictsString+=", ";
+							*conflictsString+=(QObject::tr("conflicts factor increase=%1").arg(tmp*weight));
+							*conflictsString+="\n";
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return int (ceil ( weight * nbroken ) );
 }

@@ -2,42 +2,17 @@ I did not put the e-mail of the listed persons, I do not know if they agree (Liv
 If you are on this list and want your e-mail listed, please write me!
 
 
-Bibliography:
--------------
-
-[1] H.S.C.Lee, Timetabling Highly Constrained Systems via Genetic Algorithms, Masters Thesis,
-University of Philippines, Diliman, Quezon City, 2000 (free, on the internet).
-
-[2] A.Schaerf, A Survey of Automated Timetabling, Artificial Intelligence Review 13(2), 
-87-127, 1999 (free, on the internet).
-
-[3] S.Tongchim, Coarse-Grained Parallel Genetic Algorithm for Solving the Timetable Problem, 
-Proc. of the 3rd Annual Nat.Symp.on Computational Science and Engineering. Bangkok, Thailand, 
-1999 (free, on the internet).
-
-[4] Z.Michalewicz, Genetic Algorithms + Data Structures = Evolution Programs (2nd ed.),
-Springer-Verlag, 1994 (not free. I cannot say whether it is worth the money, but it 
-helped me understand some important concepts. This was a borrowed book and I never had the
-opportunity to read other expensive books on genetic algorithms, to compare them).
-
-I will have to add here other great free sources of information I found on the web,
-but these were the most useful ones.
-
-
 People who helped me (chronologically)
 --------------------------------------
 
-Costin Badica	- my teacher, who helped me a lot. He actually made
-		me begin this project and provided me documentation and advices.
+Costin Badica	- my teacher. He actually made me begin this project and provided me with 
+	documentation and advices.
 
 Carsten Niehaus - suggestions.
 
 Imre Nagy 	- e-mail list (does not work anymore), suggestions.
 
 Sajith V. K. - suggestions
-		- suggested the idea to implement ConstraintActivitiesSameTime
-		- suggested the two tricks to allow more teachers or subgroups per activity (now deprecated)
-		- a user's guide (now deprecated)
 
 Michael Towers	- lots of bugs reported, sample files, suggestions, front/back-end.
 
@@ -49,29 +24,27 @@ Simon Ghetti	- sample files, suggestions.
 
 Gibbon Tamba - sample file, bug reported.
 
-Jerome Durand - bug reported, French translation (fetfr@free.fr, please also see http://fetfr.free.fr).
+Jerome Durand - bug reported, French translation (fetfr@free.fr, please also see http://fetfr.free.fr/).
 
-Marek Jaszuk - bugs reported, suggestions.
+Marek Jaszuk - bugs reported, suggestions, sample file.
 
 Ramanathan Srinivasan - suggested Constraint2ActivitiesConsecutive and Constraint2ActivitiesGrouped.
 
-Vimal Joseph - suggested ConstraintActivitiesPreferredTimes;
-		- a script to convert the .xml results into .tex.
+Vimal Joseph - suggestins, a script to convert the .xml results into .tex.
 
-Cristian Gherman - bug reported when working in another language and saving constraints
-				- suggested the possibility to add more than 3 teachers and 4 students
-				sets per activity - you can do that by modifying the .xml input file
-				by hand.
+Cristian Gherman - bugs reported, suggestions.
 				
-Nicholas Robinson - suggested that when the program exits, the user to have the possibility
-			of saving the working file.
-				  - suggested ConstraintTeacherRequiresRoom.
-				  - other suggestions.
+Nicholas Robinson - suggestions.
 
-Radu Spineanu - debian package.
+Radu Spineanu - Debian package.
 
 Morten Piil	- bug reported, sample file.
 
-Sebastian Canagaratna - suggestions.
+Sebastian Canagaratna - lots of suggestions, bugs reported, sample files.
+
+Abdul Hadi Kamel - sample file, bugs reported.
+
+Miguel Gea Milvaques - Catalan translation.
+
 
 All the above users were alpha-testers.

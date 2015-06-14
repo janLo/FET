@@ -15,6 +15,9 @@
 #include "fet.h"
 #include "fetmainform.h"
 #include "roomsform.h"
+#include "addroomform.h"
+#include "modifyroomform.h"
+#include "roomsequipmentsform.h"
 
 #include <qlistbox.h>
 #include <qinputdialog.h>
@@ -90,4 +93,39 @@ void RoomsForm::roomsEquipments()
 	roomsListBox->clear();
 	for(Room* rm=gt.rules.roomsList.first(); rm; rm=gt.rules.roomsList.next())
 		roomsListBox->insertItem(rm->name);
+}
+
+void RoomsForm::sortRooms()
+{
+	gt.rules.sortRoomsAlphabetically();
+
+	roomsListBox->clear();
+	for(Room* rm=gt.rules.roomsList.first(); rm; rm=gt.rules.roomsList.next())
+		roomsListBox->insertItem(rm->name);
+}
+
+void RoomsForm::modifyRoom()
+{
+	int ci=roomsListBox->currentItem();
+	if(roomsListBox->currentItem()<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected room"));
+		return;
+	}
+
+	QString text=roomsListBox->currentText();
+	int room_ID=gt.rules.searchRoom(text);
+	if(room_ID<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected room"));
+		return;
+	}
+	
+	Room* rm=gt.rules.roomsList.at(room_ID);
+	ModifyRoomForm* modifyRoomForm=new ModifyRoomForm(rm->name, rm->type, rm->capacity);
+	modifyRoomForm->exec();
+
+	roomsListBox->clear();
+	for(Room* rm=gt.rules.roomsList.first(); rm; rm=gt.rules.roomsList.next())
+		roomsListBox->insertItem(rm->name);
+	
+	roomsListBox->setCurrentItem(ci);
 }

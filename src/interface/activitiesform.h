@@ -29,6 +29,7 @@ public:
 
 	void addActivity();
 	void removeActivity();
+	void modifyActivity();
 	void activityChanged(int index);
 	void teacherChanged(const QString& dummy);
 	void studentsChanged(const QString& dummy);

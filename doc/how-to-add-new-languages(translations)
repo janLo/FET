@@ -17,13 +17,8 @@ STEP 3.
 Open the file "fet-x.x.x/translations/fet_**.ts" (for example, fet_it.ts)
 with the Qt Linguist and edit it, then save it.
 
-IMPORTANT:
-	Please do not modify the fields "WHOLE YEAR" and "WHOLE GROUP"
-	in the QObject category. They must remain marked as "unfinished" -
-	with a question mark. This is a delicate issue and I do not know
-	how to solve it in an elegant manner.
-	More recently: you must translate "WHOLE YEAR" by "WHOLE YEAR"
-	and "WHOLE GROUP" by "WHOLE GROUP". This might be a temporary solution.
+You do not have to translate all the fields. For instance, the FAQ
+is very large. Just leave the corresponding fields marked as unfinished.
 
 STEP 4.
 
@@ -38,9 +33,8 @@ as a contributor, of course.
 
 Current stage of the translation:
 
-English and Romanian done by Liviu Lalescu (liviu@lalescu.ro).
-French translation done by Jerome Durand. Public e-mail is fetfr@free.fr.
-	Please check also http://fetfr.free.fr.
-Fresta Alfio (trecyman77@email.it) said that he was willing to translate FET into Italian.
+Romanian translation done by Liviu Lalescu (liviu@lalescu.ro, http://lalescu.ro/liviu/).
+French translation done by Jerome Durand (fetfr@free.fr, http://fetfr.free.fr/).
+Catalan translation done by Miguel Gea Milvaques.
 
 Of course, anyone can redo/improve current translations. The best variants will be chosen.

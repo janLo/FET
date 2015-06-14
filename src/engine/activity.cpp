@@ -38,6 +38,7 @@ Activity::Activity(
 	int _activityGroupId,
 	const QStringList& _teachersNames,
 	const QString& _subjectName,
+	const QString& _subjectTagName,
 	const QStringList& _studentsNames,
 	int _duration,
 	int _totalDuration,
@@ -47,6 +48,7 @@ Activity::Activity(
 	this->activityGroupId=_activityGroupId;
 	this->teachersNames = _teachersNames;
 	this->subjectName = _subjectName;
+	this->subjectTagName = _subjectTagName;
 	this->studentsNames = _studentsNames;
 	this->duration=_duration;
 	this->totalDuration=_totalDuration;
@@ -65,6 +67,8 @@ bool Activity::operator==(Activity& a)
 		return false;
 	if(this->subjectName != a.subjectName)
 		return false;
+	if(this->subjectTagName != a.subjectTagName)
+		return false;
 	if(this->studentsNames != a.studentsNames)
 		return false;
 	if(this->duration != a.duration)
@@ -79,9 +83,31 @@ void Activity::removeTeacher(const QString& teacherName)
 	this->teachersNames.remove(teacherName);
 }
 
+void Activity::renameTeacher(const QString& initialTeacherName, const QString& finalTeacherName)
+{
+	int t=0;
+	for(QStringList::iterator it=this->teachersNames.begin(); it!=this->teachersNames.end(); it++)
+		if((*it)==initialTeacherName){
+			*it=finalTeacherName;
+			t++;
+		}
+	assert(t<=1);
+}
+
 void Activity::removeStudents(const QString& studentsName)
 {
 	this->studentsNames.remove(studentsName);
+}
+
+void Activity::renameStudents(const QString& initialStudentsName, const QString& finalStudentsName)
+{
+	int t=0;
+	for(QStringList::iterator it=this->studentsNames.begin(); it!=this->studentsNames.end(); it++)
+		if((*it)==initialStudentsName){
+			*it=finalStudentsName;
+			t++;
+		}
+	assert(t<=1);
 }
 
 void Activity::computeInternalStructure(Rules& r)
@@ -196,6 +222,7 @@ QString Activity::getXMLDescription(Rules& r)
 	for(QStringList::Iterator it=this->teachersNames.begin(); it!=this->teachersNames.end(); it++)
 		s+="	<Teacher>" + (*it) + "</Teacher>\n";
 	s+="	<Subject>"+this->subjectName+"</Subject>\n";
+	s+="	<Subject_Tag>"+this->subjectTagName+"</Subject_Tag>\n";
 
 	s+="	<Duration>"+QString::number(this->duration)+"</Duration>\n";
 	s+="	<Total_Duration>"+QString::number(this->totalDuration)+"</Total_Duration>\n";
@@ -229,6 +256,8 @@ QString Activity::getDescription(Rules& r)
 	for(QStringList::Iterator it=this->teachersNames.begin(); it!=this->teachersNames.end(); it++)
 		s += *it + ", ";
 	s+=QObject::tr("S:") + this->subjectName + ", ";
+	if(this->subjectTagName!="")
+		s+=QObject::tr("ST:") + this->subjectTagName + ", ";
 	s+=QObject::tr("St:");
 	for(QStringList::Iterator it=this->studentsNames.begin(); it!=this->studentsNames.end(); it++)
 		s += *it + ", ";
@@ -257,6 +286,8 @@ QString Activity::getDetailedDescription(Rules &r)
 	for(QStringList::Iterator it=this->teachersNames.begin(); it!=this->teachersNames.end(); it++)
 		s+=QObject::tr("Teacher=") + (*it) + "\n";
 	s+=QObject::tr("Subject=") + this->subjectName + "\n";
+	if(this->subjectTagName!="")
+		s+=QObject::tr("Subject tag=") + this->subjectTagName + "\n";
 	for(QStringList::Iterator it=this->studentsNames.begin(); it!=this->studentsNames.end(); it++)
 		s += QObject::tr("Students=")+ (*it) + "\n";
 

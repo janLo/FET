@@ -51,6 +51,9 @@ AddConstraintActivitiesPreferredTimesForm::~AddConstraintActivitiesPreferredTime
 
 void AddConstraintActivitiesPreferredTimesForm::tableClicked(int row, int col, int button, const QPoint& mousePos)
 {
+	if(&button!=NULL && &mousePos!=NULL)
+		; //to avoid "unused parameter" compiler warning
+
 	row--; col--;
 	if(row>=0 && row<gt.rules.nHoursPerDay && col>=0 && col<gt.rules.nDaysPerWeek){
 		QString s=preferredTimesTable->text(row+1, col+1);

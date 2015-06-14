@@ -67,6 +67,7 @@ const int CONSTRAINT_ACTIVITY_ENDS_DAY									=21;
 const int CONSTRAINT_2_ACTIVITIES_CONSECUTIVE							=22;
 const int CONSTRAINT_2_ACTIVITIES_GROUPED								=23;
 const int CONSTRAINT_ACTIVITIES_PREFERRED_TIMES							=24;
+const int CONSTRAINT_ACTIVITIES_SAME_STARTING_HOUR						=25;
 
 /**
 This class represents a time constraint
@@ -287,7 +288,7 @@ public:
 	int activitiesId[MAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME];
 
 	/**
-	The activities involved in this constraint (index in the rules) - internal structure
+	The activities involved in this constraint (indexes in the rules) - internal structure
 	*/
 	int _activities[MAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME];
 
@@ -310,7 +311,7 @@ public:
 	int fitness(TimeChromosome& c, Rules& r, QString* conflictsString=NULL);
 
 	/**
-	Removes useless activities from the _activities array
+	Removes useless activities from the _activities and activitiesId array
 	*/
 	void removeUseless(Rules& r);
 };
@@ -953,10 +954,7 @@ public:
 This is a time constraint.
 PURPOSE: you have two activities that you want to schedule one after
 the other, in the same day. Order is important.
-If compulsory, this constraint works by repairing the chromosome
-(the second activity's starting time becomes the time when the first one
-ends).
-Non-compulsory: it adds, to the fitness of the chromosome, a value that
+It adds, to the fitness of the chromosome, a value that
 grows as the 2 activities are scheduled farther one from each other.
 For the moment, fitness factor increases with one unit for every additional 
 hour and one unit for every day (the optimal being 0 - when the starting time
@@ -1086,7 +1084,7 @@ public:
 	int days[MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_TIMES];
 
 	/**
-	The preferred hour. If -1, then the user does not care about the hour.
+	The preferred hours. If -1, then the user does not care about the hour.
 	*/
 	int hours[MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_TIMES];
 
@@ -1117,6 +1115,59 @@ public:
 	QString getDetailedDescription(Rules& r);
 
 	int fitness(TimeChromosome& c, Rules& r, QString* conflictsString=NULL);
+};
+
+/**
+This is a constraint.
+It aims at scheduling a set of activities at the same starting hour.
+The number of conflicts is considered the sum of differences
+in the scheduling time for all pairs of activities.
+The difference in the scheduling time for a pair of
+activities is considered the difference in the starting hour.
+TODO: Weekly activities are counted as two and bi-weekly activities as one
+(really necessary?).
+IMPORTANT: The compulsory constraints of this kind
+implement chromosome repairing, so no conflicts will be reported
+*/
+class ConstraintActivitiesSameStartingHour: public TimeConstraint{
+public:
+	/**
+	The number of activities involved in this constraint
+	*/
+	int n_activities;
+
+	/**
+	The activities involved in this constraint (id)
+	*/
+	int activitiesId[MAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_HOUR];
+
+	/**
+	The activities involved in this constraint (index in the rules) - internal structure
+	*/
+	int _activities[MAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_HOUR];
+
+	ConstraintActivitiesSameStartingHour();
+
+	/**
+	Constructor, using:
+	the weight, the number of activities and the list of activities' id-s.
+	*/
+	ConstraintActivitiesSameStartingHour(double w, bool c, int n_act, const int act[]);
+
+	void computeInternalStructure(Rules& r);
+
+	QString getXMLDescription(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	int fitness(TimeChromosome& c, Rules& r, QString* conflictsString=NULL);
+
+	/**
+	Removes useless activities from the _activities array
+	*/
+	void removeUseless(Rules& r);
 };
 
 #endif

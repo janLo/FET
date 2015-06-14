@@ -72,7 +72,7 @@ void SubjectsForm::removeSubject()
 	}
 
 	if(QMessageBox::warning( this, QObject::tr("FET"),
-		QObject::tr("Are you sure you want to delete this subject and all related activities?\n"),
+		QObject::tr("Are you sure you want to delete this subject and all related activities and constraints?\n"),
 		QObject::tr("Yes"), QObject::tr("No"), 0, 0, 1 ) == 1)
 		return;
 
@@ -80,4 +80,49 @@ void SubjectsForm::removeSubject()
 	if(tmp)
 		subjectsListBox->removeItem(subjectsListBox->currentItem());
 	this->show();
+}
+
+void SubjectsForm::renameSubject()
+{
+	if(subjectsListBox->currentItem()<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected subject"));
+		return;
+	}
+	
+	QString initialSubjectName=subjectsListBox->currentText();
+
+	int subject_ID=gt.rules.searchSubject(initialSubjectName);
+	if(subject_ID<0){
+		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected subject"));
+		return;
+	}
+
+	bool ok = FALSE;
+	QString finalSubjectName;
+	finalSubjectName = QInputDialog::getText( QObject::tr("User input"), QObject::tr("Please enter new subject's name") ,
+                    QLineEdit::Normal, QString::null, &ok, this );
+
+	if ( ok && !(finalSubjectName.isEmpty()) ){
+		// user entered something and pressed OK
+		if(gt.rules.searchSubject(finalSubjectName)>=0){
+			QMessageBox::information( this, QObject::tr("Subject insertion dialog"),
+				QObject::tr("Could not modify item. New name must be a duplicate"));
+		}
+		else{
+			gt.rules.modifySubject(initialSubjectName, finalSubjectName);
+		}
+	}
+
+	subjectsListBox->clear();
+	for(Subject* sbj=gt.rules.subjectsList.first(); sbj; sbj=gt.rules.subjectsList.next())
+		subjectsListBox->insertItem(sbj->name);	
+}
+
+void SubjectsForm::sortSubjects()
+{
+	gt.rules.sortSubjectsAlphabetically();
+
+	subjectsListBox->clear();
+	for(Subject* sbj=gt.rules.subjectsList.first(); sbj; sbj=gt.rules.subjectsList.next())
+		subjectsListBox->insertItem(sbj->name);	
 }

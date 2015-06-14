@@ -72,12 +72,27 @@ public:
 	/**
 	Function writing the students' timetable xml format, to a file
 	*/
-	void writeStudentsTimetable(const QString& xmlfilename);
+	void writeStudentsTimetableXml(const QString& xmlfilename);
 
 	/**
 	Function writing the teachers' timetable in xml format
 	*/
-	void writeTeachersTimetable(const QString& xmlfilename);
+	void writeTeachersTimetableXml(const QString& xmlfilename);
+
+	/**
+	Function writing the students' timetable html format, to a file
+	*/
+	void writeStudentsTimetableHtml(const QString& htmlfilename);
+
+	/**
+	Function writing the teachers' timetable in html format, version 1
+	*/
+	void writeTeachersTimetable1Html(const QString& htmlfilename);
+
+	/**
+	Function writing the teachers' timetable in html format, version 2
+	*/
+	void writeTeachersTimetable2Html(const QString& htmlfilename);
 
 	void getStudentsTimetable(TimeChromosome& c);
 

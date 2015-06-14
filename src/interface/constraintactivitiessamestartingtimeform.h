@@ -44,6 +44,7 @@ public:
 	void constraintChanged(int index);
 	void addConstraint();
 	void removeConstraint();
+	void modifyConstraint();
 	
 	void refreshConstraintsListBox();
 

@@ -1,9 +1,5 @@
----Derive some time constraints so that the first phase always respects the space
-constraints (compulsory? non-compulsory?). Solve the second phase of the sample 
-input from Marek Jaszuk.
-
-
 GENERAL:
+- Add translation in other languages
 - Command line options.
 - Add make install. Where should I place the executable?
 - Proper help files.
@@ -15,7 +11,6 @@ more recently, "Lantiv".
 
 
 TECHNICAL:
-- ConstraintActivityRequiresRoom
 - ConstraintActivitiesSameEndingTime
 - ConstraintActivitiesNotConsecutive
 - ConstraintActivityRejectedTime ?
@@ -46,9 +41,6 @@ interface has to be updated)
 
 ** A clear and clean interface to your evolutionary engine as an entity separate from the 
 input/output might be useful.
-
-** What about editing existing activities? Removing them and reentering them from scratch 
-is a bit annoying!
 "
 
 "How compatible my idea of manual intervention is with the genetic algorithm is not clear to me.

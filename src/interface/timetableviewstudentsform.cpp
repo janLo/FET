@@ -148,13 +148,13 @@ void TimetableViewStudentsForm::updateStudentsTimetableTable(){
 			Activity* act=gt.rules.activitiesList.at(ai);
 			if(ai!=UNALLOCATED_ACTIVITY){
 				assert(act!=NULL);
-				s+=act->subjectName;
+				s+=act->subjectName + " " + act->subjectTagName;
 			}
 			ai=students_timetable_week2[i][k][j]; //activity index
 			act=gt.rules.activitiesList.at(ai);
 			if(ai!=UNALLOCATED_ACTIVITY){
 				assert(act!=NULL);
-				s += " / " + act->subjectName;
+				s += " / " + act->subjectName + " " + act->subjectTagName;
 			}
 			studentsTimetableTable->setText(j+1, k+1, s);
 		}

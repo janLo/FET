@@ -95,19 +95,19 @@ void TimetableViewRoomsForm::updateRoomsTimetableTable(){
 			Activity* act=gt.rules.activitiesList.at(ai);
 			if(ai!=UNALLOCATED_ACTIVITY){
 				assert(act!=NULL);
-				s += act->subjectName;
-				//s += QString::number(act->id);
+				s += act->subjectName + " " + act->subjectTagName;
 			}
 			ai=rooms_timetable_week2[roomIndex][k][j]; //activity index
 			act=gt.rules.activitiesList.at(ai);
 			if(ai!=UNALLOCATED_ACTIVITY){
 				assert(act!=NULL);
-				//s += "/" + QString::number(act->id);
-				s += "/" + act->subjectName;
+				s += "/" + act->subjectName + " " + act->subjectTagName;
 			}
 			roomsTimetableTable->setText(j+1, k+1, s);
 		}
 	}
+	for(int i=0; i<=gt.rules.nHoursPerDay; i++)
+		roomsTimetableTable->adjustRow(i); //added in version 3_12_20
 }
 
 void TimetableViewRoomsForm::detailActivity(int row, int col){

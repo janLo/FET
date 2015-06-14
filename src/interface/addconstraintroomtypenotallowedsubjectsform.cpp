@@ -88,7 +88,7 @@ void AddConstraintRoomTypeNotAllowedSubjectsForm::addConstraint()
 
 	ctr=new ConstraintRoomTypeNotAllowedSubjects(weight, compulsory, room_type);
 
-	for(int i=0; i<notAllowedSubjectsListBox->count(); i++)
+	for(uint i=0; i<notAllowedSubjectsListBox->count(); i++)
 		((ConstraintRoomTypeNotAllowedSubjects*)ctr)->addNotAllowedSubject(notAllowedSubjectsListBox->text(i));
 
 	bool tmp2=gt.rules.addSpaceConstraint(ctr);
@@ -111,7 +111,7 @@ void AddConstraintRoomTypeNotAllowedSubjectsForm::addSubject()
 		return;
 	QString subj=subjectsListBox->currentText();
 	assert(subj!="");
-	int i;
+	uint i;
 	//duplicate?
 	for(i=0; i<notAllowedSubjectsListBox->count(); i++)
 		if(subj==notAllowedSubjectsListBox->text(i))
