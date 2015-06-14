@@ -1258,8 +1258,92 @@ Versions 5.6.0 - 5.6.4
 	- Added all activities timetables by Volker Dirr (suggested by kdsayang)
 	- Added exporting of timetable in csv form by Volker Dirr
 ---------------------------------------------------------------------------------
-Versions 5.7.0 - 5.7.x
+Versions 5.7.0 - 5.7.7
 - Version 5.7.0
-	- Added an advanced command to spread better the splitted activities in a week - very useful for schools, probably.
+	- Added an advanced command to spread better the divided activities in a week - very useful for schools, probably.
 	- Minor interface improvement (in report duplicate activities routine)
 	- Added status bar for File -> new, open, save and save as menus
+- Version 5.7.1
+	- Added an option to remove redundant constraints
+	- Added exporting of advanced statistics as html by Volker Dirr
+	- Arabic translation update
+- Version 5.7.2
+	- Added 2 more samples by Cristian Balint
+	- Small bug fix in statistics exported as html, by Volker Dirr
+- Version 5.7.3
+	- Modified a bit the spreading activities dialog, now the activities split into 2 and 3 not in consecutive days
+	is by default NOT checked, because this might lead to impossible timetables for difficult files. If you want
+	spreading for these activities, you need to manually select this option.
+	- Arabic translation update by Hatim Alahmadi
+- Version 5.7.4
+	- Minor bug fix - if searching for updates at startup is enabled, it gave segmentation fault when exiting FET, under GNU/Linux.
+	Probably unnoticed bug.
+	- Switched to Qt 4.4.3
+	- Added a user's manual by Volker Dirr
+	- Spanish translation update by Jose Cesar Fernandez Lopez
+	- Added an additional sample file by Horatiu Halmajan (Faculty of Economics, Timisoara, Romania)
+- Version 5.7.5
+	- Added constraint 2 activities grouped, which is the non-oriented version of constraint 2 activities consecutive
+	(the activities can be placed in any order, but one near the other) (suggested by sherman)
+	- Added an additional test to ensure that constraints same starting time are not impossible
+	- Very minor bug fixes (when working with redundant constraints same starting time/day/hour). This bug
+	is most probably unnoticed.
+	- Added an additional sample file by Zsolt Udvari (Bethlen, Hungary).
+- Version 5.7.6
+	- Minor interface improvements
+	(Command line version now has the parameter "htmllevel", the old one was
+	"timetablehtmllevel", which still works. Added description in the README file of the default values.
+	Other interface improvements).
+- Version 5.7.7
+	- Minor improvements (the settings are now saved in a file which does not contain spaces under GNU/Linux,
+	added a better #define Q_OS_WIN for detecting Windows in compilation).
+---------------------------------------------------------------------------------
+Versions 5.8.0 - 5.8.1
+- Version 5.8.0
+	- Added the possibility to view locked activities in the timetables and toggle lock/unlock activities in the timetable
+	(suggested by Azu Boba, implemented by Liviu Lalescu and Volker Dirr).
+	- Added the possibility to lock/unlock the activities of a certain day
+	(suggested by Azu Boba, implemented by Liviu Lalescu and Volker Dirr).
+	- Added the possibility to lock/unlock the activities which end students day
+	(suggested by Volker Dirr, implemented by Liviu Lalescu).
+	- The constraints activity preferred starting time and activity preferred room have now an attribute, which
+	can mean that some constraints are added permanently by the human operator and cannot be unlocked from the view timetable
+	form (suggested by Azu Boba, done by Liviu Lalescu and Volker Dirr).
+	- Minor bug fixes (very rare crashes).
+	- Minor improvements - when viewing the timetable, the detailed activity view is updated correctly
+	(suggested by Jose Cesar Fernandez Lopez).
+	- Other minor interface improvements.
+	- Minor improvement: the directories under Windows contain now the correct back-slash, instead of forward slash.
+	- Repaired the Turkish translation (by Liviu Lalescu), but it is still old and incomplete.
+	- Added the output of activities timetable as xml
+- Version 5.8.1
+	- Minor improvements (code cleanup) - modified a bit the xml files to contain for boolean variables only true/false values
+	instead of yes/no (following xml format recommendations).
+	- Minor improvement: the constraint activity preferred starting time must have now the day and the hour both specified,
+	so there is a clearer distinction between preferred starting time and preferred starting times.
+	- Minor improvement - when reading some kind of invalid data, instead of crashing, now FET reports the error
+	(like for instance duplicate teachers, or subjects, or wrong tags).
+	- Minor improvements in the Italian, Arabic and Spanish translations.
+	- Added a sample file from Azu Boba.
+	- The index.html links now open in the same window (suggested by daviodan).
+---------------------------------------------------------------------------------
+Versions 5.9.0 - 5.9.x
+- Version 5.9.0
+	- Added multiple activity tags for a single activity.
+	- It is now possible to edit a single subactivity.
+	- Added constraints teacher(s) or students (set) activity tag max hours continuously (to specify that
+	a teacher or a students set must have maximum n hours continuously for an activity tag) - suggested by Hatim Ali,
+	George Miliotis and Volker Dirr.
+	- Improved a bit the memory consumption.
+	- To avoid Windows problems with very large filenames, the sample file names were shortened.
+	- Minor html timetables corrections (cosmetic).
+	- Updates in Spanish, Arabic, Romanian and Italian translations.
+	- Minor improvements.
+- Version 5.9.1
+	- Improved a situation for fixed timetables which were impossible sometimes (reported by Horatiu Halmajan). This bug is
+	not entirely fixed.
+	- Improved the html timetables by Volker Dirr.
+	- Crash bug fix for constraint min gaps between activities with weight below 100%.
+	- Bug fix in students early constraint - not critical bug.
+	- Updates in Arabic translation.
+	

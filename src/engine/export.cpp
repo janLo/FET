@@ -29,6 +29,7 @@
 class QWidget;
 void centerWidgetOnScreen(QWidget* widget);
 
+#include "timetable_defs.h"		//needed, because of QString s2=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);
 #include "export.h"
 #include "solution.h"
 #include <QtGui>
@@ -41,6 +42,18 @@ extern bool teachers_schedule_ready;
 extern bool students_schedule_ready;
 extern bool rooms_schedule_ready;
 
+const char CSVActivities[]="_activities.csv";
+const char CSVActivityTags[]="_activity_tags.csv";
+const char CSVRoomsAndBuildings[]="_rooms_and_buildings.csv";
+const char CSVSubjects[]="_subjects.csv";
+const char CSVTeachers[]="_teacher.csv";
+const char CSVStudents[]="_students.csv";
+const char CSVTimetable[]="_timetable.csv";
+QString DIRECTORY_CSV;
+QString PREFIX_CSV;
+
+
+
 Export::Export()
 {
 }
@@ -49,12 +62,23 @@ Export::~Export()
 {
 }
 
+
+
 void Export::exportCSV(){
 	QString fieldSeparator=",";
 	QString textquote="\"";
 	QString setSeparator="+";
 	bool head=true;
 	bool ok=true;
+
+	DIRECTORY_CSV=OUTPUT_DIR+FILE_SEP+"csv";
+	PREFIX_CSV=DIRECTORY_CSV+FILE_SEP;
+
+	QDir dir;
+	if(!dir.exists(OUTPUT_DIR))
+		dir.mkdir(OUTPUT_DIR);
+	if(!dir.exists(DIRECTORY_CSV))
+		dir.mkdir(DIRECTORY_CSV);
 
 	ok=selectSeparatorAndTextquote(textquote, fieldSeparator, head);
 	QString lastWarnings;
@@ -75,7 +99,7 @@ void Export::exportCSV(){
 			ok=exportCSVActivities(lastWarnings, textquote, fieldSeparator, head);
 		if(ok)
 			ok=exportCSVTimetable(lastWarnings, textquote, fieldSeparator, head);
-		lastWarnings.insert(0,Export::tr("CSV files were exported to directory %1.").arg(OUTPUT_DIR)+"\n");
+		lastWarnings.insert(0,Export::tr("CSV files were exported to directory %1.").arg(QDir::toNativeSeparators(DIRECTORY_CSV))+"\n");
 		if(ok)
 			lastWarnings.insert(0,Export::tr("Exported complete")+"\n");
 		else
@@ -93,18 +117,77 @@ void Export::exportCSV(){
 	ok=lwd.exec();
 }
 
-QString Export::protectCSV(const QString& str)
-{
+
+
+QString Export::protectCSV(const QString& str){
 	QString p=str;
 	p.replace("\"", "\"\"");
 	return p;
 }
 
-bool Export::checkSetSeparator(const QString& str, const QString setSeparator)
-{
+
+
+bool Export::checkSetSeparator(const QString& str, const QString setSeparator){
 	if(str.contains(setSeparator))
 		return false;
 	return true;
+}
+
+bool Export::isActivityNotManualyEdited(const int activityIndex, bool& diffTeachers, bool& diffSubject, bool& diffActivityTags, bool& diffStudents, bool& diffCompNStud, bool& diffNStud){ //similar to ActivitiesForm::modifyActivity() by Liviu Lalescu
+	diffTeachers=diffSubject=diffActivityTags=diffStudents=diffCompNStud=diffNStud=false;
+
+	assert(activityIndex>=0);
+	assert(activityIndex<gt.rules.activitiesList.size());
+
+	Activity* act=gt.rules.activitiesList[activityIndex];
+	assert(act!=NULL);
+	
+	QStringList teachers=act->teachersNames;
+	QString subject=act->subjectName;
+	QStringList activityTags=act->activityTagsNames;
+	QStringList students=act->studentsNames;
+	
+	int nTotalStudents=act->nTotalStudents;
+	
+	bool computeNTotalStudents=act->computeNTotalStudents;
+
+	if(act->isSplit()){
+		for(int i=activityIndex; i<gt.rules.activitiesList.size(); i++){	//possible speed improvement: not i=0. do i=act->activityGroupId
+			Activity* act2=gt.rules.activitiesList[i];			//possible speed improvement: if(act2->activityGroupId changed) break;
+			if(act2->activityGroupId!=0 && act2->activityGroupId==act->activityGroupId){
+				if(teachers!=act2->teachersNames){
+					//return false;
+					diffTeachers=true;
+				}
+				if(subject!=act2->subjectName){
+					//return false;
+					diffSubject=true;
+				}
+				if(activityTags!=act2->activityTagsNames){
+					diffActivityTags=true;
+					//return false;
+				}
+				if(students!=act2->studentsNames){
+					diffStudents=true;
+					//return false;
+				}
+				if( /* !computeNTotalStudents && !act2->computeNTotalStudents && */ nTotalStudents!=act2->nTotalStudents){
+					diffNStud=true;
+					//return false;
+				}
+				if(computeNTotalStudents!=act2->computeNTotalStudents){
+					diffCompNStud=true;
+					//return false;
+				}
+			}
+			else
+				i=gt.rules.activitiesList.size();
+		}
+	}
+	if(!diffTeachers && !diffSubject && !diffActivityTags && !diffStudents && !diffCompNStud && !diffNStud)
+		return true;
+	else
+		return false;
 }
 
 
@@ -195,8 +278,9 @@ bool Export::selectSeparatorAndTextquote(QString& textquote, QString& fieldSepar
 	return true;
 }
 
-lastWarningsDialogE::lastWarningsDialogE(QString lastWarning, QWidget *parent): QDialog(parent)
-{
+
+
+lastWarningsDialogE::lastWarningsDialogE(QString lastWarning, QWidget *parent): QDialog(parent){
 	this->setWindowTitle(tr("FET - export comment"));
 	QVBoxLayout* lastWarningsMainLayout=new QVBoxLayout(this);
 
@@ -229,10 +313,11 @@ lastWarningsDialogE::lastWarningsDialogE(QString lastWarning, QWidget *parent): 
 	this->setWindowFlags(this->windowFlags() | Qt::WindowMinMaxButtonsHint);
 }
 
-bool Export::exportCSVActivityTags(QString& lastWarnings, const QString textquote, const bool head){
 
-	QString s2=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);
-	QString file=OUTPUT_DIR+FILE_SEP+s2+"_Activity_Tags.csv";
+
+bool Export::exportCSVActivityTags(QString& lastWarnings, const QString textquote, const bool head){
+	QString s2=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);	//TODO: remove s2, because to long filenames!
+	QString file=PREFIX_CSV+s2+CSVActivityTags;
 
 	QFile fileExport(file);
 	if(!fileExport.open(QIODevice::WriteOnly)){
@@ -247,8 +332,7 @@ bool Export::exportCSVActivityTags(QString& lastWarnings, const QString textquot
 	if(head)
 		tosExport<<textquote<<"Activity Tag"<<textquote<<endl;
 
-	for(int i=0; i<gt.rules.activityTagsList.size(); i++){
-		ActivityTag* a=gt.rules.activityTagsList[i];
+	foreach(ActivityTag* a, gt.rules.activityTagsList){
 		tosExport<<textquote<<protectCSV(a->name)<<textquote<<endl;
 	}
 
@@ -262,9 +346,10 @@ bool Export::exportCSVActivityTags(QString& lastWarnings, const QString textquot
 }
 
 
+
 bool Export::exportCSVRoomsAndBuildings(QString& lastWarnings, const QString textquote, const QString fieldSeparator, const bool head){
-	QString s2=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);
-	QString file=OUTPUT_DIR+FILE_SEP+s2+"_Rooms_and_Buildings.csv";
+	QString s2=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);	//TODO: remove s2, because to long filenames!
+	QString file=PREFIX_CSV+s2+CSVRoomsAndBuildings;
 
 	QFile fileExport(file);
 	if(!fileExport.open(QIODevice::WriteOnly)){
@@ -282,8 +367,7 @@ bool Export::exportCSVRoomsAndBuildings(QString& lastWarnings, const QString tex
 				<<textquote<<"Building"<<textquote<<endl;
 
 	QStringList checkBuildings;
-	for(int i=0; i<gt.rules.roomsList.size(); i++){
-		Room* r=gt.rules.roomsList[i];
+	foreach(Room* r, gt.rules.roomsList){
 		tosExport	<<textquote<<protectCSV(r->name)<<textquote<<fieldSeparator
 				<<qPrintable(QString::number(r->capacity))<<fieldSeparator
 				<<textquote<<protectCSV(r->building)<<textquote<<endl;
@@ -305,9 +389,10 @@ bool Export::exportCSVRoomsAndBuildings(QString& lastWarnings, const QString tex
 }
 
 
+
 bool Export::exportCSVSubjects(QString& lastWarnings, const QString textquote, const bool head){
-	QString s2=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);
-	QString file=OUTPUT_DIR+FILE_SEP+s2+"_Subjects.csv";
+	QString s2=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);	//TODO: remove s2, because to long filenames!
+	QString file=PREFIX_CSV+s2+CSVSubjects;
 
 	QFile fileExport(file);
 	if(!fileExport.open(QIODevice::WriteOnly)){
@@ -322,8 +407,7 @@ bool Export::exportCSVSubjects(QString& lastWarnings, const QString textquote, c
 	if(head)
 		tosExport<<textquote<<"Subject"<<textquote<<endl;
 
-	for(int i=0; i<gt.rules.subjectsList.size(); i++){
-		Subject* s=gt.rules.subjectsList[i];
+	foreach(Subject* s, gt.rules.subjectsList){
 		tosExport<<textquote<<protectCSV(s->name)<<textquote<<endl;
 	}
 
@@ -337,9 +421,10 @@ bool Export::exportCSVSubjects(QString& lastWarnings, const QString textquote, c
 }
 
 
+
 bool Export::exportCSVTeachers(QString& lastWarnings, const QString textquote, const bool head, const QString setSeparator){
-	QString s2=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);
-	QString file=OUTPUT_DIR+FILE_SEP+s2+"_Teachers.csv";
+	QString s2=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);	//TODO: remove s2, because to long filenames!
+	QString file=PREFIX_CSV+s2+CSVTeachers;
 
 	QFile fileExport(file);
 	if(!fileExport.open(QIODevice::WriteOnly)){
@@ -354,8 +439,7 @@ bool Export::exportCSVTeachers(QString& lastWarnings, const QString textquote, c
 	if(head)
 		tosExport<<textquote<<"Teacher"<<textquote<<endl;
 
-	for(int i=0; i<gt.rules.teachersList.size(); i++){
-		Teacher* t=gt.rules.teachersList[i];
+	foreach(Teacher* t, gt.rules.teachersList){
 		tosExport<<textquote<<protectCSV(t->name)<<textquote<<endl;
 		if(!checkSetSeparator(t->name, setSeparator))
 			lastWarnings+=Export::tr("Warning! Import of activities will fail, because %1 include set separator +.").arg(t->name)+"\n";
@@ -371,9 +455,10 @@ bool Export::exportCSVTeachers(QString& lastWarnings, const QString textquote, c
 }
 
 
+
 bool Export::exportCSVStudents(QString& lastWarnings, const QString textquote, const QString fieldSeparator, const bool head, const QString setSeparator){
-	QString s2=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);
-	QString file=OUTPUT_DIR+FILE_SEP+s2+"_Years_Groups_and_Subgroups.csv";
+	QString s2=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);	//TODO: remove s2, because to long filenames!
+	QString file=PREFIX_CSV+s2+CSVStudents;
 
 	QFile fileExport(file);
 	if(!fileExport.open(QIODevice::WriteOnly)){
@@ -395,24 +480,21 @@ bool Export::exportCSVStudents(QString& lastWarnings, const QString textquote, c
 
 	int ig=0;
 	int is=0;
-	for(int i=0; i<gt.rules.yearsList.size(); i++){
-		StudentsYear* sty=gt.rules.yearsList[i];
+	foreach(StudentsYear* sty, gt.rules.yearsList){
 		tosExport<<textquote<<protectCSV(sty->name)<<textquote<<fieldSeparator
 					<<qPrintable(QString::number(sty->numberOfStudents))<<fieldSeparator<<fieldSeparator<<fieldSeparator<<fieldSeparator<<endl;
 		if(!checkSetSeparator(sty->name, setSeparator))
 			lastWarnings+=Export::tr("Warning! Import of activities will fail, because %1 include set separator +.").arg(sty->name)+"\n";
-		for(int j=0; j<sty->groupsList.size(); j++){
+		foreach(StudentsGroup* stg, sty->groupsList){
 			ig++;
-			StudentsGroup* stg=sty->groupsList[j];
 			tosExport	<<textquote<<protectCSV(sty->name)<<textquote<<fieldSeparator
 					<<qPrintable(QString::number(sty->numberOfStudents))<<fieldSeparator
 					<<textquote<<protectCSV(stg->name)<<textquote<<fieldSeparator
 					<<qPrintable(QString::number(stg->numberOfStudents))<<fieldSeparator<<fieldSeparator<<endl;
 			if(!checkSetSeparator(stg->name, setSeparator))
 				lastWarnings+=Export::tr("Warning! Import of activities will fail, because %1 include set separator +.").arg(stg->name)+"\n";
-			for(int k=0; k<stg->subgroupsList.size(); k++){
+			foreach(StudentsSubgroup* sts, stg->subgroupsList){
 				is++;
-				StudentsSubgroup* sts=stg->subgroupsList[k];
 				tosExport	<<textquote<<protectCSV(sty->name)<<textquote<<fieldSeparator
 						<<qPrintable(QString::number(sty->numberOfStudents))<<fieldSeparator
 						<<textquote<<protectCSV(stg->name)<<textquote<<fieldSeparator
@@ -437,9 +519,10 @@ bool Export::exportCSVStudents(QString& lastWarnings, const QString textquote, c
 }
 
 
+
 bool Export::exportCSVActivities(QString& lastWarnings, const QString textquote, const QString fieldSeparator, const bool head){
-	QString s2=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);
-	QString file=OUTPUT_DIR+FILE_SEP+s2+"_Activities.csv";
+	QString s2=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);	//TODO: remove s2, because to long filenames!
+	QString file=PREFIX_CSV+s2+CSVActivities;
 
 	QFile fileExport(file);
 	if(!fileExport.open(QIODevice::WriteOnly)){
@@ -511,7 +594,7 @@ bool Export::exportCSVActivities(QString& lastWarnings, const QString textquote,
 			}
 	
 			if(!oktmp){
-				lastWarnings+=Export::tr("Warning! Constraint")+" "+c->getDescription(gt.rules)+tr("was skipped, because"
+				lastWarnings+=Export::tr("Note: Constraint")+" "+c->getDescription(gt.rules)+" "+tr("was skipped, because"
 				" it refers not to a whole larger container activity")+"\n";
 			}
 	
@@ -520,34 +603,34 @@ bool Export::exportCSVActivities(QString& lastWarnings, const QString textquote,
 				if(oldc!=NULL){
 					if(oldc->weightPercentage < c->weightPercentage){
 						activitiesConstraints.insert(repres, c); //overwrites old value
-						lastWarnings+=Export::tr("Warning! Constraint")+" "+oldc->getDescription(gt.rules)+" "+tr("was skipped, because"
+						lastWarnings+=Export::tr("Note: Constraint")+" "+oldc->getDescription(gt.rules)+" "+tr("was skipped, because"
 							" there exists another constraint of this type with larger weight percentage, referring to the same activities")+"\n";
 					}
 					else if(oldc->weightPercentage > c->weightPercentage){
-						lastWarnings+=Export::tr("Warning! Constraint")+" "+c->getDescription(gt.rules)+" "+tr("was skipped, because"
+						lastWarnings+=Export::tr("Note: Constraint")+" "+c->getDescription(gt.rules)+" "+tr("was skipped, because"
 							" there exists another constraint of this type with larger weight percentage, referring to the same activities")+"\n";
 					}
 	
 					//equal weights - choose the lowest number of min n days
 					else if(oldc->minDays > c->minDays){
-						lastWarnings+=Export::tr("Warning! Constraint")+" "+c->getDescription(gt.rules)+" "+tr("was skipped, because"
+						lastWarnings+=Export::tr("Note: Constraint")+" "+c->getDescription(gt.rules)+" "+tr("was skipped, because"
 							" there exists another constraint of this type with same weight percentage and higher number of min days, referring to the same activities")+"\n";
 					}
 					else if(oldc->minDays < c->minDays){
 						activitiesConstraints.insert(repres, c); //overwrites old value
-						lastWarnings+=Export::tr("Warning! Constraint")+" "+oldc->getDescription(gt.rules)+" "+tr("was skipped, because"
+						lastWarnings+=Export::tr("Note: Constraint")+" "+oldc->getDescription(gt.rules)+" "+tr("was skipped, because"
 							" there exists another constraint of this type with same weight percentage and higher number of min days, referring to the same activities")+"\n";
 					}
 	
 					//equal weights and min days - choose the one with consecutive is same day true
 					else if(oldc->consecutiveIfSameDay==true){
-						lastWarnings+=Export::tr("Warning! Constraint")+" "+c->getDescription(gt.rules)+" "+tr("was skipped, because"
+						lastWarnings+=Export::tr("Note: Constraint")+" "+c->getDescription(gt.rules)+" "+tr("was skipped, because"
 							" there exists another constraint of this type with same weight percentage and same number of min days and"
 							" consecutive if same day true, referring to the same activities")+"\n";
 					}
 					else if(c->consecutiveIfSameDay==true){
 						activitiesConstraints.insert(repres, c); //overwrites old value
-						lastWarnings+=Export::tr("Warning! Constraint")+" "+oldc->getDescription(gt.rules)+" "+tr("was skipped, because"
+						lastWarnings+=Export::tr("Note: Constraint")+" "+oldc->getDescription(gt.rules)+" "+tr("was skipped, because"
 							" there exists another constraint of this type with same weight percentage and same number of min days and"
 							" consecutive if same day true, referring to the same activities")+"\n";
 					}
@@ -559,127 +642,121 @@ bool Export::exportCSVActivities(QString& lastWarnings, const QString textquote,
 		}
 	}
 	//code by Liviu Lalescu (end)
+	
+	bool manuallyEdited=false;
 
 	Activity* acti;
 	Activity* actiNext;
+	int countExportedActivities=0;
 	for(int ai=0; ai<gt.rules.activitiesList.size(); ai++){
 		acti=gt.rules.activitiesList[ai];
 		if(acti->active){
 			if((acti->activityGroupId==acti->id)||(acti->activityGroupId==0)){
-				//if((acti->studentsNames.size()>0) && (acti->teachersNames.size()>0) ){
-					//students set
-					tosExport<<textquote;
-					for(int s=0; s<acti->studentsNames.size(); s++){
-						if(s!=0)
+				bool diffTeachers, diffSubject, diffActivityTag, diffStudents, diffCompNStud, diffNStud;
+				if(isActivityNotManualyEdited(ai, diffTeachers, diffSubject, diffActivityTag, diffStudents, diffCompNStud, diffNStud)){
+				}
+				else{
+					QStringList s;
+					if(diffTeachers)
+						s.append(tr("different teachers"));
+					if(diffSubject)
+						s.append(tr("different subject"));
+					if(diffActivityTag)
+						s.append(tr("different activity tags"));
+					if(diffStudents)
+						s.append(tr("different students"));
+					if(diffCompNStud)
+						s.append(tr("different boolean variable 'must compute n total students'"));
+					if(diffNStud)
+						s.append(tr("different number of students"));
+					
+					manuallyEdited=true;
+					
+					lastWarnings+=tr("Subactivities with activity group id %1 are different between themselves (they were separately edited),"
+						" so the export will not be very accurate. The fields which are different will be considered those of the representative subactivity. Fields which were"
+						" different are: %2").arg(QString::number(acti->activityGroupId)).arg(s.join(", "))+"\n";
+				}
+				
+				countExportedActivities++;
+				//students set
+				tosExport<<textquote;
+				for(int s=0; s<acti->studentsNames.size(); s++){
+					if(s!=0)
+						tosExport<<"+";
+					tosExport<<protectCSV(acti->studentsNames[s]);
+				}
+				tosExport<<textquote<<fieldSeparator<<textquote;
+				//subject
+				tosExport<<protectCSV(acti->subjectName);
+				tosExport<<textquote<<fieldSeparator<<textquote;
+				//teachers
+				for(int t=0; t<acti->teachersNames.size(); t++){
+					if(t!=0)
+						tosExport<<"+";
+					tosExport<<protectCSV(acti->teachersNames[t]);
+				}
+				tosExport<<textquote<<fieldSeparator<<textquote;
+				//activity tags
+				for(int s=0; s<acti->activityTagsNames.size(); s++){
+					if(s!=0)
+						tosExport<<"+";
+					tosExport<<protectCSV(acti->activityTagsNames[s]);
+				}
+				tosExport<<textquote<<fieldSeparator;
+				//total duration
+				tosExport<<qPrintable(QString::number(acti->totalDuration));
+				tosExport<<fieldSeparator<<textquote;
+				//split duration
+				for(int aiNext=ai; aiNext<gt.rules.activitiesList.size(); aiNext++){
+					actiNext=gt.rules.activitiesList[aiNext];
+					if(acti->activityGroupId!=0&&actiNext->activityGroupId==acti->activityGroupId){
+						if(aiNext!=ai)
 							tosExport<<"+";
-						tosExport<<protectCSV(acti->studentsNames[s]);
-					}
-					tosExport<<textquote<<fieldSeparator<<textquote;
-					//subject
-					tosExport<<protectCSV(acti->subjectName);
-					tosExport<<textquote<<fieldSeparator<<textquote;
-					//teachers
-					for(int t=0; t<acti->teachersNames.size(); t++){
-						if(t!=0)
-							tosExport<<"+";
-						tosExport<<protectCSV(acti->teachersNames[t]);
-					}
-					tosExport<<textquote<<fieldSeparator<<textquote;
-					//activity tag
-					tosExport<<protectCSV(acti->activityTagName);
-					tosExport<<textquote<<fieldSeparator;
-					//total duration
-					tosExport<<qPrintable(QString::number(acti->totalDuration));
-					tosExport<<fieldSeparator<<textquote;
-					//split duration
-					//start old code by Volker Dirr. useless now, because of Livius min n day detection
-					/*bool careAboutMinDay=false;
-					QList<int> affected_tcIDs;
-					TimeConstraint* tc;
-					tc=NULL;
-					for(int tcID=0; tcID<gt.rules.timeConstraintsList.size(); tcID++){
-						tc=gt.rules.timeConstraintsList[tcID];
-						if(tc->type==CONSTRAINT_MIN_N_DAYS_BETWEEN_ACTIVITIES)
-							if(tc->isRelatedToActivity(acti))
-								affected_tcIDs<<tcID;
-					}
-					if(affected_tcIDs.size()>1){
-						QMessageBox::critical(NULL, QObject::tr("FET critical"),
-						Export::tr("Please check the min n day constraint of the export file of activity %1.").arg(ai));
-					}
-					if(affected_tcIDs.size()==1){
+						tosExport<<actiNext->duration;
+					} else {
+						if(acti->activityGroupId==0&&actiNext->activityGroupId==acti->activityGroupId){
+							assert(ai==aiNext);
+							assert(actiNext->duration==actiNext->totalDuration);
+							if(actiNext->duration>1)
+								tosExport<<actiNext->duration;
+						}	
+						aiNext=gt.rules.activitiesList.size();
+					}	
+				}
+				tosExport<<textquote<<fieldSeparator;
+				//min n days
+				//start new code, because of Livius detection
+				bool careAboutMinDay=false;
+				ConstraintMinNDaysBetweenActivities* tcmd=activitiesConstraints.value(acti->id, NULL);
+				if(acti->id==acti->activityGroupId){
+					if(tcmd!=NULL){
 						careAboutMinDay=true;
-						tc=gt.rules.timeConstraintsList[affected_tcIDs[0]];
 					}
-					ConstraintMinNDaysBetweenActivities* tcmd;
-					tcmd=(ConstraintMinNDaysBetweenActivities*)tc;
-					for(int aiNext=ai; aiNext<gt.rules.activitiesList.size(); aiNext++){
-						actiNext=gt.rules.activitiesList[aiNext];
-						if(acti->activityGroupId!=0&&actiNext->activityGroupId==acti->activityGroupId){
-							if(aiNext!=ai)
-								tosExport<<"+";
-							tosExport<<actiNext->duration;
-							if(affected_tcIDs.size()==1){
-								if(!tcmd->isRelatedToActivity(actiNext))
-									careAboutMinDay=false;
-							}
-						} else {
-							if(acti->activityGroupId==0&&actiNext->activityGroupId==acti->activityGroupId){
-								assert(ai==aiNext);
-								assert(actiNext->duration==actiNext->totalDuration);
-								if(actiNext->duration>1)
-									tosExport<<actiNext->duration;
-							}	
-							aiNext=gt.rules.activitiesList.size();
-						}	
-					}*/
-					//end old code by Volker Dirr
-					for(int aiNext=ai; aiNext<gt.rules.activitiesList.size(); aiNext++){
-						actiNext=gt.rules.activitiesList[aiNext];
-						if(acti->activityGroupId!=0&&actiNext->activityGroupId==acti->activityGroupId){
-							if(aiNext!=ai)
-								tosExport<<"+";
-							tosExport<<actiNext->duration;
-						} else {
-							if(acti->activityGroupId==0&&actiNext->activityGroupId==acti->activityGroupId){
-								assert(ai==aiNext);
-								assert(actiNext->duration==actiNext->totalDuration);
-								if(actiNext->duration>1)
-									tosExport<<actiNext->duration;
-							}	
-							aiNext=gt.rules.activitiesList.size();
-						}	
-					}
-					tosExport<<textquote<<fieldSeparator;
-					//min n days
-					//start new code, because of Livius detection
-					bool careAboutMinDay=false;
-					ConstraintMinNDaysBetweenActivities* tcmd=activitiesConstraints.value(acti->id, NULL);
-					if(acti->id==acti->activityGroupId){
-							if(tcmd!=NULL){
-								careAboutMinDay=true;
-							}
-					}
-					//end new code
-					if(careAboutMinDay){
-						assert(tcmd->type==CONSTRAINT_MIN_N_DAYS_BETWEEN_ACTIVITIES);
-						tosExport<<qPrintable(QString::number(tcmd->minDays));
-					}
-					tosExport<<fieldSeparator;
-					//min n days weight
-					if(careAboutMinDay)
-						tosExport<<qPrintable(QString::number(tcmd->weightPercentage));
-					tosExport<<fieldSeparator;
-					//min n days consecutive
-					if(careAboutMinDay)
-						tosExport<<tcmd->consecutiveIfSameDay;
-					tosExport<<endl;
-				//}
+				}
+				//end new code
+				if(careAboutMinDay){
+					assert(tcmd->type==CONSTRAINT_MIN_N_DAYS_BETWEEN_ACTIVITIES);
+					tosExport<<qPrintable(QString::number(tcmd->minDays));
+				}
+				tosExport<<fieldSeparator;
+				//min n days weight
+				if(careAboutMinDay)
+					tosExport<<qPrintable(QString::number(tcmd->weightPercentage));
+				tosExport<<fieldSeparator;
+				//min n days consecutive
+				if(careAboutMinDay)
+					tosExport<<tcmd->consecutiveIfSameDay;
+				tosExport<<endl;
 			}
 		}
 	}
+	
+	if(manuallyEdited){
+		QMessageBox::warning(NULL, tr("FET warning"), tr("There are subactivities which were modified separately - so the "
+			"components had different values for subject, activity tags, teachers, students or number of students from the representative subactivity. The export was done, but it is not very accurate."));
+	}
 
-	lastWarnings+=Export::tr("%1 activities exported.").arg(gt.rules.activitiesList.size())+"\n";
+	lastWarnings+=Export::tr("%1 activities exported.").arg(countExportedActivities)+"\n";
 	if(fileExport.error()>0){
 		lastWarnings+=Export::tr("FET critical. Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(file).arg(fileExport.error())+"\n";
 		return false;
@@ -689,9 +766,10 @@ bool Export::exportCSVActivities(QString& lastWarnings, const QString textquote,
 }
 
 
+
 bool Export::exportCSVTimetable(QString& lastWarnings, const QString textquote, const QString fieldSeparator, const bool head){
-	QString s2=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);
-	QString file=OUTPUT_DIR+FILE_SEP+s2+"_Timetable.csv";
+	QString s2=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);	//TODO: remove s2, because to long filenames!
+	QString file=PREFIX_CSV+s2+CSVTimetable;
 	
 	QFile fileExport(file);
 	if(!fileExport.open(QIODevice::WriteOnly)){
@@ -746,8 +824,13 @@ bool Export::exportCSVTimetable(QString& lastWarnings, const QString textquote, 
 						tosExport<<protectCSV(act->teachersNames[t]);
 					}
 					tosExport<<textquote<<fieldSeparator<<textquote;
-					//Activity Tag
-					tosExport<<protectCSV(act->activityTagName)<<textquote<<fieldSeparator;
+					//Activity Tags
+					for(int s=0; s<act->activityTagsNames.size(); s++){
+						if(s!=0)
+							tosExport<<"+";
+						tosExport<<protectCSV(act->activityTagsNames[s]);
+					}
+					tosExport<<textquote<<fieldSeparator;
 					//Room
 					if(best_solution.rooms[i] != UNSPECIFIED_ROOM && best_solution.rooms[i] != UNALLOCATED_SPACE){
 						assert(best_solution.rooms[i]>=0 && best_solution.rooms[i]<gt.rules.nInternalRooms);
@@ -947,7 +1030,8 @@ bool Export::exportSchILD(QString& lastWarnings){
 							else tosK<<"J";
 							tosK<<endl;
 						}
-						if(acti->activityTagName.size()==3 && (acti->teachersNames.size()>0)){
+						//rethink, because of multible activity tags
+						/*if(acti->activityTagName.size()==3 && (acti->teachersNames.size()>0)){
 							if((acti->activityTagName.at(0)>='0')&&(acti->activityTagName.at(0)<='9')
 							&&(acti->activityTagName.at(1)>='0')&&(acti->activityTagName.at(1)<='9')
 							&&(acti->activityTagName.at(2)>='0')&&(acti->activityTagName.at(2)<='9')){
@@ -968,7 +1052,7 @@ bool Export::exportSchILD(QString& lastWarnings){
 									tosLS<<endl;
 								}
 							}
-						}
+						}*/
 						if((acti->studentsNames.size()>0) && (acti->teachersNames.size()==0) ){	//TODO: care about that activities!
 							//added=true;
 							tosE<<"Warnung: Aktivität "<<acti->id<<" wurde nicht hinzugefügt."<<" Schülerkopplung?"<<endl;

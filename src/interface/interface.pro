@@ -11,6 +11,10 @@ SOURCES += fet.cpp \
            activitiesform.cpp \
            addactivityform.cpp \
            modifyactivityform.cpp \
+\
+           subactivitiesform.cpp \
+           modifysubactivityform.cpp \
+\
            addroomform.cpp \
            modifyroomform.cpp \
            addbuildingform.cpp \
@@ -134,6 +138,7 @@ SOURCES += fet.cpp \
            ../engine/timetable_defs.cpp \
 		   ../engine/generate.cpp \
 		   ../engine/timetableexport.cpp \
+		   ../engine/statisticsexport.cpp \
            roomsform.cpp \
            buildingsform.cpp \
            \
@@ -210,6 +215,13 @@ SOURCES += fet.cpp \
 		   addconstraintteachermaxhourscontinuouslyform.cpp \
 		   modifyconstraintteachermaxhourscontinuouslyform.cpp \
 \
+		   constraintteachersactivitytagmaxhourscontinuouslyform.cpp \
+		   addconstraintteachersactivitytagmaxhourscontinuouslyform.cpp \
+		   modifyconstraintteachersactivitytagmaxhourscontinuouslyform.cpp \
+		   constraintteacheractivitytagmaxhourscontinuouslyform.cpp \
+		   addconstraintteacheractivitytagmaxhourscontinuouslyform.cpp \
+		   modifyconstraintteacheractivitytagmaxhourscontinuouslyform.cpp \
+\
 		   constraintteachersminhoursdailyform.cpp \
 		   addconstraintteachersminhoursdailyform.cpp \
 		   modifyconstraintteachersminhoursdailyform.cpp \
@@ -266,6 +278,13 @@ SOURCES += fet.cpp \
 		   addconstraintstudentsmaxhourscontinuouslyform.cpp \
 		   modifyconstraintstudentsmaxhourscontinuouslyform.cpp \
 \
+		   constraintstudentssetactivitytagmaxhourscontinuouslyform.cpp \
+		   addconstraintstudentssetactivitytagmaxhourscontinuouslyform.cpp \
+		   modifyconstraintstudentssetactivitytagmaxhourscontinuouslyform.cpp \
+		   constraintstudentsactivitytagmaxhourscontinuouslyform.cpp \
+		   addconstraintstudentsactivitytagmaxhourscontinuouslyform.cpp \
+		   modifyconstraintstudentsactivitytagmaxhourscontinuouslyform.cpp \
+\
 		   constraintstudentssetminhoursdailyform.cpp \
 		   addconstraintstudentssetminhoursdailyform.cpp \
 		   modifyconstraintstudentssetminhoursdailyform.cpp \
@@ -278,6 +297,10 @@ SOURCES += fet.cpp \
 		   constraint2activitiesconsecutiveform.cpp \
 		   addconstraint2activitiesconsecutiveform.cpp \
 		   modifyconstraint2activitiesconsecutiveform.cpp \
+\
+		   constraint2activitiesgroupedform.cpp \
+		   addconstraint2activitiesgroupedform.cpp \
+		   modifyconstraint2activitiesgroupedform.cpp \
 \
 		   constraint2activitiesorderedform.cpp \
 		   addconstraint2activitiesorderedform.cpp \
@@ -306,7 +329,12 @@ SOURCES += fet.cpp \
 		   changeminndaysselectivelyform.cpp \
 \
 		   spreadminndaysconstraints5daysform.cpp \
-		   spreadconfirmationform.cpp
+		   spreadconfirmationform.cpp \
+\
+		   removeredundantform.cpp \
+		   removeredundantconfirmationform.cpp \
+\
+			lockunlock.cpp
 HEADERS += fet.h \
            helpaboutform.h \
            helpfaqform.h \
@@ -315,6 +343,10 @@ HEADERS += fet.h \
            activitiesform.h \
            addactivityform.h \
            modifyactivityform.h \
+\
+           subactivitiesform.h \
+           modifysubactivityform.h \
+\
            addroomform.h \
            modifyroomform.h \
            addbuildingform.h \
@@ -438,6 +470,7 @@ HEADERS += fet.h \
            ../engine/building.h \
 		   ../engine/generate.h \
 		   ../engine/timetableexport.h \
+		   ../engine/statisticsexport.h \
            roomsform.h \
            buildingsform.h \
            \
@@ -512,6 +545,13 @@ HEADERS += fet.h \
 		   addconstraintteachermaxhourscontinuouslyform.h \
 		   modifyconstraintteachermaxhourscontinuouslyform.h \
 \
+		   constraintteachersactivitytagmaxhourscontinuouslyform.h \
+		   addconstraintteachersactivitytagmaxhourscontinuouslyform.h \
+		   modifyconstraintteachersactivitytagmaxhourscontinuouslyform.h \
+		   constraintteacheractivitytagmaxhourscontinuouslyform.h \
+		   addconstraintteacheractivitytagmaxhourscontinuouslyform.h \
+		   modifyconstraintteacheractivitytagmaxhourscontinuouslyform.h \
+\
 		   constraintteachersminhoursdailyform.h \
 		   addconstraintteachersminhoursdailyform.h \
 		   modifyconstraintteachersminhoursdailyform.h \
@@ -568,6 +608,13 @@ HEADERS += fet.h \
 		   addconstraintstudentsmaxhourscontinuouslyform.h \
 		   modifyconstraintstudentsmaxhourscontinuouslyform.h \
 \
+		   constraintstudentssetactivitytagmaxhourscontinuouslyform.h \
+		   addconstraintstudentssetactivitytagmaxhourscontinuouslyform.h \
+		   modifyconstraintstudentssetactivitytagmaxhourscontinuouslyform.h \
+		   constraintstudentsactivitytagmaxhourscontinuouslyform.h \
+		   addconstraintstudentsactivitytagmaxhourscontinuouslyform.h \
+		   modifyconstraintstudentsactivitytagmaxhourscontinuouslyform.h \
+\
 		   constraintstudentssetminhoursdailyform.h \
 		   addconstraintstudentssetminhoursdailyform.h \
 		   modifyconstraintstudentssetminhoursdailyform.h \
@@ -581,6 +628,10 @@ HEADERS += fet.h \
 		   constraint2activitiesconsecutiveform.h \
 		   addconstraint2activitiesconsecutiveform.h \
 		   modifyconstraint2activitiesconsecutiveform.h \
+\
+		   constraint2activitiesgroupedform.h \
+		   addconstraint2activitiesgroupedform.h \
+		   modifyconstraint2activitiesgroupedform.h \
 \
 		   constraint2activitiesorderedform.h \
 		   addconstraint2activitiesorderedform.h \
@@ -611,7 +662,12 @@ HEADERS += fet.h \
 		   changeminndaysselectivelyform.h \
 \
 		   spreadminndaysconstraints5daysform.h \
-		   spreadconfirmationform.h
+		   spreadconfirmationform.h \
+\
+		   removeredundantform.h \
+		   removeredundantconfirmationform.h \
+\
+			lockunlock.h
 TRANSLATIONS += ../../translations/fet_ro.ts \
 				../../translations/fet_ca.ts \
                 ../../translations/fet_fr.ts \
@@ -638,7 +694,10 @@ FORMS+=  fetmainform_template.ui \
 \
 	changeminndaysselectivelyform_template.ui \
 	spreadminndaysconstraints5daysform_template.ui \
-	spreadconfirmationform_template.ui
+	spreadconfirmationform_template.ui \
+\
+	removeredundantform_template.ui \
+	removeredundantconfirmationform_template.ui
 #The following line was changed from FORMS to FORMS3 by qt3to4
 FORMS3 += helpfaqform_template.ui \
 		 helptipsform_template.ui \
@@ -646,6 +705,10 @@ FORMS3 += helpfaqform_template.ui \
          activitiesform_template.ui \
          addactivityform_template.ui \
          modifyactivityform_template.ui \
+\
+         subactivitiesform_template.ui \
+         modifysubactivityform_template.ui \
+\
          addroomform_template.ui \
          modifyroomform_template.ui \
          addbuildingform_template.ui \
@@ -822,6 +885,13 @@ FORMS3 += helpfaqform_template.ui \
 		   addconstraintteachermaxhourscontinuouslyform_template.ui \
 		   modifyconstraintteachermaxhourscontinuouslyform_template.ui \
 \
+		   constraintteachersactivitytagmaxhourscontinuouslyform_template.ui \
+		   addconstraintteachersactivitytagmaxhourscontinuouslyform_template.ui \
+		   modifyconstraintteachersactivitytagmaxhourscontinuouslyform_template.ui \
+		   constraintteacheractivitytagmaxhourscontinuouslyform_template.ui \
+		   addconstraintteacheractivitytagmaxhourscontinuouslyform_template.ui \
+		   modifyconstraintteacheractivitytagmaxhourscontinuouslyform_template.ui \
+\
 		   constraintteachersminhoursdailyform_template.ui \
 		   addconstraintteachersminhoursdailyform_template.ui \
 		   modifyconstraintteachersminhoursdailyform_template.ui \
@@ -878,6 +948,13 @@ FORMS3 += helpfaqform_template.ui \
 		   addconstraintstudentsmaxhourscontinuouslyform_template.ui \
 		   modifyconstraintstudentsmaxhourscontinuouslyform_template.ui \
 \
+		   constraintstudentssetactivitytagmaxhourscontinuouslyform_template.ui \
+		   addconstraintstudentssetactivitytagmaxhourscontinuouslyform_template.ui \
+		   modifyconstraintstudentssetactivitytagmaxhourscontinuouslyform_template.ui \
+		   constraintstudentsactivitytagmaxhourscontinuouslyform_template.ui \
+		   addconstraintstudentsactivitytagmaxhourscontinuouslyform_template.ui \
+		   modifyconstraintstudentsactivitytagmaxhourscontinuouslyform_template.ui \
+\
 		   constraintstudentssetminhoursdailyform_template.ui \
 		   addconstraintstudentssetminhoursdailyform_template.ui \
 		   modifyconstraintstudentssetminhoursdailyform_template.ui \
@@ -891,6 +968,10 @@ FORMS3 += helpfaqform_template.ui \
 		   constraint2activitiesconsecutiveform_template.ui \
 		   addconstraint2activitiesconsecutiveform_template.ui \
 		   modifyconstraint2activitiesconsecutiveform_template.ui \
+\
+		   constraint2activitiesgroupedform_template.ui \
+		   addconstraint2activitiesgroupedform_template.ui \
+		   modifyconstraint2activitiesgroupedform_template.ui \
 \
 		   constraint2activitiesorderedform_template.ui \
 		   addconstraint2activitiesorderedform_template.ui \
@@ -921,8 +1002,6 @@ CONFIG += release \
           thread 
 DESTDIR = ../../
 TARGET = fet 
-QMAKE_CXXFLAGS_DEBUG += -Wall \
-                        -O2 
 OBJECTS_DIR = ../../tmp 
 UI_DIR = ../../tmp 
 MOC_DIR = ../../tmp 

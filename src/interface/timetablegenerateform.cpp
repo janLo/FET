@@ -203,7 +203,7 @@ void TimetableGenerateForm::stop()
 	s+=" ";
 
 	s+=TimetableGenerateForm::tr("The partial results are saved in the directory %1 in html and xml mode"
-	 " and the conflicts in txt mode").arg(OUTPUT_DIR);
+	 " and the conflicts in txt mode").arg(QDir::toNativeSeparators(OUTPUT_DIR));
 
 	s+="\n\n";
 
@@ -238,8 +238,8 @@ void TimetableGenerateForm::stop()
 		s+=", ";
 		s+=TimetableGenerateForm::tr("SN: %1", "Subject name").arg(gt.rules.internalActivitiesList[ai].subjectName);
 		s+=", ";
-		if(gt.rules.internalActivitiesList[ai].activityTagName!=""){
-			s+=TimetableGenerateForm::tr("AT: %1", "Activity tag").arg(gt.rules.internalActivitiesList[ai].activityTagName);
+		if(gt.rules.internalActivitiesList[ai].activityTagsNames.count()>0){
+			s+=TimetableGenerateForm::tr("AT: %1", "Activity tags").arg(gt.rules.internalActivitiesList[ai].activityTagsNames.join(","));
 			s+=", ";
 		}
 		first=true;
@@ -284,8 +284,8 @@ void TimetableGenerateForm::stop()
 		s+=", ";
 		s+=TimetableGenerateForm::tr("SN: %1").arg(gt.rules.internalActivitiesList[ai].subjectName);
 		s+=", ";
-		if(gt.rules.internalActivitiesList[ai].activityTagName!=""){
-			s+=TimetableGenerateForm::tr("AT: %1", "Activity tag").arg(gt.rules.internalActivitiesList[ai].activityTagName);
+		if(gt.rules.internalActivitiesList[ai].activityTagsNames.count()>0){
+			s+=TimetableGenerateForm::tr("AT: %1", "Activity tags").arg(gt.rules.internalActivitiesList[ai].activityTagsNames.join(","));
 			s+=", ";
 		}
 		first=true;
@@ -384,7 +384,7 @@ void TimetableGenerateForm::impossibleToSolve()
 	s+=" ";
 
 	s+=TimetableGenerateForm::tr("The partial results are saved in the directory %1 in html and xml mode"
-	 " and the conflicts in txt mode").arg(OUTPUT_DIR);
+	 " and the conflicts in txt mode").arg(QDir::toNativeSeparators(OUTPUT_DIR));
 
 	s+="\n\n";
 
@@ -410,8 +410,8 @@ void TimetableGenerateForm::impossibleToSolve()
 		s+=", ";
 		s+=TimetableGenerateForm::tr("SN: %1").arg(gt.rules.internalActivitiesList[ai].subjectName);
 		s+=", ";
-		if(gt.rules.internalActivitiesList[ai].activityTagName!=""){
-			s+=TimetableGenerateForm::tr("AT: %1", "Activity tag").arg(gt.rules.internalActivitiesList[ai].activityTagName);
+		if(gt.rules.internalActivitiesList[ai].activityTagsNames.count()>0){
+			s+=TimetableGenerateForm::tr("AT: %1", "Activity tags").arg(gt.rules.internalActivitiesList[ai].activityTagsNames.join(","));
 			s+=", ";
 		}
 		first=true;
@@ -508,7 +508,7 @@ void TimetableGenerateForm::simulationFinished()
 		" the output directory for details)."
 		"\n\nSimulation results should be now written. You may check now Timetable/View."
 		" The results are also saved in the directory %2 in"
-		" html and xml mode and the soft conflicts in txt mode").arg(c.conflictsTotal).arg(OUTPUT_DIR));
+		" html and xml mode and the soft conflicts in txt mode").arg(c.conflictsTotal).arg(QDir::toNativeSeparators(OUTPUT_DIR)));
 
 	startPushButton->setEnabled(TRUE);
 	stopPushButton->setDisabled(TRUE);
@@ -599,7 +599,7 @@ void TimetableGenerateForm::write(){
 
 	QMessageBox::information(this, TimetableGenerateForm::tr("FET information"),
 		TimetableGenerateForm::tr("Simulation results should now be written in the directory %1 in html and xml mode"
-		" and the conflicts in txt mode").arg(OUTPUT_DIR));
+		" and the conflicts in txt mode").arg(QDir::toNativeSeparators(OUTPUT_DIR)));
 }
 
 void TimetableGenerateForm::closePressed()
@@ -640,8 +640,8 @@ void TimetableGenerateForm::seeImpossible()
 		s+=", ";
 		s+=TimetableGenerateForm::tr("SN: %1", "Subject name").arg(gt.rules.internalActivitiesList[ai].subjectName);
 		s+=", ";
-		if(gt.rules.internalActivitiesList[ai].activityTagName!=""){
-			s+=TimetableGenerateForm::tr("AT: %1", "Activity tag").arg(gt.rules.internalActivitiesList[ai].activityTagName);
+		if(gt.rules.internalActivitiesList[ai].activityTagsNames.count()>0){
+			s+=TimetableGenerateForm::tr("AT: %1", "Activity tags").arg(gt.rules.internalActivitiesList[ai].activityTagsNames.join(","));
 			s+=", ";
 		}
 		first=true;

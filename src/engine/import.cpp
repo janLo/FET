@@ -791,13 +791,18 @@ int Import::readFields(){
 								if(!itemOfField[FIELD_TOTAL_DURATION].isEmpty()){
 									int totalInt=itemOfField[FIELD_TOTAL_DURATION].toInt(&ok, 10);
 									if(ok){
-										QString tmpString;
-										for(int n=0; n<totalInt; n++){
-											if(n!=0)
-												tmpString+="+";
-											tmpString+="1";
+										if(totalInt<=10){							// TODO: make 10 a global variable?!
+											QString tmpString;
+											for(int n=0; n<totalInt; n++){
+												if(n!=0)
+													tmpString+="+";
+												tmpString+="1";
+											}
+											itemOfField[FIELD_SPLIT_DURATION]=tmpString;
+										} else {
+											warnText+=Import::tr("Skipped line %1: Field '%2' produces too many subactivities.").arg(lineNumber).arg(fieldName[FIELD_TOTAL_DURATION])+"\n";
+											ok=false;
 										}
-										itemOfField[FIELD_SPLIT_DURATION]=tmpString;
 									}
 								} else {
 									warnText+=Import::tr("Skipped line %1: Field '%2' is empty.").arg(lineNumber).arg(fieldName[i])+"\n";
@@ -805,23 +810,28 @@ int Import::readFields(){
 								}
 							} else {
 								QStringList splittedList;
-								splittedList = itemOfField[FIELD_SPLIT_DURATION].split("+");
-								int tmpInt=0;
-								QString splitted;
-								while(ok && !splittedList.isEmpty()){
-									splitted=splittedList.takeFirst();
-									tmpInt+=splitted.toInt(&ok, 10);
-									if(!ok)
-										warnText+=Import::tr("Skipped line %1: Field '%2' doesn't contain an integer value.").arg(lineNumber).arg(fieldName[FIELD_SPLIT_DURATION])+"\n";
-								}
-								if(itemOfField[FIELD_TOTAL_DURATION].isEmpty()){
-									itemOfField[FIELD_TOTAL_DURATION]=QString::number(tmpInt);	
-								} else {
-									int totalInt=itemOfField[FIELD_TOTAL_DURATION].toInt(&ok, 10);
-									if(totalInt!=tmpInt){
-										warnText+=Import::tr("Skipped line %1: Fields '%2' and '%3' haven't the same value.").arg(lineNumber).arg(fieldName[i]).arg(fieldName[FIELD_TOTAL_DURATION])+"\n";
-										ok=false;
+								if(itemOfField[FIELD_SPLIT_DURATION].count("+")<10){					// TODO: make 10 a global variable?!
+									splittedList = itemOfField[FIELD_SPLIT_DURATION].split("+");
+									int tmpInt=0;
+									QString splitted;
+									while(ok && !splittedList.isEmpty()){
+										splitted=splittedList.takeFirst();
+										tmpInt+=splitted.toInt(&ok, 10);
+										if(!ok)
+											warnText+=Import::tr("Skipped line %1: Field '%2' doesn't contain an integer value.").arg(lineNumber).arg(fieldName[FIELD_SPLIT_DURATION])+"\n";
 									}
+									if(itemOfField[FIELD_TOTAL_DURATION].isEmpty()){
+										itemOfField[FIELD_TOTAL_DURATION]=QString::number(tmpInt);	
+									} else {
+										int totalInt=itemOfField[FIELD_TOTAL_DURATION].toInt(&ok, 10);
+										if(totalInt!=tmpInt){
+											warnText+=Import::tr("Skipped line %1: Fields '%2' and '%3' haven't the same value.").arg(lineNumber).arg(fieldName[i]).arg(fieldName[FIELD_TOTAL_DURATION])+"\n";
+											ok=false;
+										}
+									}
+								} else {
+									warnText+=Import::tr("Skipped line %1: Field '%2' contains too many subactivities.").arg(lineNumber).arg(fieldName[i])+"\n";
+									ok=false;
 								}
 							}
 						}
@@ -1926,8 +1936,11 @@ void Import::importCSVActivities(){
 			int duration=fieldList[FIELD_TOTAL_DURATION][i].toInt(&ok2, 10);
 			assert(ok2);
 			bool active=true;
-
-			Activity a(gt.rules, activityid, 0, teachers_names, subject_name, activity_tag_name, students_names, duration, duration, active, true, -1);
+			//workaround only. Please rethink. (start)
+			QStringList activity_tag_names;
+			activity_tag_names<<activity_tag_name;
+			//workaround only. Please rethink. (end)
+			Activity a(gt.rules, activityid, 0, teachers_names, subject_name, activity_tag_names, students_names, duration, duration, active, true, -1);
 	
 			bool already_existing=false;
 			for(int i=0; i<gt.rules.activitiesList.size(); i++){
@@ -1938,7 +1951,7 @@ void Import::importCSVActivities(){
 			if(already_existing){
 				lastWarning+=Import::tr("Activity %1 already exists. A duplicate activity is imported. Please check the dataset!").arg(activityid)+"\n";
 			}
-			bool tmp=gt.rules.addSimpleActivity(activityid, 0, teachers_names, subject_name, activity_tag_name,
+			bool tmp=gt.rules.addSimpleActivity(activityid, 0, teachers_names, subject_name, activity_tag_names,
 				students_names,	duration, duration, active, true, -1);
 			activityid++;
 			if(tmp){
@@ -1950,8 +1963,8 @@ void Import::importCSVActivities(){
 		}
 		else{ //split activity
 			int totalduration;
-			int durations[10];
-			bool active[10];
+			int durations[10];						// TODO: make 10 a global variable?! AND do it the same in addactivityfor.cpp
+			bool active[10];						// TODO: make 10 a global variable?! AND do it the same in addactivityfor.cpp
 	
 			totalduration=0;
 			for(int s=0; s<nsplit; s++){
@@ -1971,8 +1984,12 @@ void Import::importCSVActivities(){
 			else if(fieldList[FIELD_MIN_N_DAYS_CONSECUTIVE][i]=="no")
 				force=false;
 			else assert(0==1);
+			//workaround only. Please rethink. (start)
+			QStringList activity_tag_names;
+			activity_tag_names<<activity_tag_name;
+			//workaround only. Please rethink. (end)
 			bool tmp=gt.rules.addSplitActivity(activityid, activityid,
-				teachers_names, subject_name, activity_tag_name, students_names,
+				teachers_names, subject_name, activity_tag_names, students_names,
 				nsplit, totalduration, durations,
 				active, minD, weight, force, true, -1);
 			activityid+=nsplit;

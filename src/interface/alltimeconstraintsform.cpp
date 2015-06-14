@@ -23,6 +23,7 @@
 #include "modifyconstraintactivitypreferredtimeslotsform.h"
 #include "modifyconstraintactivitypreferredstartingtimesform.h"
 #include "modifyconstraint2activitiesconsecutiveform.h"
+#include "modifyconstraint2activitiesgroupedform.h"
 #include "modifyconstraint2activitiesorderedform.h"
 
 #include "modifyconstraintactivitiespreferredtimeslotsform.h"
@@ -55,6 +56,9 @@
 #include "modifyconstraintteachersminhoursdailyform.h"
 #include "modifyconstraintteacherminhoursdailyform.h"
 
+#include "modifyconstraintteachersactivitytagmaxhourscontinuouslyform.h"
+#include "modifyconstraintteacheractivitytagmaxhourscontinuouslyform.h"
+
 #include "modifyconstraintstudentssetnotavailabletimesform.h"
 #include "modifyconstraintstudentssetmaxgapsperweekform.h"
 #include "modifyconstraintstudentsmaxgapsperweekform.h"
@@ -67,6 +71,9 @@
 #include "modifyconstraintstudentssetminhoursdailyform.h"
 #include "modifyconstraintstudentsminhoursdailyform.h"
 
+#include "modifyconstraintstudentssetactivitytagmaxhourscontinuouslyform.h"
+#include "modifyconstraintstudentsactivitytagmaxhourscontinuouslyform.h"
+
 #include "modifyconstraintteacherintervalmaxdaysperweekform.h"
 #include "modifyconstraintteachersintervalmaxdaysperweekform.h"
 
@@ -74,6 +81,8 @@
 #include "modifyconstraintstudentsintervalmaxdaysperweekform.h"
 
 #include <QDesktopWidget>
+
+#include "lockunlock.h"
 
 AllTimeConstraintsForm::AllTimeConstraintsForm()
 {
@@ -126,13 +135,28 @@ void AllTimeConstraintsForm::removeConstraint()
 	s+=QObject::tr("\nAre you sure?");
 	
 	bool t;
+	
+	bool recompute;
 
 	switch( QMessageBox::warning( this, QObject::tr("FET warning"),
 		s, QObject::tr("OK"), QObject::tr("Cancel"), 0, 0, 1 ) ){
 	case 0: // The user clicked the OK again button or pressed Enter
+		if(ctr->type==CONSTRAINT_ACTIVITY_PREFERRED_STARTING_TIME){
+			recompute=true;
+		}
+		else{
+			recompute=false;
+		}
+		
 		t=gt.rules.removeTimeConstraint(ctr);
 		assert(t);
 		constraintsListBox->removeItem(constraintsListBox->currentItem());
+		
+		if(recompute){
+			LockUnlock::computeLockedUnlockedActivitiesOnlyTime();
+			LockUnlock::increaseCommunicationSpinBox();
+		}
+		
 		break;
 	case 1: // The user clicked the Cancel or pressed Escape
 		break;
@@ -426,6 +450,36 @@ void AllTimeConstraintsForm::modifyConstraint()
 	else if(ctr->type==CONSTRAINT_ACTIVITIES_END_STUDENTS_DAY){
 		ModifyConstraintActivitiesEndStudentsDayForm* form=
 		 new ModifyConstraintActivitiesEndStudentsDayForm((ConstraintActivitiesEndStudentsDay*)ctr);
+		form->exec();
+	}
+	//47
+	else if(ctr->type==CONSTRAINT_2_ACTIVITIES_GROUPED){
+		ModifyConstraint2ActivitiesGroupedForm* form=
+		 new ModifyConstraint2ActivitiesGroupedForm((Constraint2ActivitiesGrouped*)ctr);
+		form->exec();
+	}
+	//48
+	else if(ctr->type==CONSTRAINT_TEACHERS_ACTIVITY_TAG_MAX_HOURS_CONTINUOUSLY){
+		ModifyConstraintTeachersActivityTagMaxHoursContinuouslyForm* form=
+		 new ModifyConstraintTeachersActivityTagMaxHoursContinuouslyForm((ConstraintTeachersActivityTagMaxHoursContinuously*)ctr);
+		form->exec();
+	}
+	//49
+	else if(ctr->type==CONSTRAINT_TEACHER_ACTIVITY_TAG_MAX_HOURS_CONTINUOUSLY){
+		ModifyConstraintTeacherActivityTagMaxHoursContinuouslyForm* form=
+		 new ModifyConstraintTeacherActivityTagMaxHoursContinuouslyForm((ConstraintTeacherActivityTagMaxHoursContinuously*)ctr);
+		form->exec();
+	}
+	//50
+	else if(ctr->type==CONSTRAINT_STUDENTS_ACTIVITY_TAG_MAX_HOURS_CONTINUOUSLY){
+		ModifyConstraintStudentsActivityTagMaxHoursContinuouslyForm* form=
+		 new ModifyConstraintStudentsActivityTagMaxHoursContinuouslyForm((ConstraintStudentsActivityTagMaxHoursContinuously*)ctr);
+		form->exec();
+	}
+	//51
+	else if(ctr->type==CONSTRAINT_STUDENTS_SET_ACTIVITY_TAG_MAX_HOURS_CONTINUOUSLY){
+		ModifyConstraintStudentsSetActivityTagMaxHoursContinuouslyForm* form=
+		 new ModifyConstraintStudentsSetActivityTagMaxHoursContinuouslyForm((ConstraintStudentsSetActivityTagMaxHoursContinuously*)ctr);
 		form->exec();
 	}
 	else{

@@ -99,6 +99,13 @@ const int CONSTRAINT_STUDENTS_INTERVAL_MAX_DAYS_PER_WEEK				=45;
 
 const int CONSTRAINT_ACTIVITIES_END_STUDENTS_DAY						=46;
 
+const int CONSTRAINT_2_ACTIVITIES_GROUPED								=47;
+
+const int CONSTRAINT_TEACHERS_ACTIVITY_TAG_MAX_HOURS_CONTINUOUSLY		=48;
+const int CONSTRAINT_TEACHER_ACTIVITY_TAG_MAX_HOURS_CONTINUOUSLY		=49;
+const int CONSTRAINT_STUDENTS_ACTIVITY_TAG_MAX_HOURS_CONTINUOUSLY		=50;
+const int CONSTRAINT_STUDENTS_SET_ACTIVITY_TAG_MAX_HOURS_CONTINUOUSLY	=51;
+
 /**
 This class represents a time constraint
 */
@@ -742,6 +749,90 @@ public:
 	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
 };
 
+class ConstraintTeachersActivityTagMaxHoursContinuously: public TimeConstraint{
+public:
+	/**
+	The maximum hours continuously
+	*/
+	int maxHoursContinuously;
+	
+	QString activityTagName;
+	
+	int activityTagIndex;
+	
+	QList<int> canonicalTeachersList;
+
+	ConstraintTeachersActivityTagMaxHoursContinuously();
+
+	ConstraintTeachersActivityTagMaxHoursContinuously(double wp, int maxhours, const QString& activityTag);
+
+	QString getXmlDescription(Rules& r);
+
+	bool computeInternalStructure(Rules& r);
+
+	bool hasInactiveActivities(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
+
+	bool isRelatedToActivity(Rules& r, Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToActivityTag(ActivityTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+};
+
+class ConstraintTeacherActivityTagMaxHoursContinuously: public TimeConstraint{
+public:
+	/**
+	The maximum hours continuously
+	*/
+	int maxHoursContinuously;
+	
+	QString teacherName;
+	
+	QString activityTagName;
+	
+	int teacher_ID;
+
+	int activityTagIndex;
+	
+	QList<int> canonicalTeachersList;
+
+	ConstraintTeacherActivityTagMaxHoursContinuously();
+
+	ConstraintTeacherActivityTagMaxHoursContinuously(double wp, int maxhours, const QString& teacher, const QString& activityTag);
+
+	QString getXmlDescription(Rules& r);
+
+	bool computeInternalStructure(Rules& r);
+
+	bool hasInactiveActivities(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
+
+	bool isRelatedToActivity(Rules& r, Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToActivityTag(ActivityTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+};
+
 /**
 This is a constraint.
 The resulting timetable must respect the requirement
@@ -1298,6 +1389,98 @@ public:
 	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
 };
 
+class ConstraintStudentsActivityTagMaxHoursContinuously: public TimeConstraint{
+public:
+	int maxHoursContinuously;
+	
+	QString activityTagName;
+	
+	int activityTagIndex;
+	
+	QList<int> canonicalSubgroupsList;
+
+	ConstraintStudentsActivityTagMaxHoursContinuously();
+
+	ConstraintStudentsActivityTagMaxHoursContinuously(double wp, int maxnh, const QString& activityTag);
+
+	bool computeInternalStructure(Rules& r);
+
+	bool hasInactiveActivities(Rules& r);
+
+	QString getXmlDescription(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
+
+	bool isRelatedToActivity(Rules& r, Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToActivityTag(ActivityTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+};
+
+class ConstraintStudentsSetActivityTagMaxHoursContinuously: public TimeConstraint{
+public:
+	int maxHoursContinuously;
+
+	/**
+	The students set name
+	*/
+	QString students;
+	
+	QString activityTagName;
+
+	//internal variables
+	
+	int activityTagIndex;
+
+	/**
+	The number of subgroups
+	*/
+	//int nSubgroups;
+
+	/**
+	The subgroups
+	*/
+	//int subgroups[MAX_SUBGROUPS_PER_CONSTRAINT];
+	QList<int> iSubgroupsList;
+	
+	QList<int> canonicalSubgroupsList;
+
+	ConstraintStudentsSetActivityTagMaxHoursContinuously();
+
+	ConstraintStudentsSetActivityTagMaxHoursContinuously(double wp, int maxnh, const QString& s, const QString& activityTag);
+
+	bool computeInternalStructure(Rules& r);
+
+	bool hasInactiveActivities(Rules& r);
+
+	QString getXmlDescription(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
+
+	bool isRelatedToActivity(Rules& r, Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToActivityTag(ActivityTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+};
+
 class ConstraintStudentsMinHoursDaily: public TimeConstraint{
 public:
 	int minHoursDaily;
@@ -1402,15 +1585,17 @@ public:
 	*/
 	int hour;
 
+	bool permanentlyLocked; //if this is true, then this activity cannot be unlocked from the timetable view form
+
 	//internal variables
 	/**
 	The index of the activity in the rules (from 0 to rules.nActivities-1) - it is not the id of the activity
 	*/
 	int activityIndex;
-
+	
 	ConstraintActivityPreferredStartingTime();
 
-	ConstraintActivityPreferredStartingTime(double wp, int actId, int d, int h);
+	ConstraintActivityPreferredStartingTime(double wp, int actId, int d, int h, bool perm);
 
 	/**
 	Comparison operator - to be sure that we do not introduce duplicates
@@ -2032,6 +2217,56 @@ public:
 	Constraint2ActivitiesConsecutive();
 
 	Constraint2ActivitiesConsecutive(double wp, int firstActId, int secondActId);
+
+	bool computeInternalStructure(Rules& r);
+
+	bool hasInactiveActivities(Rules& r);
+
+	QString getXmlDescription(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
+
+	bool isRelatedToActivity(Rules& r, Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToActivityTag(ActivityTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+};
+
+class Constraint2ActivitiesGrouped: public TimeConstraint{
+public:
+	/**
+	First activity id
+	*/
+	int firstActivityId;
+
+	/**
+	Second activity id
+	*/
+	int secondActivityId;
+
+	//internal variables
+	/**
+	The index of the first activity in the rules (from 0 to rules.nActivities-1) - it is not the id of the activity
+	*/
+	int firstActivityIndex;
+
+	/**
+	The index of the second activity in the rules (from 0 to rules.nActivities-1) - it is not the id of the activity
+	*/
+	int secondActivityIndex;
+
+	Constraint2ActivitiesGrouped();
+
+	Constraint2ActivitiesGrouped(double wp, int firstActId, int secondActId);
 
 	bool computeInternalStructure(Rules& r);
 

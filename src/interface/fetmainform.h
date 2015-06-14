@@ -23,11 +23,25 @@
 
 #include <QMainWindow>
 
+#include "httpget.h"
+
+#include <QSpinBox>
+
+extern const QString COMPANY;
+extern const QString PROGRAM;
+
 class FetMainForm:public QMainWindow, Ui::FetMainForm_template
 {
 	Q_OBJECT
+	
+private:
+	QSpinBox communicationSpinBox;
 
 public:
+	HttpGet getter;
+	
+	bool useGetter;
+
 	FetMainForm();
 	~FetMainForm();
 	
@@ -60,7 +74,11 @@ public slots:
 	void on_dataSubgroupsAction_activated();
 	void on_dataStudentsStatisticsAction_activated();
 	void on_dataHelpOnStatisticsAction_activated();
+	
+	void on_helpSettingsAction_activated();
+	
 	void on_dataActivitiesAction_activated();
+	void on_dataSubactivitiesAction_activated();
 	void on_dataRoomsAction_activated();
 	void on_dataBuildingsAction_activated();
 	void on_dataAllTimeConstraintsAction_activated();
@@ -102,6 +120,7 @@ public slots:
 	void on_dataTimeConstraintsBreakTimesAction_activated();
 
 	void on_dataTimeConstraints2ActivitiesConsecutiveAction_activated();
+	void on_dataTimeConstraints2ActivitiesGroupedAction_activated();
 	void on_dataTimeConstraints2ActivitiesOrderedAction_activated();
 	void on_dataTimeConstraintsActivityPreferredStartingTimeAction_activated();
 	void on_dataTimeConstraintsActivityPreferredTimeSlotsAction_activated();
@@ -125,6 +144,10 @@ public slots:
 	void on_dataTimeConstraintsTeacherMaxHoursDailyAction_activated();
 	void on_dataTimeConstraintsTeachersMaxHoursContinuouslyAction_activated();
 	void on_dataTimeConstraintsTeacherMaxHoursContinuouslyAction_activated();
+
+	void on_dataTimeConstraintsTeachersActivityTagMaxHoursContinuouslyAction_activated();
+	void on_dataTimeConstraintsTeacherActivityTagMaxHoursContinuouslyAction_activated();
+
 	void on_dataTimeConstraintsTeachersMinHoursDailyAction_activated();
 	void on_dataTimeConstraintsTeacherMinHoursDailyAction_activated();
 	void on_dataTimeConstraintsTeachersMaxGapsPerWeekAction_activated();
@@ -146,15 +169,21 @@ public slots:
 	void on_dataTimeConstraintsStudentsSetMaxHoursDailyAction_activated();
 	void on_dataTimeConstraintsStudentsMaxHoursContinuouslyAction_activated();
 	void on_dataTimeConstraintsStudentsSetMaxHoursContinuouslyAction_activated();
+
+	void on_dataTimeConstraintsStudentsActivityTagMaxHoursContinuouslyAction_activated();
+	void on_dataTimeConstraintsStudentsSetActivityTagMaxHoursContinuouslyAction_activated();
+
 	void on_dataTimeConstraintsStudentsMinHoursDailyAction_activated();
 	void on_dataTimeConstraintsStudentsSetMinHoursDailyAction_activated();
 
 	void on_spreadActivitiesAction_activated();
+	void on_removeRedundantConstraintsAction_activated();
 
 	void on_helpAboutAction_activated();
 	void on_helpFAQAction_activated();
 	void on_helpTipsAction_activated();
 	void on_helpInstructionsAction_activated();
+	void on_helpManualAction_activated();
 	void on_helpInOtherLanguagesAction_activated();
 	void on_helpForumAction_activated();
 
@@ -165,9 +194,16 @@ public slots:
 	void on_timetableViewRoomsAction_activated();
 	void on_timetableGenerateMultipleAction_activated();
 
+	void on_timetableLockAllActivitiesAction_activated();
+	void on_timetableUnlockAllActivitiesAction_activated();
+	void on_timetableLockActivitiesDayAction_activated();
+	void on_timetableUnlockActivitiesDayAction_activated();
+	void on_timetableLockActivitiesEndStudentsDayAction_activated();
+	void on_timetableUnlockActivitiesEndStudentsDayAction_activated();
+
 	void on_timetableSaveTimetableAsAction_activated();
 	
-	void on_languageEnglishAction_activated();
+/*	void on_languageEnglishAction_activated();
 	void on_languageFrenchAction_activated();
 	void on_languageCatalanAction_activated();
 	void on_languageRomanianAction_activated();
@@ -183,9 +219,12 @@ public slots:
 	void on_languageArabicAction_activated();
 	void on_languageIndonesianAction_activated();
 	void on_languageItalianAction_activated();
-	void on_languageLithuanianAction_activated();
+	void on_languageLithuanianAction_activated();*/
+	void on_languageAction_activated();
 	
 	void on_checkForUpdatesAction_toggled();
+	
+	void on_timetablesDivideByDaysAction_toggled();
 
 	void on_settingsRestoreDefaultsAction_activated();
 
@@ -193,6 +232,8 @@ public slots:
 	void on_settingsPrintNotAvailableSlotsAction_toggled();
 	
 	void httpDone(bool error);
+	
+	void on_statisticsExportToDiskAction_activated();
 	
 protected:
 	void closeEvent(QCloseEvent* event);

@@ -37,6 +37,9 @@ SpreadMinNDaysConstraints5DaysForm::SpreadMinNDaysConstraints5DaysForm()
 	
 	connect(buttonBox, SIGNAL(accepted()), this, SLOT(wasAccepted()));
 	connect(buttonBox, SIGNAL(rejected()), this, SLOT(wasCanceled()));
+	
+	spread2CheckBox->setChecked(false);
+	spread3CheckBox->setChecked(false);
 }
 
 SpreadMinNDaysConstraints5DaysForm::~SpreadMinNDaysConstraints5DaysForm()
@@ -349,6 +352,13 @@ void SpreadMinNDaysConstraints5DaysForm::wasAccepted()
 	}
 		
 	addedConstraints.clear();
+	
+	QString s2=tr("Spreading of activities operation completed successfully");
+	s2+="\n\n";
+	s2+=tr("NOTE: If you are using constraints of type activities same starting time or activities same starting day, it is important"
+	 " (after current operation) to apply the operation of removing redundant constraints.")
+	 +" "+tr("Read Help/Important tips - tip 2) for details.");
+	QMessageBox::information(this, tr("FET information"), s2);
 	
 	this->accept();
 }

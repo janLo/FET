@@ -16,23 +16,14 @@
    <iconset>
     <normaloff>fet-5.4.2/src/interface</normaloff>fet-5.4.2/src/interface</iconset>
   </property>
-  <widget class="QWidget" name="widget" >
-   <property name="geometry" >
-    <rect>
-     <x>0</x>
-     <y>30</y>
-     <width>557</width>
-     <height>252</height>
-    </rect>
-   </property>
-  </widget>
+  <widget class="QWidget" name="widget" />
   <widget class="QMenuBar" name="menubar" >
    <property name="geometry" >
     <rect>
      <x>0</x>
      <y>0</y>
      <width>557</width>
-     <height>30</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="helpMenu" >
@@ -42,6 +33,8 @@
     <addaction name="helpInstructionsAction" />
     <addaction name="helpTipsAction" />
     <addaction name="helpFAQAction" />
+    <addaction name="separator" />
+    <addaction name="helpManualAction" />
     <addaction name="separator" />
     <addaction name="helpInOtherLanguagesAction" />
     <addaction name="separator" />
@@ -90,11 +83,26 @@
     <property name="title" >
      <string>&amp;Timetable</string>
     </property>
+    <widget class="QMenu" name="menuAdvanced" >
+     <property name="title" >
+      <string>Advanced lock/unlock</string>
+     </property>
+     <addaction name="timetableLockAllActivitiesAction" />
+     <addaction name="timetableUnlockAllActivitiesAction" />
+     <addaction name="separator" />
+     <addaction name="timetableLockActivitiesDayAction" />
+     <addaction name="timetableUnlockActivitiesDayAction" />
+     <addaction name="separator" />
+     <addaction name="timetableLockActivitiesEndStudentsDayAction" />
+     <addaction name="timetableUnlockActivitiesEndStudentsDayAction" />
+    </widget>
     <addaction name="timetableGenerateAction" />
+    <addaction name="separator" />
     <addaction name="timetableViewTeachersAction" />
     <addaction name="timetableViewStudentsAction" />
     <addaction name="timetableViewRoomsAction" />
     <addaction name="timetableShowConflictsAction" />
+    <addaction name="menuAdvanced" />
     <addaction name="separator" />
     <addaction name="timetableSaveTimetableAsAction" />
     <addaction name="separator" />
@@ -107,6 +115,8 @@
     <addaction name="dataTeachersStatisticsAction" />
     <addaction name="dataSubjectsStatisticsAction" />
     <addaction name="dataStudentsStatisticsAction" />
+    <addaction name="separator" />
+    <addaction name="statisticsExportToDiskAction" />
     <addaction name="separator" />
     <addaction name="dataHelpOnStatisticsAction" />
    </widget>
@@ -145,6 +155,8 @@
       <addaction name="separator" />
       <addaction name="dataTimeConstraintsTeacherMaxHoursContinuouslyAction" />
       <addaction name="dataTimeConstraintsTeachersMaxHoursContinuouslyAction" />
+      <addaction name="dataTimeConstraintsTeacherActivityTagMaxHoursContinuouslyAction" />
+      <addaction name="dataTimeConstraintsTeachersActivityTagMaxHoursContinuouslyAction" />
       <addaction name="separator" />
       <addaction name="dataTimeConstraintsTeacherIntervalMaxDaysPerWeekAction" />
       <addaction name="dataTimeConstraintsTeachersIntervalMaxDaysPerWeekAction" />
@@ -167,6 +179,8 @@
       <addaction name="separator" />
       <addaction name="dataTimeConstraintsStudentsSetMaxHoursContinuouslyAction" />
       <addaction name="dataTimeConstraintsStudentsMaxHoursContinuouslyAction" />
+      <addaction name="dataTimeConstraintsStudentsSetActivityTagMaxHoursContinuouslyAction" />
+      <addaction name="dataTimeConstraintsStudentsActivityTagMaxHoursContinuouslyAction" />
       <addaction name="separator" />
       <addaction name="dataTimeConstraintsStudentsSetIntervalMaxDaysPerWeekAction" />
       <addaction name="dataTimeConstraintsStudentsIntervalMaxDaysPerWeekAction" />
@@ -197,6 +211,7 @@
       <addaction name="dataTimeConstraints2ActivitiesOrderedAction" />
       <addaction name="separator" />
       <addaction name="dataTimeConstraints2ActivitiesConsecutiveAction" />
+      <addaction name="dataTimeConstraints2ActivitiesGroupedAction" />
       <addaction name="separator" />
       <addaction name="dataTimeConstraintsActivitiesNotOverlappingAction" />
       <addaction name="separator" />
@@ -280,23 +295,39 @@
      <addaction name="menuSubjects_and_activity_tags_space_constraints" />
      <addaction name="menuActivities_space_constraints" />
     </widget>
-    <addaction name="dataInstitutionNameAction" />
-    <addaction name="dataCommentsAction" />
+    <widget class="QMenu" name="menuInstitution_information" >
+     <property name="title" >
+      <string>Institution information</string>
+     </property>
+     <addaction name="dataInstitutionNameAction" />
+     <addaction name="dataCommentsAction" />
+    </widget>
+    <widget class="QMenu" name="menuDays_and_hours" >
+     <property name="title" >
+      <string>Days and hours</string>
+     </property>
+     <addaction name="dataDaysAction" />
+     <addaction name="dataHoursAction" />
+    </widget>
+    <widget class="QMenu" name="menuStudents" >
+     <property name="title" >
+      <string>Students</string>
+     </property>
+     <addaction name="dataYearsAction" />
+     <addaction name="dataGroupsAction" />
+     <addaction name="dataSubgroupsAction" />
+    </widget>
+    <addaction name="menuInstitution_information" />
     <addaction name="separator" />
-    <addaction name="dataDaysAction" />
-    <addaction name="dataHoursAction" />
+    <addaction name="menuDays_and_hours" />
     <addaction name="separator" />
     <addaction name="dataSubjectsAction" />
-    <addaction name="separator" />
     <addaction name="dataActivityTagsAction" />
-    <addaction name="separator" />
     <addaction name="dataTeachersAction" />
-    <addaction name="separator" />
-    <addaction name="dataYearsAction" />
-    <addaction name="dataGroupsAction" />
-    <addaction name="dataSubgroupsAction" />
+    <addaction name="menuStudents" />
     <addaction name="separator" />
     <addaction name="dataActivitiesAction" />
+    <addaction name="dataSubactivitiesAction" />
     <addaction name="separator" />
     <addaction name="dataBuildingsAction" />
     <addaction name="dataRoomsAction" />
@@ -311,41 +342,24 @@
     <property name="title" >
      <string>Settings</string>
     </property>
-    <widget class="QMenu" name="languageMenu" >
-     <property name="title" >
-      <string>Language</string>
-     </property>
-     <addaction name="languageEnglishAction" />
-     <addaction name="languageArabicAction" />
-     <addaction name="languageCatalanAction" />
-     <addaction name="languageGermanAction" />
-     <addaction name="languageGreekAction" />
-     <addaction name="languageSpanishAction" />
-     <addaction name="languageFrenchAction" />
-     <addaction name="languageHungarianAction" />
-     <addaction name="languageIndonesianAction" />
-     <addaction name="languageItalianAction" />
-     <addaction name="languageLithuanianAction" />
-     <addaction name="languageMacedonianAction" />
-     <addaction name="languageMalayAction" />
-     <addaction name="languageDutchAction" />
-     <addaction name="languagePolishAction" />
-     <addaction name="languageRomanianAction" />
-     <addaction name="languageTurkishAction" />
-    </widget>
     <addaction name="checkForUpdatesAction" />
-    <addaction name="languageMenu" />
+    <addaction name="languageAction" />
     <addaction name="separator" />
     <addaction name="settingsPrintNotAvailableSlotsAction" />
     <addaction name="settingsTimetableHtmlLevelAction" />
+    <addaction name="timetablesDivideByDaysAction" />
     <addaction name="separator" />
     <addaction name="settingsRestoreDefaultsAction" />
+    <addaction name="separator" />
+    <addaction name="helpSettingsAction" />
    </widget>
    <widget class="QMenu" name="menuWizards" >
     <property name="title" >
      <string>Advanced</string>
     </property>
     <addaction name="spreadActivitiesAction" />
+    <addaction name="separator" />
+    <addaction name="removeRedundantConstraintsAction" />
    </widget>
    <addaction name="fileMenu" />
    <addaction name="dataMenu" />
@@ -1383,6 +1397,102 @@
   <action name="spreadActivitiesAction" >
    <property name="text" >
     <string>Spread the activities evenly over the week</string>
+   </property>
+  </action>
+  <action name="statisticsExportToDiskAction" >
+   <property name="text" >
+    <string>Export advanced statistics to disk</string>
+   </property>
+  </action>
+  <action name="removeRedundantConstraintsAction" >
+   <property name="text" >
+    <string>Remove redundant constraints</string>
+   </property>
+  </action>
+  <action name="helpManualAction" >
+   <property name="text" >
+    <string>A user's manual</string>
+   </property>
+  </action>
+  <action name="dataTimeConstraints2ActivitiesGroupedAction" >
+   <property name="text" >
+    <string>2 activities are grouped</string>
+   </property>
+  </action>
+  <action name="timetableLockActivitiesDayAction" >
+   <property name="text" >
+    <string>Lock all activities of a specified day</string>
+   </property>
+  </action>
+  <action name="timetableUnlockActivitiesDayAction" >
+   <property name="text" >
+    <string>Unlock all activities of a specified day</string>
+   </property>
+  </action>
+  <action name="timetableLockActivitiesEndStudentsDayAction" >
+   <property name="text" >
+    <string>Lock all activities which end students day</string>
+   </property>
+  </action>
+  <action name="timetableUnlockActivitiesEndStudentsDayAction" >
+   <property name="text" >
+    <string>Unlock all activities which end students day</string>
+   </property>
+  </action>
+  <action name="timetableLockAllActivitiesAction" >
+   <property name="text" >
+    <string>Lock all activities of the current timetable</string>
+   </property>
+  </action>
+  <action name="timetableUnlockAllActivitiesAction" >
+   <property name="text" >
+    <string>Unlock all activities of the current timetable</string>
+   </property>
+  </action>
+  <action name="dataTimeConstraintsStudentsSetActivityTagMaxHoursContinuouslyAction" >
+   <property name="text" >
+    <string>Max hours continuously with an activity tag for a students set</string>
+   </property>
+  </action>
+  <action name="dataTimeConstraintsStudentsActivityTagMaxHoursContinuouslyAction" >
+   <property name="text" >
+    <string>Max hours continuously with an activity tag for all students</string>
+   </property>
+  </action>
+  <action name="dataTimeConstraintsTeacherActivityTagMaxHoursContinuouslyAction" >
+   <property name="text" >
+    <string>Max hours continuously with an activity tag for a teacher</string>
+   </property>
+  </action>
+  <action name="dataTimeConstraintsTeachersActivityTagMaxHoursContinuouslyAction" >
+   <property name="text" >
+    <string>Max hours continuously with an activity tag for all teachers</string>
+   </property>
+  </action>
+  <action name="dataSubactivitiesAction" >
+   <property name="text" >
+    <string>Modify subactivities</string>
+   </property>
+  </action>
+  <action name="languageAction" >
+   <property name="text" >
+    <string>Language</string>
+   </property>
+  </action>
+  <action name="timetablesDivideByDaysAction" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="checked" >
+    <bool>true</bool>
+   </property>
+   <property name="text" >
+    <string>Divide html timetables with time-axis by days</string>
+   </property>
+  </action>
+  <action name="helpSettingsAction" >
+   <property name="text" >
+    <string>Help on settings</string>
    </property>
   </action>
  </widget>

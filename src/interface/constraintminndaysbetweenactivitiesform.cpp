@@ -128,7 +128,8 @@ bool ConstraintMinNDaysBetweenActivitiesForm::filterOk(TimeConstraint* ctr)
 				foundSubject=true;
 		
 			//activity tag
-			if(sbtn!="" && sbtn!=act->activityTagName)
+//			if(sbtn!="" && sbtn!=act->activityTagName)
+			if(sbtn!="" && !act->activityTagsNames.contains(sbtn))
 				;
 			else
 				//found=false;
@@ -413,7 +414,10 @@ void ConstraintMinNDaysBetweenActivitiesForm::changeSelectively()
 			}
 
 		QMessageBox::information(this, tr("FET information"), tr("There were inspected (and possibly modified) %1 constraints min n days between activities matching your criteria")
-		 .arg(count)
+		 .arg(count)+"\n\n"+
+		 	tr("NOTE: If you are using constraints of type activities same starting time or activities same starting day, it is important"
+		 	 " (after current operation) to apply the operation of removing redundant constraints.")
+		 	+" "+tr("Read Help/Important tips - tip 2) for details.")
 		 /*
 		 +
 		 "\n\n"

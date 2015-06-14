@@ -21,6 +21,8 @@
 
 #include <QDesktopWidget>
 
+#include "lockunlock.h"
+
 ConstraintActivityPreferredRoomForm::ConstraintActivityPreferredRoomForm()
 {
 	//setWindowFlags(Qt::Window);
@@ -122,7 +124,8 @@ bool ConstraintActivityPreferredRoomForm::filterOk(SpaceConstraint* ctr)
 			found=false;
 	
 		//activity tag
-		if(sbtn!="" && sbtn!=act->activityTagName)
+//		if(sbtn!="" && sbtn!=act->activityTagName)
+		if(sbtn!="" && !act->activityTagsNames.contains(sbtn))
 			found=false;
 	
 		//students
@@ -217,6 +220,10 @@ void ConstraintActivityPreferredRoomForm::removeConstraint()
 		s, QObject::tr("OK"), QObject::tr("Cancel"), 0, 0, 1 ) ){
 	case 0: // The user clicked the OK again button or pressed Enter
 		gt.rules.removeSpaceConstraint(ctr);
+		
+		LockUnlock::computeLockedUnlockedActivitiesOnlySpace();
+		LockUnlock::increaseCommunicationSpinBox();
+		
 		filterChanged();
 		break;
 	case 1: // The user clicked the Cancel or pressed Escape

@@ -108,37 +108,74 @@ QApplication* pqapplication=NULL;
 }*/
 
 void readSimulationParameters(){
-	QSettings settings("FET free software", "FET");
-	FET_LANGUAGE=settings.value("language", "en_GB").toString();
-	WORKING_DIRECTORY=settings.value("working-directory", "sample_inputs").toString();
-	IMPORT_DIRECTORY=settings.value("import-directory", OUTPUT_DIR).toString();
+	QSettings newSettings(COMPANY, PROGRAM);
+	QString newVer=newSettings.value("version", "-1").toString();
+	if(newVer=="-1"){
+		QSettings oldSettings("FET free software", "FET");
+		FET_LANGUAGE=oldSettings.value("language", "en_GB").toString();
+		WORKING_DIRECTORY=oldSettings.value("working-directory", "sample_inputs").toString();
+		IMPORT_DIRECTORY=oldSettings.value("import-directory", OUTPUT_DIR).toString();
 	
-	QDir d(WORKING_DIRECTORY);
-	if(!d.exists())
-		WORKING_DIRECTORY="sample_inputs";
+		QDir d(WORKING_DIRECTORY);
+		if(!d.exists())
+			WORKING_DIRECTORY="sample_inputs";
 	
-	QDir i(IMPORT_DIRECTORY);
-	if(!i.exists())
-		IMPORT_DIRECTORY=OUTPUT_DIR;	// IMPORT_DIRECTORY="import";
+		QDir i(IMPORT_DIRECTORY);
+		if(!i.exists())
+			IMPORT_DIRECTORY=OUTPUT_DIR;	// IMPORT_DIRECTORY="import";
 	
-	checkForUpdates=settings.value("check-for-updates", "-1").toInt();
-	QString ver=settings.value("version", "-1").toString();
-	TIMETABLE_HTML_LEVEL=settings.value("timetable-html-level", "2").toInt();
+		checkForUpdates=oldSettings.value("check-for-updates", "-1").toInt();
+		QString ver=oldSettings.value("version", "-1").toString();
+		TIMETABLE_HTML_LEVEL=oldSettings.value("timetable-html-level", "2").toInt();
 	
-	int tmp=settings.value("print-not-available", "1").toInt();
-	PRINT_NOT_AVAILABLE_TIME_SLOTS=tmp;
+		int tmp=oldSettings.value("print-not-available", "1").toInt();
+		PRINT_NOT_AVAILABLE_TIME_SLOTS=tmp;
+		
+		int tmp2=oldSettings.value("divide-html-timetables-with-time-axis-by-days", "0").toInt();
+		DIVIDE_HTML_TIMETABLES_WITH_TIME_AXIS_BY_DAYS=tmp2;
+	}
+	else{
+		FET_LANGUAGE=newSettings.value("language", "en_GB").toString();
+		WORKING_DIRECTORY=newSettings.value("working-directory", "sample_inputs").toString();
+		IMPORT_DIRECTORY=newSettings.value("import-directory", OUTPUT_DIR).toString();
+	
+		QDir d(WORKING_DIRECTORY);
+		if(!d.exists())
+			WORKING_DIRECTORY="sample_inputs";
+	
+		QDir i(IMPORT_DIRECTORY);
+		if(!i.exists())
+			IMPORT_DIRECTORY=OUTPUT_DIR;	// IMPORT_DIRECTORY="import";
+	
+		checkForUpdates=newSettings.value("check-for-updates", "-1").toInt();
+		QString ver=newSettings.value("version", "-1").toString();
+		TIMETABLE_HTML_LEVEL=newSettings.value("timetable-html-level", "2").toInt();
+	
+		int tmp=newSettings.value("print-not-available", "1").toInt();
+		PRINT_NOT_AVAILABLE_TIME_SLOTS=tmp;
+
+		int tmp2=newSettings.value("divide-html-timetables-with-time-axis-by-days", "0").toInt();
+		DIVIDE_HTML_TIMETABLES_WITH_TIME_AXIS_BY_DAYS=tmp2;
+	}
 	
 	cout<<"Settings read"<<endl;
 }
 
 void writeSimulationParameters(){
-	QSettings settings("FET free software", "FET");
+	QSettings settings(COMPANY, PROGRAM);
 	settings.setValue("language", FET_LANGUAGE);
 	settings.setValue("working-directory", WORKING_DIRECTORY);
 	settings.setValue("import-directory", IMPORT_DIRECTORY);
 	settings.setValue("version", FET_VERSION);
 	settings.setValue("check-for-updates", checkForUpdates);
 	settings.setValue("timetable-html-level", TIMETABLE_HTML_LEVEL);
+
+	int k;
+	if(DIVIDE_HTML_TIMETABLES_WITH_TIME_AXIS_BY_DAYS)
+		k=1;
+	else
+		k=0;
+	settings.setValue("divide-html-timetables-with-time-axis-by-days", k);
 	
 	int tmp=1;
 	if(!PRINT_NOT_AVAILABLE_TIME_SLOTS)
@@ -250,7 +287,7 @@ int main(int argc, char **argv)
 	QObject::connect(&qapplication, SIGNAL(lastWindowClosed()), &qapplication, SLOT(quit()));
 	
 	if(!t){
-		QMessageBox::critical(NULL, QObject::tr("FET critical"), QObject::tr("Cannot create or use %1 directory - FET will now abort").arg(OUTPUT_DIR));
+		QMessageBox::critical(NULL, QObject::tr("FET critical"), QObject::tr("Cannot create or use %1 directory - FET will now abort").arg(QDir::toNativeSeparators(OUTPUT_DIR)));
 		assert(0);
 		exit(1);
 	}
@@ -297,6 +334,8 @@ int main(int argc, char **argv)
 		FET_LANGUAGE="en_GB";
 		
 		PRINT_NOT_AVAILABLE_TIME_SLOTS=true;
+		
+		DIVIDE_HTML_TIMETABLES_WITH_TIME_AXIS_BY_DAYS=false;
 
 		for(int i=1; i<argc; i++){
 			QString s=argv[i];
@@ -307,6 +346,8 @@ int main(int argc, char **argv)
 				secondsLimit=s.right(s.length()-19).toInt();
 			else if(s.left(21)=="--timetablehtmllevel=")
 				TIMETABLE_HTML_LEVEL=s.right(s.length()-21).toInt();
+			else if(s.left(12)=="--htmllevel=")
+				TIMETABLE_HTML_LEVEL=s.right(s.length()-12).toInt();
 			else if(s.left(11)=="--language=")
 				FET_LANGUAGE=s.right(s.length()-11);
 			else if(s.left(20)=="--printnotavailable="){
@@ -315,39 +356,45 @@ int main(int argc, char **argv)
 				else
 					PRINT_NOT_AVAILABLE_TIME_SLOTS=true;
 			}
+			else if(s.left(23)=="--dividetimeaxisbydays="){
+				if(s.right(5)=="false")
+					DIVIDE_HTML_TIMETABLES_WITH_TIME_AXIS_BY_DAYS=false;
+				else
+					DIVIDE_HTML_TIMETABLES_WITH_TIME_AXIS_BY_DAYS=true;
+			}
 		}
 		
 		if(filename==""){
 			cout<<"Incorrect parameters (input file not specified). Please see README for usage (basically,\n"
-			 "fet --inputfile=x [--timelimitseconds=y] [--timetablehtmllevel=z] [--language=t]\n"
-			 "where z is from 0 to 5 and language is en_GB, de, ro or other implemented language in FET)"<<endl;
+			 "fet --inputfile=x [--timelimitseconds=y] [--htmllevel=z] [--language=t] [--printnotavailable=true|false] [--dividetimeaxisbydays=true|false]\n"
+			 "where z is from 0 to 6 and language is en_GB, de, ro or other implemented language in FET)"<<endl;
 			out<<"Incorrect parameters (input file not specified). Please see README for usage (basically,\n"
-			 "fet --inputfile=x [--timelimitseconds=y] [--timetablehtmllevel=z] [--language=t]\n"
-			 "where z is from 0 to 5 and language is en_GB, de, ro or other implemented language in FET)"<<endl;
+			 "fet --inputfile=x [--timelimitseconds=y] [--timetablehtmllevel=z] [--language=t] [--printnotavailable=true|false] [--dividetimeaxisbydays=true|false]\n"
+			 "where z is from 0 to 6 and language is en_GB, de, ro or other implemented language in FET)"<<endl;
 			return 1;
 		}	
 		if(secondsLimit==0){
 			cout<<"Incorrect parameters (time limit is 0 seconds). Please see README for usage (basically,\n"
-			 "fet --inputfile=x [--timelimitseconds=y] [--timetablehtmllevel=z] [--language=t]\n"
-			 "where z is from 0 to 5 and language is en_GB, de, ro or other implemented language in FET)"<<endl;
+			 "fet --inputfile=x [--timelimitseconds=y] [--htmllevel=z] [--language=t] [--printnotavailable=true|false] [--dividetimeaxisbydays=true|false]\n"
+			 "where z is from 0 to 6 and language is en_GB, de, ro or other implemented language in FET)"<<endl;
 			out<<"Incorrect parameters (time limit is 0 seconds). Please see README for usage (basically,\n"
-			 "fet --inputfile=x [--timelimitseconds=y] [--timetablehtmllevel=z] [--language=t]\n"
-			 "where z is from 0 to 5 and language is en_GB, de, ro or other implemented language in FET)"<<endl;
+			 "fet --inputfile=x [--timelimitseconds=y] [--htmllevel=z] [--language=t] [--printnotavailable=true|false] [--dividetimeaxisbydays=true|false]\n"
+			 "where z is from 0 to 6 and language is en_GB, de, ro or other implemented language in FET)"<<endl;
 			return 1;
 		}	
-		if(TIMETABLE_HTML_LEVEL>5 || TIMETABLE_HTML_LEVEL<0){
-			cout<<"Incorrect parameters (timetable html level 0, 1, 2, 3, 4 or 5). Please see README for usage (basically,\n"
-			 "fet --inputfile=x [--timelimitseconds=y] [--timetablehtmllevel=z] [--language=t]\n"
-			 "where z is from 0 to 5 and language is en_GB, de, ro or other implemented language in FET)"<<endl;
-			out<<"Incorrect parameters (timetable html level 0, 1, 2, 3, 4 or 5). Please see README for usage (basically,\n"
-			 "fet --inputfile=x [--timelimitseconds=y] [--timetablehtmllevel=z] [--language=t]\n"
-			 "where z is from 0 to 5 and language is en_GB, de, ro or other implemented language in FET)"<<endl;
+		if(TIMETABLE_HTML_LEVEL>6 || TIMETABLE_HTML_LEVEL<0){
+			cout<<"Incorrect parameters (html level must be 0, 1, 2, 3, 4, 5 or 6). Please see README for usage (basically,\n"
+			 "fet --inputfile=x [--timelimitseconds=y] [--htmllevel=z] [--language=t] [--printnotavailable=true|false] [--dividetimeaxisbydays=true|false]\n"
+			 "where z is from 0 to 6 and language is en_GB, de, ro or other implemented language in FET)"<<endl;
+			out<<"Incorrect parameters (html level must be 0, 1, 2, 3, 4, 5 or 6). Please see README for usage (basically,\n"
+			 "fet --inputfile=x [--timelimitseconds=y] [--htmllevel=z] [--language=t] [--printnotavailable=true|false] [--dividetimeaxisbydays=true|false]\n"
+			 "where z is from 0 to 6 and language is en_GB, de, ro or other implemented language in FET)"<<endl;
 			return 1;
 		}	
 		
 		setLanguage(qapplication);
 		
-		if(TIMETABLE_HTML_LEVEL>5 || TIMETABLE_HTML_LEVEL<0)
+		if(TIMETABLE_HTML_LEVEL>6 || TIMETABLE_HTML_LEVEL<0)
 			TIMETABLE_HTML_LEVEL=2;
 	
 		bool t=gt.rules.read(filename, true);

@@ -46,7 +46,8 @@ using namespace std;
 //static Solution* crt_chrom=NULL;
 //static Rules* crt_rules=NULL;
 
-#define yesNo(x)				((x)==0?"no":"yes")
+//#define yesNo(x)				((x)==0?"no":"yes")
+#define trueFalse(x)			((x)==0?"false":"true")
 #define yesNoTranslated(x)		((x)==0?QObject::tr("no"):QObject::tr("yes"))
 
 #include "generate_pre.h"
@@ -57,8 +58,8 @@ static int rooms_conflicts=-1;
 
 //extern QList<int> activitiesPreferredRoomsPreferredRooms[MAX_ACTIVITIES];
 
-static qint8 subgroupsBuildingsTimetable[MAX_TOTAL_SUBGROUPS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
-static qint8 teachersBuildingsTimetable[MAX_TEACHERS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
+//static qint8 subgroupsBuildingsTimetable[MAX_TOTAL_SUBGROUPS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
+//static qint8 teachersBuildingsTimetable[MAX_TEACHERS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
 
 //////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////
@@ -171,8 +172,8 @@ double ConstraintBasicCompulsorySpace::fitness(
 	//if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.changedForMatrixCalculation){
 		rooms_conflicts = roomsConflicts = c.getRoomsMatrix(r, roomsMatrix);
 
-		c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
-		c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
+		//c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
+		//c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
 		 
 		//crt_chrom = &c;
 		//crt_rules = &r;
@@ -567,8 +568,8 @@ double ConstraintRoomNotAvailableTimes::fitness(
 	//if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.changedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, roomsMatrix);
 
-		c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
-		c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
+		//c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
+		//c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
 		 
 		//crt_chrom = &c;
 		//crt_rules = &r;
@@ -673,12 +674,13 @@ ConstraintActivityPreferredRoom::ConstraintActivityPreferredRoom()
 	this->type=CONSTRAINT_ACTIVITY_PREFERRED_ROOM;
 }
 
-ConstraintActivityPreferredRoom::ConstraintActivityPreferredRoom(double wp, int aid, const QString& room)
+ConstraintActivityPreferredRoom::ConstraintActivityPreferredRoom(double wp, int aid, const QString& room, bool perm)
 	: SpaceConstraint(wp)
 {
 	this->type=CONSTRAINT_ACTIVITY_PREFERRED_ROOM;
 	this->activityId=aid;
 	this->roomName=room;
+	this->permanentlyLocked=perm;
 }
 
 bool ConstraintActivityPreferredRoom::operator==(ConstraintActivityPreferredRoom& c){
@@ -688,6 +690,7 @@ bool ConstraintActivityPreferredRoom::operator==(ConstraintActivityPreferredRoom
 		return false;
 	if(this->weightPercentage!=c.weightPercentage)
 		return false;
+	//no need to care about permanently locked
 	return true;
 }
 
@@ -738,6 +741,8 @@ QString ConstraintActivityPreferredRoom::getXmlDescription(Rules& r){
 	s+="	<Weight_Percentage>"+QString::number(weightPercentage)+"</Weight_Percentage>\n";
 	s+="	<Activity_Id>"+QString::number(this->activityId)+"</Activity_Id>\n";
 	s+="	<Room>"+protect(this->roomName)+"</Room>\n";
+	
+	s+="	<Permanently_Locked>";s+=trueFalse(this->permanentlyLocked);s+="</Permanently_Locked>\n";
 		
 	s+="</ConstraintActivityPreferredRoom>\n";
 
@@ -776,8 +781,10 @@ QString ConstraintActivityPreferredRoom::getDescription(Rules& r){
 		s+=QObject::tr(",S:");
 		s+=r.activitiesList[ai]->subjectName;
 	
-		if(r.activitiesList[ai]->activityTagName!="")
-			s+=QObject::tr(",AT:", "Activity tag")+r.activitiesList[ai]->activityTagName;
+		if(r.activitiesList[ai]->activityTagsNames.count()>0){
+			s+=",";
+			s+=QObject::tr("AT:", "Activity tags")+r.activitiesList[ai]->activityTagsNames.join(",");
+		}
 	
 		s+=QObject::tr(",St:");
 		k=0;
@@ -794,6 +801,9 @@ QString ConstraintActivityPreferredRoom::getDescription(Rules& r){
 	s+=", ";
 
 	s+=QObject::tr("R:%1").arg(this->roomName);
+	
+	s+=", ";
+	s+=QObject::tr("PL:%1", "Abbreviation for permanently locked").arg(yesNoTranslated(this->permanentlyLocked));
 
 	return s;
 }
@@ -832,8 +842,10 @@ QString ConstraintActivityPreferredRoom::getDetailedDescription(Rules& r){
 		s+=QObject::tr(",S:");
 		s+=r.activitiesList[ai]->subjectName;
 	
-		if(r.activitiesList[ai]->activityTagName!="")
-			s+=QObject::tr(",AT:", "Activity tag")+r.activitiesList[ai]->activityTagName;
+		if(r.activitiesList[ai]->activityTagsNames.count()>0){
+			s+=",";
+			s+=QObject::tr("AT:", "Activity tags")+r.activitiesList[ai]->activityTagsNames.join(",");
+		}
 	
 		s+=QObject::tr(",St:");
 		k=0;
@@ -850,6 +862,16 @@ QString ConstraintActivityPreferredRoom::getDetailedDescription(Rules& r){
 	s+="\n";
 	
 	s+=QObject::tr("Room=%1").arg(this->roomName);s+="\n";
+	
+	if(this->permanentlyLocked){
+		s+=QObject::tr("This activity is permanently locked, which means you cannot unlock it from the 'Timetable' menu"
+		" (you can unlock this activity by removing the constraint from the constraints dialog or by setting the 'permanently"
+		" locked' attribute false when editing this constraint)");
+	}
+	else{
+		s+=QObject::tr("This activity is not permanently locked, which means you can unlock it from the 'Timetable' menu");
+	}
+	s+="\n";
 
 	return s;
 }
@@ -867,8 +889,8 @@ double ConstraintActivityPreferredRoom::fitness(
 	//if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.changedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, roomsMatrix);
 
-		c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
-		c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
+		//c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
+		//c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
 		 
 		//crt_chrom = &c;
 		//crt_rules = &r;
@@ -1075,8 +1097,10 @@ QString ConstraintActivityPreferredRooms::getDescription(Rules& r){
 		s+=QObject::tr(",S:");
 		s+=r.activitiesList[ai]->subjectName;
 	
-		if(r.activitiesList[ai]->activityTagName!="")
-			s+=QObject::tr(",AT:", "Activity tag")+r.activitiesList[ai]->activityTagName;
+		if(r.activitiesList[ai]->activityTagsNames.count()>0){
+			s+=",";
+			s+=QObject::tr("AT:", "Activity tags")+r.activitiesList[ai]->activityTagsNames.join(",");
+		}
 	
 		s+=QObject::tr(",St:");
 		k=0;
@@ -1128,8 +1152,10 @@ QString ConstraintActivityPreferredRooms::getDetailedDescription(Rules& r){
 		s+=QObject::tr(",S:");
 		s+=r.activitiesList[ai]->subjectName;
 	
-		if(r.activitiesList[ai]->activityTagName!="")
-			s+=QObject::tr(",AT:", "Activity tag")+r.activitiesList[ai]->activityTagName;
+		if(r.activitiesList[ai]->activityTagsNames.count()>0){
+			s+=",";
+			s+=QObject::tr("AT:", "Activity tags")+r.activitiesList[ai]->activityTagsNames.join(",");
+		}
 	
 		s+=QObject::tr(",St:");
 		k=0;
@@ -1166,8 +1192,8 @@ double ConstraintActivityPreferredRooms::fitness(
 	//if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.changedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, roomsMatrix);
 
-		c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
-		c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
+		//c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
+		//c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
 		 
 		//crt_chrom = &c;
 		//crt_rules = &r;
@@ -1380,8 +1406,8 @@ double ConstraintStudentsSetHomeRoom::fitness(
 	//if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.changedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, roomsMatrix);
 
-		c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
-		c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
+		//c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
+		//c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
 		 
 		//crt_chrom = &c;
 		//crt_rules = &r;
@@ -1635,8 +1661,8 @@ double ConstraintStudentsSetHomeRooms::fitness(
 	//if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.changedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, roomsMatrix);
 
-		c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
-		c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
+		//c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
+		//c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
 		 
 		//crt_chrom = &c;
 		//crt_rules = &r;
@@ -1870,8 +1896,8 @@ double ConstraintTeacherHomeRoom::fitness(
 	//if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.changedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, roomsMatrix);
 
-		c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
-		c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
+		//c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
+		//c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
 		 
 		//crt_chrom = &c;
 		//crt_rules = &r;
@@ -2119,8 +2145,8 @@ double ConstraintTeacherHomeRooms::fitness(
 	//if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.changedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, roomsMatrix);
 
-		c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
-		c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
+		//c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
+		//c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
 		 
 		//crt_chrom = &c;
 		//crt_rules = &r;
@@ -2339,8 +2365,8 @@ double ConstraintSubjectPreferredRoom::fitness(
 	//if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.changedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, roomsMatrix);
 
-		c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
-		c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
+		//c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
+		//c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
 		 
 		//crt_chrom = &c;
 		//crt_rules = &r;
@@ -2399,11 +2425,13 @@ double ConstraintSubjectPreferredRoom::fitness(
 
 bool ConstraintSubjectPreferredRoom::isRelatedToActivity(Activity* a)
 {
-	Q_UNUSED(a);
+	//Q_UNUSED(a);
 	//if(a)
 	//	;
 
-	return false;
+	//return false;
+	
+	return a->subjectName==this->subjectName;
 }
 
 bool ConstraintSubjectPreferredRoom::isRelatedToTeacher(Teacher* t)
@@ -2577,8 +2605,8 @@ double ConstraintSubjectPreferredRooms::fitness(
 	//if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.changedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, roomsMatrix);
 
-		c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
-		c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
+		//c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
+		//c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
 		 
 		//crt_chrom = &c;
 		//crt_rules = &r;
@@ -2640,11 +2668,13 @@ double ConstraintSubjectPreferredRooms::fitness(
 
 bool ConstraintSubjectPreferredRooms::isRelatedToActivity(Activity* a)
 {
-	Q_UNUSED(a);
+	//Q_UNUSED(a);
 	//if(a)
 	//	;
 
-	return false;
+	//return false;
+	
+	return a->subjectName==this->subjectName;
 }
 
 bool ConstraintSubjectPreferredRooms::isRelatedToTeacher(Teacher* t)
@@ -2715,7 +2745,7 @@ bool ConstraintSubjectActivityTagPreferredRoom::computeInternalStructure(Rules& 
 	this->_activities.clear();
 	for(int ac=0; ac<r.nInternalActivities; ac++)
 		if(r.internalActivitiesList[ac].subjectName == this->subjectName
-		 && r.internalActivitiesList[ac].activityTagName == this->activityTagName){
+		 && r.internalActivitiesList[ac].activityTagsNames.contains(this->activityTagName)){
 		 	this->_activities.append(ac);
 		}
 		
@@ -2804,8 +2834,8 @@ double ConstraintSubjectActivityTagPreferredRoom::fitness(
 	//if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.changedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, roomsMatrix);
 
-		c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
-		c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
+		//c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
+		//c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
 		 
 		//crt_chrom = &c;
 		//crt_rules = &r;
@@ -2865,11 +2895,13 @@ double ConstraintSubjectActivityTagPreferredRoom::fitness(
 
 bool ConstraintSubjectActivityTagPreferredRoom::isRelatedToActivity(Activity* a)
 {
-	Q_UNUSED(a);
+	//Q_UNUSED(a);
 	//if(a)
 	//	;
 
-	return false;
+	//return false;
+	
+	return this->subjectName==a->subjectName && a->activityTagsNames.contains(this->activityTagName);
 }
 
 bool ConstraintSubjectActivityTagPreferredRoom::isRelatedToTeacher(Teacher* t)
@@ -2938,7 +2970,7 @@ bool ConstraintSubjectActivityTagPreferredRooms::computeInternalStructure(Rules&
 	this->_activities.clear();
 	for(int ac=0; ac<r.nInternalActivities; ac++)
 		if(r.internalActivitiesList[ac].subjectName == this->subjectName
-		 && r.internalActivitiesList[ac].activityTagName == this->activityTagName){
+		 && r.internalActivitiesList[ac].activityTagsNames.contains(this->activityTagName)){
 			this->_activities.append(ac);
 		}
 
@@ -3006,7 +3038,7 @@ QString ConstraintSubjectActivityTagPreferredRooms::getDescription(Rules& r){
 
 	QString s="Subject activity tag preferred rooms"; s+=", ";
 	s+=QObject::tr("WP:%1\%").arg(this->weightPercentage);s+=", ";
-	s+=QObject::tr("S:%1").arg(this->subjectName);
+	s+=QObject::tr("S:%1").arg(this->subjectName);s+=", ";
 	s+=QObject::tr("AT:%1", "Activity tag").arg(this->activityTagName);
 	for(QStringList::Iterator it=this->roomsNames.begin(); it!=this->roomsNames.end(); it++){
 		s+=", ";
@@ -3047,8 +3079,8 @@ double ConstraintSubjectActivityTagPreferredRooms::fitness(
 	//if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.changedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, roomsMatrix);
 
-		c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
-		c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
+		//c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
+		//c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
 		 
 		//crt_chrom = &c;
 		//crt_rules = &r;
@@ -3111,9 +3143,11 @@ double ConstraintSubjectActivityTagPreferredRooms::fitness(
 
 bool ConstraintSubjectActivityTagPreferredRooms::isRelatedToActivity(Activity* a)
 {
-	Q_UNUSED(a);
+	//Q_UNUSED(a);
 
-	return false;
+	//return false;
+	
+	return this->subjectName==a->subjectName && a->activityTagsNames.contains(this->activityTagName);
 }
 
 bool ConstraintSubjectActivityTagPreferredRooms::isRelatedToTeacher(Teacher* t)
@@ -3287,8 +3321,8 @@ double ConstraintStudentsSetMaxBuildingChangesPerDay::fitness(
 	//if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.changedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, roomsMatrix);
 
-		c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
-		c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
+		//c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
+		//c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
 		 
 		//crt_chrom = &c;
 		//crt_rules = &r;
@@ -3299,15 +3333,38 @@ double ConstraintStudentsSetMaxBuildingChangesPerDay::fitness(
 	int nbroken=0;
 	
 	foreach(int sbg, this->iSubgroupsList){
+///////////// Better, less memory
+		StudentsSubgroup* sts=r.internalSubgroupsList[sbg];
+		int crtBuildingsTimetable[MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
+		for(int d2=0; d2<r.nDaysPerWeek; d2++)
+			for(int h2=0; h2<r.nHoursPerDay; h2++)
+				crtBuildingsTimetable[d2][h2]=-1;
+				
+		foreach(int ai, sts->activitiesForSubgroup)
+			if(c.times[ai]!=UNALLOCATED_TIME){
+				int d2=c.times[ai]%r.nDaysPerWeek;
+				int h2=c.times[ai]/r.nDaysPerWeek;
+				
+				for(int dur=0; dur<r.internalActivitiesList[ai].duration; dur++){
+					assert(h2+dur<r.nHoursPerDay);
+					assert(crtBuildingsTimetable[d2][h2+dur]==-1);
+					if(c.rooms[ai]!=UNSPECIFIED_ROOM && c.rooms[ai]!=UNALLOCATED_SPACE){
+						assert(c.rooms[ai]>=0 && c.rooms[ai]<r.nInternalRooms);
+						crtBuildingsTimetable[d2][h2+dur]=r.internalRoomsList[c.rooms[ai]]->buildingIndex;
+					}
+				}
+			}
+/////////////
+	
 		for(int d2=0; d2<r.nDaysPerWeek; d2++){			
 			int crt_building=-1;
 			int n_changes=0;
 			for(int h2=0; h2<r.nHoursPerDay; h2++){
-				if(subgroupsBuildingsTimetable[sbg][d2][h2]!=-1){
-					if(crt_building!=subgroupsBuildingsTimetable[sbg][d2][h2]){
+				if(crtBuildingsTimetable[d2][h2]!=-1){
+					if(crt_building!=crtBuildingsTimetable[d2][h2]){
 						if(crt_building!=-1)
 							n_changes++;
-						crt_building=subgroupsBuildingsTimetable[sbg][d2][h2];
+						crt_building=crtBuildingsTimetable[d2][h2];
 					}
 				}
 			}
@@ -3463,8 +3520,8 @@ double ConstraintStudentsMaxBuildingChangesPerDay::fitness(
 	//if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.changedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, roomsMatrix);
 
-		c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
-		c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
+		//c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
+		//c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
 		 
 		//crt_chrom = &c;
 		//crt_rules = &r;
@@ -3475,15 +3532,38 @@ double ConstraintStudentsMaxBuildingChangesPerDay::fitness(
 	int nbroken=0;
 	
 	for(int sbg=0; sbg<r.nInternalSubgroups; sbg++){
+///////////// Better, less memory
+		StudentsSubgroup* sts=r.internalSubgroupsList[sbg];
+		int crtBuildingsTimetable[MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
+		for(int d2=0; d2<r.nDaysPerWeek; d2++)
+			for(int h2=0; h2<r.nHoursPerDay; h2++)
+				crtBuildingsTimetable[d2][h2]=-1;
+				
+		foreach(int ai, sts->activitiesForSubgroup)
+			if(c.times[ai]!=UNALLOCATED_TIME){
+				int d2=c.times[ai]%r.nDaysPerWeek;
+				int h2=c.times[ai]/r.nDaysPerWeek;
+				
+				for(int dur=0; dur<r.internalActivitiesList[ai].duration; dur++){
+					assert(h2+dur<r.nHoursPerDay);
+					assert(crtBuildingsTimetable[d2][h2+dur]==-1);
+					if(c.rooms[ai]!=UNSPECIFIED_ROOM && c.rooms[ai]!=UNALLOCATED_SPACE){
+						assert(c.rooms[ai]>=0 && c.rooms[ai]<r.nInternalRooms);
+						crtBuildingsTimetable[d2][h2+dur]=r.internalRoomsList[c.rooms[ai]]->buildingIndex;
+					}
+				}
+			}
+/////////////
+
 		for(int d2=0; d2<r.nDaysPerWeek; d2++){			
 			int crt_building=-1;
 			int n_changes=0;
 			for(int h2=0; h2<r.nHoursPerDay; h2++){
-				if(subgroupsBuildingsTimetable[sbg][d2][h2]!=-1){
-					if(crt_building!=subgroupsBuildingsTimetable[sbg][d2][h2]){
+				if(crtBuildingsTimetable[d2][h2]!=-1){
+					if(crt_building!=crtBuildingsTimetable[d2][h2]){
 						if(crt_building!=-1)
 							n_changes++;
-						crt_building=subgroupsBuildingsTimetable[sbg][d2][h2];
+						crt_building=crtBuildingsTimetable[d2][h2];
 					}
 				}
 			}
@@ -3693,8 +3773,8 @@ double ConstraintStudentsSetMaxBuildingChangesPerWeek::fitness(
 	//if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.changedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, roomsMatrix);
 
-		c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
-		c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
+		//c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
+		//c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
 		 
 		//crt_chrom = &c;
 		//crt_rules = &r;
@@ -3705,15 +3785,38 @@ double ConstraintStudentsSetMaxBuildingChangesPerWeek::fitness(
 	int nbroken=0;
 	
 	foreach(int sbg, this->iSubgroupsList){
+///////////// Better, less memory
+		StudentsSubgroup* sts=r.internalSubgroupsList[sbg];
+		int crtBuildingsTimetable[MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
+		for(int d2=0; d2<r.nDaysPerWeek; d2++)
+			for(int h2=0; h2<r.nHoursPerDay; h2++)
+				crtBuildingsTimetable[d2][h2]=-1;
+				
+		foreach(int ai, sts->activitiesForSubgroup)
+			if(c.times[ai]!=UNALLOCATED_TIME){
+				int d2=c.times[ai]%r.nDaysPerWeek;
+				int h2=c.times[ai]/r.nDaysPerWeek;
+				
+				for(int dur=0; dur<r.internalActivitiesList[ai].duration; dur++){
+					assert(h2+dur<r.nHoursPerDay);
+					assert(crtBuildingsTimetable[d2][h2+dur]==-1);
+					if(c.rooms[ai]!=UNSPECIFIED_ROOM && c.rooms[ai]!=UNALLOCATED_SPACE){
+						assert(c.rooms[ai]>=0 && c.rooms[ai]<r.nInternalRooms);
+						crtBuildingsTimetable[d2][h2+dur]=r.internalRoomsList[c.rooms[ai]]->buildingIndex;
+					}
+				}
+			}
+/////////////
+
 		int n_changes=0;
 		for(int d2=0; d2<r.nDaysPerWeek; d2++){			
 			int crt_building=-1;
 			for(int h2=0; h2<r.nHoursPerDay; h2++){
-				if(subgroupsBuildingsTimetable[sbg][d2][h2]!=-1){
-					if(crt_building!=subgroupsBuildingsTimetable[sbg][d2][h2]){
+				if(crtBuildingsTimetable[d2][h2]!=-1){
+					if(crt_building!=crtBuildingsTimetable[d2][h2]){
 						if(crt_building!=-1)
 							n_changes++;
-						crt_building=subgroupsBuildingsTimetable[sbg][d2][h2];
+						crt_building=crtBuildingsTimetable[d2][h2];
 					}
 				}
 			}
@@ -3868,8 +3971,8 @@ double ConstraintStudentsMaxBuildingChangesPerWeek::fitness(
 	//if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.changedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, roomsMatrix);
 
-		c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
-		c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
+		//c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
+		//c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
 		 
 		//crt_chrom = &c;
 		//crt_rules = &r;
@@ -3880,15 +3983,38 @@ double ConstraintStudentsMaxBuildingChangesPerWeek::fitness(
 	int nbroken=0;
 	
 	for(int sbg=0; sbg<r.nInternalSubgroups; sbg++){
+///////////// Better, less memory
+		StudentsSubgroup* sts=r.internalSubgroupsList[sbg];
+		int crtBuildingsTimetable[MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
+		for(int d2=0; d2<r.nDaysPerWeek; d2++)
+			for(int h2=0; h2<r.nHoursPerDay; h2++)
+				crtBuildingsTimetable[d2][h2]=-1;
+				
+		foreach(int ai, sts->activitiesForSubgroup)
+			if(c.times[ai]!=UNALLOCATED_TIME){
+				int d2=c.times[ai]%r.nDaysPerWeek;
+				int h2=c.times[ai]/r.nDaysPerWeek;
+				
+				for(int dur=0; dur<r.internalActivitiesList[ai].duration; dur++){
+					assert(h2+dur<r.nHoursPerDay);
+					assert(crtBuildingsTimetable[d2][h2+dur]==-1);
+					if(c.rooms[ai]!=UNSPECIFIED_ROOM && c.rooms[ai]!=UNALLOCATED_SPACE){
+						assert(c.rooms[ai]>=0 && c.rooms[ai]<r.nInternalRooms);
+						crtBuildingsTimetable[d2][h2+dur]=r.internalRoomsList[c.rooms[ai]]->buildingIndex;
+					}
+				}
+			}
+/////////////
+
 		int n_changes=0;
 		for(int d2=0; d2<r.nDaysPerWeek; d2++){			
 			int crt_building=-1;
 			for(int h2=0; h2<r.nHoursPerDay; h2++){
-				if(subgroupsBuildingsTimetable[sbg][d2][h2]!=-1){
-					if(crt_building!=subgroupsBuildingsTimetable[sbg][d2][h2]){
+				if(crtBuildingsTimetable[d2][h2]!=-1){
+					if(crt_building!=crtBuildingsTimetable[d2][h2]){
 						if(crt_building!=-1)
 							n_changes++;
-						crt_building=subgroupsBuildingsTimetable[sbg][d2][h2];
+						crt_building=crtBuildingsTimetable[d2][h2];
 					}
 				}
 			}
@@ -4097,8 +4223,8 @@ double ConstraintStudentsSetMinGapsBetweenBuildingChanges::fitness(
 	//if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.changedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, roomsMatrix);
 
-		c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
-		c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
+		//c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
+		//c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
 		 
 		//crt_chrom = &c;
 		//crt_rules = &r;
@@ -4109,21 +4235,44 @@ double ConstraintStudentsSetMinGapsBetweenBuildingChanges::fitness(
 	int nbroken=0;
 	
 	foreach(int sbg, this->iSubgroupsList){
+///////////// Better, less memory
+		StudentsSubgroup* sts=r.internalSubgroupsList[sbg];
+		int crtBuildingsTimetable[MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
+		for(int d2=0; d2<r.nDaysPerWeek; d2++)
+			for(int h2=0; h2<r.nHoursPerDay; h2++)
+				crtBuildingsTimetable[d2][h2]=-1;
+				
+		foreach(int ai, sts->activitiesForSubgroup)
+			if(c.times[ai]!=UNALLOCATED_TIME){
+				int d2=c.times[ai]%r.nDaysPerWeek;
+				int h2=c.times[ai]/r.nDaysPerWeek;
+				
+				for(int dur=0; dur<r.internalActivitiesList[ai].duration; dur++){
+					assert(h2+dur<r.nHoursPerDay);
+					assert(crtBuildingsTimetable[d2][h2+dur]==-1);
+					if(c.rooms[ai]!=UNSPECIFIED_ROOM && c.rooms[ai]!=UNALLOCATED_SPACE){
+						assert(c.rooms[ai]>=0 && c.rooms[ai]<r.nInternalRooms);
+						crtBuildingsTimetable[d2][h2+dur]=r.internalRoomsList[c.rooms[ai]]->buildingIndex;
+					}
+				}
+			}
+/////////////
+
 		for(int d2=0; d2<r.nDaysPerWeek; d2++){
 			int h2;
 			for(h2=0; h2<r.nHoursPerDay; h2++)
-				if(subgroupsBuildingsTimetable[sbg][d2][h2]!=-1)
+				if(crtBuildingsTimetable[d2][h2]!=-1)
 					break;
 
 			int crt_building=-1;					
 			if(h2<r.nHoursPerDay)
-				crt_building=subgroupsBuildingsTimetable[sbg][d2][h2];
+				crt_building=crtBuildingsTimetable[d2][h2];
 			
 			int cnt_gaps=0;
 			
 			for(h2++; h2<r.nHoursPerDay; h2++){
-				if(subgroupsBuildingsTimetable[sbg][d2][h2]!=-1){
-					if(subgroupsBuildingsTimetable[sbg][d2][h2]==crt_building)
+				if(crtBuildingsTimetable[d2][h2]!=-1){
+					if(crtBuildingsTimetable[d2][h2]==crt_building)
 						cnt_gaps=0;
 					else{
 						if(cnt_gaps<this->minGapsBetweenBuildingChanges){
@@ -4143,7 +4292,7 @@ double ConstraintStudentsSetMinGapsBetweenBuildingChanges::fitness(
 							}
 						}
 						
-						crt_building=subgroupsBuildingsTimetable[sbg][d2][h2];
+						crt_building=crtBuildingsTimetable[d2][h2];
 						cnt_gaps=0;
 					}
 				}
@@ -4285,8 +4434,8 @@ double ConstraintStudentsMinGapsBetweenBuildingChanges::fitness(
 	//if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.changedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, roomsMatrix);
 
-		c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
-		c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
+		//c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
+		//c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
 		 
 		//crt_chrom = &c;
 		//crt_rules = &r;
@@ -4297,21 +4446,44 @@ double ConstraintStudentsMinGapsBetweenBuildingChanges::fitness(
 	int nbroken=0;
 	
 	for(int sbg=0; sbg<r.nInternalSubgroups; sbg++){
+///////////// Better, less memory
+		StudentsSubgroup* sts=r.internalSubgroupsList[sbg];
+		int crtBuildingsTimetable[MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
+		for(int d2=0; d2<r.nDaysPerWeek; d2++)
+			for(int h2=0; h2<r.nHoursPerDay; h2++)
+				crtBuildingsTimetable[d2][h2]=-1;
+				
+		foreach(int ai, sts->activitiesForSubgroup)
+			if(c.times[ai]!=UNALLOCATED_TIME){
+				int d2=c.times[ai]%r.nDaysPerWeek;
+				int h2=c.times[ai]/r.nDaysPerWeek;
+				
+				for(int dur=0; dur<r.internalActivitiesList[ai].duration; dur++){
+					assert(h2+dur<r.nHoursPerDay);
+					assert(crtBuildingsTimetable[d2][h2+dur]==-1);
+					if(c.rooms[ai]!=UNSPECIFIED_ROOM && c.rooms[ai]!=UNALLOCATED_SPACE){
+						assert(c.rooms[ai]>=0 && c.rooms[ai]<r.nInternalRooms);
+						crtBuildingsTimetable[d2][h2+dur]=r.internalRoomsList[c.rooms[ai]]->buildingIndex;
+					}
+				}
+			}
+/////////////
+
 		for(int d2=0; d2<r.nDaysPerWeek; d2++){
 			int h2;
 			for(h2=0; h2<r.nHoursPerDay; h2++)
-				if(subgroupsBuildingsTimetable[sbg][d2][h2]!=-1)
+				if(crtBuildingsTimetable[d2][h2]!=-1)
 					break;
 
 			int crt_building=-1;					
 			if(h2<r.nHoursPerDay)
-				crt_building=subgroupsBuildingsTimetable[sbg][d2][h2];
+				crt_building=crtBuildingsTimetable[d2][h2];
 			
 			int cnt_gaps=0;
 			
 			for(h2++; h2<r.nHoursPerDay; h2++){
-				if(subgroupsBuildingsTimetable[sbg][d2][h2]!=-1){
-					if(subgroupsBuildingsTimetable[sbg][d2][h2]==crt_building)
+				if(crtBuildingsTimetable[d2][h2]!=-1){
+					if(crtBuildingsTimetable[d2][h2]==crt_building)
 						cnt_gaps=0;
 					else{
 						if(cnt_gaps<this->minGapsBetweenBuildingChanges){
@@ -4331,7 +4503,7 @@ double ConstraintStudentsMinGapsBetweenBuildingChanges::fitness(
 							}
 						}
 						
-						crt_building=subgroupsBuildingsTimetable[sbg][d2][h2];
+						crt_building=crtBuildingsTimetable[d2][h2];
 						cnt_gaps=0;
 					}
 				}
@@ -4490,8 +4662,8 @@ double ConstraintTeacherMaxBuildingChangesPerDay::fitness(
 	//if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.changedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, roomsMatrix);
 
-		c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
-		c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
+		//c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
+		//c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
 		 
 		//crt_chrom = &c;
 		//crt_rules = &r;
@@ -4502,16 +4674,39 @@ double ConstraintTeacherMaxBuildingChangesPerDay::fitness(
 	int nbroken=0;
 	
 	int tch=this->teacher_ID;
+
+///////////// Better, less memory
+		Teacher* tchpointer=r.internalTeachersList[tch];
+		int crtBuildingsTimetable[MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
+		for(int d2=0; d2<r.nDaysPerWeek; d2++)
+			for(int h2=0; h2<r.nHoursPerDay; h2++)
+				crtBuildingsTimetable[d2][h2]=-1;
+				
+		foreach(int ai, tchpointer->activitiesForTeacher)
+			if(c.times[ai]!=UNALLOCATED_TIME){
+				int d2=c.times[ai]%r.nDaysPerWeek;
+				int h2=c.times[ai]/r.nDaysPerWeek;
+				
+				for(int dur=0; dur<r.internalActivitiesList[ai].duration; dur++){
+					assert(h2+dur<r.nHoursPerDay);
+					assert(crtBuildingsTimetable[d2][h2+dur]==-1);
+					if(c.rooms[ai]!=UNSPECIFIED_ROOM && c.rooms[ai]!=UNALLOCATED_SPACE){
+						assert(c.rooms[ai]>=0 && c.rooms[ai]<r.nInternalRooms);
+						crtBuildingsTimetable[d2][h2+dur]=r.internalRoomsList[c.rooms[ai]]->buildingIndex;
+					}
+				}
+			}
+/////////////
 	
 	for(int d2=0; d2<r.nDaysPerWeek; d2++){			
 		int crt_building=-1;
 		int n_changes=0;
 		for(int h2=0; h2<r.nHoursPerDay; h2++){
-			if(teachersBuildingsTimetable[tch][d2][h2]!=-1){
-				if(crt_building!=teachersBuildingsTimetable[tch][d2][h2]){
+			if(crtBuildingsTimetable[d2][h2]!=-1){
+				if(crt_building!=crtBuildingsTimetable[d2][h2]){
 					if(crt_building!=-1)
 						n_changes++;
-					crt_building=teachersBuildingsTimetable[tch][d2][h2];
+					crt_building=crtBuildingsTimetable[d2][h2];
 				}
 			}
 		}
@@ -4665,8 +4860,8 @@ double ConstraintTeachersMaxBuildingChangesPerDay::fitness(
 	//if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.changedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, roomsMatrix);
 
-		c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
-		c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
+		//c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
+		//c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
 		 
 		//crt_chrom = &c;
 		//crt_rules = &r;
@@ -4677,15 +4872,38 @@ double ConstraintTeachersMaxBuildingChangesPerDay::fitness(
 	int nbroken=0;
 	
 	for(int tch=0; tch<r.nInternalTeachers; tch++){
+///////////// Better, less memory
+		Teacher* tchpointer=r.internalTeachersList[tch];
+		int crtBuildingsTimetable[MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
+		for(int d2=0; d2<r.nDaysPerWeek; d2++)
+			for(int h2=0; h2<r.nHoursPerDay; h2++)
+				crtBuildingsTimetable[d2][h2]=-1;
+				
+		foreach(int ai, tchpointer->activitiesForTeacher)
+			if(c.times[ai]!=UNALLOCATED_TIME){
+				int d2=c.times[ai]%r.nDaysPerWeek;
+				int h2=c.times[ai]/r.nDaysPerWeek;
+				
+				for(int dur=0; dur<r.internalActivitiesList[ai].duration; dur++){
+					assert(h2+dur<r.nHoursPerDay);
+					assert(crtBuildingsTimetable[d2][h2+dur]==-1);
+					if(c.rooms[ai]!=UNSPECIFIED_ROOM && c.rooms[ai]!=UNALLOCATED_SPACE){
+						assert(c.rooms[ai]>=0 && c.rooms[ai]<r.nInternalRooms);
+						crtBuildingsTimetable[d2][h2+dur]=r.internalRoomsList[c.rooms[ai]]->buildingIndex;
+					}
+				}
+			}
+/////////////
+
 		for(int d2=0; d2<r.nDaysPerWeek; d2++){			
 			int crt_building=-1;
 			int n_changes=0;
 			for(int h2=0; h2<r.nHoursPerDay; h2++){
-				if(teachersBuildingsTimetable[tch][d2][h2]!=-1){
-					if(crt_building!=teachersBuildingsTimetable[tch][d2][h2]){
+				if(crtBuildingsTimetable[d2][h2]!=-1){
+					if(crt_building!=crtBuildingsTimetable[d2][h2]){
 						if(crt_building!=-1)
 							n_changes++;
-						crt_building=teachersBuildingsTimetable[tch][d2][h2];
+						crt_building=crtBuildingsTimetable[d2][h2];
 					}
 				}
 			}
@@ -4858,8 +5076,8 @@ double ConstraintTeacherMaxBuildingChangesPerWeek::fitness(
 	//if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.changedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, roomsMatrix);
 
-		c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
-		c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
+		//c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
+		//c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
 		 
 		//crt_chrom = &c;
 		//crt_rules = &r;
@@ -4870,17 +5088,40 @@ double ConstraintTeacherMaxBuildingChangesPerWeek::fitness(
 	int nbroken=0;
 	
 	int tch=this->teacher_ID;
+
+///////////// Better, less memory
+		Teacher* tchpointer=r.internalTeachersList[tch];
+		int crtBuildingsTimetable[MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
+		for(int d2=0; d2<r.nDaysPerWeek; d2++)
+			for(int h2=0; h2<r.nHoursPerDay; h2++)
+				crtBuildingsTimetable[d2][h2]=-1;
+				
+		foreach(int ai, tchpointer->activitiesForTeacher)
+			if(c.times[ai]!=UNALLOCATED_TIME){
+				int d2=c.times[ai]%r.nDaysPerWeek;
+				int h2=c.times[ai]/r.nDaysPerWeek;
+				
+				for(int dur=0; dur<r.internalActivitiesList[ai].duration; dur++){
+					assert(h2+dur<r.nHoursPerDay);
+					assert(crtBuildingsTimetable[d2][h2+dur]==-1);
+					if(c.rooms[ai]!=UNSPECIFIED_ROOM && c.rooms[ai]!=UNALLOCATED_SPACE){
+						assert(c.rooms[ai]>=0 && c.rooms[ai]<r.nInternalRooms);
+						crtBuildingsTimetable[d2][h2+dur]=r.internalRoomsList[c.rooms[ai]]->buildingIndex;
+					}
+				}
+			}
+/////////////
 	
 	int n_changes=0;
 
 	for(int d2=0; d2<r.nDaysPerWeek; d2++){
 		int crt_building=-1;
 		for(int h2=0; h2<r.nHoursPerDay; h2++){
-			if(teachersBuildingsTimetable[tch][d2][h2]!=-1){
-				if(crt_building!=teachersBuildingsTimetable[tch][d2][h2]){
+			if(crtBuildingsTimetable[d2][h2]!=-1){
+				if(crt_building!=crtBuildingsTimetable[d2][h2]){
 					if(crt_building!=-1)
 						n_changes++;
-					crt_building=teachersBuildingsTimetable[tch][d2][h2];
+					crt_building=crtBuildingsTimetable[d2][h2];
 				}
 			}
 		}
@@ -5033,8 +5274,8 @@ double ConstraintTeachersMaxBuildingChangesPerWeek::fitness(
 	//if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.changedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, roomsMatrix);
 
-		c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
-		c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
+		//c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
+		//c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
 		 
 		//crt_chrom = &c;
 		//crt_rules = &r;
@@ -5045,16 +5286,39 @@ double ConstraintTeachersMaxBuildingChangesPerWeek::fitness(
 	int nbroken=0;
 	
 	for(int tch=0; tch<r.nInternalTeachers; tch++){
+///////////// Better, less memory
+		Teacher* tchpointer=r.internalTeachersList[tch];
+		int crtBuildingsTimetable[MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
+		for(int d2=0; d2<r.nDaysPerWeek; d2++)
+			for(int h2=0; h2<r.nHoursPerDay; h2++)
+				crtBuildingsTimetable[d2][h2]=-1;
+				
+		foreach(int ai, tchpointer->activitiesForTeacher)
+			if(c.times[ai]!=UNALLOCATED_TIME){
+				int d2=c.times[ai]%r.nDaysPerWeek;
+				int h2=c.times[ai]/r.nDaysPerWeek;
+				
+				for(int dur=0; dur<r.internalActivitiesList[ai].duration; dur++){
+					assert(h2+dur<r.nHoursPerDay);
+					assert(crtBuildingsTimetable[d2][h2+dur]==-1);
+					if(c.rooms[ai]!=UNSPECIFIED_ROOM && c.rooms[ai]!=UNALLOCATED_SPACE){
+						assert(c.rooms[ai]>=0 && c.rooms[ai]<r.nInternalRooms);
+						crtBuildingsTimetable[d2][h2+dur]=r.internalRoomsList[c.rooms[ai]]->buildingIndex;
+					}
+				}
+			}
+/////////////
+
 		int n_changes=0;
 
 		for(int d2=0; d2<r.nDaysPerWeek; d2++){
 			int crt_building=-1;
 			for(int h2=0; h2<r.nHoursPerDay; h2++){
-				if(teachersBuildingsTimetable[tch][d2][h2]!=-1){
-					if(crt_building!=teachersBuildingsTimetable[tch][d2][h2]){
+				if(crtBuildingsTimetable[d2][h2]!=-1){
+					if(crt_building!=crtBuildingsTimetable[d2][h2]){
 						if(crt_building!=-1)
 							n_changes++;
-						crt_building=teachersBuildingsTimetable[tch][d2][h2];
+						crt_building=crtBuildingsTimetable[d2][h2];
 					}
 				}
 			}
@@ -5226,8 +5490,8 @@ double ConstraintTeacherMinGapsBetweenBuildingChanges::fitness(
 	//if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.changedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, roomsMatrix);
 
-		c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
-		c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
+		//c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
+		//c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
 		 
 		//crt_chrom = &c;
 		//crt_rules = &r;
@@ -5238,22 +5502,45 @@ double ConstraintTeacherMinGapsBetweenBuildingChanges::fitness(
 	int nbroken=0;
 	
 	int tch=this->teacher_ID;
+
+///////////// Better, less memory
+		Teacher* tchpointer=r.internalTeachersList[tch];
+		int crtBuildingsTimetable[MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
+		for(int d2=0; d2<r.nDaysPerWeek; d2++)
+			for(int h2=0; h2<r.nHoursPerDay; h2++)
+				crtBuildingsTimetable[d2][h2]=-1;
+				
+		foreach(int ai, tchpointer->activitiesForTeacher)
+			if(c.times[ai]!=UNALLOCATED_TIME){
+				int d2=c.times[ai]%r.nDaysPerWeek;
+				int h2=c.times[ai]/r.nDaysPerWeek;
+				
+				for(int dur=0; dur<r.internalActivitiesList[ai].duration; dur++){
+					assert(h2+dur<r.nHoursPerDay);
+					assert(crtBuildingsTimetable[d2][h2+dur]==-1);
+					if(c.rooms[ai]!=UNSPECIFIED_ROOM && c.rooms[ai]!=UNALLOCATED_SPACE){
+						assert(c.rooms[ai]>=0 && c.rooms[ai]<r.nInternalRooms);
+						crtBuildingsTimetable[d2][h2+dur]=r.internalRoomsList[c.rooms[ai]]->buildingIndex;
+					}
+				}
+			}
+/////////////
 	
 	for(int d2=0; d2<r.nDaysPerWeek; d2++){
 		int h2;
 		for(h2=0; h2<r.nHoursPerDay; h2++)
-			if(teachersBuildingsTimetable[tch][d2][h2]!=-1)
+			if(crtBuildingsTimetable[d2][h2]!=-1)
 				break;
 
 		int crt_building=-1;					
 		if(h2<r.nHoursPerDay)
-			crt_building=teachersBuildingsTimetable[tch][d2][h2];
+			crt_building=crtBuildingsTimetable[d2][h2];
 		
 		int cnt_gaps=0;
 		
 		for(h2++; h2<r.nHoursPerDay; h2++){
-			if(teachersBuildingsTimetable[tch][d2][h2]!=-1){
-				if(teachersBuildingsTimetable[tch][d2][h2]==crt_building)
+			if(crtBuildingsTimetable[d2][h2]!=-1){
+				if(crtBuildingsTimetable[d2][h2]==crt_building)
 					cnt_gaps=0;
 				else{
 					if(cnt_gaps<this->minGapsBetweenBuildingChanges){
@@ -5273,7 +5560,7 @@ double ConstraintTeacherMinGapsBetweenBuildingChanges::fitness(
 						}
 					}
 					
-					crt_building=teachersBuildingsTimetable[tch][d2][h2];
+					crt_building=crtBuildingsTimetable[d2][h2];
 					cnt_gaps=0;
 				}
 			}
@@ -5415,8 +5702,8 @@ double ConstraintTeachersMinGapsBetweenBuildingChanges::fitness(
 	//if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.changedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, roomsMatrix);
 
-		c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
-		c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
+		//c.getSubgroupsBuildingsTimetable(r, subgroupsBuildingsTimetable);
+		//c.getTeachersBuildingsTimetable(r, teachersBuildingsTimetable);
 		 
 		//crt_chrom = &c;
 		//crt_rules = &r;
@@ -5427,21 +5714,44 @@ double ConstraintTeachersMinGapsBetweenBuildingChanges::fitness(
 	int nbroken=0;
 	
 	for(int tch=0; tch<r.nInternalTeachers; tch++){
+///////////// Better, less memory
+		Teacher* tchpointer=r.internalTeachersList[tch];
+		int crtBuildingsTimetable[MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
+		for(int d2=0; d2<r.nDaysPerWeek; d2++)
+			for(int h2=0; h2<r.nHoursPerDay; h2++)
+				crtBuildingsTimetable[d2][h2]=-1;
+				
+		foreach(int ai, tchpointer->activitiesForTeacher)
+			if(c.times[ai]!=UNALLOCATED_TIME){
+				int d2=c.times[ai]%r.nDaysPerWeek;
+				int h2=c.times[ai]/r.nDaysPerWeek;
+				
+				for(int dur=0; dur<r.internalActivitiesList[ai].duration; dur++){
+					assert(h2+dur<r.nHoursPerDay);
+					assert(crtBuildingsTimetable[d2][h2+dur]==-1);
+					if(c.rooms[ai]!=UNSPECIFIED_ROOM && c.rooms[ai]!=UNALLOCATED_SPACE){
+						assert(c.rooms[ai]>=0 && c.rooms[ai]<r.nInternalRooms);
+						crtBuildingsTimetable[d2][h2+dur]=r.internalRoomsList[c.rooms[ai]]->buildingIndex;
+					}
+				}
+			}
+/////////////
+
 		for(int d2=0; d2<r.nDaysPerWeek; d2++){
 			int h2;
 			for(h2=0; h2<r.nHoursPerDay; h2++)
-				if(teachersBuildingsTimetable[tch][d2][h2]!=-1)
+				if(crtBuildingsTimetable[d2][h2]!=-1)
 					break;
 
 			int crt_building=-1;					
 			if(h2<r.nHoursPerDay)
-				crt_building=teachersBuildingsTimetable[tch][d2][h2];
+				crt_building=crtBuildingsTimetable[d2][h2];
 				
 			int cnt_gaps=0;
 			
 			for(h2++; h2<r.nHoursPerDay; h2++){
-				if(teachersBuildingsTimetable[tch][d2][h2]!=-1){
-					if(teachersBuildingsTimetable[tch][d2][h2]==crt_building)
+				if(crtBuildingsTimetable[d2][h2]!=-1){
+					if(crtBuildingsTimetable[d2][h2]==crt_building)
 						cnt_gaps=0;
 					else{
 						if(cnt_gaps<this->minGapsBetweenBuildingChanges){
@@ -5461,7 +5771,7 @@ double ConstraintTeachersMinGapsBetweenBuildingChanges::fitness(
 							}
 						}
 					
-						crt_building=teachersBuildingsTimetable[tch][d2][h2];
+						crt_building=crtBuildingsTimetable[d2][h2];
 						cnt_gaps=0;
 					}
 				}

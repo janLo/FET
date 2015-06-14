@@ -1,3 +1,274 @@
+From Horatiu Halmajan:
+
+Students max gaps per day
+
+Students set max days per week
+
+Max gaps constraints with weight under 100% (this is very difficult)
+
+---------------------------------------------------------------
+
+From George Miliotis:
+
+I want to propose a feature: notes attached to each rule. If I can
+attach a small text snippet to rules I can put in there when and who
+asked for the rule. This makes "fixing" locked timetables easier cause i
+know what rules to remove. Also, I can make notes to myself when i use
+'tricks'. EG. set lab1+lab2 for an activity: 'all teacher's courses are
+labs but students won't fit in lab 3 so i had to exclude it here'
+
+---------------------------------------------------------------
+
+From Horatiu Halmajan:
+
+Horatiu:
+> > I met a situation: a teacher asks for maximum 2 working days, but these
+> > days should not be consecutive.
+> >
+> > Is there a way to implement it in .fet?
+> >
+> > The only (manual) way I could think of, is to set the teacher as
+> > unavailable on Tuesdays and Thursdays, thus leaving him available on
+> > Monday, Wednesday and Friday (any two of these are unconsecutive).
+> >
+> > Any other ideas...?
+>
+
+Liviu:
+> I have another idea: add a dummy activity for this teacher, split into 2
+> per
+> week, min n days = 2, with 100%. You just need to take care that this
+> teacher
+> has place for these dummy activities (enough slots in the day) and to
+> consider
+> these dummy activities as possible gaps, so if teacher has max gaps 2 then
+> make max gaps for him 0.
+>
+
+Horatiu:
+For my case, the second idea worked perfectly, as my teacher does not accept
+gaps.
+
+I have also "played" with the first with the first idea, as it seems to be
+the most un-restrictive one. It also worked. I tried it three times, and in
+all three situations at least one of the dummy activities was the first or
+the last activity for the teacher's day. So, there is a chance that the
+teacher would end up with only one gap.
+
+Which leads me to a suggestion: An activity end (or starts) a teacher's day.
+Similar to "an activity ends students's day)
+
+---------------------------------------------------------------
+
+From daviodan:
+
+in Romanian (see below for English translation):
+
+Voi face referire la sample_Brazil_more_difficult_max_2_gaps_for_teachers.fet
+
+1. In fereastra FET activities exista mai multe filtre dupa numele prof,clasa,etc.
+Daca de exemplu alegem la Subject "Matematica" si facem filtrarea si dupa numele 
+profesorului atunci lista filtrului ar trebui sa contina doar numele :Bruna,Silvania,Wellington 
+deoarece doar acestia predau matematica .In momentul de fata filtrul contine lista tuturor profesorilor.
+Analog pentru celelalte filtre.
+
+2. In fereastra All time constraints s-ar putea aduga sus un filtru dupa tipul de constrangere ?
+
+3. In fereastra Teachers statistics cand se da click pe numele unui profesor sa apara in dreapta 
+intr-o casuta toate constrangerile pentru acel profesor introduse pana in acel moment.
+
+in English:
+
+I will refer to sample_Brazil_more_difficult_max_2_gaps_for_teachers.fet
+
+1. In the FET activities dialog there exist more filters after the teacher, group, etc.
+If we choose for instance the subject "Math" and we do the filtering also after the name of 
+the teacher, then the list of the filter should contain only the name: Bruna,Silvania,Wellington,
+because only these teache Maths. In the present moment the filter contains the list of all teachers.
+The same for all the other filters.
+
+2. In the window of all time constraints, could we add a filter after the type of constraint?
+
+3. In the teachers' statistics dialog, when we click a teacher, there should appear in the right
+in a box all the constraints for this teacher inputted by that moment.
+
+---------------------------------------------------------------
+
+From Azu Boba:
+
+Currently there is no option in FET to set desired teaching times for a 
+teacher. You can do the opposite, set undesired/unavailable times for a 
+teacher, but it's not the same thing. Sometimes you just want a teacher 
+to teach on a specific hour (usually on his/her request) without 
+specifying the subject/class.
+E.g. teacher X wants to start teaching on the first hour every 
+Wednesday, without specifying subject/class in order to maximize 
+flexibility.
+I think this new restriction will be a very helpful addition. Currently, 
+I have to generate multiple timetables and browse the results in order 
+to pinpoint cases where the specific restrictions are met.
+
+---
+
+Thanks for looking into it!
+Yes, currently I am forcing the activities into the slots I want but 
+usually it takes a lot of restrictions (teacher not available usually) 
+that I need to remember to remove as soon as I find a desirable solution 
+in order to keep the general timetable flexible for future changes.
+Here in Greece, desired and undesired slots have about the same weight. 
+The thing is that not all teaching hours have the same time length (1st 
+hour 45min, 2nd 45min, 3rd 45min, 4th 40min, 5th 40min, 6th 40min, 7th 
+35min) and some teachers require first hours for some classes in order 
+to teach more time consuming subjects (the subject might vary but the 
+necessity for the time slot doesn't). That necessarily doesn't that they 
+object to teach late hours too.
+Also, it is easier to add only one restriction like the one I am 
+describing to drag e.g. the teaching hours of a teacher earlier in a day 
+than to add multiple not available restrictions at the late hours in 
+order to accomplish the same thing. Also, those late hour restrictions 
+might make the timetable too rigid and usually without serious reason.
+There are also many other examples but are much more complex.
+Generally I think that this is something that a lot of other timetable 
+organizers would want. Truthfully, it was the 2nd thing I noticed 
+missing after the not-so-easy lock/unlock of activities that you 
+currently solved.
+
+--------------------------------------------------------------------------------
+
+From Volker Dirr:
+
+missing constraint:
+CONSTRAINT_TEACHERS_MAX_DAYS_PER_WEEK
+
+for code cleanup always use the same style:
+some constraint c have
+c->teacher_ID
+others have
+c->teacher_Index
+
+--------------------------------------------------------------------------------
+
+From Azu Boba:
+
+I like the interface just the way it is now. Only three buttons and very 
+obvious of what they do. Checkboxes is not a good idea since at least 
+one should be selected at all time and this might create problems. You 
+also need to add three buttons too with this solution (lock, unlock, 
+toggle) so the interface will become much more confusing. The current 
+solution in my opinion is the way to go. The only change I propose is to 
+have fixed cell height and width so it would be easier to comprehend and 
+pinpoint what you see when switching between teachers.
+As I said before, I asked for this feature mainly to quickly lock/unlock 
+specific days. With this new build things are much easier but I still 
+need to select every single teacher and unlock the specific day I want 
+to do changes. It would be much better if I could select one day and 
+unlock all the activities for this day. The problem here is that we have 
+a 3D table (teachers/days/hours). The best solution for this IMO is to 
+add a new view named e.g. "View (day for teachers)" (of course you keep 
+the "View (teachers)" too). This view will be similar to "View 
+(teachers)" but it will have all the days as selectable tabs on the top. 
+The 2D table it will display below the tabs would be the Teachers/Hours 
+view for the day selected. The buttons and functionality will be the 
+same as in the case of "View (teachers)". This way you will be able to 
+easily lock/unlock the whole day. The best part though is that with this 
+new View you will be able to better comprehend/modify the schedule in a 
+day by day base, so its not just a tool for locking/unlocking activities.
+You might also want to consider adding an additional flag when locking 
+an activity. This flag might be called "Save data and timetable flag" 
+and would be set when an activity is locked automatically during the 
+"Save data+timetable as..." procedure. Why? Mainly, because when you 
+want to unlock e.g. a specific day in a "Save data+timetable as..." 
+saved timetable you do not want to unlock all the activities of the day; 
+you want unlocked only the ones that were locked by the "Save 
+data+timetable as..." process. There are activities that the schedule 
+creator manually locked them before FET generated the table (e.g. a 
+specific lesson needs to happen only on a specific day and time). By 
+selecting and unlocking a whole day as things are now you unlock these 
+activities too! This means that if the schedule creator doesn't pay 
+enough attention he might mistakenly create a schedule with activities 
+set at undesired hours. The solution I propose to this is to toggle 
+between locked/unlocked only the activities that have the "Save data and 
+timetable flag" set. To unlock the manually locked ones the user would 
+have to do it in a different/manual way (see the paragraph below about 
+the editable "Details" box) or even better be asked with a message box 
+if he wants to unlock the manually locked activities too.
+I also mentioned that in order to remove a teacher from a specific day 
+(because he is ill or on a leave) I have to go to "View (teachers)" and 
+pinpoint all the activities assigned to the teacher for this day 
+(checking their IDs from the "Details" text box and then writing them 
+down in notepad). Then I close this view and go to the "Activities" 
+list, find the specific activities and uncheck "Active" for them. This 
+is a little annoying and a prone to errors procedure especially if there 
+are more than one teachers missing. What I thought as a solution for 
+this has to do with the "Details" text box on the "View (teachers)". It 
+would be great if it wasn't just a simple text box but an editable 
+interface for every changeable value. What I have in mind is to split 
+the "Details" into two parts; the upper part would include all the non 
+editable values while the lower part all the editable ones. Right now 
+for me, only the "Active" and "locked time" values are worth of being 
+editable, so  simple check boxes would suffice but someone else might 
+want other values editable too (e.g. Total number of students, duration) 
+or new values worth being editable might be added in the future, so it's 
+a good thing to have.
+Last but not least (and certainly the most difficult modification) it 
+would be great if you could drag and drop activities in the "View 
+(teachers)" and "View (day for teachers)" GUIs. Of course by doing so 
+you create conflicts and this will need handling. But I think all the 
+before mentioned changes are enough work for you now and I need to think 
+this a little more to come up with a viable solution.
+I hope I gave you valuable feedback and not a headache! Thank you again 
+for your time and for this great software that really saved me since 
+this school year was the first time I was entrusted with the school's 
+schedule and I was way over my head.
+
+--------------------------------------------------------------------------------
+
+From Volker Dirr:
+
+>> just do this:
+>> open fet.
+>> open view room||teacher||student timetable form.
+>>
+>> close fet main form.
+>>
+>> maybe bug:
+>> the view table form(s) are still open. so fetmainform is not parent from
+>> that.
+
+--------------------------------------------------------------------------------
+
+From "George Miliotis [Ionio]":
+
+Mainly because the "results" directory should be
+accessible, so I would expect it to be configurable (I'd like it in my
+documents/fet/current-results)
+
+--------------------------------------------------------------------------------
+
+From Marco Barsotti:
+
+The only thing that I would like to find in a future version of FET is the
+ability 1) to find when a combination of constraints is impossible to
+respect. 2) to recognize which constraints generate a bottleneck, where FET
+stand by searching the little hole where to pass and go on, placing
+activities.
+
+--------------------------------------------------------------------------------
+
+From Saad:
+
+Manual improvements of the timetable - see forum link: http://lalescu.ro/liviu/fet/forum/YaBB.pl?num=1225143755/7#7
+
+--------------------------------------------------------------------------------
+
+From Volker Dirr:
+
+
+Change remove redundant to deactivate redundant
+
+--------------------------------------------------------------------------------
+
+
 From alfaromeo:
 
 But, again I came across the same FET behaviour:
@@ -79,7 +350,7 @@ From Volker Dirr
 
 --------------------------------------------------------------------------------
 
-from Maciej Deorowicz:
+From Maciej Deorowicz:
 
 > I have idea for two features. First: possibility to disable contraint
 > without removing it. Such 'Active' checkbox like on activities dialog.
@@ -606,37 +877,6 @@ can figure it out on how to implement the feature in (A)(ii). It would be marvel
 11---------------------------------------------------------
 From kdsayang
 
-There are 3 types of locking and unlocking....
- 
-A. By teachers
-(i)   Lock selected activities (only times)
-(ii)  Lock selected activities (only space)
-(iii) Lock selected activities (time&space)
- 
-B. By students
-(i)   Lock selected activities (only times)
-(ii)  Lock selected activities (only space)
-(iii) Lock selected activities (time&space)
- 
-C. By room
-(i)   Lock selected activities (only times)
-(ii)  Lock selected activities (only space)
-(iii) Lock selected activities  
- 
-Before this, there is no indicator that time, space and time&space have been locked/unlocked in the 
-teachers/students/rooms time table. Unless user explore the time and space constrains in FET, they 
-will see all the rules about the locking/unlock constraints
- 
-So, I suggest that coloring system to be use as an indicator so that it is easy for user to recognize and edit it (lock/unlock)
- 
-No locking (unlock) = no color
-Lock selected activities (only times) = green
-Lock selected activities (only space) = yellow
-Lock selected activities (time&space) = red
-
-12---------------------------------------------------------
-From kdsayang
-
 If a user want to add "an activity have a set of preferred rooms", the user will need to click one 
 by one to add right???... So, I would like to suggest that we group them like when user want to add 
 an "activity". There (activity), we can select by years, groups and subgroup for students. Instead of 
@@ -662,7 +902,7 @@ Lab 3
 So when user want to add "an activity have a set of preferred rooms" for all the tutorial room, instead 
 of clicking 20 tutorial room one by one, user just click the group that is Tutorial. Easy right???
 
-13---------------------------------------------------------
+12---------------------------------------------------------
 From kdsayang
 
 What I meant is in Data --> Time Constraints --> Teacher Time Constraints --> A Teachers not available time, 
@@ -676,7 +916,7 @@ What I meant is in Data --> Time Constraints --> Teacher Time Constraints --> A 
 My suggestion is that It will be better If FET can update to Sambilan from Afida in Step no 3. 
 TQ
 
-14---------------------------------------------------------
+13---------------------------------------------------------
 From kdsayang
 
 Hi,
@@ -690,14 +930,14 @@ example of tree structure can be seen in attachment
  
 Thanks 
 
-15---------------------------------------------------------
+14---------------------------------------------------------
 From kdsayang
 
 If  I want to change many teacher not available time, I need to add one by one although the teacher not available time is the SAME.  
  
 So, I suggest that u can add A set of teacher not available time. Same as A rooms not available time feature. 
 
-16---------------------------------------------------------
+15---------------------------------------------------------
 From kdsayang
 On current version, there is no group for subject and teacher. It is quite annoying if u have to look for certain subject X and teacher Y in that list. When the list grow bigger (let say 100), it's kinda hard because u have to find that lecture and subject in that 100 lists. Although the sorting is a good way to find the subject and teacher, IMHO maybe we can make groups in that teacher and subject section
 
@@ -705,7 +945,7 @@ For example I wanna find teacher X and subject X. Teacher X is a teacher that te
 
 This feature is needed if my/our/your university/school is a big one where teacher and subject are hundreds...
 
-17---------------------------------------------------------
+16---------------------------------------------------------
 From Bobby Wise
 Hi Liviu,
 
@@ -718,7 +958,7 @@ So that might be something you may want to look at.
 Best regards
 Bobby
 
-18---------------------------------------------------------
+17---------------------------------------------------------
 From daviodan
 
 In preferred time slots, preferred starting times, break or not available, clicking
@@ -727,14 +967,14 @@ on a day or hour (column or row head) will set/reset/toggle all hours (or days) 
 Or: make a combo box: column and another combo box: row. Add button "Change", so we can change
 a specific row or column by this procedure. - comment Liviu: the dialog would become very complicated.
 
-19---------------------------------------------------------
+18---------------------------------------------------------
 From George Miliotis (Ionio, Greece)
 
 PS. Feedback: Fill the empty FET window with buttons for the most common
 tasks. You could also add a search editbox and a few checkboxes (e.g.
 find activity/rule live by typing in an editbox, matching all fields)
 
-20---------------------------------------------------------
+19---------------------------------------------------------
 From Niels (gesamtschule)
 
 yesterday evening we run in to trouble, because we had defined some constraint which makes the problem unsolvable.
@@ -744,7 +984,7 @@ and all which defined for the subject and the teacher. Is it possible to realize
 I will start to write an own solution based on the xml-file.
 Niels
 
-21---------------------------------------------------------
+20---------------------------------------------------------
 From Zsolt Udvari
 
 We've created a timetable but the rooms aren't. So we do it by hand.
@@ -774,7 +1014,7 @@ with "Assign room" and choose a room.
 One more: plus constraint: maximalize the activities in same time -
 because of number of rooms.
 
-22---------------------------------------------------------
+21---------------------------------------------------------
 From Naji
 
 Hopefully, FET's team can enhanced it to be able to export the xml data to database, that will facilitates the 

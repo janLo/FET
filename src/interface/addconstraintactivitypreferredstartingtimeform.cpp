@@ -26,6 +26,11 @@
 
 #define yesNo(x)	((x)==0?QObject::tr("no"):QObject::tr("yes"))
 
+#include <QSet>
+#include "lockunlock.h"
+//extern QSet<int> idsOfLockedTime;
+//extern QSet<int> idsOfPermanentlyLockedTime;
+
 AddConstraintActivityPreferredStartingTimeForm::AddConstraintActivityPreferredStartingTimeForm()
 {
 	//setWindowFlags(Qt::Window);
@@ -35,6 +40,8 @@ AddConstraintActivityPreferredStartingTimeForm::AddConstraintActivityPreferredSt
 	int yy=desktop->height()/2 - frameGeometry().height()/2;
 	move(xx, yy);*/
 	centerWidgetOnScreen(this);
+	
+	//permTextLabel->setWordWrap(true);
 	
 	teachersComboBox->insertItem("");
 	for(int i=0; i<gt.rules.teachersList.size(); i++){
@@ -105,7 +112,8 @@ bool AddConstraintActivityPreferredStartingTimeForm::filterOk(Activity* act)
 		ok=false;
 		
 	//activity tag
-	if(sbtn!="" && sbtn!=act->activityTagName)
+//	if(sbtn!="" && sbtn!=act->activityTagName)
+	if(sbtn!="" && !act->activityTagsNames.contains(sbtn))
 		ok=false;
 		
 	//students
@@ -147,12 +155,12 @@ void AddConstraintActivityPreferredStartingTimeForm::filterChanged()
 
 void AddConstraintActivityPreferredStartingTimeForm::updatePeriodGroupBox(){
 	startHourComboBox->clear();
-	startHourComboBox->insertItem(QObject::tr("Any"));
+	//startHourComboBox->insertItem(QObject::tr("Any"));
 	for(int i=0; i<gt.rules.nHoursPerDay; i++)
 		startHourComboBox->insertItem(gt.rules.hoursOfTheDay[i]);
 
 	dayComboBox->clear();
-	dayComboBox->insertItem(QObject::tr("Any"));
+	//dayComboBox->insertItem(QObject::tr("Any"));
 	for(int i=0; i<gt.rules.nDaysPerWeek; i++)
 		dayComboBox->insertItem(gt.rules.daysOfTheWeek[i]);
 }
@@ -191,7 +199,7 @@ void AddConstraintActivityPreferredStartingTimeForm::constraintChanged()
 	}
 
 	int day=dayComboBox->currentItem();
-	if(day<0 || day>gt.rules.nDaysPerWeek){
+	if(day<0 || day>=gt.rules.nDaysPerWeek){
 		s+=QObject::tr("Invalid day");
 		s+="\n";
 	}
@@ -201,7 +209,7 @@ void AddConstraintActivityPreferredStartingTimeForm::constraintChanged()
 	}
 
 	int startHour=startHourComboBox->currentItem();
-	if(startHour<0 || startHour>gt.rules.nHoursPerDay){
+	if(startHour<0 || startHour>=gt.rules.nHoursPerDay){
 		s+=QObject::tr("Invalid start hour");
 		s+="\n";
 	}
@@ -209,6 +217,14 @@ void AddConstraintActivityPreferredStartingTimeForm::constraintChanged()
 		s+=QObject::tr("Start hour:%1").arg(startHourComboBox->currentText());
 		s+="\n";
 	}
+	
+	if(permLockedCheckBox->isChecked()){
+		s+=QObject::tr("Permanently locked (cannot be unlocked from the 'Timetable' menu)");
+	}
+	else{
+		s+=QObject::tr("Not permanently locked (can be unlocked from the 'Timetable' menu)");
+	}
+	s+="\n";
 	
 	currentConstraintTextEdit->setText(s);
 }
@@ -231,23 +247,23 @@ void AddConstraintActivityPreferredStartingTimeForm::addCurrentConstraint()
 		compulsory=true;*/
 
 	int day=dayComboBox->currentItem();
-	if(day<0 || day>gt.rules.nDaysPerWeek){
+	if(day<0 || day>=gt.rules.nDaysPerWeek){
 		QMessageBox::warning(this, QObject::tr("FET information"),
 			QObject::tr("Invalid day"));
 		return;
 	}
 	int startHour=startHourComboBox->currentItem();
-	if(startHour<0 || startHour>gt.rules.nHoursPerDay){
+	if(startHour<0 || startHour>=gt.rules.nHoursPerDay){
 		QMessageBox::warning(this, QObject::tr("FET information"),
 			QObject::tr("Invalid start hour"));
 		return;
 	}
 
-	if(startHour==0 && day==0){
+/*	if(startHour==0 && day==0){
 		QMessageBox::warning(this, QObject::tr("FET information"),
 			QObject::tr("Please specify at least a day or an hour"));
 		return;
-	}
+	}*/
 
 	int id;
 	int tmp2=activitiesComboBox->currentItem();
@@ -261,12 +277,24 @@ void AddConstraintActivityPreferredStartingTimeForm::addCurrentConstraint()
 	else
 		id=activitiesList.at(tmp2);
 	
-	ctr=new ConstraintActivityPreferredStartingTime(weight, /*compulsory,*/ id, day-1, startHour-1);
+	ctr=new ConstraintActivityPreferredStartingTime(weight, /*compulsory,*/ id, day, startHour, permLockedCheckBox->isChecked());
 
 	bool tmp3=gt.rules.addTimeConstraint(ctr);
-	if(tmp3)
+	if(tmp3){
 		QMessageBox::information(this, QObject::tr("FET information"),
 			QObject::tr("Constraint added"));
+			
+		/*
+		if(day-1>=0 && startHour-1>=0){
+			if(permLockedCheckBox->isChecked())
+				idsOfPermanentlyLockedTime.insert(id);
+			else
+				idsOfLockedTime.insert(id);
+			LockUnlock::increaseCommunicationSpinBox();
+		} wrong, must take care also of weight==100.0 */
+		LockUnlock::computeLockedUnlockedActivitiesOnlyTime();
+		LockUnlock::increaseCommunicationSpinBox();
+	}
 	else{
 		QMessageBox::warning(this, QObject::tr("FET information"),
 			QObject::tr("Constraint NOT added - duplicate"));
