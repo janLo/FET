@@ -40,7 +40,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include <iostream>
 using namespace std;
 
-extern bool students_schedule_ready, teachers_schedule_ready;
+extern bool students_schedule_ready, teachers_schedule_ready, rooms_schedule_ready;
 
 extern QMutex mutex;
 
@@ -97,6 +97,7 @@ void readSimulationParameters(){
 	WORKING_DIRECTORY=settings.value("working-directory", "sample_inputs").toString();
 	checkForUpdates=settings.value("check-for-updates", "-1").toInt();
 	QString ver=settings.value("version", "-1").toString();
+	TIMETABLE_HTML_LEVEL=settings.value("timetable-html-level", "2").toInt();
 	cout<<"Settings read"<<endl;
 }
 
@@ -106,6 +107,7 @@ void writeSimulationParameters(){
 	settings.setValue("working-directory", WORKING_DIRECTORY);
 	settings.setValue("version", FET_VERSION);
 	settings.setValue("check-for-updates", checkForUpdates);
+	settings.setValue("timetable-html-level", TIMETABLE_HTML_LEVEL);
 }
 
 /**
@@ -119,24 +121,25 @@ int main(int argc, char **argv){
 	QDir dir;
 	
 	bool t=true;
-
 	//make sure that the output directory exists
 	if(!dir.exists(OUTPUT_DIR))
 		t=dir.mkdir(OUTPUT_DIR);
-	if(!t){
-		assert(0);
-		exit(1);
-	}
-
 	readSimulationParameters();
 
 	students_schedule_ready=0;
 	teachers_schedule_ready=0;
+	rooms_schedule_ready=0;
 
 	QApplication qapplication(argc, argv);
 	
 	QObject::connect(&qapplication, SIGNAL(lastWindowClosed()), &qapplication, SLOT(quit()));
 	
+	if(!t){
+		QMessageBox::critical(NULL, QObject::tr("FET critical"), QObject::tr("Cannot create or use %1 directory - FET will now abort").arg(OUTPUT_DIR));
+		assert(0);
+		exit(1);
+	}
+
 	//translator stuff
 	QDir d("/usr/share/fet/translations");
 	
@@ -200,7 +203,25 @@ int main(int argc, char **argv){
 		else
 			translator.load("fet_mk", "translations");
 	}
+	else if(FET_LANGUAGE=="es"){
+		if(d.exists())
+			translator.load("fet_es", "/usr/share/fet/translations");
+		else
+			translator.load("fet_es", "translations");
+	}
+	else if(FET_LANGUAGE=="el"){
+		if(d.exists())
+			translator.load("fet_el", "/usr/share/fet/translations");
+		else
+			translator.load("fet_el", "translations");
+	}
 	else{
+		if(FET_LANGUAGE!="en_GB"){
+			QMessageBox::warning(NULL, QObject::tr("FET warning"), 
+			 QObject::tr("Specified language is incorrect - making it en_GB (English)"));
+			FET_LANGUAGE="en_GB";
+		}
+		
 		assert(FET_LANGUAGE=="en_GB");
 	}
 		

@@ -134,8 +134,6 @@ QString ConstraintBasicCompulsorySpace::getDetailedDescription(Rules& r)
 	return s;
 }
 
-//NOT CRITICAL as with new algorithm
-//critical function here - must be optimized for speed
 double ConstraintBasicCompulsorySpace::fitness(
 	Solution& c,
 	Rules& r,
@@ -429,12 +427,48 @@ QString ConstraintRoomNotAvailable::getDetailedDescription(Rules& r){
 
 bool ConstraintRoomNotAvailable::computeInternalStructure(Rules& r){
 	this->room_ID=r.searchRoom(this->roomName);
+	
+	if(this->room_ID<0){
+		QMessageBox::warning(NULL, QObject::tr("FET warning"),
+		 QObject::tr("Constraint room not available is wrong because it refers to inexistent room."
+		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
+		 
+		return false;
+	}	
+	if(this->d >= r.nDaysPerWeek){
+		QMessageBox::information(NULL, QObject::tr("FET information"),
+		 QObject::tr("Constraint room not available is wrong because it refers to removed day. Please correct"
+		 " and try again. Correcting means editing it and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
+		 
+		return false;
+	}
+	if(this->h1 > r.nHoursPerDay){
+		QMessageBox::information(NULL, QObject::tr("FET information"),
+		 QObject::tr("Constraint room not available is wrong because it refers to removed start hour. Please correct"
+		 " and try again. Correcting means editing it and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
+		 
+		return false;
+	}
+	if(this->h2 > r.nHoursPerDay){
+		QMessageBox::information(NULL, QObject::tr("FET information"),
+		 QObject::tr("Constraint room not available is wrong because it refers to removed end hour. Please correct"
+		 " and try again. Correcting means editing it and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
+		 
+		return false;
+	}
+	if(this->h1 >= this->h2){
+		QMessageBox::information(NULL, QObject::tr("FET information"),
+		 QObject::tr("Constraint room not available is wrong because start hour >= end hour. Please correct"
+		 " and try again. Correcting means editing it and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
+		 
+		return false;
+	}
+	
 	assert(this->room_ID>=0);
 	
 	return true;
 }
 
-//critical function here - must be optimized for speed
 double ConstraintRoomNotAvailable::fitness(
 	Solution& c,
 	Rules& r,
@@ -627,7 +661,48 @@ QString ConstraintActivityPreferredRoom::getDescription(Rules& r){
 
 	QString s="Activity preferred room"; s+=", ";
 	s+=QObject::tr("WP:%1\%").arg(this->weightPercentage);s+=", ";
-	s+=QObject::tr("A:%1").arg(this->activityId);s+=", ";
+	s+=QObject::tr("A:%1").arg(this->activityId);
+
+	//* write the teachers, subject and students sets
+	int ai;
+	for(ai=0; ai<r.activitiesList.size(); ai++)
+		if(r.activitiesList[ai]->id==this->activityId)
+			break;
+	s+=" (";	
+	if(ai==r.activitiesList.size()){
+		s+=QObject::tr(" Invalid (inexistent) activity id for constraint activity preferred room");
+	}
+	else{
+		assert(ai<r.activitiesList.size());
+		s+=QObject::tr("T:");
+		int k=0;
+		foreach(QString ss, r.activitiesList[ai]->teachersNames){
+			if(k>0)
+				s+=",";
+			s+=ss;
+			k++;
+		}
+	
+		s+=QObject::tr(",S:");
+		s+=r.activitiesList[ai]->subjectName;
+	
+		if(r.activitiesList[ai]->subjectTagName!="")
+			s+=QObject::tr(",ST:")+r.activitiesList[ai]->subjectTagName;
+	
+		s+=QObject::tr(",St:");
+		k=0;
+		foreach(QString ss, r.activitiesList[ai]->studentsNames){
+			if(k>0)
+				s+=",";
+			s+=ss;
+			k++;
+		}	
+	}
+	s+=")";
+	//* end section
+
+	s+=", ";
+
 	s+=QObject::tr("R:%1").arg(this->roomName);
 
 	return s;
@@ -640,13 +715,54 @@ QString ConstraintActivityPreferredRoom::getDetailedDescription(Rules& r){
 	QString s=QObject::tr("Space constraint"); s+="\n";
 	s+=QObject::tr("Activity preferred room"); s+="\n";
 	s+=QObject::tr("Weight (percentage)=%1\%").arg(this->weightPercentage);s+="\n";
-	s+=QObject::tr("Activity id=%1").arg(this->activityId);s+="\n";
+	
+	s+=QObject::tr("Activity id=%1").arg(this->activityId);
+	
+	//* write the teachers, subject and students sets
+	int ai;
+	for(ai=0; ai<r.activitiesList.size(); ai++)
+		if(r.activitiesList[ai]->id==this->activityId)
+			break;
+	s+=" (";	
+	if(ai==r.activitiesList.size()){
+		s+=QObject::tr(" Invalid (inexistent) activity id for constraint activity preferred room");
+	}
+	else{
+		assert(ai<r.activitiesList.size());
+		s+=QObject::tr("T:");
+		int k=0;
+		foreach(QString ss, r.activitiesList[ai]->teachersNames){
+			if(k>0)
+				s+=",";
+			s+=ss;
+			k++;
+		}
+	
+		s+=QObject::tr(",S:");
+		s+=r.activitiesList[ai]->subjectName;
+	
+		if(r.activitiesList[ai]->subjectTagName!="")
+			s+=QObject::tr(",ST:")+r.activitiesList[ai]->subjectTagName;
+	
+		s+=QObject::tr(",St:");
+		k=0;
+		foreach(QString ss, r.activitiesList[ai]->studentsNames){
+			if(k>0)
+				s+=",";
+			s+=ss;
+			k++;
+		}	
+	}
+	s+=")";
+	//* end section
+		
+	s+="\n";
+	
 	s+=QObject::tr("Room=%1").arg(this->roomName);s+="\n";
 
 	return s;
 }
 
-//critical function here - must be optimized for speed
 double ConstraintActivityPreferredRoom::fitness(
 	Solution& c,
 	Rules& r,
@@ -745,10 +861,7 @@ bool ConstraintActivityPreferredRoom::isRelatedToStudentsSet(Rules& r, StudentsS
 
 bool ConstraintActivityPreferredRoom::isRelatedToRoom(Room* r)
 {
-	if(r)
-		;
-
-	return false;
+	return r->name==this->roomName;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -821,6 +934,45 @@ QString ConstraintActivityPreferredRooms::getDescription(Rules& r){
 	QString s="Activity preferred rooms"; s+=", ";
 	s+=QObject::tr("WP:%1\%").arg(this->weightPercentage);s+=", ";
 	s+=QObject::tr("A:%1").arg(this->activityId);
+
+	//* write the teachers, subject and students sets
+	int ai;
+	for(ai=0; ai<r.activitiesList.size(); ai++)
+		if(r.activitiesList[ai]->id==this->activityId)
+			break;
+	s+=" (";	
+	if(ai==r.activitiesList.size()){
+		s+=QObject::tr(" Invalid (inexistent) activity id for constraint activity preferred rooms");
+	}
+	else{
+		assert(ai<r.activitiesList.size());
+		s+=QObject::tr("T:");
+		int k=0;
+		foreach(QString ss, r.activitiesList[ai]->teachersNames){
+			if(k>0)
+				s+=",";
+			s+=ss;
+			k++;
+		}
+	
+		s+=QObject::tr(",S:");
+		s+=r.activitiesList[ai]->subjectName;
+	
+		if(r.activitiesList[ai]->subjectTagName!="")
+			s+=QObject::tr(",ST:")+r.activitiesList[ai]->subjectTagName;
+	
+		s+=QObject::tr(",St:");
+		k=0;
+		foreach(QString ss, r.activitiesList[ai]->studentsNames){
+			if(k>0)
+				s+=",";
+			s+=ss;
+			k++;
+		}	
+	}
+	s+=")";
+	//* end section
+
 	for(QStringList::Iterator it=this->roomsNames.begin(); it!=this->roomsNames.end(); it++){
 		s+=", ";
 		s+=QObject::tr("R:%1").arg(*it);
@@ -836,7 +988,49 @@ QString ConstraintActivityPreferredRooms::getDetailedDescription(Rules& r){
 	QString s=QObject::tr("Space constraint"); s+="\n";
 	s+=QObject::tr("Activity preferred rooms"); s+="\n";
 	s+=QObject::tr("Weight (percentage)=%1\%").arg(this->weightPercentage);s+="\n";
-	s+=QObject::tr("Activity id=%1").arg(this->activityId);s+="\n";
+	
+	s+=QObject::tr("Activity id=%1").arg(this->activityId);
+	
+	//* write the teachers, subject and students sets
+	int ai;
+	for(ai=0; ai<r.activitiesList.size(); ai++)
+		if(r.activitiesList[ai]->id==this->activityId)
+			break;
+	s+=" (";	
+	if(ai==r.activitiesList.size()){
+		s+=QObject::tr(" Invalid (inexistent) activity id for constraint activity preferred rooms");
+	}
+	else{
+		assert(ai<r.activitiesList.size());
+		s+=QObject::tr("T:");
+		int k=0;
+		foreach(QString ss, r.activitiesList[ai]->teachersNames){
+			if(k>0)
+				s+=",";
+			s+=ss;
+			k++;
+		}
+	
+		s+=QObject::tr(",S:");
+		s+=r.activitiesList[ai]->subjectName;
+	
+		if(r.activitiesList[ai]->subjectTagName!="")
+			s+=QObject::tr(",ST:")+r.activitiesList[ai]->subjectTagName;
+	
+		s+=QObject::tr(",St:");
+		k=0;
+		foreach(QString ss, r.activitiesList[ai]->studentsNames){
+			if(k>0)
+				s+=",";
+			s+=ss;
+			k++;
+		}	
+	}
+	s+=")";
+	//* end section
+
+	s+="\n";
+	
 	for(QStringList::Iterator it=this->roomsNames.begin(); it!=this->roomsNames.end(); it++){
 		s+=QObject::tr("Room=%1").arg(*it);
 		s+="\n";
@@ -845,7 +1039,6 @@ QString ConstraintActivityPreferredRooms::getDetailedDescription(Rules& r){
 	return s;
 }
 
-//critical function here - must be optimized for speed
 double ConstraintActivityPreferredRooms::fitness(
 	Solution& c,
 	Rules& r,
@@ -950,10 +1143,7 @@ bool ConstraintActivityPreferredRooms::isRelatedToStudentsSet(Rules& r, Students
 
 bool ConstraintActivityPreferredRooms::isRelatedToRoom(Room* r)
 {
-	if(r)
-		;
-
-	return false;
+	return this->roomsNames.contains(r->name);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1030,7 +1220,6 @@ QString ConstraintSubjectPreferredRoom::getDetailedDescription(Rules& r){
 	return s;
 }
 
-//critical function here - must be optimized for speed
 double ConstraintSubjectPreferredRoom::fitness(
 	Solution& c,
 	Rules& r,
@@ -1141,10 +1330,7 @@ bool ConstraintSubjectPreferredRoom::isRelatedToStudentsSet(Rules& r, StudentsSe
 
 bool ConstraintSubjectPreferredRoom::isRelatedToRoom(Room* r)
 {
-	if(r)
-		;
-
-	return false;
+	return r->name==this->roomName;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1235,7 +1421,6 @@ QString ConstraintSubjectPreferredRooms::getDetailedDescription(Rules& r){
 	return s;
 }
 
-//critical function here - must be optimized for speed
 double ConstraintSubjectPreferredRooms::fitness(
 	Solution& c,
 	Rules& r,
@@ -1349,10 +1534,7 @@ bool ConstraintSubjectPreferredRooms::isRelatedToStudentsSet(Rules& r, StudentsS
 
 bool ConstraintSubjectPreferredRooms::isRelatedToRoom(Room* r)
 {
-	if(r)
-		;
-
-	return false;
+	return this->roomsNames.contains(r->name);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////
@@ -1411,7 +1593,7 @@ QString ConstraintSubjectSubjectTagPreferredRoom::getDescription(Rules& r){
 	if(&r!=NULL)
 		;
 
-	QString s="Subject subject tagp referred room"; s+=", ";
+	QString s="Subject subject tag preferred room"; s+=", ";
 	s+=QObject::tr("WP:%1\%").arg(this->weightPercentage);s+=", ";
 	s+=QObject::tr("S:%1").arg(this->subjectName);s+=",";
 	s+=QObject::tr("ST:%1").arg(this->subjectTagName);s+=",";
@@ -1434,7 +1616,6 @@ QString ConstraintSubjectSubjectTagPreferredRoom::getDetailedDescription(Rules& 
 	return s;
 }
 
-//critical function here - must be optimized for speed
 double ConstraintSubjectSubjectTagPreferredRoom::fitness(
 	Solution& c,
 	Rules& r,
@@ -1545,10 +1726,7 @@ bool ConstraintSubjectSubjectTagPreferredRoom::isRelatedToStudentsSet(Rules& r, 
 
 bool ConstraintSubjectSubjectTagPreferredRoom::isRelatedToRoom(Room* r)
 {
-	if(r)
-		;
-
-	return false;
+	return r->name==this->roomName;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1644,7 +1822,6 @@ QString ConstraintSubjectSubjectTagPreferredRooms::getDetailedDescription(Rules&
 	return s;
 }
 
-//critical function here - must be optimized for speed
 double ConstraintSubjectSubjectTagPreferredRooms::fitness(
 	Solution& c,
 	Rules& r,
@@ -1758,10 +1935,7 @@ bool ConstraintSubjectSubjectTagPreferredRooms::isRelatedToStudentsSet(Rules& r,
 
 bool ConstraintSubjectSubjectTagPreferredRooms::isRelatedToRoom(Room* r)
 {
-	if(r)
-		;
-
-	return false;
+	return this->roomsNames.contains(r->name);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////

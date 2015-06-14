@@ -427,8 +427,8 @@ bool Rules::removeTeacher(const QString& teacherName)
 {
 	for(int i=0; i<this->activitiesList.size(); ){
 		Activity* act=this->activitiesList[i];
-		act->removeTeacher(teacherName);
-		if(act->teachersNames.size()==0){
+		bool t=act->removeTeacher(teacherName);
+		if(t && act->teachersNames.size()==0){
 			this->removeActivity(act->id, act->activityGroupId);
 			i=0;
 			//(You have to be careful, there can be erased more activities here)
@@ -467,6 +467,19 @@ bool Rules::removeTeacher(const QString& teacherName)
 		TimeConstraint* ctr=this->timeConstraintsList[i];
 		if(ctr->type==CONSTRAINT_TEACHER_MAX_HOURS_DAILY){
 			ConstraintTeacherMaxHoursDaily* crt_constraint=(ConstraintTeacherMaxHoursDaily*)ctr;
+			if(teacherName==crt_constraint->teacherName)
+				this->removeTimeConstraint(ctr); //single constraint removal
+			else
+				i++;
+		}
+		else
+			i++;
+	}
+
+	for(int i=0; i<this->timeConstraintsList.size(); ){
+		TimeConstraint* ctr=this->timeConstraintsList[i];
+		if(ctr->type==CONSTRAINT_TEACHER_MIN_HOURS_DAILY){
+			ConstraintTeacherMinHoursDaily* crt_constraint=(ConstraintTeacherMinHoursDaily*)ctr;
 			if(teacherName==crt_constraint->teacherName)
 				this->removeTimeConstraint(ctr); //single constraint removal
 			else
@@ -550,6 +563,16 @@ bool Rules::modifyTeacher(const QString& initialTeacherName, const QString& fina
 
 		if(ctr->type==CONSTRAINT_TEACHER_MAX_HOURS_DAILY){
 			ConstraintTeacherMaxHoursDaily* crt_constraint=(ConstraintTeacherMaxHoursDaily*)ctr;
+			if(initialTeacherName == crt_constraint->teacherName)
+				crt_constraint->teacherName=finalTeacherName;
+		}
+	}
+
+	for(int i=0; i<this->timeConstraintsList.size(); i++){
+		TimeConstraint* ctr=this->timeConstraintsList[i];	
+
+		if(ctr->type==CONSTRAINT_TEACHER_MIN_HOURS_DAILY){
+			ConstraintTeacherMinHoursDaily* crt_constraint=(ConstraintTeacherMinHoursDaily*)ctr;
 			if(initialTeacherName == crt_constraint->teacherName)
 				crt_constraint->teacherName=finalTeacherName;
 		}
@@ -1110,9 +1133,9 @@ bool Rules::removeYear(const QString& yearName)
 
 	for(int i=0; i<this->activitiesList.size(); ){
 		Activity* act=this->activitiesList[i];
-		act->removeStudents(*this, yearName, nStudents);
+		bool t=act->removeStudents(*this, yearName, nStudents);
 		
-		if(act->studentsNames.count()==0){
+		if(t && act->studentsNames.count()==0){
 			this->removeActivity(act->id, act->activityGroupId);
 			i=0;
 			//(You have to be careful, there can be erased more activities here)
@@ -1336,8 +1359,8 @@ bool Rules::removeGroup(const QString& yearName, const QString& groupName)
 	for(int i=0; i<this->activitiesList.size(); ){
 		Activity* act=this->activitiesList[i];
 
-		act->removeStudents(*this, groupName, nStudents);
-		if(act->studentsNames.count()==0){
+		bool t=act->removeStudents(*this, groupName, nStudents);
+		if(t && act->studentsNames.count()==0){
 			this->removeActivity(act->id, act->activityGroupId);
 			i=0;
 			//(You have to be careful, there can be erased more activities here)
@@ -1555,8 +1578,8 @@ bool Rules::removeSubgroup(const QString& yearName, const QString& groupName, co
 	for(int i=0; i<this->activitiesList.size(); ){
 		Activity* act=this->activitiesList[i];
 
-		act->removeStudents(*this, subgroupName, nStudents);
-		if(act->studentsNames.count()==0){
+		bool t=act->removeStudents(*this, subgroupName, nStudents);
+		if(t && act->studentsNames.count()==0){
 			this->removeActivity(act->id, act->activityGroupId);
 			i=0;
 			//(You have to be careful, there can be erased more activities here)
@@ -1863,6 +1886,21 @@ void Rules::removeActivity(int _id)
 				else
 					j++;
 			}
+			//removing ConstraintActivityEndsStudentsDay-s referring to this activity
+			for(int j=0; j<this->timeConstraintsList.size(); ){
+				TimeConstraint* ctr=this->timeConstraintsList[j];
+				if(ctr->type==CONSTRAINT_ACTIVITY_ENDS_STUDENTS_DAY){
+					ConstraintActivityEndsStudentsDay *apt=(ConstraintActivityEndsStudentsDay*)ctr;
+					if(apt->activityId==act->id){
+						cout<<"Removing constraint "<<(const char*)(apt->getDescription(*this))<<endl;
+						this->removeTimeConstraint(ctr);
+					}
+					else
+						j++;
+				}
+				else
+					j++;
+			}
 
 			//removing ConstraintActivityPreferredRoom-s referring to this activity
 			for(int j=0; j<this->spaceConstraintsList.size(); ){
@@ -1997,6 +2035,21 @@ void Rules::removeActivity(int _id, int _activityGroupId)
 				TimeConstraint* ctr=this->timeConstraintsList[j];
 				if(ctr->type==CONSTRAINT_ACTIVITY_PREFERRED_TIMES){
 					ConstraintActivityPreferredTimes *apt=(ConstraintActivityPreferredTimes*)ctr;
+					if(apt->activityId==act->id){
+						cout<<"Removing constraint "<<(const char*)(apt->getDescription(*this))<<endl;
+						this->removeTimeConstraint(ctr);
+					}
+					else
+						j++;
+				}
+				else
+					j++;
+			}
+			//removing ConstraintActivityEndsStudentsDay-s referring to this activity
+			for(int j=0; j<this->timeConstraintsList.size(); ){
+				TimeConstraint* ctr=this->timeConstraintsList[j];
+				if(ctr->type==CONSTRAINT_ACTIVITY_ENDS_STUDENTS_DAY){
+					ConstraintActivityEndsStudentsDay *apt=(ConstraintActivityEndsStudentsDay*)ctr;
 					if(apt->activityId==act->id){
 						cout<<"Removing constraint "<<(const char*)(apt->getDescription(*this))<<endl;
 						this->removeTimeConstraint(ctr);
@@ -2228,6 +2281,35 @@ bool Rules::removeRoom(const QString& roomName)
 			else
 				j++;
 		}
+		else if(ctr->type==CONSTRAINT_SUBJECT_SUBJECT_TAG_PREFERRED_ROOM){
+			ConstraintSubjectSubjectTagPreferredRoom* c=(ConstraintSubjectSubjectTagPreferredRoom*)ctr;
+			if(c->roomName==roomName)
+				this->removeSpaceConstraint(ctr);
+			else
+				j++;
+		}
+		else if(ctr->type==CONSTRAINT_SUBJECT_SUBJECT_TAG_PREFERRED_ROOMS){
+			ConstraintSubjectSubjectTagPreferredRooms* c=(ConstraintSubjectSubjectTagPreferredRooms*)ctr;
+			int t=c->roomsNames.remove(roomName);
+			assert(t<=1);
+			if(t==1 && c->roomsNames.count()==0)
+				this->removeSpaceConstraint(ctr);
+			else if(t==1 && c->roomsNames.count()==1){
+				ConstraintSubjectSubjectTagPreferredRoom* c2=new ConstraintSubjectSubjectTagPreferredRoom
+				 (c->weightPercentage, c->subjectName, c->subjectTagName, c->roomsNames.at(0));
+
+				QMessageBox::information(NULL, QObject::tr("FET information"), 
+				 QObject::tr("The constraint\n%1 will be modified into constraint\n%2 because"
+				 " there is only one room left in the constraint")
+				 .arg(c->getDetailedDescription(*this))
+				 .arg(c2->getDetailedDescription(*this)));
+
+				this->removeSpaceConstraint(ctr);
+				this->addSpaceConstraint(c2);
+			}
+			else
+				j++;
+		}
 		else
 			j++;
 	}
@@ -2281,6 +2363,24 @@ bool Rules::modifyRoom(const QString& initialRoomName, const QString& finalRoomN
 		}
 		else if(ctr->type==CONSTRAINT_SUBJECT_PREFERRED_ROOMS){
 			ConstraintSubjectPreferredRooms* c=(ConstraintSubjectPreferredRooms*)ctr;
+			int t=0;
+			for(QStringList::Iterator it=c->roomsNames.begin(); it!=c->roomsNames.end(); it++){
+				if((*it)==initialRoomName){
+					*it=finalRoomName;
+					t++;
+				}
+			}
+			assert(t<=1);
+			j++;
+		}
+		else if(ctr->type==CONSTRAINT_SUBJECT_SUBJECT_TAG_PREFERRED_ROOM){
+			ConstraintSubjectSubjectTagPreferredRoom* c=(ConstraintSubjectSubjectTagPreferredRoom*)ctr;
+			if(c->roomName==initialRoomName)
+				c->roomName=finalRoomName;
+			j++;
+		}
+		else if(ctr->type==CONSTRAINT_SUBJECT_SUBJECT_TAG_PREFERRED_ROOMS){
+			ConstraintSubjectSubjectTagPreferredRooms* c=(ConstraintSubjectSubjectTagPreferredRooms*)ctr;
 			int t=0;
 			for(QStringList::Iterator it=c->roomsNames.begin(); it!=c->roomsNames.end(); it++){
 				if((*it)==initialRoomName){
@@ -2439,15 +2539,32 @@ bool Rules::read(const QString& filename)
 	////////////////////////////////////////
 
 	//logging part
+	QDir dir;
+	bool t=true;
+	if(!dir.exists(OUTPUT_DIR))
+		t=dir.mkdir(OUTPUT_DIR);
+	if(!t){
+		QMessageBox::warning(NULL, QObject::tr("FET warning"), QObject::tr("Cannot create or use directory %1 - cannot continue").arg(OUTPUT_DIR));
+		return false;
+	}
+	assert(t);
+	
 	QString xmlReadingLog="";
 	QString tmp=OUTPUT_DIR+FILE_SEP+XML_PARSING_LOG_FILENAME;
 	QFile file2(tmp);
 	if(!file2.open(QIODevice::WriteOnly)){
+		QMessageBox::critical(NULL, QObject::tr("FET critical"),
+		 QObject::tr("Cannot open log file for writing ... please check your disk free space. Opening of file aborted"));
+		 
+		return false;
+	
 		assert(0);
 		exit(1);
 	}
 	QTextStream logStream(&file2);
-	logStream.setEncoding(QTextStream::UnicodeUTF8);
+	//logStream.setEncoding(QTextStream::UnicodeUTF8);
+	logStream.setCodec("UTF-8");
+	logStream.setGenerateByteOrderMark(true);
 	
 	QDomElement elem1=doc.documentElement();
 	xmlReadingLog+=" Found "+elem1.tagName()+" tag\n";
@@ -2501,7 +2618,7 @@ bool Rules::read(const QString& filename)
 	
 	if(warning){
 		QMessageBox::warning(NULL, QObject::tr("FET information"), 
-		 QObject::tr("Trying to open a newer file - please update your FET software to the latest version"));
+		 QObject::tr("Opening a newer FET version file ... file will be opened but it is recommended to update your FET software to the latest version"));
 	}
 	
 	this->nHoursPerDay=12;
@@ -3196,6 +3313,14 @@ bool Rules::read(const QString& filename)
 						}
 						else if(elem4.tagName()=="Max_Days_Per_Week"){
 							cn->maxDaysPerWeek=elem4.text().toInt();
+							if(cn->maxDaysPerWeek<=0 || cn->maxDaysPerWeek>this->nDaysPerWeek){
+								QMessageBox::information(NULL, QObject::tr("FET information"), 
+								 QObject::tr("Constraint TeacherMaxDaysPerWeek day corrupt for teacher %1, max days %2 <= 0 or >nDaysPerWeek, ignoring constraint")
+								 .arg(cn->teacherName)
+								 .arg(elem4.text()));
+								cn=NULL;
+								goto corruptConstraintTime;
+							}
 							assert(cn->maxDaysPerWeek>0 && cn->maxDaysPerWeek <= this->nDaysPerWeek);
 							xmlReadingLog+="    Max. days per week="+QString::number(cn->maxDaysPerWeek)+"\n";
 						}
@@ -3613,15 +3738,8 @@ bool Rules::read(const QString& filename)
 					}
 					crt_constraint=cn;
 				}
-				if(elem3.tagName()=="ConstraintTeachersMinHoursDaily" && !skipDeprecatedConstraints){
-					int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-					 QObject::tr("File contains deprecated constraint teachers min hours daily - will be ignored\n"),
-					 "Skip rest of deprecated constraints", "See next deprecated constraint", QString(),
-					 1, 0 );
-													 
-					if(t==0)
-						skipDeprecatedConstraints=true;
-					/*ConstraintTeachersMinHoursDaily* cn=new ConstraintTeachersMinHoursDaily();
+				if(elem3.tagName()=="ConstraintTeachersMinHoursDaily"){
+					ConstraintTeachersMinHoursDaily* cn=new ConstraintTeachersMinHoursDaily();
 					for(QDomNode node4=elem3.firstChild(); !node4.isNull(); node4=node4.nextSibling()){
 						QDomElement elem4=node4.toElement();
 						if(elem4.isNull()){
@@ -3655,8 +3773,48 @@ bool Rules::read(const QString& filename)
 							xmlReadingLog+="    Read minHoursDaily="+QString::number(cn->minHoursDaily)+"\n";
 						}
 					}
-					crt_constraint=cn;*/
-					crt_constraint=NULL;
+					crt_constraint=cn;
+				}
+				if(elem3.tagName()=="ConstraintTeacherMinHoursDaily"){
+					ConstraintTeacherMinHoursDaily* cn=new ConstraintTeacherMinHoursDaily();
+					for(QDomNode node4=elem3.firstChild(); !node4.isNull(); node4=node4.nextSibling()){
+						QDomElement elem4=node4.toElement();
+						if(elem4.isNull()){
+							xmlReadingLog+="    Null node here\n";
+							continue;
+						}
+						xmlReadingLog+="    Found "+elem4.tagName()+" tag\n";
+						if(elem4.tagName()=="Weight"){
+							//cn->weight=elem4.text().toDouble();
+							xmlReadingLog+="    Ignoring old tag - weight - making weight percentage=100\n";
+							cn->weightPercentage=100;
+						}
+						else if(elem4.tagName()=="Weight_Percentage"){
+							cn->weightPercentage=elem4.text().toDouble();
+							xmlReadingLog+="    Adding weight percentage="+QString::number(cn->weightPercentage)+"\n";
+						}
+						else if(elem4.tagName()=="Compulsory"){
+							if(elem4.text()=="yes"){
+								//cn->compulsory=true;
+								xmlReadingLog+="    Ignoring old tag - Current constraint is compulsory\n";
+								cn->weightPercentage=100;
+							}
+							else{
+								//cn->compulsory=false;
+								xmlReadingLog+="    Old tag - current constraint is not compulsory - making weightPercentage=0%\n";
+								cn->weightPercentage=0;
+							}
+						}
+						else if(elem4.tagName()=="Minimum_Hours_Daily"){
+							cn->minHoursDaily=elem4.text().toInt();
+							xmlReadingLog+="    Read minHoursDaily="+QString::number(cn->minHoursDaily)+"\n";
+						}
+						else if(elem4.tagName()=="Teacher_Name"){
+							cn->teacherName=elem4.text();
+							xmlReadingLog+="    Read teacher name="+cn->teacherName+"\n";
+						}
+					}
+					crt_constraint=cn;
 				}
 				if((elem3.tagName()=="ConstraintTeachersSubgroupsMaxHoursDaily"
 				 //TODO: erase the line below. It is only kept for compatibility with older versions
@@ -4039,6 +4197,26 @@ bool Rules::read(const QString& filename)
 							}
 							assert(cn->hour>=0 && cn->hour < this->nHoursPerDay);
 							xmlReadingLog+="    Preferred hour="+this->hoursOfTheDay[cn->hour]+"\n";
+						}
+					}
+					crt_constraint=cn;
+				}
+				if(elem3.tagName()=="ConstraintActivityEndsStudentsDay"){
+					ConstraintActivityEndsStudentsDay* cn=new ConstraintActivityEndsStudentsDay();
+					for(QDomNode node4=elem3.firstChild(); !node4.isNull(); node4=node4.nextSibling()){
+						QDomElement elem4=node4.toElement();
+						if(elem4.isNull()){
+							xmlReadingLog+="    Null node here\n";
+							continue;
+						}
+						xmlReadingLog+="    Found "+elem4.tagName()+" tag\n";
+						if(elem4.tagName()=="Weight_Percentage"){
+							cn->weightPercentage=elem4.text().toDouble();
+							xmlReadingLog+="    Adding weight percentage="+QString::number(cn->weightPercentage)+"\n";
+						}
+						else if(elem4.tagName()=="Activity_Id"){
+							cn->activityId=elem4.text().toInt();
+							xmlReadingLog+="    Read activity id="+QString::number(cn->activityId)+"\n";
 						}
 					}
 					crt_constraint=cn;
@@ -6078,6 +6256,13 @@ corruptConstraintSpace:
 	this->internalStructureComputed=false;
 
 	logStream<<xmlReadingLog;
+
+	if(file2.error()>0){
+		QMessageBox::critical(NULL, QObject::tr("FET critical"),
+		 QObject::tr("Saved of logging gave error code %1, which means you cannot see the log of reading the file. Please check your disk free space")
+		 .arg(file2.error()));
+	}
+
 	file2.close();
 
 	////////////////////////////////////////
@@ -6093,8 +6278,10 @@ void Rules::write(const QString& filename)
 
 	QFile file(filename);
 	if(!file.open(QIODevice::WriteOnly)){
-		QMessageBox::critical(NULL, QObject::tr("FET information"),
-		 QObject::tr("Cannot open filename for writing ... FET will now abort"));
+		QMessageBox::critical(NULL, QObject::tr("FET critical"),
+		 QObject::tr("Cannot open filename for writing ... please check your disk free space. Saving of file aborted"));
+		 
+		return;
 	
 		assert(0);
 		exit(1);
@@ -6190,6 +6377,12 @@ void Rules::write(const QString& filename)
 	s+="</FET>\n";
 
 	tos<<s;
+	
+	if(file.error()>0){
+		QMessageBox::critical(NULL, QObject::tr("FET critical"),
+		 QObject::tr("Saved file gave error code %1, which means saving is compromised. Please check your disk free space")
+		 .arg(file.error()));
+	}
 }
 
 int Rules::activateTeacher(const QString& teacherName)

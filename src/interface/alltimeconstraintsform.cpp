@@ -28,6 +28,7 @@
 #include "modifyconstraintactivitypreferredtimeform.h"
 #include "modifyconstraintactivitiesnotoverlappingform.h"
 #include "modifyconstraintminndaysbetweenactivitiesform.h"
+#include "modifyconstraintactivityendsstudentsdayform.h"
 
 #include "modifyconstraintteachernotavailableform.h"
 #include "modifyconstraintteachersmaxgapsperweekform.h"
@@ -35,6 +36,8 @@
 #include "modifyconstraintteachermaxdaysperweekform.h"
 #include "modifyconstraintteachersmaxhoursdailyform.h"
 #include "modifyconstraintteachermaxhoursdailyform.h"
+#include "modifyconstraintteachersminhoursdailyform.h"
+#include "modifyconstraintteacherminhoursdailyform.h"
 
 #include "modifyconstraintstudentssetnotavailableform.h"
 #include "modifyconstraintstudentssetnogapsform.h"
@@ -184,6 +187,16 @@ void AllTimeConstraintsForm::modifyConstraint()
 		 new ModifyConstraintTeacherMaxHoursDailyForm((ConstraintTeacherMaxHoursDaily*)ctr);
 		form->exec();
 	}
+	else if(ctr->type==CONSTRAINT_TEACHERS_MIN_HOURS_DAILY){
+		ModifyConstraintTeachersMinHoursDailyForm* form=
+		 new ModifyConstraintTeachersMinHoursDailyForm((ConstraintTeachersMinHoursDaily*)ctr);
+		form->exec();
+	}
+	else if(ctr->type==CONSTRAINT_TEACHER_MIN_HOURS_DAILY){
+		ModifyConstraintTeacherMinHoursDailyForm* form=
+		 new ModifyConstraintTeacherMinHoursDailyForm((ConstraintTeacherMinHoursDaily*)ctr);
+		form->exec();
+	}
 	else if(ctr->type==CONSTRAINT_TEACHERS_MAX_GAPS_PER_WEEK){
 		ModifyConstraintTeachersMaxGapsPerWeekForm* form=
 		 new ModifyConstraintTeachersMaxGapsPerWeekForm((ConstraintTeachersMaxGapsPerWeek*)ctr);
@@ -247,6 +260,11 @@ void AllTimeConstraintsForm::modifyConstraint()
 	else if(ctr->type==CONSTRAINT_MIN_N_DAYS_BETWEEN_ACTIVITIES){
 		ModifyConstraintMinNDaysBetweenActivitiesForm* form=
 		 new ModifyConstraintMinNDaysBetweenActivitiesForm((ConstraintMinNDaysBetweenActivities*)ctr);
+		form->exec();
+	}
+	else if(ctr->type==CONSTRAINT_ACTIVITY_ENDS_STUDENTS_DAY){
+		ModifyConstraintActivityEndsStudentsDayForm* form=
+		 new ModifyConstraintActivityEndsStudentsDayForm((ConstraintActivityEndsStudentsDay*)ctr);
 		form->exec();
 	}
 	else{

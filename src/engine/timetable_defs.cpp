@@ -27,12 +27,17 @@ QString internetVersion;
 /**
 FET version
 */
-const QString FET_VERSION="5.2.9";
+const QString FET_VERSION="5.4.10";
 
 /**
 FET language
 */
 QString FET_LANGUAGE="en_GB";
+
+/**
+Timetable html css javaScript Level, by Volker Dirr
+*/
+int TIMETABLE_HTML_LEVEL;
 
 QString protect(const QString& str) //used for xml
 {
@@ -90,6 +95,7 @@ QString protect2id(const QString& str) //used for html
 	p.replace("<", "&lt;");
 	//p.replace("'", "&apos;");
 	p.replace(" ", "_");		// id must be a single token
+	p.replace(",", "_");		// looks like this makes trouble
 	return p;
 }
 

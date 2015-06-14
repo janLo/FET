@@ -50,6 +50,7 @@ using namespace std;
 
 #include "fet.h"
 
+#include "constraintactivityendsstudentsdayform.h"
 #include "constraint2activitiesconsecutiveform.h"
 #include "constraintactivitiespreferredtimesform.h"
 #include "constraintactivitiessamestartingtimeform.h"
@@ -64,6 +65,8 @@ using namespace std;
 #include "constraintteachermaxdaysperweekform.h"
 #include "constraintteachermaxhoursdailyform.h"
 #include "constraintteachersmaxhoursdailyform.h"
+#include "constraintteacherminhoursdailyform.h"
+#include "constraintteachersminhoursdailyform.h"
 #include "constraintactivitypreferredtimeform.h"
 #include "constraintstudentssetnogapsform.h"
 #include "constraintstudentsnogapsform.h"
@@ -83,6 +86,8 @@ using namespace std;
 #include "constraintsubjectpreferredroomsform.h"
 #include "constraintsubjectsubjecttagpreferredroomform.h"
 #include "constraintsubjectsubjecttagpreferredroomsform.h"
+
+#include "settingstimetablehtmllevelform.h"
 
 #include <qmessagebox.h>
 #include <q3filedialog.h>
@@ -116,11 +121,32 @@ extern QApplication* pqapplication;
 
 static HttpGet getter;
 
-//static bool finishedSearchingForUpdates;
+static int ORIGINAL_WIDTH, ORIGINAL_HEIGHT;
+
+//English has to be counted also
+const int NUMBER_OF_LANGUAGES=13;
+
+const int LANGUAGE_EN_GB_POSITION=0;
+const int LANGUAGE_CA_POSITION=1;
+const int LANGUAGE_DE_POSITION=2;
+const int LANGUAGE_EL_POSITION=3;
+const int LANGUAGE_ES_POSITION=4;
+const int LANGUAGE_FR_POSITION=5;
+const int LANGUAGE_HU_POSITION=6;
+const int LANGUAGE_MK_POSITION=7;
+const int LANGUAGE_MS_POSITION=8;
+const int LANGUAGE_NL_POSITION=9;
+const int LANGUAGE_PL_POSITION=10;
+const int LANGUAGE_RO_POSITION=11;
+const int LANGUAGE_TR_POSITION=12;
+
 
 FetMainForm::FetMainForm()
 {
 	setupUi(this);
+	
+	ORIGINAL_WIDTH=width();
+	ORIGINAL_HEIGHT=height();
 
 	QSettings settings("FET free software", "FET");
 	QRect rect=settings.value("fetmainformgeometry", QRect(0,0,0,0)).toRect();
@@ -138,39 +164,35 @@ FetMainForm::FetMainForm()
 		resize(rect.size());
 	}
 
-	languageMenu->setItemChecked(languageMenu->idAt(0), false);
-	languageMenu->setItemChecked(languageMenu->idAt(1), false);
-	languageMenu->setItemChecked(languageMenu->idAt(2), false);
-	languageMenu->setItemChecked(languageMenu->idAt(3), false);
-	languageMenu->setItemChecked(languageMenu->idAt(4), false);
-	languageMenu->setItemChecked(languageMenu->idAt(5), false);
-	languageMenu->setItemChecked(languageMenu->idAt(6), false);
-	languageMenu->setItemChecked(languageMenu->idAt(7), false);
-	languageMenu->setItemChecked(languageMenu->idAt(8), false);
-	languageMenu->setItemChecked(languageMenu->idAt(9), false);
-	languageMenu->setItemChecked(languageMenu->idAt(10), false);
+	for(int i=0; i<NUMBER_OF_LANGUAGES; i++)
+		languageMenu->setItemChecked(languageMenu->idAt(i), false);
+	
 	if(FET_LANGUAGE=="en_GB")
-		languageMenu->setItemChecked(languageMenu->idAt(0), true);
+		languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_EN_GB_POSITION), true);
 	else if(FET_LANGUAGE=="fr")
-		languageMenu->setItemChecked(languageMenu->idAt(1), true);
+		languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_FR_POSITION), true);
 	else if(FET_LANGUAGE=="ca")
-		languageMenu->setItemChecked(languageMenu->idAt(2), true);
+		languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_CA_POSITION), true);
 	else if(FET_LANGUAGE=="ro")
-		languageMenu->setItemChecked(languageMenu->idAt(3), true);
+		languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_RO_POSITION), true);
 	else if(FET_LANGUAGE=="ms")
-		languageMenu->setItemChecked(languageMenu->idAt(4), true);
+		languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_MS_POSITION), true);
 	else if(FET_LANGUAGE=="pl")
-		languageMenu->setItemChecked(languageMenu->idAt(5), true);
+		languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_PL_POSITION), true);
 	else if(FET_LANGUAGE=="tr")
-		languageMenu->setItemChecked(languageMenu->idAt(6), true);
+		languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_TR_POSITION), true);
 	else if(FET_LANGUAGE=="nl")
-		languageMenu->setItemChecked(languageMenu->idAt(7), true);
+		languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_NL_POSITION), true);
 	else if(FET_LANGUAGE=="de")
-		languageMenu->setItemChecked(languageMenu->idAt(8), true);
+		languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_DE_POSITION), true);
 	else if(FET_LANGUAGE=="hu")
-		languageMenu->setItemChecked(languageMenu->idAt(9), true);
+		languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_HU_POSITION), true);
 	else if(FET_LANGUAGE=="mk")
-		languageMenu->setItemChecked(languageMenu->idAt(10), true);
+		languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_MK_POSITION), true);
+	else if(FET_LANGUAGE=="es")
+		languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_ES_POSITION), true);
+	else if(FET_LANGUAGE=="el")
+		languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_EL_POSITION), true);
 
 	//new data
 	if(gt.rules.initialized)
@@ -229,8 +251,8 @@ void FetMainForm::httpDone(bool error)
 			QMessageBox::information(this, QObject::tr("FET information"),
 			 QObject::tr("Another version: %1, is available on FET webpage: http://www.lalescu.ro/liviu/fet/\n\n"
 			 "You have to manually download and install (open the FET webpage in an internet browser). "
-			 "Please read the information on web page regarding the newer version and choose whether to keep you current version or upgrade."
-			 " You might need to hit Refresh in your web browser if links do not work"
+			 "Please read the information on web page regarding the newer version and choose whether to keep your current version or upgrade "
+			 "(the recommended option is to upgrade). You might need to hit Refresh in your web browser if links do not work"
 			 "\n\nYou can choose to disable automatic search for updates in the Settings menu")
 			 .arg(s));
 		}
@@ -248,7 +270,7 @@ void FetMainForm::closeEvent(QCloseEvent* event)
 		;
 
 	switch(QMessageBox::information( this, QObject::tr("FET - exiting"),
-	 QObject::tr("File not saved - do you want to save it?"),
+	 QObject::tr("File might have been changed - do you want to save it?"),
 	 QObject::tr("&Yes"), QObject::tr("&No"), QObject::tr("&Cancel"), 0 , 2 )){
 	 	case 0: 
 			this->on_fileSaveAction_activated();
@@ -289,10 +311,6 @@ void FetMainForm::on_fileNewAction_activated()
 		return;
 	}
 
-	INPUT_FILENAME_XML="";
-	
-	setWindowTitle(QObject::tr("FET - a free evolutionary timetabling program"));
-
 	int confirm=0;
 	switch( QMessageBox::information( this, QObject::tr("FET application"),
 	 QObject::tr("Are you sure you want to load new data (rules) ?"),
@@ -306,6 +324,10 @@ void FetMainForm::on_fileNewAction_activated()
 	}
 
 	if(confirm){
+		INPUT_FILENAME_XML="";
+	
+		setWindowTitle(QObject::tr("FET - a free evolutionary timetabling program"));
+
 		if(gt.rules.initialized)
 			gt.rules.kill();
 		gt.rules.init();
@@ -336,11 +358,32 @@ void FetMainForm::on_fileOpenAction_activated()
 			this, QObject::tr("open file dialog"), QObject::tr("Choose a file"));
 		if(s.isNull())
 			return;
+
+		int tmp2=s.findRev("/");
+		QString s2=s.right(s.length()-tmp2-1);
 			
-		if(s.indexOf("(") >= 0 || s.indexOf(")")>=0){
-			QMessageBox::information(this, QObject::tr("FET info"), QObject::tr("Please do not use parantheses () in filename, the html code does not work"));
+		if(s2.indexOf("\"") >= 0){
+			QMessageBox::warning(this, QObject::tr("FET info"), 
+			 QObject::tr("Please do not use quotation marks \" in filename, the html css code does not work."
+			  " File was not loaded. Please rename it, removing not allowed characters and open it after that with FET."));
+			return;
+		}		
+		if(s2.indexOf(";") >= 0){
+			QMessageBox::warning(this, QObject::tr("FET info"), 
+			 QObject::tr("Please do not use semicolon ; in filename, the html css code does not work."
+			  " File was not loaded. Please rename it, removing not allowed characters and open it after that with FET."));
 			return;
 		}
+		if(s2.indexOf("#") >= 0){
+			QMessageBox::warning(this, QObject::tr("FET info"), 
+			 QObject::tr("Please do not use # in filename, the html css code does not work."
+			  " File was not loaded. Please rename it, removing not allowed characters and open it after that with FET."));
+			return;
+		}
+		/*if(s2.indexOf("(") >= 0 || s2.indexOf(")")>=0){
+			QMessageBox::information(this, QObject::tr("FET info"), QObject::tr("Please do not use parentheses () in filename, the html css code does not work"));
+			return;
+		}*/
 		else{
 			if(gt.rules.read(s)){
 				students_schedule_ready=false;
@@ -369,10 +412,25 @@ void FetMainForm::on_fileSaveAsAction_activated()
 	if(s==QString::null)
 		return;
 
-	if(s.indexOf("(") >= 0 || s.indexOf(")")>=0){
-		QMessageBox::information(this, QObject::tr("FET info"), QObject::tr("Please do not use parantheses () in filename, the html code does not work"));
+	int tmp2=s.findRev("/");
+	QString s2=s.right(s.length()-tmp2-1);
+			
+	if(s2.indexOf("\"") >= 0){
+		QMessageBox::warning(this, QObject::tr("FET info"), QObject::tr("Please do not use quotation marks \" in filename, the html css code does not work"));
 		return;
 	}
+	if(s2.indexOf(";") >= 0){
+		QMessageBox::warning(this, QObject::tr("FET info"), QObject::tr("Please do not use semicolon ; in filename, the html css code does not work"));
+		return;
+	}
+	if(s2.indexOf("#") >= 0){
+		QMessageBox::warning(this, QObject::tr("FET info"), QObject::tr("Please do not use # in filename, the html css code does not work"));
+		return;
+	}
+	/*if(s2.indexOf("(") >= 0 || s2.indexOf(")")>=0){
+		QMessageBox::information(this, QObject::tr("FET info"), QObject::tr("Please do not use parentheses () in filename, the html css code does not work"));
+		return;
+	}*/
 		
 	if(s.right(4)!=".fet")
 		s+=".fet";
@@ -527,6 +585,65 @@ void FetMainForm::on_dataStudentsStatisticsAction_activated()
 	form->exec();
 }
 
+void FetMainForm::on_dataHelpOnStatisticsAction_activated()
+{
+	QString s;
+	
+	s+=tr("This help by Liviu Lalescu, modified 1 October 2007");
+	
+	s+="\n\n";
+	
+	s+=tr("Statistics for students might be the most difficult to understand."
+	 " If you are using divisions of years: probably the most relevant statistics"
+	 " are the ones for each subgroup (so you may check only subgroups check box)."
+	 " You may see more hours for the years or groups, but these are not significant, please ignore them,"
+	 " because each year or group will count also activities of all contained subgroups."
+	 "\n\n"
+	 "Each subgroup should have a number of hours per week close to the average of"
+	 " all subgroups and close to the normal number of working hours of each students set."
+	 " If a subgroup has a much lower value, maybe you used incorrectly"
+	 " the years/groups/subgroups for activities."
+	 "\n\n"
+	 "Please read FAQ for detailed description"
+	 " on how divisions work. The key is that the subgroups are independent and represent the smallest unit of students."
+	 " Each subgroup receives the activities of the parent year and parent group and of itself."
+	 "\n\n"
+	 "Having a subgroup with too little working hours per week means that you inputted activities in a wrong manner,"
+	 " and also that some constraints like no gaps, early or min hours daily for this subgroup"
+	 " are interpreted in a wrong manner (if subgroup has only 2 activities, then these must"
+	 " be placed in the first hours, which is too hard and wrong)."
+	 );
+
+	//QMessageBox::information(this, tr("FET information about statistics"), s);
+
+	//show the message in a dialog
+	QDialog* dialog=new QDialog();
+	
+	dialog->setWindowTitle(tr("FET - information about statistics"));
+
+	QVBoxLayout* vl=new QVBoxLayout(dialog);
+	QTextEdit* te=new QTextEdit();
+	te->setPlainText(s);
+	te->setReadOnly(true);
+	QPushButton* pb=new QPushButton(tr("OK"));
+
+	QHBoxLayout* hl=new QHBoxLayout(0);
+	hl->addStretch(1);
+	hl->addWidget(pb);
+
+	vl->addWidget(te);
+	vl->addLayout(hl);
+	connect(pb, SIGNAL(clicked()), dialog, SLOT(close()));
+
+	dialog->setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - 350;
+	int yy=desktop->height()/2 - 250;
+	dialog->setGeometry(xx, yy, 700, 500);
+
+	dialog->exec();
+}
+
 void FetMainForm::on_dataActivitiesAction_activated()
 {
 	if(simulation_running){
@@ -596,6 +713,18 @@ void FetMainForm::on_dataTimeConstraintsActivitiesPreferredTimesAction_activated
 	}
 
 	ConstraintActivitiesPreferredTimesForm* form=new ConstraintActivitiesPreferredTimesForm();
+	form->exec();
+}
+
+void FetMainForm::on_dataTimeConstraintsActivityEndsStudentsDayAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, QObject::tr("FET information"),
+			QObject::tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	ConstraintActivityEndsStudentsDayForm* form=new ConstraintActivityEndsStudentsDayForm();
 	form->exec();
 }
 
@@ -803,6 +932,30 @@ void FetMainForm::on_dataTimeConstraintsTeacherMaxHoursDailyAction_activated()
 	form->exec();
 }
 
+void FetMainForm::on_dataTimeConstraintsTeachersMinHoursDailyAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, QObject::tr("FET information"),
+			QObject::tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	ConstraintTeachersMinHoursDailyForm* form=new ConstraintTeachersMinHoursDailyForm();
+	form->exec();
+}
+
+void FetMainForm::on_dataTimeConstraintsTeacherMinHoursDailyAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, QObject::tr("FET information"),
+			QObject::tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	ConstraintTeacherMinHoursDailyForm* form=new ConstraintTeacherMinHoursDailyForm();
+	form->exec();
+}
+
 void FetMainForm::on_dataTimeConstraintsActivityPreferredTimeAction_activated()
 {
 	if(simulation_running){
@@ -989,6 +1142,43 @@ void FetMainForm::on_helpInstructionsAction_activated()
 	form->show();
 }
 
+void FetMainForm::on_helpInOtherLanguagesAction_activated()
+{
+	QString s=tr("You can see help translated into other languages in the directory doc/ of FET");
+	s+="\n\n";	
+	s+=tr("Currently (4 Oct. 2007), there are:");	
+	s+="\n\n";	
+	s+=tr("1. es - Spanish - Instructions");
+
+	//show the message in a dialog
+	QDialog* dialog=new QDialog();
+	
+	dialog->setWindowTitle(tr("FET - help in other languages"));
+
+	QVBoxLayout* vl=new QVBoxLayout(dialog);
+	QTextEdit* te=new QTextEdit();
+	te->setPlainText(s);
+
+	te->setReadOnly(true);
+	QPushButton* pb=new QPushButton(tr("OK"));
+
+	QHBoxLayout* hl=new QHBoxLayout(0);
+	hl->addStretch(1);
+	hl->addWidget(pb);
+
+	vl->addWidget(te);
+	vl->addLayout(hl);
+	connect(pb, SIGNAL(clicked()), dialog, SLOT(close()));
+
+	dialog->setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - 350;
+	int yy=desktop->height()/2 - 250;
+	dialog->setGeometry(xx, yy, 700, 500);
+
+	dialog->exec();
+}
+
 void FetMainForm::on_timetableGenerateAction_activated()
 {
 	if(simulation_running){
@@ -1094,17 +1284,9 @@ void FetMainForm::on_languageEnglishAction_activated()
 
 	FET_LANGUAGE="en_GB";
 	
-	languageMenu->setItemChecked(languageMenu->idAt(0), true);
-	languageMenu->setItemChecked(languageMenu->idAt(1), false);
-	languageMenu->setItemChecked(languageMenu->idAt(2), false);
-	languageMenu->setItemChecked(languageMenu->idAt(3), false);
-	languageMenu->setItemChecked(languageMenu->idAt(4), false);
-	languageMenu->setItemChecked(languageMenu->idAt(5), false);
-	languageMenu->setItemChecked(languageMenu->idAt(6), false);
-	languageMenu->setItemChecked(languageMenu->idAt(7), false);
-	languageMenu->setItemChecked(languageMenu->idAt(8), false);
-	languageMenu->setItemChecked(languageMenu->idAt(9), false);
-	languageMenu->setItemChecked(languageMenu->idAt(10), false);
+	for(int i=0; i<NUMBER_OF_LANGUAGES; i++)
+		languageMenu->setItemChecked(languageMenu->idAt(i), false);
+	languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_EN_GB_POSITION), true);
 }
 
 void FetMainForm::on_languageFrenchAction_activated()
@@ -1114,17 +1296,9 @@ void FetMainForm::on_languageFrenchAction_activated()
 	
 	FET_LANGUAGE="fr";
 	
-	languageMenu->setItemChecked(languageMenu->idAt(0), false);
-	languageMenu->setItemChecked(languageMenu->idAt(1), true);
-	languageMenu->setItemChecked(languageMenu->idAt(2), false);
-	languageMenu->setItemChecked(languageMenu->idAt(3), false);
-	languageMenu->setItemChecked(languageMenu->idAt(4), false);
-	languageMenu->setItemChecked(languageMenu->idAt(5), false);
-	languageMenu->setItemChecked(languageMenu->idAt(6), false);
-	languageMenu->setItemChecked(languageMenu->idAt(7), false);
-	languageMenu->setItemChecked(languageMenu->idAt(8), false);
-	languageMenu->setItemChecked(languageMenu->idAt(9), false);
-	languageMenu->setItemChecked(languageMenu->idAt(10), false);
+	for(int i=0; i<NUMBER_OF_LANGUAGES; i++)
+		languageMenu->setItemChecked(languageMenu->idAt(i), false);
+	languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_FR_POSITION), true);
 }
 
 void FetMainForm::on_languageCatalanAction_activated()
@@ -1134,17 +1308,9 @@ void FetMainForm::on_languageCatalanAction_activated()
 
 	FET_LANGUAGE="ca";
 	
-	languageMenu->setItemChecked(languageMenu->idAt(0), false);
-	languageMenu->setItemChecked(languageMenu->idAt(1), false);
-	languageMenu->setItemChecked(languageMenu->idAt(2), true);
-	languageMenu->setItemChecked(languageMenu->idAt(3), false);
-	languageMenu->setItemChecked(languageMenu->idAt(4), false);
-	languageMenu->setItemChecked(languageMenu->idAt(5), false);
-	languageMenu->setItemChecked(languageMenu->idAt(6), false);
-	languageMenu->setItemChecked(languageMenu->idAt(7), false);
-	languageMenu->setItemChecked(languageMenu->idAt(8), false);
-	languageMenu->setItemChecked(languageMenu->idAt(9), false);
-	languageMenu->setItemChecked(languageMenu->idAt(10), false);
+	for(int i=0; i<NUMBER_OF_LANGUAGES; i++)
+		languageMenu->setItemChecked(languageMenu->idAt(i), false);
+	languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_CA_POSITION), true);
 }
 
 void FetMainForm::on_languageRomanianAction_activated()
@@ -1154,17 +1320,9 @@ void FetMainForm::on_languageRomanianAction_activated()
 	
 	FET_LANGUAGE="ro";
 	
-	languageMenu->setItemChecked(languageMenu->idAt(0), false);
-	languageMenu->setItemChecked(languageMenu->idAt(1), false);
-	languageMenu->setItemChecked(languageMenu->idAt(2), false);
-	languageMenu->setItemChecked(languageMenu->idAt(3), true);
-	languageMenu->setItemChecked(languageMenu->idAt(4), false);
-	languageMenu->setItemChecked(languageMenu->idAt(5), false);
-	languageMenu->setItemChecked(languageMenu->idAt(6), false);
-	languageMenu->setItemChecked(languageMenu->idAt(7), false);
-	languageMenu->setItemChecked(languageMenu->idAt(8), false);
-	languageMenu->setItemChecked(languageMenu->idAt(9), false);
-	languageMenu->setItemChecked(languageMenu->idAt(10), false);
+	for(int i=0; i<NUMBER_OF_LANGUAGES; i++)
+		languageMenu->setItemChecked(languageMenu->idAt(i), false);
+	languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_RO_POSITION), true);
 }
 
 void FetMainForm::on_languageMalayAction_activated()
@@ -1174,17 +1332,9 @@ void FetMainForm::on_languageMalayAction_activated()
 	
 	FET_LANGUAGE="ms";
 	
-	languageMenu->setItemChecked(languageMenu->idAt(0), false);
-	languageMenu->setItemChecked(languageMenu->idAt(1), false);
-	languageMenu->setItemChecked(languageMenu->idAt(2), false);
-	languageMenu->setItemChecked(languageMenu->idAt(3), false);
-	languageMenu->setItemChecked(languageMenu->idAt(4), true);
-	languageMenu->setItemChecked(languageMenu->idAt(5), false);
-	languageMenu->setItemChecked(languageMenu->idAt(6), false);
-	languageMenu->setItemChecked(languageMenu->idAt(7), false);
-	languageMenu->setItemChecked(languageMenu->idAt(8), false);
-	languageMenu->setItemChecked(languageMenu->idAt(9), false);
-	languageMenu->setItemChecked(languageMenu->idAt(10), false);
+	for(int i=0; i<NUMBER_OF_LANGUAGES; i++)
+		languageMenu->setItemChecked(languageMenu->idAt(i), false);
+	languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_MS_POSITION), true);
 }
 
 void FetMainForm::on_languagePolishAction_activated()
@@ -1194,17 +1344,9 @@ void FetMainForm::on_languagePolishAction_activated()
 	
 	FET_LANGUAGE="pl";
 	
-	languageMenu->setItemChecked(languageMenu->idAt(0), false);
-	languageMenu->setItemChecked(languageMenu->idAt(1), false);
-	languageMenu->setItemChecked(languageMenu->idAt(2), false);
-	languageMenu->setItemChecked(languageMenu->idAt(3), false);
-	languageMenu->setItemChecked(languageMenu->idAt(4), false);
-	languageMenu->setItemChecked(languageMenu->idAt(5), true);
-	languageMenu->setItemChecked(languageMenu->idAt(6), false);
-	languageMenu->setItemChecked(languageMenu->idAt(7), false);
-	languageMenu->setItemChecked(languageMenu->idAt(8), false);
-	languageMenu->setItemChecked(languageMenu->idAt(9), false);
-	languageMenu->setItemChecked(languageMenu->idAt(10), false);
+	for(int i=0; i<NUMBER_OF_LANGUAGES; i++)
+		languageMenu->setItemChecked(languageMenu->idAt(i), false);
+	languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_PL_POSITION), true);
 }
 
 void FetMainForm::on_languageTurkishAction_activated()
@@ -1214,17 +1356,9 @@ void FetMainForm::on_languageTurkishAction_activated()
 	
 	FET_LANGUAGE="tr";
 	
-	languageMenu->setItemChecked(languageMenu->idAt(0), false);
-	languageMenu->setItemChecked(languageMenu->idAt(1), false);
-	languageMenu->setItemChecked(languageMenu->idAt(2), false);
-	languageMenu->setItemChecked(languageMenu->idAt(3), false);
-	languageMenu->setItemChecked(languageMenu->idAt(4), false);
-	languageMenu->setItemChecked(languageMenu->idAt(5), false);
-	languageMenu->setItemChecked(languageMenu->idAt(6), true);
-	languageMenu->setItemChecked(languageMenu->idAt(7), false);
-	languageMenu->setItemChecked(languageMenu->idAt(8), false);
-	languageMenu->setItemChecked(languageMenu->idAt(9), false);
-	languageMenu->setItemChecked(languageMenu->idAt(10), false);
+	for(int i=0; i<NUMBER_OF_LANGUAGES; i++)
+		languageMenu->setItemChecked(languageMenu->idAt(i), false);
+	languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_TR_POSITION), true);
 }
 
 void FetMainForm::on_languageDutchAction_activated()
@@ -1234,17 +1368,9 @@ void FetMainForm::on_languageDutchAction_activated()
 	
 	FET_LANGUAGE="nl";
 	
-	languageMenu->setItemChecked(languageMenu->idAt(0), false);
-	languageMenu->setItemChecked(languageMenu->idAt(1), false);
-	languageMenu->setItemChecked(languageMenu->idAt(2), false);
-	languageMenu->setItemChecked(languageMenu->idAt(3), false);
-	languageMenu->setItemChecked(languageMenu->idAt(4), false);
-	languageMenu->setItemChecked(languageMenu->idAt(5), false);
-	languageMenu->setItemChecked(languageMenu->idAt(6), false);
-	languageMenu->setItemChecked(languageMenu->idAt(7), true);
-	languageMenu->setItemChecked(languageMenu->idAt(8), false);
-	languageMenu->setItemChecked(languageMenu->idAt(9), false);
-	languageMenu->setItemChecked(languageMenu->idAt(10), false);
+	for(int i=0; i<NUMBER_OF_LANGUAGES; i++)
+		languageMenu->setItemChecked(languageMenu->idAt(i), false);
+	languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_NL_POSITION), true);
 }
 
 void FetMainForm::on_languageGermanAction_activated()
@@ -1254,17 +1380,9 @@ void FetMainForm::on_languageGermanAction_activated()
 	
 	FET_LANGUAGE="de";
 	
-	languageMenu->setItemChecked(languageMenu->idAt(0), false);
-	languageMenu->setItemChecked(languageMenu->idAt(1), false);
-	languageMenu->setItemChecked(languageMenu->idAt(2), false);
-	languageMenu->setItemChecked(languageMenu->idAt(3), false);
-	languageMenu->setItemChecked(languageMenu->idAt(4), false);
-	languageMenu->setItemChecked(languageMenu->idAt(5), false);
-	languageMenu->setItemChecked(languageMenu->idAt(6), false);
-	languageMenu->setItemChecked(languageMenu->idAt(7), false);
-	languageMenu->setItemChecked(languageMenu->idAt(8), true);
-	languageMenu->setItemChecked(languageMenu->idAt(9), false);
-	languageMenu->setItemChecked(languageMenu->idAt(10), false);
+	for(int i=0; i<NUMBER_OF_LANGUAGES; i++)
+		languageMenu->setItemChecked(languageMenu->idAt(i), false);
+	languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_DE_POSITION), true);
 }
 
 void FetMainForm::on_languageHungarianAction_activated()
@@ -1274,17 +1392,9 @@ void FetMainForm::on_languageHungarianAction_activated()
 	
 	FET_LANGUAGE="hu";
 	
-	languageMenu->setItemChecked(languageMenu->idAt(0), false);
-	languageMenu->setItemChecked(languageMenu->idAt(1), false);
-	languageMenu->setItemChecked(languageMenu->idAt(2), false);
-	languageMenu->setItemChecked(languageMenu->idAt(3), false);
-	languageMenu->setItemChecked(languageMenu->idAt(4), false);
-	languageMenu->setItemChecked(languageMenu->idAt(5), false);
-	languageMenu->setItemChecked(languageMenu->idAt(6), false);
-	languageMenu->setItemChecked(languageMenu->idAt(7), false);
-	languageMenu->setItemChecked(languageMenu->idAt(8), false);
-	languageMenu->setItemChecked(languageMenu->idAt(9), true);
-	languageMenu->setItemChecked(languageMenu->idAt(10), false);
+	for(int i=0; i<NUMBER_OF_LANGUAGES; i++)
+		languageMenu->setItemChecked(languageMenu->idAt(i), false);
+	languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_HU_POSITION), true);
 }
 
 void FetMainForm::on_languageMacedonianAction_activated()
@@ -1294,16 +1404,91 @@ void FetMainForm::on_languageMacedonianAction_activated()
 	
 	FET_LANGUAGE="mk";
 	
-	languageMenu->setItemChecked(languageMenu->idAt(0), false);
-	languageMenu->setItemChecked(languageMenu->idAt(1), false);
-	languageMenu->setItemChecked(languageMenu->idAt(2), false);
-	languageMenu->setItemChecked(languageMenu->idAt(3), false);
-	languageMenu->setItemChecked(languageMenu->idAt(4), false);
-	languageMenu->setItemChecked(languageMenu->idAt(5), false);
-	languageMenu->setItemChecked(languageMenu->idAt(6), false);
-	languageMenu->setItemChecked(languageMenu->idAt(7), false);
-	languageMenu->setItemChecked(languageMenu->idAt(8), false);
-	languageMenu->setItemChecked(languageMenu->idAt(9), false);
-	languageMenu->setItemChecked(languageMenu->idAt(10), true);
+	for(int i=0; i<NUMBER_OF_LANGUAGES; i++)
+		languageMenu->setItemChecked(languageMenu->idAt(i), false);
+	languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_MK_POSITION), true);
+}
+
+void FetMainForm::on_languageSpanishAction_activated()
+{
+	QMessageBox::information(this, QObject::tr("FET information"), 
+	 QObject::tr("Please exit and restart FET to activate language change"));
+	
+	FET_LANGUAGE="es";
+	
+	for(int i=0; i<NUMBER_OF_LANGUAGES; i++)
+		languageMenu->setItemChecked(languageMenu->idAt(i), false);
+	languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_ES_POSITION), true);
+}
+
+void FetMainForm::on_languageGreekAction_activated()
+{
+	QMessageBox::information(this, QObject::tr("FET information"), 
+	 QObject::tr("Please exit and restart FET to activate language change"));
+	
+	FET_LANGUAGE="el";
+	
+	for(int i=0; i<NUMBER_OF_LANGUAGES; i++)
+		languageMenu->setItemChecked(languageMenu->idAt(i), false);
+	languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_EL_POSITION), true);
+}
+
+void FetMainForm::on_settingsRestoreDefaultsAction_activated()
+{
+	QString s=QObject::tr("Are you sure you want to reset all settings to defaults?\n\n");
+	s+=QObject::tr("(these are:\n"
+	  "1. Mainform geometry will be reset to default\n"
+	  "2. Check for updates at startup will be disabled\n"
+	  "3. Language will be en_GB (restart needed to activate language change)\n"
+	  "4. Working directory will be sample_inputs\n"
+	  "5. Timetable html level will be 2)"
+	 );
+
+	switch( QMessageBox::information( this, QObject::tr("FET application"), s,
+	 QObject::tr("&Yes"), QObject::tr("&No"), 0 , 1 ) ) {
+	case 0: // Yes
+		break;
+	case 1: // No
+		return;
+	}
+
+	/*QMessageBox::information(this, QObject::tr("FET information"), 
+	 QObject::tr("Settings reset to defaults:\n\n"
+	  "1. Mainform geometry will be reset\n"
+	  "2. Check for updates is disabled\n"
+	  "3. Language = en_GB (please restart FET to activate language change)\n"
+	  "4. Working directory = sample_inputs\n"
+	  "5. Timetable html level will be 2"
+	 ));*/
+
+	resize(ORIGINAL_WIDTH, ORIGINAL_HEIGHT);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
+	for(int i=0; i<NUMBER_OF_LANGUAGES; i++)
+		languageMenu->setItemChecked(languageMenu->idAt(i), false);
+	languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_EN_GB_POSITION), true);
+	FET_LANGUAGE="en_GB";
+	
+	checkForUpdatesAction->setChecked(false);
+	checkForUpdates=0;
+	
+	WORKING_DIRECTORY="sample_inputs";
+	
+	TIMETABLE_HTML_LEVEL=2;
+}
+
+void FetMainForm::on_settingsTimetableHtmlLevelAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, QObject::tr("FET information"),
+			QObject::tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	SettingsTimetableHtmlLevelForm* form=new SettingsTimetableHtmlLevelForm();
+	form->exec();
 }
 

@@ -150,7 +150,6 @@ QString ConstraintBasicCompulsoryTime::getDetailedDescription(Rules& r)
 	return s;
 }
 
-//critical function here - must be optimized for speed
 double ConstraintBasicCompulsoryTime::fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString){
 	assert(r.internalStructureComputed);
 
@@ -499,11 +498,47 @@ QString ConstraintTeacherNotAvailable::getDetailedDescription(Rules& r){
 
 bool ConstraintTeacherNotAvailable::computeInternalStructure(Rules& r){
 	this->teacher_ID=r.searchTeacher(this->teacherName);
+
+	if(this->teacher_ID<0){
+		QMessageBox::warning(NULL, QObject::tr("FET warning"),
+		 QObject::tr("Constraint teacher not available is wrong because it refers to inexistent teacher."
+		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
+		 
+		return false;
+	}	
+	if(this->d >= r.nDaysPerWeek){
+		QMessageBox::information(NULL, QObject::tr("FET information"),
+		 QObject::tr("Constraint teacher not available is wrong because it refers to removed day. Please correct"
+		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
+		 
+		return false;
+	}
+	if(this->h1 > r.nHoursPerDay){
+		QMessageBox::information(NULL, QObject::tr("FET information"),
+		 QObject::tr("Constraint teacher not available is wrong because it refers to removed start hour. Please correct"
+		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
+		 
+		return false;
+	}
+	if(this->h2 > r.nHoursPerDay){
+		QMessageBox::information(NULL, QObject::tr("FET information"),
+		 QObject::tr("Constraint teacher not available is wrong because it refers to removed end hour. Please correct"
+		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
+		 
+		return false;
+	}
+	if(this->h1 >= this->h2){
+		QMessageBox::information(NULL, QObject::tr("FET information"),
+		 QObject::tr("Constraint teacher not available is wrong because start hour >= end hour. Please correct"
+		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
+		 
+		return false;
+	}
+
 	assert(this->teacher_ID>=0);
 	return true;
 }
 
-//critical function here - must be optimized for speed
 double ConstraintTeacherNotAvailable::fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString *conflictsString)
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
@@ -627,6 +662,43 @@ ConstraintStudentsSetNotAvailable::ConstraintStudentsSetNotAvailable(double wp, 
 
 bool ConstraintStudentsSetNotAvailable::computeInternalStructure(Rules& r){
 	StudentsSet* ss=r.searchStudentsSet(this->students);
+	
+	if(!ss<0){
+		QMessageBox::warning(NULL, QObject::tr("FET warning"),
+		 QObject::tr("Constraint students set not available is wrong because it refers to inexistent students set."
+		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
+		 
+		return false;
+	}	
+	if(this->d >= r.nDaysPerWeek){
+		QMessageBox::information(NULL, QObject::tr("FET information"),
+		 QObject::tr("Constraint students set not available is wrong because it refers to removed day. Please correct"
+		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
+		 
+		return false;
+	}
+	if(this->h1 > r.nHoursPerDay){
+		QMessageBox::information(NULL, QObject::tr("FET information"),
+		 QObject::tr("Constraint students set not available is wrong because it refers to removed start hour. Please correct"
+		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
+		 
+		return false;
+	}
+	if(this->h2 > r.nHoursPerDay){
+		QMessageBox::information(NULL, QObject::tr("FET information"),
+		 QObject::tr("Constraint students set not available is wrong because it refers to removed end hour. Please correct"
+		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
+		 
+		return false;
+	}
+	if(this->h1 >= this->h2){
+		QMessageBox::information(NULL, QObject::tr("FET information"),
+		 QObject::tr("Constraint students set not available is wrong because start hour >= end hour. Please correct"
+		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
+		 
+		return false;
+	}
+	
 	assert(ss);
 
 	this->nSubgroups=0;
@@ -711,7 +783,6 @@ QString ConstraintStudentsSetNotAvailable::getDetailedDescription(Rules& r){
 	return s;
 }
 
-//critical function here - must be optimized for speed
 double ConstraintStudentsSetNotAvailable::fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString *conflictsString)
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
@@ -944,6 +1015,10 @@ QString ConstraintActivitiesSameStartingTime::getDetailedDescription(Rules& r){
 		for(ai=0; ai<r.activitiesList.size(); ai++)
 			if(r.activitiesList[ai]->id==this->activitiesId[i])
 				break;
+		if(ai==r.activitiesList.size()){
+			s+=QObject::tr(" Invalid (inexistent) id for activity");
+			return s;
+		}
 		assert(ai<r.activitiesList.size());
 		s+=" ( ";
 	
@@ -958,6 +1033,9 @@ QString ConstraintActivitiesSameStartingTime::getDetailedDescription(Rules& r){
 	
 		s+=QObject::tr(" , S: ");
 		s+=r.activitiesList[ai]->subjectName;
+		
+		if(r.activitiesList[ai]->subjectTagName!="")
+			s+=QObject::tr(" , ST: ")+r.activitiesList[ai]->subjectTagName;
 	
 		s+=QObject::tr(" , St: ");
 		k=0;
@@ -977,7 +1055,6 @@ QString ConstraintActivitiesSameStartingTime::getDetailedDescription(Rules& r){
 	return s;
 }
 
-//critical function here - must be optimized for speed
 double ConstraintActivitiesSameStartingTime::fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString)
 {
 	assert(r.internalStructureComputed);
@@ -1012,6 +1089,9 @@ double ConstraintActivitiesSameStartingTime::fitness(Solution& c, Rules& r, QLis
 							tmp = 2 * (abs(day1-day2) + abs(hour1-hour2));
 						else*/
 							tmp = abs(day1-day2) + abs(hour1-hour2);
+							
+						if(tmp>0)
+							tmp=1;
 
 						nbroken+=tmp;
 					}
@@ -1043,11 +1123,14 @@ double ConstraintActivitiesSameStartingTime::fitness(Solution& c, Rules& r, QLis
 							tmp = 2 * (abs(day1-day2) + abs(hour1-hour2));
 						else*/
 							tmp = abs(day1-day2) + abs(hour1-hour2);
+							
+						if(tmp>0)
+							tmp=1;
 
 						nbroken+=tmp;
 
 						if(tmp>0 && conflictsString!=NULL){
-							QString s=QObject::tr("Time constraint activities same time broken, because activity with id=%1 is not at the same time with activity with id=%2")
+							QString s=QObject::tr("Time constraint activities same starting time broken, because activity with id=%1 is not at the same starting time with activity with id=%2")
 							 .arg(this->activitiesId[i])
 							 .arg(this->activitiesId[j]);
 							s+=", ";
@@ -1233,6 +1316,10 @@ QString ConstraintActivitiesNotOverlapping::getDetailedDescription(Rules& r){
 		for(ai=0; ai<r.activitiesList.size(); ai++)
 			if(r.activitiesList[ai]->id==this->activitiesId[i])
 				break;
+		if(ai==r.activitiesList.size()){
+			s+=QObject::tr(" Invalid (inexistent) id for activity");
+			return s;
+		}
 		assert(ai<r.activitiesList.size());
 		s+=" ( ";
 	
@@ -1247,6 +1334,9 @@ QString ConstraintActivitiesNotOverlapping::getDetailedDescription(Rules& r){
 	
 		s+=QObject::tr(" , S: ");
 		s+=r.activitiesList[ai]->subjectName;
+	
+		if(r.activitiesList[ai]->subjectTagName!="")
+			s+=QObject::tr(" , ST: ")+r.activitiesList[ai]->subjectTagName;
 	
 		s+=QObject::tr(" , St: ");
 		k=0;
@@ -1266,7 +1356,6 @@ QString ConstraintActivitiesNotOverlapping::getDetailedDescription(Rules& r){
 	return s;
 }
 
-//critical function here - must be optimized for speed
 double ConstraintActivitiesNotOverlapping::fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString)
 {
 	assert(r.internalStructureComputed);
@@ -1593,6 +1682,10 @@ QString ConstraintMinNDaysBetweenActivities::getDetailedDescription(Rules& r){
 		for(ai=0; ai<r.activitiesList.size(); ai++)
 			if(r.activitiesList[ai]->id==this->activitiesId[i])
 				break;
+		if(ai==r.activitiesList.size()){
+			s+=QObject::tr(" Invalid (inexistent) id for activity");
+			return s;
+		}
 		assert(ai<r.activitiesList.size());
 		s+=" ( ";
 	
@@ -1607,6 +1700,9 @@ QString ConstraintMinNDaysBetweenActivities::getDetailedDescription(Rules& r){
 	
 		s+=QObject::tr(" , S: ");
 		s+=r.activitiesList[ai]->subjectName;
+	
+		if(r.activitiesList[ai]->subjectTagName!="")
+			s+=QObject::tr(" , ST: ")+r.activitiesList[ai]->subjectTagName;
 	
 		s+=QObject::tr(" , St: ");
 		k=0;
@@ -1628,7 +1724,6 @@ QString ConstraintMinNDaysBetweenActivities::getDetailedDescription(Rules& r){
 	return s;
 }
 
-//critical function here - must be optimized for speed
 double ConstraintMinNDaysBetweenActivities::fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString)
 {
 	assert(r.internalStructureComputed);
@@ -1771,11 +1866,19 @@ double ConstraintMinNDaysBetweenActivities::fitness(Solution& c, Rules& r, QList
 							 .arg(tn1)
 							 .arg(sn1)
 							 .arg(r.internalActivitiesList[this->_activities[i]].subjectName));
+
+							if(r.internalActivitiesList[this->_activities[i]].subjectTagName!="")
+								s+=QObject::tr(", subject tag %4").arg(r.internalActivitiesList[this->_activities[i]].subjectTagName);
+
 							s+=", ";
 							s+=(QObject::tr("teachers2 %1, students sets2 %2, subject2 %3")
 							 .arg(tn2)
 							 .arg(sn2)
 							 .arg(r.internalActivitiesList[this->_activities[j]].subjectName));
+
+							if(r.internalActivitiesList[this->_activities[j]].subjectTagName!="")
+								s+=QObject::tr(", subject tag %4").arg(r.internalActivitiesList[this->_activities[j]].subjectTagName);
+
 							s+=", ";
 							s+=(QObject::tr("conflicts factor increase=%1").arg(tmp*weightPercentage/100));
 							//s+="\n";
@@ -1906,7 +2009,6 @@ QString ConstraintTeachersMaxHoursDaily::getDetailedDescription(Rules& r){
 	return s;
 }
 
-//critical function here - must be optimized for speed
 double ConstraintTeachersMaxHoursDaily::fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString)
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
@@ -1955,13 +2057,16 @@ double ConstraintTeachersMaxHoursDaily::fitness(Solution& c, Rules& r, QList<dou
 
 					if(conflictsString!=NULL){
 						QString s=(QObject::tr(
-						 "Time constraint teacher max %1 hours daily broken for teacher %2, on day %3.")
+						 "Time constraint teachers max %1 hours daily broken for teacher %2, on day %3, length=%4.")
 						 .arg(QString::number(this->maxHoursDaily))
 						 .arg(r.internalTeachersList[i]->name)
 						 .arg(r.daysOfTheWeek[d])
+						 .arg(n_hours_daily)
 						 )
 						 +
-						 (QObject::tr(". This increases the conflicts total by %1").arg(QString::number(weightPercentage/100)));
+						 " "
+						 +
+						 (QObject::tr("This increases the conflicts total by %1").arg(QString::number(weightPercentage/100)));
 						
 						dl.append(s);
 						cl.append(weightPercentage/100);
@@ -2084,7 +2189,6 @@ QString ConstraintTeacherMaxHoursDaily::getDetailedDescription(Rules& r){
 	return s;
 }
 
-//critical function here - must be optimized for speed
 double ConstraintTeacherMaxHoursDaily::fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString)
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
@@ -2136,13 +2240,15 @@ double ConstraintTeacherMaxHoursDaily::fitness(Solution& c, Rules& r, QList<doub
 
 				if(conflictsString!=NULL){
 					QString s=(QObject::tr(
-					 "Time constraint teacher max %1 hours daily broken for teacher %2, on day %3.")
+					 "Time constraint teacher max %1 hours daily broken for teacher %2, on day %3, length=%4.")
 					 .arg(QString::number(this->maxHoursDaily))
 					 .arg(r.internalTeachersList[i]->name)
 					 .arg(r.daysOfTheWeek[d])
+					 .arg(n_hours_daily)
 					 )
+					 +" "
 					 +
-					 (QObject::tr(". This increases the conflicts total by %1").arg(QString::number(weightPercentage/100)));
+					 (QObject::tr("This increases the conflicts total by %1").arg(QString::number(weightPercentage/100)));
 						
 					dl.append(s);
 					cl.append(weightPercentage/100);
@@ -2265,7 +2371,6 @@ QString ConstraintTeacherMaxDaysPerWeek::getDetailedDescription(Rules& r){
 	return s;
 }
 
-//critical function here - must be optimized for speed
 double ConstraintTeacherMaxDaysPerWeek::fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString *conflictsString)
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
@@ -2469,7 +2574,6 @@ QString ConstraintTeachersMaxGapsPerWeek::getDetailedDescription(Rules& r){
 	return s;
 }
 
-//critical function here - must be optimized for speed
 double ConstraintTeachersMaxGapsPerWeek::fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString)
 { 
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
@@ -2641,7 +2745,6 @@ QString ConstraintTeacherMaxGapsPerWeek::getDetailedDescription(Rules& r){
 	return s;
 }
 
-//critical function here - must be optimized for speed
 double ConstraintTeacherMaxGapsPerWeek::fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString)
 { 
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
@@ -2803,10 +2906,38 @@ bool ConstraintBreak::computeInternalStructure(Rules& r)
 	if(&r!=NULL)
 		;
 		
+	if(this->d >= r.nDaysPerWeek){
+		QMessageBox::information(NULL, QObject::tr("FET information"),
+		 QObject::tr("Constraint break is wrong because it refers to removed day. Please correct"
+		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
+		 
+		return false;
+	}
+	if(this->h1 > r.nHoursPerDay){
+		QMessageBox::information(NULL, QObject::tr("FET information"),
+		 QObject::tr("Constraint break is wrong because it refers to removed start hour. Please correct"
+		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
+		 
+		return false;
+	}
+	if(this->h2 > r.nHoursPerDay){
+		QMessageBox::information(NULL, QObject::tr("FET information"),
+		 QObject::tr("Constraint break is wrong because it refers to removed end hour. Please correct"
+		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
+		 
+		return false;
+	}
+	if(this->h1 >= this->h2){
+		QMessageBox::information(NULL, QObject::tr("FET information"),
+		 QObject::tr("Constraint break is wrong because start hour >= end hour. Please correct"
+		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
+		 
+		return false;
+	}
+
 	return true;
 }
 
-//critical function here - must be optimized for speed
 double ConstraintBreak::fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString)
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
@@ -3001,12 +3132,12 @@ QString ConstraintStudentsNoGaps::getDetailedDescription(Rules& r)
 	s+=QObject::tr("Students must not have gaps");s+="\n";
 	s+=(QObject::tr("Weight (percentage)=%1\%").arg(this->weightPercentage));s+="\n";
 	s+=QObject::tr("Please note that for each subgroup, you must have: 1. only no gaps or 2. no gaps and early, with the same weight percentage");
+	s+="\n";
 	//s+=(QObject::tr("Compulsory=%1").arg(yesNoTranslated(this->compulsory)));s+="\n";
 
 	return s;
 }
 
-//critical function here - must be optimized for speed
 double ConstraintStudentsNoGaps::fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString)
 {
 	//returns a number equal to the number of windows of the subgroups (in hours)
@@ -3213,11 +3344,11 @@ QString ConstraintStudentsSetNoGaps::getDetailedDescription(Rules& r){
 	//s+=(QObject::tr("Compulsory=%1").arg(yesNoTranslated(this->compulsory)));s+="\n";
 	s+=QObject::tr("Students=%1").arg(this->students); s+="\n";
 	s+=QObject::tr("Please note that for each subgroup, you must have: 1. only no gaps or 2. no gaps and early, with the same weight percentage");
+	s+="\n";
 
 	return s;
 }
 
-//critical function here - must be optimized for speed
 double ConstraintStudentsSetNoGaps::fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString)
 {
 	//OLD COMMENT
@@ -3380,12 +3511,15 @@ QString ConstraintStudentsEarly::getDetailedDescription(Rules& r)
 	s+=QObject::tr("Students must begin their courses as early as possible (permitted by breaks and students not available)");s+="\n";
 	s+=QObject::tr("Weight (percentage)=%1\%").arg(this->weightPercentage);s+="\n";
 	s+=QObject::tr("Please note that for each subgroup, you must have: 1. only no gaps or 2. no gaps and early, with the same weight percentage");
-	//s+=(QObject::tr("Compulsory=%1").arg(yesNoTranslated(this->compulsory)));s+="\n";
+	s+="\n";
+
+	s+=QObject::tr("This is a strong constraint (for instance, if students X are available all the time, they must begin "
+	 "their activities at first hour, not a bit later)");
+	s+="\n";
 
 	return s;
 }
 
-//critical function here - must be optimized for speed
 double ConstraintStudentsEarly::fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString)
 {
 	//considers the condition that the hours of subgroups begin as early as possible
@@ -3586,12 +3720,15 @@ QString ConstraintStudentsSetEarly::getDetailedDescription(Rules& r)
 	s+=QObject::tr("Students set=%1").arg(this->students); s+="\n";
 	s+=QObject::tr("Weight (percentage)=%1\%").arg(this->weightPercentage);s+="\n";
 	s+=QObject::tr("Please note that for each subgroup, you must have: 1. only no gaps or 2. no gaps and early, with the same weight percentage");
-	//s+=(QObject::tr("Compulsory=%1").arg(yesNoTranslated(this->compulsory)));s+="\n";
+	s+="\n";
+
+	s+=QObject::tr("This is a strong constraint (for instance, if students X are available all the time, they must begin "
+	 "their activities at first hour, not a bit later)");
+	s+="\n";
 
 	return s;
 }
 
-//critical function here - must be optimized for speed
 double ConstraintStudentsSetEarly::fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString)
 {
 	//considers the condition that the hours of subgroups begin as early as possible
@@ -3767,7 +3904,6 @@ QString ConstraintStudentsMaxHoursDaily::getDetailedDescription(Rules& r)
 	return s;
 }
 
-//critical function here - must be optimized for speed
 double ConstraintStudentsMaxHoursDaily::fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString)
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
@@ -3940,6 +4076,7 @@ QString ConstraintStudentsSetMaxHoursDaily::getDescription(Rules& r)
 		assert(0);
 	//if(this->minHoursDaily>=0)
 	//	s+=(QObject::tr("mH:%1").arg(this->minHoursDaily));
+	s+=", ";
 	s+=(QObject::tr("St:%1").arg(this->students));
 
 	return s;
@@ -4017,7 +4154,6 @@ bool ConstraintStudentsSetMaxHoursDaily::computeInternalStructure(Rules &r)
 	return true;
 }
 
-//critical function here - must be optimized for speed
 double ConstraintStudentsSetMaxHoursDaily::fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString)
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
@@ -4220,7 +4356,6 @@ QString ConstraintStudentsMinHoursDaily::getDetailedDescription(Rules& r)
 	return s;
 }
 
-//critical function here - must be optimized for speed
 double ConstraintStudentsMinHoursDaily::fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString)
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
@@ -4250,7 +4385,10 @@ double ConstraintStudentsMinHoursDaily::fitness(Solution& c, Rules& r, QList<dou
 				if(subgroupsMatrix[i][j][k]>=1)
 					tmp++;
 			}
-			if(this->minHoursDaily>=0 && tmp < this->minHoursDaily){ //we would like no more than maxHoursDaily hours per day.
+			
+			//if(tmp>0) - smart, for empty days does not consider
+			
+			if(this->minHoursDaily>=0 && tmp < this->minHoursDaily){ //we would like no less than minHoursDaily hours per day.
 				too_little += - tmp + this->minHoursDaily;
 
 				if(conflictsString!=NULL){
@@ -4268,6 +4406,8 @@ double ConstraintStudentsMinHoursDaily::fitness(Solution& c, Rules& r, QList<dou
 			}
 		}
 
+	//for empty days should not consider
+			
 	assert(too_little>=0);
 	//if(weightPercentage==100) does not work for partial solutions
 	//	assert(too_little==0);
@@ -4366,6 +4506,7 @@ QString ConstraintStudentsSetMinHoursDaily::getDescription(Rules& r)
 		assert(0);
 	//if(this->minHoursDaily>=0)
 	//	s+=(QObject::tr("mH:%1").arg(this->minHoursDaily));
+	s+=", ";
 	s+=(QObject::tr("St:%1").arg(this->students));
 
 	return s;
@@ -4443,7 +4584,6 @@ bool ConstraintStudentsSetMinHoursDaily::computeInternalStructure(Rules &r)
 	return true;
 }
 
-//critical function here - must be optimized for speed
 double ConstraintStudentsSetMinHoursDaily::fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString)
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
@@ -4581,7 +4721,29 @@ bool ConstraintActivityPreferredTime::computeInternalStructure(Rules& r)
 	if(i==r.nInternalActivities){	
 		//assert(0);
 		QMessageBox::warning(NULL, QObject::tr("FET error in data"), 
-			QObject ::tr("Following constraint is wrong (because you need 2 or more activities. Please correct it):\n%1").arg(this->getDetailedDescription(r)));
+			QObject ::tr("Following constraint is wrong (because it refers to invalid activity id. Please correct (maybe removing it is a solution)):\n%1").arg(this->getDetailedDescription(r)));
+		return false;
+	}
+
+	if(this->day >= r.nDaysPerWeek){
+		QMessageBox::information(NULL, QObject::tr("FET information"),
+		 QObject::tr("Constraint activity preferred time is wrong because it refers to removed day. Please correct"
+		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
+		 
+		return false;
+	}
+	if(this->hour == r.nHoursPerDay){
+		QMessageBox::information(NULL, QObject::tr("FET information"),
+		 QObject::tr("Constraint activity preferred time is wrong because preferred hour is too late (after the last acceptable slot). Please correct"
+		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
+		 
+		return false;
+	}
+	if(this->hour > r.nHoursPerDay){
+		QMessageBox::information(NULL, QObject::tr("FET information"),
+		 QObject::tr("Constraint activity preferred time is wrong because it refers to removed hour. Please correct"
+		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
+		 
 		return false;
 	}
 
@@ -4622,8 +4784,10 @@ QString ConstraintActivityPreferredTime::getDescription(Rules& r)
 	for(ai=0; ai<r.activitiesList.size(); ai++)
 		if(r.activitiesList[ai]->id==this->activityId)
 			break;
-	if(ai==r.activitiesList.size())
-		cout<<"this->activityId=="<<this->activityId<<endl;
+	if(ai==r.activitiesList.size()){
+		s+=QObject::tr(" Invalid (inexistent) activity id for constraint activity preferred time");
+		return s;
+	}
 	assert(ai<r.activitiesList.size());
 	s+=" (";
 	
@@ -4638,6 +4802,9 @@ QString ConstraintActivityPreferredTime::getDescription(Rules& r)
 	
 	s+=QObject::tr(",S:");
 	s+=r.activitiesList[ai]->subjectName;
+	
+	if(r.activitiesList[ai]->subjectTagName!="")
+		s+=QObject::tr(",ST:")+r.activitiesList[ai]->subjectTagName;
 	
 	s+=QObject::tr(",St:");
 	k=0;
@@ -4679,6 +4846,10 @@ QString ConstraintActivityPreferredTime::getDetailedDescription(Rules& r)
 	for(ai=0; ai<r.activitiesList.size(); ai++)
 		if(r.activitiesList[ai]->id==this->activityId)
 			break;
+	if(ai==r.activitiesList.size()){
+		s+=QObject::tr(" Invalid (inexistent) activity id for constraint activity preferred time");
+		return s;
+	}
 	assert(ai<r.activitiesList.size());
 	s+=" (";
 	
@@ -4693,6 +4864,9 @@ QString ConstraintActivityPreferredTime::getDetailedDescription(Rules& r)
 	
 	s+=QObject::tr(",S:");
 	s+=r.activitiesList[ai]->subjectName;
+	
+	if(r.activitiesList[ai]->subjectTagName!="")
+		s+=QObject::tr(",ST:")+r.activitiesList[ai]->subjectTagName;
 	
 	s+=QObject::tr(",St:");
 	k=0;
@@ -4723,7 +4897,6 @@ QString ConstraintActivityPreferredTime::getDetailedDescription(Rules& r)
 	return s;
 }
 
-//critical function here - must be optimized for speed
 double ConstraintActivityPreferredTime::fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString)
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
@@ -4755,6 +4928,8 @@ double ConstraintActivityPreferredTime::fitness(Solution& c, Rules& r, QList<dou
 		/*if(r.internalActivitiesList[this->activityIndex].parity==PARITY_WEEKLY) //for weekly activities, double the conflicts
 			nbroken*=2;*/
 	}
+	if(nbroken>0)
+		nbroken=1;
 
 	if(conflictsString!=NULL && nbroken>0){
 		QString s=QObject::tr("Time constraint activity preferred time broken for activity with id=%1, increases conflicts total by %2")
@@ -4847,9 +5022,33 @@ bool ConstraintActivityPreferredTimes::computeInternalStructure(Rules& r)
 
 	if(i==r.nInternalActivities){
 		QMessageBox::warning(NULL, QObject::tr("FET error in data"), 
-			QObject ::tr("Following constraint is wrong (because you need 2 or more activities. Please correct it):\n%1").arg(this->getDetailedDescription(r)));
+			QObject ::tr("Following constraint is wrong (because it refers to invalid activity id. Please correct it (maybe removing it is a solution)):\n%1").arg(this->getDetailedDescription(r)));
 		//assert(0);
 		return false;
+	}
+
+	for(int k=0; k<nPreferredTimes; k++){
+		if(this->days[k] >= r.nDaysPerWeek){
+			QMessageBox::information(NULL, QObject::tr("FET information"),
+			 QObject::tr("Constraint activity preferred times is wrong because it refers to removed day. Please correct"
+			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
+		 
+			return false;
+		}		
+		if(this->hours[k] == r.nHoursPerDay){
+			QMessageBox::information(NULL, QObject::tr("FET information"),
+			 QObject::tr("Constraint activity preferred times is wrong because a preferred hour is too late (after the last acceptable slot). Please correct"
+			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
+		 
+			return false;
+		}
+		if(this->hours[k] > r.nHoursPerDay){
+			QMessageBox::information(NULL, QObject::tr("FET information"),
+			 QObject::tr("Constraint activity preferred times is wrong because it refers to removed hour. Please correct"
+			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
+		 
+			return false;
+		}
 	}
 
 	this->activityIndex=i;	
@@ -4894,6 +5093,10 @@ QString ConstraintActivityPreferredTimes::getDescription(Rules& r)
 	for(ai=0; ai<r.activitiesList.size(); ai++)
 		if(r.activitiesList[ai]->id==this->activityId)
 			break;
+	if(ai==r.activitiesList.size()){
+		s+=QObject::tr(" Invalid (inexistent) activity id for constraint activity preferred times");
+		return s;
+	}
 	assert(ai<r.activitiesList.size());
 	s+=" (";
 	
@@ -4908,6 +5111,9 @@ QString ConstraintActivityPreferredTimes::getDescription(Rules& r)
 	
 	s+=QObject::tr(",S:");
 	s+=r.activitiesList[ai]->subjectName;
+	
+	if(r.activitiesList[ai]->subjectTagName!="")
+		s+=QObject::tr(",ST:")+r.activitiesList[ai]->subjectTagName;
 	
 	s+=QObject::tr(",St:");
 	k=0;
@@ -4924,8 +5130,8 @@ QString ConstraintActivityPreferredTimes::getDescription(Rules& r)
 	s+=", ";
 	s+=QObject::tr("must be scheduled at: ");
 	for(int i=0; i<this->nPreferredTimes; i++){
-		s+=QString::number(i+1);
-		s+=":";
+		//s+=QString::number(i+1);
+		//s+=":";
 		if(this->days[i]>=0){
 			s+=r.daysOfTheWeek[this->days[i]];
 			s+=" ";
@@ -4933,7 +5139,7 @@ QString ConstraintActivityPreferredTimes::getDescription(Rules& r)
 		if(this->hours[i]>=0){
 			s+=r.hoursOfTheDay[this->hours[i]];
 		}
-		s+=";";
+		s+="; ";
 	}
 
 	s+=(QObject::tr("WP:%1").arg(this->weightPercentage));//s+=", ";
@@ -4953,6 +5159,10 @@ QString ConstraintActivityPreferredTimes::getDetailedDescription(Rules& r)
 	for(ai=0; ai<r.activitiesList.size(); ai++)
 		if(r.activitiesList[ai]->id==this->activityId)
 			break;
+	if(ai==r.activitiesList.size()){
+		s+=QObject::tr(" Invalid (inexistent) activity id for constraint activity preferred times");
+		return s;
+	}
 	assert(ai<r.activitiesList.size());
 	s+=" (";
 	
@@ -4967,6 +5177,9 @@ QString ConstraintActivityPreferredTimes::getDetailedDescription(Rules& r)
 	
 	s+=QObject::tr(",S:");
 	s+=r.activitiesList[ai]->subjectName;
+	
+	if(r.activitiesList[ai]->subjectTagName!="")
+		s+=QObject::tr(",ST:")+r.activitiesList[ai]->subjectTagName;
 	
 	s+=QObject::tr(",St:");
 	k=0;
@@ -4983,8 +5196,8 @@ QString ConstraintActivityPreferredTimes::getDetailedDescription(Rules& r)
 	s+="\n";
 	s+=QObject::tr("must be scheduled at:\n");
 	for(int i=0; i<this->nPreferredTimes; i++){
-		s+=QString::number(i+1);
-		s+=". ";
+		//s+=QString::number(i+1);
+		//s+=". ";
 		if(this->days[i]>=0){
 			s+=r.daysOfTheWeek[this->days[i]];
 			s+=" ";
@@ -4992,8 +5205,10 @@ QString ConstraintActivityPreferredTimes::getDetailedDescription(Rules& r)
 		if(this->hours[i]>=0){
 			s+=r.hoursOfTheDay[this->hours[i]];
 		}
-		s+="\n";
+		//s+="\n";
+		s+=";  ";
 	}
+	s+="\n";
 
 	s+=(QObject::tr("Weight (percentage)=%1\%").arg(this->weightPercentage));s+="\n";
 	//s+=(QObject::tr("Compulsory=%1").arg(yesNoTranslated(this->compulsory)));s+="\n";
@@ -5001,7 +5216,6 @@ QString ConstraintActivityPreferredTimes::getDetailedDescription(Rules& r)
 	return s;
 }
 
-//critical function here - must be optimized for speed
 double ConstraintActivityPreferredTimes::fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString)
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
@@ -5045,7 +5259,32 @@ double ConstraintActivityPreferredTimes::fitness(Solution& c, Rules& r, QList<do
 		QString s=QObject::tr("Time constraint activity preferred times broken for activity with id=%1, increases conflicts total by %2")
 		 .arg(this->activityId)
 		 .arg(weightPercentage/100*nbroken);
+
+
 		 
+		s+=" ";
+		QString tn;
+		foreach(QString t, r.internalActivitiesList[this->activityIndex].teachersNames){
+			tn+=t;
+			tn+=" ";
+		}
+		QString sn;
+		foreach(QString t, r.internalActivitiesList[this->activityIndex].studentsNames){
+			sn+=t;
+			sn+=" ";
+		}
+		s+="(";
+		s+=QObject::tr("teachers %1, students sets %2, subject %3")
+		 .arg(tn)
+		 .arg(sn)
+		 .arg(r.internalActivitiesList[this->activityIndex].subjectName);
+		if(r.internalActivitiesList[this->activityIndex].subjectTagName!="")
+			s+=QObject::tr(", subject tag %4").arg(r.internalActivitiesList[this->activityIndex].subjectTagName);
+
+		s+=")";
+
+
+
 		dl.append(s);
 		cl.append(weightPercentage/100*nbroken);
 	
@@ -5169,6 +5408,32 @@ bool ConstraintActivitiesPreferredTimes::computeInternalStructure(Rules& r)
 		assert(this->nActivities < MAX_ACTIVITIES);	
 		this->activitiesIndices[this->nActivities++]=i;
 	}
+
+	//////////////////////	
+	for(int k=0; k<nPreferredTimes; k++){
+		if(this->days[k] >= r.nDaysPerWeek){
+			QMessageBox::information(NULL, QObject::tr("FET information"),
+			 QObject::tr("Constraint activities preferred times is wrong because it refers to removed day. Please correct"
+			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
+		 
+			return false;
+		}
+		if(this->hours[k] == r.nHoursPerDay){
+			QMessageBox::information(NULL, QObject::tr("FET information"),
+			 QObject::tr("Constraint activities preferred times is wrong because a preferred hour is too late (after the last acceptable slot). Please correct"
+			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
+		 
+			return false;
+		}
+		if(this->hours[k] > r.nHoursPerDay){
+			QMessageBox::information(NULL, QObject::tr("FET information"),
+			 QObject::tr("Constraint activities preferred times is wrong because it refers to removed hour. Please correct"
+			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
+		 
+			return false;
+		}
+	}
+	///////////////////////
 	
 	if(this->nActivities>0)
 		return true;
@@ -5235,8 +5500,8 @@ QString ConstraintActivitiesPreferredTimes::getDescription(Rules& r)
 		s+=QObject::tr("all subject tags, ");
 	s+=QObject::tr("must be scheduled at: ");
 	for(int i=0; i<this->nPreferredTimes; i++){
-		s+=QString::number(i+1);
-		s+=":";
+		//s+=QString::number(i+1);
+		//s+=":";
 		if(this->days[i]>=0){
 			s+=r.daysOfTheWeek[this->days[i]];
 			s+=" ";
@@ -5244,7 +5509,7 @@ QString ConstraintActivitiesPreferredTimes::getDescription(Rules& r)
 		if(this->hours[i]>=0){
 			s+=r.hoursOfTheDay[this->hours[i]];
 		}
-		s+=";";
+		s+="; ";
 	}
 
 	s+=(QObject::tr("WP:%1\%").arg(this->weightPercentage));s+=", ";
@@ -5277,8 +5542,8 @@ QString ConstraintActivitiesPreferredTimes::getDetailedDescription(Rules& r)
 
 	s+=QObject::tr("must be scheduled at:\n");
 	for(int i=0; i<this->nPreferredTimes; i++){
-		s+=QString::number(i+1);
-		s+=". ";
+		//s+=QString::number(i+1);
+		//s+=". ";
 		if(this->days[i]>=0){
 			s+=r.daysOfTheWeek[this->days[i]];
 			s+=" ";
@@ -5286,8 +5551,9 @@ QString ConstraintActivitiesPreferredTimes::getDetailedDescription(Rules& r)
 		if(this->hours[i]>=0){
 			s+=r.hoursOfTheDay[this->hours[i]];
 		}
-		s+="\n";
+		s+=";  ";
 	}
+	s+="\n";
 
 	s+=(QObject::tr("Weight (percentage)=%1").arg(this->weightPercentage));s+="\n";
 	//s+=(QObject::tr("Compulsory=%1").arg(yesNoTranslated(this->compulsory)));s+="\n";
@@ -5295,7 +5561,6 @@ QString ConstraintActivitiesPreferredTimes::getDetailedDescription(Rules& r)
 	return s;
 }
 
-//critical function here - must be optimized for speed
 double ConstraintActivitiesPreferredTimes::fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString)
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
@@ -5375,6 +5640,32 @@ double ConstraintActivitiesPreferredTimes::fitness(Solution& c, Rules& r, QList<
 				 " increases conflicts total by %2")
 				 .arg(r.internalActivitiesList[ai].id)
 				 .arg(weightPercentage/100*tmp);
+
+
+		 
+				s+=" ";
+				QString tn;
+				foreach(QString t, r.internalActivitiesList[ai].teachersNames){
+					tn+=t;
+					tn+=" ";
+				}
+				QString sn;
+				foreach(QString t, r.internalActivitiesList[ai].studentsNames){
+					sn+=t;
+					sn+=" ";
+				}
+				s+="(";
+				s+=QObject::tr("teachers %1, students sets %2, subject %3")
+				 .arg(tn)
+				 .arg(sn)
+				 .arg(r.internalActivitiesList[ai].subjectName);
+				if(r.internalActivitiesList[ai].subjectTagName!="")
+					s+=QObject::tr(", subject tag %4").arg(r.internalActivitiesList[ai].subjectTagName);
+	
+				s+=")";
+
+
+
 				 
 				dl.append(s);
 				cl.append(weightPercentage/100*tmp);
@@ -5573,6 +5864,10 @@ QString ConstraintActivitiesSameStartingHour::getDetailedDescription(Rules& r){
 		for(ai=0; ai<r.activitiesList.size(); ai++)
 			if(r.activitiesList[ai]->id==this->activitiesId[i])
 				break;
+		if(ai==r.activitiesList.size()){
+			s+=QObject::tr(" Invalid (inexistent) activity id");
+			return s;
+		}
 		assert(ai<r.activitiesList.size());
 		s+=" ( ";
 	
@@ -5587,6 +5882,9 @@ QString ConstraintActivitiesSameStartingHour::getDetailedDescription(Rules& r){
 	
 		s+=QObject::tr(" , S: ");
 		s+=r.activitiesList[ai]->subjectName;
+	
+		if(r.activitiesList[ai]->subjectTagName!="")
+			s+=QObject::tr(" , ST: ")+r.activitiesList[ai]->subjectTagName;
 	
 		s+=QObject::tr(" , St: ");
 		k=0;
@@ -5606,7 +5904,6 @@ QString ConstraintActivitiesSameStartingHour::getDetailedDescription(Rules& r){
 	return s;
 }
 
-//critical function here - must be optimized for speed
 double ConstraintActivitiesSameStartingHour::fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString)
 {
 	assert(r.internalStructureComputed);
@@ -5682,7 +5979,7 @@ double ConstraintActivitiesSameStartingHour::fitness(Solution& c, Rules& r, QLis
 						nbroken+=tmp;
 
 						if(tmp>0 && conflictsString!=NULL){
-							QString s=QObject::tr("Time constraint activities same hour broken, because activity with id=%1 is not at the same hour with activity with id=%2")
+							QString s=QObject::tr("Time constraint activities same starting hour broken, because activity with id=%1 is not at the same hour with activity with id=%2")
 							 .arg(this->activitiesId[i])
 							 .arg(this->activitiesId[j]);
 							s+=", ";
@@ -5858,6 +6155,10 @@ QString Constraint2ActivitiesConsecutive::getDetailedDescription(Rules& r)
 	for(ai=0; ai<r.activitiesList.size(); ai++)
 		if(r.activitiesList[ai]->id==this->firstActivityId)
 			break;
+	if(ai==r.activitiesList.size()){
+		s+=QObject::tr(" Invalid (inexistent) activity id for first activity");
+		return s;
+	}
 	assert(ai<r.activitiesList.size());
 	s+=" (";
 	
@@ -5872,6 +6173,9 @@ QString Constraint2ActivitiesConsecutive::getDetailedDescription(Rules& r)
 	
 	s+=QObject::tr(",S:");
 	s+=r.activitiesList[ai]->subjectName;
+	
+	if(r.activitiesList[ai]->subjectTagName!="")
+		s+=QObject::tr(",ST:")+r.activitiesList[ai]->subjectTagName;
 	
 	s+=QObject::tr(",St:");
 	k=0;
@@ -5893,6 +6197,10 @@ QString Constraint2ActivitiesConsecutive::getDetailedDescription(Rules& r)
 	for(ai=0; ai<r.activitiesList.size(); ai++)
 		if(r.activitiesList[ai]->id==this->secondActivityId)
 			break;
+	if(ai==r.activitiesList.size()){
+		s+=QObject::tr(" Invalid (inexistent) activity id for second activity");
+		return s;
+	}
 	assert(ai<r.activitiesList.size());
 	s+=" (";
 	
@@ -5907,6 +6215,9 @@ QString Constraint2ActivitiesConsecutive::getDetailedDescription(Rules& r)
 	
 	s+=QObject::tr(",S:");
 	s+=r.activitiesList[ai]->subjectName;
+	
+	if(r.activitiesList[ai]->subjectTagName!="")
+		s+=QObject::tr(",ST:")+r.activitiesList[ai]->subjectTagName;
 	
 	s+=QObject::tr(",St:");
 	k=0;
@@ -5926,7 +6237,6 @@ QString Constraint2ActivitiesConsecutive::getDetailedDescription(Rules& r)
 	return s;
 }
 
-//critical function here - must be optimized for speed
 double Constraint2ActivitiesConsecutive::fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString)
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
@@ -6035,6 +6345,616 @@ bool Constraint2ActivitiesConsecutive::isRelatedToStudentsSet(Rules& r, Students
 	if(&r)
 		;
 		
+	return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+
+ConstraintActivityEndsStudentsDay::ConstraintActivityEndsStudentsDay()
+	: TimeConstraint()
+{
+	this->type = CONSTRAINT_ACTIVITY_ENDS_STUDENTS_DAY;
+}
+
+ConstraintActivityEndsStudentsDay::ConstraintActivityEndsStudentsDay(double wp, int actId)
+	: TimeConstraint(wp)
+{
+	this->activityId = actId;
+	this->type = CONSTRAINT_ACTIVITY_ENDS_STUDENTS_DAY;
+}
+
+bool ConstraintActivityEndsStudentsDay::computeInternalStructure(Rules& r)
+{
+	Activity* act;
+	int i;
+	for(i=0; i<r.nInternalActivities; i++){
+		act=&r.internalActivitiesList[i];
+		if(act->id==this->activityId)
+			break;
+	}
+	
+	if(i==r.nInternalActivities){	
+		//assert(0);
+		QMessageBox::warning(NULL, QObject::tr("FET error in data"), 
+			QObject ::tr("Following constraint is wrong (because it refers to invalid activity id. Please correct (maybe removing it is a solution)):\n%1").arg(this->getDetailedDescription(r)));
+		return false;
+	}
+
+	this->activityIndex=i;	
+	return true;
+}
+
+QString ConstraintActivityEndsStudentsDay::getXmlDescription(Rules& r)
+{
+	//to avoid non-used parameter warning
+	if(&r==NULL)
+		;
+
+	QString s="<ConstraintActivityEndsStudentsDay>\n";
+	s+="	<Weight_Percentage>"+QString::number(this->weightPercentage)+"</Weight_Percentage>\n";
+	//s+="	<Compulsory>";s+=yesNo(this->compulsory);s+="</Compulsory>\n";
+	s+="	<Activity_Id>"+QString::number(this->activityId)+"</Activity_Id>\n";
+	s+="</ConstraintActivityEndsStudentsDay>\n";
+	return s;
+}
+
+QString ConstraintActivityEndsStudentsDay::getDescription(Rules& r)
+{
+	//to avoid non-used parameter warning
+	if(&r==NULL)
+		;
+
+	QString s;
+	s+=(QObject::tr("Act. id:%1 must end students' day").arg(this->activityId));
+	
+	//* write the teachers, subject and students sets
+	//added in version 4.1.4
+	int ai;
+	for(ai=0; ai<r.activitiesList.size(); ai++)
+		if(r.activitiesList[ai]->id==this->activityId)
+			break;
+	if(ai==r.activitiesList.size()){
+		s+=QObject::tr(" Invalid (inexistent) activity id");
+		return s;
+	}
+	assert(ai<r.activitiesList.size());
+	s+=" (";
+	
+	s+=QObject::tr("T:");
+	int k=0;
+	foreach(QString ss, r.activitiesList[ai]->teachersNames){
+		if(k>0)
+			s+=",";
+		s+=ss;
+		k++;
+	}
+	
+	s+=QObject::tr(",S:");
+	s+=r.activitiesList[ai]->subjectName;
+	
+	if(r.activitiesList[ai]->subjectTagName!="")
+		s+=QObject::tr(",ST:")+r.activitiesList[ai]->subjectTagName;
+	
+	s+=QObject::tr(",St:");
+	k=0;
+	foreach(QString ss, r.activitiesList[ai]->studentsNames){
+		if(k>0)
+			s+=",";
+		s+=ss;
+		k++;
+	}
+	
+	s+=")";
+	//* end section
+	
+	s+=", ";
+
+	s+=(QObject::tr("WP:%1\%").arg(this->weightPercentage));
+
+	return s;
+}
+
+QString ConstraintActivityEndsStudentsDay::getDetailedDescription(Rules& r)
+{
+	QString s=QObject::tr("Time constraint");s+="\n";
+	s+=(QObject::tr("Activity with id=%1 must end students' day").arg(this->activityId));
+	
+	//* write the teachers, subject and students sets
+	//added in version 4.1.4
+	int ai;
+	for(ai=0; ai<r.activitiesList.size(); ai++)
+		if(r.activitiesList[ai]->id==this->activityId)
+			break;
+	if(ai==r.activitiesList.size()){
+		s+=QObject::tr(" Invalid (inexistent) activity id");
+		return s;
+	}
+	assert(ai<r.activitiesList.size());
+	s+=" (";
+	
+	s+=QObject::tr("T:");
+	int k=0;
+	foreach(QString ss, r.activitiesList[ai]->teachersNames){
+		if(k>0)
+			s+=",";
+		s+=ss;
+		k++;
+	}
+	
+	s+=QObject::tr(",S:");
+	s+=r.activitiesList[ai]->subjectName;
+	
+	if(r.activitiesList[ai]->subjectTagName!="")
+		s+=QObject::tr(",ST:")+r.activitiesList[ai]->subjectTagName;
+	
+	s+=QObject::tr(",St:");
+	k=0;
+	foreach(QString ss, r.activitiesList[ai]->studentsNames){
+		if(k>0)
+			s+=",";
+		s+=ss;
+		k++;
+	}
+	
+	s+=")";
+	//* end section
+
+	s+="\n";
+
+	s+=(QObject::tr("Weight (percentage)=%1\%").arg(this->weightPercentage));s+="\n";
+	//s+=(QObject::tr("Compulsory=%1").arg(yesNoTranslated(this->compulsory)));s+="\n";
+
+	return s;
+}
+
+double ConstraintActivityEndsStudentsDay::fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString)
+{
+	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
+	if(!c.teachersMatrixReady || !c.subgroupsMatrixReady){
+		c.teachersMatrixReady=true;
+		c.subgroupsMatrixReady=true;
+	//if(crt_chrom!=&c || crt_rules!=&r || subgroups_conflicts<0 || teachers_conflicts<0 || c.changedForMatrixCalculation){
+		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
+		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
+
+		//crt_chrom=&c;
+		//crt_rules=&r;
+		
+		c.changedForMatrixCalculation=false;
+	}
+
+	int nbroken;
+
+	assert(r.internalStructureComputed);
+
+	nbroken=0;
+	if(c.times[this->activityIndex]!=UNALLOCATED_TIME){
+		int d=c.times[this->activityIndex]%r.nDaysPerWeek; //the day when this activity was scheduled
+		int h=c.times[this->activityIndex]/r.nDaysPerWeek; //the hour
+		
+		int i=this->activityIndex;
+		for(int j=0; j<r.internalActivitiesList[i].nSubgroups; j++){
+			int sb=r.internalActivitiesList[i].subgroups[j];
+			for(int hh=h+r.internalActivitiesList[i].duration; hh<r.nHoursPerDay; hh++)
+				if(subgroupsMatrix[sb][d][hh]>0){
+					nbroken=1;
+					break;
+				}
+			if(nbroken)
+				break;
+		}
+	}
+
+	if(conflictsString!=NULL && nbroken>0){
+		QString s=QObject::tr("Time constraint activity ends students' day broken for activity with id=%1, increases conflicts total by %2")
+		 .arg(this->activityId)
+		 .arg(weightPercentage/100*nbroken);
+
+		dl.append(s);
+		cl.append(weightPercentage/100*nbroken);
+	
+		*conflictsString+= s+"\n";
+	}
+
+	if(weightPercentage==100)
+		assert(nbroken==0);
+	return nbroken * weightPercentage/100;
+}
+
+bool ConstraintActivityEndsStudentsDay::isRelatedToActivity(Activity* a)
+{
+	if(this->activityId==a->id)
+		return true;
+	return false;
+}
+
+bool ConstraintActivityEndsStudentsDay::isRelatedToTeacher(Teacher* t)
+{
+	if(t)
+		;
+
+	return false;
+}
+
+bool ConstraintActivityEndsStudentsDay::isRelatedToSubject(Subject* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintActivityEndsStudentsDay::isRelatedToSubjectTag(SubjectTag* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintActivityEndsStudentsDay::isRelatedToStudentsSet(Rules& r, StudentsSet* s)
+{
+	if(s)
+		;
+	if(&r)
+		;
+		
+	return false;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+
+ConstraintTeachersMinHoursDaily::ConstraintTeachersMinHoursDaily()
+	: TimeConstraint()
+{
+	this->type=CONSTRAINT_TEACHERS_MIN_HOURS_DAILY;
+}
+
+ConstraintTeachersMinHoursDaily::ConstraintTeachersMinHoursDaily(double wp, int minhours)
+ : TimeConstraint(wp)
+ {
+	assert(minhours>0);
+	this->minHoursDaily=minhours;
+
+	this->type=CONSTRAINT_TEACHERS_MIN_HOURS_DAILY;
+}
+
+bool ConstraintTeachersMinHoursDaily::computeInternalStructure(Rules& r)
+{
+	if(&r!=NULL)
+		;
+	return true;
+}
+
+QString ConstraintTeachersMinHoursDaily::getXmlDescription(Rules& r){
+	if(&r!=NULL)
+		;
+
+	QString s="<ConstraintTeachersMinHoursDaily>\n";
+	s+="	<Weight_Percentage>"+QString::number(this->weightPercentage)+"</Weight_Percentage>\n";
+	s+="	<Minimum_Hours_Daily>"+QString::number(this->minHoursDaily)+"</Minimum_Hours_Daily>\n";
+	s+="</ConstraintTeachersMinHoursDaily>\n";
+	return s;
+}
+
+QString ConstraintTeachersMinHoursDaily::getDescription(Rules& r){
+	if(&r!=NULL)
+		;
+
+	QString s;
+	s+=(QObject::tr("Teachers min %1 hours daily").arg(this->minHoursDaily));s+=", ";
+	s+=(QObject::tr("WP:%1\%").arg(this->weightPercentage));
+
+	return s;
+}
+
+QString ConstraintTeachersMinHoursDaily::getDetailedDescription(Rules& r){
+	if(&r!=NULL)
+		;
+
+	QString s=QObject::tr("Time constraint");s+="\n";
+	s+=(QObject::tr("Teachers must not have less than %1 hours daily").arg(this->minHoursDaily));s+="\n";
+	s+=(QObject::tr("Weight (percentage)=%1\%").arg(this->weightPercentage));s+="\n";
+	s+=QObject::tr("Note: FET is smart enough to use this constraint only on working days of the teachers");
+	s+="\n";
+
+	return s;
+}
+
+double ConstraintTeachersMinHoursDaily::fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString)
+{
+	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
+	if(!c.teachersMatrixReady || !c.subgroupsMatrixReady){
+		c.teachersMatrixReady=true;
+		c.subgroupsMatrixReady=true;
+	//if(crt_chrom!=&c || crt_rules!=&r || subgroups_conflicts<0 || teachers_conflicts<0 || c.changedForMatrixCalculation){
+		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
+		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
+
+		//crt_chrom=&c;
+		//crt_rules=&r;
+		
+		c.changedForMatrixCalculation=false;
+	}
+
+	int nbroken;
+
+	//without logging
+	if(conflictsString==NULL){
+		nbroken=0;
+		for(int i=0; i<r.nInternalTeachers; i++){
+			for(int d=0; d<r.nDaysPerWeek; d++){
+				int n_hours_daily=0;
+				for(int h=0; h<r.nHoursPerDay; h++)
+					if(teachersMatrix[i][d][h]>0)
+						n_hours_daily++;
+
+				if(n_hours_daily>0 && n_hours_daily<this->minHoursDaily){
+					nbroken++;
+				}
+			}
+		}
+	}
+	//with logging
+	else{
+		nbroken=0;
+		for(int i=0; i<r.nInternalTeachers; i++){
+			for(int d=0; d<r.nDaysPerWeek; d++){
+				int n_hours_daily=0;
+				for(int h=0; h<r.nHoursPerDay; h++)
+					if(teachersMatrix[i][d][h]>0)
+						n_hours_daily++;
+
+				if(n_hours_daily>0 && n_hours_daily<this->minHoursDaily){
+					nbroken++;
+
+					if(conflictsString!=NULL){
+						QString s=(QObject::tr(
+						 "Time constraint teachers min %1 hours daily broken for teacher %2, on day %3, length=%4.")
+						 .arg(QString::number(this->minHoursDaily))
+						 .arg(r.internalTeachersList[i]->name)
+						 .arg(r.daysOfTheWeek[d])
+						 .arg(n_hours_daily)
+						 )
+						 +
+						 " "
+						 +
+						 (QObject::tr("This increases the conflicts total by %1").arg(QString::number(weightPercentage/100)));
+						
+						dl.append(s);
+						cl.append(weightPercentage/100);
+					
+						*conflictsString+= s+"\n";
+					}
+				}
+			}
+		}
+	}
+
+	//does not work for partial solutions
+	/*if(weightPercentage==100)	
+		assert(nbroken==0);*/
+	return weightPercentage/100 * nbroken;
+}
+
+bool ConstraintTeachersMinHoursDaily::isRelatedToActivity(Activity* a)
+{
+	if(a)
+		;
+
+	return false;
+}
+
+bool ConstraintTeachersMinHoursDaily::isRelatedToTeacher(Teacher* t)
+{
+	if(t)
+		;
+
+	return true;
+}
+
+bool ConstraintTeachersMinHoursDaily::isRelatedToSubject(Subject* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintTeachersMinHoursDaily::isRelatedToSubjectTag(SubjectTag* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintTeachersMinHoursDaily::isRelatedToStudentsSet(Rules& r, StudentsSet* s)
+{
+	if(s)
+		;
+	if(&r)
+		;
+
+	return false;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+
+ConstraintTeacherMinHoursDaily::ConstraintTeacherMinHoursDaily()
+	: TimeConstraint()
+{
+	this->type=CONSTRAINT_TEACHER_MIN_HOURS_DAILY;
+}
+
+ConstraintTeacherMinHoursDaily::ConstraintTeacherMinHoursDaily(double wp, int minhours, const QString& teacher)
+ : TimeConstraint(wp)
+ {
+	assert(minhours>0);
+	this->minHoursDaily=minhours;
+	this->teacherName=teacher;
+
+	this->type=CONSTRAINT_TEACHER_MIN_HOURS_DAILY;
+}
+
+bool ConstraintTeacherMinHoursDaily::computeInternalStructure(Rules& r)
+{
+	this->teacher_ID=r.searchTeacher(this->teacherName);
+	assert(this->teacher_ID>=0);
+	return true;
+}
+
+QString ConstraintTeacherMinHoursDaily::getXmlDescription(Rules& r){
+	if(&r!=NULL)
+		;
+
+	QString s="<ConstraintTeacherMinHoursDaily>\n";
+	s+="	<Weight_Percentage>"+QString::number(this->weightPercentage)+"</Weight_Percentage>\n";
+	s+="	<Teacher_Name>"+protect(this->teacherName)+"</Teacher_Name>\n";
+	s+="	<Minimum_Hours_Daily>"+QString::number(this->minHoursDaily)+"</Minimum_Hours_Daily>\n";
+	s+="</ConstraintTeacherMinHoursDaily>\n";
+	return s;
+}
+
+QString ConstraintTeacherMinHoursDaily::getDescription(Rules& r){
+	if(&r!=NULL)
+		;
+
+	QString s;
+	s+=(QObject::tr("Teacher min %1 hours daily").arg(this->minHoursDaily));s+=", ";
+	s+=QObject::tr("TN:%1").arg(this->teacherName);s+=", ";
+	s+=(QObject::tr("WP:%1\%").arg(this->weightPercentage));
+
+	return s;
+}
+
+QString ConstraintTeacherMinHoursDaily::getDetailedDescription(Rules& r){
+	if(&r!=NULL)
+		;
+
+	QString s=QObject::tr("Time constraint");s+="\n";
+	s+=QObject::tr("Teacher %1 must not have less than %2 hours daily").arg(this->teacherName).arg(this->minHoursDaily);s+="\n";
+	s+=QObject::tr("Weight (percentage)=%1\%").arg(this->weightPercentage);s+="\n";
+	s+=QObject::tr("Note: FET is smart enough to use this constraint only on working days of the teacher");
+	s+="\n";
+
+	return s;
+}
+
+double ConstraintTeacherMinHoursDaily::fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString)
+{
+	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
+	if(!c.teachersMatrixReady || !c.subgroupsMatrixReady){
+		c.teachersMatrixReady=true;
+		c.subgroupsMatrixReady=true;
+	//if(crt_chrom!=&c || crt_rules!=&r || subgroups_conflicts<0 || teachers_conflicts<0 || c.changedForMatrixCalculation){
+		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
+		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
+
+		//crt_chrom=&c;
+		//crt_rules=&r;
+		
+		c.changedForMatrixCalculation=false;
+	}
+
+	int nbroken;
+
+	//without logging
+	if(conflictsString==NULL){
+		nbroken=0;
+		int i=this->teacher_ID;
+		for(int d=0; d<r.nDaysPerWeek; d++){
+			int n_hours_daily=0;
+			for(int h=0; h<r.nHoursPerDay; h++)
+				if(teachersMatrix[i][d][h]>0)
+					n_hours_daily++;
+
+			if(n_hours_daily>0 && n_hours_daily<this->minHoursDaily){
+				nbroken++;
+			}
+		}
+	}
+	//with logging
+	else{
+		nbroken=0;
+		int i=this->teacher_ID;
+		for(int d=0; d<r.nDaysPerWeek; d++){
+			int n_hours_daily=0;
+			for(int h=0; h<r.nHoursPerDay; h++)
+				if(teachersMatrix[i][d][h]>0)
+					n_hours_daily++;
+
+			if(n_hours_daily>0 && n_hours_daily<this->minHoursDaily){
+				nbroken++;
+
+				if(conflictsString!=NULL){
+					QString s=(QObject::tr(
+					 "Time constraint teacher min %1 hours daily broken for teacher %2, on day %3, length=%4.")
+					 .arg(QString::number(this->minHoursDaily))
+					 .arg(r.internalTeachersList[i]->name)
+					 .arg(r.daysOfTheWeek[d])
+					 .arg(n_hours_daily)
+					 )
+					 +" "
+					 +
+					 (QObject::tr("This increases the conflicts total by %1").arg(QString::number(weightPercentage/100)));
+						
+					dl.append(s);
+					cl.append(weightPercentage/100);
+				
+					*conflictsString+= s+"\n";
+				}
+			}
+		}
+	}
+
+	//does not work for partial solutions
+	/*if(weightPercentage==100)
+		assert(nbroken==0);*/
+	return weightPercentage/100 * nbroken;
+}
+
+bool ConstraintTeacherMinHoursDaily::isRelatedToActivity(Activity* a)
+{
+	if(a)
+		;
+
+	return false;
+}
+
+bool ConstraintTeacherMinHoursDaily::isRelatedToTeacher(Teacher* t)
+{
+	if(this->teacherName==t->name)
+		return true;
+	return false;
+}
+
+bool ConstraintTeacherMinHoursDaily::isRelatedToSubject(Subject* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintTeacherMinHoursDaily::isRelatedToSubjectTag(SubjectTag* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintTeacherMinHoursDaily::isRelatedToStudentsSet(Rules& r, StudentsSet* s)
+{
+	if(s)
+		;
+	if(&r)
+		;
+
 	return false;
 }
 

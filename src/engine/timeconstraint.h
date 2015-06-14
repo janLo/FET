@@ -73,6 +73,10 @@ const int CONSTRAINT_ACTIVITIES_PREFERRED_TIMES							=23;
 const int CONSTRAINT_ACTIVITIES_SAME_STARTING_HOUR						=24;
 const int CONSTRAINT_2_ACTIVITIES_CONSECUTIVE							=25;
 
+const int CONSTRAINT_ACTIVITY_ENDS_STUDENTS_DAY							=26;
+
+const int CONSTRAINT_TEACHERS_MIN_HOURS_DAILY							=27;
+const int CONSTRAINT_TEACHER_MIN_HOURS_DAILY							=28;
 
 /**
 This class represents a time constraint
@@ -1370,6 +1374,112 @@ public:
 	bool computeInternalStructure(Rules& r);
 
 	QString getXmlDescription(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
+
+	bool isRelatedToActivity(Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToSubjectTag(SubjectTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+};
+
+class ConstraintActivityEndsStudentsDay: public TimeConstraint{
+public:
+	/**
+	Activity id
+	*/
+	int activityId;
+
+	//internal variables
+	/**
+	The index of the activity in the rules (from 0 to rules.nActivities-1) - it is not the id of the activity
+	*/
+	int activityIndex;
+
+	ConstraintActivityEndsStudentsDay();
+
+	ConstraintActivityEndsStudentsDay(double wp, int actId);
+
+	bool computeInternalStructure(Rules& r);
+
+	QString getXmlDescription(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
+
+	bool isRelatedToActivity(Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToSubjectTag(SubjectTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+};
+
+class ConstraintTeachersMinHoursDaily: public TimeConstraint{
+public:
+	/**
+	The minimum hours daily
+	*/
+	int minHoursDaily;
+
+	ConstraintTeachersMinHoursDaily();
+
+	ConstraintTeachersMinHoursDaily(double wp, int minhours);
+
+	QString getXmlDescription(Rules& r);
+
+	bool computeInternalStructure(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	double fitness(Solution& c, Rules& r, QList<double>& cl, QList<QString>&dl, QString* conflictsString=NULL);
+
+	bool isRelatedToActivity(Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToSubjectTag(SubjectTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+};
+
+class ConstraintTeacherMinHoursDaily: public TimeConstraint{
+public:
+	/**
+	The minimum hours daily
+	*/
+	int minHoursDaily;
+	
+	QString teacherName;
+	
+	int teacher_ID;
+
+	ConstraintTeacherMinHoursDaily();
+
+	ConstraintTeacherMinHoursDaily(double wp, int minhours, const QString& teacher);
+
+	QString getXmlDescription(Rules& r);
+
+	bool computeInternalStructure(Rules& r);
 
 	QString getDescription(Rules& r);
 

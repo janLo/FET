@@ -46,7 +46,7 @@
                 <enum>Plain</enum>
             </property>
             <property name="text">
-                <string>Weight percentage (recommended: 0%-100%)</string>
+                <string>Weight percentage (recommended: 0.0%-100.0%)</string>
             </property>
         </widget>
         <widget class="QLineEdit" row="4" column="0" rowspan="1" colspan="2">
@@ -159,6 +159,15 @@
         <slot>close()</slot>
     </connection>
 </connections>
+<tabstops>
+    <tabstop>roomsComboBox</tabstop>
+    <tabstop>dayComboBox</tabstop>
+    <tabstop>startHourComboBox</tabstop>
+    <tabstop>endHourComboBox</tabstop>
+    <tabstop>weightLineEdit</tabstop>
+    <tabstop>addConstraintPushButton</tabstop>
+    <tabstop>closePushButton</tabstop>
+</tabstops>
 <slots>
     <slot>addConstraint()</slot>
 </slots>

@@ -51,6 +51,7 @@ SOURCES += fet.cpp \
            timetablegenerateform.cpp \
            timetablegeneratemultipleform.cpp \
            fetmainform.cpp \
+           settingstimetablehtmllevelform.cpp \
            timetableviewstudentsform.cpp \
            timetableviewroomsform.cpp \
            yearsform.cpp \
@@ -105,9 +106,18 @@ SOURCES += fet.cpp \
 		   constraintteachermaxhoursdailyform.cpp \
 		   addconstraintteachermaxhoursdailyform.cpp \
 		   modifyconstraintteachermaxhoursdailyform.cpp \
+		   constraintteachersminhoursdailyform.cpp \
+		   addconstraintteachersminhoursdailyform.cpp \
+		   modifyconstraintteachersminhoursdailyform.cpp \
+		   constraintteacherminhoursdailyform.cpp \
+		   addconstraintteacherminhoursdailyform.cpp \
+		   modifyconstraintteacherminhoursdailyform.cpp \
 		   constraintactivitypreferredtimeform.cpp \
 		   addconstraintactivitypreferredtimeform.cpp \
 		   modifyconstraintactivitypreferredtimeform.cpp \
+		   constraintactivityendsstudentsdayform.cpp \
+		   addconstraintactivityendsstudentsdayform.cpp \
+		   modifyconstraintactivityendsstudentsdayform.cpp \
 		   constraintstudentssetnogapsform.cpp \
 		   addconstraintstudentssetnogapsform.cpp \
 		   modifyconstraintstudentssetnogapsform.cpp \
@@ -205,6 +215,7 @@ HEADERS += fet.h \
            timetablegenerateform.h \
            timetablegeneratemultipleform.h \
            fetmainform.h \
+           settingstimetablehtmllevelform.h \
            timetableviewstudentsform.h \
            timetableviewroomsform.h \
            yearsform.h \
@@ -258,9 +269,18 @@ HEADERS += fet.h \
 		   constraintteachermaxhoursdailyform.h \
 		   addconstraintteachermaxhoursdailyform.h \
 		   modifyconstraintteachermaxhoursdailyform.h \
+		   constraintteachersminhoursdailyform.h \
+		   addconstraintteachersminhoursdailyform.h \
+		   modifyconstraintteachersminhoursdailyform.h \
+		   constraintteacherminhoursdailyform.h \
+		   addconstraintteacherminhoursdailyform.h \
+		   modifyconstraintteacherminhoursdailyform.h \
 		   constraintactivitypreferredtimeform.h \
 		   addconstraintactivitypreferredtimeform.h \
 		   modifyconstraintactivitypreferredtimeform.h \
+		   constraintactivityendsstudentsdayform.h \
+		   addconstraintactivityendsstudentsdayform.h \
+		   modifyconstraintactivityendsstudentsdayform.h \
 		   constraintstudentssetnogapsform.h \
 		   addconstraintstudentssetnogapsform.h \
 		   modifyconstraintstudentssetnogapsform.h \
@@ -320,12 +340,15 @@ TRANSLATIONS += ../../translations/fet_ro.ts \
                 ../../translations/fet_nl.ts \
                 ../../translations/fet_de.ts \
                 ../../translations/fet_mk.ts \
-                ../../translations/fet_hu.ts 
+                ../../translations/fet_hu.ts \
+				../../translations/fet_es.ts \
+				../../translations/fet_el.ts
 FORMS+=  fetmainform_template.ui \
 	helpaboutform_template.ui \
 	teachersstatisticsform_template.ui \
 	subjectsstatisticsform_template.ui \
-	studentsstatisticsform_template.ui
+	studentsstatisticsform_template.ui \
+	settingstimetablehtmllevelform_template.ui
 #The following line was changed from FORMS to FORMS3 by qt3to4
 FORMS3 += helpfaqform_template.ui \
 		 helpinstructionsform_template.ui \
@@ -410,9 +433,18 @@ FORMS3 += helpfaqform_template.ui \
 		   constraintteachermaxhoursdailyform_template.ui \
 		   addconstraintteachermaxhoursdailyform_template.ui \
 		   modifyconstraintteachermaxhoursdailyform_template.ui \
+		   constraintteachersminhoursdailyform_template.ui \
+		   addconstraintteachersminhoursdailyform_template.ui \
+		   modifyconstraintteachersminhoursdailyform_template.ui \
+		   constraintteacherminhoursdailyform_template.ui \
+		   addconstraintteacherminhoursdailyform_template.ui \
+		   modifyconstraintteacherminhoursdailyform_template.ui \
 		   constraintactivitypreferredtimeform_template.ui \
 		   addconstraintactivitypreferredtimeform_template.ui \
 		   modifyconstraintactivitypreferredtimeform_template.ui \
+		   constraintactivityendsstudentsdayform_template.ui \
+		   addconstraintactivityendsstudentsdayform_template.ui \
+		   modifyconstraintactivityendsstudentsdayform_template.ui \
 		   constraintstudentssetnogapsform_template.ui \
 		   addconstraintstudentssetnogapsform_template.ui \
 		   modifyconstraintstudentssetnogapsform_template.ui \

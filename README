@@ -102,13 +102,17 @@ Installing FET:
 
 Running FET:
 	GNU/Linux and similar OS's:
-	Run the executable named "/.../fet-x.x.x/fet" (x.x.x is the version).
+	Please chdir to the directory where fet executable is (for instance,
+	"cd /home/liviu/fet-x.x.x/") and run "./fet".
+	Please note that you must be in the FET directory to be able to use
+	correctly a translation and for FET to put the results in the correct directory.
 	
 	Microsoft Windows:
-	Run the executable fet.exe.
+	Run the executable fet.exe
 	
 Documentation:
 	Very primitive: some hints in the directory "/.../fet-x.x.x/doc/".
+	Some other hints in Help menu.
 	If you are a programmer and would like to know how the program works,
 	you can use "doxygen" to generate API documentation.
 
@@ -116,7 +120,7 @@ Input files:
 	You can open a few sample input files in "/.../fet-x.x.x/sample_inputs/" directory.
 	
 	You can create/modify a file from FET's user interface or you can modify it by
-	hand, if you like
+	hand, if you like.
 
 Feed-back / help:
 	- I would like to hear your oppinions/results about this program; any

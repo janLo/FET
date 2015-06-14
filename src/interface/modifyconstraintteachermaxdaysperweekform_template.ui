@@ -107,7 +107,7 @@
                 <enum>Plain</enum>
             </property>
             <property name="text">
-                <string>Weight percentage (recommended: 0%-100%)</string>
+                <string>Weight percentage (necessary: 100%)</string>
             </property>
         </widget>
         <widget class="QSpinBox" row="3" column="1">
@@ -163,6 +163,14 @@
         <slot>constraintChanged()</slot>
     </connection>
 </connections>
+<tabstops>
+    <tabstop>teachersComboBox</tabstop>
+    <tabstop>weightLineEdit</tabstop>
+    <tabstop>maxDaysSpinBox</tabstop>
+    <tabstop>okPushButton</tabstop>
+    <tabstop>cancelPushButton</tabstop>
+    <tabstop>currentConstraintTextEdit</tabstop>
+</tabstops>
 <slots>
     <slot>ok()</slot>
     <slot>constraintChanged()</slot>

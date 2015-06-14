@@ -38,29 +38,51 @@
                 <cstring>textBrowser3_2</cstring>
             </property>
             <property name="text">
-                <string>Updated: 23 August 2007
+                <string>Updated: 30 September 2007
 
 Instructions by Liviu Lalescu
 
 These are some small instructions which you have to follow in order to input a solvable data set.
 
-If FET cannot find a good timetable for your school, make sure to write to the author, as FET needs to be improved. Maybe small changes to your datafile can bring good solutions, or maybe there are aspects which have to be changed in FET.
+If you get an impossible timetable and your school allows beginning later for students, please reconsider your students (set) early constraints and/or replace some by not available/break in the last slots of days. Also, removing or weakening other constraints might help. If FET cannot find a good timetable for your school, make sure to write to the author, as FET needs to be improved. Maybe small changes to your datafile can bring good solutions, or maybe there are aspects which have to be changed in FET.
 
-1) You can use for the constraint min n days the weight you want. It can be 95%, 99%, 99.75% or even 100%, but please make sure your timetable is not too constrained. Please take care of the impossible constraints, they should have under 100% weight (percentage) - best would be 0%. For instance, if a teacher teaches only two days per week and has 3 math lessons for a group, then it is clear that the constraint cannot be respected, so the correct way is to specify under 100% weight (percentage) for the corresponding min n days constraint - best would be 0%.
+An impossible timetable might also be the cause of incorrect years division. Please check statistics/students for all subgroups, each subgroup should have the necessary hours, not less. If you have for instance some subgroups with less than say 20 hours per week you might get an impossible timetable, probably because of incorrect division of years and incorrectly added activities. All the subgroups are independent and should have an amount of working hours per week close to the average for all subgroups. Please see FAQ for more information.
 
-You could try at first the 95% minimum recommended value, then highten the weight percentage up to maybe 100%. I am not sure here, I have not enough sample files (please contribute with advice). If you would like to change the 95% for another value, to make the timetable better, you might use a text or xml editor to change the fet datafile faster than from the FET interface (maybe use replace option, like I do, replacing for instance "Percentage&gt;95" with with "Percentage&gt;99" or with "Percentage&gt;99.75" or with "Percentage&gt;100"). It is adviceable to keep all older versions of your datafile.
+0) Please select correctly the days and hours (working periods). To ensure best performance, it is best to keep the number hours (periods) per day to your required needs, not larger. It is a good practice to choose a value for the number of days and number of hours from the beginning (you can change their names anytime you want afterwards).
+
+1) You can use for the constraint min n days the weight you want. It can be 95%, 99.75% or even 100%. If you specify a value below 100% (even 99.75% or more) for an impossible constraint, FET will be able to detect that it is impossible and obtain a timetable in the end, so the weight is subjective. So, the best way would be to choose a 99.75% for all constraints, but the time of generation might be larger than with 95%.
+
+You could try at first the 95% minimum recommended value, then highten the weight percentage up to maybe 99.75% or 100%. I am not sure here, I have not enough sample files (please contribute with advice). If you would like to change the 95% for another value for all constraints of this type, the easiest way is in Data/Time constraints/Min n days between activities dialog, where starting with version 5.3.6 there is a simple command for that.
 
 You might want to choose different weights for different constraint min n days (for instance, higher on subjects with less activities per week)
 
-2) If you have a course lesson with say 4 activities per week, difficult lessons, which you would like to schedule in the beginning of the day (say 3 out of 4 need to be in the first half of the day), you can add constraint activity preferred times for the first three activities, with preferred times in the first half of the day. This approach worked with the sample German high-school data.
+2) If you have a course lesson with say 4 activities per week, difficult lessons, which you would like to schedule in the beginning of the day (say 3 out of 4 need to be in the first half of the day), you can add constraint activity preferred times (an activity has a set of preferred times) for the first three activities, with preferred times in the first half of the day and a weight percentage 100% or a bit lower. You could work with a text editor on the .fet file to add such constraints if this seems simpler. This approach worked very well with the sample German high-school data. Alternatevely, you might use constraint activities preferred times (a set of activities has a set of preferred times) with weight less than 100% for difficult subjects. This last approach is simpler to use, but the results might not be so satisfactory.
 
-3) For teachers' gaps: please try to use 100% weight. You could try with a large value for max allowed gaps, and lower it as you find possible timetables.
+3) From the way the algorithm is conceived, the automatic generation is faster if you use students set (or teacher) not available and/or constraint activity(ies) preferred times to specify impossible slots, in addition to possible use of students (set) or teacher(s) max hours daily, whenever it is possible. For instance, if you know that year 5 will only have hours from 8:00 to 13:00, it is better to add students set not available in addition to students set max hours daily. So, if possible, try to follow this advice. This trick helps guide FET better towards a solution.
 
-4) Please only input the special rooms with constraints. Home rooms are not necessary (teachers' or students' rooms). You might firstly try togenerate a timetable without rooms, to see if it is possible, then add rooms and rooms related constraints.
+Each constraint of type not available or preferred times which filters out impossible slots might bring an improvement in speed.
 
-5) It is possible to work with institutions in which the students work in shifts (for instance, lowest forms in the morning and highest forms in the afternoon). Please see the Help/Frequently Asked Questions the solution to how to do that (the essence is to add corresponding constraints students set not available).
+4) Constraint students (set) early: this constraint is a restrictive one, saying that the students must have hours beginning at the first free slot (possible from breaks and students set not available constraints). In the case that some "early" constraints are too strong and your school accepts beginning lessons a bit later, you might have to use constraints students set not available/break in the last slots of the days or other constraints instead. You might try with constraint early only on some students sets.
 
-6) The new algorithm (after version 5.0.0) does not accept fortnightly activities. But you might apply a trick. Please see menu Help/Frequently Asked Questions menu (it has the description of a possible trick) (the essence is to make an activity with the sum of teachers and students of both fortnightly activities)</string>
+For instance, if students X are not available on Monday from 8 to 9 and available in rest and you add students set early X, they must begin each day (without Monday) at 8 and Monday at 9, not even a bit later.
+
+Also, if you input only partial data, you might get impossible timetables (see FAQ for details).
+
+5) For teacher(s) gaps: please note that FET will take care of teacher(s) gaps only if you tell it so, by adding constraint teacher(s) max gaps per week. It is normal to add such constraint(s) after you saw that the data is solveable, using for max gaps a value which seems acceptable, lowering it as you find timetables.
+
+6) Please only input the special rooms with constraints. Home rooms are not necessary (teachers' or students' rooms). You might firstly try to generate a timetable without rooms, to see if it is possible, then add rooms and rooms related constraints.
+
+7) It is possible to work with institutions in which the students work in shifts (for instance, lowest forms in the morning and highest forms in the afternoon). Please see the Help/Frequently Asked Questions the solution to how to do that (the essence is to add corresponding constraints students set not available).
+
+8) The new algorithm (after version 5.0.0) does not accept fortnightly activities. But you might apply a trick. Please see menu Help/Frequently Asked Questions menu (it has the description of a possible trick) (the essence is to make an activity with the sum of teachers and students of both fortnightly activities)
+
+9) Even if it takes a long time to generate your timetable with a set of constraints, strengthening the constraints might not slow the generation too much. You are adviced to try with stronger constraints after you obtain timetables, because you can obtain better timetables this way.
+
+10) If a constraint is allowed values under 100%, you can use any weight, even fractional numbers like 99.75%. It might help in constraints like min n days, preferred rooms or max hours daily.
+
+11) Each room can host a single activity at the same time. If you have a large room which can host more activities at the same time, you need to use a small trick. You can add more rooms representing this large room and add corresponding constraints preferred rooms. There is an entry in the FAQ about that.
+
+12) If teachers are getting days with only one hour of work, you might want to add constraint teacher(s) min hours daily (probably with 2 hours), but please make sure your timetable is possible. This constraint is smart, it only considers non-empty days.</string>
             </property>
         </widget>
     </grid>

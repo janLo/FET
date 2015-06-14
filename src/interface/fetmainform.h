@@ -51,6 +51,7 @@ public slots:
 	void on_dataGroupsAction_activated();
 	void on_dataSubgroupsAction_activated();
 	void on_dataStudentsStatisticsAction_activated();
+	void on_dataHelpOnStatisticsAction_activated();
 	void on_dataActivitiesAction_activated();
 	void on_dataRoomsAction_activated();
 	void on_dataAllTimeConstraintsAction_activated();
@@ -79,11 +80,14 @@ public slots:
 	void on_dataTimeConstraintsActivitiesSameStartingHourAction_activated();
 	void on_dataTimeConstraintsActivitiesNotOverlappingAction_activated();
 	void on_dataTimeConstraintsMinNDaysBetweenActivitiesAction_activated();
+	void on_dataTimeConstraintsActivityEndsStudentsDayAction_activated();
 
 	void on_dataTimeConstraintsTeacherNotAvailableAction_activated();
 	void on_dataTimeConstraintsTeacherMaxDaysPerWeekAction_activated();
 	void on_dataTimeConstraintsTeachersMaxHoursDailyAction_activated();
 	void on_dataTimeConstraintsTeacherMaxHoursDailyAction_activated();
+	void on_dataTimeConstraintsTeachersMinHoursDailyAction_activated();
+	void on_dataTimeConstraintsTeacherMinHoursDailyAction_activated();
 	void on_dataTimeConstraintsTeachersMaxGapsPerWeekAction_activated();
 	void on_dataTimeConstraintsTeacherMaxGapsPerWeekAction_activated();
 
@@ -101,6 +105,7 @@ public slots:
 	void on_helpAboutAction_activated();
 	void on_helpFAQAction_activated();
 	void on_helpInstructionsAction_activated();
+	void on_helpInOtherLanguagesAction_activated();
 
 	void on_timetableGenerateAction_activated();
 	void on_timetableViewStudentsAction_activated();
@@ -120,8 +125,14 @@ public slots:
 	void on_languageGermanAction_activated();
 	void on_languageHungarianAction_activated();
 	void on_languageMacedonianAction_activated();
+	void on_languageSpanishAction_activated();
+	void on_languageGreekAction_activated();
 	
 	void on_checkForUpdatesAction_toggled();
+
+	void on_settingsRestoreDefaultsAction_activated();
+
+	void on_settingsTimetableHtmlLevelAction_activated();
 	
 	void httpDone(bool error);
 	

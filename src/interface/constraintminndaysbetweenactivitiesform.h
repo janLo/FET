@@ -35,6 +35,8 @@
 #include <q3listbox.h>
 
 class ConstraintMinNDaysBetweenActivitiesForm : public ConstraintMinNDaysBetweenActivitiesForm_template  {
+	Q_OBJECT
+
 public:
 	TimeConstraintsList visibleConstraintsList;
 
@@ -49,6 +51,8 @@ public:
 	void filterChanged();
 
 	bool filterOk(TimeConstraint* ctr);
+	
+	void changeAllWeights();
 };
 
 #endif

@@ -227,7 +227,7 @@ void AddActivityForm::updateStudentsListBox()
 {
 	for(int j=0; j<8; j++){
 		prefDay(j)->clear();
-		prefDay(j)->insertItem(QObject::tr("Any"));
+		prefDay(j)->insertItem(tr("Any"));
 		for(int i=0; i<gt.rules.nDaysPerWeek; i++)
 			prefDay(j)->insertItem(gt.rules.daysOfTheWeek[i]);
 	}
@@ -237,7 +237,7 @@ void AddActivityForm::updatePreferredHoursComboBox()
 {
 	for(int j=0; j<8; j++){
 		prefHour(j)->clear();
-		prefHour(j)->insertItem(QObject::tr("Any"));
+		prefHour(j)->insertItem(tr("Any"));
 		for(int i=0; i<gt.rules.nHoursPerDay; i++)
 			prefHour(j)->insertItem(gt.rules.hoursOfTheDay[i]);
 	}
@@ -262,6 +262,15 @@ void AddActivityForm::subjectTagChanged(const QString& dummy)
 void AddActivityForm::splitChanged()
 {
 	int nSplit=splitSpinBox->value();
+	
+	if(nSplit>=2){
+		addActivityPushButton->setText(tr("Add current activities"));
+		currentActivityTextLabel->setText(tr("Current activities"));
+	}
+	else{
+		addActivityPushButton->setText(tr("Add current activity"));
+		currentActivityTextLabel->setText(tr("Current activity"));
+	}
 
 	minDayDistanceTextLabel->setEnabled(nSplit>=2);
 	minDayDistanceSpinBox->setEnabled(nSplit>=2);
@@ -285,65 +294,61 @@ void AddActivityForm::splitChanged()
 void AddActivityForm::activityChanged()
 {
 	QString s;
-	s+=QObject::tr("Current activity:");s+="\n";
-	if(selectedTeachersListBox->count()==0)
-		s+=QObject::tr("No teachers for this activity\n");
+	//s+=tr("Current activity:");s+="\n";
+	if(selectedTeachersListBox->count()==0){
+		if(splitSpinBox->value()==1)
+			s+=tr("No teachers for this activity\n");
+		else
+			s+=tr("No teachers for these activities\n");
+	}
 	else
 		for(uint i=0; i<selectedTeachersListBox->count(); i++){
-			s+=QObject::tr("Teacher=%1").arg(selectedTeachersListBox->text(i));
+			s+=tr("Teacher=%1").arg(selectedTeachersListBox->text(i));
 			//s+=selectedTeachersListBox->text(i);
 			s+="\n";
 		}
 
-	s+=QObject::tr("Subject=%1").arg(subjectsComboBox->currentText());
+	s+=tr("Subject=%1").arg(subjectsComboBox->currentText());
 	s+="\n";
 	if(subjectTagsComboBox->currentText()!=""){
-		s+=QObject::tr("Subject tag=%1").arg(subjectTagsComboBox->currentText());
+		s+=tr("Subject tag=%1").arg(subjectTagsComboBox->currentText());
 		s+="\n";
 	}
-	if(selectedStudentsListBox->count()==0)
-		s+=QObject::tr("No students for this activity\n");
+	if(selectedStudentsListBox->count()==0){
+		if(splitSpinBox->value()==1)
+			s+=tr("No students for this activity\n");
+		else
+			s+=tr("No students for these activities\n");
+	}
 	else
 		for(uint i=0; i<selectedStudentsListBox->count(); i++){
-			s+=QObject::tr("Students=%1").arg(selectedStudentsListBox->text(i));
+			s+=tr("Students=%1").arg(selectedStudentsListBox->text(i));
 			s+="\n";
 		}
 
 	if(nStudentsSpinBox->value()>=0){
-		s+=QObject::tr("Number of students=%1").arg(nStudentsSpinBox->value());
+		s+=tr("Number of students=%1").arg(nStudentsSpinBox->value());
 		s+="\n";
 	}
 	else{
-		s+=QObject::tr("Number of students: automatically computed from component students sets");
+		s+=tr("Number of students: automatically computed from component students sets");
 		s+="\n";
 	}
 
 	if(splitSpinBox->value()==1){
-		s+=QObject::tr("Duration=%1").arg(dur(0)->value());
+		s+=tr("Duration=%1").arg(dur(0)->value());
 		s+="\n";
-		/*if(par(0)->isChecked()){
-			s+=QObject::tr("Fortnightly activity");
-			s+="\n";
-		}*/
-	/*	if(prefDay(0)->currentItem()>0){
-			s+=QObject::tr("Preferred day=%1").arg(prefDay(0)->currentText());
-			s+="\n";
-		}
-		if(prefHour(0)->currentItem()>0){
-			s+=QObject::tr("Preferred hour=%1").arg(prefHour(0)->currentText());
-			s+="\n";
-		}*/
 		if(activ(0)->isChecked()){
-			s+=QObject::tr("Active activity");
+			s+=tr("Active activity");
 			s+="\n";
 		}
 		else{
-			s+=QObject::tr("Non-active activity");
+			s+=tr("Non-active activity");
 			s+="\n";
 		}
 	}
 	else{
-		s+=QObject::tr("This activity will be split into %1 lessons per week").arg(splitSpinBox->value());
+		s+=tr("This larger activity will be split into %1 smaller activities per week").arg(splitSpinBox->value());
 		s+="\n";
 		if(minDayDistanceSpinBox->value()>0){
 			percentageTextLabel->setEnabled(true);
@@ -351,14 +356,14 @@ void AddActivityForm::activityChanged()
 			percentTextLabel->setEnabled(true);
 			forceAdjacentCheckBox->setEnabled(true);
 			
-			s+=QObject::tr("The distance between any pair of subactivities must be at least %1 days").arg(minDayDistanceSpinBox->value());
+			s+=tr("The distance between any pair of activities must be at least %1 days").arg(minDayDistanceSpinBox->value());
 			s+="\n";
 			
-			s+=QObject::tr("Weight percentage of added min n days constraint: %1\%").arg(percentageLineEdit->text());
+			s+=tr("Weight percentage of added min n days constraint: %1\%").arg(percentageLineEdit->text());
 			s+="\n";
 			
 			if(forceAdjacentCheckBox->isChecked()){
-				s+=QObject::tr("If activities on same day, then place activities consecutive, in a bigger duration lesson");
+				s+=tr("If activities on same day, then place activities consecutive, in a bigger duration lesson");
 				s+="\n";
 			}
 		}
@@ -371,28 +376,16 @@ void AddActivityForm::activityChanged()
 		s+="\n";
 
 		for(int i=0; i<splitSpinBox->value(); i++){
-			s+=QObject::tr("Componenent %1:").arg(i+1);
+			s+=tr("Component %1:").arg(i+1);
 			s+="\n";
-			s+=QObject::tr("Duration=%1").arg(dur(i)->value());
+			s+=tr("Duration=%1").arg(dur(i)->value());
 			s+="\n";
-			/*if(par(i)->isChecked()){
-				s+=QObject::tr("Fortnightly activity");
-				s+="\n";
-			}*/
-			/*if(prefDay(i)->currentItem()>0){
-				s+=QObject::tr("Preferred day=%1").arg(prefDay(i)->currentText());
-				s+="\n";
-			}
-			if(prefHour(i)->currentItem()>0){
-				s+=QObject::tr("Preferred hour=%1").arg(prefHour(i)->currentText());
-				s+="\n";
-			}*/
 			if(activ(i)->isChecked()){
-				s+=QObject::tr("Active activity");
+				s+=tr("Active activity");
 				s+="\n";
 			}
 			else{
-				s+=QObject::tr("Non-active activity");
+				s+=tr("Non-active activity");
 				s+="\n";
 			}
 			s+="\n";
@@ -408,24 +401,24 @@ void AddActivityForm::addActivity()
 	QString tmp=percentageLineEdit->text();
 	sscanf(tmp, "%lf", &weight);
 	if(weight<0.0 || weight>100.0){
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Invalid weight (percentage) for added constraint min n days between activities"));
+		QMessageBox::warning(this, tr("FET information"),
+			tr("Invalid weight (percentage) for added constraint min n days between activities"));
 		return;
 	}
 
 	//teachers
 	QStringList teachers_names;
 	if(selectedTeachersListBox->count()<=0){
-		int t=QMessageBox::question(this, QObject::tr("FET question"),
-		 QObject::tr("Do you really want to add activity with no teacher(s)?"),
+		int t=QMessageBox::question(this, tr("FET question"),
+		 tr("Do you really want to add activity with no teacher(s)?"),
 		 QMessageBox::Yes, QMessageBox::Cancel);
 
 		if(t==QMessageBox::Cancel)
 			return;
 	}
 	else if(selectedTeachersListBox->count()>(uint)(MAX_TEACHERS_PER_ACTIVITY)){
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Too many teachers for an activity. The current maximum is %1.\n"
+		QMessageBox::warning(this, tr("FET information"),
+			tr("Too many teachers for an activity. The current maximum is %1.\n"
 			"If you really need more teachers per activity, please talk to the author").
 			arg(MAX_TEACHERS_PER_ACTIVITY));
 		return;
@@ -441,8 +434,8 @@ void AddActivityForm::addActivity()
 	QString subject_name=subjectsComboBox->currentText();
 	int subject_index=gt.rules.searchSubject(subject_name);
 	if(subject_index<0){
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Invalid subject"));
+		QMessageBox::warning(this, tr("FET information"),
+			tr("Invalid subject"));
 		return;
 	}
 
@@ -450,16 +443,16 @@ void AddActivityForm::addActivity()
 	QString subject_tag_name=subjectTagsComboBox->currentText();
 	int subject_tag_index=gt.rules.searchSubjectTag(subject_tag_name);
 	if(subject_tag_index<0 && subject_tag_name!=""){
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Invalid subject tag"));
+		QMessageBox::warning(this, tr("FET information"),
+			tr("Invalid subject tag"));
 		return;
 	}
 
 	//students
 	QStringList students_names;
 	if(selectedStudentsListBox->count()<=0){
-		int t=QMessageBox::question(this, QObject::tr("FET question"),
-		 QObject::tr("Do you really want to add activity with no student set(s)?"),
+		int t=QMessageBox::question(this, tr("FET question"),
+		 tr("Do you really want to add activity with no student set(s)?"),
 		 QMessageBox::Yes, QMessageBox::Cancel);
 
 		if(t==QMessageBox::Cancel)
@@ -475,26 +468,10 @@ void AddActivityForm::addActivity()
 	if(splitSpinBox->value()==1){ //indivisible activity
 		int duration=duration1SpinBox->value();
 		if(duration<0){
-			QMessageBox::warning(this, QObject::tr("FET information"),
-				QObject::tr("Invalid duration"));
+			QMessageBox::warning(this, tr("FET information"),
+				tr("Invalid duration"));
 			return;
 		}
-		/*int parity=PARITY_WEEKLY;
-		if(parity1CheckBox->isChecked())
-			parity=PARITY_FORTNIGHTLY;*/
-
-		/*int preferred_day=preferredDay1ComboBox->currentItem()-1;
-		if(preferred_day<-1 || preferred_day>=gt.rules.nDaysPerWeek){
-			QMessageBox::warning(this, QObject::tr("FET information"),
-				QObject::tr("Invalid preferred day"));
-			return;
-		}
-		int preferred_hour=preferredHour1ComboBox->currentItem()-1;
-		if(preferred_hour<-1 || preferred_hour>=gt.rules.nHoursPerDay){
-			QMessageBox::warning(this, QObject::tr("FET information"),
-				QObject::tr("Invalid preferred hour"));
-			return;
-		}*/
 
 		bool active=false;
 		if(active1CheckBox->isChecked())
@@ -518,9 +495,9 @@ void AddActivityForm::addActivity()
 		}
 
 		if(already_existing){
-			int t=QMessageBox::question(this, QObject::tr("FET question"), 
-				QObject::tr("This activity already exists. Insert it again?"),
-				QObject::tr("Yes"),QObject::tr("No"));
+			int t=QMessageBox::question(this, tr("FET question"), 
+				tr("This activity already exists. Insert it again?"),
+				tr("Yes"),tr("No"));
 			assert(t==0 || t==1 ||t==-1);
 			if(t==1) //no pressed
 				return;
@@ -532,9 +509,9 @@ void AddActivityForm::addActivity()
 			students_names,	duration, duration, /*parity,*/ active, /*preferred_day, preferred_hour,*/
 			(nStudentsSpinBox->value()==-1), nStudentsSpinBox->value());
 		if(tmp)
-			QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Activity added"));
+			QMessageBox::information(this, tr("FET information"), tr("Activity added"));
 		else
-			QMessageBox::critical(this, QObject::tr("FET information"), QObject::tr("Activity NOT added - please report error"));
+			QMessageBox::critical(this, tr("FET information"), tr("Activity NOT added - please report error"));
 	}
 	else{ //split activity
 		int totalduration;
@@ -577,11 +554,11 @@ void AddActivityForm::addActivity()
 			/*parities,*/ active, minD, /*percentageSpinBox->value()*/weight, forceAdjacentCheckBox->isChecked(), /*preferred_days, preferred_hours,*/
 			(nStudentsSpinBox->value()==-1), nStudentsSpinBox->value());
 		if(tmp)
-			QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Split activity added."
+			QMessageBox::information(this, tr("FET information"), tr("Split activity added."
 			 " Please note that FET currently cannot check for duplicates when adding split activities"
 			 ". It is advisable to check the statistics after adding all the activities"));
 		else
-			QMessageBox::critical(this, QObject::tr("FET information"), QObject::tr("Split activity NOT added - error???"));
+			QMessageBox::critical(this, tr("FET information"), tr("Split activity NOT added - error???"));
 	}
 }
 
@@ -601,8 +578,8 @@ void AddActivityForm::help()
 {
 	QString s;
 	
-	s=QObject::tr(	
-	 "This help by Liviu Lalescu, modified 23 August 2007\n\n"
+	s=tr(	
+	 "This help by Liviu Lalescu, modified 19 September 2007\n\n"
 	
 	 "You can select a teacher from all the teachers with the mouse or with keyboard tab/up/down, then "
 	 "double click it or press Enter to add it to the selected teachers for current activity. "
@@ -613,8 +590,8 @@ void AddActivityForm::help()
 	
 	 "You can check/uncheck show years, show groups or show subgroups.\n\n"
 	
-	 "If you split an activity into more sub-activities per week, you have a multitude of choices:\n"
-	 "You can choose the minimum distance in days between each pair of subactivities."
+	 "If you split a larger activity into more activities per week, you have a multitude of choices:\n"
+	 "You can choose the minimum distance in days between each pair of activities."
 	 " Please note that a minimum distance of 1 means that the activities must not be in the same day, "
 	 "a minimum distance of 2 means that the activities must be separated by one day (distance from Monday "
 	 " to Wednesday for instance is 2 days), etc.\n\n"
@@ -635,16 +612,21 @@ void AddActivityForm::help()
 	 "detailed description of the activity). You can select a weight percentage for this constraint. "
 	 "If you select 100%, the constraint must be respected all the time. If you select 95%, there is a small chance "
 	 "that the timetable will not respect this constraint. Recommended values are 95.0%-100.0% (maybe you could try "
-	 "with 95%, then with 99%, then 99.75%, or even 100.0%, but the generation time might be larger). Please be careful, sometimes "
-	 "there are situations when the constraint cannot be respected, for instance if you have 3 lessons per week "
-	 "with a teacher which has only 2 working days. It is best to set the weight of the constraint in this case to 0% (although "
-	 "any value less than 100.0% will work). "
+	 "with 95%, then 99.75%, or even 100.0%, but the generation time might be larger). Generally, 99.75% might be a good value. "
+	 "Note: if you put a value less than 100% and the constraint is too tough, FET is able to find that this constraint "
+	 "is impossible and will break it. 99.75% might be better than 95% but possibly slower. The percentage is subjective "
+	 "(if you put 95% you may get 6 soft conflicts and if you put 99.75% you may get 3 soft conflicts). "
+	 "Starting with FET-5.3.6, it is possible to change this value for all constraints in one click, in constraint min n days"
+	 " between activities dialog.\n\n"
+
 	 "There is another option, if the activities are in the same day, force consecutive activities. You can select "
 	 "this option for instance if you have 5 lessons of math in 5 days, and there is no timetable which respects "
 	 "fully the days separation. Then, you can set the weight percent of the min days constraint to 95% and "
 	 "add consecutive if same day. You will have as results say 3 lessons with duration 1 and a 2 hours lesson in another day. "
 	 "Please be careful: if the activities are on the same day, even if the constraint has 0% weight, then the activities are forced to be "
-	 "consecutive. Current algorithm cannot schedule 3 activities in the same day if consecutive is checked, so "
+	 "consecutive.\n\n"
+
+	 "Current algorithm cannot schedule 3 activities in the same day if consecutive is checked, so "
 	 "you will get no solution in such extreme cases (for instance, if you have 3 lessons and a teacher which works only 1 day per week, "
 	 "and select 'force consecutive if same day', you will get an imposssible timetable. But these are extremely unlikely cases. "
 	 "If you encounter such cases, please contact the author, I'll try to fix this problem).\n\n"
@@ -652,24 +634,19 @@ void AddActivityForm::help()
 	 "Note: You cannot add 'consecutive if same day' with min n days=0. If you want this, you have to add "
 	 "min days at least 1 (and any weight percentage).\n\n"
 	 
-	 "Note: the extremely unlikely event that, "
-	 "given that 3 or more activities (from the same constraint min n days) must all be placed in the same day consecutively, "
-	 "FET will not be able to find a timetable. If you meet such cases, please write to the author. This unlikely "
-	 "to happen event can be managed, but I consider it neglectable.\n\n"
-	 
 	 "Starting with version 5.0.0, it is possible to add activities with no students or no teachers"
 	 );
 	
 	//show the message in a dialog
 	QDialog* dialog=new QDialog();
 	
-	dialog->setWindowTitle(QObject::tr("FET - help on adding activity(ies)"));
+	dialog->setWindowTitle(tr("FET - help on adding activity(ies)"));
 
 	QVBoxLayout* vl=new QVBoxLayout(dialog);
 	QTextEdit* te=new QTextEdit();
 	te->setPlainText(s);
 	te->setReadOnly(true);
-	QPushButton* pb=new QPushButton(QObject::tr("OK"));
+	QPushButton* pb=new QPushButton(tr("OK"));
 
 	QHBoxLayout* hl=new QHBoxLayout(0);
 	hl->addStretch(1);

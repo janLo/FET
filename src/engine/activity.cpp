@@ -46,7 +46,6 @@ Activity::Activity(
 	const QStringList& _studentsNames,
 	int _duration,
 	int _totalDuration,
-	//int _parity,
 	bool _active,
 	bool _computeNTotalStudents,
 	int _nTotalStudents)
@@ -88,8 +87,6 @@ bool Activity::operator==(Activity& a)
 		return false;
 	if(this->duration != a.duration)
 	    return false;
-	//if(this->parity != a.parity)
-	  //  return false;
 	return true;
 }
 
@@ -98,9 +95,11 @@ bool Activity::searchTeacher(const QString& teacherName)
 	return this->teachersNames.find(teacherName)!=this->teachersNames.end();
 }
 
-void Activity::removeTeacher(const QString& teacherName)
+bool Activity::removeTeacher(const QString& teacherName)
 {
-	this->teachersNames.remove(teacherName);
+	int t=this->teachersNames.removeAll(teacherName);
+	
+	return t>0;
 }
 
 void Activity::renameTeacher(const QString& initialTeacherName, const QString& finalTeacherName)
@@ -119,12 +118,12 @@ bool Activity::searchStudents(const QString& studentsName)
 	return this->studentsNames.find(studentsName)!=this->studentsNames.end();
 }
 
-void Activity::removeStudents(Rules& r, const QString& studentsName, int nStudents)
+bool Activity::removeStudents(Rules& r, const QString& studentsName, int nStudents)
 {
 	if(&r==NULL){	
 	}
 	
-	int t=this->studentsNames.remove(studentsName);
+	int t=this->studentsNames.removeAll(studentsName);
 
 	if(t>0 && this->computeNTotalStudents==true){
 		/*StudentsSet* s=r.searchStudentsSet(studentsName);
@@ -133,6 +132,8 @@ void Activity::removeStudents(Rules& r, const QString& studentsName, int nStuden
 		this->nTotalStudents-=nStudents;
 		assert(this->nTotalStudents>=0);
 	}
+	
+	return t>0;
 }
 
 void Activity::renameStudents(Rules& r, const QString& initialStudentsName, const QString& finalStudentsName)
@@ -317,8 +318,14 @@ QString Activity::getDescription(Rules& r)
 	QString s;
 	if(!this->isSplit())
 		s=QObject::tr("Activity: ");
-	else
-		s=QObject::tr("Sub-activity: ");
+	else{
+		if(this->id==this->activityGroupId)
+			s="";
+		else
+			s="   ";
+		s+=QObject::tr("Activity: ");
+		//s=QObject::tr("Sub-activity: ");
+	}
 	s+=QObject::tr("T:");
 	if(teachersNames.count()==0)
 		s+=QObject::tr(" no teachers, ");
@@ -343,9 +350,6 @@ QString Activity::getDescription(Rules& r)
 	if(this->isSplit())
 		s += QObject::tr("TD:") + QString::number(this->totalDuration) + ", ";
 
-	//if(this->parity==PARITY_FORTNIGHTLY)
-	//	s+=QObject::tr("Fortnightly, ");
-		
 	if(this->active==true)
 		s+=QObject::tr("A: yes")+", ";
 	else
@@ -362,8 +366,16 @@ QString Activity::getDetailedDescription(Rules &r)
 	QString s;
 	if(!this->isSplit())
 		s=QObject::tr("Activity:\n");
-	else
-		s=QObject::tr("Sub-activity:\n");
+	else{
+		s="";
+		/*if(this->id==this->activityGroupId)
+			s="";
+		else
+			s="   ";*/
+		s+=QObject::tr("Activity:\n");
+		//s+=QObject::tr("Component of a split activity\n");
+		//s=QObject::tr("Sub-activity:\n");
+	}
 	if(teachersNames.count()==0)
 		s+=QObject::tr("No teachers for this activity\n");
 	else
@@ -386,11 +398,6 @@ QString Activity::getDetailedDescription(Rules &r)
 	if(this->isSplit())
 		s += QObject::tr("Total duration=") + QString::number(this->totalDuration) + "\n";
 
-	/*if(this->parity==PARITY_FORTNIGHTLY)
-		s+=QObject::tr("Fortnightly activity\n");
-	else
-		s+=QObject::tr("Weekly activity\n");*/
-		
 	if(this->active==true)
 		s+=QObject::tr("Active: yes\n");
 	else

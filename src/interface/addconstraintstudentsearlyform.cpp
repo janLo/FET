@@ -60,7 +60,7 @@ void AddConstraintStudentsEarlyForm::constraintChanged()
 	s+=QObject::tr("Compulsory=%1").arg(yesNo(compulsory));
 	s+="\n";*/
 
-	s+=QObject::tr("Students must begin classes at the first hour of each day");
+	s+=QObject::tr("Students must begin activities as early as possible (permitted by not available and break)");
 	s+="\n";
 
 	currentConstraintTextEdit->setText(s);
@@ -78,6 +78,11 @@ void AddConstraintStudentsEarlyForm::addCurrentConstraint()
 			QObject::tr("Invalid weight (percentage)"));
 		return;
 	}
+	if(weight!=100.0){
+		QMessageBox::warning(this, QObject::tr("FET information"),
+			QObject::tr("Invalid weight (percentage) - it must be 100%"));
+		return;
+	}
 
 	/*bool compulsory=false;
 	if(compulsoryCheckBox->isChecked())
@@ -88,7 +93,11 @@ void AddConstraintStudentsEarlyForm::addCurrentConstraint()
 	bool tmp2=gt.rules.addTimeConstraint(ctr);
 	if(tmp2)
 		QMessageBox::information(this, QObject::tr("FET information"),
-			QObject::tr("Constraint added"));
+			QObject::tr("Constraint added.\n\nNote: this constraint is strong."
+			 " It means that students must have hours beginning at the very first available slot for them."
+			 " If such constraint is too strong and your school allows later beginning of courses,"
+			 " you might want to use a combination of"
+			 " students set not available/break in the last slots of each day or other constraints instead"));
 	else{
 		QMessageBox::warning(this, QObject::tr("FET information"),
 			QObject::tr("Constraint NOT added - please report error"));

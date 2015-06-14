@@ -69,7 +69,7 @@
                 <enum>Plain</enum>
             </property>
             <property name="text">
-                <string>Weight percentage (recommended: 0%-100%)</string>
+                <string>Weight percentage (recommended: 0.0%-100.0%)</string>
             </property>
         </widget>
         <widget class="QComboBox" row="5" column="0" rowspan="1" colspan="2">
@@ -139,6 +139,14 @@
         <slot>ok()</slot>
     </connection>
 </connections>
+<tabstops>
+    <tabstop>subjectsComboBox</tabstop>
+    <tabstop>subjectTagsComboBox</tabstop>
+    <tabstop>roomsComboBox</tabstop>
+    <tabstop>weightLineEdit</tabstop>
+    <tabstop>okPushButton</tabstop>
+    <tabstop>cancelPushButton</tabstop>
+</tabstops>
 <slots>
     <slot>ok()</slot>
     <slot>cancel()</slot>

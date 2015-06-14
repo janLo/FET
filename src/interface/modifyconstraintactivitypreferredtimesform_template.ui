@@ -53,6 +53,12 @@
                     <property name="name">
                         <cstring>activitiesComboBox</cstring>
                     </property>
+                    <property name="maximumSize">
+                        <size>
+                            <width>1600</width>
+                            <height>32767</height>
+                        </size>
+                    </property>
                 </widget>
             </vbox>
         </widget>
@@ -118,7 +124,7 @@
                         <enum>Plain</enum>
                     </property>
                     <property name="text">
-                        <string>Weight percentage (recommended: 0%-100%)</string>
+                        <string>Weight percentage (recommended: 0.0%-100.0%)</string>
                     </property>
                 </widget>
                 <widget class="QLineEdit">
@@ -242,6 +248,17 @@
         <slot>filterChanged()</slot>
     </connection>
 </connections>
+<tabstops>
+    <tabstop>teachersComboBox</tabstop>
+    <tabstop>studentsComboBox</tabstop>
+    <tabstop>subjectsComboBox</tabstop>
+    <tabstop>subjectTagsComboBox</tabstop>
+    <tabstop>activitiesComboBox</tabstop>
+    <tabstop>preferredTimesTable</tabstop>
+    <tabstop>weightLineEdit</tabstop>
+    <tabstop>okPushButton</tabstop>
+    <tabstop>cancelPushButton</tabstop>
+</tabstops>
 <slots>
     <slot>ok()</slot>
     <slot>tableClicked(int,int,int,const QPoint&amp;)</slot>
