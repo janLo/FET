@@ -15,9 +15,6 @@
  *                                                                         *
  ***************************************************************************/
 
-//#include <iostream>
-//using namespace std;
-
 #include "timetable_defs.h"
 #include "fet.h"
 #include "timetable.h"
@@ -30,7 +27,6 @@
 #include <QString>
 #include <QMessageBox>
 
-#include <QTextEdit>
 #include <QListWidget>
 #include <QScrollBar>
 
@@ -40,34 +36,43 @@
 
 #include <QBrush>
 #include <QPalette>
-//#include <QApplication>
 
-SubactivitiesForm::SubactivitiesForm(const QString& teacherName, const QString& studentsSetName, const QString& subjectName, const QString& activityTagName)
+#include <QSplitter>
+#include <QSettings>
+#include <QObject>
+#include <QMetaObject>
+
+extern const QString COMPANY;
+extern const QString PROGRAM;
+
+SubactivitiesForm::SubactivitiesForm(QWidget* parent, const QString& teacherName, const QString& studentsSetName, const QString& subjectName, const QString& activityTagName): QDialog(parent)
 {
-    setupUi(this);
-    
-    modifySubactivityPushButton->setDefault(true);
-    
-    subactivitiesListWidget->setSelectionMode(QAbstractItemView::SingleSelection);
+	setupUi(this);
+	
+	subactivityTextEdit->setReadOnly(true);
+	
+	modifySubactivityPushButton->setDefault(true);
+	
+	subactivitiesListWidget->setSelectionMode(QAbstractItemView::SingleSelection);
 
-    connect(subactivitiesListWidget, SIGNAL(currentRowChanged(int)), this /*SubactivitiesForm_template*/, SLOT(subactivityChanged()));
-    connect(closePushButton, SIGNAL(clicked()), this /*SubactivitiesForm_template*/, SLOT(close()));
-    connect(teachersComboBox, SIGNAL(activated(QString)), this /*SubactivitiesForm_template*/, SLOT(filterChanged()));
-    connect(studentsComboBox, SIGNAL(activated(QString)), this /*SubactivitiesForm_template*/, SLOT(studentsFilterChanged()));
-    connect(subjectsComboBox, SIGNAL(activated(QString)), this /*SubactivitiesForm_template*/, SLOT(filterChanged()));
-    connect(modifySubactivityPushButton, SIGNAL(clicked()), this /*SubactivitiesForm_template*/, SLOT(modifySubactivity()));
-    connect(activityTagsComboBox, SIGNAL(activated(QString)), this /*SubactivitiesForm_template*/, SLOT(filterChanged()));
-    connect(subactivitiesListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this /*SubactivitiesForm_template*/, SLOT(modifySubactivity()));
-    connect(recursiveCheckBox, SIGNAL(toggled(bool)), this /*SubactivitiesForm_template*/, SLOT(studentsFilterChanged()));
+	connect(subactivitiesListWidget, SIGNAL(currentRowChanged(int)), this, SLOT(subactivityChanged()));
+	connect(closePushButton, SIGNAL(clicked()), this, SLOT(close()));
+	connect(teachersComboBox, SIGNAL(activated(QString)), this, SLOT(filterChanged()));
+	connect(studentsComboBox, SIGNAL(activated(QString)), this, SLOT(studentsFilterChanged()));
+	connect(subjectsComboBox, SIGNAL(activated(QString)), this, SLOT(filterChanged()));
+	connect(modifySubactivityPushButton, SIGNAL(clicked()), this, SLOT(modifySubactivity()));
+	connect(activityTagsComboBox, SIGNAL(activated(QString)), this, SLOT(filterChanged()));
+	connect(subactivitiesListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(modifySubactivity()));
+	connect(recursiveCheckBox, SIGNAL(toggled(bool)), this, SLOT(studentsFilterChanged()));
+	connect(helpPushButton, SIGNAL(clicked()), this, SLOT(help()));
+	connect(commentsPushButton, SIGNAL(clicked()), this, SLOT(subactivityComments()));
 
-    connect(helpPushButton, SIGNAL(clicked()), this, SLOT(help()));
-
-	//setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 	centerWidgetOnScreen(this);
-	/*QDesktopWidget* desktop=QApplication::desktop();
-	int xx=desktop->width()/2 - frameGeometry().width()/2;
-	int yy=desktop->height()/2 - frameGeometry().height()/2;
-	move(xx, yy);*/
+	restoreFETDialogGeometry(this);
+	//restore splitter state
+	QSettings settings(COMPANY, PROGRAM);
+	if(settings.contains(this->metaObject()->className()+QString("/splitter-state")))
+		splitter->restoreState(settings.value(this->metaObject()->className()+QString("/splitter-state")).toByteArray());
 
 	QSize tmp1=teachersComboBox->minimumSizeHint();
 	Q_UNUSED(tmp1);
@@ -78,61 +83,61 @@ SubactivitiesForm::SubactivitiesForm(const QString& teacherName, const QString& 
 	QSize tmp4=activityTagsComboBox->minimumSizeHint();
 	Q_UNUSED(tmp4);
 
-	teachersComboBox->insertItem("");
+	teachersComboBox->addItem("");
 	int cit=0;
 	for(int i=0; i<gt.rules.teachersList.size(); i++){
 		Teacher* tch=gt.rules.teachersList[i];
-		teachersComboBox->insertItem(tch->name);
+		teachersComboBox->addItem(tch->name);
 		if(tch->name==teacherName)
 			cit=i+1;
 	}
-	teachersComboBox->setCurrentItem(cit);
+	teachersComboBox->setCurrentIndex(cit);
 
-	subjectsComboBox->insertItem("");
+	subjectsComboBox->addItem("");
 	int cisu=0;
 	for(int i=0; i<gt.rules.subjectsList.size(); i++){
 		Subject* sb=gt.rules.subjectsList[i];
-		subjectsComboBox->insertItem(sb->name);
+		subjectsComboBox->addItem(sb->name);
 		if(sb->name==subjectName)
 			cisu=i+1;
 	}
-	subjectsComboBox->setCurrentItem(cisu);
+	subjectsComboBox->setCurrentIndex(cisu);
 
-	activityTagsComboBox->insertItem("");
+	activityTagsComboBox->addItem("");
 	int ciat=0;
 	for(int i=0; i<gt.rules.activityTagsList.size(); i++){
 		ActivityTag* st=gt.rules.activityTagsList[i];
-		activityTagsComboBox->insertItem(st->name);
+		activityTagsComboBox->addItem(st->name);
 		if(st->name==activityTagName)
 			ciat=i+1;
 	}
-	activityTagsComboBox->setCurrentItem(ciat);
+	activityTagsComboBox->setCurrentIndex(ciat);
 
-	studentsComboBox->insertItem("");
+	studentsComboBox->addItem("");
 	int cist=0;
 	int currentID=0;
 	for(int i=0; i<gt.rules.yearsList.size(); i++){
 		StudentsYear* sty=gt.rules.yearsList[i];
-		studentsComboBox->insertItem(sty->name);
+		studentsComboBox->addItem(sty->name);
 		currentID++;
 		if(sty->name==studentsSetName)
 			cist=currentID;
 		for(int j=0; j<sty->groupsList.size(); j++){
 			StudentsGroup* stg=sty->groupsList[j];
-			studentsComboBox->insertItem(stg->name);
+			studentsComboBox->addItem(stg->name);
 			currentID++;
 			if(stg->name==studentsSetName)
 				cist=currentID;
 			for(int k=0; k<stg->subgroupsList.size(); k++){
 				StudentsSubgroup* sts=stg->subgroupsList[k];
-				studentsComboBox->insertItem(sts->name);
+				studentsComboBox->addItem(sts->name);
 				currentID++;
 				if(sts->name==studentsSetName)
 					cist=currentID;
 			}
 		}
 	}
-	studentsComboBox->setCurrentItem(cist);
+	studentsComboBox->setCurrentIndex(cist);
 	
 	if(studentsSetName!=""){
 		this->studentsFilterChanged();
@@ -147,6 +152,10 @@ SubactivitiesForm::SubactivitiesForm(const QString& teacherName, const QString& 
 
 SubactivitiesForm::~SubactivitiesForm()
 {
+	saveFETDialogGeometry(this);
+	//save splitter state
+	QSettings settings(COMPANY, PROGRAM);
+	settings.setValue(this->metaObject()->className()+QString("/splitter-state"), splitter->saveState());
 }
 
 bool SubactivitiesForm::filterOk(Activity* act)
@@ -299,10 +308,10 @@ void SubactivitiesForm::filterChanged()
 	totalTextLabel->setText(tr("Dur: %1 / %2", "Dur means duration, %1 is the duration of active activities, %2 is the duration of total activities."
 		"Please leave space between fields, so that they are better visible").arg(nh-ninacth).arg(nh));
 	
-	subactivitiesListWidget->setCurrentRow(0);
-	
-	if(subactivitiesListWidget->count()<=0)
-		subactivityTextEdit->setText("");
+	if(subactivitiesListWidget->count()>0)
+		subactivitiesListWidget->setCurrentRow(0);
+	else
+		subactivityTextEdit->setPlainText(QString(""));
 }
 
 void SubactivitiesForm::modifySubactivity()
@@ -321,8 +330,9 @@ void SubactivitiesForm::modifySubactivity()
 	Activity* act=visibleSubactivitiesList[ind];
 	assert(act!=NULL);
 	
-	ModifySubactivityForm modifySubactivityForm(act->id, act->activityGroupId);
+	ModifySubactivityForm modifySubactivityForm(this, act->id, act->activityGroupId);
 	int t;
+	setParentAndOtherThings(&modifySubactivityForm, this);
 	t=modifySubactivityForm.exec();
 
 	if(t==QDialog::Accepted){
@@ -348,11 +358,11 @@ void SubactivitiesForm::subactivityChanged()
 	int index=subactivitiesListWidget->currentRow();
 
 	if(index<0){
-		subactivityTextEdit->setText(tr("Invalid activity"));
+		subactivityTextEdit->setPlainText(QString(""));
 		return;
 	}
 	if(index>=visibleSubactivitiesList.count()){
-		subactivityTextEdit->setText(tr("Invalid activity"));
+		subactivityTextEdit->setPlainText(QString("Invalid subactivity"));
 		return;
 	}
 
@@ -361,7 +371,7 @@ void SubactivitiesForm::subactivityChanged()
 
 	assert(act!=NULL);
 	s=act->getDetailedDescriptionWithConstraints(gt.rules);
-	subactivityTextEdit->setText(s);
+	subactivityTextEdit->setPlainText(s);
 }
 
 void SubactivitiesForm::help()
@@ -404,4 +414,65 @@ void SubactivitiesForm::help()
 		" is a year or a group) and also higher ranked year or group (if the current set is a group or a subgroup).");
 	
 	LongTextMessageBox::largeInformation(this, tr("FET Help"), s);
+}
+
+void SubactivitiesForm::subactivityComments()
+{
+	int ind=subactivitiesListWidget->currentRow();
+	if(ind<0){
+		QMessageBox::information(this, tr("FET information"), tr("Invalid selected subactivity"));
+		return;
+	}
+	
+	assert(ind<visibleSubactivitiesList.count());
+
+	Activity* act=visibleSubactivitiesList[ind];
+	assert(act!=NULL);
+
+	QDialog getCommentsDialog(this);
+	
+	getCommentsDialog.setWindowTitle(tr("Subactivity comments"));
+	
+	QPushButton* okPB=new QPushButton(tr("OK"));
+	okPB->setDefault(true);
+	QPushButton* cancelPB=new QPushButton(tr("Cancel"));
+	
+	connect(okPB, SIGNAL(clicked()), &getCommentsDialog, SLOT(accept()));
+	connect(cancelPB, SIGNAL(clicked()), &getCommentsDialog, SLOT(reject()));
+
+	QHBoxLayout* hl=new QHBoxLayout();
+	hl->addStretch();
+	hl->addWidget(okPB);
+	hl->addWidget(cancelPB);
+	
+	QVBoxLayout* vl=new QVBoxLayout();
+	
+	QPlainTextEdit* commentsPT=new QPlainTextEdit();
+	commentsPT->setPlainText(act->comments);
+	commentsPT->selectAll();
+	commentsPT->setFocus();
+	
+	vl->addWidget(commentsPT);
+	vl->addLayout(hl);
+	
+	getCommentsDialog.setLayout(vl);
+	
+	const QString settingsName=QString("SubactivityCommentsDialog");
+	
+	getCommentsDialog.resize(500, 320);
+	centerWidgetOnScreen(&getCommentsDialog);
+	restoreFETDialogGeometry(&getCommentsDialog, settingsName);
+	
+	int t=getCommentsDialog.exec();
+	saveFETDialogGeometry(&getCommentsDialog, settingsName);
+	
+	if(t==QDialog::Accepted){
+		act->comments=commentsPT->toPlainText();
+	
+		gt.rules.internalStructureComputed=false;
+		setRulesModifiedAndOtherThings(&gt.rules);
+
+		subactivitiesListWidget->currentItem()->setText(act->getDescription(gt.rules));
+		subactivityChanged();
+	}
 }

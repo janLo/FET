@@ -1,5 +1,3 @@
-Translators:
-
 ar - Arabic translation
 	Silver (to contact Silver visit FET forum - http://lalescu.ro/liviu/fet/forum/,
 	section about Arabic translation, or contact forum user Silver)
@@ -12,7 +10,7 @@ da - Danish translation
 	David Lamhauge (davidlamhauge AT gmail.com)
 
 de - German translation
-	Volker Dirr (to contact Volker Dirr visit http://www.timetabling.de/)
+	Volker Dirr (http://www.timetabling.de/)
 
 el - Greek translation
 	initial translator: Dimitrios Ropokis (wamy80s AT gmail.com)
@@ -29,7 +27,14 @@ fa - Persian translation
 
 fr - French translation
 	initial translator: Jerome Durand (fetfr AT free.fr)
-	current translator: Patrick Fox (patrick.fox AT laposte.net)
+	initial translator: Patrick Fox (patrick.fox AT laposte.net)
+	current translator: Régis Bouguin (regis.bouguin AT laposte.net)
+
+gl - Galician translation
+	Juan Marcos Filgueira Gomis (to contact marcos.filgueira, visit FET forum - http://lalescu.ro/liviu/fet/forum/,
+	section about Galician translation, or contact forum user marcos.filgueira)
+	this translation was based on the Spanish translation by José César Fernández López
+	as of April 2011 (see es - Spanish translation for more information)
 
 he - Hebrew translation
 	Yotam Medini (yotam.medini AT gmail.com)
@@ -63,7 +68,7 @@ pt_BR - Brazilian Portuguese translation
 	Frank Mártin (drfarofa AT gmail.com)
 
 ro - Romanian translation
-	Liviu Lalescu (to contact Liviu Lalescu, visit http://lalescu.ro/liviu/)
+	Liviu Lalescu (http://lalescu.ro/liviu/)
 
 ru - Russian translation
 	Ilya V. Paramonov (ivparamonov AT gmail.com)
@@ -75,9 +80,21 @@ sk - Slovak translation
 	Ondrej Gregor (to contact Ondrej visit FET forum - http://lalescu.ro/liviu/fet/forum/,
 	section about Slovak translation, or contact forum user Ondrej)
 
+sr - Serbian translation
+	Ivan Starchevicy (ivanstar61 AT gmail.com)
+	Radan Putnik (srastral AT gmail.com)
+
 tr - Turkish translation
 	initial translator: Mehmet Gezmisoglu (m_gezmisoglu AT hotmail.com)
 	current translator: Mahir Nacar (mahirnacar AT email.com)
 
 uk - Ukrainian translation
 	Andriy Melnyk (melnyk.andriy AT gmail.com)
+
+uz - Uzbek translation
+	Orzubek Eraliyev (o.eraliyev AT gmail.com, or visit FET forum - http://lalescu.ro/liviu/fet/forum/,
+	section about Uzbek translation, or contact forum user sarkor)
+
+vi - Vietnamese translation
+	Nguyen Truong Thang (to contact Thang visit FET forum - http://lalescu.ro/liviu/fet/forum/,
+	section about Vietnamese translation, or contact forum user NTThang)

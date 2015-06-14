@@ -1,8 +1,7 @@
 FET - How to add new translations (languages):
 
-VERY IMPORTANT: Please e-mail the author, mailing list or write on the forum
-if you want to translate FET into your language. Another person might work on
-the same translation as you and time might be wasted.
+VERY IMPORTANT: Please announce your intention if you want to translate FET into your language.
+Another person might work on the same translation as you and time might be wasted.
 
 VERY IMPORTANT: Please follow the English words and do not translate incompletely
 a field. Either translate it or not, but not partially.
@@ -29,10 +28,10 @@ Open the file "fet-v.v.v/translations/fet_**.ts" (for example, fet_it.ts)
 with the Qt Linguist and edit it, then save it.
 
 You do not have to translate all the fields. Just leave the corresponding fields marked as unfinished (untranslated).
-Especially, there are 8 weird looking large fields (5 in HelpAboutForm_template, 1 in HelpFaqForm_template,
-1 in HelpInstructionsForm_template and 1 in HelpTipsForm_template). These fields begin with
-something like: "<!DOCTYPE HTML...". You are advised not to translate these 8 fields. They are big,
-difficult to translate and will suffer ulterior modifications.
+Especially, there are 5 weird looking large fields in HelpAboutForm_template. These fields begin with
+something like: "<!DOCTYPE HTML...". You are advised not to translate these 5 fields (but leave their translation
+empty and leave them marked as unfinished, because otherwise the corresponding text might appear incomplete when
+using FET in your language). They are big, difficult to translate and will suffer ulterior modifications.
 
 There are some comments in the translation file, they are not to be translated, they just help you.
 You can see that for instance in the "FET xml files" field.
@@ -41,10 +40,10 @@ Please translate the FetMainForm_template section firstly. This is the main form
 Please double check the translation of the main menu practically from FET (see below how to check your translation
 in FET, by renaming it as an already existing translation). The main form is very important and there should be
 no mistakes here, especially in the constraints description.
-Send the file with complete FetMainForm_template section translated to the author. It may take a long time for
-you to translate all the fields in FET, but if you translate only the main form it takes usually a short time
-and your partial translation will be added to official FET, helping other users until the complete translation
-will be ready.
+Send the file with the completely translated FetMainForm_template section to the FET authors. It may take a
+long time for you to translate all the fields in FET, but if you translate only the main form it takes usually
+a short time and your partial translation will be added to official FET, helping other users until the complete
+translation will be ready.
 
 STEP 3.
 
@@ -53,7 +52,7 @@ From Qt Linguist, release the translation as "fet-v.v.v/translations/fet_**.qm"
 
 STEP 4.
 
-Send all the three modified files to the author (the important file is fet_**.ts, the others you may omit).
+Send all the three modified files to the FET authors (the important file is fet_**.ts, you may omit the others).
 
 
 Of course, anyone can redo/improve current translations. The best variants will be chosen.
@@ -63,12 +62,16 @@ Some other details follow:
 
 First of all, you need a version of Qt Linguist.
 
+Qt homepage: http://qt-project.org/
+
 For GNU/Linux it is available if you type "linguist" (this is part of Qt,
 probably in package libqt4-devel - probably you can install from your package manager,
-or you need to get Qt from http://qt.nokia.com ).
+or from the Qt homepage).
 Note for Ubuntu GNU/Linux: a translator reported that Qt Linguist may be found in
 the package qt4-dev-tools .
-For Windows, you will have to download the latest Qt from http://qt.nokia.com .
+For Windows, you will have to download the latest Qt from the Qt homepage.
+For Mac OS X, maybe you have Qt linguist precompiled available for download from your package manager,
+or you can download the latest Qt from the Qt homepage.
 
 fet_**.ts: You will have to open this file using Qt
 Linguist. The most useful keys are: Ctrl+Enter (activates current translation
@@ -118,14 +121,12 @@ If you don't do that, you will get an exclamation mark for this translation.
 Please translate a field preferably word-by-word as in English, and if you
 translate a field, translate it completely.
 
-You will have to save the file (in Qt Linguist) after you have done the
-modifications (I usually save it every 10 minutes).
+It would be a good idea to send the fet_**.ts file after only a few
+modifications, so that the FET authors can check it if it works, so your work
+is not wasted. If that goes well, you can continue working on it.
 
-It would be a good idea to send me the fet_**.ts file after only a few
-modifications, so I can check it if it works, so your work is not wasted. If
-that goes well, I will tell you so that you can continue working on it.
-
-Please tell me if you do not want me to put your e-mail address in the TRANSLATORS field.
+If you do not want your email address to be listed in the TRANSLATORS section, please specify that,
+and maybe provide another method of contacting you.
 
 In order to test your translation you need to release it as fet_**.qm
 and put it into the directory "translations/". Then, rename the file as

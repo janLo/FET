@@ -26,14 +26,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include "activity.h"
 #include "rules.h"
 
-#include <QMessageBox>
-
-#include <iostream>
-
-using namespace std;
-
 Activity::Activity()
 {
+	comments=QString("");
 }
 
 Activity::Activity(
@@ -50,6 +45,8 @@ Activity::Activity(
 	bool _computeNTotalStudents,
 	int _nTotalStudents)
 {
+	comments=QString("");
+
 	this->id=_id;
 	this->activityGroupId=_activityGroupId;
 	this->teachersNames = _teachersNames;
@@ -58,7 +55,6 @@ Activity::Activity(
 	this->studentsNames = _studentsNames;
 	this->duration=_duration;
 	this->totalDuration=_totalDuration;
-	//this->parity=_parity;
 	this->active=_active;
 	this->computeNTotalStudents=_computeNTotalStudents;
 	
@@ -93,6 +89,8 @@ Activity::Activity(
 	Q_UNUSED(r);
 	Q_UNUSED(_nTotalStudents);
 
+	comments=QString("");
+
 	this->id=_id;
 	this->activityGroupId=_activityGroupId;
 	this->teachersNames = _teachersNames;
@@ -101,7 +99,6 @@ Activity::Activity(
 	this->studentsNames = _studentsNames;
 	this->duration=_duration;
 	this->totalDuration=_totalDuration;
-	//this->parity=_parity;
 	this->active=_active;
 	this->computeNTotalStudents=_computeNTotalStudents;
 	
@@ -128,7 +125,7 @@ bool Activity::operator==(Activity& a)
 
 bool Activity::searchTeacher(const QString& teacherName)
 {
-	return this->teachersNames.find(teacherName)!=this->teachersNames.end();
+	return this->teachersNames.indexOf(teacherName)!=-1;
 }
 
 bool Activity::removeTeacher(const QString& teacherName)
@@ -151,7 +148,7 @@ void Activity::renameTeacher(const QString& initialTeacherName, const QString& f
 
 bool Activity::searchStudents(const QString& studentsName)
 {
-	return this->studentsNames.find(studentsName)!=this->studentsNames.end();
+	return this->studentsNames.indexOf(studentsName)!=-1;
 }
 
 bool Activity::removeStudents(Rules& r, const QString& studentsName, int nStudents)
@@ -341,36 +338,34 @@ QString Activity::getXmlDescription(Rules& r)
 	Q_UNUSED(r);
 
 	QString s="<Activity>\n";
+
 	for(QStringList::Iterator it=this->teachersNames.begin(); it!=this->teachersNames.end(); it++)
 		s+="	<Teacher>" + protect(*it) + "</Teacher>\n";
-	s+="	<Subject>"+protect(this->subjectName)+"</Subject>\n";
+
+	s+="	<Subject>" + protect(this->subjectName) + "</Subject>\n";
 
 	foreach(QString tag, this->activityTagsNames)
-		s+="	<Activity_Tag>"+protect(tag)+"</Activity_Tag>\n";
+		s+="	<Activity_Tag>" + protect(tag) + "</Activity_Tag>\n";
 
-	s+="	<Duration>"+QString::number(this->duration)+"</Duration>\n";
-	s+="	<Total_Duration>"+QString::number(this->totalDuration)+"</Total_Duration>\n";
-	s+="	<Id>"+QString::number(this->id)+"</Id>\n";
-	s+="	<Activity_Group_Id>"+QString::number(this->activityGroupId)+"</Activity_Group_Id>\n";
-	/*if(this->parity==PARITY_WEEKLY)
-		s+="	<Weekly></Weekly>\n";
-	else{
-		assert(this->parity==PARITY_FORTNIGHTLY);
-		s+="	<Fortnightly></Fortnightly>\n";
-	}*/
-	if(this->active==true){
-		//s+="	<Active>yes</Active>\n";
-		s+="	<Active>true</Active>\n";
-	}
-	else{
-		//s+="	<Active>no</Active>\n";
-		s+="	<Active>false</Active>\n";
-	}
 	for(QStringList::Iterator it=this->studentsNames.begin(); it!=this->studentsNames.end(); it++)
 		s+="	<Students>" + protect(*it) + "</Students>\n";
 
+	s+="	<Duration>"+CustomFETString::number(this->duration)+"</Duration>\n";
+	s+="	<Total_Duration>"+CustomFETString::number(this->totalDuration)+"</Total_Duration>\n";
+	s+="	<Id>"+CustomFETString::number(this->id)+"</Id>\n";
+	s+="	<Activity_Group_Id>"+CustomFETString::number(this->activityGroupId)+"</Activity_Group_Id>\n";
+
 	if(this->computeNTotalStudents==false)
-		s+="	<Number_Of_Students>"+QString::number(this->nTotalStudents)+"</Number_Of_Students>\n";
+		s+="	<Number_Of_Students>"+CustomFETString::number(this->nTotalStudents)+"</Number_Of_Students>\n";
+
+	s+="	<Active>";
+	if(this->active==true)
+		s+="true";
+	else
+		s+="false";
+	s+="</Active>\n";
+
+	s+="	<Comments>"+protect(comments)+"</Comments>\n";
 
 	s+="</Activity>";
 
@@ -394,8 +389,6 @@ QString Activity::getDescription(Rules& r)
 		indentRepr=true;
 	else
 		indentRepr=false;
-
-
 		
 	QString _teachers="";
 	if(teachersNames.count()==0)
@@ -414,17 +407,17 @@ QString Activity::getDescription(Rules& r)
 		_students=this->studentsNames.join(",");
 
 	QString _id;
-	_id = QString::number(id);
+	_id = CustomFETString::number(id);
 
 	QString _agid="";
 	if(this->isSplit())
-		_agid = QString::number(this->activityGroupId);
+		_agid = CustomFETString::number(this->activityGroupId);
 
-	QString _duration=QString::number(this->duration);
+	QString _duration=CustomFETString::number(this->duration);
 	
 	QString _totalDuration="";
 	if(this->isSplit())
-		_totalDuration = QString::number(this->totalDuration);
+		_totalDuration = CustomFETString::number(this->totalDuration);
 
 	QString _active;
 	if(this->active==true)
@@ -434,7 +427,7 @@ QString Activity::getDescription(Rules& r)
 
 	QString _nstudents="";
 	if(this->computeNTotalStudents==false)
-		_nstudents=QString::number(this->nTotalStudents);
+		_nstudents=CustomFETString::number(this->nTotalStudents);
 
 	/////////
 	QString s="";
@@ -473,12 +466,11 @@ QString Activity::getDescription(Rules& r)
 		s+=" - ";
 		s+=_nstudents;
 	}
-
-
-
-	//if there is left alignment, I do a double padding with spaces in RTL languages, just to make sure
-	if(_indent && LANGUAGE_STYLE_RIGHT_TO_LEFT==true) //this is because old Q3ListBox is left aligned even in RTL layout
-		s+=QString(INDENT, ' ');
+	
+	if(!comments.isEmpty()){
+		s+=" - ";
+		s+=comments;
+	}
 
 	return s;
 }
@@ -493,27 +485,18 @@ QString Activity::getDetailedDescription(Rules& r)
 	s+="\n";
 
 	//Id, AGId
-	s += tr("Id=%1").arg(QString::number(id));
+	s += tr("Id=%1").arg(CustomFETString::number(id));
 	s+="\n";
 	if(this->isSplit()){
-		s += tr("Activity group id=%1").arg(QString::number(this->activityGroupId));
+		s += tr("Activity group id=%1").arg(CustomFETString::number(this->activityGroupId));
 		s+="\n";
 	}
 
-	//Active?
-	QString activeYesNo;
-	if(this->active==true)
-		activeYesNo=tr("yes");
-	else
-		activeYesNo=tr("no");
-	s+=tr("Active=%1", "Represents a boolean value, if activity is active or not, %1 is yes or no").arg(activeYesNo);
-	s+="\n";
-
 	//Dur, TD
-	s+=tr("Duration=%1").arg(QString::number(this->duration));
+	s+=tr("Duration=%1").arg(CustomFETString::number(this->duration));
 	s+="\n";
 	if(this->isSplit()){
-		s += tr("Total duration=%1").arg(QString::number(this->totalDuration));
+		s += tr("Total duration=%1").arg(CustomFETString::number(this->totalDuration));
 		s+="\n";
 	}
 	
@@ -558,6 +541,23 @@ QString Activity::getDetailedDescription(Rules& r)
 	else{
 		s+=tr("Total number of students=%1").arg(this->nTotalStudents);
 		s+=" ("+tr("specified", "Specified means that the total number of students was specified separately for the activity")+")";
+		s+="\n";
+	}
+	
+	//Not active?
+	QString activeYesNo;
+	if(this->active==true)
+		activeYesNo=tr("yes");
+	else
+		activeYesNo=tr("no");
+	if(!active){
+		s+=tr("Active=%1", "Represents a boolean value, if activity is active or not, %1 is yes or no").arg(activeYesNo);
+		s+="\n";
+	}
+
+	//Has comments?
+	if(!comments.isEmpty()){
+		s+=tr("Comments=%1").arg(comments);
 		s+="\n";
 	}
 

@@ -21,9 +21,6 @@
 #ifndef ACTIVITYPLANNINGFORM_H
 #define ACTIVITYPLANNINGFORM_H
 
-//#include "timetable.h"		//needed?
-//#include "timetable_defs.h"	//needed?
-
 #include <QResizeEvent>
 
 #include <QObject>
@@ -33,6 +30,7 @@
 #include <QList>
 
 #include <QDialog>
+
 class QTableWidget;
 class QRadioButton;
 class QCheckBox;
@@ -42,22 +40,27 @@ class QComboBox;
 class QGroupBox;
 class QToolButton;
 class QSizePolicy;
+class QSplitter;
 
 class StartActivityPlanning{
 public:
 	StartActivityPlanning();
 	~StartActivityPlanning();
 
-	static void startActivityPlanning();
+	static void startActivityPlanning(QWidget* parent);
 };
 
 class ActivityPlanningForm: public QDialog{
 	Q_OBJECT
 	
-public:							//can i do that private, too?
-	ActivityPlanningForm(QWidget *parent = 0);
+public:
+	ActivityPlanningForm(QWidget *parent);
+	~ActivityPlanningForm();
 
 private:
+	bool buttonsVisible;
+
+	QSplitter* leftSplitter;
 	SparseTableView* activitiesTableView;
 	SparseTableView* teachersTableView;
 	QRadioButton* RBActivity;
@@ -123,8 +126,7 @@ private slots:
 };
 
 
-//now communication box by Liviu Lalescu
-
+//communication box by Liviu Lalescu
 class PlanningCommunicationSpinBox: public QObject{
 	Q_OBJECT
 

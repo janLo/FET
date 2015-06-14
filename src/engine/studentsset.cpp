@@ -14,8 +14,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-//
-//
 
 #include "studentsset.h"
 #include "rules.h"
@@ -40,6 +38,8 @@ StudentsYear::StudentsYear()
 	: StudentsSet()
 {
 	this->type=STUDENTS_YEAR;
+
+	indexInAugmentedYearsList=-1;
 }
 
 StudentsYear::~StudentsYear()
@@ -68,7 +68,7 @@ QString StudentsYear::getXmlDescription()
 	QString s="";
 	s+="<Year>\n";
 	s+="<Name>"+protect(this->name)+"</Name>\n";
-	s+="<Number_of_Students>"+QString::number(this->numberOfStudents)+"</Number_of_Students>\n";
+	s+="<Number_of_Students>"+CustomFETString::number(this->numberOfStudents)+"</Number_of_Students>\n";
 	for(int i=0; i<this->groupsList.size(); i++){
 		StudentsGroup* stg=this->groupsList[i];
 		s+=stg->getXmlDescription();
@@ -136,6 +136,8 @@ StudentsGroup::StudentsGroup()
 	: StudentsSet()
 {
 	this->type=STUDENTS_GROUP;
+
+	indexInInternalGroupsList=-1;
 }
 
 StudentsGroup::~StudentsGroup()
@@ -168,7 +170,7 @@ QString StudentsGroup::getXmlDescription()
 	QString s="";
 	s+="	<Group>\n";
 	s+="	<Name>"+protect(this->name)+"</Name>\n";
-	s+="	<Number_of_Students>"+QString::number(this->numberOfStudents)+"</Number_of_Students>\n";
+	s+="	<Number_of_Students>"+CustomFETString::number(this->numberOfStudents)+"</Number_of_Students>\n";
 	for(int i=0; i<this->subgroupsList.size(); i++){
 		StudentsSubgroup* sts=this->subgroupsList[i];
 		s+=sts->getXmlDescription();
@@ -249,7 +251,7 @@ QString StudentsSubgroup::getXmlDescription()
 	QString s="";
 	s+="		<Subgroup>\n";
 	s+="		<Name>"+protect(this->name)+"</Name>\n";
-	s+="		<Number_of_Students>"+QString::number(this->numberOfStudents)+"</Number_of_Students>\n";
+	s+="		<Number_of_Students>"+CustomFETString::number(this->numberOfStudents)+"</Number_of_Students>\n";
 	s+="		</Subgroup>\n";
 
 	return s;

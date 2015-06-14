@@ -32,6 +32,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 class Activity;
 
+class QWidget;
+
 //a probabilistic function to say if we can skip a constraint based on its percentage weight
 bool skipRandom(double weightPercentage);
 
@@ -39,7 +41,7 @@ bool skipRandom(double weightPercentage);
 bool compareFunctionGenerate(int i, int j);
 
 /**
-This class represents the solving of time
+This class incorporates the routines for time and space allocation of activities
 */
 class Generate: public QObject{
 	Q_OBJECT
@@ -84,6 +86,8 @@ public:
 
 	inline bool subgroupRemoveAnActivityFromAnywhereCertainDayCertainActivityTag(int sbg, int d2, int actTag, int level, int ai, QList<int>& conflActivities, int& nConflActivities, int& removedActivity);
 	
+	inline bool checkActivitiesOccupyMaxDifferentRooms(const QList<int>& globalConflActivities, int rm, int level, int ai, QList<int>& tmp_list);
+
 	//only one out of sbg and tch is >=0, other one is -1
 	inline bool checkBuildingChanges(int sbg, int tch, const QList<int>& globalConflActivities, int rm, int level, const Activity* act, int ai, int d, int h, QList<int>& tmp_list);
 	inline bool chooseRoom(const QList<int>& listOfRooms, const QList<int>& globalConflActivities, int level, const Activity* act, int ai, int d, int h, int& roomSlot, int& selectedSlot, QList<int>& localConflActivities);
@@ -105,7 +109,7 @@ public:
 	
 	bool abortOptimization;
 	
-	bool precompute(QTextStream* maxPlacedActivityStream=NULL);
+	bool precompute(QWidget* parent, QTextStream* maxPlacedActivityStream=NULL);
 	
 	void generate(int maxSeconds, bool& impossible, bool& timeExceeded, bool threaded, QTextStream* maxPlacedActivityStream=NULL);
 	
@@ -119,6 +123,9 @@ signals:
 	void simulationFinished();
 	
 	void impossibleToSolve();
+	
+private:
+	bool isThreaded;
 };
 
 #endif
