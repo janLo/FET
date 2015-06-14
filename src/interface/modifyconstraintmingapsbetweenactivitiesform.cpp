@@ -29,6 +29,20 @@
 
 ModifyConstraintMinGapsBetweenActivitiesForm::ModifyConstraintMinGapsBetweenActivitiesForm(ConstraintMinGapsBetweenActivities* ctr)
 {
+    setupUi(this);
+
+    connect(cancelPushButton, SIGNAL(clicked()), this /*ModifyConstraintMinGapsBetweenActivitiesForm_template*/, SLOT(cancel()));
+    connect(okPushButton, SIGNAL(clicked()), this /*ModifyConstraintMinGapsBetweenActivitiesForm_template*/, SLOT(ok()));
+    connect(activitiesListBox, SIGNAL(selected(QString)), this /*ModifyConstraintMinGapsBetweenActivitiesForm_template*/, SLOT(addActivity()));
+    connect(selectedActivitiesListBox, SIGNAL(selected(QString)), this /*ModifyConstraintMinGapsBetweenActivitiesForm_template*/, SLOT(removeActivity()));
+    connect(teachersComboBox, SIGNAL(activated(QString)), this /*ModifyConstraintMinGapsBetweenActivitiesForm_template*/, SLOT(filterChanged()));
+    connect(studentsComboBox, SIGNAL(activated(QString)), this /*ModifyConstraintMinGapsBetweenActivitiesForm_template*/, SLOT(filterChanged()));
+    connect(subjectsComboBox, SIGNAL(activated(QString)), this /*ModifyConstraintMinGapsBetweenActivitiesForm_template*/, SLOT(filterChanged()));
+    connect(activityTagsComboBox, SIGNAL(activated(QString)), this /*ModifyConstraintMinGapsBetweenActivitiesForm_template*/, SLOT(filterChanged()));
+
+    connect(clearPushButton, SIGNAL(clicked()), this, SLOT(clear()));
+
+
 	//setWindowFlags(Qt::Window);
 	/*setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 	QDesktopWidget* desktop=QApplication::desktop();
@@ -36,6 +50,15 @@ ModifyConstraintMinGapsBetweenActivitiesForm::ModifyConstraintMinGapsBetweenActi
 	int yy=desktop->height()/2 - frameGeometry().height()/2;
 	move(xx, yy);*/
 	centerWidgetOnScreen(this);
+
+	QSize tmp1=teachersComboBox->minimumSizeHint();
+	Q_UNUSED(tmp1);
+	QSize tmp2=studentsComboBox->minimumSizeHint();
+	Q_UNUSED(tmp2);
+	QSize tmp3=subjectsComboBox->minimumSizeHint();
+	Q_UNUSED(tmp3);
+	QSize tmp4=activityTagsComboBox->minimumSizeHint();
+	Q_UNUSED(tmp4);
 	
 	this->_ctr=ctr;
 	//updateActivitiesListBox();
@@ -174,8 +197,8 @@ void ModifyConstraintMinGapsBetweenActivitiesForm::ok()
 	QString tmp=weightLineEdit->text();
 	sscanf(tmp, "%lf", &weight);
 	if(weight<0.0 || weight>100.0){
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Invalid weight (percentage)"));
+		QMessageBox::warning(this, tr("FET information"),
+			tr("Invalid weight (percentage)"));
 		return;
 	}
 
@@ -184,18 +207,18 @@ void ModifyConstraintMinGapsBetweenActivitiesForm::ok()
 		compulsory=true;*/
 
 	if(this->selectedActivitiesList.size()==0){
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Empty list of selected activities"));
+		QMessageBox::warning(this, tr("FET information"),
+			tr("Empty list of selected activities"));
 		return;
 	}
 	if(this->selectedActivitiesList.size()==1){
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Only one selected activity"));
+		QMessageBox::warning(this, tr("FET information"),
+			tr("Only one selected activity"));
 		return;
 	}
-/*	if(this->selectedActivitiesList.size()>MAX_CONSTRAINT_MIN_N_DAYS_BETWEEN_ACTIVITIES){
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Please report error to the author\nMAX_CONSTRAINT_MIN_N_DAYS_BETWEEN_ACTIVITIES must be increased (you have too many activities)"));
+/*	if(this->selectedActivitiesList.size()>MAX_CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES){
+		QMessageBox::warning(this, tr("FET information"),
+			tr("Please report error to the author\nMAX_CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES must be increased (you have too many activities)"));
 		return;
 	}*/
 
@@ -218,8 +241,8 @@ void ModifyConstraintMinGapsBetweenActivitiesForm::ok()
 		bool duplicate=false;
 		
 		foreach(TimeConstraint* tc, gt.rules.timeConstraintsList)
-			if(tc!=this->_ctr && tc->type==CONSTRAINT_MIN_N_DAYS_BETWEEN_ACTIVITIES)
-				if( ( *((ConstraintMinNDaysBetweenActivities*)tc) ) == adc){
+			if(tc!=this->_ctr && tc->type==CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES)
+				if( ( *((ConstraintMinDaysBetweenActivities*)tc) ) == adc){
 					duplicate=true;
 					break;
 				}
@@ -283,3 +306,10 @@ void ModifyConstraintMinGapsBetweenActivitiesForm::removeActivity()
 	selectedActivitiesListBox->removeItem(selectedActivitiesListBox->currentItem());
 	this->selectedActivitiesList.removeAt(tmp);
 }
+
+void ModifyConstraintMinGapsBetweenActivitiesForm::clear()
+{
+	selectedActivitiesListBox->clear();
+	selectedActivitiesList.clear();
+}
+

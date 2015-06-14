@@ -18,6 +18,8 @@
 
 #include "timetable_defs.h"
 
+#include <ctime>
+
 #include <QByteArray>
 #include <QHash>
 
@@ -28,7 +30,7 @@ QString internetVersion;
 /**
 FET version
 */
-const QString FET_VERSION="5.9.1";
+const QString FET_VERSION="5.11.0";
 
 /**
 FET language
@@ -41,12 +43,14 @@ because the functions add a FILE_SEP sign at the end of it
 and then the name of a file. If you make OUTPUT_DIR="",
 there will be problems.
 */
+/*
 #ifdef Q_OS_WIN
 const QString OUTPUT_DIR="results";
 #else
 const QString OUTPUT_DIR=QDir::homePath()+FILE_SEP+"fet-results";
 #endif
-
+*/
+QString OUTPUT_DIR;
 
 bool LANGUAGE_STYLE_RIGHT_TO_LEFT;
 
@@ -59,6 +63,8 @@ int TIMETABLE_HTML_LEVEL;
 
 bool PRINT_NOT_AVAILABLE_TIME_SLOTS;
 
+bool PRINT_ACTIVITIES_WITH_SAME_STARTING_TIME;
+
 bool DIVIDE_HTML_TIMETABLES_WITH_TIME_AXIS_BY_DAYS;
 
 //this hashs are needed to get the IDs for html and css in timetableexport and statistics
@@ -68,6 +74,36 @@ QHash<QString, QString> hashStudentIDs;
 QHash<QString, QString> hashTeacherIDs;
 QHash<QString, QString> hashRoomIDs;
 QHash<QString, QString> hashDayIDs;
+
+
+/**
+A log file explaining how the xml input file was parsed
+*/
+const QString XML_PARSING_LOG_FILENAME="xml_reading_log.txt";
+
+
+
+/**
+The predefined names of the days of the week
+*/
+const QString PREDEFINED_DAYS_OF_THE_WEEK[]={"Monday", "Tuesday", "Wednesday",
+	"Thursday", "Friday", "Saturday", "Sunday", "Monday2",
+	"Tuesday2", "Wednesday2", "Thursday2", "Friday2", "Saturday2", "Sunday2",
+	"Monday3", "Tuesday3", "Wednesday3",
+	"Thursday3", "Friday3", "Saturday3", "Sunday3", "Monday4",
+	"Tuesday4", "Wednesday4", "Thursday4", "Friday4", "Saturday4", "Sunday4"};
+
+/**
+File and directory separator
+*/
+const QString FILE_SEP="/";
+
+
+/**
+The XML tag used for identification of the input file (old)
+*/
+//const QString INPUT_FILE_TAG_3_6_1="FET_VERSION_3_6_1_AND_ABOVE_TIMETABLE_DATA_FILE";
+
 
 
 QString protect(const QString& str) //used for xml
@@ -129,6 +165,7 @@ QString protect3(const QString& str) //used for iCal
 	return p;
 }
 
+/*
 bool isLeapYear(int year)
 {
 	bool leap=false;
@@ -298,6 +335,7 @@ QString iCalFolding(const QString s)
 
 	return t;
 }
+*/
 
 int XX;
 
@@ -310,11 +348,14 @@ void initRandomKnuth()
 	assert(RR==3399);
 				
 	XX=1+((unsigned(time(NULL)))%(MM-1));
+	assert(XX<MM);
 }
 	
 int randomKnuth()
 {
-	assert(XX!=0);
+	//assert(XX!=0);
+	assert(XX>0);
+	assert(XX<MM);
 
 	XX=AA*(XX%QQ)-RR*(XX/QQ);
 	if(XX<0)

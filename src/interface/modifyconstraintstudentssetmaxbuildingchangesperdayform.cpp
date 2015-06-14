@@ -26,6 +26,15 @@
 
 ModifyConstraintStudentsSetMaxBuildingChangesPerDayForm::ModifyConstraintStudentsSetMaxBuildingChangesPerDayForm(ConstraintStudentsSetMaxBuildingChangesPerDay* ctr)
 {
+    setupUi(this);
+
+//    connect(weightLineEdit, SIGNAL(textChanged(QString)), this /*ModifyConstraintStudentsSetMaxBuildingChangesPerDayForm_template*/, SLOT(constraintChanged()));
+    connect(okPushButton, SIGNAL(clicked()), this /*ModifyConstraintStudentsSetMaxBuildingChangesPerDayForm_template*/, SLOT(ok()));
+    connect(cancelPushButton, SIGNAL(clicked()), this /*ModifyConstraintStudentsSetMaxBuildingChangesPerDayForm_template*/, SLOT(cancel()));
+//    connect(studentsComboBox, SIGNAL(activated(QString)), this /*ModifyConstraintStudentsSetMaxBuildingChangesPerDayForm_template*/, SLOT(constraintChanged()));
+//    connect(maxChangesSpinBox, SIGNAL(valueChanged(int)), this /*ModifyConstraintStudentsSetMaxBuildingChangesPerDayForm_template*/, SLOT(constraintChanged()));
+
+
 	//setWindowFlags(Qt::Window);
 	/*setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 	QDesktopWidget* desktop=QApplication::desktop();
@@ -34,6 +43,9 @@ ModifyConstraintStudentsSetMaxBuildingChangesPerDayForm::ModifyConstraintStudent
 	move(xx, yy);*/
 	centerWidgetOnScreen(this);
 		
+	QSize tmp2=studentsComboBox->minimumSizeHint();
+	Q_UNUSED(tmp2);
+
 	this->_ctr=ctr;
 	
 	weightLineEdit->setText(QString::number(ctr->weightPercentage));
@@ -82,7 +94,7 @@ void ModifyConstraintStudentsSetMaxBuildingChangesPerDayForm::updateStudentsComb
 }
 
 void ModifyConstraintStudentsSetMaxBuildingChangesPerDayForm::constraintChanged()
-{
+{/*
 	QString s;
 	s+=tr("Current constraint:");
 	s+="\n";
@@ -101,7 +113,7 @@ void ModifyConstraintStudentsSetMaxBuildingChangesPerDayForm::constraintChanged(
 	s+=tr("Max building changes per day=%1").arg(maxChangesSpinBox->value());
 	s+="\n";
 
-	currentConstraintTextEdit->setText(s);
+	currentConstraintTextEdit->setText(s);*/
 }
 
 void ModifyConstraintStudentsSetMaxBuildingChangesPerDayForm::ok()

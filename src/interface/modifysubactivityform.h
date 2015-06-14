@@ -18,7 +18,7 @@
 #ifndef MODIFYSUBACTIVITYFORM_H
 #define MODIFYSUBACTIVITYFORM_H
 
-#include "modifysubactivityform_template.h"
+#include "ui_modifysubactivityform_template.h"
 
 #include "timetable_defs.h"
 #include "timetable.h"
@@ -37,10 +37,12 @@
 #include <q3listbox.h>
 
 
-class ModifySubactivityForm : public ModifySubactivityForm_template  {
+class ModifySubactivityForm : public QDialog, Ui::ModifySubactivityForm_template  {
 	Q_OBJECT
 
 public:
+	QList<QString> canonicalStudentsSetsNames;
+
 	int _id;
 	int _activityGroupId;
 	Activity* _activity;
@@ -52,31 +54,39 @@ public:
 	ModifySubactivityForm(int id, int activityGroupId);
 	~ModifySubactivityForm();
 
-	void addTeacher();
-	void removeTeacher();
-	void addStudents();
-	void removeStudents();
-	void addActivityTag();
-	void removeActivityTag();
 	void updateStudentsListBox();
 	void updateTeachersListBox();
 	void updateSubjectsComboBox();
 	void updateActivityTagsListBox();
 	
-	void clearTeachers();
-	void clearStudents();
-	void clearActivityTags();
+	/*void durationChanged();
+	void showYearsChanged();
+	void showGroupsChanged();
+	void showSubgroupsChanged();*/
 
+public slots:
+	void ok();
+	void cancel();
+	
 	void subjectChanged(const QString& dummy);
-	void durationChanged();
 	void subactivityChanged();
 	
+	void addTeacher();
+	void removeTeacher();
+
+	void addStudents();
+	void removeStudents();
+
+	void clearTeachers();
+	void clearStudents();
+
+	void addActivityTag();
+	void removeActivityTag();
+	void clearActivityTags();
+
 	void showYearsChanged();
 	void showGroupsChanged();
 	void showSubgroupsChanged();
-
-	void ok();
-	void cancel();
 };
 
 #endif

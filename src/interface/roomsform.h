@@ -13,26 +13,31 @@
 #ifndef ROOMSFORM_H
 #define ROOMSFORM_H
 
-#include "roomsform_template.h"
+#include "room.h"
+
+#include "ui_roomsform_template.h"
 
 /**
 @author Liviu Lalescu
 */
-class RoomsForm : public RoomsForm_template
+class RoomsForm : public QDialog, Ui::RoomsForm_template
 {
+	Q_OBJECT
 public:
 	RoomsList visibleRoomsList;
 
 	RoomsForm();
 	~RoomsForm();
 
+	bool filterOk(Room* rm);
+
+public slots:
 	void addRoom();
 	void removeRoom();
 	void modifyRoom();
 	void sortRooms();
 	void roomChanged(int index);
 	void filterChanged();
-	bool filterOk(Room* rm);
 };
 
 #endif

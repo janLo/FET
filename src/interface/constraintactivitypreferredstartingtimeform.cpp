@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "longtextmessagebox.h"
+
 #include "constraintactivitypreferredstartingtimeform.h"
 #include "addconstraintactivitypreferredstartingtimeform.h"
 #include "modifyconstraintactivitypreferredstartingtimeform.h"
@@ -25,6 +27,20 @@
 
 ConstraintActivityPreferredStartingTimeForm::ConstraintActivityPreferredStartingTimeForm()
 {
+    setupUi(this);
+
+    connect(constraintsListBox, SIGNAL(highlighted(int)), this /*ConstraintActivityPreferredStartingTimeForm_template*/, SLOT(constraintChanged(int)));
+    connect(addConstraintPushButton, SIGNAL(clicked()), this /*ConstraintActivityPreferredStartingTimeForm_template*/, SLOT(addConstraint()));
+    connect(closePushButton, SIGNAL(clicked()), this /*ConstraintActivityPreferredStartingTimeForm_template*/, SLOT(close()));
+    connect(removeConstraintPushButton, SIGNAL(clicked()), this /*ConstraintActivityPreferredStartingTimeForm_template*/, SLOT(removeConstraint()));
+    connect(modifyConstraintPushButton, SIGNAL(clicked()), this /*ConstraintActivityPreferredStartingTimeForm_template*/, SLOT(modifyConstraint()));
+    connect(constraintsListBox, SIGNAL(selected(QString)), this /*ConstraintActivityPreferredStartingTimeForm_template*/, SLOT(modifyConstraint()));
+    connect(teachersComboBox, SIGNAL(activated(QString)), this /*ConstraintActivityPreferredStartingTimeForm_template*/, SLOT(filterChanged()));
+    connect(studentsComboBox, SIGNAL(activated(QString)), this /*ConstraintActivityPreferredStartingTimeForm_template*/, SLOT(filterChanged()));
+    connect(subjectsComboBox, SIGNAL(activated(QString)), this /*ConstraintActivityPreferredStartingTimeForm_template*/, SLOT(filterChanged()));
+    connect(activityTagsComboBox, SIGNAL(activated(QString)), this /*ConstraintActivityPreferredStartingTimeForm_template*/, SLOT(filterChanged()));
+
+
 	//setWindowFlags(Qt::Window);
 	/*setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 	QDesktopWidget* desktop=QApplication::desktop();
@@ -32,6 +48,15 @@ ConstraintActivityPreferredStartingTimeForm::ConstraintActivityPreferredStarting
 	int yy=desktop->height()/2 - frameGeometry().height()/2;
 	move(xx, yy);*/
 	centerWidgetOnScreen(this);
+
+	QSize tmp1=teachersComboBox->minimumSizeHint();
+	Q_UNUSED(tmp1);
+	QSize tmp2=studentsComboBox->minimumSizeHint();
+	Q_UNUSED(tmp2);
+	QSize tmp3=subjectsComboBox->minimumSizeHint();
+	Q_UNUSED(tmp3);
+	QSize tmp4=activityTagsComboBox->minimumSizeHint();
+	Q_UNUSED(tmp4);
 	
 /////////////
 	teachersComboBox->insertItem("");
@@ -173,8 +198,8 @@ void ConstraintActivityPreferredStartingTimeForm::constraintChanged(int index)
 
 void ConstraintActivityPreferredStartingTimeForm::addConstraint()
 {
-	AddConstraintActivityPreferredStartingTimeForm *form=new AddConstraintActivityPreferredStartingTimeForm();
-	form->exec();
+	AddConstraintActivityPreferredStartingTimeForm form;
+	form.exec();
 
 	filterChanged();
 	
@@ -185,13 +210,13 @@ void ConstraintActivityPreferredStartingTimeForm::modifyConstraint()
 {
 	int i=constraintsListBox->currentItem();
 	if(i<0){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected constraint"));
+		QMessageBox::information(this, tr("FET information"), tr("Invalid selected constraint"));
 		return;
 	}
 	TimeConstraint* ctr=this->visibleConstraintsList.at(i);
 
-	ModifyConstraintActivityPreferredStartingTimeForm *form = new ModifyConstraintActivityPreferredStartingTimeForm((ConstraintActivityPreferredStartingTime*)ctr);
-	form->exec();
+	ModifyConstraintActivityPreferredStartingTimeForm form((ConstraintActivityPreferredStartingTime*)ctr);
+	form.exec();
 
 	filterChanged();
 	constraintsListBox->setCurrentItem(i);
@@ -201,17 +226,18 @@ void ConstraintActivityPreferredStartingTimeForm::removeConstraint()
 {
 	int i=constraintsListBox->currentItem();
 	if(i<0){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected constraint"));
+		QMessageBox::information(this, tr("FET information"), tr("Invalid selected constraint"));
 		return;
 	}
 	TimeConstraint* ctr=this->visibleConstraintsList.at(i);
 	QString s;
-	s=QObject::tr("Removing constraint:\n");
+	s=tr("Remove constraint?");
+	s+="\n\n";
 	s+=ctr->getDetailedDescription(gt.rules);
-	s+=QObject::tr("\nAre you sure?");
+	//s+=tr("\nAre you sure?");
 
-	switch( QMessageBox::warning( this, QObject::tr("FET warning"),
-		s, QObject::tr("OK"), QObject::tr("Cancel"), 0, 0, 1 ) ){
+	switch( LongTextMessageBox::confirmation( this, tr("FET confirmation"),
+		s, tr("Yes"), tr("No"), 0, 0, 1 ) ){
 	case 0: // The user clicked the OK again button or pressed Enter
 		gt.rules.removeTimeConstraint(ctr);
 		

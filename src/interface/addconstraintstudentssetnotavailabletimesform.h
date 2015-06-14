@@ -18,7 +18,7 @@
 #ifndef ADDCONSTRAINTSTUDENTSSETNOTAVAILABLETIMESFORM_H
 #define ADDCONSTRAINTSTUDENTSSETNOTAVAILABLETIMESFORM_H
 
-#include "addconstraintstudentssetnotavailabletimesform_template.h"
+#include "ui_addconstraintstudentssetnotavailabletimesform_template.h"
 #include "timetable_defs.h"
 #include "timetable.h"
 #include "fet.h"
@@ -32,7 +32,7 @@
 #include <qlineedit.h>
 #include <q3textedit.h>
 
-class AddConstraintStudentsSetNotAvailableTimesForm : public AddConstraintStudentsSetNotAvailableTimesForm_template  {
+class AddConstraintStudentsSetNotAvailableTimesForm : public QDialog, Ui::AddConstraintStudentsSetNotAvailableTimesForm_template  {
 	Q_OBJECT
 public:
 	AddConstraintStudentsSetNotAvailableTimesForm();
@@ -40,9 +40,15 @@ public:
 
 	void updateStudentsSetComboBox();
 
-	void addCurrentConstraint();
+	void colorItem(QTableWidgetItem* item);
+
 public slots:	
-	void tableClicked(int, int, int, const QPoint&);
+	void addCurrentConstraint();
+
+	void itemClicked(QTableWidgetItem* item);
+	void horizontalHeaderClicked(int col);
+	void verticalHeaderClicked(int row);
+
 	void help();
 
 	void setAllAvailable();

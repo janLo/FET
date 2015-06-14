@@ -28,17 +28,20 @@
 #define for		if(0);else for
 #endif*/
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <math.h>
-#include <time.h>
-#include <stdlib.h>
+//#include <stdio.h>
+//#include <string.h>
+//#include <stdlib.h>
+//#include <ctype.h>
+//#include <math.h>
+//#include <time.h>
+//#include <stdlib.h>
 
-#include <qstring.h>
-#include <qtranslator.h>
-#include <qdir.h>
+#include <QString>
+
+class QWidget;
+
+//#include <qtranslator.h>
+//#include <qdir.h>
 
 /**
 The version number
@@ -51,7 +54,7 @@ The language
 extern QString FET_LANGUAGE;
 
 //English has to be counted also
-extern const int NUMBER_OF_LANGUAGES;
+//extern const int NUMBER_OF_LANGUAGES;
 
 extern bool LANGUAGE_STYLE_RIGHT_TO_LEFT;
 
@@ -65,6 +68,15 @@ extern int TIMETABLE_HTML_LEVEL;
 extern bool PRINT_NOT_AVAILABLE_TIME_SLOTS;
 
 extern bool DIVIDE_HTML_TIMETABLES_WITH_TIME_AXIS_BY_DAYS;
+
+extern bool PRINT_ACTIVITIES_WITH_SAME_STARTING_TIME;
+
+extern bool USE_GUI_COLORS;
+
+extern bool ENABLE_ACTIVITY_TAG_MAX_HOURS_DAILY;
+extern bool ENABLE_STUDENTS_MAX_GAPS_PER_DAY;
+
+extern bool SHOW_WARNING_FOR_NOT_PERFECT_CONSTRAINTS;
 
 /**
 The maximum number of different years of students
@@ -137,12 +149,7 @@ const int MAX_DAYS_PER_WEEK=28;
 /**
 The predefined names of the days of the week
 */
-const QString PREDEFINED_DAYS_OF_THE_WEEK[]={"Monday", "Tuesday", "Wednesday",
-	"Thursday", "Friday", "Saturday", "Sunday", "Monday2",
-	"Tuesday2", "Wednesday2", "Thursday2", "Friday2", "Saturday2", "Sunday2",
-	"Monday3", "Tuesday3", "Wednesday3",
-	"Thursday3", "Friday3", "Saturday3", "Sunday3", "Monday4",
-	"Tuesday4", "Wednesday4", "Thursday4", "Friday4", "Saturday4", "Sunday4"};
+extern const QString PREDEFINED_DAYS_OF_THE_WEEK[];
 
 /**
 The maximum number of working hours in a week.
@@ -201,72 +208,55 @@ const int MAX_N_CONSTRAINT_SUBACTIVITIES_PREFERRED_STARTING_TIMES = MAX_HOURS_PE
 
 /**
 The maximum number of activities that can be put in
-a constraint of type ConstraintActivitiesMinNDaysBetweenActivities
+a constraint of type ConstraintActivitiesMinDaysBetweenActivities
 I guess this variable must disappear and the
 restriction modified to allocate dynamically the
 necessary memory.
 */
-const int MAX_CONSTRAINT_MIN_N_DAYS_BETWEEN_ACTIVITIES = 100;
+const int MAX_CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES = 100;
+
+const int MAX_CONSTRAINT_MAX_DAYS_BETWEEN_ACTIVITIES = 400;
 
 /**
 The maximum number of activities for a single
 constraint of type
 ConstraintActivitiesSameStartingTime
 */
-const int MAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME=100;
+const int MAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME=200;
 
 /**
 The maximum number of activities for a single
 constraint of type
 ConstraintActivitiesSameStartingHour
 */
-const int MAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_HOUR=100;
+const int MAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_HOUR=200;
 
 /**
 The maximum number of activities for a single
 constraint of type
 ConstraintActivitiesSameStartingHour
 */
-const int MAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_DAY=100;
+const int MAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_DAY=200;
 
 /**
 The maximum number of activities for a single
 constraint of type
 ConstraintActivitiesNotOverlapping
 */
-const int MAX_CONSTRAINT_ACTIVITIES_NOT_OVERLAPPING=100;
+const int MAX_CONSTRAINT_ACTIVITIES_NOT_OVERLAPPING=400;
 
 
 /**
 File and directory separator
 */
-const QString FILE_SEP="/";
+extern const QString FILE_SEP;
 
 
 /**
 The XML tag used for identification of the input file (old)
 */
-const QString INPUT_FILE_TAG_3_6_1="FET_VERSION_3_6_1_AND_ABOVE_TIMETABLE_DATA_FILE";
+//extern const QString INPUT_FILE_TAG_3_6_1;
 
-/**
-The XML tag used for identification of the output file
-"Subgroup's Timetable"
-*/
-const QString STUDENTS_TIMETABLE_TAG="Students_Timetable";
-
-/**
-The XML tag used for identification of the output file
-"Teacher's Timetable"
-*/
-const QString TEACHERS_TIMETABLE_TAG="Teachers_Timetable";
-
-const QString ACTIVITIES_TIMETABLE_TAG="Activities_Timetable";
-
-/**
-The XML tag used for identification of the output file
-"Rooms's Timetable"
-*/
-const QString ROOMS_TIMETABLE_TAG="Rooms_Timetable";
 
 /**
 The timetable's rules input file name
@@ -300,223 +290,18 @@ because the functions add a FILE_SEP sign at the end of it
 and then the name of a file. If you make OUTPUT_DIR="",
 there will be problems.
 */
-extern const QString OUTPUT_DIR;
+extern QString OUTPUT_DIR;
 /*#ifdef Q_OS_WIN
 const QString OUTPUT_DIR="results";
 #else
 const QString OUTPUT_DIR=QDir::homeDirPath()+"/fet-results";
 #endif*/
 
-/**
-An output file containing the timetable for each subgroup,
-arranged in xml format
-*/
-const QString SUBGROUPS_TIMETABLE_FILENAME_XML="subgroups_timetable.xml";
-
-/**
-An output file containing the timetable for each teacher,
-arranged in xml format
-*/
-const QString TEACHERS_TIMETABLE_FILENAME_XML="teachers_timetable.xml";
-
-const QString ACTIVITIES_TIMETABLE_FILENAME_XML="activities_timetable.xml";
-
-/**
-An output file containing the timetable for each room,
-arranged in xml format
-*/
-const QString ROOMS_TIMETABLE_FILENAME_XML="rooms_timetable.xml";
-
-/**
-An output file containing the css stylesheet for each html-file
-*/
-const QString STYLESHEET_CSS="stylesheet.css";
-
-/**
-An output file containing the index html file
-*/
-const QString INDEX_HTML="index.html";
-
-/**
-An output file containing the timetable for each subgroup, arranged in html format.
-Days horizontal version.
-*/
-const QString SUBGROUPS_TIMETABLE_DAYS_HORIZONTAL_FILENAME_HTML="subgroups_timetable_days_horizontal.html";
-
-/**
-An output file containing the timetable for each subgroup, arranged in html format.
-Days vertical version.
-*/
-const QString SUBGROUPS_TIMETABLE_DAYS_VERTICAL_FILENAME_HTML="subgroups_timetable_days_vertical.html";
-
-/**
-An output file containing the timetable for each subgroup, arranged in html format.
-Time horizontal version.
-*/
-const QString SUBGROUPS_TIMETABLE_TIME_HORIZONTAL_FILENAME_HTML="subgroups_timetable_time_horizontal.html";
-
-/**
-An output file containing the timetable for each subgroup, arranged in html format.
-Time vertical version.
-*/
-const QString SUBGROUPS_TIMETABLE_TIME_VERTICAL_FILENAME_HTML="subgroups_timetable_time_vertical.html";
-
-/**
-An output file containing the timetable for each group, arranged in html format.
-Days horizontal version.
-*/
-const QString GROUPS_TIMETABLE_DAYS_HORIZONTAL_FILENAME_HTML="groups_timetable_days_horizontal.html";
-
-/**
-An output file containing the timetable for each group, arranged in html format.
-Days vertical version.
-*/
-const QString GROUPS_TIMETABLE_DAYS_VERTICAL_FILENAME_HTML="groups_timetable_days_vertical.html";
-
-/**
-An output file containing the timetable for each group, arranged in html format.
-Time horizontal version.
-*/
-const QString GROUPS_TIMETABLE_TIME_HORIZONTAL_FILENAME_HTML="groups_timetable_time_horizontal.html";
-
-/**
-An output file containing the timetable for each group, arranged in html format.
-Time vertical version.
-*/
-const QString GROUPS_TIMETABLE_TIME_VERTICAL_FILENAME_HTML="groups_timetable_time_vertical.html";
-
-/**
-An output file containing the timetable for each year, arranged in html format.
-Days horizontal version.
-*/
-const QString YEARS_TIMETABLE_DAYS_HORIZONTAL_FILENAME_HTML="years_timetable_days_horizontal.html";
-
-/**
-An output file containing the timetable for each year, arranged in html format.
-Days vertical version.
-*/
-const QString YEARS_TIMETABLE_DAYS_VERTICAL_FILENAME_HTML="years_timetable_days_vertical.html";
-
-/**
-An output file containing the timetable for each year, arranged in html format.
-Time horizontal version.
-*/
-const QString YEARS_TIMETABLE_TIME_HORIZONTAL_FILENAME_HTML="years_timetable_time_horizontal.html";
-
-/**
-An output file containing the timetable for each year, arranged in html format.
-Time vertical version.
-*/
-const QString YEARS_TIMETABLE_TIME_VERTICAL_FILENAME_HTML="years_timetable_time_vertical.html";
-
-/**
-An output file containing the timetable for each teacher, arranged in html format.
-Days horizontal version.
-*/
-const QString TEACHERS_TIMETABLE_DAYS_HORIZONTAL_FILENAME_HTML="teachers_timetable_days_horizontal.html";
-
-/**
-An output file containing the timetable for each teacher, arranged in html format.
-Days vertical version.
-*/
-const QString TEACHERS_TIMETABLE_DAYS_VERTICAL_FILENAME_HTML="teachers_timetable_days_vertical.html";
-
-/**
-An output file containing the timetable for each teacher, arranged in html format.
-Time horizontal version.
-*/
-const QString TEACHERS_TIMETABLE_TIME_HORIZONTAL_FILENAME_HTML="teachers_timetable_time_horizontal.html";
-
-/**
-An output file containing the timetable for each teacher, arranged in html format.
-Time vertical version.
-*/
-const QString TEACHERS_TIMETABLE_TIME_VERTICAL_FILENAME_HTML="teachers_timetable_time_vertical.html";
-
-/**
-An output file containing the timetable for each room, arranged in html format.
-Days horizontal version.
-*/
-const QString ROOMS_TIMETABLE_DAYS_HORIZONTAL_FILENAME_HTML="rooms_timetable_days_horizontal.html";
-
-/**
-An output file containing the timetable for each room, arranged in html format.
-Days vertical version.
-*/
-const QString ROOMS_TIMETABLE_DAYS_VERTICAL_FILENAME_HTML="rooms_timetable_days_vertical.html";
-
-/**
-An output file containing the timetable for each room, arranged in html format.
-Time horizontal version.
-*/
-const QString ROOMS_TIMETABLE_TIME_HORIZONTAL_FILENAME_HTML="rooms_timetable_time_horizontal.html";
-
-/**
-An output file containing the timetable for each room, arranged in html format.
-Time vertical version.
-*/
-const QString ROOMS_TIMETABLE_TIME_VERTICAL_FILENAME_HTML="rooms_timetable_time_vertical.html";
-
-/**
-An output file containing the timetable for each subject, arranged in html format.
-Days horizontal version.
-*/
-const QString SUBJECTS_TIMETABLE_DAYS_HORIZONTAL_FILENAME_HTML="subjects_timetable_days_horizontal.html";
-
-/**
-An output file containing the timetable for each subject, arranged in html format.
-Days vertical version.
-*/
-const QString SUBJECTS_TIMETABLE_DAYS_VERTICAL_FILENAME_HTML="subjects_timetable_days_vertical.html";
-
-/**
-An output file containing the timetable for each subject, arranged in html format.
-Time horizontal version.
-*/
-const QString SUBJECTS_TIMETABLE_TIME_HORIZONTAL_FILENAME_HTML="subjects_timetable_time_horizontal.html";
-
-/**
-An output file containing the timetable for each subject, arranged in html format.
-Time vertical version.
-*/
-const QString SUBJECTS_TIMETABLE_TIME_VERTICAL_FILENAME_HTML="subjects_timetable_time_vertical.html";
-
-/**
-An output file containing the timetable for all activities, arranged in html format.
-Days horizontal version.
-*/
-const QString ALL_ACTIVITIES_TIMETABLE_DAYS_HORIZONTAL_FILENAME_HTML="all_activities_timetable_days_horizontal.html";
-
-/**
-An output file containing the timetable for all activities, arranged in html format.
-Days vertical version.
-*/
-const QString ALL_ACTIVITIES_TIMETABLE_DAYS_VERTICAL_FILENAME_HTML="all_activities_timetable_days_vertical.html";
-
-
-/**
-An output file containing the timetable for all activities, arranged in html format.
-Time horizontal version.
-*/
-const QString ALL_ACTIVITIES_TIMETABLE_TIME_HORIZONTAL_FILENAME_HTML="all_activities_timetable_time_horizontal.html";
-
-/**
-An output file containing the timetable for all activities, arranged in html format.
-Time vertical version.
-*/
-const QString ALL_ACTIVITIES_TIMETABLE_TIME_VERTICAL_FILENAME_HTML="all_activities_timetable_time_vertical.html";
-
-
 
 /**
 A log file explaining how the xml input file was parsed
 */
-const QString XML_PARSING_LOG_FILENAME="xml_reading_log.txt";
-
-/**
-A file containing the time conflicts
-*/
-const QString CONFLICTS_FILENAME="soft_conflicts.txt";
+extern const QString XML_PARSING_LOG_FILENAME;
 
 
 /**
@@ -568,21 +353,9 @@ const qint16 TEACHER_IS_NOT_AVAILABLE =8;
 
 const int TEACHERS_FREE_PERIODS_N_CATEGORIES=9;
 
-/**
-An output file containing the timetable for free periods of teachers, arranged in html format.
-Days horizontal version.
-*/
-const QString TEACHERS_FREE_PERIODS_TIMETABLE_DAYS_HORIZONTAL_FILENAME_HTML="teachers_free_periods_timetable_days_horizontal.html";
-
-/**
-An output file containing the timetable for free periods of teachers, arranged in html format.
-Days vertical version.
-*/
-const QString TEACHERS_FREE_PERIODS_TIMETABLE_DAYS_VERTICAL_FILENAME_HTML="teachers_free_periods_timetable_days_vertical.html";
-
-const QString MULTIPLE_TIMETABLE_DATA_RESULTS_FILE="data_and_timetable.fet";
 
 
+/*
 //functions below are used in iCal exporting functions
 bool isLeapYear(int year);
 
@@ -594,7 +367,7 @@ QString nextDay(const QString day);
 
 bool sumHours(const QString hour1, const QString hour2, QString& result);
 
-QString iCalFolding(const QString s);
+QString iCalFolding(const QString s);*/
 
 extern int checkForUpdates;
 
@@ -602,6 +375,8 @@ extern QString internetVersion;
 
 //class Widget;
 void centerWidgetOnScreen(QWidget* widget);
+//int maxScreenWidth(QWidget* widget);
+int maxRecommendedWidth(QWidget* widget);
 
 
 //for random Knuth - from Knuth TAOCP Vol. 2 Seminumerical Algorithms section 3.6
@@ -612,6 +387,8 @@ const int MM=2147483647;
 const int AA=48271;
 const int QQ=44488;
 const int RR=3399;
+
+
 void initRandomKnuth();
 int randomKnuth();
 	

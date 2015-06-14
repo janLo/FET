@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "longtextmessagebox.h"
+
 #include "constraintmingapsbetweenactivitiesform.h"
 #include "addconstraintmingapsbetweenactivitiesform.h"
 #include "modifyconstraintmingapsbetweenactivitiesform.h"
@@ -25,6 +27,21 @@
 
 ConstraintMinGapsBetweenActivitiesForm::ConstraintMinGapsBetweenActivitiesForm()
 {
+    setupUi(this);
+
+    connect(constraintsListBox, SIGNAL(highlighted(int)), this /*ConstraintMinGapsBetweenActivitiesForm_template*/, SLOT(constraintChanged(int)));
+    connect(addConstraintPushButton, SIGNAL(clicked()), this /*ConstraintMinGapsBetweenActivitiesForm_template*/, SLOT(addConstraint()));
+    connect(closePushButton, SIGNAL(clicked()), this /*ConstraintMinGapsBetweenActivitiesForm_template*/, SLOT(close()));
+    connect(removeConstraintPushButton, SIGNAL(clicked()), this /*ConstraintMinGapsBetweenActivitiesForm_template*/, SLOT(removeConstraint()));
+    connect(modifyConstraintPushButton, SIGNAL(clicked()), this /*ConstraintMinGapsBetweenActivitiesForm_template*/, SLOT(modifyConstraint()));
+    connect(constraintsListBox, SIGNAL(selected(QString)), this /*ConstraintMinGapsBetweenActivitiesForm_template*/, SLOT(modifyConstraint()));
+    connect(teachersComboBox, SIGNAL(activated(QString)), this /*ConstraintMinGapsBetweenActivitiesForm_template*/, SLOT(filterChanged()));
+    connect(studentsComboBox, SIGNAL(activated(QString)), this /*ConstraintMinGapsBetweenActivitiesForm_template*/, SLOT(filterChanged()));
+    connect(subjectsComboBox, SIGNAL(activated(QString)), this /*ConstraintMinGapsBetweenActivitiesForm_template*/, SLOT(filterChanged()));
+    connect(activityTagsComboBox, SIGNAL(activated(QString)), this /*ConstraintMinGapsBetweenActivitiesForm_template*/, SLOT(filterChanged()));
+    connect(helpPushButton, SIGNAL(clicked()), this /*ConstraintMinGapsBetweenActivitiesForm_template*/, SLOT(help()));
+
+
 	//setWindowFlags(Qt::Window);
 	/*setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 	QDesktopWidget* desktop=QApplication::desktop();
@@ -32,6 +49,15 @@ ConstraintMinGapsBetweenActivitiesForm::ConstraintMinGapsBetweenActivitiesForm()
 	int yy=desktop->height()/2 - frameGeometry().height()/2;
 	move(xx, yy);*/
 	centerWidgetOnScreen(this);
+
+	QSize tmp1=teachersComboBox->minimumSizeHint();
+	Q_UNUSED(tmp1);
+	QSize tmp2=studentsComboBox->minimumSizeHint();
+	Q_UNUSED(tmp2);
+	QSize tmp3=subjectsComboBox->minimumSizeHint();
+	Q_UNUSED(tmp3);
+	QSize tmp4=activityTagsComboBox->minimumSizeHint();
+	Q_UNUSED(tmp4);
 	
 /////////////
 	teachersComboBox->insertItem("");
@@ -89,6 +115,9 @@ bool ConstraintMinGapsBetweenActivitiesForm::filterOk(TimeConstraint* ctr)
 	QString sbn=subjectsComboBox->currentText();
 	QString sbtn=activityTagsComboBox->currentText();
 	QString stn=studentsComboBox->currentText();
+	
+	if(tn=="" && sbn=="" && sbtn=="" && stn=="")
+		return true;
 	
 	bool foundTeacher=false, foundStudents=false, foundSubject=false, foundActivityTag=false;
 		
@@ -192,8 +221,8 @@ void ConstraintMinGapsBetweenActivitiesForm::constraintChanged(int index)
 
 void ConstraintMinGapsBetweenActivitiesForm::addConstraint()
 {
-	AddConstraintMinGapsBetweenActivitiesForm *form=new AddConstraintMinGapsBetweenActivitiesForm();
-	form->exec();
+	AddConstraintMinGapsBetweenActivitiesForm form;
+	form.exec();
 
 	filterChanged();
 	
@@ -204,14 +233,13 @@ void ConstraintMinGapsBetweenActivitiesForm::modifyConstraint()
 {
 	int i=constraintsListBox->currentItem();
 	if(i<0){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected constraint"));
+		QMessageBox::information(this, tr("FET information"), tr("Invalid selected constraint"));
 		return;
 	}
 	TimeConstraint* ctr=this->visibleConstraintsList.at(i);
 
-	ModifyConstraintMinGapsBetweenActivitiesForm *form
-	 = new ModifyConstraintMinGapsBetweenActivitiesForm((ConstraintMinGapsBetweenActivities*)ctr);
-	form->exec();
+	ModifyConstraintMinGapsBetweenActivitiesForm form((ConstraintMinGapsBetweenActivities*)ctr);
+	form.exec();
 
 	filterChanged();
 	constraintsListBox->setCurrentItem(i);
@@ -221,17 +249,18 @@ void ConstraintMinGapsBetweenActivitiesForm::removeConstraint()
 {
 	int i=constraintsListBox->currentItem();
 	if(i<0){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected constraint"));
+		QMessageBox::information(this, tr("FET information"), tr("Invalid selected constraint"));
 		return;
 	}
 	TimeConstraint* ctr=this->visibleConstraintsList.at(i);
 	QString s;
-	s=QObject::tr("Removing constraint:\n");
+	s=tr("Remove constraint?");
+	s+="\n\n";
 	s+=ctr->getDetailedDescription(gt.rules);
-	s+=QObject::tr("\nAre you sure?");
+	//s+=tr("\nAre you sure?");
 
-	switch( QMessageBox::warning( this, QObject::tr("FET warning"),
-		s, QObject::tr("OK"), QObject::tr("Cancel"), 0, 0, 1 ) ){
+	switch( LongTextMessageBox::confirmation( this, tr("FET confirmation"),
+		s, tr("Yes"), tr("No"), 0, 0, 1 ) ){
 	case 0: // The user clicked the OK again button or pressed Enter
 		gt.rules.removeTimeConstraint(ctr);
 		filterChanged();
@@ -245,3 +274,11 @@ void ConstraintMinGapsBetweenActivitiesForm::removeConstraint()
 	constraintsListBox->setCurrentItem(i);
 }
 
+void ConstraintMinGapsBetweenActivitiesForm::help()
+{
+	QString s=tr("Please make sure that the selected activities are not forced to be"
+		" consecutive by other constraint min days between activities (with"
+		" consecutive if same day true) or by a constraint 2 activities consecutive");
+		
+	LongTextMessageBox::information(this, tr("FET help"), s);
+}

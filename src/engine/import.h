@@ -4,7 +4,7 @@
    copyright            : (C) by Lalescu Liviu
     email                : Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)
  ***************************************************************************
-                          impot.h  -  description
+                          import.h  -  description
                              -------------------
     begin                : Mar 2008
     copyright            : (C) by Volker Dirr
@@ -48,20 +48,27 @@ static const int FIELD_BUILDING_NAME=10;
 static const int FIELD_ROOM_NAME=11;
 static const int FIELD_ROOM_CAPACITY=12;
 
-static const int FIELD_STUDENTS_SET=13;
-static const int FIELD_TEACHERS_SET=14;
-static const int FIELD_TOTAL_DURATION=15;
-static const int FIELD_SPLIT_DURATION=16;
-static const int FIELD_MIN_N_DAYS=17;
-static const int FIELD_MIN_N_DAYS_WEIGHT=18;
-static const int FIELD_MIN_N_DAYS_CONSECUTIVE=19;
+static const int FIELD_ACTIVITY_TAGS_SET=13;
 
-static const int NUMBER_OF_FIELDS=20;
+static const int FIELD_STUDENTS_SET=14;
+static const int FIELD_TEACHERS_SET=15;
+
+static const int FIELD_TOTAL_DURATION=16;
+static const int FIELD_SPLIT_DURATION=17;
+static const int FIELD_MIN_DAYS=18;
+static const int FIELD_MIN_DAYS_WEIGHT=19;
+static const int FIELD_MIN_DAYS_CONSECUTIVE=20;
+
+
+static const int NUMBER_OF_FIELDS=21;
 
 
 
 class Import: public QDialog{
 	Q_OBJECT
+
+	static int chooseWidth(int w);
+	static int chooseHeight(int h);
 
 public:
 	Import();
@@ -89,11 +96,12 @@ class QRadioButton;
 class QComboBox;
 class QPushButton;
 class QSpinBox;
+class QHBoxLayout;
 
-class chooseFieldsDialog: public QDialog{
+class ChooseFieldsDialog: public QDialog{
         Q_OBJECT
 public:							//can i do that privat too?
-	chooseFieldsDialog(QWidget *parent = 0);
+	ChooseFieldsDialog(QWidget *parent = 0);
 private:
 	QGroupBox* fieldGroupBox[NUMBER_OF_FIELDS];
 	QRadioButton* fieldRadio1[NUMBER_OF_FIELDS];
@@ -104,8 +112,9 @@ private:
 	QLineEdit* fieldLine3Text[NUMBER_OF_FIELDS];
 	QSpinBox* fieldLine3bSpinBox[NUMBER_OF_FIELDS];
 	QPushButton* pb;
-
-
+	QPushButton* cancelpb;
+	QHBoxLayout* buttonsLayout;
+	
 private slots:
 	void chooseFieldsDialogClose();
 	void chooseFieldsDialogUpdateRadio1();
@@ -116,10 +125,10 @@ private slots:
 };
 
 
-class lastWarningsDialog: public QDialog{
+class LastWarningsDialog: public QDialog{
         Q_OBJECT
 public:							//can i do that privat too?
-	lastWarningsDialog(QWidget *parent = 0);
+	LastWarningsDialog(QWidget *parent = 0);
 };
 
 #endif

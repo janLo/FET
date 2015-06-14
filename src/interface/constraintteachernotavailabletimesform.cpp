@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "longtextmessagebox.h"
+
 #include "constraintteachernotavailabletimesform.h"
 #include "addconstraintteachernotavailabletimesform.h"
 #include "modifyconstraintteachernotavailabletimesform.h"
@@ -23,6 +25,16 @@
 
 ConstraintTeacherNotAvailableTimesForm::ConstraintTeacherNotAvailableTimesForm()
 {
+    setupUi(this);
+
+    connect(constraintsListBox, SIGNAL(highlighted(int)), this /*ConstraintTeacherNotAvailableTimesForm_template*/, SLOT(constraintChanged(int)));
+    connect(addConstraintPushButton, SIGNAL(clicked()), this /*ConstraintTeacherNotAvailableTimesForm_template*/, SLOT(addConstraint()));
+    connect(closePushButton, SIGNAL(clicked()), this /*ConstraintTeacherNotAvailableTimesForm_template*/, SLOT(close()));
+    connect(removeConstraintPushButton, SIGNAL(clicked()), this /*ConstraintTeacherNotAvailableTimesForm_template*/, SLOT(removeConstraint()));
+    connect(modifyConstraintPushButton, SIGNAL(clicked()), this /*ConstraintTeacherNotAvailableTimesForm_template*/, SLOT(modifyConstraint()));
+    connect(teachersComboBox, SIGNAL(activated(QString)), this /*ConstraintTeacherNotAvailableTimesForm_template*/, SLOT(filterChanged()));
+    connect(constraintsListBox, SIGNAL(selected(QString)), this /*ConstraintTeacherNotAvailableTimesForm_template*/, SLOT(modifyConstraint()));
+
 	//setWindowFlags(Qt::Window);
 	/*setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 	QDesktopWidget* desktop=QApplication::desktop();
@@ -30,6 +42,9 @@ ConstraintTeacherNotAvailableTimesForm::ConstraintTeacherNotAvailableTimesForm()
 	int yy=desktop->height()/2 - frameGeometry().height()/2;
 	move(xx, yy);*/
 	centerWidgetOnScreen(this);
+
+	QSize tmp1=teachersComboBox->minimumSizeHint();
+	Q_UNUSED(tmp1);
 	
 	teachersComboBox->insertItem("");
 	for(int i=0; i<gt.rules.teachersList.size(); i++){
@@ -79,8 +94,8 @@ void ConstraintTeacherNotAvailableTimesForm::constraintChanged(int index)
 
 void ConstraintTeacherNotAvailableTimesForm::addConstraint()
 {
-	AddConstraintTeacherNotAvailableTimesForm *form=new AddConstraintTeacherNotAvailableTimesForm();
-	form->exec();
+	AddConstraintTeacherNotAvailableTimesForm form;
+	form.exec();
 
 	filterChanged();
 	
@@ -96,9 +111,8 @@ void ConstraintTeacherNotAvailableTimesForm::modifyConstraint()
 	}
 	TimeConstraint* ctr=this->visibleConstraintsList.at(i);
 
-	ModifyConstraintTeacherNotAvailableTimesForm *form
-	 = new ModifyConstraintTeacherNotAvailableTimesForm((ConstraintTeacherNotAvailableTimes*)ctr);
-	form->exec();
+	ModifyConstraintTeacherNotAvailableTimesForm form((ConstraintTeacherNotAvailableTimes*)ctr);
+	form.exec();
 
 	filterChanged();
 	constraintsListBox->setCurrentItem(i);
@@ -113,12 +127,13 @@ void ConstraintTeacherNotAvailableTimesForm::removeConstraint()
 	}
 	TimeConstraint* ctr=this->visibleConstraintsList.at(i);
 	QString s;
-	s=tr("Removing constraint:\n");
+	s=tr("Remove constraint?");
+	s+="\n\n";
 	s+=ctr->getDetailedDescription(gt.rules);
-	s+=tr("\nAre you sure?");
+	//s+=tr("\nAre you sure?");
 
-	switch( QMessageBox::warning( this, tr("FET warning"),
-		s, tr("OK"), tr("Cancel"), 0, 0, 1 ) ){
+	switch( LongTextMessageBox::confirmation( this, tr("FET confirmation"),
+		s, tr("Yes"), tr("No"), 0, 0, 1 ) ){
 	case 0: // The user clicked the OK again button or pressed Enter
 		gt.rules.removeTimeConstraint(ctr);
 		filterChanged();

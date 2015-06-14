@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "longtextmessagebox.h"
+
 #include "constraintteachermaxbuildingchangesperdayform.h"
 #include "addconstraintteachermaxbuildingchangesperdayform.h"
 #include "modifyconstraintteachermaxbuildingchangesperdayform.h"
@@ -23,6 +25,17 @@
 
 ConstraintTeacherMaxBuildingChangesPerDayForm::ConstraintTeacherMaxBuildingChangesPerDayForm()
 {
+    setupUi(this);
+
+    connect(constraintsListBox, SIGNAL(highlighted(int)), this /*ConstraintTeacherMaxBuildingChangesPerDayForm_template*/, SLOT(constraintChanged(int)));
+    connect(addConstraintPushButton, SIGNAL(clicked()), this /*ConstraintTeacherMaxBuildingChangesPerDayForm_template*/, SLOT(addConstraint()));
+    connect(closePushButton, SIGNAL(clicked()), this /*ConstraintTeacherMaxBuildingChangesPerDayForm_template*/, SLOT(close()));
+    connect(removeConstraintPushButton, SIGNAL(clicked()), this /*ConstraintTeacherMaxBuildingChangesPerDayForm_template*/, SLOT(removeConstraint()));
+    connect(modifyConstraintPushButton, SIGNAL(clicked()), this /*ConstraintTeacherMaxBuildingChangesPerDayForm_template*/, SLOT(modifyConstraint()));
+    connect(teachersComboBox, SIGNAL(activated(QString)), this /*ConstraintTeacherMaxBuildingChangesPerDayForm_template*/, SLOT(filterChanged()));
+    connect(constraintsListBox, SIGNAL(selected(QString)), this /*ConstraintTeacherMaxBuildingChangesPerDayForm_template*/, SLOT(modifyConstraint()));
+
+
 	//setWindowFlags(Qt::Window);
 	/*setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 	QDesktopWidget* desktop=QApplication::desktop();
@@ -30,6 +43,9 @@ ConstraintTeacherMaxBuildingChangesPerDayForm::ConstraintTeacherMaxBuildingChang
 	int yy=desktop->height()/2 - frameGeometry().height()/2;
 	move(xx, yy);*/
 	centerWidgetOnScreen(this);
+
+	QSize tmp1=teachersComboBox->minimumSizeHint();
+	Q_UNUSED(tmp1);
 		
 	teachersComboBox->insertItem("");
 	foreach(Teacher* tch, gt.rules.teachersList)
@@ -77,8 +93,8 @@ void ConstraintTeacherMaxBuildingChangesPerDayForm::constraintChanged(int index)
 
 void ConstraintTeacherMaxBuildingChangesPerDayForm::addConstraint()
 {
-	AddConstraintTeacherMaxBuildingChangesPerDayForm *form=new AddConstraintTeacherMaxBuildingChangesPerDayForm();
-	form->exec();
+	AddConstraintTeacherMaxBuildingChangesPerDayForm form;
+	form.exec();
 
 	filterChanged();
 	
@@ -89,14 +105,13 @@ void ConstraintTeacherMaxBuildingChangesPerDayForm::modifyConstraint()
 {
 	int i=constraintsListBox->currentItem();
 	if(i<0){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected constraint"));
+		QMessageBox::information(this, tr("FET information"), tr("Invalid selected constraint"));
 		return;
 	}
 	SpaceConstraint* ctr=this->visibleConstraintsList.at(i);
 
-	ModifyConstraintTeacherMaxBuildingChangesPerDayForm *form
-	 = new ModifyConstraintTeacherMaxBuildingChangesPerDayForm((ConstraintTeacherMaxBuildingChangesPerDay*)ctr);
-	form->exec();
+	ModifyConstraintTeacherMaxBuildingChangesPerDayForm form((ConstraintTeacherMaxBuildingChangesPerDay*)ctr);
+	form.exec();
 
 	filterChanged();
 	constraintsListBox->setCurrentItem(i);
@@ -106,17 +121,18 @@ void ConstraintTeacherMaxBuildingChangesPerDayForm::removeConstraint()
 {
 	int i=constraintsListBox->currentItem();
 	if(i<0){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected constraint"));
+		QMessageBox::information(this, tr("FET information"), tr("Invalid selected constraint"));
 		return;
 	}
 	SpaceConstraint* ctr=this->visibleConstraintsList.at(i);
 	QString s;
-	s=QObject::tr("Removing constraint:\n");
+	s=tr("Remove constraint?");
+	s+="\n\n";
 	s+=ctr->getDetailedDescription(gt.rules);
-	s+=QObject::tr("\nAre you sure?");
+	//s+=tr("\nAre you sure?");
 
-	switch( QMessageBox::warning( this, QObject::tr("FET warning"),
-		s, QObject::tr("OK"), QObject::tr("Cancel"), 0, 0, 1 ) ){
+	switch( LongTextMessageBox::confirmation( this, tr("FET confirmation"),
+		s, tr("Yes"), tr("No"), 0, 0, 1 ) ){
 	case 0: // The user clicked the OK again button or pressed Enter
 		gt.rules.removeSpaceConstraint(ctr);
 		filterChanged();

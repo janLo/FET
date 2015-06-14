@@ -1,8 +1,8 @@
 /***************************************************************************
-                          modifyconstraintminndaysbetweenactivitiesform.h  -  description
+                          modifyconstraintmingapsbetweenactivitiesform.h  -  description
                              -------------------
-    begin                : Feb 11, 2005
-    copyright            : (C) 2005 by Lalescu Liviu
+    begin                : 2008
+    copyright            : (C) 2008 by Lalescu Liviu
     email                : Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)
  ***************************************************************************/
 
@@ -18,7 +18,7 @@
 #ifndef MODIFYCONSTRAINTMINGAPSBETWEENACTIVITIESFORM_H
 #define MODIFYCONSTRAINTMINGAPSBETWEENACTIVITIESFORM_H
 
-#include "modifyconstraintmingapsbetweenactivitiesform_template.h"
+#include "ui_modifyconstraintmingapsbetweenactivitiesform_template.h"
 #include "timetable_defs.h"
 #include "timetable.h"
 #include "fet.h"
@@ -36,22 +36,25 @@
 
 #include <QList>
 
-class ModifyConstraintMinGapsBetweenActivitiesForm : public ModifyConstraintMinGapsBetweenActivitiesForm_template  {
+class ModifyConstraintMinGapsBetweenActivitiesForm : public QDialog, Ui::ModifyConstraintMinGapsBetweenActivitiesForm_template  {
 	Q_OBJECT	
 
 public:
 	ModifyConstraintMinGapsBetweenActivitiesForm(ConstraintMinGapsBetweenActivities* ctr);
 	~ModifyConstraintMinGapsBetweenActivitiesForm();
 
+	bool filterOk(Activity* ac);
+	
+public slots:
 	void filterChanged();
 	
 	void addActivity();
 	void removeActivity();
 
+	void clear();
+
 	void ok();
 	void cancel();
-	
-	bool filterOk(Activity* ac);
 	
 private:
 	ConstraintMinGapsBetweenActivities* _ctr;

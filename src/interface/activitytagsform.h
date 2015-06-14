@@ -13,15 +13,18 @@
 #ifndef ACTIVITYTAGSFORM_H
 #define ACTIVITYTAGSFORM_H
 
-#include "activitytagsform_template.h"
+#include "ui_activitytagsform_template.h"
 
-class ActivityTagsForm : public ActivityTagsForm_template
+class ActivityTagsForm : public QDialog, Ui::ActivityTagsForm_template
 {
+	Q_OBJECT
+	
 public:
 	ActivityTagsForm();
 
 	~ActivityTagsForm();
 
+public slots:
 	void addActivityTag();
 	void removeActivityTag();
 	void renameActivityTag();

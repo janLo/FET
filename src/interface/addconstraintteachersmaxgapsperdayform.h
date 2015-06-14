@@ -18,7 +18,7 @@
 #ifndef ADDCONSTRAINTTEACHERSMAXGAPSPERDAYFORM_H
 #define ADDCONSTRAINTTEACHERSMAXGAPSPERDAYFORM_H
 
-#include "addconstraintteachersmaxgapsperdayform_template.h"
+#include "ui_addconstraintteachersmaxgapsperdayform_template.h"
 #include "timetable_defs.h"
 #include "timetable.h"
 #include "fet.h"
@@ -32,11 +32,13 @@
 #include <qlineedit.h>
 #include <q3textedit.h>
 
-class AddConstraintTeachersMaxGapsPerDayForm : public AddConstraintTeachersMaxGapsPerDayForm_template  {
+class AddConstraintTeachersMaxGapsPerDayForm : public QDialog, Ui::AddConstraintTeachersMaxGapsPerDayForm_template  {
+	Q_OBJECT
 public:
 	AddConstraintTeachersMaxGapsPerDayForm();
 	~AddConstraintTeachersMaxGapsPerDayForm();
 
+public slots:
 	void constraintChanged();
 	void addCurrentConstraint();
 };

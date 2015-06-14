@@ -18,7 +18,7 @@
 #ifndef ADDCONSTRAINTMINGAPSBETWEENACTIVITIESFORM_H
 #define ADDCONSTRAINTMINGAPSBETWEENACTIVITIESFORM_H
 
-#include "addconstraintmingapsbetweenactivitiesform_template.h"
+#include "ui_addconstraintmingapsbetweenactivitiesform_template.h"
 #include "timetable_defs.h"
 #include "timetable.h"
 #include "fet.h"
@@ -36,7 +36,7 @@
 
 #include <QList>
 
-class AddConstraintMinGapsBetweenActivitiesForm : public AddConstraintMinGapsBetweenActivitiesForm_template  {
+class AddConstraintMinGapsBetweenActivitiesForm : public QDialog, Ui::AddConstraintMinGapsBetweenActivitiesForm_template  {
 	Q_OBJECT
 
 public:
@@ -44,13 +44,15 @@ public:
 	~AddConstraintMinGapsBetweenActivitiesForm();
 
 	void updateActivitiesListBox();
-	
+
+	bool filterOk(Activity* a);
+
+public slots:
 	void addActivity();
 	void removeActivity();
 
 	void addConstraint();
 
-	bool filterOk(Activity* a);
 	void filterChanged();	
 	
 	void clear();

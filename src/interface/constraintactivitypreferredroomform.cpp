@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "longtextmessagebox.h"
+
 #include "constraintactivitypreferredroomform.h"
 #include "addconstraintactivitypreferredroomform.h"
 #include "modifyconstraintactivitypreferredroomform.h"
@@ -25,6 +27,21 @@
 
 ConstraintActivityPreferredRoomForm::ConstraintActivityPreferredRoomForm()
 {
+    setupUi(this);
+
+    connect(constraintsListBox, SIGNAL(highlighted(int)), this /*ConstraintActivityPreferredRoomForm_template*/, SLOT(constraintChanged(int)));
+    connect(addConstraintPushButton, SIGNAL(clicked()), this /*ConstraintActivityPreferredRoomForm_template*/, SLOT(addConstraint()));
+    connect(closePushButton, SIGNAL(clicked()), this /*ConstraintActivityPreferredRoomForm_template*/, SLOT(close()));
+    connect(removeConstraintPushButton, SIGNAL(clicked()), this /*ConstraintActivityPreferredRoomForm_template*/, SLOT(removeConstraint()));
+    connect(modifyConstraintPushButton, SIGNAL(clicked()), this /*ConstraintActivityPreferredRoomForm_template*/, SLOT(modifyConstraint()));
+    connect(roomsComboBox, SIGNAL(activated(QString)), this /*ConstraintActivityPreferredRoomForm_template*/, SLOT(filterChanged()));
+    connect(constraintsListBox, SIGNAL(selected(QString)), this /*ConstraintActivityPreferredRoomForm_template*/, SLOT(modifyConstraint()));
+    connect(teachersComboBox, SIGNAL(activated(QString)), this /*ConstraintActivityPreferredRoomForm_template*/, SLOT(filterChanged()));
+    connect(studentsComboBox, SIGNAL(activated(QString)), this /*ConstraintActivityPreferredRoomForm_template*/, SLOT(filterChanged()));
+    connect(subjectsComboBox, SIGNAL(activated(QString)), this /*ConstraintActivityPreferredRoomForm_template*/, SLOT(filterChanged()));
+    connect(activityTagsComboBox, SIGNAL(activated(QString)), this /*ConstraintActivityPreferredRoomForm_template*/, SLOT(filterChanged()));
+
+
 	//setWindowFlags(Qt::Window);
 	/*setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 	QDesktopWidget* desktop=QApplication::desktop();
@@ -33,6 +50,18 @@ ConstraintActivityPreferredRoomForm::ConstraintActivityPreferredRoomForm()
 	move(xx, yy);*/
 	centerWidgetOnScreen(this);
 	
+	QSize tmp1=teachersComboBox->minimumSizeHint();
+	Q_UNUSED(tmp1);
+	QSize tmp2=studentsComboBox->minimumSizeHint();
+	Q_UNUSED(tmp2);
+	QSize tmp3=subjectsComboBox->minimumSizeHint();
+	Q_UNUSED(tmp3);
+	QSize tmp4=activityTagsComboBox->minimumSizeHint();
+	Q_UNUSED(tmp4);
+	
+	QSize tmp5=roomsComboBox->minimumSizeHint();
+	Q_UNUSED(tmp5);
+
 	roomsComboBox->insertItem("");
 	for(int i=0; i<gt.rules.roomsList.size(); i++){
 		Room* rm=gt.rules.roomsList[i];
@@ -179,8 +208,8 @@ void ConstraintActivityPreferredRoomForm::constraintChanged(int index)
 
 void ConstraintActivityPreferredRoomForm::addConstraint()
 {
-	AddConstraintActivityPreferredRoomForm *form=new AddConstraintActivityPreferredRoomForm();
-	form->exec();
+	AddConstraintActivityPreferredRoomForm form;
+	form.exec();
 
 	filterChanged();
 	
@@ -191,13 +220,13 @@ void ConstraintActivityPreferredRoomForm::modifyConstraint()
 {
 	int i=constraintsListBox->currentItem();
 	if(i<0){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected constraint"));
+		QMessageBox::information(this, tr("FET information"), tr("Invalid selected constraint"));
 		return;
 	}
 	SpaceConstraint* ctr=this->visibleConstraintsList.at(i);
 
-	ModifyConstraintActivityPreferredRoomForm *form = new ModifyConstraintActivityPreferredRoomForm((ConstraintActivityPreferredRoom*)ctr);
-	form->exec();
+	ModifyConstraintActivityPreferredRoomForm form((ConstraintActivityPreferredRoom*)ctr);
+	form.exec();
 
 	filterChanged();
 	constraintsListBox->setCurrentItem(i);
@@ -207,17 +236,18 @@ void ConstraintActivityPreferredRoomForm::removeConstraint()
 {
 	int i=constraintsListBox->currentItem();
 	if(i<0){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected constraint"));
+		QMessageBox::information(this, tr("FET information"), tr("Invalid selected constraint"));
 		return;
 	}
 	SpaceConstraint* ctr=this->visibleConstraintsList.at(i);
 	QString s;
-	s=QObject::tr("Removing constraint:\n");
+	s=tr("Remove constraint?");
+	s+="\n\n";
 	s+=ctr->getDetailedDescription(gt.rules);
-	s+=QObject::tr("\nAre you sure?");
+	//s+=tr("\nAre you sure?");
 
-	switch( QMessageBox::warning( this, QObject::tr("FET warning"),
-		s, QObject::tr("OK"), QObject::tr("Cancel"), 0, 0, 1 ) ){
+	switch( LongTextMessageBox::confirmation( this, tr("FET confirmation"),
+		s, tr("Yes"), tr("No"), 0, 0, 1 ) ){
 	case 0: // The user clicked the OK again button or pressed Enter
 		gt.rules.removeSpaceConstraint(ctr);
 		

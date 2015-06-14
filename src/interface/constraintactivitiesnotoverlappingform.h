@@ -18,7 +18,7 @@
 #ifndef CONSTRAINTACTIVITIESNOTOVERLAPPINGFORM_H
 #define CONSTRAINTACTIVITIESNOTOVERLAPPINGFORM_H
 
-#include "constraintactivitiesnotoverlappingform_template.h"
+#include "ui_constraintactivitiesnotoverlappingform_template.h"
 #include "timetable_defs.h"
 #include "timetable.h"
 #include "fet.h"
@@ -34,21 +34,23 @@
 #include <q3textedit.h>
 #include <q3listbox.h>
 
-class ConstraintActivitiesNotOverlappingForm : public ConstraintActivitiesNotOverlappingForm_template  {
+class ConstraintActivitiesNotOverlappingForm : public QDialog, Ui::ConstraintActivitiesNotOverlappingForm_template  {
+	Q_OBJECT
 public:
 	TimeConstraintsList visibleConstraintsList;
 
 	ConstraintActivitiesNotOverlappingForm();
 	~ConstraintActivitiesNotOverlappingForm();
 
+	bool filterOk(TimeConstraint* ctr);
+
+public slots:
 	void constraintChanged(int index);
 	void addConstraint();
 	void modifyConstraint();
 	void removeConstraint();
 
 	void filterChanged();
-
-	bool filterOk(TimeConstraint* ctr);
 };
 
 #endif

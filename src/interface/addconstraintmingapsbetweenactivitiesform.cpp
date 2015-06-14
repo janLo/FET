@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "longtextmessagebox.h"
+
 #include "addconstraintmingapsbetweenactivitiesform.h"
 #include "spaceconstraint.h"
 
@@ -27,6 +29,19 @@
 
 AddConstraintMinGapsBetweenActivitiesForm::AddConstraintMinGapsBetweenActivitiesForm()
 {
+    setupUi(this);
+
+    connect(closePushButton, SIGNAL(clicked()), this, SLOT(close()));
+    connect(addConstraintPushButton, SIGNAL(clicked()), this, SLOT(addConstraint()));
+    connect(activitiesListBox, SIGNAL(selected(QString)), this, SLOT(addActivity()));
+    connect(selectedActivitiesListBox, SIGNAL(selected(QString)), this, SLOT(removeActivity()));
+    connect(teachersComboBox, SIGNAL(activated(QString)), this, SLOT(filterChanged()));
+    connect(studentsComboBox, SIGNAL(activated(QString)), this, SLOT(filterChanged()));
+    connect(subjectsComboBox, SIGNAL(activated(QString)), this, SLOT(filterChanged()));
+    connect(activityTagsComboBox, SIGNAL(activated(QString)), this, SLOT(filterChanged()));
+    connect(pushButton6, SIGNAL(clicked()), this, SLOT(clear()));
+
+
 	//setWindowFlags(Qt::Window);
 	/*setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 	QDesktopWidget* desktop=QApplication::desktop();
@@ -34,7 +49,16 @@ AddConstraintMinGapsBetweenActivitiesForm::AddConstraintMinGapsBetweenActivities
 	int yy=desktop->height()/2 - frameGeometry().height()/2;
 	move(xx, yy);*/
 	centerWidgetOnScreen(this);
-		
+
+	QSize tmp1=teachersComboBox->minimumSizeHint();
+	Q_UNUSED(tmp1);
+	QSize tmp2=studentsComboBox->minimumSizeHint();
+	Q_UNUSED(tmp2);
+	QSize tmp3=subjectsComboBox->minimumSizeHint();
+	Q_UNUSED(tmp3);
+	QSize tmp4=activityTagsComboBox->minimumSizeHint();
+	Q_UNUSED(tmp4);
+	
 	updateActivitiesListBox();
 	
 	minGapsSpinBox->setMinValue(1);
@@ -166,8 +190,8 @@ void AddConstraintMinGapsBetweenActivitiesForm::addConstraint()
 	QString tmp=weightLineEdit->text();
 	sscanf(tmp, "%lf", &weight);
 	if(weight<0.0 || weight>100){
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Invalid weight (percentage)"));
+		QMessageBox::warning(this, tr("FET information"),
+			tr("Invalid weight (percentage)"));
 		return;
 	}
 
@@ -176,18 +200,18 @@ void AddConstraintMinGapsBetweenActivitiesForm::addConstraint()
 		compulsory=true;*/
 
 	if(this->selectedActivitiesList.count()==0){
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Empty list of selected activities"));
+		QMessageBox::warning(this, tr("FET information"),
+			tr("Empty list of selected activities"));
 		return;
 	}
 	if(this->selectedActivitiesList.count()==1){
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Only one selected activity"));
+		QMessageBox::warning(this, tr("FET information"),
+			tr("Only one selected activity"));
 		return;
 	}
-	/*if(this->selectedActivitiesList.size()>MAX_CONSTRAINT_MIN_N_DAYS_BETWEEN_ACTIVITIES){
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Please report error to the author\nMAX_CONSTRAINT_MIN_N_DAYS_BETWEEN_ACTIVITIES must be increased (you have too many activities)"));
+	/*if(this->selectedActivitiesList.size()>MAX_CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES){
+		QMessageBox::warning(this, tr("FET information"),
+			tr("Please report error to the author\nMAX_CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES must be increased (you have too many activities)"));
 		return;
 	}*/
 
@@ -204,20 +228,22 @@ void AddConstraintMinGapsBetweenActivitiesForm::addConstraint()
 	if(tmp2){
 		QString s;
 		
-		s=QObject::tr("Note: please make sure that the selected activities are not forced to be consecutive"
-		 " by other constraint min n days between activities (with consecutive if same day true) or by a constraint"
+		/*s+=tr("Constraint added")+". "+tr("See details below")+"\n\n";
+		
+		s+=tr("Note: please make sure that the selected activities are not forced to be consecutive"
+		 " by other constraint min days between activities (with consecutive if same day true) or by a constraint"
 		 " 2 activities consecutive");
 		 
-		s+="\n\n";
+		s+="\n\n";*/
 		
-		s+=QObject::tr("Constraint added:");
-		s+="\n";
+		s+=tr("Constraint added:");
+		s+="\n\n";
 		s+=ctr->getDetailedDescription(gt.rules);
-		QMessageBox::information(this, QObject::tr("FET information"), s);
+		LongTextMessageBox::information(this, tr("FET information"), s);
 	}
 	else{
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Constraint NOT added - please report error"));
+		QMessageBox::warning(this, tr("FET information"),
+			tr("Constraint NOT added - please report error"));
 		delete ctr;
 	}
 }

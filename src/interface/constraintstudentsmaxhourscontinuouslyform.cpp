@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "longtextmessagebox.h"
+
 #include "constraintstudentsmaxhourscontinuouslyform.h"
 #include "addconstraintstudentsmaxhourscontinuouslyform.h"
 #include "modifyconstraintstudentsmaxhourscontinuouslyform.h"
@@ -23,6 +25,16 @@
 
 ConstraintStudentsMaxHoursContinuouslyForm::ConstraintStudentsMaxHoursContinuouslyForm()
 {
+    setupUi(this);
+
+    connect(constraintsListBox, SIGNAL(highlighted(int)), this /*ConstraintStudentsMaxHoursContinuouslyForm_template*/, SLOT(constraintChanged(int)));
+    connect(addConstraintPushButton, SIGNAL(clicked()), this /*ConstraintStudentsMaxHoursContinuouslyForm_template*/, SLOT(addConstraint()));
+    connect(closePushButton, SIGNAL(clicked()), this /*ConstraintStudentsMaxHoursContinuouslyForm_template*/, SLOT(close()));
+    connect(removeConstraintPushButton, SIGNAL(clicked()), this /*ConstraintStudentsMaxHoursContinuouslyForm_template*/, SLOT(removeConstraint()));
+    connect(modifyConstraintPushButton, SIGNAL(clicked()), this /*ConstraintStudentsMaxHoursContinuouslyForm_template*/, SLOT(modifyConstraint()));
+    connect(constraintsListBox, SIGNAL(selected(QString)), this /*ConstraintStudentsMaxHoursContinuouslyForm_template*/, SLOT(modifyConstraint()));
+
+
 	//setWindowFlags(Qt::Window);
 	/*setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 	QDesktopWidget* desktop=QApplication::desktop();
@@ -71,8 +83,8 @@ void ConstraintStudentsMaxHoursContinuouslyForm::constraintChanged(int index)
 
 void ConstraintStudentsMaxHoursContinuouslyForm::addConstraint()
 {
-	AddConstraintStudentsMaxHoursContinuouslyForm *form=new AddConstraintStudentsMaxHoursContinuouslyForm();
-	form->exec();
+	AddConstraintStudentsMaxHoursContinuouslyForm form;
+	form.exec();
 
 	filterChanged();
 	
@@ -83,14 +95,13 @@ void ConstraintStudentsMaxHoursContinuouslyForm::modifyConstraint()
 {
 	int i=constraintsListBox->currentItem();
 	if(i<0){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected constraint"));
+		QMessageBox::information(this, tr("FET information"), tr("Invalid selected constraint"));
 		return;
 	}
 	TimeConstraint* ctr=this->visibleConstraintsList.at(i);
 
-	ModifyConstraintStudentsMaxHoursContinuouslyForm *form
-	 = new ModifyConstraintStudentsMaxHoursContinuouslyForm((ConstraintStudentsMaxHoursContinuously*)ctr);
-	form->exec();
+	ModifyConstraintStudentsMaxHoursContinuouslyForm form((ConstraintStudentsMaxHoursContinuously*)ctr);
+	form.exec();
 
 	filterChanged();
 	constraintsListBox->setCurrentItem(i);
@@ -100,17 +111,18 @@ void ConstraintStudentsMaxHoursContinuouslyForm::removeConstraint()
 {
 	int i=constraintsListBox->currentItem();
 	if(i<0){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected constraint"));
+		QMessageBox::information(this, tr("FET information"), tr("Invalid selected constraint"));
 		return;
 	}
 	TimeConstraint* ctr=this->visibleConstraintsList.at(i);
 	QString s;
-	s=QObject::tr("Removing constraint:\n");
+	s=tr("Remove constraint?");
+	s+="\n\n";
 	s+=ctr->getDetailedDescription(gt.rules);
-	s+=QObject::tr("\nAre you sure?");
+	//s+=tr("\nAre you sure?");
 
-	switch( QMessageBox::warning( this, QObject::tr("FET warning"),
-		s, QObject::tr("OK"), QObject::tr("Cancel"), 0, 0, 1 ) ){
+	switch( LongTextMessageBox::confirmation( this, tr("FET confirmation"),
+		s, tr("Yes"), tr("No"), 0, 0, 1 ) ){
 	case 0: // The user clicked the OK again button or pressed Enter
 		gt.rules.removeTimeConstraint(ctr);
 		filterChanged();

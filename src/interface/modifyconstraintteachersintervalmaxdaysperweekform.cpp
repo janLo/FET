@@ -26,6 +26,16 @@
 
 ModifyConstraintTeachersIntervalMaxDaysPerWeekForm::ModifyConstraintTeachersIntervalMaxDaysPerWeekForm(ConstraintTeachersIntervalMaxDaysPerWeek* ctr)
 {
+    setupUi(this);
+
+//    connect(weightLineEdit, SIGNAL(textChanged(QString)), this  /*ModifyConstraintTeachersIntervalMaxDaysPerWeekForm_template*/, SLOT(constraintChanged()));
+    connect(okPushButton, SIGNAL(clicked()), this /*ModifyConstraintTeachersIntervalMaxDaysPerWeekForm_template*/, SLOT(ok()));
+    connect(cancelPushButton, SIGNAL(clicked()), this /*ModifyConstraintTeachersIntervalMaxDaysPerWeekForm_template*/, SLOT(cancel()));
+//    connect(maxDaysSpinBox, SIGNAL(valueChanged(int)), this /*ModifyConstraintTeachersIntervalMaxDaysPerWeekForm_template*/, SLOT(constraintChanged()));
+//    connect(startHourComboBox, SIGNAL(activated(QString)), this /*ModifyConstraintTeachersIntervalMaxDaysPerWeekForm_template*/, SLOT(constraintChanged()));
+//    connect(endHourComboBox, SIGNAL(activated(QString)), this /*ModifyConstraintTeachersIntervalMaxDaysPerWeekForm_template*/, SLOT(constraintChanged()));
+
+
 	//setWindowFlags(Qt::Window);
 	/*setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 	QDesktopWidget* desktop=QApplication::desktop();
@@ -33,6 +43,11 @@ ModifyConstraintTeachersIntervalMaxDaysPerWeekForm::ModifyConstraintTeachersInte
 	int yy=desktop->height()/2 - frameGeometry().height()/2;
 	move(xx, yy);*/
 	centerWidgetOnScreen(this);
+
+	QSize tmp5=startHourComboBox->minimumSizeHint();
+	Q_UNUSED(tmp5);
+	QSize tmp6=endHourComboBox->minimumSizeHint();
+	Q_UNUSED(tmp6);
 	
 	this->_ctr=ctr;
 	
@@ -66,7 +81,7 @@ void ModifyConstraintTeachersIntervalMaxDaysPerWeekForm::updateMaxDaysSpinBox(){
 }
 
 void ModifyConstraintTeachersIntervalMaxDaysPerWeekForm::constraintChanged()
-{
+{/*
 	QString s;
 	s+=tr("Current constraint:");
 	s+="\n";
@@ -89,7 +104,7 @@ void ModifyConstraintTeachersIntervalMaxDaysPerWeekForm::constraintChanged()
 	s+=tr("Max days per week=%1").arg(maxDaysSpinBox->value());
 	s+="\n";
 
-	currentConstraintTextEdit->setText(s);
+	currentConstraintTextEdit->setText(s);*/
 }
 
 void ModifyConstraintTeachersIntervalMaxDaysPerWeekForm::ok()

@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "longtextmessagebox.h"
+
 #include "addconstraintteachermaxdaysperweekform.h"
 #include "timeconstraint.h"
 
@@ -24,10 +26,17 @@
 
 #include <QDesktopWidget>
 
-#define yesNo(x)	((x)==0?QObject::tr("no"):QObject::tr("yes"))
-
 AddConstraintTeacherMaxDaysPerWeekForm::AddConstraintTeacherMaxDaysPerWeekForm()
 {
+    setupUi(this);
+
+//    connect(weightLineEdit, SIGNAL(textChanged(QString)), this /*AddConstraintTeacherMaxDaysPerWeekForm_template*/, SLOT(constraintChanged()));
+    connect(addConstraintPushButton, SIGNAL(clicked()), this /*AddConstraintTeacherMaxDaysPerWeekForm_template*/, SLOT(addCurrentConstraint()));
+    connect(closePushButton, SIGNAL(clicked()), this /*AddConstraintTeacherMaxDaysPerWeekForm_template*/, SLOT(close()));
+//    connect(teachersComboBox, SIGNAL(activated(QString)), this /*AddConstraintTeacherMaxDaysPerWeekForm_template*/, SLOT(constraintChanged()));
+//    connect(maxDaysSpinBox, SIGNAL(valueChanged(int)), this /*AddConstraintTeacherMaxDaysPerWeekForm_template*/, SLOT(constraintChanged()));
+
+
 	//setWindowFlags(Qt::Window);
 	/*setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 	QDesktopWidget* desktop=QApplication::desktop();
@@ -35,6 +44,9 @@ AddConstraintTeacherMaxDaysPerWeekForm::AddConstraintTeacherMaxDaysPerWeekForm()
 	int yy=desktop->height()/2 - frameGeometry().height()/2;
 	move(xx, yy);*/
 	centerWidgetOnScreen(this);
+
+	QSize tmp1=teachersComboBox->minimumSizeHint();
+	Q_UNUSED(tmp1);
 	
 	updateMaxDaysSpinBox();
 	updateTeachersComboBox();
@@ -61,32 +73,26 @@ void AddConstraintTeacherMaxDaysPerWeekForm::updateMaxDaysSpinBox(){
 }
 
 void AddConstraintTeacherMaxDaysPerWeekForm::constraintChanged()
-{
+{/*
 	QString s;
-	s+=QObject::tr("Current constraint:");
+	s+=tr("Current constraint:");
 	s+="\n";
 
 	double weight;
 	QString tmp=weightLineEdit->text();
 	sscanf(tmp, "%lf", &weight);
-	s+=QObject::tr("Weight (percentage)=%1").arg(weight);
+	s+=tr("Weight (percentage)=%1").arg(weight);
 	s+="\n";
 
-	/*bool compulsory=false;
-	if(compulsoryCheckBox->isChecked())
-		compulsory=true;
-	s+=QObject::tr("Compulsory=%1").arg(yesNo(compulsory));
-	s+="\n";*/
-
-	s+=QObject::tr("Teacher max days per week");
+	s+=tr("Teacher max days per week");
 	s+="\n";
-	s+=QObject::tr("Teacher=%1").arg(teachersComboBox->currentText());
+	s+=tr("Teacher=%1").arg(teachersComboBox->currentText());
 	s+="\n";
 
-	s+=QObject::tr("Max days per week=%1").arg(maxDaysSpinBox->value());
+	s+=tr("Max days per week=%1").arg(maxDaysSpinBox->value());
 	s+="\n";
 
-	currentConstraintTextEdit->setText(s);
+	currentConstraintTextEdit->setText(s);*/
 }
 
 void AddConstraintTeacherMaxDaysPerWeekForm::addCurrentConstraint()
@@ -97,13 +103,13 @@ void AddConstraintTeacherMaxDaysPerWeekForm::addCurrentConstraint()
 	QString tmp=weightLineEdit->text();
 	sscanf(tmp, "%lf", &weight);
 	if(weight<0.0 || weight>100.0){
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Invalid weight (percentage)"));
+		QMessageBox::warning(this, tr("FET information"),
+			tr("Invalid weight (percentage)"));
 		return;
 	}
 	if(weight!=100.0){
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Invalid weight (percentage) - it has to be 100%"));
+		QMessageBox::warning(this, tr("FET information"),
+			tr("Invalid weight (percentage) - it has to be 100%"));
 		return;
 	}
 
@@ -116,8 +122,8 @@ void AddConstraintTeacherMaxDaysPerWeekForm::addCurrentConstraint()
 	QString teacher_name=teachersComboBox->currentText();
 	int teacher_ID=gt.rules.searchTeacher(teacher_name);
 	if(teacher_ID<0){
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Invalid teacher"));
+		QMessageBox::warning(this, tr("FET information"),
+			tr("Invalid teacher"));
 		return;
 	}
 
@@ -125,11 +131,11 @@ void AddConstraintTeacherMaxDaysPerWeekForm::addCurrentConstraint()
 
 	bool tmp2=gt.rules.addTimeConstraint(ctr);
 	if(tmp2)
-		QMessageBox::information(this, QObject::tr("FET information"),
-			QObject::tr("Constraint added"));
+		LongTextMessageBox::information(this, tr("FET information"),
+			tr("Constraint added:")+"\n\n"+ctr->getDetailedDescription(gt.rules));
 	else{
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Constraint NOT added - please report error"));
+		QMessageBox::warning(this, tr("FET information"),
+			tr("Constraint NOT added - please report error"));
 		delete ctr;
 	}
 }

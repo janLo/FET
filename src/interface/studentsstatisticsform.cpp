@@ -31,8 +31,13 @@
 
 #include <QProgressDialog>
 
+#include "longtextmessagebox.h"
+
 #include <QMessageBox>
 #include <QApplication>
+
+#include <QHeaderView>
+#include <QTableWidget>
 
 extern QApplication* pqapplication;
 
@@ -63,6 +68,9 @@ QSet<QString> relatedYears;
 StudentsStatisticsForm::StudentsStatisticsForm()
 {
 	setupUi(this);
+	
+	tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
+	tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
 
 	//setWindowFlags(Qt::Window);
 	/*setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
@@ -75,6 +83,8 @@ StudentsStatisticsForm::StudentsStatisticsForm()
 	connect(showYearsCheckBox, SIGNAL(toggled(bool)), this, SLOT(checkBoxesModified()));
 	connect(showGroupsCheckBox, SIGNAL(toggled(bool)), this, SLOT(checkBoxesModified()));
 	connect(showSubgroupsCheckBox, SIGNAL(toggled(bool)), this, SLOT(checkBoxesModified()));
+
+	connect(showCompleteStructureCheckBox, SIGNAL(toggled(bool)), this, SLOT(checkBoxesModified()));
 
 	////////////	
 	/*onlyExactHours.clear();
@@ -252,48 +262,101 @@ StudentsStatisticsForm::~StudentsStatisticsForm()
 
 void StudentsStatisticsForm::checkBoxesModified()
 {
+	bool complete=showCompleteStructureCheckBox->isChecked();
+	
+	QSet<QString> studs;
+
+	studs.clear();
 	int nStudentsSets=0;
 	foreach(StudentsYear* year, gt.rules.yearsList){
-		if(showYearsCheckBox->isChecked())
+		bool sy=true;
+		if(!complete){
+			if(studs.contains(year->name))
+				sy=false;
+			else
+				studs.insert(year->name);
+		}
+		if(showYearsCheckBox->isChecked() && sy)
 			nStudentsSets++;
 		foreach(StudentsGroup* group, year->groupsList){
-			if(showGroupsCheckBox->isChecked())
+			bool sg=true;
+			if(!complete){
+				if(studs.contains(group->name))
+					sg=false;
+				else
+					studs.insert(group->name);
+			}
+			if(showGroupsCheckBox->isChecked() && sg)
 				nStudentsSets++;
 			foreach(StudentsSubgroup* subgroup, group->subgroupsList){
-				Q_UNUSED(subgroup);
+				bool ss=true;
+				if(!complete){
+					if(studs.contains(subgroup->name))
+						ss=false;
+					else
+						studs.insert(subgroup->name);
+				}
+				//Q_UNUSED(subgroup);
 				//if(subgroup)
 				//	;
-				if(showSubgroupsCheckBox->isChecked())
+				if(showSubgroupsCheckBox->isChecked() && ss)
 					nStudentsSets++;
 			}
 		}
 	}
 	
+	tableWidget->clear();
 	tableWidget->setColumnCount(3);
 	tableWidget->setRowCount(nStudentsSets);
 	
 	QStringList columns;
 	columns<<tr("Students set");
 	columns<<tr("No. of activities");
-	columns<<tr("No. of hours")+" ("+tr("periods")+")";
+	columns<<tr("Duration");
 	
 	tableWidget->setHorizontalHeaderLabels(columns);
 	
+	studs.clear();
+	
 	int currentStudentsSet=-1;
 	foreach(StudentsYear* year, gt.rules.yearsList){
-		if(showYearsCheckBox->isChecked()){
+		bool sy=true;
+		if(!complete){
+			if(studs.contains(year->name))
+				sy=false;
+			else
+				studs.insert(year->name);
+		}
+
+		if(showYearsCheckBox->isChecked() && sy){
 			currentStudentsSet++;		
 			insertStudentsSet(year, currentStudentsSet);
 		}
 				
 		foreach(StudentsGroup* group, year->groupsList){
-			if(showGroupsCheckBox->isChecked()){
+			bool sg=true;
+			if(!complete){
+				if(studs.contains(group->name))
+					sg=false;
+				else
+					studs.insert(group->name);
+			}
+
+			if(showGroupsCheckBox->isChecked() && sg){
 				currentStudentsSet++;
 				insertStudentsSet(group, currentStudentsSet);
 			}
 			
 			foreach(StudentsSubgroup* subgroup, group->subgroupsList){
-				if(showSubgroupsCheckBox->isChecked()){
+				bool ss=true;
+				if(!complete){
+					if(studs.contains(subgroup->name))
+						ss=false;
+					else
+						studs.insert(subgroup->name);
+				}
+
+				if(showSubgroupsCheckBox->isChecked() && ss){
 					currentStudentsSet++;
 					insertStudentsSet(subgroup, currentStudentsSet);
 				}
@@ -342,4 +405,24 @@ void StudentsStatisticsForm::insertStudentsSet(StudentsSet* set, int row)
 	newItem=new QTableWidgetItem(QString::number(nHours));
 	newItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 	tableWidget->setItem(row, 2, newItem);
+}
+
+void StudentsStatisticsForm::on_helpPushButton_clicked()
+{
+	QString s;
+	
+	s+=tr("The check boxes '%1', '%2' and '%3': they permit you to show/hide information related to years, groups or subgroups")
+	 .arg(tr("Show years"))
+	 .arg(tr("Show groups"))
+	 .arg(tr("Show subgroups"));
+	
+	s+="\n\n";
+	
+	s+=tr("The check box '%1': it has effect only if you have overlapping groups/years, and means that FET will show the complete tree structure"
+	 ", even if that means that some subgroups/groups will appear twice or more in the table, with the same information."
+	 " For instance, if you have year Y1, groups G1 and G2, subgroups S1, S2, S3, with structure: Y1 (G1 (S1, S2), G2 (S1, S3)),"
+	 " S1 will appear twice in the table with the same information attached").arg(tr("Show duplicates"));
+	
+	//QMessageBox::information(this, tr("FET help"), s);
+	LongTextMessageBox::largeInformation(this, tr("FET help"), s);
 }

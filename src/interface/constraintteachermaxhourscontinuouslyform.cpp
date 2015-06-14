@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "longtextmessagebox.h"
+
 #include "constraintteachermaxhourscontinuouslyform.h"
 #include "addconstraintteachermaxhourscontinuouslyform.h"
 #include "modifyconstraintteachermaxhourscontinuouslyform.h"
@@ -23,6 +25,17 @@
 
 ConstraintTeacherMaxHoursContinuouslyForm::ConstraintTeacherMaxHoursContinuouslyForm()
 {
+    setupUi(this);
+
+    connect(constraintsListBox, SIGNAL(highlighted(int)), this /*ConstraintTeacherMaxHoursContinuouslyForm_template*/, SLOT(constraintChanged(int)));
+    connect(addConstraintPushButton, SIGNAL(clicked()), this /*ConstraintTeacherMaxHoursContinuouslyForm_template*/, SLOT(addConstraint()));
+    connect(closePushButton, SIGNAL(clicked()), this /*ConstraintTeacherMaxHoursContinuouslyForm_template*/, SLOT(close()));
+    connect(removeConstraintPushButton, SIGNAL(clicked()), this /*ConstraintTeacherMaxHoursContinuouslyForm_template*/, SLOT(removeConstraint()));
+    connect(modifyConstraintPushButton, SIGNAL(clicked()), this /*ConstraintTeacherMaxHoursContinuouslyForm_template*/, SLOT(modifyConstraint()));
+    connect(teachersComboBox, SIGNAL(activated(QString)), this /*ConstraintTeacherMaxHoursContinuouslyForm_template*/, SLOT(filterChanged()));
+    connect(constraintsListBox, SIGNAL(selected(QString)), this /*ConstraintTeacherMaxHoursContinuouslyForm_template*/, SLOT(modifyConstraint()));
+
+
 	//setWindowFlags(Qt::Window);
 	/*setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 	QDesktopWidget* desktop=QApplication::desktop();
@@ -30,6 +43,9 @@ ConstraintTeacherMaxHoursContinuouslyForm::ConstraintTeacherMaxHoursContinuously
 	int yy=desktop->height()/2 - frameGeometry().height()/2;
 	move(xx, yy);*/
 	centerWidgetOnScreen(this);
+
+	QSize tmp1=teachersComboBox->minimumSizeHint();
+	Q_UNUSED(tmp1);
 	
 	teachersComboBox->insertItem("");
 	for(int i=0; i<gt.rules.teachersList.size(); i++){
@@ -79,8 +95,8 @@ void ConstraintTeacherMaxHoursContinuouslyForm::constraintChanged(int index)
 
 void ConstraintTeacherMaxHoursContinuouslyForm::addConstraint()
 {
-	AddConstraintTeacherMaxHoursContinuouslyForm *form=new AddConstraintTeacherMaxHoursContinuouslyForm();
-	form->exec();
+	AddConstraintTeacherMaxHoursContinuouslyForm form;
+	form.exec();
 
 	filterChanged();
 	
@@ -91,14 +107,13 @@ void ConstraintTeacherMaxHoursContinuouslyForm::modifyConstraint()
 {
 	int i=constraintsListBox->currentItem();
 	if(i<0){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected constraint"));
+		QMessageBox::information(this, tr("FET information"), tr("Invalid selected constraint"));
 		return;
 	}
 	TimeConstraint* ctr=this->visibleConstraintsList.at(i);
 
-	ModifyConstraintTeacherMaxHoursContinuouslyForm *form
-	 = new ModifyConstraintTeacherMaxHoursContinuouslyForm((ConstraintTeacherMaxHoursContinuously*)ctr);
-	form->exec();
+	ModifyConstraintTeacherMaxHoursContinuouslyForm form((ConstraintTeacherMaxHoursContinuously*)ctr);
+	form.exec();
 
 	filterChanged();
 	constraintsListBox->setCurrentItem(i);
@@ -108,17 +123,18 @@ void ConstraintTeacherMaxHoursContinuouslyForm::removeConstraint()
 {
 	int i=constraintsListBox->currentItem();
 	if(i<0){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected constraint"));
+		QMessageBox::information(this, tr("FET information"), tr("Invalid selected constraint"));
 		return;
 	}
 	TimeConstraint* ctr=this->visibleConstraintsList.at(i);
 	QString s;
-	s=QObject::tr("Removing constraint:\n");
+	s=tr("Remove constraint?");
+	s+="\n\n";
 	s+=ctr->getDetailedDescription(gt.rules);
-	s+=QObject::tr("\nAre you sure?");
+	//s+=tr("\nAre you sure?");
 
-	switch( QMessageBox::warning( this, QObject::tr("FET warning"),
-		s, QObject::tr("OK"), QObject::tr("Cancel"), 0, 0, 1 ) ){
+	switch( LongTextMessageBox::confirmation( this, tr("FET confirmation"),
+		s, tr("Yes"), tr("No"), 0, 0, 1 ) ){
 	case 0: // The user clicked the OK again button or pressed Enter
 		gt.rules.removeTimeConstraint(ctr);
 		filterChanged();

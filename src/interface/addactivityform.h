@@ -18,7 +18,7 @@
 #ifndef ADDACTIVITYFORM_H
 #define ADDACTIVITYFORM_H
 
-#include "addactivityform_template.h"
+#include "ui_addactivityform_template.h"
 
 #include "timetable_defs.h"
 #include "timetable.h"
@@ -36,10 +36,12 @@
 #include <q3textedit.h>
 
 
-class AddActivityForm : public AddActivityForm_template  {
+class AddActivityForm : public QDialog, Ui::AddActivityForm_template  {
 	Q_OBJECT
 
 public: 
+	QList<QString> canonicalStudentsSetsNames;
+
 	AddActivityForm();
 	~AddActivityForm();
 
@@ -50,6 +52,7 @@ public:
 	void updatePreferredDaysComboBox();
 	void updatePreferredHoursComboBox();
 
+public slots:
 	void addTeacher();
 	void removeTeacher();
 	void addStudents();
@@ -59,10 +62,6 @@ public:
 	void addActivityTag();
 	void removeActivityTag();
 
-	void hourChanged();
-	void dayChanged();
-	void parityChanged();
-	void durationChanged();
 	void activityChanged();
 	void splitChanged();
 	
@@ -76,6 +75,8 @@ public:
 
 	void addActivity();
 	void help();
+	
+	void minDaysChanged();
 };
 
 class SecondMinDaysDialog: public QDialog

@@ -18,7 +18,7 @@
 #ifndef CONSTRAINTACTIVITIESSAMESTARTINGHOURFORM_H
 #define CONSTRAINTACTIVITIESSAMESTARTINGHOURFORM_H
 
-#include "constraintactivitiessamestartinghourform_template.h"
+#include "ui_constraintactivitiessamestartinghourform_template.h"
 #include "timetable_defs.h"
 #include "timetable.h"
 #include "fet.h"
@@ -34,21 +34,23 @@
 #include <q3textedit.h>
 #include <q3listbox.h>
 
-class ConstraintActivitiesSameStartingHourForm : public ConstraintActivitiesSameStartingHourForm_template  {
+class ConstraintActivitiesSameStartingHourForm : public QDialog, Ui::ConstraintActivitiesSameStartingHourForm_template  {
+	Q_OBJECT
 public:
 	TimeConstraintsList visibleConstraintsList;
 
 	ConstraintActivitiesSameStartingHourForm();
 	~ConstraintActivitiesSameStartingHourForm();
-
-	void constraintChanged(int index);
-	void addConstraint();
-	void removeConstraint();
-	void modifyConstraint();
 	
 	void refreshConstraintsListBox();
 
 	bool filterOk(TimeConstraint* ctr);
+
+public slots:
+	void constraintChanged(int index);
+	void addConstraint();
+	void removeConstraint();
+	void modifyConstraint();
 };
 
 #endif

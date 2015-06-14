@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "longtextmessagebox.h"
+
 #include "addconstraintteachermaxbuildingchangesperdayform.h"
 #include "spaceconstraint.h"
 
@@ -26,6 +28,15 @@
 
 AddConstraintTeacherMaxBuildingChangesPerDayForm::AddConstraintTeacherMaxBuildingChangesPerDayForm()
 {
+    setupUi(this);
+
+//    connect(weightLineEdit, SIGNAL(textChanged(QString)), this /*AddConstraintTeacherMaxBuildingChangesPerDayForm_template*/, SLOT(constraintChanged()));
+    connect(addConstraintPushButton, SIGNAL(clicked()), this /*AddConstraintTeacherMaxBuildingChangesPerDayForm_template */, SLOT(addCurrentConstraint()));
+    connect(closePushButton, SIGNAL(clicked()), this /*AddConstraintTeacherMaxBuildingChangesPerDayForm_template*/, SLOT(close()));
+//    connect(teachersComboBox, SIGNAL(activated(QString)), this /*AddConstraintTeacherMaxBuildingChangesPerDayForm_template*/, SLOT(constraintChanged()));
+//    connect(maxChangesSpinBox, SIGNAL(valueChanged(int)), this /*AddConstraintTeacherMaxBuildingChangesPerDayForm_template*/, SLOT(constraintChanged()));
+
+
 	//setWindowFlags(Qt::Window);
 	/*setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 	QDesktopWidget* desktop=QApplication::desktop();
@@ -33,6 +44,9 @@ AddConstraintTeacherMaxBuildingChangesPerDayForm::AddConstraintTeacherMaxBuildin
 	int yy=desktop->height()/2 - frameGeometry().height()/2;
 	move(xx, yy);*/
 	centerWidgetOnScreen(this);
+
+	QSize tmp1=teachersComboBox->minimumSizeHint();
+	Q_UNUSED(tmp1);
 		
 	maxChangesSpinBox->setMinValue(0);
 	maxChangesSpinBox->setMaxValue(10);
@@ -55,26 +69,26 @@ void AddConstraintTeacherMaxBuildingChangesPerDayForm::updateTeachersComboBox()
 }
 
 void AddConstraintTeacherMaxBuildingChangesPerDayForm::constraintChanged()
-{
+{/*
 	QString s;
-	s+=QObject::tr("Current constraint:");
+	s+=tr("Current constraint:");
 	s+="\n";
 
 	double weight;
 	QString tmp=weightLineEdit->text();
 	sscanf(tmp, "%lf", &weight);
-	s+=QObject::tr("Weight (percentage)=%1").arg(weight);
+	s+=tr("Weight (percentage)=%1").arg(weight);
 	s+="\n";
 
-	s+=QObject::tr("Teacher max building changes per day");
+	s+=tr("Teacher max building changes per day");
 	s+="\n";
-	s+=QObject::tr("Teacher=%1").arg(teachersComboBox->currentText());
+	s+=tr("Teacher=%1").arg(teachersComboBox->currentText());
 	s+="\n";
 	
-	s+=QObject::tr("Max building changes per day=%1").arg(maxChangesSpinBox->value());
+	s+=tr("Max building changes per day=%1").arg(maxChangesSpinBox->value());
 	s+="\n";
 
-	currentConstraintTextEdit->setText(s);
+	currentConstraintTextEdit->setText(s);*/
 }
 
 void AddConstraintTeacherMaxBuildingChangesPerDayForm::addCurrentConstraint()
@@ -85,16 +99,16 @@ void AddConstraintTeacherMaxBuildingChangesPerDayForm::addCurrentConstraint()
 	QString tmp=weightLineEdit->text();
 	sscanf(tmp, "%lf", &weight);
 	if(weight<100.0 || weight>100.0){
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Invalid weight (percentage). It has to be 100"));
+		QMessageBox::warning(this, tr("FET information"),
+			tr("Invalid weight (percentage). It has to be 100"));
 		return;
 	}
 
 	QString teacher_name=teachersComboBox->currentText();
 	int t=gt.rules.searchTeacher(teacher_name);
 	if(t==-1){
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Invalid teacher"));
+		QMessageBox::warning(this, tr("FET information"),
+			tr("Invalid teacher"));
 		return;
 	}
 
@@ -102,11 +116,11 @@ void AddConstraintTeacherMaxBuildingChangesPerDayForm::addCurrentConstraint()
 
 	bool tmp2=gt.rules.addSpaceConstraint(ctr);
 	if(tmp2)
-		QMessageBox::information(this, QObject::tr("FET information"),
-			QObject::tr("Constraint added"));
+		LongTextMessageBox::information(this, tr("FET information"),
+			tr("Constraint added:")+"\n\n"+ctr->getDetailedDescription(gt.rules));
 	else{
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Constraint NOT added - please report error"));
+		QMessageBox::warning(this, tr("FET information"),
+			tr("Constraint NOT added - please report error"));
 		delete ctr;
 	}
 }

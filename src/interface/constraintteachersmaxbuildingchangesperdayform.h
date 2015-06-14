@@ -18,7 +18,7 @@
 #ifndef CONSTRAINTTEACHERSMAXBUILDINGCHANGESPERDAYFORM_H
 #define CONSTRAINTTEACHERSMAXBUILDINGCHANGESPERDAYFORM_H
 
-#include "constraintteachersmaxbuildingchangesperdayform_template.h"
+#include "ui_constraintteachersmaxbuildingchangesperdayform_template.h"
 #include "timetable_defs.h"
 #include "timetable.h"
 #include "fet.h"
@@ -33,21 +33,23 @@
 #include <q3textedit.h>
 #include <q3listbox.h>
 
-class ConstraintTeachersMaxBuildingChangesPerDayForm : public ConstraintTeachersMaxBuildingChangesPerDayForm_template  {
+class ConstraintTeachersMaxBuildingChangesPerDayForm : public QDialog, Ui::ConstraintTeachersMaxBuildingChangesPerDayForm_template  {
+	Q_OBJECT
 public:
 	SpaceConstraintsList visibleConstraintsList;
 
 	ConstraintTeachersMaxBuildingChangesPerDayForm();
 	~ConstraintTeachersMaxBuildingChangesPerDayForm();
 
+	bool filterOk(SpaceConstraint* ctr);
+
+public slots:
 	void constraintChanged(int index);
 	void addConstraint();
 	void modifyConstraint();
 	void removeConstraint();
 
 	void filterChanged();
-
-	bool filterOk(SpaceConstraint* ctr);
 };
 
 #endif

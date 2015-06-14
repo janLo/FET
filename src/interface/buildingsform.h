@@ -13,26 +13,32 @@
 #ifndef BUILDINGSFORM_H
 #define BUILDINGSFORM_H
 
-#include "buildingsform_template.h"
+#include "building.h"
+
+#include "ui_buildingsform_template.h"
 
 /**
 @author Liviu Lalescu
 */
-class BuildingsForm : public BuildingsForm_template
+class BuildingsForm : public QDialog, Ui::BuildingsForm_template
 {
+	Q_OBJECT
+	
 public:
 	BuildingsList visibleBuildingsList;
 
 	BuildingsForm();
 	~BuildingsForm();
 
+	bool filterOk(Building* bu);
+
+public slots:
 	void addBuilding();
 	void removeBuilding();
-	void modifyBuilding();
-	void sortBuildings();
 	void buildingChanged(int index);
+	void sortBuildings();
+	void modifyBuilding();
 	void filterChanged();
-	bool filterOk(Building* bu);
 };
 
 #endif

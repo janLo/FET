@@ -18,7 +18,7 @@
 #ifndef TIMETABLEGENERATEMULTIPLEFORM_H
 #define TIMETABLEGENERATEMULTIPLEFORM_H
 
-#include "timetablegeneratemultipleform_template.h"
+#include "ui_timetablegeneratemultipleform_template.h"
 #include "timetable_defs.h"
 #include "timetable.h"
 #include "fet.h"
@@ -32,12 +32,14 @@ public:
 	void run();
 
 signals:
+	void timetableStarted(int timetable);
+
 	void timetableGenerated(int timetable, const QString& description, bool ok);
 	
 	void finished();
 };
 
-class TimetableGenerateMultipleForm : public TimetableGenerateMultipleForm_template  {
+class TimetableGenerateMultipleForm : public QDialog, Ui::TimetableGenerateMultipleForm_template  {
 	Q_OBJECT
 
 public:
@@ -46,19 +48,22 @@ public:
 
 	~TimetableGenerateMultipleForm();
 	
+	void simulationFinished();
+
+	void writeTimetableDataFile();
+
+public slots:
 	void help();
 
 	void start();
 
 	void stop();
 	
-	void simulationFinished();
-
 	void closePressed();
 	
-	void writeTimetableDataFile();
-
 private slots:
+	void timetableStarted(int timetable);
+
 	void timetableGenerated(int timetable, const QString& description, bool ok);
 	
 	void finished();

@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "longtextmessagebox.h"
+
 #include "constraintstudentssethomeroomsform.h"
 #include "addconstraintstudentssethomeroomsform.h"
 #include "modifyconstraintstudentssethomeroomsform.h"
@@ -23,6 +25,18 @@
 
 ConstraintStudentsSetHomeRoomsForm::ConstraintStudentsSetHomeRoomsForm()
 {
+    setupUi(this);
+
+    connect(addConstraintPushButton, SIGNAL(clicked()), this /*ConstraintStudentsSetHomeRoomsForm_template*/, SLOT(addConstraint()));
+    connect(removeConstraintPushButton, SIGNAL(clicked()), this /*ConstraintStudentsSetHomeRoomsForm_template*/, SLOT(removeConstraint()));
+    connect(closePushButton, SIGNAL(clicked()), this /*ConstraintStudentsSetHomeRoomsForm_template*/, SLOT(close()));
+    connect(constraintsListBox, SIGNAL(highlighted(int)), this /*ConstraintStudentsSetHomeRoomsForm_template*/, SLOT(constraintChanged(int)));
+    connect(modifyConstraintPushButton, SIGNAL(clicked()), this /*ConstraintStudentsSetHomeRoomsForm_template*/, SLOT(modifyConstraint()));
+    connect(constraintsListBox, SIGNAL(selected(QString)), this /*ConstraintStudentsSetHomeRoomsForm_template*/, SLOT(modifyConstraint()));
+    connect(studentsComboBox, SIGNAL(activated(QString)), this /*ConstraintStudentsSetHomeRoomsForm_template*/, SLOT(filterChanged()));
+    connect(roomsComboBox, SIGNAL(activated(QString)), this /*ConstraintStudentsSetHomeRoomsForm_template*/, SLOT(filterChanged()));
+
+
 	//setWindowFlags(Qt::Window);
 	/*setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 	QDesktopWidget* desktop=QApplication::desktop();
@@ -30,6 +44,12 @@ ConstraintStudentsSetHomeRoomsForm::ConstraintStudentsSetHomeRoomsForm()
 	int yy=desktop->height()/2 - frameGeometry().height()/2;
 	move(xx, yy);*/
 	centerWidgetOnScreen(this);
+
+	QSize tmp2=studentsComboBox->minimumSizeHint();
+	Q_UNUSED(tmp2);
+	
+	QSize tmp5=roomsComboBox->minimumSizeHint();
+	Q_UNUSED(tmp5);
 	
 	studentsComboBox->insertItem("");
 
@@ -105,23 +125,25 @@ void ConstraintStudentsSetHomeRoomsForm::constraintChanged(int index)
 
 void ConstraintStudentsSetHomeRoomsForm::addConstraint()
 {
-	AddConstraintStudentsSetHomeRoomsForm *form=new AddConstraintStudentsSetHomeRoomsForm();
-	form->exec();
+	AddConstraintStudentsSetHomeRoomsForm form;
+	form.exec();
 
 	this->refreshConstraintsListBox();
+	
+	constraintsListBox->setCurrentItem(constraintsListBox->count()-1);
 }
 
 void ConstraintStudentsSetHomeRoomsForm::modifyConstraint()
 {
 	int i=constraintsListBox->currentItem();
 	if(i<0){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected constraint"));
+		QMessageBox::information(this, tr("FET information"), tr("Invalid selected constraint"));
 		return;
 	}
 	SpaceConstraint* ctr=this->visibleConstraintsList.at(i);
 
-	ModifyConstraintStudentsSetHomeRoomsForm *form=new ModifyConstraintStudentsSetHomeRoomsForm((ConstraintStudentsSetHomeRooms*)ctr);
-	form->exec();
+	ModifyConstraintStudentsSetHomeRoomsForm form((ConstraintStudentsSetHomeRooms*)ctr);
+	form.exec();
 
 	this->refreshConstraintsListBox();
 	
@@ -132,17 +154,18 @@ void ConstraintStudentsSetHomeRoomsForm::removeConstraint()
 {
 	int i=constraintsListBox->currentItem();
 	if(i<0){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected constraint"));
+		QMessageBox::information(this, tr("FET information"), tr("Invalid selected constraint"));
 		return;
 	}
 	SpaceConstraint* ctr=this->visibleConstraintsList.at(i);
 	QString s;
-	s=QObject::tr("Removing constraint:\n");
+	s=tr("Remove constraint?");
+	s+="\n\n";
 	s+=ctr->getDetailedDescription(gt.rules);
-	s+=QObject::tr("\nAre you sure?");
+	//s+=tr("\nAre you sure?");
 
-	switch( QMessageBox::warning( this, QObject::tr("FET warning"),
-		s, QObject::tr("OK"), QObject::tr("Cancel"), 0, 0, 1 ) ){
+	switch( LongTextMessageBox::confirmation( this, tr("FET confirmation"),
+		s, tr("Yes"), tr("No"), 0, 0, 1 ) ){
 	case 0: // The user clicked the OK again button or pressed Enter
 		gt.rules.removeSpaceConstraint(ctr);
 		this->refreshConstraintsListBox();

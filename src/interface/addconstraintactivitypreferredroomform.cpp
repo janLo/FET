@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "longtextmessagebox.h"
+
 #include "addconstraintactivitypreferredroomform.h"
 #include "spaceconstraint.h"
 
@@ -32,6 +34,15 @@
 
 AddConstraintActivityPreferredRoomForm::AddConstraintActivityPreferredRoomForm()
 {
+    setupUi(this);
+
+    connect(closePushButton, SIGNAL(clicked()), this, SLOT(close()));
+    connect(addConstraintPushButton, SIGNAL(clicked()), this, SLOT(addConstraint()));
+    connect(teachersComboBox, SIGNAL(activated(QString)), this, SLOT(filterChanged()));
+    connect(studentsComboBox, SIGNAL(activated(QString)), this, SLOT(filterChanged()));
+    connect(subjectsComboBox, SIGNAL(activated(QString)), this, SLOT(filterChanged()));
+    connect(activityTagsComboBox, SIGNAL(activated(QString)), this, SLOT(filterChanged()));
+
 	//setWindowFlags(Qt::Window);
 	/*setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 	QDesktopWidget* desktop=QApplication::desktop();
@@ -39,6 +50,22 @@ AddConstraintActivityPreferredRoomForm::AddConstraintActivityPreferredRoomForm()
 	int yy=desktop->height()/2 - frameGeometry().height()/2;
 	move(xx, yy);*/
 	centerWidgetOnScreen(this);
+	
+	QSize tmp1=teachersComboBox->minimumSizeHint();
+	Q_UNUSED(tmp1);
+	QSize tmp2=studentsComboBox->minimumSizeHint();
+	Q_UNUSED(tmp2);
+	QSize tmp3=subjectsComboBox->minimumSizeHint();
+	Q_UNUSED(tmp3);
+	QSize tmp4=activityTagsComboBox->minimumSizeHint();
+	Q_UNUSED(tmp4);
+	
+	QSize tmp5=roomsComboBox->minimumSizeHint();
+	Q_UNUSED(tmp5);
+	QSize tmp6=activitiesComboBox->minimumSizeHint();
+	Q_UNUSED(tmp6);
+	
+	activitiesComboBox->setMaximumWidth(maxRecommendedWidth(this));
 	
 	//permTextLabel->setWordWrap(true);
 	
@@ -166,8 +193,8 @@ void AddConstraintActivityPreferredRoomForm::addConstraint()
 	QString tmp=weightLineEdit->text();
 	sscanf(tmp, "%lf", &weight);
 	if(weight<0.0 || weight>100){
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Invalid weight (percentage)"));
+		QMessageBox::warning(this, tr("FET information"),
+			tr("Invalid weight (percentage)"));
 		return;
 	}
 
@@ -176,8 +203,8 @@ void AddConstraintActivityPreferredRoomForm::addConstraint()
 	//assert(tmp2<gt.rules.activitiesList.size());
 	//assert(tmp2<activitiesList.size());
 	if(tmp2<0 || tmp2>=gt.rules.activitiesList.size() || tmp2>=activitiesList.size()){
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Invalid activity"));
+		QMessageBox::warning(this, tr("FET information"),
+			tr("Invalid activity"));
 		return;
 	}
 	else
@@ -185,16 +212,16 @@ void AddConstraintActivityPreferredRoomForm::addConstraint()
 		
 	/*int i=activitiesComboBox->currentItem();
 	if(i<0 || activitiesComboBox->count()<=0){
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Invalid activity"));
+		QMessageBox::warning(this, tr("FET information"),
+			tr("Invalid activity"));
 		return;
 	}
 	Activity* act=gt.rules.activitiesList.at(i);*/
 
 	int i=roomsComboBox->currentItem();
 	if(i<0 || roomsComboBox->count()<=0){
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Invalid room"));
+		QMessageBox::warning(this, tr("FET information"),
+			tr("Invalid room"));
 		return;
 	}
 	QString room=roomsComboBox->currentText();
@@ -203,10 +230,10 @@ void AddConstraintActivityPreferredRoomForm::addConstraint()
 
 	bool tmp3=gt.rules.addSpaceConstraint(ctr);
 	if(tmp3){
-		QString s=QObject::tr("Constraint added:");
-		s+="\n";
+		QString s=tr("Constraint added:");
+		s+="\n\n";
 		s+=ctr->getDetailedDescription(gt.rules);
-		QMessageBox::information(this, QObject::tr("FET information"), s);
+		LongTextMessageBox::information(this, tr("FET information"), s);
 		
 		/*if(permLockedCheckBox->isChecked()) wrong, must take care of weight==100.0
 			idsOfPermanentlyLockedSpace.insert(id);
@@ -216,8 +243,8 @@ void AddConstraintActivityPreferredRoomForm::addConstraint()
 		LockUnlock::increaseCommunicationSpinBox();
 	}
 	else{
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Constraint NOT added - must be a duplicate"));
+		QMessageBox::warning(this, tr("FET information"),
+			tr("Constraint NOT added - must be a duplicate"));
 		delete ctr;
 	}
 }

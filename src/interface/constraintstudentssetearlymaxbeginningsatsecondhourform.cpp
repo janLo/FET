@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "longtextmessagebox.h"
+
 #include "constraintstudentssetearlymaxbeginningsatsecondhourform.h"
 #include "addconstraintstudentssetearlymaxbeginningsatsecondhourform.h"
 #include "modifyconstraintstudentssetearlymaxbeginningsatsecondhourform.h"
@@ -23,6 +25,17 @@
 
 ConstraintStudentsSetEarlyMaxBeginningsAtSecondHourForm::ConstraintStudentsSetEarlyMaxBeginningsAtSecondHourForm()
 {
+    setupUi(this);
+
+    connect(constraintsListBox, SIGNAL(highlighted(int)), this /*ConstraintStudentsSetEarlyMaxBeginningsAtSecondHourForm_template*/, SLOT(constraintChanged(int)));
+    connect(addConstraintPushButton, SIGNAL(clicked()), this /*ConstraintStudentsSetEarlyMaxBeginningsAtSecondHourForm_template*/, SLOT(addConstraint()));
+    connect(closePushButton, SIGNAL(clicked()), this /*ConstraintStudentsSetEarlyMaxBeginningsAtSecondHourForm_template*/, SLOT(close()));
+    connect(removeConstraintPushButton, SIGNAL(clicked()), this /*ConstraintStudentsSetEarlyMaxBeginningsAtSecondHourForm_template*/, SLOT(removeConstraint()));
+    connect(modifyConstraintPushButton, SIGNAL(clicked()), this /*ConstraintStudentsSetEarlyMaxBeginningsAtSecondHourForm_template*/, SLOT(modifyConstraint()));
+    connect(studentsComboBox, SIGNAL(activated(QString)), this /*ConstraintStudentsSetEarlyMaxBeginningsAtSecondHourForm_template*/, SLOT(filterChanged()));
+    connect(constraintsListBox, SIGNAL(selected(QString)), this /*ConstraintStudentsSetEarlyMaxBeginningsAtSecondHourForm_template*/, SLOT(modifyConstraint()));
+
+
 	//setWindowFlags(Qt::Window);
 	/*setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 	QDesktopWidget* desktop=QApplication::desktop();
@@ -30,6 +43,9 @@ ConstraintStudentsSetEarlyMaxBeginningsAtSecondHourForm::ConstraintStudentsSetEa
 	int yy=desktop->height()/2 - frameGeometry().height()/2;
 	move(xx, yy);*/
 	centerWidgetOnScreen(this);
+
+	QSize tmp2=studentsComboBox->minimumSizeHint();
+	Q_UNUSED(tmp2);
 	
 	studentsComboBox->insertItem("");
 
@@ -88,8 +104,8 @@ void ConstraintStudentsSetEarlyMaxBeginningsAtSecondHourForm::constraintChanged(
 
 void ConstraintStudentsSetEarlyMaxBeginningsAtSecondHourForm::addConstraint()
 {
-	AddConstraintStudentsSetEarlyMaxBeginningsAtSecondHourForm *form=new AddConstraintStudentsSetEarlyMaxBeginningsAtSecondHourForm();
-	form->exec();
+	AddConstraintStudentsSetEarlyMaxBeginningsAtSecondHourForm form;
+	form.exec();
 
 	filterChanged();
 	
@@ -105,8 +121,8 @@ void ConstraintStudentsSetEarlyMaxBeginningsAtSecondHourForm::modifyConstraint()
 	}
 	TimeConstraint* ctr=this->visibleConstraintsList.at(i);
 
-	ModifyConstraintStudentsSetEarlyMaxBeginningsAtSecondHourForm *form = new ModifyConstraintStudentsSetEarlyMaxBeginningsAtSecondHourForm((ConstraintStudentsSetEarlyMaxBeginningsAtSecondHour*)ctr);
-	form->exec();
+	ModifyConstraintStudentsSetEarlyMaxBeginningsAtSecondHourForm form((ConstraintStudentsSetEarlyMaxBeginningsAtSecondHour*)ctr);
+	form.exec();
 
 	filterChanged();
 	constraintsListBox->setCurrentItem(i);
@@ -121,12 +137,13 @@ void ConstraintStudentsSetEarlyMaxBeginningsAtSecondHourForm::removeConstraint()
 	}
 	TimeConstraint* ctr=this->visibleConstraintsList.at(i);
 	QString s;
-	s=tr("Removing constraint:\n");
+	s=tr("Remove constraint?");
+	s+="\n\n";
 	s+=ctr->getDetailedDescription(gt.rules);
-	s+=tr("\nAre you sure?");
+	//s+=tr("\nAre you sure?");
 
-	switch( QMessageBox::warning( this, tr("FET warning"),
-		s, tr("OK"), tr("Cancel"), 0, 0, 1 ) ){
+	switch( LongTextMessageBox::confirmation( this, tr("FET confirmation"),
+		s, tr("Yes"), tr("No"), 0, 0, 1 ) ){
 	case 0: // The user clicked the OK again button or pressed Enter
 		gt.rules.removeTimeConstraint(ctr);
 		filterChanged();

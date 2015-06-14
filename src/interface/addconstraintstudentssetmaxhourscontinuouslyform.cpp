@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "longtextmessagebox.h"
+
 #include "addconstraintstudentssetmaxhourscontinuouslyform.h"
 #include "timeconstraint.h"
 
@@ -26,6 +28,14 @@
 
 AddConstraintStudentsSetMaxHoursContinuouslyForm::AddConstraintStudentsSetMaxHoursContinuouslyForm()
 {
+    setupUi(this);
+
+//    connect(weightLineEdit, SIGNAL(textChanged(QString)), this /*AddConstraintStudentsSetMaxHoursContinuouslyForm_template*/, SLOT(constraintChanged()));
+    connect(addConstraintPushButton, SIGNAL(clicked()), this /*AddConstraintStudentsSetMaxHoursContinuouslyForm_template*/, SLOT(addCurrentConstraint()));
+    connect(closePushButton, SIGNAL(clicked()), this /*AddConstraintStudentsSetMaxHoursContinuouslyForm_template*/, SLOT(close()));
+//    connect(studentsComboBox, SIGNAL(activated(QString)), this /*AddConstraintStudentsSetMaxHoursContinuouslyForm_template*/, SLOT(constraintChanged()));
+//    connect(maxHoursSpinBox, SIGNAL(valueChanged(int)), this /*AddConstraintStudentsSetMaxHoursContinuouslyForm_template*/, SLOT(constraintChanged()));
+
 	//setWindowFlags(Qt::Window);
 	/*setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 	QDesktopWidget* desktop=QApplication::desktop();
@@ -33,6 +43,9 @@ AddConstraintStudentsSetMaxHoursContinuouslyForm::AddConstraintStudentsSetMaxHou
 	int yy=desktop->height()/2 - frameGeometry().height()/2;
 	move(xx, yy);*/
 	centerWidgetOnScreen(this);
+
+	QSize tmp2=studentsComboBox->minimumSizeHint();
+	Q_UNUSED(tmp2);
 	
 	maxHoursSpinBox->setMinValue(1);
 	maxHoursSpinBox->setMaxValue(gt.rules.nHoursPerDay);
@@ -65,35 +78,29 @@ void AddConstraintStudentsSetMaxHoursContinuouslyForm::updateStudentsSetComboBox
 }
 
 void AddConstraintStudentsSetMaxHoursContinuouslyForm::constraintChanged()
-{
+{/*
 	QString s;
-	s+=QObject::tr("Current constraint:");
+	s+=tr("Current constraint:");
 	s+="\n";
 
 	double weight;
 	QString tmp=weightLineEdit->text();
 	sscanf(tmp, "%lf", &weight);
-	s+=QObject::tr("Weight (percentage)=%1").arg(weight);
+	s+=tr("Weight (percentage)=%1").arg(weight);
 	s+="\n";
 
-	/*bool compulsory=false;
-	if(compulsoryCheckBox->isChecked())
-		compulsory=true;
-	s+=QObject::tr("Compulsory=%1").arg(yesNo(compulsory));
-	s+="\n";*/
-
-	s+=QObject::tr("Students set max hours continuously");
+	s+=tr("Students set max hours continuously");
 	s+="\n";
-	s+=QObject::tr("Students set=%1").arg(studentsComboBox->currentText());
+	s+=tr("Students set=%1").arg(studentsComboBox->currentText());
 	s+="\n";
 
 	int maxHours=maxHoursSpinBox->value();
 	if(maxHours>=0){
-		s+=QObject::tr("Max. hours:%1").arg(maxHours);
+		s+=tr("Max. hours:%1").arg(maxHours);
 		s+="\n";
 	}
 
-	currentConstraintTextEdit->setText(s);
+	currentConstraintTextEdit->setText(s);*/
 }
 
 void AddConstraintStudentsSetMaxHoursContinuouslyForm::addCurrentConstraint()
@@ -104,13 +111,13 @@ void AddConstraintStudentsSetMaxHoursContinuouslyForm::addCurrentConstraint()
 	QString tmp=weightLineEdit->text();
 	sscanf(tmp, "%lf", &weight);
 	if(weight<0.0 || weight>100.0){
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Invalid weight"));
+		QMessageBox::warning(this, tr("FET information"),
+			tr("Invalid weight"));
 		return;
 	}
 	/*if(weight!=100.0){
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Invalid weight - must be 100%"));
+		QMessageBox::warning(this, tr("FET information"),
+			tr("Invalid weight - must be 100%"));
 		return;
 	}*/
 
@@ -123,8 +130,8 @@ void AddConstraintStudentsSetMaxHoursContinuouslyForm::addCurrentConstraint()
 	QString students_name=studentsComboBox->currentText();
 	StudentsSet* s=gt.rules.searchStudentsSet(students_name);
 	if(s==NULL){
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Invalid students set"));
+		QMessageBox::warning(this, tr("FET information"),
+			tr("Invalid students set"));
 		return;
 	}
 
@@ -132,11 +139,11 @@ void AddConstraintStudentsSetMaxHoursContinuouslyForm::addCurrentConstraint()
 
 	bool tmp2=gt.rules.addTimeConstraint(ctr);
 	if(tmp2)
-		QMessageBox::information(this, QObject::tr("FET information"),
-			QObject::tr("Constraint added"));
+		LongTextMessageBox::information(this, tr("FET information"),
+			tr("Constraint added:")+"\n\n"+ctr->getDetailedDescription(gt.rules));
 	else{
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Constraint NOT added - please report error"));
+		QMessageBox::warning(this, tr("FET information"),
+			tr("Constraint NOT added - please report error"));
 		delete ctr;
 	}
 }

@@ -13,14 +13,16 @@
 #ifndef SUBGROUPSFORM_H
 #define SUBGROUPSFORM_H
 
-#include "subgroupsform_template.h"
+#include "ui_subgroupsform_template.h"
 
-class SubgroupsForm : public SubgroupsForm_template
+class SubgroupsForm : public QDialog, Ui::SubgroupsForm_template
 {
+	Q_OBJECT
 public:
 	SubgroupsForm();
 	~SubgroupsForm();
 
+public slots:
 	void addSubgroup();
 	void removeSubgroup();
 	void modifySubgroup();

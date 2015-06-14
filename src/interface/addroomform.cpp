@@ -17,6 +17,8 @@
 
 #include "addroomform.h"
 
+#include "longtextmessagebox.h"
+
 #include <qlineedit.h>
 #include <q3combobox.h>
 
@@ -28,6 +30,13 @@
 
 AddRoomForm::AddRoomForm()
 {
+    setupUi(this);
+
+    connect(closePushButton, SIGNAL(clicked()), this /*addRoomForm_template*/, SLOT(close()));
+    connect(pushButton3, SIGNAL(clicked()), this /*addRoomForm_template*/, SLOT(help()));
+    connect(addRoomPushButton, SIGNAL(clicked()), this /*addRoomForm_template*/, SLOT(addRoom()));
+
+
 	//setWindowFlags(Qt::Window);
 	/*setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 	QDesktopWidget* desktop=QApplication::desktop();
@@ -35,6 +44,9 @@ AddRoomForm::AddRoomForm()
 	int yy=desktop->height()/2 - frameGeometry().height()/2;
 	move(xx, yy);*/
 	centerWidgetOnScreen(this);
+
+	QSize tmp5=buildingsComboBox->minimumSizeHint();
+	Q_UNUSED(tmp5);
 	
 	/*typesComboBox->clear();
 	typesComboBox->setDuplicatesEnabled(false);
@@ -65,15 +77,15 @@ AddRoomForm::~AddRoomForm()
 void AddRoomForm::addRoom()
 {
 	if(nameLineEdit->text().isEmpty()){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Incorrect name"));
+		QMessageBox::information(this, tr("FET information"), tr("Incorrect name"));
 		return;
 	}
 	/*if(typesComboBox->currentText().isEmpty()){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Incorrect type"));
+		QMessageBox::information(this, tr("FET information"), tr("Incorrect type"));
 		return;
 	}*/
 	if(buildingsComboBox->currentItem()<0){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Incorrect building"));
+		QMessageBox::information(this, tr("FET information"), tr("Incorrect building"));
 		return;
 	}
 	Room* rm=new Room();
@@ -82,13 +94,13 @@ void AddRoomForm::addRoom()
 	rm->building=buildingsComboBox->currentText();
 	rm->capacity=capacitySpinBox->value();
 	if(!gt.rules.addRoom(rm)){
-		QMessageBox::information(this, QObject::tr("Room insertion dialog"),
-			QObject::tr("Could not insert item. Must be a duplicate"));
+		QMessageBox::information(this, tr("Room insertion dialog"),
+			tr("Could not insert item. Must be a duplicate"));
 		delete rm;
 	}
 	else{
-		QMessageBox::information(this, QObject::tr("Room insertion dialog"),
-			QObject::tr("Room added"));
+		QMessageBox::information(this, tr("Room insertion dialog"),
+			tr("Room added"));
 			
 		//typesComboBox->insertItem(rm->type);
 	}
@@ -101,27 +113,26 @@ void AddRoomForm::help()
 {
 	QString s;
 	
-	s=QObject::tr("It is advisable to only input special rooms, which are not available, or for activities with "
-	 "special rooms needed (no need to input home rooms for teachers or students)\n\n"
-	 "It is advisable to generate the timetable without the rooms, then, if a solution is possible, to add rooms"
-	 );
+	s=tr("It is advisable to generate the timetable without the rooms (or without rooms' constraints), then, if a solution is possible, to add rooms or rooms' constraints");
 	 
 	s+="\n\n";
 	
-	s+=QObject::tr("Please note that each room can hold a single activity at a specified period. If you"
+	s+=tr("Please note that each room can hold a single activity at a specified period. If you"
 	 " have a very large room, which can hold more activities at one time, please add more rooms,"
 	 " representing this larger room");
+	 
+	LongTextMessageBox::largeInformation(this, tr("FET - help on adding room(s)"), s);
 	
 	//show the message in a dialog
-	QDialog* dialog=new QDialog();
+/*	QDialog dialog;
 	
-	dialog->setWindowTitle(QObject::tr("FET - help on adding room(s)"));
+	dialog.setWindowTitle(tr("FET - help on adding room(s)"));
 
-	QVBoxLayout* vl=new QVBoxLayout(dialog);
+	QVBoxLayout* vl=new QVBoxLayout(&dialog);
 	QTextEdit* te=new QTextEdit();
 	te->setPlainText(s);
 	te->setReadOnly(true);
-	QPushButton* pb=new QPushButton(QObject::tr("OK"));
+	QPushButton* pb=new QPushButton(tr("OK"));
 
 	QHBoxLayout* hl=new QHBoxLayout(0);
 	hl->addStretch(1);
@@ -129,14 +140,14 @@ void AddRoomForm::help()
 
 	vl->addWidget(te);
 	vl->addLayout(hl);
-	connect(pb, SIGNAL(clicked()), dialog, SLOT(close()));
+	connect(pb, SIGNAL(clicked()), &dialog, SLOT(close()));
 
-	dialog->setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	dialog.setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 	//QDesktopWidget* desktop=QApplication::desktop();
-	QRect rect = QApplication::desktop()->availableGeometry(dialog);
+	QRect rect = QApplication::desktop()->availableGeometry(&dialog);
 	int xx=rect.width()/2 - 350;
 	int yy=rect.height()/2 - 250;
-	dialog->setGeometry(xx, yy, 700, 500);
+	dialog.setGeometry(xx, yy, 700, 500);
 
-	dialog->exec();
+	dialog.exec();*/
 }

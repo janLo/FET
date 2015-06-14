@@ -18,7 +18,7 @@
 #ifndef ADDCONSTRAINTACTIVITYPREFERREDSTARTINGTIMEFORM_H
 #define ADDCONSTRAINTACTIVITYPREFERREDSTARTINGTIMEFORM_H
 
-#include "addconstraintactivitypreferredstartingtimeform_template.h"
+#include "ui_addconstraintactivitypreferredstartingtimeform_template.h"
 #include "timetable_defs.h"
 #include "timetable.h"
 #include "fet.h"
@@ -35,7 +35,8 @@
 
 #include <QList>
 
-class AddConstraintActivityPreferredStartingTimeForm : public AddConstraintActivityPreferredStartingTimeForm_template  {
+class AddConstraintActivityPreferredStartingTimeForm : public QDialog, Ui::AddConstraintActivityPreferredStartingTimeForm_template  {
+	Q_OBJECT
 public:
 	AddConstraintActivityPreferredStartingTimeForm();
 	~AddConstraintActivityPreferredStartingTimeForm();
@@ -43,10 +44,12 @@ public:
 	void updatePeriodGroupBox();
 	void updateActivitiesComboBox();
 
+	bool filterOk(Activity* a);
+
+public slots:
 	void constraintChanged();
 	void addCurrentConstraint();
 	
-	bool filterOk(Activity* a);
 	void filterChanged();
 	
 private:

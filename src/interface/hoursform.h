@@ -13,15 +13,17 @@
 #ifndef HOURSFORM_H
 #define HOURSFORM_H
 
-#include "hoursform_template.h"
+#include "ui_hoursform_template.h"
 
-class HoursForm : public HoursForm_template
+class HoursForm : public QDialog, Ui::HoursForm_template
 {
+	Q_OBJECT
 public:
 	HoursForm();
 
 	~HoursForm();
 
+public slots:
 	void hoursChanged();
 	void ok();
 	void cancel();

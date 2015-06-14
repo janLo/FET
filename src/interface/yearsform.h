@@ -13,14 +13,16 @@
 #ifndef YEARSFORM_H
 #define YEARSFORM_H
 
-#include "yearsform_template.h"
+#include "ui_yearsform_template.h"
 
-class YearsForm : public YearsForm_template
+class YearsForm : public QDialog, Ui::YearsForm_template
 {
+	Q_OBJECT
 public:
 	YearsForm();
 	~YearsForm();
 
+public slots:
 	void addYear();
 	void removeYear();
 	void modifyYear();

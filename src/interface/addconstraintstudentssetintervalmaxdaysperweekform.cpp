@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "longtextmessagebox.h"
+
 #include "addconstraintstudentssetintervalmaxdaysperweekform.h"
 #include "timeconstraint.h"
 
@@ -26,6 +28,16 @@
 
 AddConstraintStudentsSetIntervalMaxDaysPerWeekForm::AddConstraintStudentsSetIntervalMaxDaysPerWeekForm()
 {
+     setupUi(this);
+
+//    connect(weightLineEdit, SIGNAL(textChanged(QString)), this /*AddConstraintStudentsSetIntervalMaxDaysPerWeekForm_template*/, SLOT(constraintChanged()));
+    connect(addConstraintPushButton, SIGNAL(clicked()), this /*AddConstraintStudentsSetIntervalMaxDaysPerWeekForm_template*/, SLOT(addCurrentConstraint()));
+    connect(closePushButton, SIGNAL(clicked()), this /*AddConstraintStudentsSetIntervalMaxDaysPerWeekForm_template*/, SLOT(close()));
+//    connect(studentsComboBox, SIGNAL(activated(QString)), this /*AddConstraintStudentsSetIntervalMaxDaysPerWeekForm_template*/, SLOT(constraintChanged()));
+//    connect(maxDaysSpinBox, SIGNAL(valueChanged(int)), this /*AddConstraintStudentsSetIntervalMaxDaysPerWeekForm_template*/, SLOT(constraintChanged()));
+//    connect(startHourComboBox, SIGNAL(activated(QString)), this /*AddConstraintStudentsSetIntervalMaxDaysPerWeekForm_template*/, SLOT(constraintChanged()));
+//    connect(endHourComboBox, SIGNAL(activated(QString)), this /*AddConstraintStudentsSetIntervalMaxDaysPerWeekForm_template*/, SLOT(constraintChanged()));
+
 	//setWindowFlags(Qt::Window);
 	/*setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 	QDesktopWidget* desktop=QApplication::desktop();
@@ -34,6 +46,14 @@ AddConstraintStudentsSetIntervalMaxDaysPerWeekForm::AddConstraintStudentsSetInte
 	move(xx, yy);*/
 	centerWidgetOnScreen(this);
 	
+	QSize tmp2=studentsComboBox->minimumSizeHint();
+	Q_UNUSED(tmp2);
+
+	QSize tmp5=startHourComboBox->minimumSizeHint();
+	Q_UNUSED(tmp5);
+	QSize tmp6=endHourComboBox->minimumSizeHint();
+	Q_UNUSED(tmp6);
+
 	updateMaxDaysSpinBox();
 	updateStudentsComboBox();
 	updateStartHoursComboBox();
@@ -91,7 +111,7 @@ void AddConstraintStudentsSetIntervalMaxDaysPerWeekForm::updateEndHoursComboBox(
 }
 
 void AddConstraintStudentsSetIntervalMaxDaysPerWeekForm::constraintChanged()
-{
+{/*
 	QString s;
 	s+=tr("Current constraint:");
 	s+="\n";
@@ -116,7 +136,7 @@ void AddConstraintStudentsSetIntervalMaxDaysPerWeekForm::constraintChanged()
 	s+=tr("Max days per week=%1").arg(maxDaysSpinBox->value());
 	s+="\n";
 
-	currentConstraintTextEdit->setText(s);
+	currentConstraintTextEdit->setText(s);*/
 }
 
 void AddConstraintStudentsSetIntervalMaxDaysPerWeekForm::addCurrentConstraint()
@@ -173,8 +193,8 @@ void AddConstraintStudentsSetIntervalMaxDaysPerWeekForm::addCurrentConstraint()
 
 	bool tmp2=gt.rules.addTimeConstraint(ctr);
 	if(tmp2)
-		QMessageBox::information(this, tr("FET information"),
-			tr("Constraint added"));
+		LongTextMessageBox::information(this, tr("FET information"),
+			tr("Constraint added:")+"\n\n"+ctr->getDetailedDescription(gt.rules));
 	else{
 		QMessageBox::warning(this, tr("FET information"),
 			tr("Constraint NOT added - please report error"));

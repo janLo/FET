@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "longtextmessagebox.h"
+
 #include "constraintactivitiesendstudentsdayform.h"
 #include "addconstraintactivitiesendstudentsdayform.h"
 #include "modifyconstraintactivitiesendstudentsdayform.h"
@@ -23,6 +25,16 @@
 
 ConstraintActivitiesEndStudentsDayForm::ConstraintActivitiesEndStudentsDayForm()
 {
+    setupUi(this);
+
+    connect(constraintsListBox, SIGNAL(highlighted(int)), this /*ConstraintActivitiesEndStudentsDayForm_template*/, SLOT(constraintChanged(int)));
+    connect(addConstraintPushButton, SIGNAL(clicked()), this /*ConstraintActivitiesEndStudentsDayForm_template*/, SLOT(addConstraint()));
+    connect(closePushButton, SIGNAL(clicked()), this /*ConstraintActivitiesEndStudentsDayForm_template*/, SLOT(close()));
+    connect(removeConstraintPushButton, SIGNAL(clicked()), this /*ConstraintActivitiesEndStudentsDayForm_template*/, SLOT(removeConstraint()));
+    connect(modifyConstraintPushButton, SIGNAL(clicked()), this /*ConstraintActivitiesEndStudentsDayForm_template*/, SLOT(modifyConstraint()));
+    connect(constraintsListBox, SIGNAL(selected(QString)), this /*ConstraintActivitiesEndStudentsDayForm_template*/, SLOT(modifyConstraint()));
+
+
 	//setWindowFlags(Qt::Window);
 	/*setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 	QDesktopWidget* desktop=QApplication::desktop();
@@ -78,23 +90,25 @@ void ConstraintActivitiesEndStudentsDayForm::constraintChanged(int index)
 
 void ConstraintActivitiesEndStudentsDayForm::addConstraint()
 {
-	AddConstraintActivitiesEndStudentsDayForm *form=new AddConstraintActivitiesEndStudentsDayForm();
-	form->exec();
+	AddConstraintActivitiesEndStudentsDayForm form;
+	form.exec();
 
 	this->refreshConstraintsListBox();
+	
+	constraintsListBox->setCurrentItem(constraintsListBox->count()-1);
 }
 
 void ConstraintActivitiesEndStudentsDayForm::modifyConstraint()
 {
 	int i=constraintsListBox->currentItem();
 	if(i<0){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected constraint"));
+		QMessageBox::information(this, tr("FET information"), tr("Invalid selected constraint"));
 		return;
 	}
 	TimeConstraint* ctr=this->visibleConstraintsList.at(i);
 
-	ModifyConstraintActivitiesEndStudentsDayForm *form=new ModifyConstraintActivitiesEndStudentsDayForm((ConstraintActivitiesEndStudentsDay*)ctr);
-	form->exec();
+	ModifyConstraintActivitiesEndStudentsDayForm form((ConstraintActivitiesEndStudentsDay*)ctr);
+	form.exec();
 
 	this->refreshConstraintsListBox();
 	
@@ -105,17 +119,18 @@ void ConstraintActivitiesEndStudentsDayForm::removeConstraint()
 {
 	int i=constraintsListBox->currentItem();
 	if(i<0){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected constraint"));
+		QMessageBox::information(this, tr("FET information"), tr("Invalid selected constraint"));
 		return;
 	}
 	TimeConstraint* ctr=this->visibleConstraintsList.at(i);
 	QString s;
-	s=QObject::tr("Removing constraint:\n");
+	s=tr("Remove constraint?");
+	s+="\n\n";
 	s+=ctr->getDetailedDescription(gt.rules);
-	s+=QObject::tr("\nAre you sure?");
+	//s+=tr("\nAre you sure?");
 
-	switch( QMessageBox::warning( this, QObject::tr("FET warning"),
-		s, QObject::tr("OK"), QObject::tr("Cancel"), 0, 0, 1 ) ){
+	switch( LongTextMessageBox::confirmation( this, tr("FET confirmation"),
+		s, tr("Yes"), tr("No"), 0, 0, 1 ) ){
 	case 0: // The user clicked the OK again button or pressed Enter
 		gt.rules.removeTimeConstraint(ctr);
 		this->refreshConstraintsListBox();
@@ -123,4 +138,9 @@ void ConstraintActivitiesEndStudentsDayForm::removeConstraint()
 	case 1: // The user clicked the Cancel or pressed Escape
 		break;
 	}
+
+	if((uint)(i) >= constraintsListBox->count())
+		i=constraintsListBox->count()-1;
+	constraintsListBox->setCurrentItem(i);
+	
 }

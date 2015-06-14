@@ -1327,7 +1327,7 @@ Versions 5.8.0 - 5.8.1
 	- Added a sample file from Azu Boba.
 	- The index.html links now open in the same window (suggested by daviodan).
 ---------------------------------------------------------------------------------
-Versions 5.9.0 - 5.9.x
+Versions 5.9.0 - 5.9.4
 - Version 5.9.0
 	- Added multiple activity tags for a single activity.
 	- It is now possible to edit a single subactivity.
@@ -1346,4 +1346,101 @@ Versions 5.9.0 - 5.9.x
 	- Crash bug fix for constraint min gaps between activities with weight below 100%.
 	- Bug fix in students early constraint - not critical bug.
 	- Updates in Arabic translation.
+- Version 5.9.2
+	- Crash bug fix when importing activities (reported by Thomas Schwartz).
+	- Improvements and corrections in the import filter.
+- Version 5.9.3
+	- Added constraint activity tag preferred room(s) - suggested by Horatiu Halmajan and Catalin Maican
+- Version 5.9.4
+	- Added the Russian translation (incomplete) - by Ilya V. Paramonov
+	- Added the Persian translation (incomplete) - by Hamed SadeghiNeshat
+	- Minor bug fix by Volker Dirr - highlighting the same teacher or student set, for html level >= 5, did not work
+	correctly for advanced statistics export.
+	- Improved compilation time and memory consumption by modifying the data reading and parsing routines
+	(additional checking/tests needed here).
+	- Minor memory leak fix (normally, not noticeable).
+	- Minor interface bug fix (description of constraint teacher max gaps per day displayed incorrectly information about the
+	gaps, writing "per week" instead of "per day").
+	- Modified the order of search for translation files (firstly in current directory, then in current directory/translations,
+	then, under Unix-like, in /usr/share/fet/translations).
+---------------------------------------------------------------------------------
+Versions 5.10.0 - 5.10.3
+- Version 5.10.0
+	- Leaking bugs fixed (closed Qt widgets were not removed).
+	- Bug fix in generation algorithm. This bug is not seen in practice, but the code in generate.cpp was incorrect in a minor portion.
+	Specifically, it corrected tests done when the user has constraints of type students early max beginnings at second hour,
+	without max gaps per week for students, with max or min hours daily for students.
+	- Added constraint teachers max days per week (suggested by Marco Barsotti).
+	- Made the results directory customizable (user can choose it) - suggested by Massimo Mancini. Important: under Windows,
+	the default location is not the usual one, but $HOME\fet-results (C:\Documents and Settings\username\fet-results
+	or C:\Users\username\fet-results)
+	- Fixed a bug: if user deactivated some activities, in some cases he could not generate a timetable (if using preferred times
+	for (sub)activities).
+	- Added a filter in add and modify dialogs constraints activities not overlapping (suggested by Yush Yuen).
+	- Added a new feature in the timetable generate dialog, which allows you to see the time when the highest
+	number of activities was placed (suggested by Yush Yuen).
+	- Added a Catalan translation of the manual, by Joan de Gracia.
+	- Changed the name of the html timetable files.
+	- Corrected many translations' layout (by Liviu Lalescu).
+	- Added a new test for inconsitency for indirect links between constraints actvities same starting time
+	(suggested by Silvia).
+	- Minor improvement - in students statistics menu, user can select to view complete structure (duplicates enabled)
+	or canonical structure.
+	- Interface improvement - dialogs when removing the constraints or adding them are improved, so that they are not
+	very large for large constraints.
+	- Selection mode in constraints not available and preferred slots is improved - you can click table header
+	(suggested by Massimo Mancini).
+	- Minor other interface improvements.
+	- Export warns if existing files (suggested by Angela).
+	- Changed directory of sample inputs to 'examples'.
+	- Added a 'Related' checkbox in activities and subactivities dialogs (suggested by Bingen).
+	- Speed improvement in some precomputing situations (not in generation).
+	- Improved size for constraints with combo boxes of very large activities (suggested by Bingen).
+- Version 5.10.1
+	- Speed improvement if user has constraints activities same starting time. Idea and partial code by Volker Dirr.
+	- Added possibility to print activities with same starting time in the html timetables (suggested on the forum, implemented by Volker Dirr).
+	- Minor interface improments under GNU/Linux. The combo boxes are now smaller.
+	- Modified the main menu arrangement of constraints (suggested by Massimo Mancini).
+	- Crash bug fix (very rare, if user pressed cancel immediately after hitting generation start in timetable generate dialog).
+	- Added another sample file (by T. Renganathan).
+- Version 5.10.2
+	- Speed improvement if user has constraints activities same starting time, 2 activities consecutive and 2 activities ordered and
+	 activities not overlapping (idea and partial code by Volker Dirr). In some cases, the speed improvement is very high. This has to
+	 do with the initial ordering of the activities.
+	- Other minor speed improvements (idea and partial code by Volker Dirr).
+	- Added a Persian manual by Hamed SadeghiNeshat.
+- Version 5.10.3
+	- Added 2 new constraints: three activities grouped, max days between activities (suggested by Zsolt Udvari).
+	- Improved the names of constraints: "2" activities grouped, ordered and consecutive are now "two" activities grouped, ordered and consecutive.
+	- Code cleanup.
+	- Added a new Italian sample file, by Marco.
+---------------------------------------------------------------------------------
+Versions 5.11.0 - 5.11.x
+- Version 5.11.0
+	- Updated to Qt 4.5.2
+	- Converted all dialogs to Qt 4 Designer files - suggested by George Miliotis.
+	Compilation time is now shorter and intermediary and executable files are smaller.
+	- Added constraint teacher(s) min days per week (suggested by several users).
+	- Added constraint teacher(s) or students (set) for an activity tag maximum hours daily (suggested by several users).
+	It is not perfect and must be enabled from settings menu.
+	- Added constraint students (set) max gaps per day. It is not perfect and must be enabled from settings menu.
+	- Very rare crash bug fix (reported by Marco Barsotti).
+	- Constraint room not available times permits now multiple constraints for the same room (so, you can use multiple constraints with
+	 different weights and preferences for the same room).
+	- In add/modify activity and modify subactivity dialogs, the students are displayed in a tree-like structure (suggested by George Miliotis).
+	- In all constraints dialogs, added a nice filter (suggested by daviodan).
+	- Changed name of constraint: MinNDaysBetweenActivities becomes MinDaysBetweenActivities.
+	- Added a count for activities list and constraints list.
+	- The constraints with tables now contain an X (nicer look), also centered nicely, and they have colors (which can be enabled in settings)
+	- The timetables view forms now center text in cells.
+	- Many other minor interface improvements.
+	- Rewritten the Catalan translation by Silvia. It is very complete, check it out.
+	- Added a new Greek sample file, by George Miliotis.
+	- Updated and improved Persian translation by sally sat.
+	- Dropped <!DOCTYPE FET> tag in the .fet files - following general recommendations, and changed FET tag to fet tag. Of course you can open older files.
+	- Improved activities simple description (suggested by Massimo Mancini and alfaromeo).
+	- Added possibility to save the highest stage timetable (suggested by alfaromeo, pinco and Massimo Mancini).
+	- Added a new Romanian sample file, by Horatiu Halmajan.
+	- Updated translations: Russian, German, Romanian, Italian, Spanish.
+	- The timetable view dialogs now have resizeable widgets (you can drag the sections with the mouse) - suggested by Ben Bauer.
 	

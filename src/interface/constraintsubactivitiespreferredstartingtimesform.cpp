@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "longtextmessagebox.h"
+
 #include "constraintsubactivitiespreferredstartingtimesform.h"
 #include "addconstraintsubactivitiespreferredstartingtimesform.h"
 #include "modifyconstraintsubactivitiespreferredstartingtimesform.h"
@@ -23,6 +25,17 @@
 
 ConstraintSubactivitiesPreferredStartingTimesForm::ConstraintSubactivitiesPreferredStartingTimesForm()
 {
+    setupUi(this);
+
+    connect(constraintsListBox, SIGNAL(highlighted(int)), this /*ConstraintSubactivitiesPreferredStartingTimesForm_template*/, SLOT(constraintChanged(int)));
+    connect(addConstraintPushButton, SIGNAL(clicked()), this /*ConstraintSubactivitiesPreferredStartingTimesForm_template*/, SLOT(addConstraint()));
+    connect(closePushButton, SIGNAL(clicked()), this /*ConstraintSubactivitiesPreferredStartingTimesForm_template*/, SLOT(close()));
+    connect(removeConstraintPushButton, SIGNAL(clicked()), this /*ConstraintSubactivitiesPreferredStartingTimesForm_template*/, SLOT(removeConstraint()));
+    connect(modifyConstraintPushButton, SIGNAL(clicked()), this /*ConstraintSubactivitiesPreferredStartingTimesForm_template*/, SLOT(modifyConstraint()));
+    connect(constraintsListBox, SIGNAL(selected(QString)), this /*ConstraintSubactivitiesPreferredStartingTimesForm_template*/, SLOT(modifyConstraint()));
+    connect(helpPushButton, SIGNAL(clicked()), this /*ConstraintSubactivitiesPreferredStartingTimesForm_template*/, SLOT(help()));
+
+
 	//setWindowFlags(Qt::Window);
 	/*setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 	QDesktopWidget* desktop=QApplication::desktop();
@@ -78,23 +91,25 @@ void ConstraintSubactivitiesPreferredStartingTimesForm::constraintChanged(int in
 
 void ConstraintSubactivitiesPreferredStartingTimesForm::addConstraint()
 {
-	AddConstraintSubactivitiesPreferredStartingTimesForm *form=new AddConstraintSubactivitiesPreferredStartingTimesForm();
-	form->exec();
+	AddConstraintSubactivitiesPreferredStartingTimesForm form;
+	form.exec();
 
 	this->refreshConstraintsListBox();
+	
+	constraintsListBox->setCurrentItem(constraintsListBox->count()-1);
 }
 
 void ConstraintSubactivitiesPreferredStartingTimesForm::modifyConstraint()
 {
 	int i=constraintsListBox->currentItem();
 	if(i<0){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected constraint"));
+		QMessageBox::information(this, tr("FET information"), tr("Invalid selected constraint"));
 		return;
 	}
 	TimeConstraint* ctr=this->visibleConstraintsList.at(i);
 
-	ModifyConstraintSubactivitiesPreferredStartingTimesForm *form=new ModifyConstraintSubactivitiesPreferredStartingTimesForm((ConstraintSubactivitiesPreferredStartingTimes*)ctr);
-	form->exec();
+	ModifyConstraintSubactivitiesPreferredStartingTimesForm form((ConstraintSubactivitiesPreferredStartingTimes*)ctr);
+	form.exec();
 
 	this->refreshConstraintsListBox();
 	
@@ -105,17 +120,18 @@ void ConstraintSubactivitiesPreferredStartingTimesForm::removeConstraint()
 {
 	int i=constraintsListBox->currentItem();
 	if(i<0){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected constraint"));
+		QMessageBox::information(this, tr("FET information"), tr("Invalid selected constraint"));
 		return;
 	}
 	TimeConstraint* ctr=this->visibleConstraintsList.at(i);
 	QString s;
-	s=QObject::tr("Removing constraint:\n");
+	s=tr("Remove constraint?");
+	s+="\n\n";
 	s+=ctr->getDetailedDescription(gt.rules);
-	s+=QObject::tr("\nAre you sure?");
+	//s+=tr("\nAre you sure?");
 
-	switch( QMessageBox::warning( this, QObject::tr("FET warning"),
-		s, QObject::tr("OK"), QObject::tr("Cancel"), 0, 0, 1 ) ){
+	switch( LongTextMessageBox::confirmation( this, tr("FET confirmation"),
+		s, tr("Yes"), tr("No"), 0, 0, 1 ) ){
 	case 0: // The user clicked the OK again button or pressed Enter
 		gt.rules.removeTimeConstraint(ctr);
 		this->refreshConstraintsListBox();
@@ -123,11 +139,15 @@ void ConstraintSubactivitiesPreferredStartingTimesForm::removeConstraint()
 	case 1: // The user clicked the Cancel or pressed Escape
 		break;
 	}
+
+	if((uint)(i) >= constraintsListBox->count())
+		i=constraintsListBox->count()-1;
+	constraintsListBox->setCurrentItem(i);
 }
 
 void ConstraintSubactivitiesPreferredStartingTimesForm::help()
 {
-	QMessageBox::information(this, tr("FET help"), tr(
+	LongTextMessageBox::largeInformation(this, tr("FET help"), tr(
 	 "This constraint is used to specify that for some components of a type of"
 	" activities, for instance for Mathematics activities, you need that from say 4-5"
 	" per week, at least the first 2 to start early (say in the first 4 hours).")+
@@ -143,5 +163,7 @@ void ConstraintSubactivitiesPreferredStartingTimesForm::help()
 	 tr("Note: if an activity does not belong to a larger group (is a single activity),"
 	 " it is considered to have component number 1. As an advice, if you have activities of say Biology splitted into 1"
 	 " or 2 per week and want to constrain only one component if there are 2 per week, add a constraint for Biology with component number=2")
-	 );
+	 +"\n\n"+
+	 tr("Note: if a teacher or a students set cannot have lessons in some slots because of this constraint, gaps will be counted (if you have max gaps constraints)"
+ 	  ". So be careful if you add this constraint for all sub-activities, for only a teacher or for only a students set"));
 }

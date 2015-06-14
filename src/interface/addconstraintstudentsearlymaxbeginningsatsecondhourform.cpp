@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "longtextmessagebox.h"
+
 #include "addconstraintstudentsearlymaxbeginningsatsecondhourform.h"
 #include "timeconstraint.h"
 
@@ -24,10 +26,15 @@
 
 #include <QDesktopWidget>
 
-//#define yesNo(x)	((x)==0?tr("no"):tr("yes"))
-
 AddConstraintStudentsEarlyMaxBeginningsAtSecondHourForm::AddConstraintStudentsEarlyMaxBeginningsAtSecondHourForm()
 {
+    setupUi(this);
+
+//    connect(weightLineEdit, SIGNAL(textChanged(QString)), this, SLOT(constraintChanged()));
+    connect(addConstraintPushButton, SIGNAL(clicked()), this, SLOT(addCurrentConstraint()));
+    connect(closePushButton, SIGNAL(clicked()), this, SLOT(close()));
+//    connect(maxBeginningsSpinBox, SIGNAL(valueChanged(int)), this, SLOT(constraintChanged()));
+
 	//setWindowFlags(Qt::Window);
 	/*setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 	QDesktopWidget* desktop=QApplication::desktop();
@@ -49,7 +56,7 @@ AddConstraintStudentsEarlyMaxBeginningsAtSecondHourForm::~AddConstraintStudentsE
 
 void AddConstraintStudentsEarlyMaxBeginningsAtSecondHourForm::constraintChanged()
 {
-	QString s;
+/*	QString s;
 	s+=tr("Current constraint:");
 	s+="\n";
 
@@ -59,17 +66,11 @@ void AddConstraintStudentsEarlyMaxBeginningsAtSecondHourForm::constraintChanged(
 	s+=tr("Weight percentage=%1\%").arg(weight);
 	s+="\n";
 
-	/*bool compulsory=false;
-	if(compulsoryCheckBox->isChecked())
-		compulsory=true;
-	s+=tr("Compulsory=%1").arg(yesNo(compulsory));
-	s+="\n";*/
-
 	s+=tr("Students must begin activities early, with maximum %1 beginnings at the second available hour, per week (not available and break not counted)")
 	 .arg(maxBeginningsSpinBox->value());
 	s+="\n";
 
-	currentConstraintTextEdit->setText(s);
+	currentConstraintTextEdit->setText(s);*/
 }
 
 void AddConstraintStudentsEarlyMaxBeginningsAtSecondHourForm::addCurrentConstraint()
@@ -98,8 +99,8 @@ void AddConstraintStudentsEarlyMaxBeginningsAtSecondHourForm::addCurrentConstrai
 
 	bool tmp2=gt.rules.addTimeConstraint(ctr);
 	if(tmp2)
-		QMessageBox::information(this, tr("FET information"),
-			tr("Constraint added."));
+		LongTextMessageBox::information(this, tr("FET information"),
+			tr("Constraint added:")+"\n\n"+ctr->getDetailedDescription(gt.rules));
 	else{
 		QMessageBox::warning(this, tr("FET information"),
 			tr("Constraint NOT added - please report error"));

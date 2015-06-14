@@ -18,7 +18,7 @@
 #ifndef CONSTRAINTTEACHERMAXGAPSPERDAYFORM_H
 #define CONSTRAINTTEACHERMAXGAPSPERDAYFORM_H
 
-#include "constraintteachermaxgapsperdayform_template.h"
+#include "ui_constraintteachermaxgapsperdayform_template.h"
 #include "timetable_defs.h"
 #include "timetable.h"
 #include "fet.h"
@@ -33,21 +33,23 @@
 #include <q3textedit.h>
 #include <q3listbox.h>
 
-class ConstraintTeacherMaxGapsPerDayForm : public ConstraintTeacherMaxGapsPerDayForm_template  {
+class ConstraintTeacherMaxGapsPerDayForm : public QDialog, Ui::ConstraintTeacherMaxGapsPerDayForm_template  {
+	Q_OBJECT
 public:
 	TimeConstraintsList visibleConstraintsList;
 
 	ConstraintTeacherMaxGapsPerDayForm();
 	~ConstraintTeacherMaxGapsPerDayForm();
 
+	bool filterOk(TimeConstraint* ctr);
+
+public slots:
 	void constraintChanged(int index);
 	void addConstraint();
 	void modifyConstraint();
 	void removeConstraint();
 
 	void filterChanged();
-
-	bool filterOk(TimeConstraint* ctr);
 };
 
 #endif

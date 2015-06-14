@@ -13,6 +13,8 @@
 #ifndef TEACHER_H
 #define TEACHER_H
 
+#include <QCoreApplication>
+
 #include "timetable_defs.h"
 
 #include <qstring.h>
@@ -21,6 +23,8 @@
 class Teacher;
 class Rules;
 
+#include <QList>
+
 typedef QList<Teacher*> TeachersList;
 
 /**
@@ -28,6 +32,8 @@ typedef QList<Teacher*> TeachersList;
 */
 class Teacher
 {
+	Q_DECLARE_TR_FUNCTIONS(Teacher)
+	
 public:
 	QList<qint16> activitiesForTeacher;
 

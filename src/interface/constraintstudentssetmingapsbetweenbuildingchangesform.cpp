@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "longtextmessagebox.h"
+
 #include "constraintstudentssetmingapsbetweenbuildingchangesform.h"
 #include "addconstraintstudentssetmingapsbetweenbuildingchangesform.h"
 #include "modifyconstraintstudentssetmingapsbetweenbuildingchangesform.h"
@@ -23,6 +25,17 @@
 
 ConstraintStudentsSetMinGapsBetweenBuildingChangesForm::ConstraintStudentsSetMinGapsBetweenBuildingChangesForm()
 {
+    setupUi(this);
+
+    connect(constraintsListBox, SIGNAL(highlighted(int)), this /*ConstraintStudentsSetMinGapsBetweenBuildingChangesForm_template*/, SLOT(constraintChanged(int)));
+    connect(addConstraintPushButton, SIGNAL(clicked()), this /*ConstraintStudentsSetMinGapsBetweenBuildingChangesForm_template*/, SLOT(addConstraint()));
+    connect(closePushButton, SIGNAL(clicked()), this /*ConstraintStudentsSetMinGapsBetweenBuildingChangesForm_template*/, SLOT(close()));
+    connect(removeConstraintPushButton, SIGNAL(clicked()), this /*ConstraintStudentsSetMinGapsBetweenBuildingChangesForm_template*/, SLOT(removeConstraint()));
+    connect(modifyConstraintPushButton, SIGNAL(clicked()), this /*ConstraintStudentsSetMinGapsBetweenBuildingChangesForm_template*/, SLOT(modifyConstraint()));
+    connect(studentsComboBox, SIGNAL(activated(QString)), this /*ConstraintStudentsSetMinGapsBetweenBuildingChangesForm_template*/, SLOT(filterChanged()));
+    connect(constraintsListBox, SIGNAL(selected(QString)), this /*ConstraintStudentsSetMinGapsBetweenBuildingChangesForm_template*/, SLOT(modifyConstraint()));
+
+
 	//setWindowFlags(Qt::Window);
 	/*setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 	QDesktopWidget* desktop=QApplication::desktop();
@@ -30,6 +43,9 @@ ConstraintStudentsSetMinGapsBetweenBuildingChangesForm::ConstraintStudentsSetMin
 	int yy=desktop->height()/2 - frameGeometry().height()/2;
 	move(xx, yy);*/
 	centerWidgetOnScreen(this);
+
+	QSize tmp2=studentsComboBox->minimumSizeHint();
+	Q_UNUSED(tmp2);
 	
 	studentsComboBox->insertItem("");
 
@@ -88,8 +104,8 @@ void ConstraintStudentsSetMinGapsBetweenBuildingChangesForm::constraintChanged(i
 
 void ConstraintStudentsSetMinGapsBetweenBuildingChangesForm::addConstraint()
 {
-	AddConstraintStudentsSetMinGapsBetweenBuildingChangesForm *form=new AddConstraintStudentsSetMinGapsBetweenBuildingChangesForm();
-	form->exec();
+	AddConstraintStudentsSetMinGapsBetweenBuildingChangesForm form;
+	form.exec();
 
 	filterChanged();
 	
@@ -100,14 +116,13 @@ void ConstraintStudentsSetMinGapsBetweenBuildingChangesForm::modifyConstraint()
 {
 	int i=constraintsListBox->currentItem();
 	if(i<0){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected constraint"));
+		QMessageBox::information(this, tr("FET information"), tr("Invalid selected constraint"));
 		return;
 	}
 	SpaceConstraint* ctr=this->visibleConstraintsList.at(i);
 
-	ModifyConstraintStudentsSetMinGapsBetweenBuildingChangesForm *form
-	 = new ModifyConstraintStudentsSetMinGapsBetweenBuildingChangesForm((ConstraintStudentsSetMinGapsBetweenBuildingChanges*)ctr);
-	form->exec();
+	ModifyConstraintStudentsSetMinGapsBetweenBuildingChangesForm form((ConstraintStudentsSetMinGapsBetweenBuildingChanges*)ctr);
+	form.exec();
 
 	filterChanged();
 	constraintsListBox->setCurrentItem(i);
@@ -117,17 +132,18 @@ void ConstraintStudentsSetMinGapsBetweenBuildingChangesForm::removeConstraint()
 {
 	int i=constraintsListBox->currentItem();
 	if(i<0){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected constraint"));
+		QMessageBox::information(this, tr("FET information"), tr("Invalid selected constraint"));
 		return;
 	}
 	SpaceConstraint* ctr=this->visibleConstraintsList.at(i);
 	QString s;
-	s=QObject::tr("Removing constraint:\n");
+	s=tr("Remove constraint?");
+	s+="\n\n";
 	s+=ctr->getDetailedDescription(gt.rules);
-	s+=QObject::tr("\nAre you sure?");
+	//s+=tr("\nAre you sure?");
 
-	switch( QMessageBox::warning( this, QObject::tr("FET warning"),
-		s, QObject::tr("OK"), QObject::tr("Cancel"), 0, 0, 1 ) ){
+	switch( LongTextMessageBox::confirmation( this, tr("FET confirmation"),
+		s, tr("Yes"), tr("No"), 0, 0, 1 ) ){
 	case 0: // The user clicked the OK again button or pressed Enter
 		gt.rules.removeSpaceConstraint(ctr);
 		filterChanged();

@@ -29,6 +29,12 @@
 
 ModifyConstraintActivityPreferredRoomForm::ModifyConstraintActivityPreferredRoomForm(ConstraintActivityPreferredRoom* ctr)
 {
+    setupUi(this);
+
+    connect(cancelPushButton, SIGNAL(clicked()), this /*ModifyConstraintActivityPreferredRoomForm_template*/, SLOT(cancel()));
+    connect(okPushButton, SIGNAL(clicked()), this /*ModifyConstraintActivityPreferredRoomForm_template*/, SLOT(ok()));
+
+
 	//setWindowFlags(Qt::Window);
 	/*setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 	QDesktopWidget* desktop=QApplication::desktop();
@@ -36,6 +42,13 @@ ModifyConstraintActivityPreferredRoomForm::ModifyConstraintActivityPreferredRoom
 	int yy=desktop->height()/2 - frameGeometry().height()/2;
 	move(xx, yy);*/
 	centerWidgetOnScreen(this);
+
+	QSize tmp5=roomsComboBox->minimumSizeHint();
+	Q_UNUSED(tmp5);
+	QSize tmp6=activitiesComboBox->minimumSizeHint();
+	Q_UNUSED(tmp6);
+	
+	activitiesComboBox->setMaximumWidth(maxRecommendedWidth(this));
 	
 	//permTextLabel->setWordWrap(true);
 	
@@ -95,8 +108,8 @@ void ModifyConstraintActivityPreferredRoomForm::ok()
 	QString tmp=weightLineEdit->text();
 	sscanf(tmp, "%lf", &weight);
 	if(weight<0.0 || weight>100){
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Invalid weight"));
+		QMessageBox::warning(this, tr("FET information"),
+			tr("Invalid weight"));
 		return;
 	}
 
@@ -106,16 +119,16 @@ void ModifyConstraintActivityPreferredRoomForm::ok()
 
 	int i=activitiesComboBox->currentItem();
 	if(i<0 || activitiesComboBox->count()<=0){
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Invalid activity"));
+		QMessageBox::warning(this, tr("FET information"),
+			tr("Invalid activity"));
 		return;
 	}
 	Activity* act=gt.rules.activitiesList.at(i);
 
 	i=roomsComboBox->currentItem();
 	if(i<0 || roomsComboBox->count()<=0){
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Invalid room"));
+		QMessageBox::warning(this, tr("FET information"),
+			tr("Invalid room"));
 		return;
 	}
 	QString room=roomsComboBox->currentText();

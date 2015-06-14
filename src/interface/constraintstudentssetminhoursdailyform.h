@@ -18,7 +18,7 @@
 #ifndef CONSTRAINTSTUDENTSSETMINHOURSDAILYFORM_H
 #define CONSTRAINTSTUDENTSSETMINHOURSDAILYFORM_H
 
-#include "constraintstudentssetminhoursdailyform_template.h"
+#include "ui_constraintstudentssetminhoursdailyform_template.h"
 #include "timetable_defs.h"
 #include "timetable.h"
 #include "fet.h"
@@ -34,21 +34,23 @@
 #include <q3textedit.h>
 #include <q3listbox.h>
 
-class ConstraintStudentsSetMinHoursDailyForm : public ConstraintStudentsSetMinHoursDailyForm_template  {
+class ConstraintStudentsSetMinHoursDailyForm : public QDialog, Ui::ConstraintStudentsSetMinHoursDailyForm_template  {
+	Q_OBJECT
 public:
 	TimeConstraintsList visibleConstraintsList;
 
 	ConstraintStudentsSetMinHoursDailyForm();
 	~ConstraintStudentsSetMinHoursDailyForm();
 
+	bool filterOk(TimeConstraint* ctr);
+
+public slots:
 	void constraintChanged(int index);
 	void addConstraint();
 	void modifyConstraint();
 	void removeConstraint();
 
 	void filterChanged();
-
-	bool filterOk(TimeConstraint* ctr);
 };
 
 #endif

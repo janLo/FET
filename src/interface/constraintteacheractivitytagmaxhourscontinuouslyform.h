@@ -18,7 +18,7 @@
 #ifndef CONSTRAINTTEACHERACTIVITYTAGMAXHOURSCONTINUOUSLYFORM_H
 #define CONSTRAINTTEACHERACTIVITYTAGMAXHOURSCONTINUOUSLYFORM_H
 
-#include "constraintteacheractivitytagmaxhourscontinuouslyform_template.h"
+#include "ui_constraintteacheractivitytagmaxhourscontinuouslyform_template.h"
 #include "timetable_defs.h"
 #include "timetable.h"
 #include "fet.h"
@@ -34,21 +34,23 @@
 #include <q3textedit.h>
 #include <q3listbox.h>
 
-class ConstraintTeacherActivityTagMaxHoursContinuouslyForm : public ConstraintTeacherActivityTagMaxHoursContinuouslyForm_template  {
+class ConstraintTeacherActivityTagMaxHoursContinuouslyForm : public QDialog, Ui::ConstraintTeacherActivityTagMaxHoursContinuouslyForm_template  {
+	Q_OBJECT
 public:
 	TimeConstraintsList visibleConstraintsList;
 
 	ConstraintTeacherActivityTagMaxHoursContinuouslyForm();
 	~ConstraintTeacherActivityTagMaxHoursContinuouslyForm();
 
+	bool filterOk(TimeConstraint* ctr);
+
+public slots:
 	void constraintChanged(int index);
 	void addConstraint();
 	void modifyConstraint();
 	void removeConstraint();
 
 	void filterChanged();
-
-	bool filterOk(TimeConstraint* ctr);
 };
 
 #endif

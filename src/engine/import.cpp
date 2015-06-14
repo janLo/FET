@@ -4,7 +4,7 @@
    copyright            : (C) by Lalescu Liviu
     email                : Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)
  ***************************************************************************
-                          impot.cpp  -  description
+                          import.cpp  -  description
                              -------------------
     begin                : Mar 2008
     copyright            : (C) by Volker Dirr
@@ -61,6 +61,25 @@ static QString warnText;				// warnings about the csv file
 static QStringList dataWarning;			// warnings about the current conflicts between the csv file and the data that is already in memory
 static QString lastWarning;
 
+
+int Import::chooseWidth(int w)
+{
+	int ww=w;
+	if(ww>1000)
+		ww=1000;
+	
+	return ww;
+}
+
+int Import::chooseHeight(int h)
+{
+	int hh=h;
+	if(hh>650)
+		hh=650;
+	
+	return hh;
+}
+
 Import::Import()
 {
 	centerWidgetOnScreen(this);
@@ -90,9 +109,10 @@ void Import::prearrangement(){
 	fieldName[FIELD_TEACHERS_SET]=Import::tr("Teachers");
 	fieldName[FIELD_TOTAL_DURATION]=Import::tr("Total Duration");
 	fieldName[FIELD_SPLIT_DURATION]=Import::tr("Split Duration");
-	fieldName[FIELD_MIN_N_DAYS]=Import::tr("Min N Days");
-	fieldName[FIELD_MIN_N_DAYS_WEIGHT]=Import::tr("Min N Days Weight");
-	fieldName[FIELD_MIN_N_DAYS_CONSECUTIVE]=Import::tr("Min N Days Consecutive");
+	fieldName[FIELD_MIN_DAYS]=Import::tr("Min Days");
+	fieldName[FIELD_MIN_DAYS_WEIGHT]=Import::tr("Min Days Weight");
+	fieldName[FIELD_MIN_DAYS_CONSECUTIVE]=Import::tr("Min Days Consecutive");
+	fieldName[FIELD_ACTIVITY_TAGS_SET]=Import::tr("Activity Tags");
 	for(int i=0; i<NUMBER_OF_FIELDS; i++){
 		fieldNumber[i]=DO_NOT_IMPORT;
 		fieldDefaultItem[i]="";
@@ -107,7 +127,7 @@ void Import::prearrangement(){
 
 
 //TODO: add this into the first function!? form to full?!
-chooseFieldsDialog::chooseFieldsDialog(QWidget *parent): QDialog(parent)
+ChooseFieldsDialog::ChooseFieldsDialog(QWidget *parent): QDialog(parent)
 {
 	assert(fields.size()>0);
 
@@ -128,7 +148,13 @@ chooseFieldsDialog::chooseFieldsDialog(QWidget *parent): QDialog(parent)
 		fieldBox[i] = new QVBoxLayout();
 		fieldRadio1[i] = new QRadioButton(Import::tr("Don't import \"%1\".").arg(fieldName[i]));
 		fieldRadio2[i] = new QRadioButton(Import::tr("Import this field from CSV:"));
-		fieldRadio3[i] = new QRadioButton(Import::tr("Set always the same name:"));
+		
+		//trick to keep the translation active, maybe we need it in the future
+		QString s=Import::tr("Set always the same name:");
+		Q_UNUSED(s);
+		
+		//fieldRadio3[i] = new QRadioButton(Import::tr("Set always the same name:"));
+		fieldRadio3[i] = new QRadioButton(Import::tr("Set always the same value:")); //modified by Liviu on 18 March 2009
 		fieldRadio3b[i] = new QRadioButton(Import::tr("Set always the same value:"));
 
 		fieldLine1[i] = new QHBoxLayout();
@@ -145,9 +171,16 @@ chooseFieldsDialog::chooseFieldsDialog(QWidget *parent): QDialog(parent)
 		fieldRadio2[i]->setChecked(true);
 
 		fieldLine3Text[i] = new QLineEdit(Import::tr("Please modify this text."));
-		fieldLine3Text[i]->setMaximumWidth(220);		//max
+//		fieldLine3Text[i]->setMaximumWidth(220);		//max
 		fieldLine3[i] = new QHBoxLayout();
 		fieldLine3[i]->addWidget(fieldRadio3[i]);
+		
+		//Added by Liviu - 18 March 2009, so that the dialog looks nice when dialog is maximized
+		
+		//TODO: add this line or not???
+		fieldLine3[i]->addStretch();
+		//fieldLine3Text[i]->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Maximum);
+		
 		fieldLine3[i]->addWidget(fieldLine3Text[i]);
 		fieldBox[i]->addLayout(fieldLine3[i]);
 
@@ -206,19 +239,51 @@ chooseFieldsDialog::chooseFieldsDialog(QWidget *parent): QDialog(parent)
 			fieldRadio3[i]->hide();
 			fieldLine3Text[i]->hide();
 		}
+		
+		if(i==FIELD_TOTAL_DURATION){
+			fieldRadio1[i]->hide();
+			fieldLine3Text[i]->setText("1");
+		}
+		if(i==FIELD_SPLIT_DURATION){
+			fieldRadio1[i]->hide();
+			fieldLine3Text[i]->setText("1");
+		}
+		if(i==FIELD_MIN_DAYS){
+			fieldRadio1[i]->hide();
+			fieldLine3Text[i]->setText("1");
+		}
+		if(i==FIELD_MIN_DAYS_WEIGHT){
+			fieldRadio1[i]->hide();
+			fieldLine3Text[i]->setText("95");
+		}
+		if(i==FIELD_MIN_DAYS_CONSECUTIVE){
+			fieldRadio1[i]->hide();
+			fieldLine3Text[i]->setText("1");
+		}
 	}
 
 	gridRow++;
+	/*
 	pb=new QPushButton(tr("OK"));
 	chooseFieldsMainLayout->addWidget(pb,gridRow,1);
+	cancelpb=new QPushButton(tr("Cancel"));
+	chooseFieldsMainLayout->addWidget(cancelpb,gridRow,2);*/
+	pb=new QPushButton(tr("OK"));
+	cancelpb=new QPushButton(tr("Cancel"));
+	buttonsLayout=new QHBoxLayout();
+	buttonsLayout->addStretch();
+	buttonsLayout->addWidget(pb);
+	buttonsLayout->addWidget(cancelpb);
+	chooseFieldsMainLayout->addLayout(buttonsLayout,gridRow,1);
 
 	chooseFieldsDialogUpdateRadio1();
 	chooseFieldsDialogUpdateRadio2();
 	chooseFieldsDialogUpdateRadio3();
 	chooseFieldsDialogUpdateRadio3b();
 
-	connect(pb, SIGNAL(clicked()), this, SLOT(accept()));
+	//connect(pb, SIGNAL(clicked()), this, SLOT(accept()));
 	connect(pb, SIGNAL(clicked()), this, SLOT(chooseFieldsDialogClose()));
+	connect(cancelpb, SIGNAL(clicked()), this, SLOT(reject()));
 	for(int i=1; i<NUMBER_OF_FIELDS; i++){
 		connect(fieldRadio1[i], SIGNAL(toggled(bool)), this, SLOT(chooseFieldsDialogUpdateRadio1()));
 		connect(fieldRadio2[i], SIGNAL(toggled(bool)), this, SLOT(chooseFieldsDialogUpdateRadio2()));
@@ -228,10 +293,13 @@ chooseFieldsDialog::chooseFieldsDialog(QWidget *parent): QDialog(parent)
 	}
 	
 	this->setWindowFlags(this->windowFlags() | Qt::WindowMinMaxButtonsHint);
+	
+	pb->setDefault(true);
+	pb->setFocus();
 }
 
 
-void chooseFieldsDialog::chooseFieldsDialogUpdateRadio1(){
+void ChooseFieldsDialog::chooseFieldsDialogUpdateRadio1(){
 	if(fieldRadio1[FIELD_GROUP_NAME]->isChecked()){
 		fieldRadio1[FIELD_GROUP_NUMBER_OF_STUDENTS]->setChecked(true);
 		fieldRadio1[FIELD_SUBGROUP_NAME]->setChecked(true);
@@ -258,7 +326,7 @@ void chooseFieldsDialog::chooseFieldsDialogUpdateRadio1(){
 }
 
 
-void chooseFieldsDialog::chooseFieldsDialogUpdateRadio2(){
+void ChooseFieldsDialog::chooseFieldsDialogUpdateRadio2(){
 	if(fieldRadio2[FIELD_GROUP_NAME]->isChecked()){
 		fieldGroupBox[FIELD_SUBGROUP_NAME]->setDisabled(false);
 		fieldGroupBox[FIELD_SUBGROUP_NUMBER_OF_STUDENTS]->setDisabled(false);
@@ -277,7 +345,7 @@ void chooseFieldsDialog::chooseFieldsDialogUpdateRadio2(){
 }
 
 
-void chooseFieldsDialog::chooseFieldsDialogUpdateRadio3(){
+void ChooseFieldsDialog::chooseFieldsDialogUpdateRadio3(){
 	if(fieldRadio3[FIELD_GROUP_NAME]->isChecked()){
 		fieldGroupBox[FIELD_SUBGROUP_NAME]->setDisabled(false);
 		fieldGroupBox[FIELD_SUBGROUP_NUMBER_OF_STUDENTS]->setDisabled(false);
@@ -295,7 +363,7 @@ void chooseFieldsDialog::chooseFieldsDialogUpdateRadio3(){
 	}
 }
 
-void chooseFieldsDialog::chooseFieldsDialogUpdateRadio3b(){
+void ChooseFieldsDialog::chooseFieldsDialogUpdateRadio3b(){
 	if(fieldRadio3b[FIELD_GROUP_NAME]->isChecked()){
 		fieldGroupBox[FIELD_SUBGROUP_NAME]->setDisabled(false);
 		fieldGroupBox[FIELD_SUBGROUP_NUMBER_OF_STUDENTS]->setDisabled(false);
@@ -314,20 +382,21 @@ void chooseFieldsDialog::chooseFieldsDialogUpdateRadio3b(){
 }
 
 
-void chooseFieldsDialog::chooseFieldsDialogUpdateLine3Text(){
+void ChooseFieldsDialog::chooseFieldsDialogUpdateLine3Text(){
 	bool textOK=true;
 	for(int i=1; i<NUMBER_OF_FIELDS; i++){
 		if(fieldLine3Text[i]->displayText()=="")
 			textOK=false;
 	}
-	if(textOK)
+	//by Liviu - always enabled
+	if(1 || textOK)
 		pb->setDisabled(false);
 	else
 		pb->setDisabled(true);
 }
 
 
-void chooseFieldsDialog::chooseFieldsDialogClose(){
+void ChooseFieldsDialog::chooseFieldsDialogClose(){
 	for(int i=1; i<NUMBER_OF_FIELDS; i++){
 		if(fieldNumber[i]!=DO_NOT_IMPORT){
 			if(fieldRadio1[i]->isChecked()){
@@ -349,12 +418,14 @@ void chooseFieldsDialog::chooseFieldsDialogClose(){
 			}
 		}
 	}
+	
+	this->accept();
 }
 
 
-lastWarningsDialog::lastWarningsDialog(QWidget *parent): QDialog(parent)
+LastWarningsDialog::LastWarningsDialog(QWidget *parent): QDialog(parent)
 {
-	this->setWindowTitle(tr("FET - import %1 comment").arg(importThing));
+	this->setWindowTitle(tr("FET - import %1 comment", "The comment of the importing of the category named %1").arg(importThing));
 	QVBoxLayout* lastWarningsMainLayout=new QVBoxLayout(this);
 
 	QTextEdit* lastWarningsText=new QTextEdit();
@@ -365,7 +436,7 @@ lastWarningsDialog::lastWarningsDialog(QWidget *parent): QDialog(parent)
 	lastWarningsText->setText(lastWarning);
 
 	//Start Buttons
-	QPushButton* pb1=new QPushButton(tr("&Ok"));
+	QPushButton* pb1=new QPushButton(tr("&OK"));
 	//pb1->setAutoDefault(true);
 
 	QHBoxLayout* hl=new QHBoxLayout();
@@ -405,12 +476,23 @@ int Import::getFileSeparatorFieldsAndHead(){
 	if(fieldNumber[FIELD_STUDENTS_SET]==IMPORT_DEFAULT_ITEM)
 		importThing=Import::tr("activities");
 
-	fileName=QFileDialog::getOpenFileName(NULL, Import::tr("FET - Import %1 from CSV file").arg(importThing), IMPORT_DIRECTORY, Import::tr("Text Files (*.csv *.dat *.txt);;" "All Files (*.*)"));
+	fileName=QFileDialog::getOpenFileName(NULL, Import::tr("FET - Import %1 from CSV file").arg(importThing), IMPORT_DIRECTORY, 
+		Import::tr("Text Files")+" (*.csv *.dat *.txt)" + ";;" + Import::tr("All Files") + " (*)");
 
-	fieldSeparator=Import::tr("no separator");	//needed, because a csv file contain maybe just one field!
-	assert(fieldSeparator.size()>1);
-	textquote=Import::tr("no textquote");
-	assert(textquote.size()>1);
+	const QString NO_SEPARATOR_TRANSLATED=Import::tr("no separator");
+	fieldSeparator=NO_SEPARATOR_TRANSLATED;	//needed, because a csv file contain maybe just one field!
+/*	if(fieldSeparator.size()<=1){
+		QMessageBox::warning(NULL, tr("FET warning"), tr("Translation is wrong, because translation of 'no separator' is too short - falling back to English words. Please report bug"));
+		fieldSeparator=QString("no separator");
+	}
+	assert(fieldSeparator.size()>1);*/
+	const QString NO_TEXTQUOTE_TRANSLATED=Import::tr("no textquote");
+	textquote=NO_TEXTQUOTE_TRANSLATED;
+/*	if(textquote.size()<=1){
+		QMessageBox::warning(NULL, tr("FET warning"), tr("Translation is wrong, because translation of 'no textquote' is too short - falling back to English words. Please report bug"));
+		textquote=QString("no textquote");
+	}
+	assert(textquote.size()>1);*/
 	fields.clear();
 	QFile file(fileName);
 	if(fileName.isEmpty()){
@@ -422,8 +504,16 @@ int Import::getFileSeparatorFieldsAndHead(){
 	QTextStream in(&file);
 	in.setCodec("UTF-8");
 	QString line = in.readLine();
-
-	if(fieldNumber[FIELD_ACTIVITY_TAG_NAME]==IMPORT_DEFAULT_ITEM && line.contains("\"Activity Tag\"") && line.size()<=15 && line.size()>=14){
+	
+	if(line.size()<=0){
+		QMessageBox::warning(NULL, tr("FET warning"), tr("The first line of the file is empty. Please fix this."));
+		return false;
+	}
+	
+	if(fieldNumber[FIELD_ACTIVITY_TAG_NAME]==IMPORT_DEFAULT_ITEM
+		&& line.contains("\"Activity Tag\"")
+		&& line.size()<=QString("\"Activity Tag\"").length()+1
+		&& line.size()>=QString("\"Activity Tag\"").length()){
 		fieldNumber[FIELD_ACTIVITY_TAG_NAME]=0;
 		head=true;
 		fieldSeparator=",";
@@ -432,7 +522,10 @@ int Import::getFileSeparatorFieldsAndHead(){
 		return true;
 	}
 
-	if(fieldNumber[FIELD_ROOM_NAME]==IMPORT_DEFAULT_ITEM && line.contains("\"Room\",\"Room Capacity\",\"Building\"") && line.size()<=34 && line.size()>=33){
+	if(fieldNumber[FIELD_ROOM_NAME]==IMPORT_DEFAULT_ITEM
+		&& line.contains("\"Room\",\"Room Capacity\",\"Building\"")
+		&& line.size()<=QString("\"Room\",\"Room Capacity\",\"Building\"").length()+1
+		&& line.size()>=QString("\"Room\",\"Room Capacity\",\"Building\"").length()){
 		fieldNumber[FIELD_BUILDING_NAME]=2;
 		fieldNumber[FIELD_ROOM_NAME]=0;
 		fieldNumber[FIELD_ROOM_CAPACITY]=1;
@@ -443,7 +536,10 @@ int Import::getFileSeparatorFieldsAndHead(){
 		return true;
 	}
 
-	if(fieldNumber[FIELD_TEACHER_NAME]==IMPORT_DEFAULT_ITEM && line.contains("\"Teacher\"") && line.size()<=10 && line.size()>=9){
+	if(fieldNumber[FIELD_TEACHER_NAME]==IMPORT_DEFAULT_ITEM
+		&& line.contains("\"Teacher\"")
+		&& line.size()<=QString("\"Teacher\"").length()+1
+		&& line.size()>=QString("\"Teacher\"").length()){
 		fieldNumber[FIELD_TEACHER_NAME]=0;
 		head=true;
 		fieldSeparator=",";
@@ -452,7 +548,10 @@ int Import::getFileSeparatorFieldsAndHead(){
 		return true;
 	}
 
-	if(fieldNumber[FIELD_SUBJECT_NAME]==IMPORT_DEFAULT_ITEM && line.contains("\"Subject\"") && line.size()<=10 && line.size()>=9){
+	if(fieldNumber[FIELD_SUBJECT_NAME]==IMPORT_DEFAULT_ITEM
+		&& line.contains("\"Subject\"")
+		&& line.size()<=QString("\"Subject\"").length()+1
+		&& line.size()>=QString("\"Subject\"").length()){
 		fieldNumber[FIELD_SUBJECT_NAME]=0;
 		head=true;
 		fieldSeparator=",";
@@ -461,7 +560,10 @@ int Import::getFileSeparatorFieldsAndHead(){
 		return true;
 	}
 
-	if(fieldNumber[FIELD_YEAR_NAME]==IMPORT_DEFAULT_ITEM && line.contains("\"Year\",\"Number of Students per Year\",\"Group\",\"Number of Students per Group\",\"Subgroup\",\"Number of Students per Subgroup\"") && line.size()<=121 && line.size()>=120){
+	if(fieldNumber[FIELD_YEAR_NAME]==IMPORT_DEFAULT_ITEM
+		&& line.contains("\"Year\",\"Number of Students per Year\",\"Group\",\"Number of Students per Group\",\"Subgroup\",\"Number of Students per Subgroup\"")
+		&& line.size()<=QString("\"Year\",\"Number of Students per Year\",\"Group\",\"Number of Students per Group\",\"Subgroup\",\"Number of Students per Subgroup\"").length()+1
+		&& line.size()>=QString("\"Year\",\"Number of Students per Year\",\"Group\",\"Number of Students per Group\",\"Subgroup\",\"Number of Students per Subgroup\"").length()){
 		fieldNumber[FIELD_YEAR_NAME]=0;
 		fieldNumber[FIELD_YEAR_NUMBER_OF_STUDENTS]=1;
 		fieldNumber[FIELD_GROUP_NAME]=2;
@@ -475,16 +577,19 @@ int Import::getFileSeparatorFieldsAndHead(){
 		return true;
 	}
 
-	if(fieldNumber[FIELD_STUDENTS_SET]==IMPORT_DEFAULT_ITEM && line.contains("\"Students Sets\",\"Subject\",\"Teachers\",\"Activity Tag\",\"Total Duration\",\"Split Duration\",\"Min N Days\",\"Weight\",\"Consecutive\"") && line.size()<=122 && line.size()>=121){
-		fieldNumber[FIELD_ACTIVITY_TAG_NAME]=3;
+	if(fieldNumber[FIELD_STUDENTS_SET]==IMPORT_DEFAULT_ITEM
+		&& line.contains("\"Students Sets\",\"Subject\",\"Teachers\",\"Activity Tags\",\"Total Duration\",\"Split Duration\",\"Min Days\",\"Weight\",\"Consecutive\"")
+		&& line.size()<=QString("\"Students Sets\",\"Subject\",\"Teachers\",\"Activity Tags\",\"Total Duration\",\"Split Duration\",\"Min Days\",\"Weight\",\"Consecutive\"").length()+1
+		&& line.size()>=QString("\"Students Sets\",\"Subject\",\"Teachers\",\"Activity Tags\",\"Total Duration\",\"Split Duration\",\"Min Days\",\"Weight\",\"Consecutive\"").length()){
+		fieldNumber[FIELD_ACTIVITY_TAGS_SET]=3;
 		fieldNumber[FIELD_SUBJECT_NAME]=1;
 		fieldNumber[FIELD_STUDENTS_SET]=0;
 		fieldNumber[FIELD_TEACHERS_SET]=2;
 		fieldNumber[FIELD_TOTAL_DURATION]=4;
 		fieldNumber[FIELD_SPLIT_DURATION]=5;
-		fieldNumber[FIELD_MIN_N_DAYS]=6;
-		fieldNumber[FIELD_MIN_N_DAYS_WEIGHT]=7;
-		fieldNumber[FIELD_MIN_N_DAYS_CONSECUTIVE]=8;
+		fieldNumber[FIELD_MIN_DAYS]=6;
+		fieldNumber[FIELD_MIN_DAYS_WEIGHT]=7;
+		fieldNumber[FIELD_MIN_DAYS_CONSECUTIVE]=8;
 		head=true;
 		fieldSeparator=",";
 		textquote="\"";
@@ -495,12 +600,20 @@ int Import::getFileSeparatorFieldsAndHead(){
 	QStringList separators;
 	QStringList textquotes;
 	separators<<fieldSeparator;
+	const int NO_SEPARATOR_POS=0; //it is the first element. It may have length > 1 QChar
 	textquotes<<textquote;
-	for(int i=0; i<line.size();i++)
-		if(!(line.at(i)>='A'&&line.at(i)<='Z')&&!(line.at(i)>='a'&&line.at(i)<='z')&&!(line.at(i)>='0'&&line.at(i)<='9')&&!separators.contains(line.at(i))){
+	const int NO_TEXTQUOTE_POS=0; //it is the first element. It may have length > 1 QChar
+	for(int i=0; i<line.size();i++){
+		//if(!(line.at(i)>='A'&&line.at(i)<='Z')&&!(line.at(i)>='a'&&line.at(i)<='z')&&!(line.at(i)>='0'&&line.at(i)<='9')&&!separators.contains(line.at(i))){
+		if(!(line.at(i).isLetterOrNumber())&&!separators.contains(line.at(i))){
 			separators<<line.at(i);
-			textquotes<<line.at(i);
+			//careful: if you intend to add strings longer than one QChar, take care of assert in line 647 (below in the same function) (fieldSeparator.size()==1)
 		}
+		if(!(line.at(i).isLetterOrNumber())&&!textquotes.contains(line.at(i))){
+			textquotes<<line.at(i);
+			//careful: if you intend to add strings longer than one QChar, take care of assert in line 659 (below in the same function) (textquote.size()==1)
+		}
+	}
 
 	QDialog separatorsDialog(NULL);
 	separatorsDialog.setWindowTitle(Import::tr("FET - Import %1 from CSV file").arg(importThing));
@@ -520,9 +633,11 @@ int Import::getFileSeparatorFieldsAndHead(){
 	textOfFirstLine->setText(line);
 
 	QGroupBox* separatorsGroupBox = new QGroupBox(Import::tr("Please specify the used separator between fields:"));
-	QHBoxLayout* separatorBoxChoose=new QHBoxLayout();
-	QComboBox* separatorsCB=new QComboBox();
+	QComboBox* separatorsCB=NULL;
 	if(separators.size()>1){
+		QHBoxLayout* separatorBoxChoose=new QHBoxLayout();
+		separatorsCB=new QComboBox();
+		
 		QLabel* separatorTextChoose=new QLabel();
 		separatorTextChoose->setText(Import::tr("Used field separator:"));
 		separatorsCB->insertItems(0,separators);
@@ -532,9 +647,11 @@ int Import::getFileSeparatorFieldsAndHead(){
 	}
 
 	QGroupBox* textquoteGroupBox = new QGroupBox(Import::tr("Please specify the used text quote of text fields:"));
-	QHBoxLayout* textquoteBoxChoose=new QHBoxLayout();
-	QComboBox* textquoteCB=new QComboBox();
+	QComboBox* textquoteCB=NULL;
 	if(separators.size()>1){
+		QHBoxLayout* textquoteBoxChoose=new QHBoxLayout();
+		textquoteCB=new QComboBox();
+		
 		QLabel* textquoteTextChoose=new QLabel();
 		textquoteTextChoose->setText(Import::tr("Used textquote:"));
 		textquoteCB->insertItems(0,textquotes);
@@ -553,9 +670,11 @@ int Import::getFileSeparatorFieldsAndHead(){
 	firstLineGroupBox->setLayout(firstLineChooseBox);
 
 	QPushButton* pb=new QPushButton(tr("OK"));
+	QPushButton* cancelpb=new QPushButton(tr("Cancel"));
 	QHBoxLayout* hl=new QHBoxLayout();
 	hl->addStretch();
 	hl->addWidget(pb);
+	hl->addWidget(cancelpb);
 	
 	separatorsMainLayout->addLayout(top);
 	separatorsMainLayout->addWidget(textOfFirstLine);
@@ -563,22 +682,59 @@ int Import::getFileSeparatorFieldsAndHead(){
 		separatorsMainLayout->addWidget(separatorsGroupBox);
 		separatorsMainLayout->addWidget(textquoteGroupBox);
 	}
+	else{
+		delete separatorsGroupBox;
+		delete textquoteGroupBox;
+	}
 	separatorsMainLayout->addWidget(firstLineGroupBox);
 	separatorsMainLayout->addLayout(hl);
 	QObject::connect(pb, SIGNAL(clicked()), &separatorsDialog, SLOT(accept()));
+	QObject::connect(cancelpb, SIGNAL(clicked()), &separatorsDialog, SLOT(reject()));
+	
+	pb->setDefault(true);
+	pb->setFocus();
 	
 	//separatorsDialog.setWindowFlags(separatorsDialog.windowFlags() | Qt::WindowMinMaxButtonsHint);
 	//separatorsDialog.show();
-	int w=separatorsDialog.sizeHint().width();
-	int h=separatorsDialog.sizeHint().height();
+	int w=chooseWidth(separatorsDialog.sizeHint().width());
+	int h=chooseHeight(separatorsDialog.sizeHint().height());
 	separatorsDialog.setGeometry(0,0,w,h);
 	centerWidgetOnScreen(&separatorsDialog);
 	
 	int ok=separatorsDialog.exec();
 	if(!ok) return false;
-
-	fieldSeparator=separatorsCB->currentText();
-	textquote=textquoteCB->currentText();
+	
+	if(separators.size()>1){
+		assert(separatorsCB!=NULL);
+		assert(textquoteCB!=NULL);
+		fieldSeparator=separatorsCB->currentText();
+		
+		if(separatorsCB->currentItem()==NO_SEPARATOR_POS){
+			assert(fieldSeparator==NO_SEPARATOR_TRANSLATED);
+			fieldSeparator=QString("no sep"); //must have length >= 2
+		}
+		else{
+			assert(fieldSeparator.size()==1);
+			//assert(!fieldSeparator.at(0).isLetterOrNumber());
+		}
+		
+		textquote=textquoteCB->currentText();
+		
+		if(textquoteCB->currentItem()==NO_TEXTQUOTE_POS){
+			assert(textquote==NO_TEXTQUOTE_TRANSLATED);
+			textquote=QString("no tquote"); //must have length >= 2
+		}
+		else{
+			assert(textquote.size()==1);
+			//assert(!textquote.at(0).isLetterOrNumber());
+		}
+	}
+	else{
+		assert(separatorsCB==NULL);
+		assert(textquoteCB==NULL);
+		fieldSeparator="";
+		textquote="";
+	}
 //NEW start
 			QString tmp;
 			QString tmpLine=line;
@@ -669,7 +825,7 @@ int Import::readFields(){
 
 	qint64 size=file.size();
 	QProgressDialog progress(NULL);
-	progress.setMinimumDuration(2000);
+	//progress.setMinimumDuration(2000);
 	progress.setLabelText(tr("Loading file"));
 	progress.setModal(true);
 	progress.setRange(0, size);
@@ -764,20 +920,20 @@ int Import::readFields(){
 							if(i==FIELD_ROOM_CAPACITY){
 								itemOfField[i]==fieldDefaultItem[i];
 							}
-							if(i==FIELD_MIN_N_DAYS){
+							if(i==FIELD_MIN_DAYS){
 								itemOfField[i]="0";
 							}
-							if(i==FIELD_MIN_N_DAYS_WEIGHT){
-								if(itemOfField[FIELD_MIN_N_DAYS].isEmpty()){
+							if(i==FIELD_MIN_DAYS_WEIGHT){
+								if(itemOfField[FIELD_MIN_DAYS].isEmpty()){
 									ok=false;
-									warnText+=Import::tr("Skipped line %1: Field '%2' is empty.").arg(lineNumber).arg(fieldName[FIELD_MIN_N_DAYS])+"\n";
+									warnText+=Import::tr("Skipped line %1: Field '%2' is empty.").arg(lineNumber).arg(fieldName[FIELD_MIN_DAYS])+"\n";
 								} else 
 									itemOfField[i]="95";
 							}
-							if(i==FIELD_MIN_N_DAYS_CONSECUTIVE){
-								if(itemOfField[FIELD_MIN_N_DAYS].isEmpty()){
+							if(i==FIELD_MIN_DAYS_CONSECUTIVE){
+								if(itemOfField[FIELD_MIN_DAYS].isEmpty()){
 									ok=false;
-									warnText+=Import::tr("Skipped line %1: Field '%2' is empty.").arg(lineNumber).arg(fieldName[FIELD_MIN_N_DAYS])+"\n";
+									warnText+=Import::tr("Skipped line %1: Field '%2' is empty.").arg(lineNumber).arg(fieldName[FIELD_MIN_DAYS])+"\n";
 								} else 
 									itemOfField[i]="N";
 							}
@@ -790,7 +946,7 @@ int Import::readFields(){
 							if(itemOfField[FIELD_SPLIT_DURATION].isEmpty()){
 								if(!itemOfField[FIELD_TOTAL_DURATION].isEmpty()){
 									int totalInt=itemOfField[FIELD_TOTAL_DURATION].toInt(&ok, 10);
-									if(ok){
+									if(ok && totalInt>=1){
 										if(totalInt<=10){							// TODO: make 10 a global variable?!
 											QString tmpString;
 											for(int n=0; n<totalInt; n++){
@@ -803,6 +959,9 @@ int Import::readFields(){
 											warnText+=Import::tr("Skipped line %1: Field '%2' produces too many subactivities.").arg(lineNumber).arg(fieldName[FIELD_TOTAL_DURATION])+"\n";
 											ok=false;
 										}
+									} else {
+										warnText+=Import::tr("Skipped line %1: Field '%2' contain incorrect data.").arg(lineNumber).arg(fieldName[FIELD_TOTAL_DURATION])+"\n";
+										ok=false;
 									}
 								} else {
 									warnText+=Import::tr("Skipped line %1: Field '%2' is empty.").arg(lineNumber).arg(fieldName[i])+"\n";
@@ -838,7 +997,7 @@ int Import::readFields(){
 						if(ok && !itemOfField[FIELD_BUILDING_NAME].isEmpty() && itemOfField[FIELD_ROOM_NAME].isEmpty() && i==FIELD_ROOM_NAME){
 							warnText+=Import::tr("Warning in line %1: Field with building name doesn't affect to a room").arg(lineNumber)+"\n";
 						}
-						if(ok && (i==FIELD_YEAR_NUMBER_OF_STUDENTS || i==FIELD_GROUP_NUMBER_OF_STUDENTS || i==FIELD_SUBGROUP_NUMBER_OF_STUDENTS || i==FIELD_ROOM_CAPACITY || i==FIELD_TOTAL_DURATION || i==FIELD_MIN_N_DAYS)){
+						if(ok && (i==FIELD_YEAR_NUMBER_OF_STUDENTS || i==FIELD_GROUP_NUMBER_OF_STUDENTS || i==FIELD_SUBGROUP_NUMBER_OF_STUDENTS || i==FIELD_ROOM_CAPACITY || i==FIELD_TOTAL_DURATION || i==FIELD_MIN_DAYS)){
 							if(!itemOfField[i].isEmpty()){
 								int value=itemOfField[i].toInt(&ok, 10);
 								if(!ok)
@@ -855,7 +1014,7 @@ int Import::readFields(){
 								assert(false);
 							}
 						}
-						if(ok && i==FIELD_MIN_N_DAYS_WEIGHT){
+						if(ok && i==FIELD_MIN_DAYS_WEIGHT){
 							double weight=itemOfField[i].toDouble(&ok);
 							if(!ok)
 								warnText+=Import::tr("Skipped line %1: Field '%2' doesn't contain a number (double) value.").arg(lineNumber).arg(fieldName[i])+"\n";
@@ -866,7 +1025,7 @@ int Import::readFields(){
 								}
 							}
 						}
-						if(ok && i==FIELD_MIN_N_DAYS_CONSECUTIVE){
+						if(ok && i==FIELD_MIN_DAYS_CONSECUTIVE){
 							QString tmpString;
 							tmpString=itemOfField[i];
 							tmpString=tmpString.toUpper();
@@ -882,7 +1041,8 @@ int Import::readFields(){
 					} else if(fieldNumber[i]==IMPORT_DEFAULT_ITEM){
 						itemOfField[i].clear();
 						itemOfField[i] = fieldDefaultItem[i];
-						assert(!fieldDefaultItem[i].isEmpty());
+						//Removed by Liviu - we may have empty default fields
+						//assert(!fieldDefaultItem[i].isEmpty());
 					}
 				}
 			}
@@ -940,9 +1100,12 @@ int Import::showFieldsAndWarnings(){
 				max=fieldList[i].size();
 			assert(fieldList[i].size()==max);
 		}
-		else
-			if(i!=FIELD_TEACHER_NAME)		//needed for activities!
-				assert(fieldList[i].isEmpty());
+		else{
+			if(i!=FIELD_TEACHER_NAME){		//needed for activities!
+				//assert(fieldList[i].isEmpty());
+				; //because of bug reported 17.03.2008. Please add again?! compare add activities function
+			}
+		}
 	}
 	// Start Dialog
 	QDialog addItemsDialog(NULL);
@@ -958,7 +1121,8 @@ int Import::showFieldsAndWarnings(){
 	QString shortFileName=fileName.right(tmp);
 	if(!warnText.isEmpty())
 		headWarningsText->setText(Import::tr("There are several problems in file\n%1").arg(shortFileName));
-	else headWarningsText->setText(Import::tr("There are no problems in file\n%1").arg(shortFileName));
+	else
+		headWarningsText->setText(Import::tr("There are no problems in file\n%1").arg(shortFileName));
 
 //TODO
 /*
@@ -982,7 +1146,8 @@ FILE_STRIPPED_NAME
 	QLabel* headTableText=new QLabel();
 	if(max!=0)
 		headTableText->setText(Import::tr("Following data found in the file:"));
-	else headTableText->setText(Import::tr("There is no useable data in the file."));
+	else
+		headTableText->setText(Import::tr("There is no useable data in the file."));
 
 	QTableWidget* fieldsTable= new QTableWidget;
 	fieldsTable->setRowCount(max);
@@ -1024,6 +1189,8 @@ FILE_STRIPPED_NAME
 	dataWarningItems->addItems(dataWarning);
 	if(dataWarning.size()>0)
 		dataWarningBox->addWidget(dataWarningItems);
+	else
+		delete dataWarningItems;
 
 	//Start Buttons
 	QPushButton* pb1=new QPushButton(tr("&Import"));
@@ -1046,9 +1213,13 @@ FILE_STRIPPED_NAME
 	addItemsMainLayout->addLayout(headWarnings);
 	if(!warnText.isEmpty())
 		addItemsMainLayout->addWidget(textOfWarnings);
+	else
+		delete textOfWarnings;
 	addItemsMainLayout->addWidget(headTableText);
 	if(max!=0)
 		addItemsMainLayout->addWidget(fieldsTable);
+	else
+		delete fieldsTable;
 	addItemsMainLayout->addLayout(dataWarningBox);
 	addItemsMainLayout->addLayout(hl);
 
@@ -1059,8 +1230,8 @@ FILE_STRIPPED_NAME
 	
 	//addItemsDialog.setWindowFlags(addItemsDialog.windowFlags() | Qt::WindowMinMaxButtonsHint);
 	//addItemsDialog.show();
-	int w=addItemsDialog.sizeHint().width();
-	int h=addItemsDialog.sizeHint().height();
+	int w=chooseWidth(addItemsDialog.sizeHint().width());
+	int h=chooseHeight(addItemsDialog.sizeHint().height());
 	addItemsDialog.setGeometry(0,0,w,h);
 
 	centerWidgetOnScreen(&addItemsDialog);
@@ -1083,11 +1254,11 @@ void Import::importCSVActivityTags(){
 	if(!ok)	return;
 
 	if(fieldNumber[FIELD_ACTIVITY_TAG_NAME]==IMPORT_DEFAULT_ITEM){
-		chooseFieldsDialog cfd;
+		ChooseFieldsDialog cfd;
 		//cfd.setWindowFlags(cfd.windowFlags() | Qt::WindowMinMaxButtonsHint);
 		//cfd.show();
-		int w= cfd.sizeHint().width();
-		int h= cfd.sizeHint().height();
+		int w= chooseWidth(cfd.sizeHint().width());
+		int h= chooseHeight(cfd.sizeHint().height());
 		cfd.setGeometry(0,0,w,h);
 		centerWidgetOnScreen(&cfd);
 	
@@ -1130,7 +1301,7 @@ void Import::importCSVActivityTags(){
 	QMessageBox::information(NULL, tr("FET information"), Import::tr("%1 activity tags added. Please check activity tag form.").arg(count));
 	//add subjects (end) - similar to teachersform.cpp by Liviu modified by Volker
 	int tmp=fileName.findRev("/");
-	IMPORT_DIRECTORY=fileName.left(tmp+1);
+	IMPORT_DIRECTORY=fileName.left(tmp);
 	gt.rules.internalStructureComputed=false;
 }
 
@@ -1146,11 +1317,11 @@ void Import::importCSVRoomsAndBuildings(){
 	if(!ok)	return;
 
 	if(fieldNumber[FIELD_ROOM_NAME]==IMPORT_DEFAULT_ITEM){
-		chooseFieldsDialog cfd;
+		ChooseFieldsDialog cfd;
 		//cfd.setWindowFlags(cfd.windowFlags() | Qt::WindowMinMaxButtonsHint);
 		//cfd.show();
-		int w= cfd.sizeHint().width();
-		int h= cfd.sizeHint().height();
+		int w= chooseWidth(cfd.sizeHint().width());
+		int h= chooseHeight(cfd.sizeHint().height());
 		cfd.setGeometry(0,0,w,h);
 		centerWidgetOnScreen(&cfd);
 
@@ -1253,7 +1424,7 @@ void Import::importCSVRoomsAndBuildings(){
 	 Import::tr("%1 buildings added. Please check rooms form.").arg(count)+"\n"+tr("%2 rooms added. Please check rooms form.").arg(countroom));
 
 	int tmp=fileName.findRev("/");
-	IMPORT_DIRECTORY=fileName.left(tmp+1);
+	IMPORT_DIRECTORY=fileName.left(tmp);
 	gt.rules.internalStructureComputed=false;
 }
 
@@ -1267,11 +1438,11 @@ void Import::importCSVSubjects(){
 	if(!ok)	return;
 
 	if(fieldNumber[FIELD_SUBJECT_NAME]==IMPORT_DEFAULT_ITEM){
-		chooseFieldsDialog cfd;
+		ChooseFieldsDialog cfd;
 		//cfd.setWindowFlags(cfd.windowFlags() | Qt::WindowMinMaxButtonsHint);
 		//cfd.show();
-		int w= cfd.sizeHint().width();
-		int h= cfd.sizeHint().height();
+		int w= chooseWidth(cfd.sizeHint().width());
+		int h= chooseHeight(cfd.sizeHint().height());
 		cfd.setGeometry(0,0,w,h);
 		centerWidgetOnScreen(&cfd);
 
@@ -1315,7 +1486,7 @@ void Import::importCSVSubjects(){
 	//add subjects (end) - similar to teachersform.cpp by Liviu modified by Volker
 	QMessageBox::information(NULL, tr("FET information"), Import::tr("%1 subjects added. Please check subjects form.").arg(count));
 	int tmp=fileName.findRev("/");
-	IMPORT_DIRECTORY=fileName.left(tmp+1);
+	IMPORT_DIRECTORY=fileName.left(tmp);
 	gt.rules.internalStructureComputed=false;
 }
 
@@ -1329,11 +1500,11 @@ void Import::importCSVTeachers(){
 	if(!ok)	return;
 
 	if(fieldNumber[FIELD_TEACHER_NAME]==IMPORT_DEFAULT_ITEM){
-		chooseFieldsDialog cfd;
+		ChooseFieldsDialog cfd;
 		//cfd.setWindowFlags(cfd.windowFlags() | Qt::WindowMinMaxButtonsHint);
 		//cfd.show();
-		int w= cfd.sizeHint().width();
-		int h= cfd.sizeHint().height();
+		int w= chooseWidth(cfd.sizeHint().width());
+		int h= chooseHeight(cfd.sizeHint().height());
 		cfd.setGeometry(0,0,w,h);
 		centerWidgetOnScreen(&cfd);
 
@@ -1377,7 +1548,7 @@ void Import::importCSVTeachers(){
 	QMessageBox::information(NULL, tr("FET information"), Import::tr("%1 teachers added. Please check teachers form.").arg(count));
 	//add teachers (end) - similar to teachersform.cpp by Liviu modified by Volker
 	int tmp=fileName.findRev("/");
-	IMPORT_DIRECTORY=fileName.left(tmp+1);
+	IMPORT_DIRECTORY=fileName.left(tmp);
 	gt.rules.internalStructureComputed=false;
 }
 
@@ -1396,11 +1567,11 @@ void Import::importCSVStudents(){
 	if(!ok)	return;
 	
 	if(fieldNumber[FIELD_YEAR_NAME]==IMPORT_DEFAULT_ITEM){
-		chooseFieldsDialog cfd;
+		ChooseFieldsDialog cfd;
 		//cfd.show();
 		//cfd.setWindowFlags(cfd.windowFlags() | Qt::WindowMinMaxButtonsHint);
-		int w=cfd.sizeHint().width();
-		int h=cfd.sizeHint().height();
+		int w=chooseWidth(cfd.sizeHint().width());
+		int h=chooseHeight(cfd.sizeHint().height());
 		cfd.setGeometry(0,0,w,h);
 
 		centerWidgetOnScreen(&cfd);
@@ -1423,7 +1594,7 @@ void Import::importCSVStudents(){
 	//check csv
 	QProgressDialog progress(NULL);
 	cout<<"progress in importCSVStudents starts, range="<<fieldList[FIELD_YEAR_NAME].size()<<endl;
-	progress.setMinimumDuration(2000);
+//	progress.setMinimumDuration(2000);
 	progress.setLabelText(tr("Checking CSV"));
 	progress.setModal(true);
 	progress.setRange(0, fieldList[FIELD_YEAR_NAME].size());
@@ -1479,7 +1650,7 @@ void Import::importCSVStudents(){
 
 	//check current data
 	QProgressDialog progress2(NULL);
-	progress2.setMinimumDuration(2000);
+//	progress2.setMinimumDuration(2000);
 	progress2.setLabelText(tr("Checking data"));
 	progress2.setModal(true);
 	progress2.setRange(0, fieldList[FIELD_YEAR_NAME].size());
@@ -1545,7 +1716,7 @@ void Import::importCSVStudents(){
 	int addedGroups=0;
 	int addedSubgroups=0;
 	QProgressDialog progress3(NULL);
-	progress3.setMinimumDuration(2000);
+//	progress3.setMinimumDuration(2000);
 	progress3.setLabelText(tr("Importing data"));
 	progress3.setModal(true);
 	progress3.setRange(0, fieldList[FIELD_YEAR_NAME].size());
@@ -1690,18 +1861,18 @@ ifUserCanceledProgress3:
 	lastWarning.insert(0,Import::tr("%1 groups added. Please check groups form.").arg(addedGroups)+"\n");
 	lastWarning.insert(0,Import::tr("%1 years added. Please check years form.").arg(addedYears)+"\n");
 
-	lastWarningsDialog lwd;
+	LastWarningsDialog lwd;
 	//lwd.setWindowFlags(lwd.windowFlags() | Qt::WindowMinMaxButtonsHint);
 	//lwd.show();
-	int w=lwd.sizeHint().width();
-	int h=lwd.sizeHint().height();
+	int w=chooseWidth(lwd.sizeHint().width());
+	int h=chooseHeight(lwd.sizeHint().height());
 	lwd.setGeometry(0,0,w,h);
 	centerWidgetOnScreen(&lwd);
 
 	ok=lwd.exec();
 
 	int tmp=fileName.findRev("/");
-	IMPORT_DIRECTORY=fileName.left(tmp+1);
+	IMPORT_DIRECTORY=fileName.left(tmp);
 	gt.rules.internalStructureComputed=false;
 }
 
@@ -1711,12 +1882,12 @@ void Import::importCSVActivities(){
 	fieldNumber[FIELD_STUDENTS_SET]=IMPORT_DEFAULT_ITEM;
 	fieldNumber[FIELD_SUBJECT_NAME]=IMPORT_DEFAULT_ITEM;
 	fieldNumber[FIELD_TEACHERS_SET]=IMPORT_DEFAULT_ITEM;
-	fieldNumber[FIELD_ACTIVITY_TAG_NAME]=IMPORT_DEFAULT_ITEM;
+	fieldNumber[FIELD_ACTIVITY_TAGS_SET]=IMPORT_DEFAULT_ITEM;
 	fieldNumber[FIELD_TOTAL_DURATION]=IMPORT_DEFAULT_ITEM;
 	fieldNumber[FIELD_SPLIT_DURATION]=IMPORT_DEFAULT_ITEM;
-	fieldNumber[FIELD_MIN_N_DAYS]=IMPORT_DEFAULT_ITEM;
-	fieldNumber[FIELD_MIN_N_DAYS_WEIGHT]=IMPORT_DEFAULT_ITEM;
-	fieldNumber[FIELD_MIN_N_DAYS_CONSECUTIVE]=IMPORT_DEFAULT_ITEM;
+	fieldNumber[FIELD_MIN_DAYS]=IMPORT_DEFAULT_ITEM;
+	fieldNumber[FIELD_MIN_DAYS_WEIGHT]=IMPORT_DEFAULT_ITEM;
+	fieldNumber[FIELD_MIN_DAYS_CONSECUTIVE]=IMPORT_DEFAULT_ITEM;
 
 	int ok;
 
@@ -1724,11 +1895,11 @@ void Import::importCSVActivities(){
 	if(!ok)	return;
 
 	if(fieldNumber[FIELD_SUBJECT_NAME]==IMPORT_DEFAULT_ITEM){
-		chooseFieldsDialog cfd;
+		ChooseFieldsDialog cfd;
 		//cfd.setWindowFlags(cfd.windowFlags() | Qt::WindowMinMaxButtonsHint);
 		//cfd.show();
-		int w=cfd.sizeHint().width();
-		int h=cfd.sizeHint().height();
+		int w=chooseWidth(cfd.sizeHint().width());
+		int h=chooseHeight(cfd.sizeHint().height());
 		cfd.setGeometry(0,0,w,h);
 		centerWidgetOnScreen(&cfd);
 
@@ -1743,6 +1914,101 @@ void Import::importCSVActivities(){
 
 	ok = readFields();
 	if(!ok) return;
+
+	//check number of fields (start) //because of bug reported 17.03.2008
+	int checkNumber=0;
+	if(fieldList[FIELD_STUDENTS_SET].size()>0){
+		checkNumber=fieldList[FIELD_STUDENTS_SET].size();
+	}
+	if(fieldList[FIELD_SUBJECT_NAME].size()>0){
+		if(checkNumber>0){
+			assert(checkNumber==fieldList[FIELD_SUBJECT_NAME].size());
+		}
+		checkNumber=fieldList[FIELD_SUBJECT_NAME].size();
+	}
+	if(fieldList[FIELD_TEACHERS_SET].size()>0){
+		if(checkNumber>0){
+			assert(checkNumber==fieldList[FIELD_TEACHERS_SET].size());
+		}
+		checkNumber=fieldList[FIELD_TEACHERS_SET].size();
+	}
+	if(fieldList[FIELD_ACTIVITY_TAGS_SET].size()>0){
+		if(checkNumber>0){
+			assert(checkNumber==fieldList[FIELD_ACTIVITY_TAGS_SET].size());
+		}
+		checkNumber=fieldList[FIELD_ACTIVITY_TAGS_SET].size();
+	}
+	if(fieldList[FIELD_TOTAL_DURATION].size()>0){
+		if(checkNumber>0){
+			assert(checkNumber==fieldList[FIELD_TOTAL_DURATION].size());
+		}
+		checkNumber=fieldList[FIELD_TOTAL_DURATION].size();
+	}
+	if(fieldList[FIELD_SPLIT_DURATION].size()>0){
+		if(checkNumber>0){
+			assert(checkNumber==fieldList[FIELD_SPLIT_DURATION].size());
+		}
+		checkNumber=fieldList[FIELD_SPLIT_DURATION].size();
+	}
+	if(fieldList[FIELD_MIN_DAYS].size()>0){
+		if(checkNumber>0){
+			assert(checkNumber==fieldList[FIELD_MIN_DAYS].size());
+		}
+		checkNumber=fieldList[FIELD_MIN_DAYS].size();
+	}
+	if(fieldList[FIELD_MIN_DAYS_WEIGHT].size()>0){
+		if(checkNumber>0){
+			assert(checkNumber==fieldList[FIELD_MIN_DAYS_WEIGHT].size());
+		}
+		checkNumber=fieldList[FIELD_MIN_DAYS_WEIGHT].size();
+	}
+	if(fieldList[FIELD_MIN_DAYS_CONSECUTIVE].size()>0){
+		if(checkNumber>0){
+			assert(checkNumber==fieldList[FIELD_MIN_DAYS_CONSECUTIVE].size());
+		}
+		checkNumber=fieldList[FIELD_MIN_DAYS_CONSECUTIVE].size();
+	}
+
+
+
+	if(fieldList[FIELD_STUDENTS_SET].size()==0){
+		for(int i=0; i<checkNumber; i++)
+			fieldList[FIELD_STUDENTS_SET]<<"";
+	}
+	if(fieldList[FIELD_SUBJECT_NAME].size()==0){
+		for(int i=0; i<checkNumber; i++)
+			fieldList[FIELD_SUBJECT_NAME]<<"";
+	}
+	if(fieldList[FIELD_TEACHERS_SET].size()==0){
+		for(int i=0; i<checkNumber; i++)
+			fieldList[FIELD_TEACHERS_SET]<<"";
+	}
+	if(fieldList[FIELD_ACTIVITY_TAGS_SET].size()==0){
+		for(int i=0; i<checkNumber; i++)
+			fieldList[FIELD_ACTIVITY_TAGS_SET]<<"";
+	}
+	if(fieldList[FIELD_TOTAL_DURATION].size()==0){
+		for(int i=0; i<checkNumber; i++)
+			fieldList[FIELD_TOTAL_DURATION]<<"1";
+	}
+	if(fieldList[FIELD_SPLIT_DURATION].size()==0){
+		for(int i=0; i<checkNumber; i++)
+			fieldList[FIELD_SPLIT_DURATION]<<"1";
+	}
+	if(fieldList[FIELD_MIN_DAYS].size()==0){
+		for(int i=0; i<checkNumber; i++)
+			fieldList[FIELD_MIN_DAYS]<<"1";
+	}
+	if(fieldList[FIELD_MIN_DAYS_WEIGHT].size()==0){
+		for(int i=0; i<checkNumber; i++)
+			fieldList[FIELD_MIN_DAYS_WEIGHT]<<"95";
+	}
+	if(fieldList[FIELD_MIN_DAYS_CONSECUTIVE].size()==0){
+		for(int i=0; i<checkNumber; i++)
+			fieldList[FIELD_MIN_DAYS_CONSECUTIVE]<<"no";
+	}
+
+	//check number of fields (end) //because of bug reported 17.03.2008
 
 	//check if already in memory (start)
 	//check if students set is in memory
@@ -1764,7 +2030,7 @@ void Import::importCSVActivities(){
 						"students sets. You must add (or import) years, groups and subgroups first.")+"\n"+
 						tr("I recommend to import also teachers, rooms, buildings, subjects and activity tags before "
 						"importing activities. It is not needed, because FET will automatically do it, but you can "
-						"check the activity cvs file by that.")+"\n";
+						"check the activity csv file by that.")+"\n";
 						firstWarning=false;
 					}
 					lastWarning+=Import::tr("Student set %1 doesn't exist. You must add (or import) years, groups and subgroups first.").arg(students[s])+"\n";
@@ -1773,11 +2039,11 @@ void Import::importCSVActivities(){
 		}
 	}
 	if(lastWarning.size()>0){
-		lastWarningsDialog lwd;
+		LastWarningsDialog lwd;
 		//lwd.setWindowFlags(lwd.windowFlags() | Qt::WindowMinMaxButtonsHint);
 		//lwd.show();
-		int w=lwd.sizeHint().width();
-		int h=lwd.sizeHint().height();
+		int w=chooseWidth(lwd.sizeHint().width());
+		int h=chooseHeight(lwd.sizeHint().height());
 		lwd.setGeometry(0,0,w,h);
 		centerWidgetOnScreen(&lwd);
 
@@ -1825,18 +2091,27 @@ void Import::importCSVActivities(){
 		}			
 	}
 	//check is activity tag is in memory
+	assert(fieldList[FIELD_ACTIVITY_TAG_NAME].isEmpty());
+	QStringList activityTags;
 	tmpList.clear();
 	for(int i=0; i<gt.rules.activityTagsList.size(); i++){
-		ActivityTag* act=gt.rules.activityTagsList[i];
-		tmpList<<act->name;
+		ActivityTag* at=gt.rules.activityTagsList[i];
+		tmpList<<at->name;
 	}
-	for(int a=0; a<fieldList[FIELD_ACTIVITY_TAG_NAME].size(); a++){
-		bool add=true;
-		if(tmpList.contains(fieldList[FIELD_ACTIVITY_TAG_NAME][a]) || fieldList[FIELD_ACTIVITY_TAG_NAME][a]=="")
-			add=false;
-		if(add){
-			dataWarning<<Import::tr("%1 %2 will be added.", "For instance 'Subject Math will be added', so use singular").arg(fieldName[FIELD_ACTIVITY_TAG_NAME]).arg(fieldList[FIELD_ACTIVITY_TAG_NAME][a]);
-			tmpList<<fieldList[FIELD_ACTIVITY_TAG_NAME][a];
+	for(int i=0; i<fieldList[FIELD_ACTIVITY_TAGS_SET].size(); i++){
+		line.clear();
+		line=fieldList[FIELD_ACTIVITY_TAGS_SET][i];
+		activityTags.clear();
+		activityTags=line.split("+");
+		for(int at=0; at<activityTags.size(); at++){
+			bool add=true;
+			if(tmpList.contains(activityTags[at]) || activityTags[at]=="")
+				add=false;
+			if(add){
+				dataWarning<<Import::tr("%1 %2 will be added.", "For instance 'Subject Math will be added', so use singular").arg(fieldName[FIELD_ACTIVITY_TAG_NAME]).arg(activityTags[at]);
+				tmpList<<activityTags[at];
+				fieldList[FIELD_ACTIVITY_TAG_NAME]<<activityTags[at];
+			}
 		}
 	}
 	tmpList.clear();
@@ -1903,10 +2178,13 @@ void Import::importCSVActivities(){
 	}
 	activityid++;
 	QProgressDialog progress4(NULL);
-	progress4.setMinimumDuration(2000);
+//	progress4.setMinimumDuration(2000);
 	progress4.setLabelText(tr("Importing activities"));
 	progress4.setModal(true);
 	progress4.setRange(0, fieldList[FIELD_SUBJECT_NAME].size());
+
+	bool incorrect_bool_consecutive=false;
+
 	for(int i=0; i<fieldList[FIELD_SUBJECT_NAME].size(); i++){
 		progress4.setValue(i);
 		if(progress4.wasCanceled()){
@@ -1916,14 +2194,20 @@ void Import::importCSVActivities(){
 			goto ifUserCanceledProgress4;
 		}
 		bool ok2;
-		QString tmpStr=fieldList[FIELD_MIN_N_DAYS_WEIGHT][i];
+		QString tmpStr=fieldList[FIELD_MIN_DAYS_WEIGHT][i];
 		double weight=tmpStr.toDouble(&ok2);
 		assert(ok2);
+
 		QStringList teachers_names;
 		if(!fieldList[FIELD_TEACHERS_SET][i].isEmpty())
 			teachers_names = fieldList[FIELD_TEACHERS_SET][i].split("+");
+		
 		QString subject_name = fieldList[FIELD_SUBJECT_NAME][i];
-		QString activity_tag_name = fieldList[FIELD_ACTIVITY_TAG_NAME][i];
+		
+		QStringList activity_tags_names;
+		if(!fieldList[FIELD_ACTIVITY_TAGS_SET][i].isEmpty())
+			activity_tags_names = fieldList[FIELD_ACTIVITY_TAGS_SET][i].split("+");
+		
 		QStringList students_names;
 		if(!fieldList[FIELD_STUDENTS_SET][i].isEmpty())
 			students_names = fieldList[FIELD_STUDENTS_SET][i].split("+");
@@ -1937,10 +2221,10 @@ void Import::importCSVActivities(){
 			assert(ok2);
 			bool active=true;
 			//workaround only. Please rethink. (start)
-			QStringList activity_tag_names;
-			activity_tag_names<<activity_tag_name;
+			/*QStringList activity_tag_names;
+			activity_tag_names<<activity_tag_name;*/
 			//workaround only. Please rethink. (end)
-			Activity a(gt.rules, activityid, 0, teachers_names, subject_name, activity_tag_names, students_names, duration, duration, active, true, -1);
+			Activity a(gt.rules, activityid, 0, teachers_names, subject_name, activity_tags_names, students_names, duration, duration, active, true, -1);
 	
 			bool already_existing=false;
 			for(int i=0; i<gt.rules.activitiesList.size(); i++){
@@ -1951,7 +2235,7 @@ void Import::importCSVActivities(){
 			if(already_existing){
 				lastWarning+=Import::tr("Activity %1 already exists. A duplicate activity is imported. Please check the dataset!").arg(activityid)+"\n";
 			}
-			bool tmp=gt.rules.addSimpleActivity(activityid, 0, teachers_names, subject_name, activity_tag_names,
+			bool tmp=gt.rules.addSimpleActivity(activityid, 0, teachers_names, subject_name, activity_tags_names,
 				students_names,	duration, duration, active, true, -1);
 			activityid++;
 			if(tmp){
@@ -1976,20 +2260,35 @@ void Import::importCSVActivities(){
 			assert(totalduration==fieldList[FIELD_TOTAL_DURATION][i].toInt(&ok2));
 			assert(ok2);
 	
-			int minD=fieldList[FIELD_MIN_N_DAYS][i].toInt(&ok2);
+			int minD=fieldList[FIELD_MIN_DAYS][i].toInt(&ok2);
 			assert(ok2);
 			bool force;
-			if(fieldList[FIELD_MIN_N_DAYS_CONSECUTIVE][i]=="yes")
+			
+			if(fieldList[FIELD_MIN_DAYS_CONSECUTIVE][i].toUpper()=="YES" ||
+			 fieldList[FIELD_MIN_DAYS_CONSECUTIVE][i].toUpper()=="Y" ||
+			 fieldList[FIELD_MIN_DAYS_CONSECUTIVE][i].toUpper()=="TRUE" ||
+			 fieldList[FIELD_MIN_DAYS_CONSECUTIVE][i].toUpper()=="T" ||
+			 fieldList[FIELD_MIN_DAYS_CONSECUTIVE][i].toUpper()=="1"
+			 )
 				force=true;
-			else if(fieldList[FIELD_MIN_N_DAYS_CONSECUTIVE][i]=="no")
+			else if(
+			 fieldList[FIELD_MIN_DAYS_CONSECUTIVE][i].toUpper()=="NO" ||
+			 fieldList[FIELD_MIN_DAYS_CONSECUTIVE][i].toUpper()=="N" ||
+			 fieldList[FIELD_MIN_DAYS_CONSECUTIVE][i].toUpper()=="FALSE" ||
+			 fieldList[FIELD_MIN_DAYS_CONSECUTIVE][i].toUpper()=="F" ||
+			 fieldList[FIELD_MIN_DAYS_CONSECUTIVE][i].toUpper()=="0"
+			 )
 				force=false;
-			else assert(0==1);
+			else{
+				incorrect_bool_consecutive=true;
+				force=true;
+			}
 			//workaround only. Please rethink. (start)
-			QStringList activity_tag_names;
-			activity_tag_names<<activity_tag_name;
+			/*QStringList activity_tag_names;
+			activity_tag_names<<activity_tag_name;*/
 			//workaround only. Please rethink. (end)
 			bool tmp=gt.rules.addSplitActivity(activityid, activityid,
-				teachers_names, subject_name, activity_tag_names, students_names,
+				teachers_names, subject_name, activity_tags_names, students_names,
 				nsplit, totalduration, durations,
 				active, minD, weight, force, true, -1);
 			activityid+=nsplit;
@@ -2005,22 +2304,26 @@ void Import::importCSVActivities(){
 	//add activities (end) - similar to Livius code modified by Volker
 ifUserCanceledProgress4:
 
-	if(!lastWarning.isEmpty())
-		lastWarning.insert(0,"\n"+Import::tr("Notes:")+"\n");
-	if(count>0)
-		lastWarning.insert(0,Import::tr("%1 container activities (%2 total activities) added. Please check activity form.").arg(count).arg(count2))+"\n";
+	if(incorrect_bool_consecutive){
+		lastWarning.insert(0, tr("Warning: found tags for the 'consecutive' field of min days which are not a valid boolean value (%1) - making them %2").arg("1, 0, yes, no, y, n, true, false, t, f").arg("true")+"\n");
+	}
 
-	lastWarningsDialog lwd;
+	if(!lastWarning.isEmpty())
+		lastWarning.insert(0,Import::tr("Notes:")+"\n");
+	if(count>0)
+		lastWarning.insert(0,Import::tr("%1 container activities (%2 total activities) added. Please check activity form.").arg(count).arg(count2)+"\n");
+
+	LastWarningsDialog lwd;
 	//lwd.setWindowFlags(lwd.windowFlags() | Qt::WindowMinMaxButtonsHint);
 	//lwd.show();
-	int w=lwd.sizeHint().width();
-	int h=lwd.sizeHint().height();
+	int w=chooseWidth(lwd.sizeHint().width());
+	int h=chooseHeight(lwd.sizeHint().height());
 	lwd.setGeometry(0,0,w,h);
 	centerWidgetOnScreen(&lwd);
 
 	ok=lwd.exec();
 
 	int tmp=fileName.findRev("/");
-	IMPORT_DIRECTORY=fileName.left(tmp+1);
+	IMPORT_DIRECTORY=fileName.left(tmp);
 	gt.rules.internalStructureComputed=false;
 }

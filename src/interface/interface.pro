@@ -3,7 +3,29 @@
 # Subdir relative project main directory: ./src/interface
 # Target is an application:  ../../fet
 
-SOURCES += fet.cpp \
+SOURCES += \
+           ../engine/activity.cpp \
+           ../engine/solution.cpp \
+           ../engine/timetable.cpp \
+           ../engine/rules.cpp \
+		   ../engine/import.cpp \
+		   ../engine/export.cpp \
+           ../engine/generate_pre.cpp \
+           ../engine/timeconstraint.cpp \
+           ../engine/spaceconstraint.cpp \
+           ../engine/studentsset.cpp \
+           ../engine/teacher.cpp \
+           ../engine/subject.cpp \
+           ../engine/activitytag.cpp \
+           ../engine/room.cpp \
+           ../engine/building.cpp \
+           ../engine/timetable_defs.cpp \
+		   ../engine/generate.cpp \
+		   ../engine/timetableexport.cpp \
+		   ../engine/statisticsexport.cpp \
+		   ../engine/lockunlock.cpp \
+\
+			fet.cpp \
            helpaboutform.cpp \
            helpfaqform.cpp \
            helptipsform.cpp \
@@ -47,6 +69,14 @@ SOURCES += fet.cpp \
            addconstraintsubjectactivitytagpreferredroomsform.cpp \
            constraintsubjectactivitytagpreferredroomsform.cpp \
            modifyconstraintsubjectactivitytagpreferredroomsform.cpp \
+\
+           addconstraintactivitytagpreferredroomform.cpp \
+           constraintactivitytagpreferredroomform.cpp \
+           modifyconstraintactivitytagpreferredroomform.cpp \
+           addconstraintactivitytagpreferredroomsform.cpp \
+           constraintactivitytagpreferredroomsform.cpp \
+           modifyconstraintactivitytagpreferredroomsform.cpp \
+\
            addconstraintstudentssethomeroomform.cpp \
 \
            addconstraintstudentssetmaxbuildingchangesperdayform.cpp \
@@ -112,6 +142,8 @@ SOURCES += fet.cpp \
            timetablegeneratemultipleform.cpp \
            fetmainform.cpp \
 			centerwidgetonscreen.cpp \
+			tablewidgetupdatebug.cpp \
+			helponimperfectconstraints.cpp \
            settingstimetablehtmllevelform.cpp \
            timetableviewstudentsform.cpp \
            timetableviewroomsform.cpp \
@@ -120,25 +152,6 @@ SOURCES += fet.cpp \
            timetableviewteachersform.cpp \
            hoursform.cpp \
            daysform.cpp \
-           ../engine/activity.cpp \
-           ../engine/solution.cpp \
-           ../engine/timetable.cpp \
-           ../engine/rules.cpp \
-		   ../engine/import.cpp \
-		   ../engine/export.cpp \
-           ../engine/generate_pre.cpp \
-           ../engine/timeconstraint.cpp \
-           ../engine/spaceconstraint.cpp \
-           ../engine/studentsset.cpp \
-           ../engine/teacher.cpp \
-           ../engine/subject.cpp \
-           ../engine/activitytag.cpp \
-           ../engine/room.cpp \
-           ../engine/building.cpp \
-           ../engine/timetable_defs.cpp \
-		   ../engine/generate.cpp \
-		   ../engine/timetableexport.cpp \
-		   ../engine/statisticsexport.cpp \
            roomsform.cpp \
            buildingsform.cpp \
            \
@@ -185,6 +198,18 @@ SOURCES += fet.cpp \
 		   addconstraintteachermaxdaysperweekform.cpp \
 		   modifyconstraintteachermaxdaysperweekform.cpp \
 \
+		   constraintteachermindaysperweekform.cpp \
+		   addconstraintteachermindaysperweekform.cpp \
+		   modifyconstraintteachermindaysperweekform.cpp \
+\
+		   constraintteachersmaxdaysperweekform.cpp \
+		   addconstraintteachersmaxdaysperweekform.cpp \
+		   modifyconstraintteachersmaxdaysperweekform.cpp \
+\
+		   constraintteachersmindaysperweekform.cpp \
+		   addconstraintteachersmindaysperweekform.cpp \
+		   modifyconstraintteachersmindaysperweekform.cpp \
+\
 		   constraintteacherintervalmaxdaysperweekform.cpp \
 		   addconstraintteacherintervalmaxdaysperweekform.cpp \
 		   modifyconstraintteacherintervalmaxdaysperweekform.cpp \
@@ -222,6 +247,13 @@ SOURCES += fet.cpp \
 		   addconstraintteacheractivitytagmaxhourscontinuouslyform.cpp \
 		   modifyconstraintteacheractivitytagmaxhourscontinuouslyform.cpp \
 \
+		   constraintteachersactivitytagmaxhoursdailyform.cpp \
+		   addconstraintteachersactivitytagmaxhoursdailyform.cpp \
+		   modifyconstraintteachersactivitytagmaxhoursdailyform.cpp \
+		   constraintteacheractivitytagmaxhoursdailyform.cpp \
+		   addconstraintteacheractivitytagmaxhoursdailyform.cpp \
+		   modifyconstraintteacheractivitytagmaxhoursdailyform.cpp \
+\
 		   constraintteachersminhoursdailyform.cpp \
 		   addconstraintteachersminhoursdailyform.cpp \
 		   modifyconstraintteachersminhoursdailyform.cpp \
@@ -245,6 +277,14 @@ SOURCES += fet.cpp \
 		   constraintstudentsmaxgapsperweekform.cpp \
 		   addconstraintstudentsmaxgapsperweekform.cpp \
 		   modifyconstraintstudentsmaxgapsperweekform.cpp \
+\
+		   constraintstudentssetmaxgapsperdayform.cpp \
+		   addconstraintstudentssetmaxgapsperdayform.cpp \
+		   modifyconstraintstudentssetmaxgapsperdayform.cpp \
+		   constraintstudentsmaxgapsperdayform.cpp \
+		   addconstraintstudentsmaxgapsperdayform.cpp \
+		   modifyconstraintstudentsmaxgapsperdayform.cpp \
+\
 		   constraintteachersmaxgapsperweekform.cpp \
 		   constraintteachermaxgapsperweekform.cpp \
 		   addconstraintteachersmaxgapsperweekform.cpp \
@@ -285,6 +325,13 @@ SOURCES += fet.cpp \
 		   addconstraintstudentsactivitytagmaxhourscontinuouslyform.cpp \
 		   modifyconstraintstudentsactivitytagmaxhourscontinuouslyform.cpp \
 \
+		   constraintstudentssetactivitytagmaxhoursdailyform.cpp \
+		   addconstraintstudentssetactivitytagmaxhoursdailyform.cpp \
+		   modifyconstraintstudentssetactivitytagmaxhoursdailyform.cpp \
+		   constraintstudentsactivitytagmaxhoursdailyform.cpp \
+		   addconstraintstudentsactivitytagmaxhoursdailyform.cpp \
+		   modifyconstraintstudentsactivitytagmaxhoursdailyform.cpp \
+\
 		   constraintstudentssetminhoursdailyform.cpp \
 		   addconstraintstudentssetminhoursdailyform.cpp \
 		   modifyconstraintstudentssetminhoursdailyform.cpp \
@@ -294,21 +341,29 @@ SOURCES += fet.cpp \
 		   constraintactivitiesnotoverlappingform.cpp \
 		   addconstraintactivitiesnotoverlappingform.cpp \
 		   modifyconstraintactivitiesnotoverlappingform.cpp \
-		   constraint2activitiesconsecutiveform.cpp \
-		   addconstraint2activitiesconsecutiveform.cpp \
-		   modifyconstraint2activitiesconsecutiveform.cpp \
+		   constrainttwoactivitiesconsecutiveform.cpp \
+		   addconstrainttwoactivitiesconsecutiveform.cpp \
+		   modifyconstrainttwoactivitiesconsecutiveform.cpp \
 \
-		   constraint2activitiesgroupedform.cpp \
-		   addconstraint2activitiesgroupedform.cpp \
-		   modifyconstraint2activitiesgroupedform.cpp \
+		   constrainttwoactivitiesgroupedform.cpp \
+		   addconstrainttwoactivitiesgroupedform.cpp \
+		   modifyconstrainttwoactivitiesgroupedform.cpp \
 \
-		   constraint2activitiesorderedform.cpp \
-		   addconstraint2activitiesorderedform.cpp \
-		   modifyconstraint2activitiesorderedform.cpp \
+		   constraintthreeactivitiesgroupedform.cpp \
+		   addconstraintthreeactivitiesgroupedform.cpp \
+		   modifyconstraintthreeactivitiesgroupedform.cpp \
 \
-		   constraintminndaysbetweenactivitiesform.cpp \
-		   addconstraintminndaysbetweenactivitiesform.cpp \
-		   modifyconstraintminndaysbetweenactivitiesform.cpp \
+		   constrainttwoactivitiesorderedform.cpp \
+		   addconstrainttwoactivitiesorderedform.cpp \
+		   modifyconstrainttwoactivitiesorderedform.cpp \
+\
+		   constraintmindaysbetweenactivitiesform.cpp \
+		   addconstraintmindaysbetweenactivitiesform.cpp \
+		   modifyconstraintmindaysbetweenactivitiesform.cpp \
+\
+		   constraintmaxdaysbetweenactivitiesform.cpp \
+		   addconstraintmaxdaysbetweenactivitiesform.cpp \
+		   modifyconstraintmaxdaysbetweenactivitiesform.cpp \
 \
 		   constraintmingapsbetweenactivitiesform.cpp \
 		   addconstraintmingapsbetweenactivitiesform.cpp \
@@ -326,16 +381,41 @@ SOURCES += fet.cpp \
 		   httpget.cpp \
 		   splityearform.cpp \
 \
-		   changeminndaysselectivelyform.cpp \
+		   changemindaysselectivelyform.cpp \
 \
-		   spreadminndaysconstraints5daysform.cpp \
+		   spreadmindaysconstraintsfivedaysform.cpp \
 		   spreadconfirmationform.cpp \
 \
 		   removeredundantform.cpp \
 		   removeredundantconfirmationform.cpp \
 \
-			lockunlock.cpp
-HEADERS += fet.h \
+			advancedlockunlockform.cpp \
+\
+			longtextmessagebox.cpp \
+			advancedfilterform.cpp
+HEADERS += \
+           ../engine/activity.h \
+           ../engine/solution.h \
+           ../engine/timetable.h \
+           ../engine/rules.h \
+		   ../engine/import.h \
+		   ../engine/export.h \
+           ../engine/generate_pre.h \
+           ../engine/timeconstraint.h \
+           ../engine/spaceconstraint.h \
+           ../engine/timetable_defs.h \
+           ../engine/studentsset.h \
+           ../engine/teacher.h \
+           ../engine/subject.h \
+           ../engine/activitytag.h \
+           ../engine/room.h \
+           ../engine/building.h \
+		   ../engine/generate.h \
+		   ../engine/timetableexport.h \
+		   ../engine/statisticsexport.h \
+		   ../engine/lockunlock.h \
+			\
+			fet.h \
            helpaboutform.h \
            helpfaqform.h \
            helptipsform.h \
@@ -373,12 +453,22 @@ HEADERS += fet.h \
            addconstraintsubjectactivitytagpreferredroomform.h \
            constraintsubjectactivitytagpreferredroomform.h \
            modifyconstraintsubjectactivitytagpreferredroomform.h \
+\
+           addconstraintactivitytagpreferredroomform.h \
+           constraintactivitytagpreferredroomform.h \
+           modifyconstraintactivitytagpreferredroomform.h \
+\
            addconstraintsubjectpreferredroomsform.h \
            constraintsubjectpreferredroomsform.h \
            modifyconstraintsubjectpreferredroomsform.h \
            addconstraintsubjectactivitytagpreferredroomsform.h \
            constraintsubjectactivitytagpreferredroomsform.h \
            modifyconstraintsubjectactivitytagpreferredroomsform.h \
+\
+           addconstraintactivitytagpreferredroomsform.h \
+           constraintactivitytagpreferredroomsform.h \
+           modifyconstraintactivitytagpreferredroomsform.h \
+\
            addconstraintstudentssethomeroomform.h \
            constraintstudentssethomeroomform.h \
            modifyconstraintstudentssethomeroomform.h \
@@ -444,6 +534,8 @@ HEADERS += fet.h \
            timetablegeneratemultipleform.h \
            fetmainform.h \
 			centerwidgetonscreen.h \
+			tablewidgetupdatebug.h \
+			helponimperfectconstraints.h \
            settingstimetablehtmllevelform.h \
            timetableviewstudentsform.h \
            timetableviewroomsform.h \
@@ -452,25 +544,6 @@ HEADERS += fet.h \
            timetableviewteachersform.h \
            hoursform.h \
            daysform.h \
-           ../engine/activity.h \
-           ../engine/solution.h \
-           ../engine/timetable.h \
-           ../engine/rules.h \
-		   ../engine/import.h \
-		   ../engine/export.h \
-           ../engine/generate_pre.h \
-           ../engine/timeconstraint.h \
-           ../engine/spaceconstraint.h \
-           ../engine/timetable_defs.h \
-           ../engine/studentsset.h \
-           ../engine/teacher.h \
-           ../engine/subject.h \
-           ../engine/activitytag.h \
-           ../engine/room.h \
-           ../engine/building.h \
-		   ../engine/generate.h \
-		   ../engine/timetableexport.h \
-		   ../engine/statisticsexport.h \
            roomsform.h \
            buildingsform.h \
            \
@@ -515,6 +588,18 @@ HEADERS += fet.h \
 		   addconstraintteachermaxdaysperweekform.h \
 		   modifyconstraintteachermaxdaysperweekform.h \
 \
+		   constraintteachermindaysperweekform.h \
+		   addconstraintteachermindaysperweekform.h \
+		   modifyconstraintteachermindaysperweekform.h \
+\
+		   constraintteachersmaxdaysperweekform.h \
+		   addconstraintteachersmaxdaysperweekform.h \
+		   modifyconstraintteachersmaxdaysperweekform.h \
+\
+		   constraintteachersmindaysperweekform.h \
+		   addconstraintteachersmindaysperweekform.h \
+		   modifyconstraintteachersmindaysperweekform.h \
+\
 		   constraintteacherintervalmaxdaysperweekform.h \
 		   addconstraintteacherintervalmaxdaysperweekform.h \
 		   modifyconstraintteacherintervalmaxdaysperweekform.h \
@@ -552,6 +637,13 @@ HEADERS += fet.h \
 		   addconstraintteacheractivitytagmaxhourscontinuouslyform.h \
 		   modifyconstraintteacheractivitytagmaxhourscontinuouslyform.h \
 \
+		   constraintteachersactivitytagmaxhoursdailyform.h \
+		   addconstraintteachersactivitytagmaxhoursdailyform.h \
+		   modifyconstraintteachersactivitytagmaxhoursdailyform.h \
+		   constraintteacheractivitytagmaxhoursdailyform.h \
+		   addconstraintteacheractivitytagmaxhoursdailyform.h \
+		   modifyconstraintteacheractivitytagmaxhoursdailyform.h \
+\
 		   constraintteachersminhoursdailyform.h \
 		   addconstraintteachersminhoursdailyform.h \
 		   modifyconstraintteachersminhoursdailyform.h \
@@ -575,6 +667,14 @@ HEADERS += fet.h \
 		   constraintstudentsmaxgapsperweekform.h \
 		   addconstraintstudentsmaxgapsperweekform.h \
 		   modifyconstraintstudentsmaxgapsperweekform.h \
+\
+		   constraintstudentssetmaxgapsperdayform.h \
+		   addconstraintstudentssetmaxgapsperdayform.h \
+		   modifyconstraintstudentssetmaxgapsperdayform.h \
+		   constraintstudentsmaxgapsperdayform.h \
+		   addconstraintstudentsmaxgapsperdayform.h \
+		   modifyconstraintstudentsmaxgapsperdayform.h \
+\
 		   constraintteachersmaxgapsperweekform.h \
 		   addconstraintteachersmaxgapsperweekform.h \
 		   modifyconstraintteachersmaxgapsperweekform.h \
@@ -615,6 +715,13 @@ HEADERS += fet.h \
 		   addconstraintstudentsactivitytagmaxhourscontinuouslyform.h \
 		   modifyconstraintstudentsactivitytagmaxhourscontinuouslyform.h \
 \
+		   constraintstudentssetactivitytagmaxhoursdailyform.h \
+		   addconstraintstudentssetactivitytagmaxhoursdailyform.h \
+		   modifyconstraintstudentssetactivitytagmaxhoursdailyform.h \
+		   constraintstudentsactivitytagmaxhoursdailyform.h \
+		   addconstraintstudentsactivitytagmaxhoursdailyform.h \
+		   modifyconstraintstudentsactivitytagmaxhoursdailyform.h \
+\
 		   constraintstudentssetminhoursdailyform.h \
 		   addconstraintstudentssetminhoursdailyform.h \
 		   modifyconstraintstudentssetminhoursdailyform.h \
@@ -625,21 +732,29 @@ HEADERS += fet.h \
 		   addconstraintactivitiesnotoverlappingform.h \
 		   modifyconstraintactivitiesnotoverlappingform.h \
 \
-		   constraint2activitiesconsecutiveform.h \
-		   addconstraint2activitiesconsecutiveform.h \
-		   modifyconstraint2activitiesconsecutiveform.h \
+		   constrainttwoactivitiesconsecutiveform.h \
+		   addconstrainttwoactivitiesconsecutiveform.h \
+		   modifyconstrainttwoactivitiesconsecutiveform.h \
 \
-		   constraint2activitiesgroupedform.h \
-		   addconstraint2activitiesgroupedform.h \
-		   modifyconstraint2activitiesgroupedform.h \
+		   constrainttwoactivitiesgroupedform.h \
+		   addconstrainttwoactivitiesgroupedform.h \
+		   modifyconstrainttwoactivitiesgroupedform.h \
 \
-		   constraint2activitiesorderedform.h \
-		   addconstraint2activitiesorderedform.h \
-		   modifyconstraint2activitiesorderedform.h \
+		   constraintthreeactivitiesgroupedform.h \
+		   addconstraintthreeactivitiesgroupedform.h \
+		   modifyconstraintthreeactivitiesgroupedform.h \
 \
-		   constraintminndaysbetweenactivitiesform.h \
-		   addconstraintminndaysbetweenactivitiesform.h \
-		   modifyconstraintminndaysbetweenactivitiesform.h \
+		   constrainttwoactivitiesorderedform.h \
+		   addconstrainttwoactivitiesorderedform.h \
+		   modifyconstrainttwoactivitiesorderedform.h \
+\
+		   constraintmindaysbetweenactivitiesform.h \
+		   addconstraintmindaysbetweenactivitiesform.h \
+		   modifyconstraintmindaysbetweenactivitiesform.h \
+\
+		   constraintmaxdaysbetweenactivitiesform.h \
+		   addconstraintmaxdaysbetweenactivitiesform.h \
+		   modifyconstraintmaxdaysbetweenactivitiesform.h \
 \
 		   constraintmingapsbetweenactivitiesform.h \
 		   addconstraintmingapsbetweenactivitiesform.h \
@@ -659,15 +774,18 @@ HEADERS += fet.h \
 		   httpget.h \
 		   splityearform.h\
 \
-		   changeminndaysselectivelyform.h \
+		   changemindaysselectivelyform.h \
 \
-		   spreadminndaysconstraints5daysform.h \
+		   spreadmindaysconstraintsfivedaysform.h \
 		   spreadconfirmationform.h \
 \
 		   removeredundantform.h \
 		   removeredundantconfirmationform.h \
 \
-			lockunlock.h
+			advancedlockunlockform.h \
+\
+			longtextmessagebox.h \
+			advancedfilterform.h
 TRANSLATIONS += ../../translations/fet_ro.ts \
 				../../translations/fet_ca.ts \
                 ../../translations/fet_fr.ts \
@@ -684,6 +802,8 @@ TRANSLATIONS += ../../translations/fet_ro.ts \
 				../../translations/fet_id.ts \
 				../../translations/fet_it.ts \
 				../../translations/fet_lt.ts \
+				../../translations/fet_ru.ts \
+				../../translations/fet_fa.ts \
 				../../translations/fet_untranslated.ts
 FORMS+=  fetmainform_template.ui \
 	helpaboutform_template.ui \
@@ -692,18 +812,20 @@ FORMS+=  fetmainform_template.ui \
 	studentsstatisticsform_template.ui \
 	settingstimetablehtmllevelform_template.ui \
 \
-	changeminndaysselectivelyform_template.ui \
-	spreadminndaysconstraints5daysform_template.ui \
+	changemindaysselectivelyform_template.ui \
+	spreadmindaysconstraintsfivedaysform_template.ui \
 	spreadconfirmationform_template.ui \
 \
 	removeredundantform_template.ui \
-	removeredundantconfirmationform_template.ui
-#The following line was changed from FORMS to FORMS3 by qt3to4
-FORMS3 += helpfaqform_template.ui \
+	removeredundantconfirmationform_template.ui \
+	activitiesform_template.ui \
+	activitytagsform_template.ui \
+	addactivityform_template.ui \
+	addbuildingform_template.ui
+#####The following line was changed from FORMS to FORMS3 by qt3to4
+FORMS += helpfaqform_template.ui \
 		 helptipsform_template.ui \
 		 helpinstructionsform_template.ui \
-         activitiesform_template.ui \
-         addactivityform_template.ui \
          modifyactivityform_template.ui \
 \
          subactivitiesform_template.ui \
@@ -711,7 +833,6 @@ FORMS3 += helpfaqform_template.ui \
 \
          addroomform_template.ui \
          modifyroomform_template.ui \
-         addbuildingform_template.ui \
          modifybuildingform_template.ui \
          addstudentsyearform_template.ui \
          modifystudentsyearform_template.ui \
@@ -735,12 +856,22 @@ FORMS3 += helpfaqform_template.ui \
 		 addconstraintsubjectactivitytagpreferredroomform_template.ui \
          constraintsubjectactivitytagpreferredroomform_template.ui \
          modifyconstraintsubjectactivitytagpreferredroomform_template.ui \
+\
+		 addconstraintactivitytagpreferredroomform_template.ui \
+         constraintactivitytagpreferredroomform_template.ui \
+         modifyconstraintactivitytagpreferredroomform_template.ui \
+\
          addconstraintsubjectpreferredroomsform_template.ui \
          constraintsubjectpreferredroomsform_template.ui \
          modifyconstraintsubjectpreferredroomsform_template.ui \
 		 addconstraintsubjectactivitytagpreferredroomsform_template.ui \
          constraintsubjectactivitytagpreferredroomsform_template.ui \
          modifyconstraintsubjectactivitytagpreferredroomsform_template.ui \
+\
+		 addconstraintactivitytagpreferredroomsform_template.ui \
+         constraintactivitytagpreferredroomsform_template.ui \
+         modifyconstraintactivitytagpreferredroomsform_template.ui \
+\
          addconstraintstudentssethomeroomform_template.ui \
          constraintstudentssethomeroomform_template.ui \
          modifyconstraintstudentssethomeroomform_template.ui \
@@ -800,7 +931,6 @@ FORMS3 += helpfaqform_template.ui \
          groupsform_template.ui \
          subgroupsform_template.ui \
          subjectsform_template.ui \
-         activitytagsform_template.ui \
          teachersform_template.ui \
          timetablegenerateform_template.ui \
          timetablegeneratemultipleform_template.ui \
@@ -855,6 +985,18 @@ FORMS3 += helpfaqform_template.ui \
 		   addconstraintteachermaxdaysperweekform_template.ui \
 		   modifyconstraintteachermaxdaysperweekform_template.ui \
 \
+		   constraintteachermindaysperweekform_template.ui \
+		   addconstraintteachermindaysperweekform_template.ui \
+		   modifyconstraintteachermindaysperweekform_template.ui \
+\
+		   constraintteachersmaxdaysperweekform_template.ui \
+		   addconstraintteachersmaxdaysperweekform_template.ui \
+		   modifyconstraintteachersmaxdaysperweekform_template.ui \
+\
+		   constraintteachersmindaysperweekform_template.ui \
+		   addconstraintteachersmindaysperweekform_template.ui \
+		   modifyconstraintteachersmindaysperweekform_template.ui \
+\
 		   constraintteacherintervalmaxdaysperweekform_template.ui \
 		   addconstraintteacherintervalmaxdaysperweekform_template.ui \
 		   modifyconstraintteacherintervalmaxdaysperweekform_template.ui \
@@ -892,6 +1034,13 @@ FORMS3 += helpfaqform_template.ui \
 		   addconstraintteacheractivitytagmaxhourscontinuouslyform_template.ui \
 		   modifyconstraintteacheractivitytagmaxhourscontinuouslyform_template.ui \
 \
+		   constraintteachersactivitytagmaxhoursdailyform_template.ui \
+		   addconstraintteachersactivitytagmaxhoursdailyform_template.ui \
+		   modifyconstraintteachersactivitytagmaxhoursdailyform_template.ui \
+		   constraintteacheractivitytagmaxhoursdailyform_template.ui \
+		   addconstraintteacheractivitytagmaxhoursdailyform_template.ui \
+		   modifyconstraintteacheractivitytagmaxhoursdailyform_template.ui \
+\
 		   constraintteachersminhoursdailyform_template.ui \
 		   addconstraintteachersminhoursdailyform_template.ui \
 		   modifyconstraintteachersminhoursdailyform_template.ui \
@@ -915,6 +1064,14 @@ FORMS3 += helpfaqform_template.ui \
 		   constraintstudentsmaxgapsperweekform_template.ui \
 		   addconstraintstudentsmaxgapsperweekform_template.ui \
 		   modifyconstraintstudentsmaxgapsperweekform_template.ui \
+\
+		   constraintstudentssetmaxgapsperdayform_template.ui \
+		   addconstraintstudentssetmaxgapsperdayform_template.ui \
+		   modifyconstraintstudentssetmaxgapsperdayform_template.ui \
+		   constraintstudentsmaxgapsperdayform_template.ui \
+		   addconstraintstudentsmaxgapsperdayform_template.ui \
+		   modifyconstraintstudentsmaxgapsperdayform_template.ui \
+\
 		   constraintteachersmaxgapsperweekform_template.ui \
 		   addconstraintteachersmaxgapsperweekform_template.ui \
 		   modifyconstraintteachersmaxgapsperweekform_template.ui \
@@ -955,6 +1112,13 @@ FORMS3 += helpfaqform_template.ui \
 		   addconstraintstudentsactivitytagmaxhourscontinuouslyform_template.ui \
 		   modifyconstraintstudentsactivitytagmaxhourscontinuouslyform_template.ui \
 \
+		   constraintstudentssetactivitytagmaxhoursdailyform_template.ui \
+		   addconstraintstudentssetactivitytagmaxhoursdailyform_template.ui \
+		   modifyconstraintstudentssetactivitytagmaxhoursdailyform_template.ui \
+		   constraintstudentsactivitytagmaxhoursdailyform_template.ui \
+		   addconstraintstudentsactivitytagmaxhoursdailyform_template.ui \
+		   modifyconstraintstudentsactivitytagmaxhoursdailyform_template.ui \
+\
 		   constraintstudentssetminhoursdailyform_template.ui \
 		   addconstraintstudentssetminhoursdailyform_template.ui \
 		   modifyconstraintstudentssetminhoursdailyform_template.ui \
@@ -965,21 +1129,29 @@ FORMS3 += helpfaqform_template.ui \
 		   addconstraintactivitiesnotoverlappingform_template.ui \
 		   modifyconstraintactivitiesnotoverlappingform_template.ui \
 \
-		   constraint2activitiesconsecutiveform_template.ui \
-		   addconstraint2activitiesconsecutiveform_template.ui \
-		   modifyconstraint2activitiesconsecutiveform_template.ui \
+		   constrainttwoactivitiesconsecutiveform_template.ui \
+		   addconstrainttwoactivitiesconsecutiveform_template.ui \
+		   modifyconstrainttwoactivitiesconsecutiveform_template.ui \
 \
-		   constraint2activitiesgroupedform_template.ui \
-		   addconstraint2activitiesgroupedform_template.ui \
-		   modifyconstraint2activitiesgroupedform_template.ui \
+		   constrainttwoactivitiesgroupedform_template.ui \
+		   addconstrainttwoactivitiesgroupedform_template.ui \
+		   modifyconstrainttwoactivitiesgroupedform_template.ui \
 \
-		   constraint2activitiesorderedform_template.ui \
-		   addconstraint2activitiesorderedform_template.ui \
-		   modifyconstraint2activitiesorderedform_template.ui \
+		   constraintthreeactivitiesgroupedform_template.ui \
+		   addconstraintthreeactivitiesgroupedform_template.ui \
+		   modifyconstraintthreeactivitiesgroupedform_template.ui \
 \
-		   constraintminndaysbetweenactivitiesform_template.ui \
-		   addconstraintminndaysbetweenactivitiesform_template.ui \
-		   modifyconstraintminndaysbetweenactivitiesform_template.ui \
+		   constrainttwoactivitiesorderedform_template.ui \
+		   addconstrainttwoactivitiesorderedform_template.ui \
+		   modifyconstrainttwoactivitiesorderedform_template.ui \
+\
+		   constraintmindaysbetweenactivitiesform_template.ui \
+		   addconstraintmindaysbetweenactivitiesform_template.ui \
+		   modifyconstraintmindaysbetweenactivitiesform_template.ui \
+\
+		   constraintmaxdaysbetweenactivitiesform_template.ui \
+		   addconstraintmaxdaysbetweenactivitiesform_template.ui \
+		   modifyconstraintmaxdaysbetweenactivitiesform_template.ui \
 \
 		   constraintmingapsbetweenactivitiesform_template.ui \
 		   addconstraintmingapsbetweenactivitiesform_template.ui \
@@ -995,19 +1167,20 @@ FORMS3 += helpfaqform_template.ui \
 		   commentsform_template.ui \
 		   splityearform_template.ui
 
-TEMPLATE = app 
+TEMPLATE = app
 CONFIG += release \
           warn_on \
           qt \
-          thread 
+          thread
 DESTDIR = ../../
-TARGET = fet 
-OBJECTS_DIR = ../../tmp 
-UI_DIR = ../../tmp 
-MOC_DIR = ../../tmp 
-INCLUDEPATH = ../engine 
+TARGET = fet
+OBJECTS_DIR = ../../tmp
+UI_DIR = ../../tmp
+MOC_DIR = ../../tmp
+RCC_DIR = ../../tmp
+INCLUDEPATH = ../engine ../interface
+RESOURCES+=icons.qrc
 #The following line was inserted by qt3to4
 QT += xml qt3support network
-#The following line was inserted by qt3to4
-CONFIG += uic3
-
+###The following line was inserted by qt3to4
+###CONFIG += uic3

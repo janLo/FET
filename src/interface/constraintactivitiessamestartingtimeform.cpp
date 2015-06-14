@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "longtextmessagebox.h"
+
 #include "constraintactivitiessamestartingtimeform.h"
 #include "addconstraintactivitiessamestartingtimeform.h"
 #include "modifyconstraintactivitiessamestartingtimeform.h"
@@ -23,6 +25,21 @@
 
 ConstraintActivitiesSameStartingTimeForm::ConstraintActivitiesSameStartingTimeForm()
 {
+    setupUi(this);
+
+    connect(addConstraintPushButton, SIGNAL(clicked()), this /*ConstraintActivitiesSameStartingTimeForm_template*/, SLOT(addConstraint()));
+    connect(removeConstraintPushButton, SIGNAL(clicked()), this /*ConstraintActivitiesSameStartingTimeForm_template*/, SLOT(removeConstraint()));
+    connect(closePushButton, SIGNAL(clicked()), this /*ConstraintActivitiesSameStartingTimeForm_template*/, SLOT(close()));
+    connect(constraintsListBox, SIGNAL(highlighted(int)), this /*ConstraintActivitiesSameStartingTimeForm_template*/, SLOT(constraintChanged(int)));
+    connect(modifyConstraintPushButton, SIGNAL(clicked()), this /*ConstraintActivitiesSameStartingTimeForm_template*/, SLOT(modifyConstraint()));
+    connect(constraintsListBox, SIGNAL(selected(QString)), this /*ConstraintActivitiesSameStartingTimeForm_template*/, SLOT(modifyConstraint()));
+    connect(teachersComboBox, SIGNAL(activated(QString)), this /*ConstraintActivitiesSameStartingTimeForm_template*/, SLOT(filterChanged()));
+    connect(studentsComboBox, SIGNAL(activated(QString)), this /*ConstraintActivitiesSameStartingTimeForm_template*/, SLOT(filterChanged()));
+    connect(subjectsComboBox, SIGNAL(activated(QString)), this /*ConstraintActivitiesSameStartingTimeForm_template*/, SLOT(filterChanged()));
+    connect(activityTagsComboBox, SIGNAL(activated(QString)), this /*ConstraintActivitiesSameStartingTimeForm_template*/, SLOT(filterChanged()));
+    connect(helpPushButton, SIGNAL(clicked()), this /*ConstraintActivitiesSameStartingTimeForm_template*/, SLOT(help()));
+
+
 	//setWindowFlags(Qt::Window);
 	/*setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 	QDesktopWidget* desktop=QApplication::desktop();
@@ -30,6 +47,15 @@ ConstraintActivitiesSameStartingTimeForm::ConstraintActivitiesSameStartingTimeFo
 	int yy=desktop->height()/2 - frameGeometry().height()/2;
 	move(xx, yy);*/
 	centerWidgetOnScreen(this);
+
+	QSize tmp1=teachersComboBox->minimumSizeHint();
+	Q_UNUSED(tmp1);
+	QSize tmp2=studentsComboBox->minimumSizeHint();
+	Q_UNUSED(tmp2);
+	QSize tmp3=subjectsComboBox->minimumSizeHint();
+	Q_UNUSED(tmp3);
+	QSize tmp4=activityTagsComboBox->minimumSizeHint();
+	Q_UNUSED(tmp4);
 	
 	//this->refreshConstraintsListBox();
 
@@ -115,6 +141,9 @@ bool ConstraintActivitiesSameStartingTimeForm::filterOk(TimeConstraint* ctr)
 	QString sbn=subjectsComboBox->currentText();
 	QString sbtn=activityTagsComboBox->currentText();
 	QString stn=studentsComboBox->currentText();
+	
+	if(tn=="" && sbn=="" && sbtn=="" && stn=="")
+		return true;
 	
 	bool foundTeacher=false, foundStudents=false, foundSubject=false, foundActivityTag=false;
 		
@@ -217,23 +246,25 @@ void ConstraintActivitiesSameStartingTimeForm::constraintChanged(int index)
 
 void ConstraintActivitiesSameStartingTimeForm::addConstraint()
 {
-	AddConstraintActivitiesSameStartingTimeForm *form=new AddConstraintActivitiesSameStartingTimeForm();
-	form->exec();
+	AddConstraintActivitiesSameStartingTimeForm form;
+	form.exec();
 
 	this->refreshConstraintsListBox();
+	
+	constraintsListBox->setCurrentItem(constraintsListBox->count()-1);
 }
 
 void ConstraintActivitiesSameStartingTimeForm::modifyConstraint()
 {
 	int i=constraintsListBox->currentItem();
 	if(i<0){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected constraint"));
+		QMessageBox::information(this, tr("FET information"), tr("Invalid selected constraint"));
 		return;
 	}
 	TimeConstraint* ctr=this->visibleConstraintsList.at(i);
 
-	ModifyConstraintActivitiesSameStartingTimeForm *form=new ModifyConstraintActivitiesSameStartingTimeForm((ConstraintActivitiesSameStartingTime*)ctr);
-	form->exec();
+	ModifyConstraintActivitiesSameStartingTimeForm form((ConstraintActivitiesSameStartingTime*)ctr);
+	form.exec();
 
 	this->refreshConstraintsListBox();
 	
@@ -244,17 +275,18 @@ void ConstraintActivitiesSameStartingTimeForm::removeConstraint()
 {
 	int i=constraintsListBox->currentItem();
 	if(i<0){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected constraint"));
+		QMessageBox::information(this, tr("FET information"), tr("Invalid selected constraint"));
 		return;
 	}
 	TimeConstraint* ctr=this->visibleConstraintsList.at(i);
 	QString s;
-	s=QObject::tr("Removing constraint:\n");
+	s=tr("Remove constraint?");
+	s+="\n\n";
 	s+=ctr->getDetailedDescription(gt.rules);
-	s+=QObject::tr("\nAre you sure?");
+	//s+=tr("\nAre you sure?");
 
-	switch( QMessageBox::warning( this, QObject::tr("FET warning"),
-		s, QObject::tr("OK"), QObject::tr("Cancel"), 0, 0, 1 ) ){
+	switch( LongTextMessageBox::confirmation( this, tr("FET confirmation"),
+		s, tr("Yes"), tr("No"), 0, 0, 1 ) ){
 	case 0: // The user clicked the OK again button or pressed Enter
 		gt.rules.removeTimeConstraint(ctr);
 		this->refreshConstraintsListBox();
@@ -262,4 +294,20 @@ void ConstraintActivitiesSameStartingTimeForm::removeConstraint()
 	case 1: // The user clicked the Cancel or pressed Escape
 		break;
 	}
+
+	if((uint)(i) >= constraintsListBox->count())
+		i=constraintsListBox->count()-1;
+	constraintsListBox->setCurrentItem(i);
+}
+
+void ConstraintActivitiesSameStartingTimeForm::help()
+{
+	QString s;
+
+	s+=tr("IMPORTANT: after adding such constraints, it is necessary (otherwise generation might be impossible) to remove redundant constraints"
+	" min days between activities. If you are sure that you don't have redundant constraints, you can skip this step, but it doesn't hurt to do it as a precaution."
+	" Also, you don't have to do that after each added constraint, but only once after adding more constraints of this type."
+	" Please read Help/Important tips - tip number 2 for details");
+
+	LongTextMessageBox::largeInformation(this, tr("FET help"), s);
 }

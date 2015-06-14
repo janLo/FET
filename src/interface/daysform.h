@@ -13,15 +13,17 @@
 #ifndef DAYSFORM_H
 #define DAYSFORM_H
 
-#include "daysform_template.h"
+#include "ui_daysform_template.h"
 
-class DaysForm : public DaysForm_template
+class DaysForm : public QDialog, Ui::DaysForm_template
 {
+	Q_OBJECT
 public:
 	DaysForm();
 
 	~DaysForm();
 
+public slots:
 	void daysChanged();
 	void ok();
 	void cancel();

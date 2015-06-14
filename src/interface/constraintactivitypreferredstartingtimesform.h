@@ -18,7 +18,7 @@
 #ifndef CONSTRAINTACTIVITYPREFERREDSTARTINGTIMESFORM_H
 #define CONSTRAINTACTIVITYPREFERREDSTARTINGTIMESFORM_H
 
-#include "constraintactivitypreferredstartingtimesform_template.h"
+#include "ui_constraintactivitypreferredstartingtimesform_template.h"
 #include "timetable_defs.h"
 #include "timetable.h"
 #include "fet.h"
@@ -34,7 +34,7 @@
 #include <q3textedit.h>
 #include <q3listbox.h>
 
-class ConstraintActivityPreferredStartingTimesForm : public ConstraintActivityPreferredStartingTimesForm_template  {
+class ConstraintActivityPreferredStartingTimesForm : public QDialog, Ui::ConstraintActivityPreferredStartingTimesForm_template  {
 	Q_OBJECT
 
 public:
@@ -43,14 +43,15 @@ public:
 	ConstraintActivityPreferredStartingTimesForm();
 	~ConstraintActivityPreferredStartingTimesForm();
 
+	bool filterOk(TimeConstraint* ctr);
+
+public slots:
 	void constraintChanged(int index);
 	void addConstraint();
 	void modifyConstraint();
 	void removeConstraint();
 
 	void filterChanged();
-
-	bool filterOk(TimeConstraint* ctr);
 };
 
 #endif

@@ -22,8 +22,9 @@
 
 //TODO: convert all export funtions like this: tosExport<<qPrintable(QString::number(actiNext->duration))
 //TODO: protect export strings. textquote must be dubbled
-//TODO: count skipped min n day constraints?
+//TODO: count skipped min day constraints?
 //TODO: add cancel button
+//TODO: REMOVE OR COMMENT OUT qPrintable, just output QString::number
 
 //#include "centerwidgetonscreen.h"
 class QWidget;
@@ -42,16 +43,18 @@ extern bool teachers_schedule_ready;
 extern bool students_schedule_ready;
 extern bool rooms_schedule_ready;
 
-const char CSVActivities[]="_activities.csv";
-const char CSVActivityTags[]="_activity_tags.csv";
-const char CSVRoomsAndBuildings[]="_rooms_and_buildings.csv";
-const char CSVSubjects[]="_subjects.csv";
-const char CSVTeachers[]="_teacher.csv";
-const char CSVStudents[]="_students.csv";
-const char CSVTimetable[]="_timetable.csv";
+const char CSVActivities[]="activities.csv";
+const char CSVActivityTags[]="activity_tags.csv";
+const char CSVRoomsAndBuildings[]="rooms_and_buildings.csv";
+const char CSVSubjects[]="subjects.csv";
+const char CSVTeachers[]="teachers.csv";
+const char CSVStudents[]="students.csv";
+const char CSVTimetable[]="timetable.csv";
 QString DIRECTORY_CSV;
 QString PREFIX_CSV;
 
+#include <iostream>
+using namespace std;
 
 
 Export::Export()
@@ -63,6 +66,36 @@ Export::~Export()
 }
 
 
+bool Export::okToWrite(const QString& file, QMessageBox::StandardButton& msgBoxButton)
+{
+	if(QFile::exists(file)){
+		if(msgBoxButton==QMessageBox::YesToAll){
+			return true;
+		}
+		else if(msgBoxButton==QMessageBox::NoToAll){
+			return false;
+		}
+		else if(msgBoxButton==QMessageBox::No ||
+		 msgBoxButton==QMessageBox::Yes ||
+		 msgBoxButton==QMessageBox::NoButton){
+			msgBoxButton=QMessageBox::warning(NULL, tr("FET warning"),
+			 tr("File %1 exists - are you sure you want to overwrite existing file?")
+			 .arg(file),
+			 QMessageBox::Yes|QMessageBox::No|QMessageBox::YesToAll|QMessageBox::NoToAll,
+			 QMessageBox::Yes
+			 );
+			if(msgBoxButton==QMessageBox::No || msgBoxButton==QMessageBox::NoToAll)
+				return false;
+			else
+				return true;
+		}
+		else
+			assert(0);
+	}
+	else
+		return true;
+}
+
 
 void Export::exportCSV(){
 	QString fieldSeparator=",";
@@ -72,21 +105,39 @@ void Export::exportCSV(){
 	bool ok=true;
 
 	DIRECTORY_CSV=OUTPUT_DIR+FILE_SEP+"csv";
+
+
+	QString s2;
+	if(INPUT_FILENAME_XML=="")
+		s2="unnamed";
+	else{
+		s2=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);	//TODO: remove s2, because to long filenames!
+
+		if(s2.right(4)==".fet")
+			s2=s2.left(s2.length()-4);
+		else if(INPUT_FILENAME_XML!="")
+			cout<<"Minor problem - input file does not end in .fet extension - might be a problem when saving the timetables"<<" (file:"<<__FILE__<<", line:"<<__LINE__<<")"<<endl;
+	}
+	DIRECTORY_CSV.append(FILE_SEP);
+	DIRECTORY_CSV.append(s2);
+	
+
 	PREFIX_CSV=DIRECTORY_CSV+FILE_SEP;
 
 	QDir dir;
 	if(!dir.exists(OUTPUT_DIR))
-		dir.mkdir(OUTPUT_DIR);
+		dir.mkpath(OUTPUT_DIR);
 	if(!dir.exists(DIRECTORY_CSV))
-		dir.mkdir(DIRECTORY_CSV);
+		dir.mkpath(DIRECTORY_CSV);
 
 	ok=selectSeparatorAndTextquote(textquote, fieldSeparator, head);
 	QString lastWarnings;
 	if(!ok){
 		lastWarnings.insert(0,Export::tr("Export aborted")+"\n");
 	} else {
-		if(ok)
-			ok=exportCSVActivityTags(lastWarnings, textquote, head);
+		bool okat, okr, oks, okt, okst, okact, oktim;
+		/*if(ok)
+			ok=exportCSVActivityTags(lastWarnings, textquote, head, setSeparator);
 		if(ok)
 			ok=exportCSVRoomsAndBuildings(lastWarnings, textquote, fieldSeparator, head);
 		if(ok)
@@ -98,7 +149,20 @@ void Export::exportCSV(){
 		if(ok)
 			ok=exportCSVActivities(lastWarnings, textquote, fieldSeparator, head);
 		if(ok)
-			ok=exportCSVTimetable(lastWarnings, textquote, fieldSeparator, head);
+			ok=exportCSVTimetable(lastWarnings, textquote, fieldSeparator, head);*/
+
+		QMessageBox::StandardButton msgBoxButton=QMessageBox::NoButton;
+
+		okat=exportCSVActivityTags(lastWarnings, textquote, head, setSeparator, msgBoxButton);
+		okr=exportCSVRoomsAndBuildings(lastWarnings, textquote, fieldSeparator, head, msgBoxButton);
+		oks=exportCSVSubjects(lastWarnings, textquote, head, msgBoxButton);
+		okt=exportCSVTeachers(lastWarnings, textquote, head, setSeparator, msgBoxButton);
+		okst=exportCSVStudents(lastWarnings, textquote, fieldSeparator, head, setSeparator, msgBoxButton);
+		okact=exportCSVActivities(lastWarnings, textquote, fieldSeparator, head, msgBoxButton);
+		oktim=exportCSVTimetable(lastWarnings, textquote, fieldSeparator, head, msgBoxButton);
+		
+		ok=okat && okr && oks && okt && okst && okact && oktim;
+			
 		lastWarnings.insert(0,Export::tr("CSV files were exported to directory %1.").arg(QDir::toNativeSeparators(DIRECTORY_CSV))+"\n");
 		if(ok)
 			lastWarnings.insert(0,Export::tr("Exported complete")+"\n");
@@ -106,11 +170,11 @@ void Export::exportCSV(){
 			lastWarnings.insert(0,Export::tr("Export incomplete")+"\n");
 	}
 
-	lastWarningsDialogE lwd(lastWarnings);
+	LastWarningsDialogE lwd(lastWarnings);
 	lwd.setWindowFlags(lwd.windowFlags() | Qt::WindowMinMaxButtonsHint);
 	//lwd.show();
 	int w=lwd.sizeHint().width();
-        int h=lwd.sizeHint().height();
+	int h=lwd.sizeHint().height();
 	lwd.setGeometry(0,0,w,h);
 	centerWidgetOnScreen(&lwd);
 
@@ -133,8 +197,8 @@ bool Export::checkSetSeparator(const QString& str, const QString setSeparator){
 	return true;
 }
 
-bool Export::isActivityNotManualyEdited(const int activityIndex, bool& diffTeachers, bool& diffSubject, bool& diffActivityTags, bool& diffStudents, bool& diffCompNStud, bool& diffNStud){ //similar to ActivitiesForm::modifyActivity() by Liviu Lalescu
-	diffTeachers=diffSubject=diffActivityTags=diffStudents=diffCompNStud=diffNStud=false;
+bool Export::isActivityNotManualyEdited(const int activityIndex, bool& diffTeachers, bool& diffSubject, bool& diffActivityTags, bool& diffStudents, bool& diffCompNStud, bool& diffNStud, bool& diffActive){ //similar to ActivitiesForm::modifyActivity() by Liviu Lalescu, but added diffActive
+	diffTeachers=diffSubject=diffActivityTags=diffStudents=diffCompNStud=diffNStud=diffActive=false;
 
 	assert(activityIndex>=0);
 	assert(activityIndex<gt.rules.activitiesList.size());
@@ -150,6 +214,7 @@ bool Export::isActivityNotManualyEdited(const int activityIndex, bool& diffTeach
 	int nTotalStudents=act->nTotalStudents;
 	
 	bool computeNTotalStudents=act->computeNTotalStudents;
+	bool active=act->active;
 
 	if(act->isSplit()){
 		for(int i=activityIndex; i<gt.rules.activitiesList.size(); i++){	//possible speed improvement: not i=0. do i=act->activityGroupId
@@ -179,12 +244,16 @@ bool Export::isActivityNotManualyEdited(const int activityIndex, bool& diffTeach
 					diffCompNStud=true;
 					//return false;
 				}
+				if(active!=act2->active){
+					diffActive=true;
+					//return false;	
+				}
 			}
 			else
 				i=gt.rules.activitiesList.size();
 		}
 	}
-	if(!diffTeachers && !diffSubject && !diffActivityTags && !diffStudents && !diffCompNStud && !diffNStud)
+	if(!diffTeachers && !diffSubject && !diffActivityTags && !diffStudents && !diffCompNStud && !diffNStud && !diffActive)
 		return true;
 	else
 		return false;
@@ -197,11 +266,21 @@ bool Export::selectSeparatorAndTextquote(QString& textquote, QString& fieldSepar
 	QStringList separators;
 	QStringList textquotes;
 	separators<<","<<";"<<"|";
-	textquotes<<"\""<<"'"<<Export::tr("no textquote");
-	assert(textquotes[2].size()>1);
+	//textquotes<<"\""<<"'"<<Export::tr("no textquote", "The translated field must contain at least 2 characters (normally it should), otherwise the export filter does not work");
+	const QString NO_TEXTQUOTE_TRANSLATED=Export::tr("no textquote");
+	textquotes<<"\""<<"'"<<NO_TEXTQUOTE_TRANSLATED;
+	const int NO_TEXTQUOTE_POS=2; //if you modify line above, modify also this variable to be the position of the no textquote (starts from 0)
+	//also, if you add textquotes longer than one character, take care of line 309 (later in the same function) (assert textquote.size()==1)
+	//it is permitted for position NO_TEXTQUOTE_POS to have a string longer than 1 QChar
+	
+	/*if(textquotes[2].size()<=1){
+		QMessageBox::warning(NULL, tr("FET warning"), tr("Translation is wrong, because translation of 'no textquote' is too short - falling back to English words. Please report bug"));
+		textquote=QString("no textquote");
+	}
+	assert(textquotes[2].size()>1);*/
 
 	QDialog separatorsDialog(NULL);
-	separatorsDialog.setWindowTitle(QObject::tr("FET question"));
+	separatorsDialog.setWindowTitle(tr("FET question"));
 	QVBoxLayout* separatorsMainLayout=new QVBoxLayout(&separatorsDialog);
 
 	QHBoxLayout* top=new QHBoxLayout();
@@ -210,9 +289,11 @@ bool Export::selectSeparatorAndTextquote(QString& textquote, QString& fieldSepar
 	top->addWidget(topText);
 
 	QGroupBox* separatorsGroupBox = new QGroupBox(Export::tr("Please specify the separator between fields:"));
-	QHBoxLayout* separatorBoxChoose=new QHBoxLayout();
-	QComboBox* separatorsCB=new QComboBox();
+	QComboBox* separatorsCB=NULL;
 	if(separators.size()>1){
+		QHBoxLayout* separatorBoxChoose=new QHBoxLayout();
+		separatorsCB=new QComboBox();
+
 		QLabel* separatorTextChoose=new QLabel();
 		separatorTextChoose->setText(Export::tr("Use field separator:"));
 		separatorsCB->insertItems(0,separators);
@@ -222,9 +303,11 @@ bool Export::selectSeparatorAndTextquote(QString& textquote, QString& fieldSepar
 	}
 
 	QGroupBox* textquoteGroupBox = new QGroupBox(Export::tr("Please specify the text quote of text fields:"));
-	QHBoxLayout* textquoteBoxChoose=new QHBoxLayout();
-	QComboBox* textquoteCB=new QComboBox();
+	QComboBox* textquoteCB=NULL;
 	if(separators.size()>1){
+		QHBoxLayout* textquoteBoxChoose=new QHBoxLayout();
+		textquoteCB=new QComboBox();
+		
 		QLabel* textquoteTextChoose=new QLabel();
 		textquoteTextChoose->setText(Export::tr("Use textquote:"));
 		textquoteCB->insertItems(0,textquotes);
@@ -242,10 +325,12 @@ bool Export::selectSeparatorAndTextquote(QString& textquote, QString& fieldSepar
 	firstLineChooseBox->addWidget(firstLineRadio2);
 	firstLineGroupBox->setLayout(firstLineChooseBox);
 
-	QPushButton* pb=new QPushButton(QObject::tr("OK"));
+	QPushButton* pb=new QPushButton(tr("OK"));
+	QPushButton* cancelpb=new QPushButton(tr("Cancel"));
 	QHBoxLayout* hl=new QHBoxLayout();
 	hl->addStretch();
 	hl->addWidget(pb);
+	hl->addWidget(cancelpb);
 	
 	separatorsMainLayout->addLayout(top);
 	separatorsMainLayout->addWidget(separatorsGroupBox);
@@ -253,21 +338,45 @@ bool Export::selectSeparatorAndTextquote(QString& textquote, QString& fieldSepar
 
 	separatorsMainLayout->addWidget(firstLineGroupBox);
 	separatorsMainLayout->addLayout(hl);
+
+	pb->setDefault(true);
+	pb->setFocus();
+	
 	QObject::connect(pb, SIGNAL(clicked()), &separatorsDialog, SLOT(accept()));
+	QObject::connect(cancelpb, SIGNAL(clicked()), &separatorsDialog, SLOT(reject()));
 		
 	separatorsDialog.setWindowFlags(separatorsDialog.windowFlags() | Qt::WindowMinMaxButtonsHint);
 
 	//separatorsDialog.show();
 	int w=separatorsDialog.sizeHint().width();
-        int h=separatorsDialog.sizeHint().height();
+	int h=separatorsDialog.sizeHint().height();
 	separatorsDialog.setGeometry(0,0,w,h);
 	centerWidgetOnScreen(&separatorsDialog);
 
 	int ok=separatorsDialog.exec();
-	if(!ok) return false;
+	if(ok!=QDialog::Accepted) return false;
 
-	fieldSeparator=separatorsCB->currentText();
-	textquote=textquoteCB->currentText();
+	// TODO: if is always true. maybe clean source (also 2 previous if)
+	if(separators.size()>1){
+		assert(separatorsCB!=NULL);
+		assert(textquoteCB!=NULL);
+		fieldSeparator=separatorsCB->currentText();
+		textquote=textquoteCB->currentText();
+		if(textquoteCB->currentItem()==NO_TEXTQUOTE_POS){
+			assert(textquote==NO_TEXTQUOTE_TRANSLATED);
+			textquote=QString("no tquote"); //must have length >= 2
+		}
+		else{
+			assert(textquote.size()==1);
+			//assert(textquote=="\"" || textquote=="'");
+		}
+	}
+	else{
+		assert(separatorsCB==NULL);
+		assert(textquoteCB==NULL);
+		fieldSeparator="";
+		textquote="";
+	}
 
 	if(textquote.size()!=1)
 		textquote="";
@@ -280,8 +389,8 @@ bool Export::selectSeparatorAndTextquote(QString& textquote, QString& fieldSepar
 
 
 
-lastWarningsDialogE::lastWarningsDialogE(QString lastWarning, QWidget *parent): QDialog(parent){
-	this->setWindowTitle(tr("FET - export comment"));
+LastWarningsDialogE::LastWarningsDialogE(QString lastWarning, QWidget *parent): QDialog(parent){
+	this->setWindowTitle(tr("FET - export comment", "The comment of the exporting operation"));
 	QVBoxLayout* lastWarningsMainLayout=new QVBoxLayout(this);
 
 	QTextEdit* lastWarningsText=new QTextEdit();
@@ -314,11 +423,22 @@ lastWarningsDialogE::lastWarningsDialogE(QString lastWarning, QWidget *parent): 
 }
 
 
-
-bool Export::exportCSVActivityTags(QString& lastWarnings, const QString textquote, const bool head){
+bool Export::exportCSVActivityTags(QString& lastWarnings, const QString textquote, const bool head, const QString setSeparator, QMessageBox::StandardButton& msgBoxButton){
 	QString s2=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);	//TODO: remove s2, because to long filenames!
-	QString file=PREFIX_CSV+s2+CSVActivityTags;
 
+	if(s2.right(4)==".fet")
+		s2=s2.left(s2.length()-4);
+	//else if(INPUT_FILENAME_XML!="")
+	//	cout<<"Minor problem - input file does not end in .fet extension - might be a problem when saving the timetables"<<" (file:"<<__FILE__<<", line:"<<__LINE__<<")"<<endl;
+
+	QString UNDERSCORE="_";
+	if(INPUT_FILENAME_XML=="")
+		UNDERSCORE="";
+	QString file=PREFIX_CSV+s2+UNDERSCORE+CSVActivityTags;
+	
+	if(!Export::okToWrite(file, msgBoxButton))
+		return false;
+	
 	QFile fileExport(file);
 	if(!fileExport.open(QIODevice::WriteOnly)){
 		lastWarnings+=Export::tr("FET critical. Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(file)+"\n";
@@ -334,6 +454,8 @@ bool Export::exportCSVActivityTags(QString& lastWarnings, const QString textquot
 
 	foreach(ActivityTag* a, gt.rules.activityTagsList){
 		tosExport<<textquote<<protectCSV(a->name)<<textquote<<endl;
+		if(!checkSetSeparator(a->name, setSeparator))
+			lastWarnings+=Export::tr("Warning! Import of activities will fail, because %1 include set separator +.").arg(a->name)+"\n";
 	}
 
 	lastWarnings+=Export::tr("%1 activity tags exported.").arg(gt.rules.activityTagsList.size())+"\n";
@@ -347,10 +469,22 @@ bool Export::exportCSVActivityTags(QString& lastWarnings, const QString textquot
 
 
 
-bool Export::exportCSVRoomsAndBuildings(QString& lastWarnings, const QString textquote, const QString fieldSeparator, const bool head){
+bool Export::exportCSVRoomsAndBuildings(QString& lastWarnings, const QString textquote, const QString fieldSeparator, const bool head, QMessageBox::StandardButton& msgBoxButton){
 	QString s2=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);	//TODO: remove s2, because to long filenames!
-	QString file=PREFIX_CSV+s2+CSVRoomsAndBuildings;
 
+	if(s2.right(4)==".fet")
+		s2=s2.left(s2.length()-4);
+	//else if(INPUT_FILENAME_XML!="")
+	//	cout<<"Minor problem - input file does not end in .fet extension - might be a problem when saving the timetables"<<" (file:"<<__FILE__<<", line:"<<__LINE__<<")"<<endl;
+
+	QString UNDERSCORE="_";
+	if(INPUT_FILENAME_XML=="")
+		UNDERSCORE="";
+	QString file=PREFIX_CSV+s2+UNDERSCORE+CSVRoomsAndBuildings;
+
+	if(!Export::okToWrite(file, msgBoxButton))
+		return false;
+	
 	QFile fileExport(file);
 	if(!fileExport.open(QIODevice::WriteOnly)){
 		lastWarnings+=Export::tr("FET critical. Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(file)+"\n";
@@ -369,7 +503,7 @@ bool Export::exportCSVRoomsAndBuildings(QString& lastWarnings, const QString tex
 	QStringList checkBuildings;
 	foreach(Room* r, gt.rules.roomsList){
 		tosExport	<<textquote<<protectCSV(r->name)<<textquote<<fieldSeparator
-				<<qPrintable(QString::number(r->capacity))<<fieldSeparator
+				<</*qPrintable(*/QString::number(r->capacity)/*)*/<<fieldSeparator
 				<<textquote<<protectCSV(r->building)<<textquote<<endl;
 		if(!checkBuildings.contains(r->building)&&!r->building.isEmpty())
 			checkBuildings<<r->building;
@@ -390,10 +524,22 @@ bool Export::exportCSVRoomsAndBuildings(QString& lastWarnings, const QString tex
 
 
 
-bool Export::exportCSVSubjects(QString& lastWarnings, const QString textquote, const bool head){
+bool Export::exportCSVSubjects(QString& lastWarnings, const QString textquote, const bool head, QMessageBox::StandardButton& msgBoxButton){
 	QString s2=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);	//TODO: remove s2, because to long filenames!
-	QString file=PREFIX_CSV+s2+CSVSubjects;
 
+	if(s2.right(4)==".fet")
+		s2=s2.left(s2.length()-4);
+	//else if(INPUT_FILENAME_XML!="")
+	//	cout<<"Minor problem - input file does not end in .fet extension - might be a problem when saving the timetables"<<" (file:"<<__FILE__<<", line:"<<__LINE__<<")"<<endl;
+
+	QString UNDERSCORE="_";
+	if(INPUT_FILENAME_XML=="")
+		UNDERSCORE="";
+	QString file=PREFIX_CSV+s2+UNDERSCORE+CSVSubjects;
+
+	if(!Export::okToWrite(file, msgBoxButton))
+		return false;
+	
 	QFile fileExport(file);
 	if(!fileExport.open(QIODevice::WriteOnly)){
 		lastWarnings+=Export::tr("FET critical. Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(file)+"\n";
@@ -422,10 +568,22 @@ bool Export::exportCSVSubjects(QString& lastWarnings, const QString textquote, c
 
 
 
-bool Export::exportCSVTeachers(QString& lastWarnings, const QString textquote, const bool head, const QString setSeparator){
+bool Export::exportCSVTeachers(QString& lastWarnings, const QString textquote, const bool head, const QString setSeparator, QMessageBox::StandardButton& msgBoxButton){
 	QString s2=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);	//TODO: remove s2, because to long filenames!
-	QString file=PREFIX_CSV+s2+CSVTeachers;
 
+	if(s2.right(4)==".fet")
+		s2=s2.left(s2.length()-4);
+	//else if(INPUT_FILENAME_XML!="")
+	//	cout<<"Minor problem - input file does not end in .fet extension - might be a problem when saving the timetables"<<" (file:"<<__FILE__<<", line:"<<__LINE__<<")"<<endl;
+
+	QString UNDERSCORE="_";
+	if(INPUT_FILENAME_XML=="")
+		UNDERSCORE="";
+	QString file=PREFIX_CSV+s2+UNDERSCORE+CSVTeachers;
+
+	if(!Export::okToWrite(file, msgBoxButton))
+		return false;
+	
 	QFile fileExport(file);
 	if(!fileExport.open(QIODevice::WriteOnly)){
 		lastWarnings+=Export::tr("FET critical. Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(file)+"\n";
@@ -456,10 +614,23 @@ bool Export::exportCSVTeachers(QString& lastWarnings, const QString textquote, c
 
 
 
-bool Export::exportCSVStudents(QString& lastWarnings, const QString textquote, const QString fieldSeparator, const bool head, const QString setSeparator){
+bool Export::exportCSVStudents(QString& lastWarnings, const QString textquote, const QString fieldSeparator, const bool head, const QString setSeparator
+ , QMessageBox::StandardButton& msgBoxButton){
 	QString s2=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);	//TODO: remove s2, because to long filenames!
-	QString file=PREFIX_CSV+s2+CSVStudents;
 
+	if(s2.right(4)==".fet")
+		s2=s2.left(s2.length()-4);
+	//else if(INPUT_FILENAME_XML!="")
+	//	cout<<"Minor problem - input file does not end in .fet extension - might be a problem when saving the timetables"<<" (file:"<<__FILE__<<", line:"<<__LINE__<<")"<<endl;
+
+	QString UNDERSCORE="_";
+	if(INPUT_FILENAME_XML=="")
+		UNDERSCORE="";
+	QString file=PREFIX_CSV+s2+UNDERSCORE+CSVStudents;
+
+	if(!Export::okToWrite(file, msgBoxButton))
+		return false;
+	
 	QFile fileExport(file);
 	if(!fileExport.open(QIODevice::WriteOnly)){
 		lastWarnings+=Export::tr("FET critical. Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(file)+"\n";
@@ -482,25 +653,25 @@ bool Export::exportCSVStudents(QString& lastWarnings, const QString textquote, c
 	int is=0;
 	foreach(StudentsYear* sty, gt.rules.yearsList){
 		tosExport<<textquote<<protectCSV(sty->name)<<textquote<<fieldSeparator
-					<<qPrintable(QString::number(sty->numberOfStudents))<<fieldSeparator<<fieldSeparator<<fieldSeparator<<fieldSeparator<<endl;
+					<</*qPrintable(*/QString::number(sty->numberOfStudents)/*)*/<<fieldSeparator<<fieldSeparator<<fieldSeparator<<fieldSeparator<<endl;
 		if(!checkSetSeparator(sty->name, setSeparator))
 			lastWarnings+=Export::tr("Warning! Import of activities will fail, because %1 include set separator +.").arg(sty->name)+"\n";
 		foreach(StudentsGroup* stg, sty->groupsList){
 			ig++;
 			tosExport	<<textquote<<protectCSV(sty->name)<<textquote<<fieldSeparator
-					<<qPrintable(QString::number(sty->numberOfStudents))<<fieldSeparator
+					<</*qPrintable(*/QString::number(sty->numberOfStudents)/*)*/<<fieldSeparator
 					<<textquote<<protectCSV(stg->name)<<textquote<<fieldSeparator
-					<<qPrintable(QString::number(stg->numberOfStudents))<<fieldSeparator<<fieldSeparator<<endl;
+					<</*qPrintable(*/QString::number(stg->numberOfStudents)/*)*/<<fieldSeparator<<fieldSeparator<<endl;
 			if(!checkSetSeparator(stg->name, setSeparator))
 				lastWarnings+=Export::tr("Warning! Import of activities will fail, because %1 include set separator +.").arg(stg->name)+"\n";
 			foreach(StudentsSubgroup* sts, stg->subgroupsList){
 				is++;
 				tosExport	<<textquote<<protectCSV(sty->name)<<textquote<<fieldSeparator
-						<<qPrintable(QString::number(sty->numberOfStudents))<<fieldSeparator
+						<</*qPrintable(*/QString::number(sty->numberOfStudents)/*)*/<<fieldSeparator
 						<<textquote<<protectCSV(stg->name)<<textquote<<fieldSeparator
-						<<qPrintable(QString::number(stg->numberOfStudents))<<fieldSeparator
+						<</*qPrintable(*/QString::number(stg->numberOfStudents)/*)*/<<fieldSeparator
 						<<textquote<<protectCSV(sts->name)<<textquote<<fieldSeparator
-						<<qPrintable(QString::number(sts->numberOfStudents))<<endl;
+						<</*qPrintable(*/QString::number(sts->numberOfStudents)/*)*/<<endl;
 				if(!checkSetSeparator(sts->name, setSeparator))
 					lastWarnings+=Export::tr("Warning! Import of activities will fail, because %1 include set separator +.").arg(sts->name)+"\n";
 			}
@@ -520,10 +691,22 @@ bool Export::exportCSVStudents(QString& lastWarnings, const QString textquote, c
 
 
 
-bool Export::exportCSVActivities(QString& lastWarnings, const QString textquote, const QString fieldSeparator, const bool head){
+bool Export::exportCSVActivities(QString& lastWarnings, const QString textquote, const QString fieldSeparator, const bool head, QMessageBox::StandardButton& msgBoxButton){
 	QString s2=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);	//TODO: remove s2, because to long filenames!
-	QString file=PREFIX_CSV+s2+CSVActivities;
 
+	if(s2.right(4)==".fet")
+		s2=s2.left(s2.length()-4);
+	//else if(INPUT_FILENAME_XML!="")
+	//	cout<<"Minor problem - input file does not end in .fet extension - might be a problem when saving the timetables"<<" (file:"<<__FILE__<<", line:"<<__LINE__<<")"<<endl;
+
+	QString UNDERSCORE="_";
+	if(INPUT_FILENAME_XML=="")
+		UNDERSCORE="";
+	QString file=PREFIX_CSV+s2+UNDERSCORE+CSVActivities;
+
+	if(!Export::okToWrite(file, msgBoxButton))
+		return false;
+	
 	QFile fileExport(file);
 	if(!fileExport.open(QIODevice::WriteOnly)){
 		lastWarnings+=Export::tr("FET critical. Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(file)+"\n";
@@ -538,18 +721,18 @@ bool Export::exportCSVActivities(QString& lastWarnings, const QString textquote,
 		tosExport	<<textquote<<"Students Sets"<<textquote<<fieldSeparator
 				<<textquote<<"Subject"<<textquote<<fieldSeparator
 				<<textquote<<"Teachers"<<textquote<<fieldSeparator
-				<<textquote<<"Activity Tag"<<textquote<<fieldSeparator
+				<<textquote<<"Activity Tags"<<textquote<<fieldSeparator
 				<<textquote<<"Total Duration"<<textquote<<fieldSeparator
 				<<textquote<<"Split Duration"<<textquote<<fieldSeparator
-				<<textquote<<"Min N Days"<<textquote<<fieldSeparator
+				<<textquote<<"Min Days"<<textquote<<fieldSeparator
 				<<textquote<<"Weight"<<textquote<<fieldSeparator
 				<<textquote<<"Consecutive"<<textquote<<endl;
 
 	//code by Liviu Lalescu (begin)
-	//better detection of min n day constraint
+	//better detection of min day constraint
 	QHash<int, int> activitiesRepresentant;
 	QHash<int, int> activitiesNumberOfSubactivities;
-	QHash<int, ConstraintMinNDaysBetweenActivities*>activitiesConstraints;
+	QHash<int, ConstraintMinDaysBetweenActivities*>activitiesConstraints;
 	
 	activitiesRepresentant.clear();
 	activitiesNumberOfSubactivities.clear();
@@ -566,8 +749,8 @@ bool Export::exportCSVActivities(QString& lastWarnings, const QString textquote,
 		}
 	}
 	foreach(TimeConstraint* tc, gt.rules.timeConstraintsList){
-		if(tc->type==CONSTRAINT_MIN_N_DAYS_BETWEEN_ACTIVITIES){
-			ConstraintMinNDaysBetweenActivities* c=(ConstraintMinNDaysBetweenActivities*) tc;
+		if(tc->type==CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES){
+			ConstraintMinDaysBetweenActivities* c=(ConstraintMinDaysBetweenActivities*) tc;
 	
 			QSet<int> aset;
 			int repres=-1;
@@ -599,7 +782,7 @@ bool Export::exportCSVActivities(QString& lastWarnings, const QString textquote,
 			}
 	
 			if(oktmp){
-				ConstraintMinNDaysBetweenActivities* oldc=activitiesConstraints.value(repres, NULL);
+				ConstraintMinDaysBetweenActivities* oldc=activitiesConstraints.value(repres, NULL);
 				if(oldc!=NULL){
 					if(oldc->weightPercentage < c->weightPercentage){
 						activitiesConstraints.insert(repres, c); //overwrites old value
@@ -611,7 +794,7 @@ bool Export::exportCSVActivities(QString& lastWarnings, const QString textquote,
 							" there exists another constraint of this type with larger weight percentage, referring to the same activities")+"\n";
 					}
 	
-					//equal weights - choose the lowest number of min n days
+					//equal weights - choose the lowest number of min days
 					else if(oldc->minDays > c->minDays){
 						lastWarnings+=Export::tr("Note: Constraint")+" "+c->getDescription(gt.rules)+" "+tr("was skipped, because"
 							" there exists another constraint of this type with same weight percentage and higher number of min days, referring to the same activities")+"\n";
@@ -650,10 +833,10 @@ bool Export::exportCSVActivities(QString& lastWarnings, const QString textquote,
 	int countExportedActivities=0;
 	for(int ai=0; ai<gt.rules.activitiesList.size(); ai++){
 		acti=gt.rules.activitiesList[ai];
-		if(acti->active){
+		//if(acti->active){
 			if((acti->activityGroupId==acti->id)||(acti->activityGroupId==0)){
-				bool diffTeachers, diffSubject, diffActivityTag, diffStudents, diffCompNStud, diffNStud;
-				if(isActivityNotManualyEdited(ai, diffTeachers, diffSubject, diffActivityTag, diffStudents, diffCompNStud, diffNStud)){
+				bool diffTeachers, diffSubject, diffActivityTag, diffStudents, diffCompNStud, diffNStud, diffActive;
+				if(isActivityNotManualyEdited(ai, diffTeachers, diffSubject, diffActivityTag, diffStudents, diffCompNStud, diffNStud, diffActive)){
 				}
 				else{
 					QStringList s;
@@ -669,12 +852,20 @@ bool Export::exportCSVActivities(QString& lastWarnings, const QString textquote,
 						s.append(tr("different boolean variable 'must compute n total students'"));
 					if(diffNStud)
 						s.append(tr("different number of students"));
+					if(diffActive)
+						s.append(tr("different active flag"));
 					
 					manuallyEdited=true;
 					
 					lastWarnings+=tr("Subactivities with activity group id %1 are different between themselves (they were separately edited),"
 						" so the export will not be very accurate. The fields which are different will be considered those of the representative subactivity. Fields which were"
 						" different are: %2").arg(QString::number(acti->activityGroupId)).arg(s.join(", "))+"\n";
+				}
+				if(!acti->active){
+					if(acti->activityGroupId==0)
+						lastWarnings+=tr("Activity with id %1 has disabled active flag but it is exported.").arg(QString::number(acti->id))+"\n";
+					else
+						lastWarnings+=tr("Subactivities with activity group id %1 have disabled active flag but they are exported.").arg(QString::number(acti->activityGroupId))+"\n";
 				}
 				
 				countExportedActivities++;
@@ -704,7 +895,7 @@ bool Export::exportCSVActivities(QString& lastWarnings, const QString textquote,
 				}
 				tosExport<<textquote<<fieldSeparator;
 				//total duration
-				tosExport<<qPrintable(QString::number(acti->totalDuration));
+				tosExport<</*qPrintable(*/QString::number(acti->totalDuration)/*)*/;
 				tosExport<<fieldSeparator<<textquote;
 				//split duration
 				for(int aiNext=ai; aiNext<gt.rules.activitiesList.size(); aiNext++){
@@ -724,10 +915,10 @@ bool Export::exportCSVActivities(QString& lastWarnings, const QString textquote,
 					}	
 				}
 				tosExport<<textquote<<fieldSeparator;
-				//min n days
+				//min days
 				//start new code, because of Livius detection
 				bool careAboutMinDay=false;
-				ConstraintMinNDaysBetweenActivities* tcmd=activitiesConstraints.value(acti->id, NULL);
+				ConstraintMinDaysBetweenActivities* tcmd=activitiesConstraints.value(acti->id, NULL);
 				if(acti->id==acti->activityGroupId){
 					if(tcmd!=NULL){
 						careAboutMinDay=true;
@@ -735,20 +926,20 @@ bool Export::exportCSVActivities(QString& lastWarnings, const QString textquote,
 				}
 				//end new code
 				if(careAboutMinDay){
-					assert(tcmd->type==CONSTRAINT_MIN_N_DAYS_BETWEEN_ACTIVITIES);
-					tosExport<<qPrintable(QString::number(tcmd->minDays));
+					assert(tcmd->type==CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES);
+					tosExport<</*qPrintable(*/QString::number(tcmd->minDays)/*)*/;
 				}
 				tosExport<<fieldSeparator;
-				//min n days weight
+				//min days weight
 				if(careAboutMinDay)
-					tosExport<<qPrintable(QString::number(tcmd->weightPercentage));
+					tosExport<</*qPrintable(*/QString::number(tcmd->weightPercentage)/*)*/;
 				tosExport<<fieldSeparator;
-				//min n days consecutive
+				//min days consecutive
 				if(careAboutMinDay)
 					tosExport<<tcmd->consecutiveIfSameDay;
 				tosExport<<endl;
 			}
-		}
+		//}
 	}
 	
 	if(manuallyEdited){
@@ -767,9 +958,21 @@ bool Export::exportCSVActivities(QString& lastWarnings, const QString textquote,
 
 
 
-bool Export::exportCSVTimetable(QString& lastWarnings, const QString textquote, const QString fieldSeparator, const bool head){
+bool Export::exportCSVTimetable(QString& lastWarnings, const QString textquote, const QString fieldSeparator, const bool head, QMessageBox::StandardButton& msgBoxButton){
 	QString s2=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);	//TODO: remove s2, because to long filenames!
-	QString file=PREFIX_CSV+s2+CSVTimetable;
+
+	if(s2.right(4)==".fet")
+		s2=s2.left(s2.length()-4);
+	//else if(INPUT_FILENAME_XML!="")
+	//	cout<<"Minor problem - input file does not end in .fet extension - might be a problem when saving the timetables"<<" (file:"<<__FILE__<<", line:"<<__LINE__<<")"<<endl;
+
+	QString UNDERSCORE="_";
+	if(INPUT_FILENAME_XML=="")
+		UNDERSCORE="";
+	QString file=PREFIX_CSV+s2+UNDERSCORE+CSVTimetable;
+	
+	if(!Export::okToWrite(file, msgBoxButton))
+		return false;
 	
 	QFile fileExport(file);
 	if(!fileExport.open(QIODevice::WriteOnly)){
@@ -854,11 +1057,20 @@ bool Export::exportCSVTimetable(QString& lastWarnings, const QString textquote, 
 
 
 
-bool Export::exportSchILD(QString& lastWarnings){
+bool Export::exportSchILD(QString& lastWarnings){ 
+
+/////////////////TODO: REMOVE OR COMMENT OUT qPrintable, just output QString::number
+
+
 	//assert(gt.rules.initialized && gt.rules.internalStructureComputed); //i think i don't need that, or?
 
 	//TODO:
 	QString directoryname=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);
+
+	if(directoryname.right(4)==".fet")
+		directoryname=directoryname.left(directoryname.length()-4);
+	else if(INPUT_FILENAME_XML!="")
+		cout<<"Minor problem - input file does not end in .fet extension - might be a problem when saving the timetables"<<" (file:"<<__FILE__<<", line:"<<__LINE__<<")"<<endl;
 
 	int ret=QMessageBox::question(NULL, "Export to SchILD?", "Do you want to export dat-files for SchILD?\nSchiILD is the school administration software of NRW (Germany).\nhttp://www.svws.nrw.de/\nThis will create following files:\n- Exportprotokoll.log\n- Kurse.dat\n- KurseLehrkraefte.dat\n- LehrkraefteSonderzeiten.dat\n- LehrkraefteSonderzeiten.dat", QMessageBox::Yes | QMessageBox::No);
 
@@ -1108,8 +1320,8 @@ bool Export::exportSchILD(QString& lastWarnings){
 			}
 			fileK.close();
 		}
-		if(ok) QMessageBox::information(NULL, QObject::tr("FET information"), Export::tr("TODO: write content of file \"Exportprotokoll.log\" here."));
-		else QMessageBox::warning(NULL, QObject::tr("FET warning"), Export::tr("User abort export"));
+		if(ok) QMessageBox::information(NULL, tr("FET information"), Export::tr("TODO: write content of file \"Exportprotokoll.log\" here."));
+		else QMessageBox::warning(NULL, tr("FET warning"), Export::tr("User abort export"));
 	}
 	return true;
 }

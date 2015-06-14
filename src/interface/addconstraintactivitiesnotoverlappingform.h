@@ -18,7 +18,7 @@
 #ifndef ADDCONSTRAINTACTIVITIESNOTOVERLAPPINGFORM_H
 #define ADDCONSTRAINTACTIVITIESNOTOVERLAPPINGFORM_H
 
-#include "addconstraintactivitiesnotoverlappingform_template.h"
+#include "ui_addconstraintactivitiesnotoverlappingform_template.h"
 #include "timetable_defs.h"
 #include "timetable.h"
 #include "fet.h"
@@ -36,17 +36,25 @@
 
 #include <QList>
 
-class AddConstraintActivitiesNotOverlappingForm : public AddConstraintActivitiesNotOverlappingForm_template  {
+class AddConstraintActivitiesNotOverlappingForm : public QDialog, Ui::AddConstraintActivitiesNotOverlappingForm_template  {
+	Q_OBJECT
 public:
 	AddConstraintActivitiesNotOverlappingForm();
 	~AddConstraintActivitiesNotOverlappingForm();
 
 	void updateActivitiesListBox();
 	
+	bool filterOk(Activity* a);
+
+public slots:
 	void addActivity();
 	void removeActivity();
 
 	void addConstraint();
+	
+	void filterChanged();
+	
+	void clear();
 	
 private:
 	//the id's of the activities listed in the activities list

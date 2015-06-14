@@ -26,6 +26,15 @@
 
 ModifyConstraintStudentsSetMaxBuildingChangesPerWeekForm::ModifyConstraintStudentsSetMaxBuildingChangesPerWeekForm(ConstraintStudentsSetMaxBuildingChangesPerWeek* ctr)
 {
+    setupUi(this);
+
+//    connect(weightLineEdit, SIGNAL(textChanged(QString)), this /*ModifyConstraintStudentsSetMaxBuildingChangesPerWeekForm_template*/, SLOT(constraintChanged()));
+    connect(okPushButton, SIGNAL(clicked()), this /*ModifyConstraintStudentsSetMaxBuildingChangesPerWeekForm_template*/, SLOT(ok()));
+    connect(cancelPushButton, SIGNAL(clicked()), this /*ModifyConstraintStudentsSetMaxBuildingChangesPerWeekForm_template*/, SLOT(cancel()));
+//    connect(studentsComboBox, SIGNAL(activated(QString)), this /*ModifyConstraintStudentsSetMaxBuildingChangesPerWeekForm_template*/, SLOT(constraintChanged()));
+//    connect(maxChangesSpinBox, SIGNAL(valueChanged(int)), this /*ModifyConstraintStudentsSetMaxBuildingChangesPerWeekForm_template*/, SLOT(constraintChanged()));
+
+
 	//setWindowFlags(Qt::Window);
 	/*setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 	QDesktopWidget* desktop=QApplication::desktop();
@@ -33,6 +42,9 @@ ModifyConstraintStudentsSetMaxBuildingChangesPerWeekForm::ModifyConstraintStuden
 	int yy=desktop->height()/2 - frameGeometry().height()/2;
 	move(xx, yy);*/
 	centerWidgetOnScreen(this);
+
+	QSize tmp2=studentsComboBox->minimumSizeHint();
+	Q_UNUSED(tmp2);
 		
 	this->_ctr=ctr;
 	
@@ -82,7 +94,7 @@ void ModifyConstraintStudentsSetMaxBuildingChangesPerWeekForm::updateStudentsCom
 }
 
 void ModifyConstraintStudentsSetMaxBuildingChangesPerWeekForm::constraintChanged()
-{
+{/*
 	QString s;
 	s+=tr("Current constraint:");
 	s+="\n";
@@ -101,7 +113,7 @@ void ModifyConstraintStudentsSetMaxBuildingChangesPerWeekForm::constraintChanged
 	s+=tr("Max building changes per week=%1").arg(maxChangesSpinBox->value());
 	s+="\n";
 
-	currentConstraintTextEdit->setText(s);
+	currentConstraintTextEdit->setText(s);*/
 }
 
 void ModifyConstraintStudentsSetMaxBuildingChangesPerWeekForm::ok()

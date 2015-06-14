@@ -18,7 +18,7 @@
 #ifndef ADDCONSTRAINTACTIVITIESENDSTUDENTSDAYFORM_H
 #define ADDCONSTRAINTACTIVITIESENDSTUDENTSDAYFORM_H
 
-#include "addconstraintactivitiesendstudentsdayform_template.h"
+#include "ui_addconstraintactivitiesendstudentsdayform_template.h"
 #include "timetable_defs.h"
 #include "timetable.h"
 #include "fet.h"
@@ -34,7 +34,7 @@
 #include <q3textedit.h>
 #include <qpoint.h>
 
-class AddConstraintActivitiesEndStudentsDayForm : public AddConstraintActivitiesEndStudentsDayForm_template  {
+class AddConstraintActivitiesEndStudentsDayForm : public QDialog, Ui::AddConstraintActivitiesEndStudentsDayForm_template  {
 	Q_OBJECT
 
 public:
@@ -46,6 +46,7 @@ public:
 	void updateSubjectsComboBox();
 	void updateActivityTagsComboBox();
 
+public slots:
 	void addConstraint();
 };
 

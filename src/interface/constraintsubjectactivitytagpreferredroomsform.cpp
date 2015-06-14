@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "longtextmessagebox.h"
+
 #include "constraintsubjectactivitytagpreferredroomsform.h"
 #include "addconstraintsubjectactivitytagpreferredroomsform.h"
 #include "modifyconstraintsubjectactivitytagpreferredroomsform.h"
@@ -23,6 +25,18 @@
 
 ConstraintSubjectActivityTagPreferredRoomsForm::ConstraintSubjectActivityTagPreferredRoomsForm()
 {
+    setupUi(this);
+
+    connect(addConstraintPushButton, SIGNAL(clicked()), this /*ConstraintSubjectActivityTagPreferredRoomsForm_template*/, SLOT(addConstraint()));
+    connect(removeConstraintPushButton, SIGNAL(clicked()), this /*ConstraintSubjectActivityTagPreferredRoomsForm_template*/, SLOT(removeConstraint()));
+    connect(closePushButton, SIGNAL(clicked()), this /*ConstraintSubjectActivityTagPreferredRoomsForm_template*/, SLOT(close()));
+    connect(constraintsListBox, SIGNAL(highlighted(int)), this /*ConstraintSubjectActivityTagPreferredRoomsForm_template*/, SLOT(constraintChanged(int)));
+    connect(modifyConstraintPushButton, SIGNAL(clicked()), this /*ConstraintSubjectActivityTagPreferredRoomsForm_template*/, SLOT(modifyConstraint()));
+    connect(subjectsComboBox, SIGNAL(activated(QString)), this /*ConstraintSubjectActivityTagPreferredRoomsForm_template*/, SLOT(filterChanged()));
+    connect(constraintsListBox, SIGNAL(selected(QString)), this /*ConstraintSubjectActivityTagPreferredRoomsForm_template*/, SLOT(modifyConstraint()));
+    connect(activityTagsComboBox, SIGNAL(activated(QString)), this /*ConstraintSubjectActivityTagPreferredRoomsForm_template*/, SLOT(filterChanged()));
+
+
 	//setWindowFlags(Qt::Window);
 	/*setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 	QDesktopWidget* desktop=QApplication::desktop();
@@ -30,6 +44,11 @@ ConstraintSubjectActivityTagPreferredRoomsForm::ConstraintSubjectActivityTagPref
 	int yy=desktop->height()/2 - frameGeometry().height()/2;
 	move(xx, yy);*/
 	centerWidgetOnScreen(this);
+	
+	QSize tmp3=subjectsComboBox->minimumSizeHint();
+	Q_UNUSED(tmp3);
+	QSize tmp4=activityTagsComboBox->minimumSizeHint();
+	Q_UNUSED(tmp4);
 	
 	subjectsComboBox->insertItem("");
 	for(int i=0; i<gt.rules.subjectsList.size(); i++){
@@ -98,23 +117,25 @@ void ConstraintSubjectActivityTagPreferredRoomsForm::constraintChanged(int index
 
 void ConstraintSubjectActivityTagPreferredRoomsForm::addConstraint()
 {
-	AddConstraintSubjectActivityTagPreferredRoomsForm *form=new AddConstraintSubjectActivityTagPreferredRoomsForm();
-	form->exec();
+	AddConstraintSubjectActivityTagPreferredRoomsForm form;
+	form.exec();
 
 	this->refreshConstraintsListBox();
+	
+	constraintsListBox->setCurrentItem(constraintsListBox->count()-1);
 }
 
 void ConstraintSubjectActivityTagPreferredRoomsForm::modifyConstraint()
 {
 	int i=constraintsListBox->currentItem();
 	if(i<0){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected constraint"));
+		QMessageBox::information(this, tr("FET information"), tr("Invalid selected constraint"));
 		return;
 	}
 	SpaceConstraint* ctr=this->visibleConstraintsList.at(i);
 
-	ModifyConstraintSubjectActivityTagPreferredRoomsForm *form=new ModifyConstraintSubjectActivityTagPreferredRoomsForm((ConstraintSubjectActivityTagPreferredRooms*)ctr);
-	form->exec();
+	ModifyConstraintSubjectActivityTagPreferredRoomsForm form((ConstraintSubjectActivityTagPreferredRooms*)ctr);
+	form.exec();
 
 	this->refreshConstraintsListBox();
 	
@@ -125,17 +146,18 @@ void ConstraintSubjectActivityTagPreferredRoomsForm::removeConstraint()
 {
 	int i=constraintsListBox->currentItem();
 	if(i<0){
-		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected constraint"));
+		QMessageBox::information(this, tr("FET information"), tr("Invalid selected constraint"));
 		return;
 	}
 	SpaceConstraint* ctr=this->visibleConstraintsList.at(i);
 	QString s;
-	s=QObject::tr("Removing constraint:\n");
+	s=tr("Remove constraint?");
+	s+="\n\n";
 	s+=ctr->getDetailedDescription(gt.rules);
-	s+=QObject::tr("\nAre you sure?");
+	//s+=tr("\nAre you sure?");
 
-	switch( QMessageBox::warning( this, QObject::tr("FET warning"),
-		s, QObject::tr("OK"), QObject::tr("Cancel"), 0, 0, 1 ) ){
+	switch( LongTextMessageBox::confirmation( this, tr("FET confirmation"),
+		s, tr("Yes"), tr("No"), 0, 0, 1 ) ){
 	case 0: // The user clicked the OK again button or pressed Enter
 		gt.rules.removeSpaceConstraint(ctr);
 		this->refreshConstraintsListBox();
@@ -143,4 +165,8 @@ void ConstraintSubjectActivityTagPreferredRoomsForm::removeConstraint()
 	case 1: // The user clicked the Cancel or pressed Escape
 		break;
 	}
+
+	if((uint)(i) >= constraintsListBox->count())
+		i=constraintsListBox->count()-1;
+	constraintsListBox->setCurrentItem(i);
 }

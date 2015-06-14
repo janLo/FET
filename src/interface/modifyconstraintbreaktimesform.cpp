@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "tablewidgetupdatebug.h"
+
 #include "modifyconstraintbreaktimesform.h"
 #include "timeconstraint.h"
 
@@ -24,11 +26,29 @@
 
 #include <QDesktopWidget>
 
-#define YES	(QObject::tr("Break", "Please keep translation short"))
-#define NO	(QObject::tr("Allowed", "Please keep translation short"))
+#include <QHeaderView>
+#include <QTableWidget>
+#include <QTableWidgetItem>
+
+#include <QBrush>
+#include <QColor>
+
+//#define YES	(ModifyConstraintBreakTimesForm::tr("Break", "Please keep translation short"))
+//#define NO	(ModifyConstraintBreakTimesForm::tr("Allowed", "Please keep translation short"))
+#define YES		(QString("X"))
+#define NO		(QString(" "))
 
 ModifyConstraintBreakTimesForm::ModifyConstraintBreakTimesForm(ConstraintBreakTimes* ctr)
 {
+    setupUi(this);
+
+    connect(okPushButton, SIGNAL(clicked()), this /*ModifyConstraintBreakTimesForm_template*/, SLOT(ok()));
+    connect(cancelPushButton, SIGNAL(clicked()), this /*ModifyConstraintBreakTimesForm_template*/, SLOT(cancel()));
+    connect(notAllowedTimesTable, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(itemClicked(QTableWidgetItem*)));
+    connect(setAllAllowedPushButton, SIGNAL(clicked()), this /*ModifyConstraintBreakTimesForm_template*/, SLOT(setAllAllowed()));
+    connect(setAllBreakPushButton, SIGNAL(clicked()), this /*ModifyConstraintBreakTimesForm_template*/, SLOT(setAllBreak()));
+
+
 	//setWindowFlags(Qt::Window);
 	/*setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 	QDesktopWidget* desktop=QApplication::desktop();
@@ -41,13 +61,17 @@ ModifyConstraintBreakTimesForm::ModifyConstraintBreakTimesForm(ConstraintBreakTi
 	
 	weightLineEdit->setText(QString::number(ctr->weightPercentage));
 	
-	notAllowedTimesTable->setNumRows(gt.rules.nHoursPerDay);
-	notAllowedTimesTable->setNumCols(gt.rules.nDaysPerWeek);
+	notAllowedTimesTable->setRowCount(gt.rules.nHoursPerDay);
+	notAllowedTimesTable->setColumnCount(gt.rules.nDaysPerWeek);
 
-	for(int j=0; j<gt.rules.nDaysPerWeek; j++)
-		notAllowedTimesTable->horizontalHeader()->setLabel(j, gt.rules.daysOfTheWeek[j]);
-	for(int i=0; i<gt.rules.nHoursPerDay; i++)
-		notAllowedTimesTable->verticalHeader()->setLabel(i, gt.rules.hoursOfTheDay[i]);
+	for(int j=0; j<gt.rules.nDaysPerWeek; j++){
+		QTableWidgetItem* item=new QTableWidgetItem(gt.rules.daysOfTheWeek[j]);
+		notAllowedTimesTable->setHorizontalHeaderItem(j, item);
+	}
+	for(int i=0; i<gt.rules.nHoursPerDay; i++){
+		QTableWidgetItem* item=new QTableWidgetItem(gt.rules.hoursOfTheDay[i]);
+		notAllowedTimesTable->setVerticalHeaderItem(i, item);
+	}
 
 	bool currentMatrix[MAX_HOURS_PER_DAY][MAX_DAYS_PER_WEEK];
 	for(int i=0; i<gt.rules.nHoursPerDay; i++)
@@ -63,46 +87,130 @@ ModifyConstraintBreakTimesForm::ModifyConstraintBreakTimesForm(ConstraintBreakTi
 	}
 
 	for(int i=0; i<gt.rules.nHoursPerDay; i++)
-		for(int j=0; j<gt.rules.nDaysPerWeek; j++)
+		for(int j=0; j<gt.rules.nDaysPerWeek; j++){
+			QTableWidgetItem* item= new QTableWidgetItem();
+			item->setTextAlignment(Qt::AlignCenter);
+			item->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
+			notAllowedTimesTable->setItem(i, j, item);
+
 			if(!currentMatrix[i][j])
-				notAllowedTimesTable->setText(i, j, NO);
+				item->setText(NO);
 			else
-				notAllowedTimesTable->setText(i, j, YES);
+				item->setText(YES);
+				
+			colorItem(item);
+		}
+		
+	notAllowedTimesTable->resizeRowsToContents();
+
+	connect(notAllowedTimesTable->horizontalHeader(), SIGNAL(sectionClicked(int)), this, SLOT(horizontalHeaderClicked(int)));
+	connect(notAllowedTimesTable->verticalHeader(), SIGNAL(sectionClicked(int)), this, SLOT(verticalHeaderClicked(int)));
+
+	notAllowedTimesTable->setSelectionMode(QAbstractItemView::NoSelection);
+	
+	tableWidgetUpdateBug(notAllowedTimesTable);
 }
 
 ModifyConstraintBreakTimesForm::~ModifyConstraintBreakTimesForm()
 {
 }
 
-void ModifyConstraintBreakTimesForm::setAllAllowed()
+void ModifyConstraintBreakTimesForm::colorItem(QTableWidgetItem* item)
 {
-	for(int i=0; i<gt.rules.nHoursPerDay; i++)
-		for(int j=0; j<gt.rules.nDaysPerWeek; j++)
-			notAllowedTimesTable->setText(i, j, NO);
+	if(USE_GUI_COLORS){
+		if(item->text()==NO)
+			item->setBackground(QBrush(Qt::darkGreen));
+		else
+			item->setBackground(QBrush(Qt::darkRed));
+		item->setForeground(QBrush(Qt::lightGray));
+	}
 }
 
-void ModifyConstraintBreakTimesForm::setAllBreak()
+void ModifyConstraintBreakTimesForm::horizontalHeaderClicked(int col)
 {
-	for(int i=0; i<gt.rules.nHoursPerDay; i++)
-		for(int j=0; j<gt.rules.nDaysPerWeek; j++)
-			notAllowedTimesTable->setText(i, j, YES);
-}
-
-void ModifyConstraintBreakTimesForm::tableClicked(int row, int col, int button, const QPoint& mousePos)
-{
-	Q_UNUSED(button);
-	Q_UNUSED(mousePos);
-
-	if(row>=0 && row<gt.rules.nHoursPerDay && col>=0 && col<gt.rules.nDaysPerWeek){
-		QString s=notAllowedTimesTable->text(row, col);
+	if(col>=0 && col<gt.rules.nDaysPerWeek){
+		QString s=notAllowedTimesTable->item(0, col)->text();
 		if(s==YES)
 			s=NO;
 		else{
 			assert(s==NO);
 			s=YES;
 		}
-		notAllowedTimesTable->setText(row, col, s);
+
+		for(int row=0; row<gt.rules.nHoursPerDay; row++){
+			/*QString s=notAllowedTimesTable->text(row, col);
+			if(s==YES)
+				s=NO;
+			else{
+				assert(s==NO);
+				s=YES;
+			}*/
+			notAllowedTimesTable->item(row, col)->setText(s);
+			colorItem(notAllowedTimesTable->item(row,col));
+		}
+		tableWidgetUpdateBug(notAllowedTimesTable);
 	}
+}
+
+void ModifyConstraintBreakTimesForm::verticalHeaderClicked(int row)
+{
+	if(row>=0 && row<gt.rules.nHoursPerDay){
+		QString s=notAllowedTimesTable->item(row, 0)->text();
+		if(s==YES)
+			s=NO;
+		else{
+			assert(s==NO);
+			s=YES;
+		}
+	
+		for(int col=0; col<gt.rules.nDaysPerWeek; col++){
+			/*QString s=notAllowedTimesTable->text(row, col);
+			if(s==YES)
+				s=NO;
+			else{
+				assert(s==NO);
+				s=YES;
+			}*/
+			notAllowedTimesTable->item(row, col)->setText(s);
+			colorItem(notAllowedTimesTable->item(row,col));
+		}
+		tableWidgetUpdateBug(notAllowedTimesTable);
+	}
+}
+
+void ModifyConstraintBreakTimesForm::setAllAllowed()
+{
+	for(int i=0; i<gt.rules.nHoursPerDay; i++)
+		for(int j=0; j<gt.rules.nDaysPerWeek; j++){
+			notAllowedTimesTable->item(i, j)->setText(NO);
+			colorItem(notAllowedTimesTable->item(i,j));
+		}
+	tableWidgetUpdateBug(notAllowedTimesTable);
+}
+
+void ModifyConstraintBreakTimesForm::setAllBreak()
+{
+	for(int i=0; i<gt.rules.nHoursPerDay; i++)
+		for(int j=0; j<gt.rules.nDaysPerWeek; j++){
+			notAllowedTimesTable->item(i, j)->setText(YES);
+			colorItem(notAllowedTimesTable->item(i,j));
+		}
+	tableWidgetUpdateBug(notAllowedTimesTable);
+}
+
+void ModifyConstraintBreakTimesForm::itemClicked(QTableWidgetItem* item)
+{
+	QString s=item->text();
+	if(s==YES)
+		s=NO;
+	else{
+		assert(s==NO);
+		s=YES;
+	}
+	item->setText(s);
+	colorItem(item);
+
+	tableWidgetUpdateBug(notAllowedTimesTable);
 }
 
 void ModifyConstraintBreakTimesForm::ok()
@@ -111,8 +219,8 @@ void ModifyConstraintBreakTimesForm::ok()
 	QString tmp=weightLineEdit->text();
 	sscanf(tmp, "%lf", &weight);
 	if(weight<100.0 || weight>100.0){
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Invalid weight (percentage). It has to be 100"));
+		QMessageBox::warning(this, tr("FET information"),
+			tr("Invalid weight (percentage). It has to be 100"));
 		return;
 	}
 
@@ -122,7 +230,7 @@ void ModifyConstraintBreakTimesForm::ok()
 	QList<int> hours;
 	for(int j=0; j<gt.rules.nDaysPerWeek; j++)
 		for(int i=0; i<gt.rules.nHoursPerDay; i++)
-			if(notAllowedTimesTable->text(i, j)==YES){
+			if(notAllowedTimesTable->item(i, j)->text()==YES){
 				days.append(j);
 				hours.append(i);
 			}

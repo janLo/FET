@@ -13,6 +13,8 @@
 #include <iostream>
 using namespace std;
 
+#include "centerwidgetonscreen.h"
+
 #include "timetable_defs.h"
 #include "timetable.h"
 #include "solution.h"
@@ -58,9 +60,10 @@ using namespace std;
 
 #include "constraintactivityendsstudentsdayform.h"
 #include "constraintactivitiesendstudentsdayform.h"
-#include "constraint2activitiesconsecutiveform.h"
-#include "constraint2activitiesgroupedform.h"
-#include "constraint2activitiesorderedform.h"
+#include "constrainttwoactivitiesconsecutiveform.h"
+#include "constrainttwoactivitiesgroupedform.h"
+#include "constraintthreeactivitiesgroupedform.h"
+#include "constrainttwoactivitiesorderedform.h"
 #include "constraintactivitiespreferredtimeslotsform.h"
 #include "constraintactivitiespreferredstartingtimesform.h"
 
@@ -78,6 +81,10 @@ using namespace std;
 #include "constraintstudentssetnotavailabletimesform.h"
 #include "constraintbreaktimesform.h"
 #include "constraintteachermaxdaysperweekform.h"
+#include "constraintteachersmaxdaysperweekform.h"
+
+#include "constraintteachermindaysperweekform.h"
+#include "constraintteachersmindaysperweekform.h"
 
 #include "constraintteacherintervalmaxdaysperweekform.h"
 #include "constraintteachersintervalmaxdaysperweekform.h"
@@ -92,11 +99,18 @@ using namespace std;
 #include "constraintteacheractivitytagmaxhourscontinuouslyform.h"
 #include "constraintteachersactivitytagmaxhourscontinuouslyform.h"
 
+#include "constraintteacheractivitytagmaxhoursdailyform.h"
+#include "constraintteachersactivitytagmaxhoursdailyform.h"
+
 #include "constraintteacherminhoursdailyform.h"
 #include "constraintteachersminhoursdailyform.h"
 #include "constraintactivitypreferredstartingtimeform.h"
 #include "constraintstudentssetmaxgapsperweekform.h"
 #include "constraintstudentsmaxgapsperweekform.h"
+
+#include "constraintstudentssetmaxgapsperdayform.h"
+#include "constraintstudentsmaxgapsperdayform.h"
+
 #include "constraintteachersmaxgapsperweekform.h"
 #include "constraintteachermaxgapsperweekform.h"
 #include "constraintteachersmaxgapsperdayform.h"
@@ -111,10 +125,14 @@ using namespace std;
 #include "constraintstudentssetactivitytagmaxhourscontinuouslyform.h"
 #include "constraintstudentsactivitytagmaxhourscontinuouslyform.h"
 
+#include "constraintstudentssetactivitytagmaxhoursdailyform.h"
+#include "constraintstudentsactivitytagmaxhoursdailyform.h"
+
 #include "constraintstudentssetminhoursdailyform.h"
 #include "constraintstudentsminhoursdailyform.h"
 #include "constraintactivitiesnotoverlappingform.h"
-#include "constraintminndaysbetweenactivitiesform.h"
+#include "constraintmindaysbetweenactivitiesform.h"
+#include "constraintmaxdaysbetweenactivitiesform.h"
 #include "constraintmingapsbetweenactivitiesform.h"
 #include "constraintactivitypreferredtimeslotsform.h"
 #include "constraintactivitypreferredstartingtimesform.h"
@@ -144,6 +162,9 @@ using namespace std;
 #include "constraintsubjectactivitytagpreferredroomform.h"
 #include "constraintsubjectactivitytagpreferredroomsform.h"
 
+#include "constraintactivitytagpreferredroomform.h"
+#include "constraintactivitytagpreferredroomsform.h"
+
 #include "settingstimetablehtmllevelform.h"
 
 #include "spreadconfirmationform.h"
@@ -152,8 +173,12 @@ using namespace std;
 #include "removeredundantform.h"
 
 #include "lockunlock.h"
+#include "advancedlockunlockform.h"
 
 #include <qmessagebox.h>
+
+#include "longtextmessagebox.h"
+
 //#include <q3filedialog.h>
 #include <QFileDialog>
 #include <qstring.h>
@@ -168,9 +193,11 @@ using namespace std;
 
 #include <QMap>
 
+#include <QWidget>
+
 #include "httpget.h"
 
-#include "spreadminndaysconstraints5daysform.h"
+#include "spreadmindaysconstraintsfivedaysform.h"
 
 #include "statisticsexport.h"
 
@@ -192,6 +219,9 @@ extern QApplication* pqapplication;
 
 #include <QSettings>
 
+//for the icons of not perfect constraints
+#include <QIcon>
+
 //static HttpGet getter;
 
 Rules rules2;
@@ -201,105 +231,126 @@ static int ORIGINAL_WIDTH, ORIGINAL_HEIGHT;
 const QString COMPANY="fet";
 const QString PROGRAM="fettimetabling";
 
-//English has to be counted also
-/*const int NUMBER_OF_LANGUAGES=17;
+bool USE_GUI_COLORS=false;
 
-const int LANGUAGE_EN_GB_POSITION=0;
-const int LANGUAGE_AR_POSITION=1;
-const int LANGUAGE_CA_POSITION=2;
-const int LANGUAGE_DE_POSITION=3;
-const int LANGUAGE_EL_POSITION=4;
-const int LANGUAGE_ES_POSITION=5;
-const int LANGUAGE_FR_POSITION=6;
-const int LANGUAGE_HU_POSITION=7;
-const int LANGUAGE_ID_POSITION=8;
-const int LANGUAGE_IT_POSITION=9;
-const int LANGUAGE_LT_POSITION=10;
-const int LANGUAGE_MK_POSITION=11;
-const int LANGUAGE_MS_POSITION=12;
-const int LANGUAGE_NL_POSITION=13;
-const int LANGUAGE_PL_POSITION=14;
-const int LANGUAGE_RO_POSITION=15;
-const int LANGUAGE_TR_POSITION=16;
-*/
+bool ENABLE_ACTIVITY_TAG_MAX_HOURS_DAILY=false;
+bool ENABLE_STUDENTS_MAX_GAPS_PER_DAY=false;
+
+bool SHOW_WARNING_FOR_NOT_PERFECT_CONSTRAINTS=true;
+
+extern int XX;
+extern const int MM;
 
 const int STATUS_BAR_MILLISECONDS=2500;
 
-QSpinBox* pcommunicationSpinBox;	//needed to sync the view table forms
-QSet <int> idsOfLockedTime;		//care about locked activities in view forms
-QSet <int> idsOfLockedSpace;		//care about locked activities in view forms
-QSet <int> idsOfPermanentlyLockedTime;	//care about locked activities in view forms
-QSet <int> idsOfPermanentlyLockedSpace;	//care about locked activities in view forms
+
+RandomSeedDialog::RandomSeedDialog()
+{
+	label=new QLabel(tr("Random seed"));
+	lineEdit=new QLineEdit(QString::number(XX));
+	okPB=new QPushButton(tr("OK"));
+	okPB->setDefault(true);
+	helpPB=new QPushButton(tr("Help"));
+	cancelPB=new QPushButton(tr("Cancel"));
+	seedLayout=new QHBoxLayout();
+	seedLayout->addWidget(label);
+	seedLayout->addWidget(lineEdit);
+	
+	valuesLabel=new QLabel(tr("Allowed minimum %1 to maximum %2").arg(1).arg(MM-1));
+	
+	buttonsLayout=new QHBoxLayout();
+	buttonsLayout->addWidget(helpPB);
+	buttonsLayout->addWidget(okPB);
+	buttonsLayout->addWidget(cancelPB);
+	
+	mainLayout=new QVBoxLayout(this);
+	mainLayout->addLayout(seedLayout);
+	mainLayout->addWidget(valuesLabel);
+	mainLayout->addLayout(buttonsLayout);
+	
+	connect(helpPB, SIGNAL(clicked()), this, SLOT(help()));
+	connect(okPB, SIGNAL(clicked()), this, SLOT(ok()));
+	connect(cancelPB, SIGNAL(clicked()), this, SLOT(reject()));
+	
+	int w=this->sizeHint().width();
+	int h=this->sizeHint().height();
+	if(w<300)
+		w=300;
+	if(h<150)
+		h=150;
+	this->setGeometry(0, 0, w, h);
+	
+	centerWidgetOnScreen(this);
+}
+
+RandomSeedDialog::~RandomSeedDialog()
+{
+}
+
+void RandomSeedDialog::help()
+{
+	LongTextMessageBox::largeInformation(this, tr("FET information"), 
+		tr("You can control the random behaviour of FET with this function")+".\n\n"+
+		tr("The random seed is a value at least %1 and at most %2.").arg(1).arg(MM-1)+
+		+"\n\n"+tr("The random seed before the generation of a timetable is saved on disk in the corresponding timetables directory,"
+		" so that you can simulate again the same generation after that")+"\n\n"+
+		tr("Mode of operation: to obtain the same timetable twice, make the random seed"
+		" a value (say 1234), then generate single, then make it again the same value (1234),"
+		" then generate single again. The timetables will be the same. If you generate multiple instead of single,"
+		" the first set of timetables will be the same as the second set (if you generate the same number of timetables)"
+		" but of course timetables inside each set will be different. If you enter the same random seed on different computers"
+		" and generate single, the timetables will be the same (if you generate multiple, the sets of timetables will correspond, "
+		"the first timetable from simulation 1 with first timetable from simulation 2, etc.)")
+		+"\n\n"
+		+tr("Note: of course you need the exact same conditions to duplicate the same simulations (so, you need the same exact data - activities, constraints, etc.).")
+		+"\n\n"
+		+tr("Note: when you start FET, each time, the random seed is the number of seconds since 1 January 1970")
+		+". "
+		+tr("After you generate (even partially), the random seed will change (each call of the random number generator updates the random seed to the next number"
+		" in the sequence, and there are many calls to this random generating routine in the generate function)")
+		+"\n\n"
+		+tr("This setting is useful for more things, maybe one thing is bug report: send you file along with the random seed at the start of generating"
+		" (this value is saved in the timetable directory at the start of generation)")
+	);
+}
+
+void RandomSeedDialog::ok()
+{
+	int tx=lineEdit->text().toInt();
+	if(!(tx>=1 && tx<MM)){
+		QMessageBox::warning(this, tr("FET warning"), tr("The random seed must be at least %1 and at most %2").arg(1).arg(MM-1));
+		return;
+	}
+	
+	accept();
+}
+
 
 FetMainForm::FetMainForm()
 {
 	setupUi(this);
 	
+	//statusBar()->showMessage(tr("FET started", "This is a message written in the status bar, saying that FET was started"), STATUS_BAR_MILLISECONDS);
+	statusBar()->showMessage("", STATUS_BAR_MILLISECONDS); //to get the correct centralWidget for the logo, so we need status bar existing.
+	
 	ORIGINAL_WIDTH=width();
 	ORIGINAL_HEIGHT=height();
 	
 	QSettings newSettings(COMPANY, PROGRAM);
-	QString ver=newSettings.value("version", "-1").toString();
-	QRect rect;
-	if(ver=="-1"){
-		QSettings oldSettings("FET free software", "FET");
-		rect=oldSettings.value("fetmainformgeometry", QRect(0,0,0,0)).toRect();
-	}
-	else{
+	QRect rect=newSettings.value("main-form-geometry", QRect(0,0,0,0)).toRect();
+	if(!rect.isValid())
 		rect=newSettings.value("fetmainformgeometry", QRect(0,0,0,0)).toRect();
-	}
 	
 	if(!rect.isValid()){
-		//setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
-		/*QDesktopWidget* desktop=QApplication::desktop();
-		int xx=desktop->width()/2 - frameGeometry().width()/2;
-		int yy=desktop->height()/2 - frameGeometry().height()/2;
-		move(xx, yy);*/
 		centerWidgetOnScreen(this);
 	}
 	else{
+		this->setWindowFlags(this->windowFlags() | Qt::WindowMinMaxButtonsHint);
+		
+		resize(rect.size());
 		move(rect.topLeft());
 		cout<<"read rect.x()=="<<rect.x()<<", rect.y()=="<<rect.y()<<endl;
-		resize(rect.size());
 	}
-
-/*	for(int i=0; i<NUMBER_OF_LANGUAGES; i++)
-		languageMenu->setItemChecked(languageMenu->idAt(i), false);
-	
-	if(FET_LANGUAGE=="en_GB")
-		languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_EN_GB_POSITION), true);
-	else if(FET_LANGUAGE=="fr")
-		languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_FR_POSITION), true);
-	else if(FET_LANGUAGE=="ca")
-		languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_CA_POSITION), true);
-	else if(FET_LANGUAGE=="ro")
-		languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_RO_POSITION), true);
-	else if(FET_LANGUAGE=="ms")
-		languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_MS_POSITION), true);
-	else if(FET_LANGUAGE=="pl")
-		languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_PL_POSITION), true);
-	else if(FET_LANGUAGE=="tr")
-		languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_TR_POSITION), true);
-	else if(FET_LANGUAGE=="nl")
-		languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_NL_POSITION), true);
-	else if(FET_LANGUAGE=="de")
-		languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_DE_POSITION), true);
-	else if(FET_LANGUAGE=="hu")
-		languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_HU_POSITION), true);
-	else if(FET_LANGUAGE=="mk")
-		languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_MK_POSITION), true);
-	else if(FET_LANGUAGE=="es")
-		languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_ES_POSITION), true);
-	else if(FET_LANGUAGE=="el")
-		languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_EL_POSITION), true);
-	else if(FET_LANGUAGE=="ar")
-		languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_AR_POSITION), true);
-	else if(FET_LANGUAGE=="id")
-		languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_ID_POSITION), true);
-	else if(FET_LANGUAGE=="it")
-		languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_IT_POSITION), true);
-	else if(FET_LANGUAGE=="lt")
-		languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_LT_POSITION), true);*/
 
 	//new data
 	if(gt.rules.initialized)
@@ -319,6 +370,9 @@ FetMainForm::FetMainForm()
 	
 	checkForUpdatesAction->setCheckable(true);
 	checkForUpdatesAction->setChecked(checkForUpdates);
+	
+	settingsUseColorsAction->setCheckable(true);
+	settingsUseColorsAction->setChecked(USE_GUI_COLORS);
 	
 	timetablesDivideByDaysAction->setCheckable(true);
 	timetablesDivideByDaysAction->setChecked(DIVIDE_HTML_TIMETABLES_WITH_TIME_AXIS_BY_DAYS);
@@ -341,18 +395,115 @@ FetMainForm::FetMainForm()
 	settingsPrintNotAvailableSlotsAction->setCheckable(true);
 	settingsPrintNotAvailableSlotsAction->setChecked(PRINT_NOT_AVAILABLE_TIME_SLOTS);
 
-	//needed to sync the view table forms
-	pcommunicationSpinBox=&communicationSpinBox;
-	pcommunicationSpinBox->setRange(0, 9);
-	pcommunicationSpinBox->setValue(0);
+	settingsPrintActivitiesWithSameStartingTimeAction->setCheckable(true);
+	settingsPrintActivitiesWithSameStartingTimeAction->setChecked(PRINT_ACTIVITIES_WITH_SAME_STARTING_TIME);
 
+	//needed to sync the view table forms
 	LockUnlock::computeLockedUnlockedActivitiesTimeSpace();
 	LockUnlock::increaseCommunicationSpinBox();
+	
+	enableActivityTagMaxHoursDailyAction->setChecked(ENABLE_ACTIVITY_TAG_MAX_HOURS_DAILY);
+	enableStudentsMaxGapsPerDayAction->setChecked(ENABLE_STUDENTS_MAX_GAPS_PER_DAY);
+	showWarningForNotPerfectConstraintsAction->setChecked(SHOW_WARNING_FOR_NOT_PERFECT_CONSTRAINTS);
+	
+	connect(enableActivityTagMaxHoursDailyAction, SIGNAL(toggled(bool)), this, SLOT(enableActivityTagMaxHoursDailyToggled(bool)));
+	connect(enableStudentsMaxGapsPerDayAction, SIGNAL(toggled(bool)), this, SLOT(enableStudentsMaxGapsPerDayToggled(bool)));
+	connect(showWarningForNotPerfectConstraintsAction, SIGNAL(toggled(bool)), this, SLOT(showWarningForNotPerfectConstraintsToggled(bool)));
+
+	setEnabledIcon(dataTimeConstraintsTeacherActivityTagMaxHoursDailyAction, ENABLE_ACTIVITY_TAG_MAX_HOURS_DAILY);
+	setEnabledIcon(dataTimeConstraintsTeachersActivityTagMaxHoursDailyAction, ENABLE_ACTIVITY_TAG_MAX_HOURS_DAILY);
+	setEnabledIcon(dataTimeConstraintsStudentsActivityTagMaxHoursDailyAction, ENABLE_ACTIVITY_TAG_MAX_HOURS_DAILY);
+	setEnabledIcon(dataTimeConstraintsStudentsSetActivityTagMaxHoursDailyAction, ENABLE_ACTIVITY_TAG_MAX_HOURS_DAILY);
+
+	setEnabledIcon(dataTimeConstraintsStudentsSetMaxGapsPerDayAction, ENABLE_STUDENTS_MAX_GAPS_PER_DAY);
+	setEnabledIcon(dataTimeConstraintsStudentsMaxGapsPerDayAction, ENABLE_STUDENTS_MAX_GAPS_PER_DAY);
+}
+
+void FetMainForm::setEnabledIcon(QAction* action, bool enabled)
+{
+	static QIcon locked(":/icons/locked.png");
+	static QIcon unlocked(":/icons/unlocked.png");
+	
+	if(enabled)
+		action->setIcon(unlocked);
+	else
+		action->setIcon(locked);
+}
+
+/*
+void FetMainForm::resizeEvent(QResizeEvent* event)
+{
+	QMainWindow::resizeEvent(event);
+
+	updateLogo();
+}
+
+void FetMainForm::updateLogo()
+{
+	//cout<<"menubar height=="<<menubar->height()<<endl;
+
+	QWidget* centralw=this->centralWidget();
+	
+	if(centralw){
+		double w=centralw->width();
+		double h=centralw->height();
+		
+		int bh=menubar->sizeHint().height()-menubar->size().height(); //Hack to solve a Qt bug :-(
+		if(bh>0)
+			h-=bh;
+	
+		//cout<<"w=="<<w<<", h=="<<h<<endl;
+		//cout<<"x=="<<centralw->x()<<" y=="<<centralw->y()<<endl;
+
+		double a=w/10.0; //width
+		double b=2.0*a;
+	
+		double d=h/6.0; //height
+		double c=4.0*d;
+	
+		int ww=3; //width of line
+
+		//F
+		line->setGeometry(int(a), int(d), int(ww), int(c));
+		line_2->setGeometry(int(a), int(d), int(b), int(ww));
+		line_3->setGeometry(int(a), int(d+c/2.0), int(b/2.0), int(ww));
+
+		//E
+		line_5->setGeometry(int(a+a+b), int(d), int(ww), int(c));
+		line_4->setGeometry(int(a+a+b), int(d), int(b), int(ww));
+		line_6->setGeometry(int(a+a+b), int(d+c/2.0), int(b/2.0), int(ww));
+		line_7->setGeometry(int(a+a+b), int(d+c), int(b), int(ww));
+	
+		//T
+		line_8->setGeometry(int(a+2*a+2*b), int(d), int(b), int(ww));
+		line_9->setGeometry(int(a+2*a+2*b+b/2), int(d), int(ww), int(c));
+	}
+}
+*/
+
+void FetMainForm::enableNotPerfectMessage()
+{
+	QString s=tr("Constraint is not enabled. To use this type of constraint you must manually enable it from the Settings menu.");
+	s+="\n\n";
+	s+=tr("Explanation:");
+	s+=" ";
+	s+=tr("Constraints of this type are good, working, but they are not perfectly optimized.");
+	s+=" ";
+	s+=tr("For some situations, the generation of the timetable may take too long or be impossible.");
+	s+="\n\n";
+	s+=tr("Use with caution.");
+
+	QMessageBox::warning(this, tr("FET warning"), s);
 }
 
 void FetMainForm::on_checkForUpdatesAction_toggled()
 {
 	checkForUpdates=checkForUpdatesAction->isChecked();
+}
+
+void FetMainForm::on_settingsUseColorsAction_toggled()
+{
+	USE_GUI_COLORS=settingsUseColorsAction->isChecked();
 }
 
 void FetMainForm::on_timetablesDivideByDaysAction_toggled()
@@ -397,13 +548,13 @@ void FetMainForm::closeEvent(QCloseEvent* event)
 {
 	QSettings settings(COMPANY, PROGRAM);
 	QRect rect(x(), y(), width(), height());
-	settings.setValue("fetmainformgeometry", rect);
+	settings.setValue("main-form-geometry", rect);
 	cout<<"wrote x()=="<<x()<<", y()=="<<y()<<endl;
 	
 	//if(event!=NULL)
 	//	;
 
-	switch(QMessageBox::information( this, tr("FET - exiting"),
+	switch(QMessageBox::question( this, tr("FET - exiting"),
 	 tr("File might have been changed - do you want to save it?"),
 	 tr("&Yes"), tr("&No"), tr("&Cancel"), 0 , 2 )){
 	 	case 0: 
@@ -497,7 +648,7 @@ void FetMainForm::on_fileOpenAction_activated()
 		QString s = QFileDialog::getOpenFileName(this, tr("Choose a file"),
 			WORKING_DIRECTORY, 
 			tr("FET XML files", "Instructions for translators: FET XML is a type of file format (using text mode). "
-			"So this field means files in the FET XML format")+" (*.fet)\n"+tr("All files")+" (*)");
+			"So this field means files in the FET XML format")+" (*.fet)"+";;"+tr("All files")+" (*)");
 			/*tr("FET xml files (*.fet)\nAll files (*)",
 			"Instructions for translators, IMPORTANT: There are 2 file filters, on "
 			"2 separate lines, so make sure you have a 'new line' character after the first filter "
@@ -549,7 +700,7 @@ void FetMainForm::on_fileOpenAction_activated()
 		}
 		//get the directory
 		int tmp=s.findRev("/");
-		WORKING_DIRECTORY=s.left(tmp+1);
+		WORKING_DIRECTORY=s.left(tmp);
 		
 		if(INPUT_FILENAME_XML!="")
 			setWindowTitle(tr("FET - %1").arg(INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev("/")-1)));
@@ -558,9 +709,13 @@ void FetMainForm::on_fileOpenAction_activated()
 
 void FetMainForm::on_fileSaveAsAction_activated()
 {
+	QString predefFileName=INPUT_FILENAME_XML;
+	if(predefFileName=="")
+		predefFileName=WORKING_DIRECTORY;
+
 	QString s = QFileDialog::getSaveFileName(this, tr("Choose a filename to save under"),
-		INPUT_FILENAME_XML, tr("FET XML files", "Instructions for translators: FET XML is a type of file format (using text mode). "
-		"So this field means files in the FET XML format")+" (*.fet)\n"+tr("All files")+" (*)",
+		predefFileName, tr("FET XML files", "Instructions for translators: FET XML is a type of file format (using text mode). "
+		"So this field means files in the FET XML format")+" (*.fet)"+";;"+tr("All files")+" (*)",
 			/*tr("FET xml files (*.fet)\nAll files (*)",
 			"Instructions for translators, IMPORTANT: There are 2 file filters, on "
 			"2 separate lines, so make sure you have a 'new line' character after the first filter "
@@ -593,11 +748,11 @@ void FetMainForm::on_fileSaveAsAction_activated()
 		s+=".fet";
 
 	int tmp=s.findRev("/");
-	WORKING_DIRECTORY=s.left(tmp+1);
+	WORKING_DIRECTORY=s.left(tmp);
 
 	if(QFile::exists(s))
-		if(QMessageBox::information( this, tr("FET"),
-		 tr("File exists - are you sure you want to overwrite existing file?"),
+		if(QMessageBox::warning( this, tr("FET"),
+		 tr("File %1 exists - are you sure you want to overwrite existing file?").arg(s),
 		 tr("&Yes"), tr("&No"), 0 , 1 ) == 1)
 		 	return;
 			
@@ -737,18 +892,19 @@ void FetMainForm::on_timetableSaveTimetableAsAction_activated()
 	t+=tr("Current data file will not be affected by anything, locking constraints will only be added to the file you select to save"
 		" (you can save current datafile and open saved timetable file after that to check it)");
 		
-	t+="\n\n";
+	//t+="\n\n";
 	
-	t+=tr("If you need more information, contact author or mailing list");
+	//t+=tr("If you need more information, contact author or mailing list");
 
-	QMessageBox::information(this, tr("FET - information about saving a timetable as"), t);
+	//QMessageBox::information(this, tr("FET - information about saving a timetable as"), t);
+	LongTextMessageBox::largeInformation(this, tr("FET - information about saving a timetable as"), t);
 	
 	QString s;
 
 	for(;;){
 		s = QFileDialog::getSaveFileName(this, tr("Choose a filename to save under" ), 
 			INPUT_FILENAME_XML, tr("FET XML files", "Instructions for translators: FET XML is a type of file format (using text mode). "
-			"So this field means files in the FET XML format")+" (*.fet)\n"+tr("All files")+" (*)",
+			"So this field means files in the FET XML format")+" (*.fet)"+";;"+tr("All files")+" (*)",
 			/*tr("FET xml files (*.fet)\nAll files (*)",
 			"Instructions for translators, IMPORTANT: There are 2 file filters, on "
 			"2 separate lines, so make sure you have a 'new line' character after the first filter "
@@ -781,7 +937,7 @@ void FetMainForm::on_timetableSaveTimetableAsAction_activated()
 			s+=".fet";
 
 		int tmp=s.findRev("/");
-		WORKING_DIRECTORY=s.left(tmp+1);
+		WORKING_DIRECTORY=s.left(tmp);
 
 		if(QFile::exists(s)){
 			t=tr("File exists");
@@ -974,14 +1130,32 @@ void FetMainForm::on_fileSaveAction_activated()
 
 void FetMainForm::on_dataInstitutionNameAction_activated()
 {
-	InstitutionNameForm* form=new InstitutionNameForm();
-	form->show();
+/*	InstitutionNameForm* form=new InstitutionNameForm();
+	form->setAttribute(Qt::WA_DeleteOnClose);
+	form->show();*/
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	InstitutionNameForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataCommentsAction_activated()
 {
-	CommentsForm* form=new CommentsForm();
-	form->show();
+/*	CommentsForm* form=new CommentsForm();
+	form->setAttribute(Qt::WA_DeleteOnClose);
+	form->show();*/
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	CommentsForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataDaysAction_activated()
@@ -992,8 +1166,8 @@ void FetMainForm::on_dataDaysAction_activated()
 		return;
 	}
 
-	DaysForm* form=new DaysForm();
-	form->exec();
+	DaysForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataHoursAction_activated()
@@ -1004,8 +1178,8 @@ void FetMainForm::on_dataHoursAction_activated()
 		return;
 	}
 
-	HoursForm* form=new HoursForm();
-	form->exec();
+	HoursForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTeachersAction_activated()
@@ -1016,14 +1190,14 @@ void FetMainForm::on_dataTeachersAction_activated()
 		return;
 	}
 
-	TeachersForm* form=new TeachersForm();
-	form->exec();
+	TeachersForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTeachersStatisticsAction_activated()
 {
-	TeachersStatisticsForm* form=new TeachersStatisticsForm();
-	form->exec();
+	TeachersStatisticsForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataSubjectsAction_activated()
@@ -1034,14 +1208,14 @@ void FetMainForm::on_dataSubjectsAction_activated()
 		return;
 	}
 
-	SubjectsForm* form=new SubjectsForm();
-	form->exec();
+	SubjectsForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataSubjectsStatisticsAction_activated()
 {
-	SubjectsStatisticsForm* form=new SubjectsStatisticsForm();
-	form->exec();
+	SubjectsStatisticsForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataActivityTagsAction_activated()
@@ -1052,8 +1226,8 @@ void FetMainForm::on_dataActivityTagsAction_activated()
 		return;
 	}
 
-	ActivityTagsForm* form=new ActivityTagsForm();
-	form->exec();
+	ActivityTagsForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataYearsAction_activated()
@@ -1064,8 +1238,8 @@ void FetMainForm::on_dataYearsAction_activated()
 		return;
 	}
 
-	YearsForm* form=new YearsForm();
-	form->exec();
+	YearsForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataGroupsAction_activated()
@@ -1076,8 +1250,8 @@ void FetMainForm::on_dataGroupsAction_activated()
 		return;
 	}
 
-	GroupsForm* form=new GroupsForm();
-	form->exec();
+	GroupsForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataSubgroupsAction_activated()
@@ -1088,37 +1262,74 @@ void FetMainForm::on_dataSubgroupsAction_activated()
 		return;
 	}
 
-	SubgroupsForm* form=new SubgroupsForm();
-	form->exec();
+	SubgroupsForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataStudentsStatisticsAction_activated()
 {
-	StudentsStatisticsForm* form=new StudentsStatisticsForm();
-	form->exec();
+	StudentsStatisticsForm form;
+	form.exec();
 }
 
 void FetMainForm::on_helpSettingsAction_activated()
 {
 	QString s;
 	
-	s+=tr("Probably a difficult to understand setting is this one:");
+	s+=tr("Probably some settings which are more difficult to understand are these ones:");
 	s+="\n\n";
-	s+=tr("Divide html timetables with time-axis by days");
-	s+="\n\n";
-	s+=tr("This means simply that the html timetables of type 'time horizontal' or 'time vertical' (see the generated html timetables)"
+	s+=tr("Option 'Divide html timetables with time-axis by days':"
+	" This means simply that the html timetables of type 'time horizontal' or 'time vertical' (see the generated html timetables)"
 	" should be or not divided according to the days.");
 	s+=" ";
-	s+=tr("If the 'time horizontal' or 'time vertical' html timetables are too large for you, then you might need this option");
+	s+=tr("If the 'time horizontal' or 'time vertical' html timetables are too large for you, then you might need to select this option");
 	
-	QMessageBox::information(this, tr("FET information"), s);
+	s+="\n\n";
+	s+=tr("Option 'Print activities with same starting time in timetables': selecting it means that the html timetables will contain for"
+	 " each slot all the activities which have the same starting time (fact specified by your constraints) as the activity(ies) which are normally shown in this slot."
+	 " If you don't use constraints activities same starting time, this option has no effect for you.");
+	 
+	s+="\n\n";
+	s+=tr("Seed of random number generator: please read the help in the dialog of this option");
+	
+	s+="\n\n";
+	s+=tr("Interface - use colors: the places with colors in FET interface are in:");
+	s+="\n";
+	s+=" -";
+	s+=tr("add/modify constraints break, not available, preferred starting times or time slots (the table cells will have green or red colors).");
+	s+="\n";
+	s+=" -";
+	s+=tr("activities and subactivities dialogs, the inactive activities will have a distinctive background color");
+	
+	s+="\n\n";
+	s+=tr("Enable activity tag max hours daily:");
+	s+="\n";
+	s+=tr("This will enable the menu for 4 constraints: teacher(s) or students (set) activity tag max hours daily. These 4 constraints are good, but not perfect and"
+		" may bring slow down of generation or impossible timetables if used unproperly. Select only if you know what you're doing.");
+	s+="\n\n";
+	s+=tr("Enable students max gaps per day:");
+	s+="\n";
+	s+=tr("This will enable the menu for 2 constraints: students (set) max gaps per day. These 2 constraints are good, but not perfect and"
+		" may bring slow down of generation or impossible timetables if used unproperly. Select only if you know what you're doing.");
+		
+	s+="\n\n";
+	s+=tr("Warn if using not perfect constraints:", "this is a warning if user uses not perfect constraints");
+	s+="\n";
+	s+=tr("If you use a not perfect constraint (activity tag max hours daily or students max gaps per day), you'll get a warning before generating"
+		". Uncheck this option to get rid of that warning (it is recommended to keep the warning).");
+	
+	LongTextMessageBox::largeInformation(this, tr("FET information"), s);
 }
 
 void FetMainForm::on_dataHelpOnStatisticsAction_activated()
 {
 	QString s;
 	
-	s+=tr("This help by Liviu Lalescu, modified 7 November 2007");
+	s+=tr("This help by Liviu Lalescu, modified 12 September 2009");
+	
+	s+="\n\n";
+	
+	s+=tr("You will find in the statistics only active activities count. The inactive ones are not counted.");
 	
 	s+="\n\n";
 	
@@ -1142,36 +1353,17 @@ void FetMainForm::on_dataHelpOnStatisticsAction_activated()
 	 " are interpreted in a wrong manner (if subgroup has only 2 activities, then these must"
 	 " be placed in the first hours, which is too hard and wrong)."
 	 );
-	 
-	//QMessageBox::information(this, tr("FET information about statistics"), s);
-
-	//show the message in a dialog
-	QDialog* dialog=new QDialog();
 	
-	dialog->setWindowTitle(tr("FET - information about statistics"));
-
-	QVBoxLayout* vl=new QVBoxLayout(dialog);
-	QTextEdit* te=new QTextEdit();
-	te->setPlainText(s);
-	te->setReadOnly(true);
-	QPushButton* pb=new QPushButton(tr("OK"));
-
-	QHBoxLayout* hl=new QHBoxLayout(0);
-	hl->addStretch(1);
-	hl->addWidget(pb);
-
-	vl->addWidget(te);
-	vl->addLayout(hl);
-	connect(pb, SIGNAL(clicked()), dialog, SLOT(close()));
-
-	dialog->setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
-	QRect rect = QApplication::desktop()->availableGeometry(dialog);
-	//QDesktopWidget* desktop=QApplication::desktop();
-	int xx=rect.width()/2 - 350;
-	int yy=rect.height()/2 - 250;
-	dialog->setGeometry(xx, yy, 700, 500);
-
-	dialog->exec();
+	s+="\n\n";
+	s+=tr("New addition, 26 June 2009:");
+	s+=" ";
+	s+=tr("Students' statistics form contains a check box named '%1'"
+	 ". This has effect only if you have overlapping groups/years, and means that FET will show the complete tree structure"
+	 ", even if that means that some subgroups/groups will appear twice or more in the table, with the same information."
+	 " For instance, if you have year Y1, groups G1 and G2, subgroups S1, S2, S3, with structure: Y1 (G1 (S1, S2), G2 (S1, S3)),"
+	 " S1 will appear twice in the table").arg(tr("Show duplicates"));
+	 
+	LongTextMessageBox::largeInformation(this, tr("FET - information about statistics"), s);
 }
 
 void FetMainForm::on_dataActivitiesAction_activated()
@@ -1182,8 +1374,8 @@ void FetMainForm::on_dataActivitiesAction_activated()
 		return;
 	}
 
-	ActivitiesForm* form=new ActivitiesForm();
-	form->exec();
+	ActivitiesForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataSubactivitiesAction_activated()
@@ -1194,8 +1386,8 @@ void FetMainForm::on_dataSubactivitiesAction_activated()
 		return;
 	}
 
-	SubactivitiesForm* form=new SubactivitiesForm();
-	form->exec();
+	SubactivitiesForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataRoomsAction_activated()
@@ -1206,8 +1398,8 @@ void FetMainForm::on_dataRoomsAction_activated()
 		return;
 	}
 
-	RoomsForm* form=new RoomsForm();
-	form->exec();
+	RoomsForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataBuildingsAction_activated()
@@ -1218,8 +1410,8 @@ void FetMainForm::on_dataBuildingsAction_activated()
 		return;
 	}
 
-	BuildingsForm* form=new BuildingsForm();
-	form->exec();
+	BuildingsForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataAllTimeConstraintsAction_activated()
@@ -1230,8 +1422,8 @@ void FetMainForm::on_dataAllTimeConstraintsAction_activated()
 		return;
 	}
 
-	AllTimeConstraintsForm* form=new AllTimeConstraintsForm();
-	form->exec();
+	AllTimeConstraintsForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataAllSpaceConstraintsAction_activated()
@@ -1242,11 +1434,11 @@ void FetMainForm::on_dataAllSpaceConstraintsAction_activated()
 		return;
 	}
 
-	AllSpaceConstraintsForm* form=new AllSpaceConstraintsForm();
-	form->exec();
+	AllSpaceConstraintsForm form;
+	form.exec();
 }
 
-void FetMainForm::on_dataTimeConstraints2ActivitiesConsecutiveAction_activated()
+void FetMainForm::on_dataTimeConstraintsTwoActivitiesConsecutiveAction_activated()
 {
 	if(simulation_running){
 		QMessageBox::information(this, tr("FET information"),
@@ -1254,11 +1446,11 @@ void FetMainForm::on_dataTimeConstraints2ActivitiesConsecutiveAction_activated()
 		return;
 	}
 
-	Constraint2ActivitiesConsecutiveForm* form=new Constraint2ActivitiesConsecutiveForm();
-	form->exec();
+	ConstraintTwoActivitiesConsecutiveForm form;
+	form.exec();
 }
 
-void FetMainForm::on_dataTimeConstraints2ActivitiesGroupedAction_activated()
+void FetMainForm::on_dataTimeConstraintsTwoActivitiesGroupedAction_activated()
 {
 	if(simulation_running){
 		QMessageBox::information(this, tr("FET information"),
@@ -1266,11 +1458,11 @@ void FetMainForm::on_dataTimeConstraints2ActivitiesGroupedAction_activated()
 		return;
 	}
 
-	Constraint2ActivitiesGroupedForm* form=new Constraint2ActivitiesGroupedForm();
-	form->exec();
+	ConstraintTwoActivitiesGroupedForm form;
+	form.exec();
 }
 
-void FetMainForm::on_dataTimeConstraints2ActivitiesOrderedAction_activated()
+void FetMainForm::on_dataTimeConstraintsThreeActivitiesGroupedAction_activated()
 {
 	if(simulation_running){
 		QMessageBox::information(this, tr("FET information"),
@@ -1278,8 +1470,20 @@ void FetMainForm::on_dataTimeConstraints2ActivitiesOrderedAction_activated()
 		return;
 	}
 
-	Constraint2ActivitiesOrderedForm* form=new Constraint2ActivitiesOrderedForm();
-	form->exec();
+	ConstraintThreeActivitiesGroupedForm form;
+	form.exec();
+}
+
+void FetMainForm::on_dataTimeConstraintsTwoActivitiesOrderedAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	ConstraintTwoActivitiesOrderedForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsActivitiesPreferredTimeSlotsAction_activated()
@@ -1290,8 +1494,8 @@ void FetMainForm::on_dataTimeConstraintsActivitiesPreferredTimeSlotsAction_activ
 		return;
 	}
 
-	ConstraintActivitiesPreferredTimeSlotsForm* form=new ConstraintActivitiesPreferredTimeSlotsForm();
-	form->exec();
+	ConstraintActivitiesPreferredTimeSlotsForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsActivitiesPreferredStartingTimesAction_activated()
@@ -1302,8 +1506,8 @@ void FetMainForm::on_dataTimeConstraintsActivitiesPreferredStartingTimesAction_a
 		return;
 	}
 
-	ConstraintActivitiesPreferredStartingTimesForm* form=new ConstraintActivitiesPreferredStartingTimesForm();
-	form->exec();
+	ConstraintActivitiesPreferredStartingTimesForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsSubactivitiesPreferredTimeSlotsAction_activated()
@@ -1314,8 +1518,8 @@ void FetMainForm::on_dataTimeConstraintsSubactivitiesPreferredTimeSlotsAction_ac
 		return;
 	}
 
-	ConstraintSubactivitiesPreferredTimeSlotsForm* form=new ConstraintSubactivitiesPreferredTimeSlotsForm();
-	form->exec();
+	ConstraintSubactivitiesPreferredTimeSlotsForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsSubactivitiesPreferredStartingTimesAction_activated()
@@ -1326,8 +1530,8 @@ void FetMainForm::on_dataTimeConstraintsSubactivitiesPreferredStartingTimesActio
 		return;
 	}
 
-	ConstraintSubactivitiesPreferredStartingTimesForm* form=new ConstraintSubactivitiesPreferredStartingTimesForm();
-	form->exec();
+	ConstraintSubactivitiesPreferredStartingTimesForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsActivityEndsStudentsDayAction_activated()
@@ -1338,8 +1542,8 @@ void FetMainForm::on_dataTimeConstraintsActivityEndsStudentsDayAction_activated(
 		return;
 	}
 
-	ConstraintActivityEndsStudentsDayForm* form=new ConstraintActivityEndsStudentsDayForm();
-	form->exec();
+	ConstraintActivityEndsStudentsDayForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsActivitiesEndStudentsDayAction_activated()
@@ -1350,8 +1554,8 @@ void FetMainForm::on_dataTimeConstraintsActivitiesEndStudentsDayAction_activated
 		return;
 	}
 
-	ConstraintActivitiesEndStudentsDayForm* form=new ConstraintActivitiesEndStudentsDayForm();
-	form->exec();
+	ConstraintActivitiesEndStudentsDayForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsActivitiesSameStartingTimeAction_activated()
@@ -1362,8 +1566,8 @@ void FetMainForm::on_dataTimeConstraintsActivitiesSameStartingTimeAction_activat
 		return;
 	}
 
-	ConstraintActivitiesSameStartingTimeForm* form=new ConstraintActivitiesSameStartingTimeForm();
-	form->exec();
+	ConstraintActivitiesSameStartingTimeForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsActivitiesSameStartingHourAction_activated()
@@ -1374,8 +1578,8 @@ void FetMainForm::on_dataTimeConstraintsActivitiesSameStartingHourAction_activat
 		return;
 	}
 
-	ConstraintActivitiesSameStartingHourForm* form=new ConstraintActivitiesSameStartingHourForm();
-	form->exec();
+	ConstraintActivitiesSameStartingHourForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsActivitiesSameStartingDayAction_activated()
@@ -1386,8 +1590,8 @@ void FetMainForm::on_dataTimeConstraintsActivitiesSameStartingDayAction_activate
 		return;
 	}
 
-	ConstraintActivitiesSameStartingDayForm* form=new ConstraintActivitiesSameStartingDayForm();
-	form->exec();
+	ConstraintActivitiesSameStartingDayForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsTeacherNotAvailableTimesAction_activated()
@@ -1398,8 +1602,8 @@ void FetMainForm::on_dataTimeConstraintsTeacherNotAvailableTimesAction_activated
 		return;
 	}
 
-	ConstraintTeacherNotAvailableTimesForm* form=new ConstraintTeacherNotAvailableTimesForm();
-	form->exec();
+	ConstraintTeacherNotAvailableTimesForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsBasicCompulsoryTimeAction_activated()
@@ -1410,8 +1614,8 @@ void FetMainForm::on_dataTimeConstraintsBasicCompulsoryTimeAction_activated()
 		return;
 	}
 
-	ConstraintBasicCompulsoryTimeForm* form=new ConstraintBasicCompulsoryTimeForm();
-	form->exec();
+	ConstraintBasicCompulsoryTimeForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataSpaceConstraintsBasicCompulsorySpaceAction_activated()
@@ -1422,8 +1626,8 @@ void FetMainForm::on_dataSpaceConstraintsBasicCompulsorySpaceAction_activated()
 		return;
 	}
 
-	ConstraintBasicCompulsorySpaceForm* form=new ConstraintBasicCompulsorySpaceForm();
-	form->exec();
+	ConstraintBasicCompulsorySpaceForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataSpaceConstraintsRoomNotAvailableTimesAction_activated()
@@ -1434,8 +1638,8 @@ void FetMainForm::on_dataSpaceConstraintsRoomNotAvailableTimesAction_activated()
 		return;
 	}
 
-	ConstraintRoomNotAvailableTimesForm* form=new ConstraintRoomNotAvailableTimesForm();
-	form->exec();
+	ConstraintRoomNotAvailableTimesForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataSpaceConstraintsActivityPreferredRoomAction_activated()
@@ -1446,8 +1650,8 @@ void FetMainForm::on_dataSpaceConstraintsActivityPreferredRoomAction_activated()
 		return;
 	}
 
-	ConstraintActivityPreferredRoomForm* form=new ConstraintActivityPreferredRoomForm();
-	form->exec();
+	ConstraintActivityPreferredRoomForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataSpaceConstraintsActivityPreferredRoomsAction_activated()
@@ -1458,8 +1662,8 @@ void FetMainForm::on_dataSpaceConstraintsActivityPreferredRoomsAction_activated(
 		return;
 	}
 
-	ConstraintActivityPreferredRoomsForm* form=new ConstraintActivityPreferredRoomsForm();
-	form->exec();
+	ConstraintActivityPreferredRoomsForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataSpaceConstraintsSubjectPreferredRoomAction_activated()
@@ -1470,8 +1674,8 @@ void FetMainForm::on_dataSpaceConstraintsSubjectPreferredRoomAction_activated()
 		return;
 	}
 
-	ConstraintSubjectPreferredRoomForm* form=new ConstraintSubjectPreferredRoomForm();
-	form->exec();
+	ConstraintSubjectPreferredRoomForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataSpaceConstraintsSubjectPreferredRoomsAction_activated()
@@ -1482,8 +1686,8 @@ void FetMainForm::on_dataSpaceConstraintsSubjectPreferredRoomsAction_activated()
 		return;
 	}
 
-	ConstraintSubjectPreferredRoomsForm* form=new ConstraintSubjectPreferredRoomsForm();
-	form->exec();
+	ConstraintSubjectPreferredRoomsForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataSpaceConstraintsSubjectActivityTagPreferredRoomAction_activated()
@@ -1494,8 +1698,8 @@ void FetMainForm::on_dataSpaceConstraintsSubjectActivityTagPreferredRoomAction_a
 		return;
 	}
 
-	ConstraintSubjectActivityTagPreferredRoomForm* form=new ConstraintSubjectActivityTagPreferredRoomForm();
-	form->exec();
+	ConstraintSubjectActivityTagPreferredRoomForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataSpaceConstraintsSubjectActivityTagPreferredRoomsAction_activated()
@@ -1506,9 +1710,35 @@ void FetMainForm::on_dataSpaceConstraintsSubjectActivityTagPreferredRoomsAction_
 		return;
 	}
 
-	ConstraintSubjectActivityTagPreferredRoomsForm* form=new ConstraintSubjectActivityTagPreferredRoomsForm();
-	form->exec();
+	ConstraintSubjectActivityTagPreferredRoomsForm form;
+	form.exec();
 }
+
+///added 6 apr 2009
+void FetMainForm::on_dataSpaceConstraintsActivityTagPreferredRoomAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	ConstraintActivityTagPreferredRoomForm form;
+	form.exec();
+}
+
+void FetMainForm::on_dataSpaceConstraintsActivityTagPreferredRoomsAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	ConstraintActivityTagPreferredRoomsForm form;
+	form.exec();
+}
+///
 
 void FetMainForm::on_dataSpaceConstraintsStudentsSetHomeRoomAction_activated()
 {
@@ -1518,8 +1748,8 @@ void FetMainForm::on_dataSpaceConstraintsStudentsSetHomeRoomAction_activated()
 		return;
 	}
 
-	ConstraintStudentsSetHomeRoomForm* form=new ConstraintStudentsSetHomeRoomForm();
-	form->exec();
+	ConstraintStudentsSetHomeRoomForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataSpaceConstraintsStudentsSetHomeRoomsAction_activated()
@@ -1530,8 +1760,8 @@ void FetMainForm::on_dataSpaceConstraintsStudentsSetHomeRoomsAction_activated()
 		return;
 	}
 
-	ConstraintStudentsSetHomeRoomsForm* form=new ConstraintStudentsSetHomeRoomsForm();
-	form->exec();
+	ConstraintStudentsSetHomeRoomsForm form;
+	form.exec();
 }
 
 
@@ -1543,8 +1773,8 @@ void FetMainForm::on_dataSpaceConstraintsStudentsSetMaxBuildingChangesPerDayActi
 		return;
 	}
 
-	ConstraintStudentsSetMaxBuildingChangesPerDayForm* form=new ConstraintStudentsSetMaxBuildingChangesPerDayForm();
-	form->exec();
+	ConstraintStudentsSetMaxBuildingChangesPerDayForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataSpaceConstraintsStudentsMaxBuildingChangesPerDayAction_activated()
@@ -1555,8 +1785,8 @@ void FetMainForm::on_dataSpaceConstraintsStudentsMaxBuildingChangesPerDayAction_
 		return;
 	}
 
-	ConstraintStudentsMaxBuildingChangesPerDayForm* form=new ConstraintStudentsMaxBuildingChangesPerDayForm();
-	form->exec();
+	ConstraintStudentsMaxBuildingChangesPerDayForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataSpaceConstraintsStudentsSetMaxBuildingChangesPerWeekAction_activated()
@@ -1567,8 +1797,8 @@ void FetMainForm::on_dataSpaceConstraintsStudentsSetMaxBuildingChangesPerWeekAct
 		return;
 	}
 
-	ConstraintStudentsSetMaxBuildingChangesPerWeekForm* form=new ConstraintStudentsSetMaxBuildingChangesPerWeekForm();
-	form->exec();
+	ConstraintStudentsSetMaxBuildingChangesPerWeekForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataSpaceConstraintsStudentsMaxBuildingChangesPerWeekAction_activated()
@@ -1579,8 +1809,8 @@ void FetMainForm::on_dataSpaceConstraintsStudentsMaxBuildingChangesPerWeekAction
 		return;
 	}
 
-	ConstraintStudentsMaxBuildingChangesPerWeekForm* form=new ConstraintStudentsMaxBuildingChangesPerWeekForm();
-	form->exec();
+	ConstraintStudentsMaxBuildingChangesPerWeekForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataSpaceConstraintsStudentsSetMinGapsBetweenBuildingChangesAction_activated()
@@ -1591,8 +1821,8 @@ void FetMainForm::on_dataSpaceConstraintsStudentsSetMinGapsBetweenBuildingChange
 		return;
 	}
 
-	ConstraintStudentsSetMinGapsBetweenBuildingChangesForm* form=new ConstraintStudentsSetMinGapsBetweenBuildingChangesForm();
-	form->exec();
+	ConstraintStudentsSetMinGapsBetweenBuildingChangesForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataSpaceConstraintsStudentsMinGapsBetweenBuildingChangesAction_activated()
@@ -1603,8 +1833,8 @@ void FetMainForm::on_dataSpaceConstraintsStudentsMinGapsBetweenBuildingChangesAc
 		return;
 	}
 
-	ConstraintStudentsMinGapsBetweenBuildingChangesForm* form=new ConstraintStudentsMinGapsBetweenBuildingChangesForm();
-	form->exec();
+	ConstraintStudentsMinGapsBetweenBuildingChangesForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataSpaceConstraintsTeacherMaxBuildingChangesPerDayAction_activated()
@@ -1615,8 +1845,8 @@ void FetMainForm::on_dataSpaceConstraintsTeacherMaxBuildingChangesPerDayAction_a
 		return;
 	}
 
-	ConstraintTeacherMaxBuildingChangesPerDayForm* form=new ConstraintTeacherMaxBuildingChangesPerDayForm();
-	form->exec();
+	ConstraintTeacherMaxBuildingChangesPerDayForm form;
+	form.exec();
 }
 void FetMainForm::on_dataSpaceConstraintsTeachersMaxBuildingChangesPerDayAction_activated()
 {
@@ -1626,8 +1856,8 @@ void FetMainForm::on_dataSpaceConstraintsTeachersMaxBuildingChangesPerDayAction_
 		return;
 	}
 
-	ConstraintTeachersMaxBuildingChangesPerDayForm* form=new ConstraintTeachersMaxBuildingChangesPerDayForm();
-	form->exec();
+	ConstraintTeachersMaxBuildingChangesPerDayForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataSpaceConstraintsTeacherMaxBuildingChangesPerWeekAction_activated()
@@ -1638,8 +1868,8 @@ void FetMainForm::on_dataSpaceConstraintsTeacherMaxBuildingChangesPerWeekAction_
 		return;
 	}
 
-	ConstraintTeacherMaxBuildingChangesPerWeekForm* form=new ConstraintTeacherMaxBuildingChangesPerWeekForm();
-	form->exec();
+	ConstraintTeacherMaxBuildingChangesPerWeekForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataSpaceConstraintsTeachersMaxBuildingChangesPerWeekAction_activated()
@@ -1650,8 +1880,8 @@ void FetMainForm::on_dataSpaceConstraintsTeachersMaxBuildingChangesPerWeekAction
 		return;
 	}
 
-	ConstraintTeachersMaxBuildingChangesPerWeekForm* form=new ConstraintTeachersMaxBuildingChangesPerWeekForm();
-	form->exec();
+	ConstraintTeachersMaxBuildingChangesPerWeekForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataSpaceConstraintsTeacherMinGapsBetweenBuildingChangesAction_activated()
@@ -1662,8 +1892,8 @@ void FetMainForm::on_dataSpaceConstraintsTeacherMinGapsBetweenBuildingChangesAct
 		return;
 	}
 
-	ConstraintTeacherMinGapsBetweenBuildingChangesForm* form=new ConstraintTeacherMinGapsBetweenBuildingChangesForm();
-	form->exec();
+	ConstraintTeacherMinGapsBetweenBuildingChangesForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataSpaceConstraintsTeachersMinGapsBetweenBuildingChangesAction_activated()
@@ -1674,8 +1904,8 @@ void FetMainForm::on_dataSpaceConstraintsTeachersMinGapsBetweenBuildingChangesAc
 		return;
 	}
 
-	ConstraintTeachersMinGapsBetweenBuildingChangesForm* form=new ConstraintTeachersMinGapsBetweenBuildingChangesForm();
-	form->exec();
+	ConstraintTeachersMinGapsBetweenBuildingChangesForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataSpaceConstraintsTeacherHomeRoomAction_activated()
@@ -1686,8 +1916,8 @@ void FetMainForm::on_dataSpaceConstraintsTeacherHomeRoomAction_activated()
 		return;
 	}
 
-	ConstraintTeacherHomeRoomForm* form=new ConstraintTeacherHomeRoomForm();
-	form->exec();
+	ConstraintTeacherHomeRoomForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataSpaceConstraintsTeacherHomeRoomsAction_activated()
@@ -1698,8 +1928,8 @@ void FetMainForm::on_dataSpaceConstraintsTeacherHomeRoomsAction_activated()
 		return;
 	}
 
-	ConstraintTeacherHomeRoomsForm* form=new ConstraintTeacherHomeRoomsForm();
-	form->exec();
+	ConstraintTeacherHomeRoomsForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsStudentsSetNotAvailableTimesAction_activated()
@@ -1710,8 +1940,8 @@ void FetMainForm::on_dataTimeConstraintsStudentsSetNotAvailableTimesAction_activ
 		return;
 	}
 
-	ConstraintStudentsSetNotAvailableTimesForm* form=new ConstraintStudentsSetNotAvailableTimesForm();
-	form->exec();
+	ConstraintStudentsSetNotAvailableTimesForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsBreakTimesAction_activated()
@@ -1722,8 +1952,8 @@ void FetMainForm::on_dataTimeConstraintsBreakTimesAction_activated()
 		return;
 	}
 
-	ConstraintBreakTimesForm* form=new ConstraintBreakTimesForm();
-	form->exec();
+	ConstraintBreakTimesForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsTeacherMaxDaysPerWeekAction_activated()
@@ -1734,8 +1964,44 @@ void FetMainForm::on_dataTimeConstraintsTeacherMaxDaysPerWeekAction_activated()
 		return;
 	}
 
-	ConstraintTeacherMaxDaysPerWeekForm* form=new ConstraintTeacherMaxDaysPerWeekForm();
-	form->exec();
+	ConstraintTeacherMaxDaysPerWeekForm form;
+	form.exec();
+}
+
+void FetMainForm::on_dataTimeConstraintsTeachersMaxDaysPerWeekAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	ConstraintTeachersMaxDaysPerWeekForm form;
+	form.exec();
+}
+
+void FetMainForm::on_dataTimeConstraintsTeacherMinDaysPerWeekAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	ConstraintTeacherMinDaysPerWeekForm form;
+	form.exec();
+}
+
+void FetMainForm::on_dataTimeConstraintsTeachersMinDaysPerWeekAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	ConstraintTeachersMinDaysPerWeekForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsTeacherIntervalMaxDaysPerWeekAction_activated()
@@ -1746,8 +2012,8 @@ void FetMainForm::on_dataTimeConstraintsTeacherIntervalMaxDaysPerWeekAction_acti
 		return;
 	}
 
-	ConstraintTeacherIntervalMaxDaysPerWeekForm* form=new ConstraintTeacherIntervalMaxDaysPerWeekForm();
-	form->exec();
+	ConstraintTeacherIntervalMaxDaysPerWeekForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsTeachersIntervalMaxDaysPerWeekAction_activated()
@@ -1758,8 +2024,8 @@ void FetMainForm::on_dataTimeConstraintsTeachersIntervalMaxDaysPerWeekAction_act
 		return;
 	}
 
-	ConstraintTeachersIntervalMaxDaysPerWeekForm* form=new ConstraintTeachersIntervalMaxDaysPerWeekForm();
-	form->exec();
+	ConstraintTeachersIntervalMaxDaysPerWeekForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsStudentsSetIntervalMaxDaysPerWeekAction_activated()
@@ -1770,8 +2036,8 @@ void FetMainForm::on_dataTimeConstraintsStudentsSetIntervalMaxDaysPerWeekAction_
 		return;
 	}
 
-	ConstraintStudentsSetIntervalMaxDaysPerWeekForm* form=new ConstraintStudentsSetIntervalMaxDaysPerWeekForm();
-	form->exec();
+	ConstraintStudentsSetIntervalMaxDaysPerWeekForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsStudentsIntervalMaxDaysPerWeekAction_activated()
@@ -1782,8 +2048,8 @@ void FetMainForm::on_dataTimeConstraintsStudentsIntervalMaxDaysPerWeekAction_act
 		return;
 	}
 
-	ConstraintStudentsIntervalMaxDaysPerWeekForm* form=new ConstraintStudentsIntervalMaxDaysPerWeekForm();
-	form->exec();
+	ConstraintStudentsIntervalMaxDaysPerWeekForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsTeachersMaxHoursDailyAction_activated()
@@ -1794,8 +2060,8 @@ void FetMainForm::on_dataTimeConstraintsTeachersMaxHoursDailyAction_activated()
 		return;
 	}
 
-	ConstraintTeachersMaxHoursDailyForm* form=new ConstraintTeachersMaxHoursDailyForm();
-	form->exec();
+	ConstraintTeachersMaxHoursDailyForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsTeacherMaxHoursDailyAction_activated()
@@ -1806,8 +2072,8 @@ void FetMainForm::on_dataTimeConstraintsTeacherMaxHoursDailyAction_activated()
 		return;
 	}
 
-	ConstraintTeacherMaxHoursDailyForm* form=new ConstraintTeacherMaxHoursDailyForm();
-	form->exec();
+	ConstraintTeacherMaxHoursDailyForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsTeachersMaxHoursContinuouslyAction_activated()
@@ -1818,8 +2084,8 @@ void FetMainForm::on_dataTimeConstraintsTeachersMaxHoursContinuouslyAction_activ
 		return;
 	}
 
-	ConstraintTeachersMaxHoursContinuouslyForm* form=new ConstraintTeachersMaxHoursContinuouslyForm();
-	form->exec();
+	ConstraintTeachersMaxHoursContinuouslyForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsTeacherMaxHoursContinuouslyAction_activated()
@@ -1830,8 +2096,8 @@ void FetMainForm::on_dataTimeConstraintsTeacherMaxHoursContinuouslyAction_activa
 		return;
 	}
 
-	ConstraintTeacherMaxHoursContinuouslyForm* form=new ConstraintTeacherMaxHoursContinuouslyForm();
-	form->exec();
+	ConstraintTeacherMaxHoursContinuouslyForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsTeachersActivityTagMaxHoursContinuouslyAction_activated()
@@ -1842,8 +2108,8 @@ void FetMainForm::on_dataTimeConstraintsTeachersActivityTagMaxHoursContinuouslyA
 		return;
 	}
 
-	ConstraintTeachersActivityTagMaxHoursContinuouslyForm* form=new ConstraintTeachersActivityTagMaxHoursContinuouslyForm();
-	form->exec();
+	ConstraintTeachersActivityTagMaxHoursContinuouslyForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsTeacherActivityTagMaxHoursContinuouslyAction_activated()
@@ -1854,8 +2120,42 @@ void FetMainForm::on_dataTimeConstraintsTeacherActivityTagMaxHoursContinuouslyAc
 		return;
 	}
 
-	ConstraintTeacherActivityTagMaxHoursContinuouslyForm* form=new ConstraintTeacherActivityTagMaxHoursContinuouslyForm();
-	form->exec();
+	ConstraintTeacherActivityTagMaxHoursContinuouslyForm form;
+	form.exec();
+}
+
+void FetMainForm::on_dataTimeConstraintsTeachersActivityTagMaxHoursDailyAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+	
+	if(!ENABLE_ACTIVITY_TAG_MAX_HOURS_DAILY){
+		enableNotPerfectMessage();
+		return;
+	}
+
+	ConstraintTeachersActivityTagMaxHoursDailyForm form;
+	form.exec();
+}
+
+void FetMainForm::on_dataTimeConstraintsTeacherActivityTagMaxHoursDailyAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	if(!ENABLE_ACTIVITY_TAG_MAX_HOURS_DAILY){
+		enableNotPerfectMessage();
+		return;
+	}
+
+	ConstraintTeacherActivityTagMaxHoursDailyForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsTeachersMinHoursDailyAction_activated()
@@ -1866,8 +2166,8 @@ void FetMainForm::on_dataTimeConstraintsTeachersMinHoursDailyAction_activated()
 		return;
 	}
 
-	ConstraintTeachersMinHoursDailyForm* form=new ConstraintTeachersMinHoursDailyForm();
-	form->exec();
+	ConstraintTeachersMinHoursDailyForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsTeacherMinHoursDailyAction_activated()
@@ -1878,8 +2178,8 @@ void FetMainForm::on_dataTimeConstraintsTeacherMinHoursDailyAction_activated()
 		return;
 	}
 
-	ConstraintTeacherMinHoursDailyForm* form=new ConstraintTeacherMinHoursDailyForm();
-	form->exec();
+	ConstraintTeacherMinHoursDailyForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsActivityPreferredStartingTimeAction_activated()
@@ -1890,8 +2190,8 @@ void FetMainForm::on_dataTimeConstraintsActivityPreferredStartingTimeAction_acti
 		return;
 	}
 
-	ConstraintActivityPreferredStartingTimeForm* form=new ConstraintActivityPreferredStartingTimeForm();
-	form->exec();
+	ConstraintActivityPreferredStartingTimeForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsStudentsSetMaxGapsPerWeekAction_activated()
@@ -1902,8 +2202,8 @@ void FetMainForm::on_dataTimeConstraintsStudentsSetMaxGapsPerWeekAction_activate
 		return;
 	}
 
-	ConstraintStudentsSetMaxGapsPerWeekForm* form=new ConstraintStudentsSetMaxGapsPerWeekForm();
-	form->exec();
+	ConstraintStudentsSetMaxGapsPerWeekForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsStudentsMaxGapsPerWeekAction_activated()
@@ -1914,8 +2214,42 @@ void FetMainForm::on_dataTimeConstraintsStudentsMaxGapsPerWeekAction_activated()
 		return;
 	}
 
-	ConstraintStudentsMaxGapsPerWeekForm* form=new ConstraintStudentsMaxGapsPerWeekForm();
-	form->exec();
+	ConstraintStudentsMaxGapsPerWeekForm form;
+	form.exec();
+}
+
+void FetMainForm::on_dataTimeConstraintsStudentsSetMaxGapsPerDayAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	if(!ENABLE_STUDENTS_MAX_GAPS_PER_DAY){
+		enableNotPerfectMessage();
+		return;
+	}
+
+	ConstraintStudentsSetMaxGapsPerDayForm form;
+	form.exec();
+}
+
+void FetMainForm::on_dataTimeConstraintsStudentsMaxGapsPerDayAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+	
+	if(!ENABLE_STUDENTS_MAX_GAPS_PER_DAY){
+		enableNotPerfectMessage();
+		return;
+	}
+
+	ConstraintStudentsMaxGapsPerDayForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsTeachersMaxGapsPerWeekAction_activated()
@@ -1926,8 +2260,8 @@ void FetMainForm::on_dataTimeConstraintsTeachersMaxGapsPerWeekAction_activated()
 		return;
 	}
 
-	ConstraintTeachersMaxGapsPerWeekForm* form=new ConstraintTeachersMaxGapsPerWeekForm();
-	form->exec();
+	ConstraintTeachersMaxGapsPerWeekForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsTeacherMaxGapsPerWeekAction_activated()
@@ -1938,8 +2272,8 @@ void FetMainForm::on_dataTimeConstraintsTeacherMaxGapsPerWeekAction_activated()
 		return;
 	}
 
-	ConstraintTeacherMaxGapsPerWeekForm* form=new ConstraintTeacherMaxGapsPerWeekForm();
-	form->exec();
+	ConstraintTeacherMaxGapsPerWeekForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsTeachersMaxGapsPerDayAction_activated()
@@ -1950,8 +2284,8 @@ void FetMainForm::on_dataTimeConstraintsTeachersMaxGapsPerDayAction_activated()
 		return;
 	}
 
-	ConstraintTeachersMaxGapsPerDayForm* form=new ConstraintTeachersMaxGapsPerDayForm();
-	form->exec();
+	ConstraintTeachersMaxGapsPerDayForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsTeacherMaxGapsPerDayAction_activated()
@@ -1962,8 +2296,8 @@ void FetMainForm::on_dataTimeConstraintsTeacherMaxGapsPerDayAction_activated()
 		return;
 	}
 
-	ConstraintTeacherMaxGapsPerDayForm* form=new ConstraintTeacherMaxGapsPerDayForm();
-	form->exec();
+	ConstraintTeacherMaxGapsPerDayForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsStudentsEarlyMaxBeginningsAtSecondHourAction_activated()
@@ -1974,8 +2308,8 @@ void FetMainForm::on_dataTimeConstraintsStudentsEarlyMaxBeginningsAtSecondHourAc
 		return;
 	}
 
-	ConstraintStudentsEarlyMaxBeginningsAtSecondHourForm* form=new ConstraintStudentsEarlyMaxBeginningsAtSecondHourForm();
-	form->exec();
+	ConstraintStudentsEarlyMaxBeginningsAtSecondHourForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsStudentsSetEarlyMaxBeginningsAtSecondHourAction_activated()
@@ -1986,8 +2320,8 @@ void FetMainForm::on_dataTimeConstraintsStudentsSetEarlyMaxBeginningsAtSecondHou
 		return;
 	}
 
-	ConstraintStudentsSetEarlyMaxBeginningsAtSecondHourForm* form=new ConstraintStudentsSetEarlyMaxBeginningsAtSecondHourForm();
-	form->exec();
+	ConstraintStudentsSetEarlyMaxBeginningsAtSecondHourForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsStudentsSetMaxHoursDailyAction_activated()
@@ -1998,8 +2332,8 @@ void FetMainForm::on_dataTimeConstraintsStudentsSetMaxHoursDailyAction_activated
 		return;
 	}
 
-	ConstraintStudentsSetMaxHoursDailyForm* form=new ConstraintStudentsSetMaxHoursDailyForm();
-	form->exec();
+	ConstraintStudentsSetMaxHoursDailyForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsStudentsMaxHoursDailyAction_activated()
@@ -2010,8 +2344,8 @@ void FetMainForm::on_dataTimeConstraintsStudentsMaxHoursDailyAction_activated()
 		return;
 	}
 
-	ConstraintStudentsMaxHoursDailyForm* form=new ConstraintStudentsMaxHoursDailyForm();
-	form->exec();
+	ConstraintStudentsMaxHoursDailyForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsStudentsSetMaxHoursContinuouslyAction_activated()
@@ -2022,8 +2356,8 @@ void FetMainForm::on_dataTimeConstraintsStudentsSetMaxHoursContinuouslyAction_ac
 		return;
 	}
 
-	ConstraintStudentsSetMaxHoursContinuouslyForm* form=new ConstraintStudentsSetMaxHoursContinuouslyForm();
-	form->exec();
+	ConstraintStudentsSetMaxHoursContinuouslyForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsStudentsMaxHoursContinuouslyAction_activated()
@@ -2034,8 +2368,8 @@ void FetMainForm::on_dataTimeConstraintsStudentsMaxHoursContinuouslyAction_activ
 		return;
 	}
 
-	ConstraintStudentsMaxHoursContinuouslyForm* form=new ConstraintStudentsMaxHoursContinuouslyForm();
-	form->exec();
+	ConstraintStudentsMaxHoursContinuouslyForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsStudentsSetActivityTagMaxHoursContinuouslyAction_activated()
@@ -2046,8 +2380,8 @@ void FetMainForm::on_dataTimeConstraintsStudentsSetActivityTagMaxHoursContinuous
 		return;
 	}
 
-	ConstraintStudentsSetActivityTagMaxHoursContinuouslyForm* form=new ConstraintStudentsSetActivityTagMaxHoursContinuouslyForm();
-	form->exec();
+	ConstraintStudentsSetActivityTagMaxHoursContinuouslyForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsStudentsActivityTagMaxHoursContinuouslyAction_activated()
@@ -2058,8 +2392,42 @@ void FetMainForm::on_dataTimeConstraintsStudentsActivityTagMaxHoursContinuouslyA
 		return;
 	}
 
-	ConstraintStudentsActivityTagMaxHoursContinuouslyForm* form=new ConstraintStudentsActivityTagMaxHoursContinuouslyForm();
-	form->exec();
+	ConstraintStudentsActivityTagMaxHoursContinuouslyForm form;
+	form.exec();
+}
+
+void FetMainForm::on_dataTimeConstraintsStudentsSetActivityTagMaxHoursDailyAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	if(!ENABLE_ACTIVITY_TAG_MAX_HOURS_DAILY){
+		enableNotPerfectMessage();
+		return;
+	}
+
+	ConstraintStudentsSetActivityTagMaxHoursDailyForm form;
+	form.exec();
+}
+
+void FetMainForm::on_dataTimeConstraintsStudentsActivityTagMaxHoursDailyAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	if(!ENABLE_ACTIVITY_TAG_MAX_HOURS_DAILY){
+		enableNotPerfectMessage();
+		return;
+	}
+
+	ConstraintStudentsActivityTagMaxHoursDailyForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsStudentsSetMinHoursDailyAction_activated()
@@ -2070,8 +2438,8 @@ void FetMainForm::on_dataTimeConstraintsStudentsSetMinHoursDailyAction_activated
 		return;
 	}
 
-	ConstraintStudentsSetMinHoursDailyForm* form=new ConstraintStudentsSetMinHoursDailyForm();
-	form->exec();
+	ConstraintStudentsSetMinHoursDailyForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsStudentsMinHoursDailyAction_activated()
@@ -2082,8 +2450,8 @@ void FetMainForm::on_dataTimeConstraintsStudentsMinHoursDailyAction_activated()
 		return;
 	}
 
-	ConstraintStudentsMinHoursDailyForm* form=new ConstraintStudentsMinHoursDailyForm();
-	form->exec();
+	ConstraintStudentsMinHoursDailyForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsActivitiesNotOverlappingAction_activated()
@@ -2094,11 +2462,11 @@ void FetMainForm::on_dataTimeConstraintsActivitiesNotOverlappingAction_activated
 		return;
 	}
 
-	ConstraintActivitiesNotOverlappingForm* form=new ConstraintActivitiesNotOverlappingForm();
-	form->exec();
+	ConstraintActivitiesNotOverlappingForm form;
+	form.exec();
 }
 
-void FetMainForm::on_dataTimeConstraintsMinNDaysBetweenActivitiesAction_activated()
+void FetMainForm::on_dataTimeConstraintsMinDaysBetweenActivitiesAction_activated()
 {
 	if(simulation_running){
 		QMessageBox::information(this, tr("FET information"),
@@ -2106,8 +2474,20 @@ void FetMainForm::on_dataTimeConstraintsMinNDaysBetweenActivitiesAction_activate
 		return;
 	}
 
-	ConstraintMinNDaysBetweenActivitiesForm* form=new ConstraintMinNDaysBetweenActivitiesForm();
-	form->exec();
+	ConstraintMinDaysBetweenActivitiesForm form;
+	form.exec();
+}
+
+void FetMainForm::on_dataTimeConstraintsMaxDaysBetweenActivitiesAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	ConstraintMaxDaysBetweenActivitiesForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsMinGapsBetweenActivitiesAction_activated()
@@ -2118,8 +2498,8 @@ void FetMainForm::on_dataTimeConstraintsMinGapsBetweenActivitiesAction_activated
 		return;
 	}
 
-	ConstraintMinGapsBetweenActivitiesForm* form=new ConstraintMinGapsBetweenActivitiesForm();
-	form->exec();
+	ConstraintMinGapsBetweenActivitiesForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsActivityPreferredTimeSlotsAction_activated()
@@ -2130,8 +2510,8 @@ void FetMainForm::on_dataTimeConstraintsActivityPreferredTimeSlotsAction_activat
 		return;
 	}
 
-	ConstraintActivityPreferredTimeSlotsForm* form=new ConstraintActivityPreferredTimeSlotsForm();
-	form->exec();
+	ConstraintActivityPreferredTimeSlotsForm form;
+	form.exec();
 }
 
 void FetMainForm::on_dataTimeConstraintsActivityPreferredStartingTimesAction_activated()
@@ -2142,13 +2522,14 @@ void FetMainForm::on_dataTimeConstraintsActivityPreferredStartingTimesAction_act
 		return;
 	}
 
-	ConstraintActivityPreferredStartingTimesForm* form=new ConstraintActivityPreferredStartingTimesForm();
-	form->exec();
+	ConstraintActivityPreferredStartingTimesForm form;
+	form.exec();
 }
 
 void FetMainForm::on_helpAboutAction_activated()
 {
 	HelpAboutForm* form=new HelpAboutForm();
+	form->setAttribute(Qt::WA_DeleteOnClose);
 	form->show();
 }
 
@@ -2164,11 +2545,11 @@ void FetMainForm::on_helpForumAction_activated()
 
 	//QMessageBox::information(this, tr("FET forum"), s);
 	
-	QDialog* dialog=new QDialog();
+	QDialog dialog;
 	
-	dialog->setWindowTitle(tr("FET forum"));
+	dialog.setWindowTitle(tr("FET forum"));
 
-	QVBoxLayout* vl=new QVBoxLayout(dialog);
+	QVBoxLayout* vl=new QVBoxLayout(&dialog);
 	QTextEdit* te=new QTextEdit();
 	te->setPlainText(s);
 	te->setReadOnly(true);
@@ -2180,34 +2561,38 @@ void FetMainForm::on_helpForumAction_activated()
 
 	vl->addWidget(te);
 	vl->addLayout(hl);
-	connect(pb, SIGNAL(clicked()), dialog, SLOT(close()));
+	connect(pb, SIGNAL(clicked()), &dialog, SLOT(close()));
 
-	dialog->setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
-	QRect rect = QApplication::desktop()->availableGeometry(dialog);
-	//QDesktopWidget* desktop=QApplication::desktop();
+	/*dialog.setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QRect rect = QApplication::desktop()->availableGeometry(&dialog);
 	int xx=rect.width()/2 - 200;
 	int yy=rect.height()/2 - 125;
-	dialog->setGeometry(xx, yy, 400, 250);
+	dialog.setGeometry(xx, yy, 400, 250);*/
+	dialog.setGeometry(0, 0, 400, 250);
+	centerWidgetOnScreen(&dialog);
 
-	dialog->exec();
+	dialog.exec();
 
 }
 
 void FetMainForm::on_helpFAQAction_activated()
 {
 	HelpFaqForm* form=new HelpFaqForm();
+	form->setAttribute(Qt::WA_DeleteOnClose);
 	form->show();
 }
 
 void FetMainForm::on_helpTipsAction_activated()
 {
 	HelpTipsForm* form=new HelpTipsForm();
+	form->setAttribute(Qt::WA_DeleteOnClose);
 	form->show();
 }
 
 void FetMainForm::on_helpInstructionsAction_activated()
 {
 	HelpInstructionsForm* form=new HelpInstructionsForm();
+	form->setAttribute(Qt::WA_DeleteOnClose);
 	form->show();
 }
 
@@ -2223,11 +2608,11 @@ void FetMainForm::on_helpManualAction_activated()
 	s+=tr("See the website timetabling.de for possible updated version of this manual.");
 
 	//show the message in a dialog
-	QDialog* dialog=new QDialog();
+	QDialog dialog;
 	
-	dialog->setWindowTitle(tr("FET - contributed user's manual"));
+	dialog.setWindowTitle(tr("FET - contributed user's manual"));
 
-	QVBoxLayout* vl=new QVBoxLayout(dialog);
+	QVBoxLayout* vl=new QVBoxLayout(&dialog);
 	QTextEdit* te=new QTextEdit();
 	te->setPlainText(s);
 
@@ -2240,16 +2625,17 @@ void FetMainForm::on_helpManualAction_activated()
 
 	vl->addWidget(te);
 	vl->addLayout(hl);
-	connect(pb, SIGNAL(clicked()), dialog, SLOT(close()));
+	connect(pb, SIGNAL(clicked()), &dialog, SLOT(close()));
 
-	dialog->setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
-	QRect rect = QApplication::desktop()->availableGeometry(dialog);
-	//QDesktopWidget* desktop=QApplication::desktop();
+	/*dialog.setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QRect rect = QApplication::desktop()->availableGeometry(&dialog);
 	int xx=rect.width()/2 - 300;
 	int yy=rect.height()/2 - 200;
-	dialog->setGeometry(xx, yy, 600, 400);
+	dialog.setGeometry(xx, yy, 600, 400);*/
+	dialog.setGeometry(0,0,600,400);
+	centerWidgetOnScreen(&dialog);
 
-	dialog->exec();
+	dialog.exec();
 }
 
 void FetMainForm::on_helpInOtherLanguagesAction_activated()
@@ -2265,13 +2651,17 @@ void FetMainForm::on_helpInOtherLanguagesAction_activated()
 	s+=tr("3. it - Italian - Instructions, FAQ");
 	s+="\n\n";	
 	s+=tr("4. ro - Romanian - Import/Export Help");
+	s+="\n\n";	
+	s+=tr("5. ca - Catalan - Manual");
+	s+="\n\n";	
+	s+=tr("6. fa - Persian - Manual");
 
 	//show the message in a dialog
-	QDialog* dialog=new QDialog();
+	QDialog dialog;
 	
-	dialog->setWindowTitle(tr("FET - help in other languages"));
+	dialog.setWindowTitle(tr("FET - help in other languages"));
 
-	QVBoxLayout* vl=new QVBoxLayout(dialog);
+	QVBoxLayout* vl=new QVBoxLayout(&dialog);
 	QTextEdit* te=new QTextEdit();
 	te->setPlainText(s);
 
@@ -2284,16 +2674,17 @@ void FetMainForm::on_helpInOtherLanguagesAction_activated()
 
 	vl->addWidget(te);
 	vl->addLayout(hl);
-	connect(pb, SIGNAL(clicked()), dialog, SLOT(close()));
+	connect(pb, SIGNAL(clicked()), &dialog, SLOT(close()));
 
-	dialog->setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
-	QRect rect = QApplication::desktop()->availableGeometry(dialog);
-	//QDesktopWidget* desktop=QApplication::desktop();
+	/*dialog.setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QRect rect = QApplication::desktop()->availableGeometry(&dialog);
 	int xx=rect.width()/2 - 350;
 	int yy=rect.height()/2 - 250;
-	dialog->setGeometry(xx, yy, 700, 500);
+	dialog.setGeometry(xx, yy, 700, 500);*/
+	dialog.setGeometry(0,0,700,500);
+	centerWidgetOnScreen(&dialog);
 
-	dialog->exec();
+	dialog.exec();
 }
 
 void FetMainForm::on_timetableGenerateAction_activated()
@@ -2316,8 +2707,8 @@ void FetMainForm::on_timetableGenerateAction_activated()
 		QMessageBox::information(this, tr("FET information"), tr("Please input at least one active activity before generating"));
 		return;
 	}
-	TimetableGenerateForm *form=new TimetableGenerateForm();
-	form->exec();
+	TimetableGenerateForm form;
+	form.exec();
 	
 	//LockUnlock::computeLockedUnlockedActivitiesTimeSpace();
 	LockUnlock::increaseCommunicationSpinBox();
@@ -2349,8 +2740,8 @@ void FetMainForm::on_timetableGenerateMultipleAction_activated()
 		QMessageBox::information(this, tr("FET information"), tr("Please input at least one active activity before generating multiple"));
 		return;
 	}
-	TimetableGenerateMultipleForm *form=new TimetableGenerateMultipleForm();
-	form->exec();
+	TimetableGenerateMultipleForm form;
+	form.exec();
 
 	//LockUnlock::computeLockedUnlockedActivitiesTimeSpace();
 	LockUnlock::increaseCommunicationSpinBox();
@@ -2363,9 +2754,15 @@ void FetMainForm::on_timetableViewStudentsAction_activated()
 		return;
 	}
 
+	if(gt.rules.nInternalRooms!=gt.rules.roomsList.count()){
+		QMessageBox::warning(this, tr("FET warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
+		return;
+	}
+
 	TimetableViewStudentsForm *form=new TimetableViewStudentsForm();
 	form->setAttribute(Qt::WA_DeleteOnClose);
 	form->show();
+	form->resizeRowsAfterShow();
 }
 
 void FetMainForm::on_timetableViewTeachersAction_activated()
@@ -2375,9 +2772,19 @@ void FetMainForm::on_timetableViewTeachersAction_activated()
 		return;
 	}
 
+	if(gt.rules.nInternalRooms!=gt.rules.roomsList.count()){
+		QMessageBox::warning(this, tr("FET warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
+		return;
+	}
+	if(gt.rules.nInternalTeachers!=gt.rules.teachersList.count()){
+		QMessageBox::warning(this, tr("FET warning"), tr("Cannot display the timetable, because you added or removed some teachers. Please regenerate the timetable and then view it"));
+		return;
+	}
+	
 	TimetableViewTeachersForm *form=new TimetableViewTeachersForm();
 	form->setAttribute(Qt::WA_DeleteOnClose);
 	form->show();
+	form->resizeRowsAfterShow();
 }
 
 void FetMainForm::on_timetableShowConflictsAction_activated()
@@ -2388,6 +2795,7 @@ void FetMainForm::on_timetableShowConflictsAction_activated()
 	}
 
 	TimetableShowConflictsForm *form=new TimetableShowConflictsForm();
+	form->setAttribute(Qt::WA_DeleteOnClose);
 	form->show();
 }
 
@@ -2398,9 +2806,15 @@ void FetMainForm::on_timetableViewRoomsAction_activated()
 		return;
 	}
 
+	if(gt.rules.nInternalRooms!=gt.rules.roomsList.count()){
+		QMessageBox::warning(this, tr("FET warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
+		return;
+	}
+
 	TimetableViewRoomsForm* form=new TimetableViewRoomsForm();
 	form->setAttribute(Qt::WA_DeleteOnClose);
 	form->show();
+	form->resizeRowsAfterShow();
 }
 
 
@@ -2411,7 +2825,7 @@ void FetMainForm::on_timetableLockAllActivitiesAction_activated()
 		return;
 	}
 
-	LockUnlock::lockAll();
+	AdvancedLockUnlockForm::lockAll();
 }
 
 void FetMainForm::on_timetableUnlockAllActivitiesAction_activated()
@@ -2421,7 +2835,7 @@ void FetMainForm::on_timetableUnlockAllActivitiesAction_activated()
 		return;
 	}
 
-	LockUnlock::unlockAll();
+	AdvancedLockUnlockForm::unlockAll();
 }
 
 void FetMainForm::on_timetableLockActivitiesDayAction_activated()
@@ -2431,7 +2845,7 @@ void FetMainForm::on_timetableLockActivitiesDayAction_activated()
 		return;
 	}
 
-	LockUnlock::lockDay();
+	AdvancedLockUnlockForm::lockDay();
 }
 
 void FetMainForm::on_timetableUnlockActivitiesDayAction_activated()
@@ -2441,7 +2855,7 @@ void FetMainForm::on_timetableUnlockActivitiesDayAction_activated()
 		return;
 	}
 
-	LockUnlock::unlockDay();
+	AdvancedLockUnlockForm::unlockDay();
 }
 
 void FetMainForm::on_timetableLockActivitiesEndStudentsDayAction_activated()
@@ -2451,7 +2865,7 @@ void FetMainForm::on_timetableLockActivitiesEndStudentsDayAction_activated()
 		return;
 	}
 
-	LockUnlock::lockEndStudentsDay();
+	AdvancedLockUnlockForm::lockEndStudentsDay();
 }
 
 void FetMainForm::on_timetableUnlockActivitiesEndStudentsDayAction_activated()
@@ -2461,7 +2875,7 @@ void FetMainForm::on_timetableUnlockActivitiesEndStudentsDayAction_activated()
 		return;
 	}
 
-	LockUnlock::unlockEndStudentsDay();
+	AdvancedLockUnlockForm::unlockEndStudentsDay();
 }
 
 void FetMainForm::on_languageAction_activated()
@@ -2481,17 +2895,10 @@ void FetMainForm::on_languageAction_activated()
 	
 	QComboBox* languagesComboBox=new QComboBox();
 	
-	/*const int N_LANGUAGES=17;
+	QSize tmp=languagesComboBox->minimumSizeHint();
+	Q_UNUSED(tmp);
 	
-	QString shortLang[N_LANGUAGES]={"en_GB", "ar", "ca", "de", "el", 
-		"es", "fr", "hu", "id", "it", 
-		"lt", "mk", "ms", "nl", "pl", 
-		"ro", "tr"};
-	QString longLang[N_LANGUAGES]={tr("British English"), tr("Arabic"), tr("Catalan"), tr("German"), tr("Greek"),
-		tr("Spanish"), tr("French"), tr("Hungarian"), tr("Indonesian"), tr("Italian"),
-		tr("Lithuanian"), tr("Macedonian"), tr("Malay"), tr("Dutch"), tr("Polish"),
-		tr("Romanian"), tr("Turkish")};*/
-		
+	//this is the other place (out of 2) in which you need to add a new language
 	QMap<QString, QString> languagesMap;
 	languagesMap.insert("en_GB", tr("British English"));
 	languagesMap.insert("ar", tr("Arabic"));
@@ -2510,6 +2917,8 @@ void FetMainForm::on_languageAction_activated()
 	languagesMap.insert("pl", tr("Polish"));
 	languagesMap.insert("ro", tr("Romanian"));
 	languagesMap.insert("tr", tr("Turkish"));
+	languagesMap.insert("ru", tr("Russian"));
+	languagesMap.insert("fa", tr("Persian"));
 	
 	//assert(languagesMap.count()==N_LANGUAGES);
 	
@@ -2554,11 +2963,11 @@ void FetMainForm::on_languageAction_activated()
 	tapb2->setFocus();
 
 	int w=dialog.sizeHint().width();
-	if(w<250)
-		w=250;
+	if(w<350)
+		w=350;
 	int h=dialog.sizeHint().height();
-	if(h<150)
-		h=150;
+	if(h<180)
+		h=180;
 	dialog.setGeometry(0,0,w,h);
 	centerWidgetOnScreen(&dialog);
 					
@@ -2588,213 +2997,15 @@ void FetMainForm::on_languageAction_activated()
 	 tr("Please exit and restart FET to activate language change"));
 }
 
-/*
-void FetMainForm::on_languageEnglishAction_activated()
-{
-	QMessageBox::information(this, tr("FET information"), 
-	 tr("Please exit and restart FET to activate language change"));
-
-	FET_LANGUAGE="en_GB";
-	
-	for(int i=0; i<NUMBER_OF_LANGUAGES; i++)
-		languageMenu->setItemChecked(languageMenu->idAt(i), false);
-	languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_EN_GB_POSITION), true);
-}
-
-void FetMainForm::on_languageFrenchAction_activated()
-{
-	QMessageBox::information(this, tr("FET information"), 
-	 tr("Please exit and restart FET to activate language change"));
-	
-	FET_LANGUAGE="fr";
-	
-	for(int i=0; i<NUMBER_OF_LANGUAGES; i++)
-		languageMenu->setItemChecked(languageMenu->idAt(i), false);
-	languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_FR_POSITION), true);
-}
-
-void FetMainForm::on_languageCatalanAction_activated()
-{
-	QMessageBox::information(this, tr("FET information"), 
-	 tr("Please exit and restart FET to activate language change"));
-
-	FET_LANGUAGE="ca";
-	
-	for(int i=0; i<NUMBER_OF_LANGUAGES; i++)
-		languageMenu->setItemChecked(languageMenu->idAt(i), false);
-	languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_CA_POSITION), true);
-}
-
-void FetMainForm::on_languageRomanianAction_activated()
-{
-	QMessageBox::information(this, tr("FET information"), 
-	 tr("Please exit and restart FET to activate language change"));
-	
-	FET_LANGUAGE="ro";
-	
-	for(int i=0; i<NUMBER_OF_LANGUAGES; i++)
-		languageMenu->setItemChecked(languageMenu->idAt(i), false);
-	languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_RO_POSITION), true);
-}
-
-void FetMainForm::on_languageMalayAction_activated()
-{
-	QMessageBox::information(this, tr("FET information"), 
-	 tr("Please exit and restart FET to activate language change"));
-	
-	FET_LANGUAGE="ms";
-	
-	for(int i=0; i<NUMBER_OF_LANGUAGES; i++)
-		languageMenu->setItemChecked(languageMenu->idAt(i), false);
-	languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_MS_POSITION), true);
-}
-
-void FetMainForm::on_languagePolishAction_activated()
-{
-	QMessageBox::information(this, tr("FET information"), 
-	 tr("Please exit and restart FET to activate language change"));
-	
-	FET_LANGUAGE="pl";
-	
-	for(int i=0; i<NUMBER_OF_LANGUAGES; i++)
-		languageMenu->setItemChecked(languageMenu->idAt(i), false);
-	languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_PL_POSITION), true);
-}
-
-void FetMainForm::on_languageTurkishAction_activated()
-{
-	QMessageBox::information(this, tr("FET information"), 
-	 tr("Please exit and restart FET to activate language change"));
-	
-	FET_LANGUAGE="tr";
-	
-	for(int i=0; i<NUMBER_OF_LANGUAGES; i++)
-		languageMenu->setItemChecked(languageMenu->idAt(i), false);
-	languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_TR_POSITION), true);
-}
-
-void FetMainForm::on_languageDutchAction_activated()
-{
-	QMessageBox::information(this, tr("FET information"), 
-	 tr("Please exit and restart FET to activate language change"));
-	
-	FET_LANGUAGE="nl";
-	
-	for(int i=0; i<NUMBER_OF_LANGUAGES; i++)
-		languageMenu->setItemChecked(languageMenu->idAt(i), false);
-	languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_NL_POSITION), true);
-}
-
-void FetMainForm::on_languageGermanAction_activated()
-{
-	QMessageBox::information(this, tr("FET information"), 
-	 tr("Please exit and restart FET to activate language change"));
-	
-	FET_LANGUAGE="de";
-	
-	for(int i=0; i<NUMBER_OF_LANGUAGES; i++)
-		languageMenu->setItemChecked(languageMenu->idAt(i), false);
-	languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_DE_POSITION), true);
-}
-
-void FetMainForm::on_languageHungarianAction_activated()
-{
-	QMessageBox::information(this, tr("FET information"), 
-	 tr("Please exit and restart FET to activate language change"));
-	
-	FET_LANGUAGE="hu";
-	
-	for(int i=0; i<NUMBER_OF_LANGUAGES; i++)
-		languageMenu->setItemChecked(languageMenu->idAt(i), false);
-	languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_HU_POSITION), true);
-}
-
-void FetMainForm::on_languageMacedonianAction_activated()
-{
-	QMessageBox::information(this, tr("FET information"), 
-	 tr("Please exit and restart FET to activate language change"));
-	
-	FET_LANGUAGE="mk";
-	
-	for(int i=0; i<NUMBER_OF_LANGUAGES; i++)
-		languageMenu->setItemChecked(languageMenu->idAt(i), false);
-	languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_MK_POSITION), true);
-}
-
-void FetMainForm::on_languageSpanishAction_activated()
-{
-	QMessageBox::information(this, tr("FET information"), 
-	 tr("Please exit and restart FET to activate language change"));
-	
-	FET_LANGUAGE="es";
-	
-	for(int i=0; i<NUMBER_OF_LANGUAGES; i++)
-		languageMenu->setItemChecked(languageMenu->idAt(i), false);
-	languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_ES_POSITION), true);
-}
-
-void FetMainForm::on_languageGreekAction_activated()
-{
-	QMessageBox::information(this, tr("FET information"), 
-	 tr("Please exit and restart FET to activate language change"));
-	
-	FET_LANGUAGE="el";
-	
-	for(int i=0; i<NUMBER_OF_LANGUAGES; i++)
-		languageMenu->setItemChecked(languageMenu->idAt(i), false);
-	languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_EL_POSITION), true);
-}
-
-void FetMainForm::on_languageArabicAction_activated()
-{
-	QMessageBox::information(this, tr("FET information"), 
-	 tr("Please exit and restart FET to activate language change"));
-	
-	FET_LANGUAGE="ar";
-	
-	for(int i=0; i<NUMBER_OF_LANGUAGES; i++)
-		languageMenu->setItemChecked(languageMenu->idAt(i), false);
-	languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_AR_POSITION), true);
-}
-
-void FetMainForm::on_languageIndonesianAction_activated()
-{
-	QMessageBox::information(this, tr("FET information"), 
-	 tr("Please exit and restart FET to activate language change"));
-	
-	FET_LANGUAGE="id";
-	
-	for(int i=0; i<NUMBER_OF_LANGUAGES; i++)
-		languageMenu->setItemChecked(languageMenu->idAt(i), false);
-	languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_ID_POSITION), true);
-}
-
-void FetMainForm::on_languageItalianAction_activated()
-{
-	QMessageBox::information(this, tr("FET information"), 
-	 tr("Please exit and restart FET to activate language change"));
-	
-	FET_LANGUAGE="it";
-	
-	for(int i=0; i<NUMBER_OF_LANGUAGES; i++)
-		languageMenu->setItemChecked(languageMenu->idAt(i), false);
-	languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_IT_POSITION), true);
-}
-
-void FetMainForm::on_languageLithuanianAction_activated()
-{
-	QMessageBox::information(this, tr("FET information"), 
-	 tr("Please exit and restart FET to activate language change"));
-	
-	FET_LANGUAGE="lt";
-	
-	for(int i=0; i<NUMBER_OF_LANGUAGES; i++)
-		languageMenu->setItemChecked(languageMenu->idAt(i), false);
-	languageMenu->setItemChecked(languageMenu->idAt(LANGUAGE_LT_POSITION), true);
-}*/
-
 void FetMainForm::on_settingsRestoreDefaultsAction_activated()
 {
+	QString default_working_directory="examples";
+	QDir d2(default_working_directory);
+	if(!d2.exists())
+		default_working_directory=QDir::homePath();
+	else
+		default_working_directory=d2.absolutePath();
+
 	QString s=tr("Are you sure you want to reset all settings to defaults?");
 	s+="\n\n";
 	
@@ -2806,19 +3017,35 @@ void FetMainForm::on_settingsRestoreDefaultsAction_activated()
 	s+="\n";
 	s+=tr("3. Language will be en_GB (restart needed to activate language change)");
 	s+="\n";
-	s+=tr("4. Working directory will be sample_inputs");
+	s+=tr("4. Working directory will be '%1'").arg(QDir::toNativeSeparators(default_working_directory));
 	s+="\n";
 	s+=tr("5. Html level of the timetables will be 2");
 	s+="\n";
-	s+=tr("6. Import directory will be %1").arg(QDir::toNativeSeparators(OUTPUT_DIR));
+	s+=tr("6. Import directory will be %1").arg(QDir::toNativeSeparators(QDir::homePath()+FILE_SEP+"fet-results"));
 	s+="\n";
 	s+=tr("7. Mark not available slots with -x- in timetables will be true");
 	s+="\n";
 	s+=tr("8. Divide html timetables with time-axis by days will be false");
 	s+="\n";
+	s+=tr("9. Output (results) directory will be %1").arg(QDir::toNativeSeparators(QDir::homePath()+FILE_SEP+"fet-results"));
+	s+="\n";
+	s+=tr("10. Print activities with same starting time will be %1", "%1 is true or false").arg(tr("false"));
+	s+="\n";
+	s+=tr("11. Use colors in FET graphical user interface will be %1", "%1 is true or false").arg(tr("false"));
+	s+="\n";
+
+	s+=tr("12. Enable activity tag max hours daily will be %1", "%1 is true or false").arg(tr("false"));
+	s+="\n";
+	s+=tr("13. Enable students max gaps per day will be %1", "%1 is true or false").arg(tr("false"));
+	s+="\n";
+	s+=tr("14. Warn if using not perfect constraints will be %1", "%1 is true or false, this is a warning if user uses not perfect constraints").arg(tr("true"));
+
+	//s+="    ";
+	//s+=tr("Explanation: $HOME is usually '/home/username' under UNIX and Mac and 'Documents and Settings\\username' or 'Users\\username' under Windows");
+	//s+="\n";
 	
-	switch( QMessageBox::information( this, tr("FET application"), s,
-	 tr("&Yes"), tr("&No"), 0 , 1 ) ) {
+	switch( LongTextMessageBox::largeConfirmation( this, tr("FET confirmation"), s,
+	 tr("&Yes"), tr("&No"), QString(), 0 , 1 ) ) {
 	case 0: // Yes
 		break;
 	case 1: // No
@@ -2826,10 +3053,11 @@ void FetMainForm::on_settingsRestoreDefaultsAction_activated()
 	}
 
 	resize(ORIGINAL_WIDTH, ORIGINAL_HEIGHT);
-	QDesktopWidget* desktop=QApplication::desktop();
+	/*QDesktopWidget* desktop=QApplication::desktop();
 	int xx=desktop->width()/2 - frameGeometry().width()/2;
 	int yy=desktop->height()/2 - frameGeometry().height()/2;
-	move(xx, yy);
+	move(xx, yy);*/
+	centerWidgetOnScreen(this);
 
 	/*for(int i=0; i<NUMBER_OF_LANGUAGES; i++)
 		languageMenu->setItemChecked(languageMenu->idAt(i), false);
@@ -2839,17 +3067,46 @@ void FetMainForm::on_settingsRestoreDefaultsAction_activated()
 	checkForUpdatesAction->setChecked(false);
 	checkForUpdates=0;
 	
+	USE_GUI_COLORS=false;
+	settingsUseColorsAction->setChecked(USE_GUI_COLORS);
+	
+	///////////
+	ENABLE_ACTIVITY_TAG_MAX_HOURS_DAILY=false;
+	enableActivityTagMaxHoursDailyAction->setChecked(ENABLE_ACTIVITY_TAG_MAX_HOURS_DAILY);
+
+	ENABLE_STUDENTS_MAX_GAPS_PER_DAY=false;
+	enableStudentsMaxGapsPerDayAction->setChecked(ENABLE_STUDENTS_MAX_GAPS_PER_DAY);
+	
+	SHOW_WARNING_FOR_NOT_PERFECT_CONSTRAINTS=true;
+	showWarningForNotPerfectConstraintsAction->setChecked(SHOW_WARNING_FOR_NOT_PERFECT_CONSTRAINTS);
+	
+	setEnabledIcon(dataTimeConstraintsTeacherActivityTagMaxHoursDailyAction, ENABLE_ACTIVITY_TAG_MAX_HOURS_DAILY);
+	setEnabledIcon(dataTimeConstraintsTeachersActivityTagMaxHoursDailyAction, ENABLE_ACTIVITY_TAG_MAX_HOURS_DAILY);
+	setEnabledIcon(dataTimeConstraintsStudentsActivityTagMaxHoursDailyAction, ENABLE_ACTIVITY_TAG_MAX_HOURS_DAILY);
+	setEnabledIcon(dataTimeConstraintsStudentsSetActivityTagMaxHoursDailyAction, ENABLE_ACTIVITY_TAG_MAX_HOURS_DAILY);
+
+	setEnabledIcon(dataTimeConstraintsStudentsSetMaxGapsPerDayAction, ENABLE_STUDENTS_MAX_GAPS_PER_DAY);
+	setEnabledIcon(dataTimeConstraintsStudentsMaxGapsPerDayAction, ENABLE_STUDENTS_MAX_GAPS_PER_DAY);
+	///////////
+	
 	timetablesDivideByDaysAction->setChecked(false);
 	DIVIDE_HTML_TIMETABLES_WITH_TIME_AXIS_BY_DAYS=false;
 	
-	WORKING_DIRECTORY="sample_inputs";
+	WORKING_DIRECTORY=default_working_directory;
 	
+	OUTPUT_DIR=QDir::homePath()+FILE_SEP+"fet-results";
+	QDir dir;
+	if(!dir.exists(OUTPUT_DIR))
+		dir.mkpath(OUTPUT_DIR);
 	IMPORT_DIRECTORY=OUTPUT_DIR;
 	
 	TIMETABLE_HTML_LEVEL=2;
 	
 	settingsPrintNotAvailableSlotsAction->setChecked(true);
 	PRINT_NOT_AVAILABLE_TIME_SLOTS=true;
+
+	settingsPrintActivitiesWithSameStartingTimeAction->setChecked(false);
+	PRINT_ACTIVITIES_WITH_SAME_STARTING_TIME=false;
 }
 
 void FetMainForm::on_settingsTimetableHtmlLevelAction_activated()
@@ -2860,13 +3117,18 @@ void FetMainForm::on_settingsTimetableHtmlLevelAction_activated()
 		return;
 	}
 
-	SettingsTimetableHtmlLevelForm* form=new SettingsTimetableHtmlLevelForm();
-	form->exec();
+	SettingsTimetableHtmlLevelForm form;
+	form.exec();
 }
 
 void FetMainForm::on_settingsPrintNotAvailableSlotsAction_toggled()
 {
 	PRINT_NOT_AVAILABLE_TIME_SLOTS=settingsPrintNotAvailableSlotsAction->isChecked();
+}
+
+void FetMainForm::on_settingsPrintActivitiesWithSameStartingTimeAction_toggled()
+{
+	PRINT_ACTIVITIES_WITH_SAME_STARTING_TIME=settingsPrintActivitiesWithSameStartingTimeAction->isChecked();
 }
 
 void FetMainForm::on_spreadActivitiesAction_activated()
@@ -2919,52 +3181,14 @@ void FetMainForm::on_spreadActivitiesAction_activated()
 		}
 	}
 	
-/*	QString s;
-	//s+=tr("Please note that this a new, not thoroughly tested feature - might have bugs (I hope not :-) . Please report any bugs.");
-	//s+="\n\n";
-	s+=tr("Please read VERY carefully the description below:");
-	s+="\n\n";
-	s+=tr("This function is usable for a 5 days week, but it should work well also for a 6 days week. If your number of days "
-	 "per week is larger or lower, you might find this function useless. This function is useful for schools or high-schools with usual requirements");
-	s+="\n\n";
-	s+=tr("This function is intended to be used ONLY after you introduced all activities and obtained a timetable, "
-	 "if you want now to spread the splitted activities more evenly in a week");
-	s+="\n\n";
-	s+=tr("This improvement - optimization of spreading activities in a week - is a process "
-	 "of replacing current constraints of type min n days between activities with others, which "
-	 "should provide you with a better timetable");
-	s+=". ";
-	s+=tr("Note: only min n days constraints referring to components from the same split activity will be replaced. If you have constraints min n days "
-	 "referring to activities in different components, these will be left untouched - this is a useful feature");
-	s+=".\n\n";
-	s+=tr("This function is useful you want a rapid improvement of your timetable, without needing to manually modify the constraints "
-	 "of type min n days between activities");
-	s+="\n\n";
-	s+=tr("Please SAVE/BACKUP your current file and keep it safe, in case anything goes wrong, and only continue if you did that already. "
-	 "Current function is new and not many users tested it");
-	s+="\n\n";
-	s+=tr("Important: if you obtain a timetable too difficult for FET, you might need to revert to your former data or lower weights of constraints");
-
-	int confirm=0;
-	switch( QMessageBox::question( this, tr("FET question"),
-	 s,
-	 tr("&Continue"), tr("&Cancel"), 0 , 1 ) ) {
-	case 0: // Yes - continue
-		confirm=1;
-		break;
-	case 1: // No - cancel
-		confirm=0;
-		break;
-	}*/
-	
 	int confirm;
 	
-	SpreadConfirmationForm* form=new SpreadConfirmationForm();
-	confirm=form->exec();
+	SpreadConfirmationForm form;
+	confirm=form.exec();
 
 	if(confirm==QDialog::Accepted){
-		SpreadMinNDaysConstraints5DaysForm* form=new SpreadMinNDaysConstraints5DaysForm();
-		form->exec();
+		SpreadMinDaysConstraintsFiveDaysForm form;
+		form.exec();
 	}
 }
 
@@ -2989,12 +3213,132 @@ void FetMainForm::on_removeRedundantConstraintsAction_activated()
 	
 	int confirm;
 	
-	RemoveRedundantConfirmationForm* form=new RemoveRedundantConfirmationForm();
-	confirm=form->exec();
+	RemoveRedundantConfirmationForm form;
+	confirm=form.exec();
 
 	if(confirm==QDialog::Accepted){
-		RemoveRedundantForm* form=new RemoveRedundantForm();
-		form->exec();
+		RemoveRedundantForm form;
+		form.exec();
 	}
 }
 
+void FetMainForm::on_selectOutputDirAction_activated()
+{
+	QString od;
+	
+	od = QFileDialog::getExistingDirectory(this, tr("Choose results (output) directory"), OUTPUT_DIR);
+	
+	if(!od.isNull()){
+		QFile test(od+FILE_SEP+"test_write_permissions_3.tmp");
+		bool existedBefore=test.exists();
+		bool t=test.open(QIODevice::ReadWrite);
+		//if(!test.exists())
+		//	t=false;
+		if(!t){
+			QMessageBox::warning(this, tr("FET warning"), tr("You don't have write permissions in this directory"));
+			return;
+		}
+		test.close();
+		if(!existedBefore)
+			test.remove();
+	
+		OUTPUT_DIR=od;
+	}
+}
+
+void FetMainForm::on_randomSeedAction_activated()
+{
+	RandomSeedDialog dialog;
+	
+	int te=dialog.exec();
+	
+	if(te==QDialog::Accepted){
+		int tx=dialog.lineEdit->text().toInt();
+		if(!(tx>=1 && tx<MM)){
+			assert(0);
+			//QMessageBox::warning(this, tr("FET warning"), tr("The random seed must be at least %1 and at most %2").arg(1).arg(MM-1));
+			//return;
+		}
+		XX=tx;
+	}
+}
+
+void FetMainForm::enableActivityTagMaxHoursDailyToggled(bool checked)
+{
+	if(checked==true){
+		QString s=tr("These kinds of constraints are good, but not perfectly optimized. Adding such constraints may make your"
+		 " timetable solve too slow or even impossible.");
+		s+=" ";
+		s+=tr("It is recommended to use such constraints only at the end, after you generated successfully with all the other constraints.");
+		s+="\n\n";
+		s+=tr("If your timetable is too difficult, it may be from these kinds of constraints, so you may need to remove them and retry.");
+		s+="\n\n";
+		s+=tr("Continue only if you know what you are doing.");
+	
+		QMessageBox::StandardButton b=QMessageBox::warning(this, tr("FET warning"), s, QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Ok);
+	
+		if(b!=QMessageBox::Ok){
+			disconnect(enableActivityTagMaxHoursDailyAction, SIGNAL(toggled(bool)), this, SLOT(enableActivityTagMaxHoursDailyToggled(bool)));
+			enableActivityTagMaxHoursDailyAction->setChecked(false);
+			connect(enableActivityTagMaxHoursDailyAction, SIGNAL(toggled(bool)), this, SLOT(enableActivityTagMaxHoursDailyToggled(bool)));
+			return;
+		}
+	}
+	
+	ENABLE_ACTIVITY_TAG_MAX_HOURS_DAILY=checked;
+
+	setEnabledIcon(dataTimeConstraintsTeacherActivityTagMaxHoursDailyAction, ENABLE_ACTIVITY_TAG_MAX_HOURS_DAILY);
+	setEnabledIcon(dataTimeConstraintsTeachersActivityTagMaxHoursDailyAction, ENABLE_ACTIVITY_TAG_MAX_HOURS_DAILY);
+	setEnabledIcon(dataTimeConstraintsStudentsActivityTagMaxHoursDailyAction, ENABLE_ACTIVITY_TAG_MAX_HOURS_DAILY);
+	setEnabledIcon(dataTimeConstraintsStudentsSetActivityTagMaxHoursDailyAction, ENABLE_ACTIVITY_TAG_MAX_HOURS_DAILY);
+}
+
+void FetMainForm::enableStudentsMaxGapsPerDayToggled(bool checked)
+{
+	if(checked==true){
+		QString s=tr("These kinds of constraints are good, but not perfectly optimized. Adding such constraints may make your"
+		 " timetable solve too slow or even impossible.");
+		s+=" ";
+		s+=tr("It is recommended to use such constraints only at the end, after you generated successfully with all the other constraints.");
+		s+="\n\n";
+		s+=tr("If your timetable is too difficult, it may be from these kinds of constraints, so you may need to remove them and retry.");
+		s+="\n\n";
+		s+=tr("Continue only if you know what you are doing.");
+	
+		QMessageBox::StandardButton b=QMessageBox::warning(this, tr("FET warning"), s, QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Ok);
+	
+		if(b!=QMessageBox::Ok){
+			disconnect(enableStudentsMaxGapsPerDayAction, SIGNAL(toggled(bool)), this, SLOT(enableStudentsMaxGapsPerDayToggled(bool)));
+			enableStudentsMaxGapsPerDayAction->setChecked(false);
+			connect(enableStudentsMaxGapsPerDayAction, SIGNAL(toggled(bool)), this, SLOT(enableStudentsMaxGapsPerDayToggled(bool)));
+			return;
+		}
+	}
+	
+	ENABLE_STUDENTS_MAX_GAPS_PER_DAY=checked;
+	
+	setEnabledIcon(dataTimeConstraintsStudentsSetMaxGapsPerDayAction, ENABLE_STUDENTS_MAX_GAPS_PER_DAY);
+	setEnabledIcon(dataTimeConstraintsStudentsMaxGapsPerDayAction, ENABLE_STUDENTS_MAX_GAPS_PER_DAY);
+}
+
+void FetMainForm::showWarningForNotPerfectConstraintsToggled(bool checked)
+{
+	if(checked==false){
+		QString s=tr("It is recommended to keep this warning active, but if you really want, you can disable it.");
+		s+="\n\n";
+		s+=tr("Disable it only if you know what you are doing.");
+		s+="\n\n";
+		s+=tr("Are you sure you want to disable it?");
+	
+		QMessageBox::StandardButton b=QMessageBox::warning(this, tr("FET warning"), s, QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Yes);
+	
+		if(b!=QMessageBox::Yes){
+			disconnect(showWarningForNotPerfectConstraintsAction, SIGNAL(toggled(bool)), this, SLOT(showWarningForNotPerfectConstraintsToggled(bool)));
+			showWarningForNotPerfectConstraintsAction->setChecked(true);
+			connect(showWarningForNotPerfectConstraintsAction, SIGNAL(toggled(bool)), this, SLOT(showWarningForNotPerfectConstraintsToggled(bool)));
+			return;
+		}
+	}
+	
+	SHOW_WARNING_FOR_NOT_PERFECT_CONSTRAINTS=checked;
+}

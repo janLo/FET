@@ -15,6 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "longtextmessagebox.h"
+
 #include "constraintstudentsintervalmaxdaysperweekform.h"
 #include "addconstraintstudentsintervalmaxdaysperweekform.h"
 #include "modifyconstraintstudentsintervalmaxdaysperweekform.h"
@@ -23,6 +25,16 @@
 
 ConstraintStudentsIntervalMaxDaysPerWeekForm::ConstraintStudentsIntervalMaxDaysPerWeekForm()
 {
+    setupUi(this);
+
+    connect(constraintsListBox, SIGNAL(highlighted(int)), this /*ConstraintStudentsIntervalMaxDaysPerWeekForm_template*/, SLOT(constraintChanged(int)));
+    connect(addConstraintPushButton, SIGNAL(clicked()), this /*ConstraintStudentsIntervalMaxDaysPerWeekForm_template*/, SLOT(addConstraint()));
+    connect(closePushButton, SIGNAL(clicked()), this /*ConstraintStudentsIntervalMaxDaysPerWeekForm_template*/, SLOT(close()));
+    connect(removeConstraintPushButton, SIGNAL(clicked()), this /*ConstraintStudentsIntervalMaxDaysPerWeekForm_template*/, SLOT(removeConstraint()));
+    connect(modifyConstraintPushButton, SIGNAL(clicked()), this /*ConstraintStudentsIntervalMaxDaysPerWeekForm_template*/, SLOT(modifyConstraint()));
+    connect(constraintsListBox, SIGNAL(selected(QString)), this /*ConstraintStudentsIntervalMaxDaysPerWeekForm_template*/, SLOT(modifyConstraint()));
+
+
 	//setWindowFlags(Qt::Window);
 	/*setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 	QDesktopWidget* desktop=QApplication::desktop();
@@ -89,8 +101,8 @@ void ConstraintStudentsIntervalMaxDaysPerWeekForm::constraintChanged(int index)
 
 void ConstraintStudentsIntervalMaxDaysPerWeekForm::addConstraint()
 {
-	AddConstraintStudentsIntervalMaxDaysPerWeekForm *form=new AddConstraintStudentsIntervalMaxDaysPerWeekForm();
-	form->exec();
+	AddConstraintStudentsIntervalMaxDaysPerWeekForm form;
+	form.exec();
 
 	filterChanged();
 	
@@ -106,9 +118,8 @@ void ConstraintStudentsIntervalMaxDaysPerWeekForm::modifyConstraint()
 	}
 	TimeConstraint* ctr=this->visibleConstraintsList.at(i);
 
-	ModifyConstraintStudentsIntervalMaxDaysPerWeekForm *form
-	 = new ModifyConstraintStudentsIntervalMaxDaysPerWeekForm((ConstraintStudentsIntervalMaxDaysPerWeek*)ctr);
-	form->exec();
+	ModifyConstraintStudentsIntervalMaxDaysPerWeekForm form((ConstraintStudentsIntervalMaxDaysPerWeek*)ctr);
+	form.exec();
 
 	filterChanged();
 	constraintsListBox->setCurrentItem(i);
@@ -123,12 +134,13 @@ void ConstraintStudentsIntervalMaxDaysPerWeekForm::removeConstraint()
 	}
 	TimeConstraint* ctr=this->visibleConstraintsList.at(i);
 	QString s;
-	s=tr("Removing constraint:\n");
+	s=tr("Remove constraint?");
+	s+="\n\n";
 	s+=ctr->getDetailedDescription(gt.rules);
-	s+=tr("\nAre you sure?");
+	//s+=tr("\nAre you sure?");
 
-	switch( QMessageBox::warning( this, tr("FET warning"),
-		s, tr("OK"), tr("Cancel"), 0, 0, 1 ) ){
+	switch( LongTextMessageBox::confirmation( this, tr("FET confirmation"),
+		s, tr("Yes"), tr("No"), 0, 0, 1 ) ){
 	case 0: // The user clicked the OK again button or pressed Enter
 		gt.rules.removeTimeConstraint(ctr);
 		filterChanged();

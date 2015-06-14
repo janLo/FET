@@ -18,19 +18,35 @@
 #ifndef SUBACTIVITIESFORM_H
 #define SUBACTIVITIESFORM_H
 
-#include "subactivitiesform_template.h"
+#include "ui_subactivitiesform_template.h"
 
-class SubactivitiesForm : public SubactivitiesForm_template  {
+#include "activity.h"
+
+#include <QSet>
+#include <QString>
+
+class SubactivitiesForm : public QDialog, Ui::SubactivitiesForm_template  {
+	Q_OBJECT
+	
+private:
+	QSet<QString> showedStudents;
+	
 public:
 	ActivitiesList visibleSubactivitiesList;
 
 	SubactivitiesForm();
 	~SubactivitiesForm();
 
-	void modifySubactivity();
-	void subactivityChanged(int index);
-	void filterChanged();
 	bool filterOk(Activity* act);
+
+public slots:
+	void modifySubactivity();
+	void subactivityChanged();
+	void filterChanged();
+	
+	void studentsFilterChanged();
+	
+	void help();
 };
 
 #endif

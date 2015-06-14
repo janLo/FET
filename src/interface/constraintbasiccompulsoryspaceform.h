@@ -18,7 +18,7 @@
 #ifndef CONSTRAINTBASICCOMPULSORYSPACEFORM_H
 #define CONSTRAINTBASICCOMPULSORYSPACEFORM_H
 
-#include "constraintbasiccompulsoryspaceform_template.h"
+#include "ui_constraintbasiccompulsoryspaceform_template.h"
 #include "timetable_defs.h"
 #include "timetable.h"
 #include "fet.h"
@@ -34,21 +34,23 @@
 #include <q3textedit.h>
 #include <q3listbox.h>
 
-class ConstraintBasicCompulsorySpaceForm : public ConstraintBasicCompulsorySpaceForm_template  {
+class ConstraintBasicCompulsorySpaceForm : public QDialog, Ui::ConstraintBasicCompulsorySpaceForm_template  {
+	Q_OBJECT
 public:
 	SpaceConstraintsList visibleConstraintsList;
 
 	ConstraintBasicCompulsorySpaceForm();
 	~ConstraintBasicCompulsorySpaceForm();
 
+	bool filterOk(SpaceConstraint* ctr);
+
+public slots:
 	void constraintChanged(int index);
 	void addConstraint();
 	void modifyConstraint();
 	void removeConstraint();
 
 	void filterChanged();
-
-	bool filterOk(SpaceConstraint* ctr);
 };
 
 #endif

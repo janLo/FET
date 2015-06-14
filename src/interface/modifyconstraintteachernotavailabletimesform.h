@@ -18,7 +18,7 @@
 #ifndef MODIFYCONSTRAINTTEACHERNOTAVAILABLETIMESFORM_H
 #define MODIFYCONSTRAINTTEACHERNOTAVAILABLETIMESFORM_H
 
-#include "modifyconstraintteachernotavailabletimesform_template.h"
+#include "ui_modifyconstraintteachernotavailabletimesform_template.h"
 #include "timetable_defs.h"
 #include "timetable.h"
 #include "fet.h"
@@ -32,7 +32,7 @@
 #include <qlineedit.h>
 #include <q3textedit.h>
 
-class ModifyConstraintTeacherNotAvailableTimesForm : public ModifyConstraintTeacherNotAvailableTimesForm_template  {
+class ModifyConstraintTeacherNotAvailableTimesForm : public QDialog, Ui::ModifyConstraintTeacherNotAvailableTimesForm_template  {
 	Q_OBJECT
 public:
 	ConstraintTeacherNotAvailableTimes* _ctr;
@@ -42,10 +42,15 @@ public:
 
 	void updateTeachersComboBox();
 
+	void colorItem(QTableWidgetItem* item);
+
+public slots:
 	void ok();
 	void cancel();
-public slots:
-	void tableClicked(int, int, int, const QPoint&);
+
+	void itemClicked(QTableWidgetItem* item);
+	void horizontalHeaderClicked(int col);
+	void verticalHeaderClicked(int row);
 
 	void setAllAvailable();
 	void setAllNotAvailable();

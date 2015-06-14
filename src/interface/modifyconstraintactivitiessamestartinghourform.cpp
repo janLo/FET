@@ -29,6 +29,20 @@
 
 ModifyConstraintActivitiesSameStartingHourForm::ModifyConstraintActivitiesSameStartingHourForm(ConstraintActivitiesSameStartingHour* ctr)
 {
+    setupUi(this);
+
+    connect(cancelPushButton, SIGNAL(clicked()), this /*ModifyConstraintActivitiesSameStartingHourForm_template*/, SLOT(cancel()));
+    connect(okPushButton, SIGNAL(clicked()), this /*ModifyConstraintActivitiesSameStartingHourForm_template*/, SLOT(ok()));
+    connect(activitiesListBox, SIGNAL(selected(QString)), this /*ModifyConstraintActivitiesSameStartingHourForm_template*/, SLOT(addActivity()));
+    connect(selectedActivitiesListBox, SIGNAL(selected(QString)), this /*ModifyConstraintActivitiesSameStartingHourForm_template*/, SLOT(removeActivity()));
+    connect(teachersComboBox, SIGNAL(activated(QString)), this /*ModifyConstraintActivitiesSameStartingHourForm_template*/, SLOT(filterChanged()));
+    connect(studentsComboBox, SIGNAL(activated(QString)), this /*ModifyConstraintActivitiesSameStartingHourForm_template*/, SLOT(filterChanged()));
+    connect(subjectsComboBox, SIGNAL(activated(QString)), this /*ModifyConstraintActivitiesSameStartingHourForm_template*/, SLOT(filterChanged()));
+    connect(activityTagsComboBox, SIGNAL(activated(QString)), this /*ModifyConstraintActivitiesSameStartingHourForm_template*/, SLOT(filterChanged()));
+
+    connect(clearPushButton, SIGNAL(clicked()), this, SLOT(clear()));
+
+
 	//setWindowFlags(Qt::Window);
 	/*setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 	QDesktopWidget* desktop=QApplication::desktop();
@@ -38,7 +52,60 @@ ModifyConstraintActivitiesSameStartingHourForm::ModifyConstraintActivitiesSameSt
 	centerWidgetOnScreen(this);
 	
 	this->_ctr=ctr;
+
+	QSize tmp1=teachersComboBox->minimumSizeHint();
+	Q_UNUSED(tmp1);
+	QSize tmp2=studentsComboBox->minimumSizeHint();
+	Q_UNUSED(tmp2);
+	QSize tmp3=subjectsComboBox->minimumSizeHint();
+	Q_UNUSED(tmp3);
+	QSize tmp4=activityTagsComboBox->minimumSizeHint();
+	Q_UNUSED(tmp4);
+	
+
+	teachersComboBox->insertItem("");
+	for(int i=0; i<gt.rules.teachersList.size(); i++){
+		Teacher* tch=gt.rules.teachersList[i];
+		teachersComboBox->insertItem(tch->name);
+	}
+	teachersComboBox->setCurrentItem(0);
+
+	subjectsComboBox->insertItem("");
+	for(int i=0; i<gt.rules.subjectsList.size(); i++){
+		Subject* sb=gt.rules.subjectsList[i];
+		subjectsComboBox->insertItem(sb->name);
+	}
+	subjectsComboBox->setCurrentItem(0);
+
+	activityTagsComboBox->insertItem("");
+	for(int i=0; i<gt.rules.activityTagsList.size(); i++){
+		ActivityTag* st=gt.rules.activityTagsList[i];
+		activityTagsComboBox->insertItem(st->name);
+	}
+	activityTagsComboBox->setCurrentItem(0);
+
+	studentsComboBox->insertItem("");
+	for(int i=0; i<gt.rules.yearsList.size(); i++){
+		StudentsYear* sty=gt.rules.yearsList[i];
+		studentsComboBox->insertItem(sty->name);
+		for(int j=0; j<sty->groupsList.size(); j++){
+			StudentsGroup* stg=sty->groupsList[j];
+			studentsComboBox->insertItem(stg->name);
+			for(int k=0; k<stg->subgroupsList.size(); k++){
+				StudentsSubgroup* sts=stg->subgroupsList[k];
+				studentsComboBox->insertItem(sts->name);
+			}
+		}
+	}
+	studentsComboBox->setCurrentItem(0);
+	
+
+
+
 	updateActivitiesListBox();
+
+	selectedActivitiesListBox->clear();
+	this->selectedActivitiesList.clear();
 	
 	weightLineEdit->setText(QString::number(ctr->weightPercentage));
 	//compulsoryCheckBox->setChecked(ctr->compulsory);
@@ -61,18 +128,69 @@ ModifyConstraintActivitiesSameStartingHourForm::~ModifyConstraintActivitiesSameS
 {
 }
 
+bool ModifyConstraintActivitiesSameStartingHourForm::filterOk(Activity* act)
+{
+	QString tn=teachersComboBox->currentText();
+	QString stn=studentsComboBox->currentText();
+	QString sbn=subjectsComboBox->currentText();
+	QString sbtn=activityTagsComboBox->currentText();
+	int ok=true;
+
+	//teacher
+	if(tn!=""){
+		bool ok2=false;
+		for(QStringList::Iterator it=act->teachersNames.begin(); it!=act->teachersNames.end(); it++)
+			if(*it == tn){
+				ok2=true;
+				break;
+			}
+		if(!ok2)
+			ok=false;
+	}
+
+	//subject
+	if(sbn!="" && sbn!=act->subjectName)
+		ok=false;
+		
+	//activity tag
+//	if(sbtn!="" && sbtn!=act->activityTagName)
+	if(sbtn!="" && !act->activityTagsNames.contains(sbtn))
+		ok=false;
+		
+	//students
+	if(stn!=""){
+		bool ok2=false;
+		for(QStringList::Iterator it=act->studentsNames.begin(); it!=act->studentsNames.end(); it++)
+			if(*it == stn){
+				ok2=true;
+				break;
+			}
+		if(!ok2)
+			ok=false;
+	}
+	
+	return ok;
+}
+
+void ModifyConstraintActivitiesSameStartingHourForm::filterChanged()
+{
+	this->updateActivitiesListBox();
+}
+
 void ModifyConstraintActivitiesSameStartingHourForm::updateActivitiesListBox()
 {
 	activitiesListBox->clear();
-	selectedActivitiesListBox->clear();
+	//selectedActivitiesListBox->clear();
 
 	this->activitiesList.clear();
-	this->selectedActivitiesList.clear();
+	//this->selectedActivitiesList.clear();
 
 	for(int i=0; i<gt.rules.activitiesList.size(); i++){
 		Activity* ac=gt.rules.activitiesList[i];
-		activitiesListBox->insertItem(ac->getDescription(gt.rules));
-		this->activitiesList.append(ac->id);
+		 if(filterOk(ac)){
+			activitiesListBox->insertItem(ac->getDescription(gt.rules));
+			this->activitiesList.append(ac->id);
+		}
 	}
 }
 
@@ -82,8 +200,8 @@ void ModifyConstraintActivitiesSameStartingHourForm::ok()
 	QString tmp=weightLineEdit->text();
 	sscanf(tmp, "%lf", &weight);
 	if(weight<0.0 || weight>100.0){
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Invalid weight (percentage)"));
+		QMessageBox::warning(this, tr("FET information"),
+			tr("Invalid weight (percentage)"));
 		return;
 	}
 
@@ -92,18 +210,18 @@ void ModifyConstraintActivitiesSameStartingHourForm::ok()
 		compulsory=true;*/
 
 	if(this->selectedActivitiesList.size()==0){
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Empty list of selected activities"));
+		QMessageBox::warning(this, tr("FET information"),
+			tr("Empty list of selected activities"));
 		return;
 	}
 	if(this->selectedActivitiesList.size()==1){
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Only one selected activity"));
+		QMessageBox::warning(this, tr("FET information"),
+			tr("Only one selected activity"));
 		return;
 	}
 	if(this->selectedActivitiesList.size()>MAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_HOUR){
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("Please report error to the author\nMAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_HOUR must be increased (you have too many activities)"));
+		QMessageBox::warning(this, tr("FET information"),
+			tr("Please report error to the author\nMAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_HOUR must be increased (you have too many activities)"));
 		return;
 	}
 	
@@ -156,3 +274,10 @@ void ModifyConstraintActivitiesSameStartingHourForm::removeActivity()
 	selectedActivitiesListBox->removeItem(tmp);
 	this->selectedActivitiesList.removeAt(tmp);
 }
+
+void ModifyConstraintActivitiesSameStartingHourForm::clear()
+{
+	selectedActivitiesListBox->clear();
+	selectedActivitiesList.clear();
+}
+

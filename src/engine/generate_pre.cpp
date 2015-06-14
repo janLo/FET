@@ -37,6 +37,8 @@ using namespace std;
 
 #include <QPair>
 #include <QSet>
+#include <QHash>
+#include <QQueue>
 
 extern Timetable gt;
 
@@ -58,11 +60,16 @@ qint16 roomsTimetable[MAX_ROOMS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
 //BASIC TIME
 qint8 activitiesConflictingPercentage[MAX_ACTIVITIES][MAX_ACTIVITIES];
 
-//MIN N DAYS BETWEEN ACTIVITIES
-QList<int> minNDaysListOfActivities[MAX_ACTIVITIES];
-QList<int> minNDaysListOfMinDays[MAX_ACTIVITIES];
-QList<double> minNDaysListOfWeightPercentages[MAX_ACTIVITIES];
-QList<bool> minNDaysListOfConsecutiveIfSameDay[MAX_ACTIVITIES];
+//MIN DAYS BETWEEN ACTIVITIES
+QList<int> minDaysListOfActivities[MAX_ACTIVITIES];
+QList<int> minDaysListOfMinDays[MAX_ACTIVITIES];
+QList<double> minDaysListOfWeightPercentages[MAX_ACTIVITIES];
+QList<bool> minDaysListOfConsecutiveIfSameDay[MAX_ACTIVITIES];
+
+//MAX DAYS BETWEEN ACTIVITIES
+QList<int> maxDaysListOfActivities[MAX_ACTIVITIES];
+QList<int> maxDaysListOfMaxDays[MAX_ACTIVITIES];
+QList<double> maxDaysListOfWeightPercentages[MAX_ACTIVITIES];
 
 //MIN GAPS BETWEEN ACTIVITIES
 QList<int> minGapsBetweenActivitiesListOfActivities[MAX_ACTIVITIES];
@@ -88,6 +95,10 @@ double subgroupsEarlyMaxBeginningsAtSecondHourPercentage[MAX_TOTAL_SUBGROUPS];
 int subgroupsEarlyMaxBeginningsAtSecondHourMaxBeginnings[MAX_TOTAL_SUBGROUPS];
 double subgroupsMaxGapsPerWeekPercentage[MAX_TOTAL_SUBGROUPS];
 int subgroupsMaxGapsPerWeekMaxGaps[MAX_TOTAL_SUBGROUPS];
+
+double subgroupsMaxGapsPerDayPercentage[MAX_TOTAL_SUBGROUPS];
+int subgroupsMaxGapsPerDayMaxGaps[MAX_TOTAL_SUBGROUPS];
+bool haveStudentsMaxGapsPerDay;
 
 //TEACHERS MAX DAYS PER WEEK
 int teachersMaxDaysPerWeekMaxDays[MAX_TEACHERS];
@@ -138,6 +149,13 @@ int teachersMaxHoursContinuouslyMaxHours1[MAX_TEACHERS];
 double teachersMaxHoursContinuouslyPercentages2[MAX_TEACHERS];
 int teachersMaxHoursContinuouslyMaxHours2[MAX_TEACHERS];
 
+//teacher(s) activity tag max hours daily
+bool haveTeachersActivityTagMaxHoursDaily;
+
+QList<int> teachersActivityTagMaxHoursDailyMaxHours[MAX_TEACHERS];
+QList<int> teachersActivityTagMaxHoursDailyActivityTag[MAX_TEACHERS];
+QList<double> teachersActivityTagMaxHoursDailyPercentage[MAX_TEACHERS];
+
 //teacher(s) activity tag max hours continuously
 bool haveTeachersActivityTagMaxHoursContinuously;
 
@@ -149,12 +167,23 @@ QList<double> teachersActivityTagMaxHoursContinuouslyPercentage[MAX_TEACHERS];
 double teachersMinHoursDailyPercentages[MAX_TEACHERS];
 int teachersMinHoursDailyMinHours[MAX_TEACHERS];
 
+//teacher(s) min days per week
+double teachersMinDaysPerWeekPercentages[MAX_TEACHERS];
+int teachersMinDaysPerWeekMinDays[MAX_TEACHERS];
+
 //students (set) max hours continuously
 double subgroupsMaxHoursContinuouslyPercentages1[MAX_TOTAL_SUBGROUPS];
 int subgroupsMaxHoursContinuouslyMaxHours1[MAX_TOTAL_SUBGROUPS];
 
 double subgroupsMaxHoursContinuouslyPercentages2[MAX_TOTAL_SUBGROUPS];
 int subgroupsMaxHoursContinuouslyMaxHours2[MAX_TOTAL_SUBGROUPS];
+
+//students (set) activity tag max hours daily
+bool haveStudentsActivityTagMaxHoursDaily;
+
+QList<int> subgroupsActivityTagMaxHoursDailyMaxHours[MAX_TOTAL_SUBGROUPS];
+QList<int> subgroupsActivityTagMaxHoursDailyActivityTag[MAX_TOTAL_SUBGROUPS];
+QList<double> subgroupsActivityTagMaxHoursDailyPercentage[MAX_TOTAL_SUBGROUPS];
 
 //students (set) activity tag max hours continuously
 bool haveStudentsActivityTagMaxHoursContinuously;
@@ -176,27 +205,32 @@ int subgroupsMinHoursDailyMinHours[MAX_TOTAL_SUBGROUPS];
 
 // 2 activities consecutive
 //index represents the first activity, value in array represents the second activity
-QList<double> constr2ActivitiesConsecutivePercentages[MAX_ACTIVITIES];
-QList<int> constr2ActivitiesConsecutiveActivities[MAX_ACTIVITIES];
+QList<double> constrTwoActivitiesConsecutivePercentages[MAX_ACTIVITIES];
+QList<int> constrTwoActivitiesConsecutiveActivities[MAX_ACTIVITIES];
 
 //index represents the second activity, value in array represents the first activity
-QList<double> inverseConstr2ActivitiesConsecutivePercentages[MAX_ACTIVITIES];
-QList<int> inverseConstr2ActivitiesConsecutiveActivities[MAX_ACTIVITIES];
+QList<double> inverseConstrTwoActivitiesConsecutivePercentages[MAX_ACTIVITIES];
+QList<int> inverseConstrTwoActivitiesConsecutiveActivities[MAX_ACTIVITIES];
 // 2 activities consecutive
 
 // 2 activities grouped
 //index represents the first activity, value in array represents the second activity
-QList<double> constr2ActivitiesGroupedPercentages[MAX_ACTIVITIES];
-QList<int> constr2ActivitiesGroupedActivities[MAX_ACTIVITIES];
+QList<double> constrTwoActivitiesGroupedPercentages[MAX_ACTIVITIES];
+QList<int> constrTwoActivitiesGroupedActivities[MAX_ACTIVITIES];
+
+// 3 activities grouped
+//index represents the first activity, value in array represents the second activity
+QList<double> constrThreeActivitiesGroupedPercentages[MAX_ACTIVITIES];
+QList<QPair<int, int> > constrThreeActivitiesGroupedActivities[MAX_ACTIVITIES];
 
 // 2 activities ordered
 //index represents the first activity, value in array represents the second activity
-QList<double> constr2ActivitiesOrderedPercentages[MAX_ACTIVITIES];
-QList<int> constr2ActivitiesOrderedActivities[MAX_ACTIVITIES];
+QList<double> constrTwoActivitiesOrderedPercentages[MAX_ACTIVITIES];
+QList<int> constrTwoActivitiesOrderedActivities[MAX_ACTIVITIES];
 
 //index represents the second activity, value in array represents the first activity
-QList<double> inverseConstr2ActivitiesOrderedPercentages[MAX_ACTIVITIES];
-QList<int> inverseConstr2ActivitiesOrderedActivities[MAX_ACTIVITIES];
+QList<double> inverseConstrTwoActivitiesOrderedPercentages[MAX_ACTIVITIES];
+QList<int> inverseConstrTwoActivitiesOrderedActivities[MAX_ACTIVITIES];
 // 2 activities consecutive
 
 double activityEndsStudentsDayPercentages[MAX_ACTIVITIES];
@@ -289,12 +323,15 @@ bool fixedTimeActivity[MAX_ACTIVITIES];
 bool fixedSpaceActivity[MAX_ACTIVITIES];
 
 
-#define max(x,y)		((x)>=(y)?(x):(y))
+///#define max(x,y)		((x)>=(y)?(x):(y))
 
 
-bool processTimeConstraints()
+bool processTimeSpaceConstraints(QTextStream* initialOrderStream)
 {
 	assert(gt.rules.internalStructureComputed);
+	
+	QHash<int, int> reprSameStartingTime;
+	QHash<int, QSet<int> > reprSameActivitiesSet;
 
 	/////1. BASIC TIME CONSTRAINTS
 	bool t=computeActivitiesConflictingPercentage();
@@ -302,8 +339,14 @@ bool processTimeConstraints()
 		return false;
 	//////////////////////////////
 	
-	/////2. min n days between activities
-	t=computeMinNDays();
+	/////2. min days between activities
+	t=computeMinDays();
+	if(!t)
+		return false;
+	/////////////////////////////////////
+	
+	/////2.3. max days between activities
+	t=computeMaxDays();
 	if(!t)
 		return false;
 	/////////////////////////////////////
@@ -328,6 +371,10 @@ bool processTimeConstraints()
 	t=computeSubgroupsEarlyAndMaxGapsPercentages();
 	if(!t)
 		return false;
+	t=computeSubgroupsMaxGapsPerDayPercentages(); //!!!after max gaps per week
+	if(!t)
+		return false;
+		
 	//////////////////////////////////
 	
 	/////5. TEACHER MAX DAYS PER WEEK
@@ -350,7 +397,7 @@ bool processTimeConstraints()
 	//////////////////////////////////
 	
 	//must be AFTER basic time constraints (computeActivitiesConflictingPercentage)
-	t=computeActivitiesSameStartingTime();
+	t=computeActivitiesSameStartingTime(reprSameStartingTime, reprSameActivitiesSet);
 	if(!t)
 		return false;
 
@@ -369,12 +416,21 @@ bool processTimeConstraints()
 	if(!t)
 		return false;
 
+	t=computeTeachersActivityTagMaxHoursDaily();
+	if(!t)
+		return false;
+
 	t=computeTeachersActivityTagMaxHoursContinuously();
 	if(!t)
 		return false;
 
 	//must be after n hours per teacher
 	t=computeTeachersMinHoursDaily();
+	if(!t)
+		return false;
+	
+	//must be after teachers min hours daily
+	t=computeTeachersMinDaysPerWeek();
 	if(!t)
 		return false;
 	
@@ -387,6 +443,10 @@ bool processTimeConstraints()
 	if(!t)
 		return false;
 
+	t=computeStudentsActivityTagMaxHoursDaily();
+	if(!t)
+		return false;
+
 	t=computeStudentsActivityTagMaxHoursContinuously();
 	if(!t)
 		return false;
@@ -395,21 +455,23 @@ bool processTimeConstraints()
 	if(!t)
 		return false;
 		
-	computeConstr2ActivitiesConsecutive();
+	computeConstrTwoActivitiesConsecutive();
 	
-	computeConstr2ActivitiesGrouped();
+	computeConstrTwoActivitiesGrouped();
 	
-	computeConstr2ActivitiesOrdered();
+	computeConstrThreeActivitiesGrouped();
+	
+	computeConstrTwoActivitiesOrdered();
 	
 	t=computeActivityEndsStudentsDayPercentages();
 	if(!t)
 		return false;
 		
-	//check for impossible min n days
-	t=checkMinNDays100Percent();
+	//check for impossible min days
+	t=checkMinDays100Percent();
 	if(!t)
 		return false;
-	t=checkMinNDaysConsecutiveIfSameDay();
+	t=checkMinDaysConsecutiveIfSameDay();
 	if(!t)
 		return false;
 	
@@ -468,56 +530,30 @@ bool processTimeConstraints()
 	if(!t)
 		return false;
 	
-	sortActivities();
+	//must have here repr computed correctly
+	sortActivities(reprSameStartingTime, reprSameActivitiesSet, initialOrderStream);
+	
+	if(SHOW_WARNING_FOR_NOT_PERFECT_CONSTRAINTS){
+		if(haveStudentsMaxGapsPerDay || haveTeachersActivityTagMaxHoursDaily || haveStudentsActivityTagMaxHoursDaily){
+			QString s=GeneratePreTranslate::tr("Your data contains constraints students max gaps per day and/or activity tag max hours daily.");
+			s+="\n\n";
+			s+=GeneratePreTranslate::tr("These constraints are good, but they are not perfect. They are not fully optimized and you may obtain a very long generation time or even impossible timetables.");
+			s+=" ";
+			s+=GeneratePreTranslate::tr("It is recommended to use such constraints with caution.");
+			s+=" ";
+			s+=GeneratePreTranslate::tr("If your timetable is impossible, please remove such constraints from your data and try again.");
+			s+="\n\n";
+			s+=GeneratePreTranslate::tr("It is highly recommendable to add these constraints after you added all the other constraints and generated a timetable (so add them at the end of your work).");
+			s+="\n\n";
+			s+=GeneratePreTranslate::tr("Are you sure you want to continue?");
+	
+			QMessageBox::StandardButton b=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"), s, QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+			if(b!=QMessageBox::Yes)
+				return false;
+		}
+	}
 	
 	bool ok=true;
-	
-/////////////
-#if 0
-#include <iostream>
-#include <fstream>
-using namespace std;
-	ofstream out("res.out");
-
-	out<<"haveStudentsActivityTagMaxHoursContinuously=="<<haveStudentsActivityTagMaxHoursContinuously<<endl;
-	for(int i=0; i<gt.rules.nInternalSubgroups; i++)
-		if(subgroupsActivityTagMaxHoursContinuouslyPercentage[i].count()>0){
-			out<<"Subgroup "<<qPrintable(gt.rules.internalSubgroupsList[i]->name)<<endl;
-			out<<"	Has count=="<<subgroupsActivityTagMaxHoursContinuouslyPercentage[i].count()<<endl;
-			out<<"	Percentages are: "<<endl;
-			foreach(double perc, subgroupsActivityTagMaxHoursContinuouslyPercentage[i])
-				out<<perc<<" ";
-			out<<endl;
-			out<<"	Act tags are: "<<endl;
-			foreach(int acttag, subgroupsActivityTagMaxHoursContinuouslyActivityTag[i])
-				out<<acttag<<" ";
-			out<<endl;
-			out<<"	Max hours are: "<<endl;
-			foreach(int mh, subgroupsActivityTagMaxHoursContinuouslyMaxHours[i])
-				out<<mh<<" ";
-			out<<endl;
-		}
-
-	out<<"haveTeachersActivityTagMaxHoursContinuously=="<<haveTeachersActivityTagMaxHoursContinuously<<endl;
-	for(int i=0; i<gt.rules.nInternalTeachers; i++)
-		if(teachersActivityTagMaxHoursContinuouslyPercentage[i].count()>0){
-			out<<"Teacher "<<qPrintable(gt.rules.internalTeachersList[i]->name)<<endl;
-			out<<"	Has count=="<<teachersActivityTagMaxHoursContinuouslyPercentage[i].count()<<endl;
-			out<<"	Percentages are: "<<endl;
-			foreach(double perc, teachersActivityTagMaxHoursContinuouslyPercentage[i])
-				out<<perc<<" ";
-			out<<endl;
-			out<<"	Act tags are: "<<endl;
-			foreach(int acttag, teachersActivityTagMaxHoursContinuouslyActivityTag[i])
-				out<<acttag<<" ";
-			out<<endl;
-			out<<"	Max hours are: "<<endl;
-			foreach(int mh, teachersActivityTagMaxHoursContinuouslyMaxHours[i])
-				out<<mh<<" ";
-			out<<endl;
-		}
-#endif
-/////////////
 	
 	return ok;
 }
@@ -565,8 +601,8 @@ bool computeSubgroupsMaxHoursDaily()
 						 //cannot proceed
 						ok=false;
 		
-						int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-						 QObject::tr("Cannot optimize for subgroup %1, because there are too many constraints"
+						int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+						 GeneratePreTranslate::tr("Cannot optimize for subgroup %1, because there are too many constraints"
 						 " of type max hours daily relating to him, which cannot be compressed in 2 constraints of this type."
 						 " Two constraints max hours can be compressed into a single one if the max hours are lower"
 						 " in the first one and the weight percentage is higher on the first one."
@@ -574,10 +610,9 @@ bool computeSubgroupsMaxHoursDaily()
 						 " be maximum 2 constraints of type max hours daily.\n\n"
 						 " Example: you are allowed to use 3 constraints: 6 hours 95%, 7 hours 100% and 8 hours 100%,"
 						 " which can be compressed into 2 constraints: 6 hours 95%, 7 hours 100%\n\n"
-						 " Please modify your data accordingly and try again.\n\n"
-						 " For more details, join the mailing list or email the author")
+						 " Please modify your data accordingly and try again.")
 						 .arg(gt.rules.internalSubgroupsList[sb]->name),
-						 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+						 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 						 1, 0 );
 				 	
 						if(t==0)
@@ -617,8 +652,8 @@ bool computeSubgroupsMaxHoursDaily()
 						//cannot proceed
 						ok=false;
 	
-						int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-						 QObject::tr("Cannot optimize for subgroup %1, because there are too many constraints"
+						int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+						 GeneratePreTranslate::tr("Cannot optimize for subgroup %1, because there are too many constraints"
 						 " of type max hours daily relating to him, which cannot be compressed in 2 constraints of this type."
 						 " Two constraints max hours can be compressed into a single one if the max hours are lower"
 						 " in the first one and the weight percentage is higher on the first one."
@@ -626,10 +661,9 @@ bool computeSubgroupsMaxHoursDaily()
 						 " be maximum 2 constraints of type max hours daily.\n\n"
 						 " Example: you are allowed to use 3 constraints: 6 hours 95%, 7 hours 100% and 8 hours 100%,"
 						 " which can be compressed into 2 constraints: 6 hours 95%, 7 hours 100%\n\n"
-						 " Please modify your data accordingly and try again."
-						 " For more details, join the mailing list or email the author")
+						 " Please modify your data accordingly and try again.")
 						 .arg(gt.rules.internalSubgroupsList[sb]->name),
-						 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+						 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 						 1, 0 );
 
 						if(t==0)
@@ -657,7 +691,7 @@ bool computeSubgroupsMaxHoursDaily()
 				ok=false;
 				
 				QString s;
-				s=QObject::tr("Cannot optimize for subgroup %1, because there is a constraint of type"
+				s=GeneratePreTranslate::tr("Cannot optimize for subgroup %1, because there is a constraint of type"
 				 " max %2 hours daily with 100% weight which cannot be respected because of number of days per week,"
 				 " number of hours per day, students set not available and/or breaks. The number of total hours for this subgroup is"
 				 " %3 and the number of available slots is, considering max hours daily and all other constraints, %4.")
@@ -666,11 +700,10 @@ bool computeSubgroupsMaxHoursDaily()
 				 .arg(nHoursPerSubgroup[sb])
 				 .arg(total);
 				s+="\n\n";
-				s+=QObject::tr("Please modify your data accordingly and try again"
-				 ". For more details, join the mailing list or email the author");
+				s+=GeneratePreTranslate::tr("Please modify your data accordingly and try again");
 	
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"), s,
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"), s,
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 				 	
 				if(t==0)
@@ -696,7 +729,7 @@ bool computeSubgroupsMaxHoursDaily()
 				ok=false;
 				
 				QString s;
-				s=QObject::tr("Cannot optimize for subgroup %1, because there is a constraint of type"
+				s=GeneratePreTranslate::tr("Cannot optimize for subgroup %1, because there is a constraint of type"
 				 " max %2 hours daily with 100% weight which cannot be respected because of number of days per week,"
 				 " number of hours per day, students set not available and/or breaks. The number of total hours for this subgroup is"
 				 " %3 and the number of available slots is, considering max hours daily and all other constraints, %4.")
@@ -705,11 +738,10 @@ bool computeSubgroupsMaxHoursDaily()
 				 .arg(nHoursPerSubgroup[sb])
 				 .arg(total);
 				s+="\n\n";
-				s+=QObject::tr("Please modify your data accordingly and try again"
-				 ". For more details, join the mailing list or email the author");
+				s+=GeneratePreTranslate::tr("Please modify your data accordingly and try again");
 	
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"), s,
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"), s,
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 				 	
 				if(t==0)
@@ -763,8 +795,8 @@ bool computeStudentsMaxHoursContinuously()
 						 //cannot proceed
 						ok=false;
 		
-						int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-						 QObject::tr("Cannot optimize for subgroup %1, because there are too many constraints"
+						int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+						 GeneratePreTranslate::tr("Cannot optimize for subgroup %1, because there are too many constraints"
 						 " of type max hours continuously relating to him, which cannot be compressed in 2 constraints of this type."
 						 " Two constraints max hours can be compressed into a single one if the max hours are lower"
 						 " in the first one and the weight percentage is higher on the first one."
@@ -772,10 +804,9 @@ bool computeStudentsMaxHoursContinuously()
 						 " be maximum 2 constraints of type max hours continuously.\n\n"
 						 " Example: you are allowed to use 3 constraints: 6 hours 95%, 7 hours 100% and 8 hours 100%,"
 						 " which can be compressed into 2 constraints: 6 hours 95%, 7 hours 100%\n\n"
-						 " Please modify your data accordingly and try again.\n\n"
-						 " For more details, join the mailing list or email the author")
+						 " Please modify your data accordingly and try again.")
 						 .arg(gt.rules.internalSubgroupsList[sb]->name),
-						 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+						 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 						 1, 0 );
 				 	
 						if(t==0)
@@ -815,8 +846,8 @@ bool computeStudentsMaxHoursContinuously()
 						//cannot proceed
 						ok=false;
 	
-						int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-						 QObject::tr("Cannot optimize for subgroup %1, because there are too many constraints"
+						int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+						 GeneratePreTranslate::tr("Cannot optimize for subgroup %1, because there are too many constraints"
 						 " of type max hours continuously relating to him, which cannot be compressed in 2 constraints of this type."
 						 " Two constraints max hours can be compressed into a single one if the max hours are lower"
 						 " in the first one and the weight percentage is higher on the first one."
@@ -824,10 +855,9 @@ bool computeStudentsMaxHoursContinuously()
 						 " be maximum 2 constraints of type max hours continuously.\n\n"
 						 " Example: you are allowed to use 3 constraints: 6 hours 95%, 7 hours 100% and 8 hours 100%,"
 						 " which can be compressed into 2 constraints: 6 hours 95%, 7 hours 100%\n\n"
-						 " Please modify your data accordingly and try again."
-						 " For more details, join the mailing list or email the author")
+						 " Please modify your data accordingly and try again.")
 						 .arg(gt.rules.internalSubgroupsList[sb]->name),
-						 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+						 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 						 1, 0 );
 
 						if(t==0)
@@ -846,18 +876,17 @@ bool computeStudentsMaxHoursContinuously()
 		foreach(int sbg, gt.rules.internalActivitiesList[ai].iSubgroupsList){
 			if(subgroupsMaxHoursContinuouslyPercentages1[sbg]>=0 && gt.rules.internalActivitiesList[ai].duration > subgroupsMaxHoursContinuouslyMaxHours1[sbg]){
 				QString s;
-				s=QObject::tr("Cannot optimize for subgroup %1, because there is a constraint of type"
+				s=GeneratePreTranslate::tr("Cannot optimize for subgroup %1, because there is a constraint of type"
 				 " max %2 hours continuously which cannot be respected because of activity with id %3 (which has duration %4).")
 				 .arg(gt.rules.internalSubgroupsList[sbg]->name)
 				 .arg(subgroupsMaxHoursContinuouslyMaxHours1[sbg])
 				 .arg(gt.rules.internalActivitiesList[ai].id)
 				 .arg(gt.rules.internalActivitiesList[ai].duration);
 				s+="\n\n";
-				s+=QObject::tr("Please modify your data accordingly and try again"
-				 ". For more details, join the mailing list or email the author");
+				s+=GeneratePreTranslate::tr("Please modify your data accordingly and try again");
 	
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"), s,
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"), s,
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 				 	
 				if(t==0)
@@ -865,22 +894,244 @@ bool computeStudentsMaxHoursContinuously()
 			}
 			if(subgroupsMaxHoursContinuouslyPercentages2[sbg]>=0 && gt.rules.internalActivitiesList[ai].duration > subgroupsMaxHoursContinuouslyMaxHours2[sbg]){
 				QString s;
-				s=QObject::tr("Cannot optimize for subgroup %1, because there is a constraint of type"
+				s=GeneratePreTranslate::tr("Cannot optimize for subgroup %1, because there is a constraint of type"
 				 " max %2 hours continuously which cannot be respected because of activity with id %3 (which has duration %4).")
 				 .arg(gt.rules.internalSubgroupsList[sbg]->name)
 				 .arg(subgroupsMaxHoursContinuouslyMaxHours2[sbg])
 				 .arg(gt.rules.internalActivitiesList[ai].id)
 				 .arg(gt.rules.internalActivitiesList[ai].duration);
 				s+="\n\n";
-				s+=QObject::tr("Please modify your data accordingly and try again"
-				 ". For more details, join the mailing list or email the author");
+				s+=GeneratePreTranslate::tr("Please modify your data accordingly and try again");
 	
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"), s,
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"), s,
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 				 	
 				if(t==0)
 					return false;
+			}
+		}
+	}
+	
+	return ok;
+}
+
+bool computeStudentsActivityTagMaxHoursDaily()
+{
+	haveStudentsActivityTagMaxHoursDaily=false;
+	
+	bool ok=true;
+	
+	for(int i=0; i<gt.rules.nInternalSubgroups; i++){
+		subgroupsActivityTagMaxHoursDailyMaxHours[i].clear();
+		subgroupsActivityTagMaxHoursDailyPercentage[i].clear();
+		subgroupsActivityTagMaxHoursDailyActivityTag[i].clear();
+	}
+
+	for(int i=0; i<gt.rules.nInternalTimeConstraints; i++){
+		if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_STUDENTS_ACTIVITY_TAG_MAX_HOURS_DAILY){
+			haveStudentsActivityTagMaxHoursDaily=true;
+
+			ConstraintStudentsActivityTagMaxHoursDaily* samc=(ConstraintStudentsActivityTagMaxHoursDaily*)gt.rules.internalTimeConstraintsList[i];
+			
+			foreach(int sb, samc->canonicalSubgroupsList){
+				int pos1=-1, pos2=-1;
+				
+				for(int j=0; j<subgroupsActivityTagMaxHoursDailyMaxHours[sb].count(); j++){
+					if(subgroupsActivityTagMaxHoursDailyActivityTag[sb].at(j)==samc->activityTagIndex){
+						if(pos1==-1){
+							pos1=j;
+						}
+						else{
+							assert(pos2==-1);
+							pos2=j;
+						}
+					}
+				}
+				
+				if(pos1==-1){
+					subgroupsActivityTagMaxHoursDailyActivityTag[sb].append(samc->activityTagIndex);
+					subgroupsActivityTagMaxHoursDailyMaxHours[sb].append(samc->maxHoursDaily);
+					subgroupsActivityTagMaxHoursDailyPercentage[sb].append(samc->weightPercentage);
+				}
+				else{
+					if(subgroupsActivityTagMaxHoursDailyMaxHours[sb].at(pos1) <= samc->maxHoursDaily
+					 && subgroupsActivityTagMaxHoursDailyPercentage[sb].at(pos1) >= samc->weightPercentage){
+					 	//do nothing
+					}
+					else if(subgroupsActivityTagMaxHoursDailyMaxHours[sb].at(pos1) >= samc->maxHoursDaily
+					 && subgroupsActivityTagMaxHoursDailyPercentage[sb].at(pos1) <= samc->weightPercentage){
+					
+						subgroupsActivityTagMaxHoursDailyActivityTag[sb][pos1]=samc->activityTagIndex;
+						subgroupsActivityTagMaxHoursDailyMaxHours[sb][pos1]=samc->maxHoursDaily;
+						subgroupsActivityTagMaxHoursDailyPercentage[sb][pos1]=samc->weightPercentage;
+					}
+					else{
+						if(pos2==-1){
+							subgroupsActivityTagMaxHoursDailyActivityTag[sb].append(samc->activityTagIndex);
+							subgroupsActivityTagMaxHoursDailyMaxHours[sb].append(samc->maxHoursDaily);
+							subgroupsActivityTagMaxHoursDailyPercentage[sb].append(samc->weightPercentage);
+						}
+						else{
+
+							if(subgroupsActivityTagMaxHoursDailyMaxHours[sb].at(pos2) <= samc->maxHoursDaily
+							 && subgroupsActivityTagMaxHoursDailyPercentage[sb].at(pos2) >= samc->weightPercentage){
+							 	//do nothing
+							}
+							else if(subgroupsActivityTagMaxHoursDailyMaxHours[sb].at(pos2) >= samc->maxHoursDaily
+							 && subgroupsActivityTagMaxHoursDailyPercentage[sb].at(pos2) <= samc->weightPercentage){
+							
+								subgroupsActivityTagMaxHoursDailyActivityTag[sb][pos2]=samc->activityTagIndex;
+								subgroupsActivityTagMaxHoursDailyMaxHours[sb][pos2]=samc->maxHoursDaily;
+								subgroupsActivityTagMaxHoursDailyPercentage[sb][pos2]=samc->weightPercentage;
+							}
+							else{
+								ok=false;
+	
+								int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+								 GeneratePreTranslate::tr("Cannot optimize for subgroup %1, because there are too many constraints"
+								 " of type activity tag max hours daily relating to him, which cannot be compressed in 2 constraints of this type."
+								 " Two constraints max hours can be compressed into a single one if the max hours are lower"
+								 " in the first one and the weight percentage is higher on the first one."
+								 " It is possible to use any number of such constraints for a subgroup, but their resultant must"
+								 " be maximum 2 constraints of type activity tag max hours daily.\n\n"
+								 " Example: you are allowed to use 3 constraints: 6 hours 95%, 7 hours 100% and 8 hours 100%,"
+								 " which can be compressed into 2 constraints: 6 hours 95%, 7 hours 100%\n\n"
+								 " Please modify your data accordingly and try again.")
+								 .arg(gt.rules.internalSubgroupsList[sb]->name),
+								 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
+								 1, 0 );
+
+								if(t==0)
+									return false;
+							}
+						}
+					}
+				}
+			}
+		}
+		if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_STUDENTS_SET_ACTIVITY_TAG_MAX_HOURS_DAILY){
+			haveStudentsActivityTagMaxHoursDaily=true;
+
+			ConstraintStudentsSetActivityTagMaxHoursDaily* samc=(ConstraintStudentsSetActivityTagMaxHoursDaily*)gt.rules.internalTimeConstraintsList[i];
+			
+			foreach(int sb, samc->canonicalSubgroupsList){
+				int pos1=-1, pos2=-1;
+				
+				for(int j=0; j<subgroupsActivityTagMaxHoursDailyMaxHours[sb].count(); j++){
+					if(subgroupsActivityTagMaxHoursDailyActivityTag[sb].at(j)==samc->activityTagIndex){
+						if(pos1==-1){
+							pos1=j;
+						}
+						else{
+							assert(pos2==-1);
+							pos2=j;
+						}
+					}
+				}
+				
+				if(pos1==-1){
+					subgroupsActivityTagMaxHoursDailyActivityTag[sb].append(samc->activityTagIndex);
+					subgroupsActivityTagMaxHoursDailyMaxHours[sb].append(samc->maxHoursDaily);
+					subgroupsActivityTagMaxHoursDailyPercentage[sb].append(samc->weightPercentage);
+				}
+				else{
+					if(subgroupsActivityTagMaxHoursDailyMaxHours[sb].at(pos1) <= samc->maxHoursDaily
+					 && subgroupsActivityTagMaxHoursDailyPercentage[sb].at(pos1) >= samc->weightPercentage){
+					 	//do nothing
+					}
+					else if(subgroupsActivityTagMaxHoursDailyMaxHours[sb].at(pos1) >= samc->maxHoursDaily
+					 && subgroupsActivityTagMaxHoursDailyPercentage[sb].at(pos1) <= samc->weightPercentage){
+					
+						subgroupsActivityTagMaxHoursDailyActivityTag[sb][pos1]=samc->activityTagIndex;
+						subgroupsActivityTagMaxHoursDailyMaxHours[sb][pos1]=samc->maxHoursDaily;
+						subgroupsActivityTagMaxHoursDailyPercentage[sb][pos1]=samc->weightPercentage;
+					}
+					else{
+						if(pos2==-1){
+							subgroupsActivityTagMaxHoursDailyActivityTag[sb].append(samc->activityTagIndex);
+							subgroupsActivityTagMaxHoursDailyMaxHours[sb].append(samc->maxHoursDaily);
+							subgroupsActivityTagMaxHoursDailyPercentage[sb].append(samc->weightPercentage);
+						}
+						else{
+
+							if(subgroupsActivityTagMaxHoursDailyMaxHours[sb].at(pos2) <= samc->maxHoursDaily
+							 && subgroupsActivityTagMaxHoursDailyPercentage[sb].at(pos2) >= samc->weightPercentage){
+							 	//do nothing
+							}
+							else if(subgroupsActivityTagMaxHoursDailyMaxHours[sb].at(pos2) >= samc->maxHoursDaily
+							 && subgroupsActivityTagMaxHoursDailyPercentage[sb].at(pos2) <= samc->weightPercentage){
+							
+								subgroupsActivityTagMaxHoursDailyActivityTag[sb][pos2]=samc->activityTagIndex;
+								subgroupsActivityTagMaxHoursDailyMaxHours[sb][pos2]=samc->maxHoursDaily;
+								subgroupsActivityTagMaxHoursDailyPercentage[sb][pos2]=samc->weightPercentage;
+							}
+							else{
+								ok=false;
+	
+								int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+								 GeneratePreTranslate::tr("Cannot optimize for subgroup %1, because there are too many constraints"
+								 " of type activity tag max hours daily relating to him, which cannot be compressed in 2 constraints of this type."
+								 " Two constraints max hours can be compressed into a single one if the max hours are lower"
+								 " in the first one and the weight percentage is higher on the first one."
+								 " It is possible to use any number of such constraints for a subgroup, but their resultant must"
+								 " be maximum 2 constraints of type activity tag max hours daily.\n\n"
+								 " Example: you are allowed to use 3 constraints: 6 hours 95%, 7 hours 100% and 8 hours 100%,"
+								 " which can be compressed into 2 constraints: 6 hours 95%, 7 hours 100%\n\n"
+								 " Please modify your data accordingly and try again.")
+								 .arg(gt.rules.internalSubgroupsList[sb]->name),
+								 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
+								 1, 0 );
+
+								if(t==0)
+									return false;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	int navd[MAX_DAYS_PER_WEEK];
+	
+	for(int i=0; i<gt.rules.nInternalSubgroups; i++){
+		for(int d=0; d<gt.rules.nDaysPerWeek; d++){
+			navd[d]=0;
+			for(int h=0; h<gt.rules.nHoursPerDay; h++){
+				if(!breakDayHour[d][h] && !subgroupNotAvailableDayHour[i][d][h])
+					navd[d]++;
+			}
+		}
+	
+		for(int j=0; j<subgroupsActivityTagMaxHoursDailyMaxHours[i].count(); j++){
+			int mh=subgroupsActivityTagMaxHoursDailyMaxHours[i].at(j);
+			double perc=subgroupsActivityTagMaxHoursDailyPercentage[i].at(j);
+			int at=subgroupsActivityTagMaxHoursDailyActivityTag[i].at(j);
+			if(perc==100.0){
+				int totalAt=0;
+				foreach(int ai, gt.rules.internalSubgroupsList[i]->activitiesForSubgroup)
+					if(gt.rules.internalActivitiesList[ai].iActivityTagsSet.contains(at))
+						totalAt+=gt.rules.internalActivitiesList[ai].duration;
+						
+				int ava=0;
+				for(int d=0; d<gt.rules.nDaysPerWeek; d++)
+					ava+=min(navd[d], mh);
+					
+				if(ava<totalAt){
+					ok=false;
+					
+					int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+					 GeneratePreTranslate::tr("Cannot optimize for subgroup %1, because there is a constraint activity tag %2 max %3 hours daily for it with weight 100\%"
+					 " which cannot be satifisfied, considering the number of available slots (%4) and total duration of activities with this activity tag (%5)"
+					 ". Please correct and try again.", "%2 is the activity tag for this constraint, %3 is the max number of hours daily for this constraint")
+					 .arg(gt.rules.internalSubgroupsList[i]->name).arg(gt.rules.activityTagsList.at(at)->name).arg(mh).arg(ava).arg(totalAt),
+					 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
+					 1, 0 );
+
+					if(t==0)
+						return false;
+				}
 			}
 		}
 	}
@@ -960,8 +1211,8 @@ bool computeStudentsActivityTagMaxHoursContinuously()
 							else{
 								ok=false;
 	
-								int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-								 QObject::tr("Cannot optimize for subgroup %1, because there are too many constraints"
+								int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+								 GeneratePreTranslate::tr("Cannot optimize for subgroup %1, because there are too many constraints"
 								 " of type activity tag max hours continuously relating to him, which cannot be compressed in 2 constraints of this type."
 								 " Two constraints max hours can be compressed into a single one if the max hours are lower"
 								 " in the first one and the weight percentage is higher on the first one."
@@ -969,10 +1220,9 @@ bool computeStudentsActivityTagMaxHoursContinuously()
 								 " be maximum 2 constraints of type activity tag max hours continuously.\n\n"
 								 " Example: you are allowed to use 3 constraints: 6 hours 95%, 7 hours 100% and 8 hours 100%,"
 								 " which can be compressed into 2 constraints: 6 hours 95%, 7 hours 100%\n\n"
-								 " Please modify your data accordingly and try again."
-								 " For more details, join the mailing list or email the author")
+								 " Please modify your data accordingly and try again.")
 								 .arg(gt.rules.internalSubgroupsList[sb]->name),
-								 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+								 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 								 1, 0 );
 
 								if(t==0)
@@ -1042,8 +1292,8 @@ bool computeStudentsActivityTagMaxHoursContinuously()
 							else{
 								ok=false;
 	
-								int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-								 QObject::tr("Cannot optimize for subgroup %1, because there are too many constraints"
+								int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+								 GeneratePreTranslate::tr("Cannot optimize for subgroup %1, because there are too many constraints"
 								 " of type activity tag max hours continuously relating to him, which cannot be compressed in 2 constraints of this type."
 								 " Two constraints max hours can be compressed into a single one if the max hours are lower"
 								 " in the first one and the weight percentage is higher on the first one."
@@ -1051,10 +1301,9 @@ bool computeStudentsActivityTagMaxHoursContinuously()
 								 " be maximum 2 constraints of type activity tag max hours continuously.\n\n"
 								 " Example: you are allowed to use 3 constraints: 6 hours 95%, 7 hours 100% and 8 hours 100%,"
 								 " which can be compressed into 2 constraints: 6 hours 95%, 7 hours 100%\n\n"
-								 " Please modify your data accordingly and try again."
-								 " For more details, join the mailing list or email the author")
+								 " Please modify your data accordingly and try again.")
 								 .arg(gt.rules.internalSubgroupsList[sb]->name),
-								 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+								 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 								 1, 0 );
 
 								if(t==0)
@@ -1086,12 +1335,11 @@ bool computeSubgroupsMinHoursDaily()
 			if(smd->weightPercentage!=100){
 				ok=false;
 	
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot optimize for students, because the constraint of type min hours daily relating to students"
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize for students, because the constraint of type min hours daily relating to students"
 				 " has no 100% weight"
-				 ". Please modify your data accordingly and try again"
-				 ". For more details, join the mailing list or email the author"),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 ". Please modify your data accordingly and try again"),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 				 	
 				if(t==0)
@@ -1104,13 +1352,12 @@ bool computeSubgroupsMinHoursDaily()
 			if(smd->weightPercentage!=100){
 				ok=false;
 	
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot optimize for students set %1, because the constraint of type min hours daily relating to him"
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize for students set %1, because the constraint of type min hours daily relating to him"
 				 " has no 100% weight"
-				 ". Please modify your data accordingly and try again"
-				 ". For more details, join the mailing list or email the author")
+				 ". Please modify your data accordingly and try again")
 				 .arg(smd->students),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 				 	
 				if(t==0)
@@ -1140,15 +1387,14 @@ bool computeSubgroupsMinHoursDaily()
 				else{ //cannot proceed
 					ok=false;
 	
-					int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-					 QObject::tr("Cannot optimize for subgroup %1, because there are two constraints"
+					int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+					 GeneratePreTranslate::tr("Cannot optimize for subgroup %1, because there are two constraints"
 					 " of type min hours daily relating to him, and the weight percentage is higher on the constraint"
 					 " with less minimum hours. You are allowed only to have for each subgroup"
 					 " the most important constraint with maximum weight percentage and largest minimum hours daily allowed"
-					 ". Please modify your data accordingly and try again"
-					 ". For more details, join the mailing list or email the author")
+					 ". Please modify your data accordingly and try again")
 					 .arg(gt.rules.internalSubgroupsList[sb]->name),
-					 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+					 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 					 1, 0 );
 				 	
 					if(t==0)
@@ -1174,15 +1420,14 @@ bool computeSubgroupsMinHoursDaily()
 				else{ //cannot proceed
 					ok=false;
 	
-					int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-					 QObject::tr("Cannot optimize for subgroup %1, because there are two constraints"
+					int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+					 GeneratePreTranslate::tr("Cannot optimize for subgroup %1, because there are two constraints"
 					 " of type min hours daily relating to him, and the weight percentage is higher on the constraint"
 					 " with less minimum hours. You are allowed only to have for each subgroup"
 					 " the most important constraint with maximum weight percentage and largest minimum hours daily allowed"
-					 ". Please modify your data accordingly and try again"
-					 ". For more details, join the mailing list or email the author")
+					 ". Please modify your data accordingly and try again")
 					 .arg(gt.rules.internalSubgroupsList[sb]->name),
-					 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+					 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 					 1, 0 );
 				 	
 					if(t==0)
@@ -1197,15 +1442,15 @@ bool computeSubgroupsMinHoursDaily()
 			/*if(nHoursPerSubgroup[i]>0 && subgroupsMinHoursDailyMinHours[i]>nHoursPerSubgroup[i]){
 				ok=false;
 
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot optimize, because you have constraint subgroup min %1 hours daily for subgroup"
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize, because you have constraint subgroup min %1 hours daily for subgroup"
 				 " %2. This subgroup has in total only %3 hours per week, so impossible constraint."
 				 " Please correct and try again")
 				 .arg(subgroupsMinHoursDailyMinHours[i])
 				 .arg(gt.rules.internalSubgroupsList[i]->name)
 				 .arg(nHoursPerSubgroup[i])
 				 ,
-				 QObject::tr("Skip rest of min hours problems"), QObject::tr("See next incompatibility min hours"), QString(),
+				 GeneratePreTranslate::tr("Skip rest of min hours problems"), GeneratePreTranslate::tr("See next incompatibility min hours"), QString(),
 				 1, 0 );
 			 	
 				if(t==0)
@@ -1214,15 +1459,14 @@ bool computeSubgroupsMinHoursDaily()
 			if(gt.rules.nDaysPerWeek*subgroupsMinHoursDailyMinHours[i] > nHoursPerSubgroup[i]){
 				ok=false;
 			
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("For subgroup %1 you have too little activities to respect the constraint"
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("For subgroup %1 you have too little activities to respect the constraint"
 				 " of type min hours daily. Please modify your data accordingly and try again"
 				 ". A possible situation is that you have unneeded groups like 'year1 WHOLE YEAR' and subgroups with name like 'year1 WHOLE YEAR WHOLE GROUP'"
 				 ". You might need to remove such dummy groups and subgroups (they were generated with old versions if you started allocation"
-				 " with incomplete students data). FET cannot automatically remove such dummy groups and subgroups"
-				 ". For more details, join the mailing list or email the author")
+				 " with incomplete students data). FET cannot automatically remove such dummy groups and subgroups")
 				 .arg(gt.rules.internalSubgroupsList[i]->name),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 				 	
 				if(t==0)
@@ -1237,8 +1481,8 @@ bool computeSubgroupsMinHoursDaily()
 				if(subgroupsMinHoursDailyMinHours[i]>freeSlots){
 					ok=false;
 			
-					int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-					 QObject::tr("For subgroup %1 cannot respect the constraint"
+					int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+					 GeneratePreTranslate::tr("For subgroup %1 cannot respect the constraint"
 					 " of type min hours daily on day %2, because of students set not available and/or break."
 					 " Probably you have a day off for this subgroup. The workaround is described in the Help/Frequently Asked Questions menu"
 					 " (for short: keep constraint min hours daily for this students set, remove corresponding constraint students set not available (or break)"
@@ -1247,7 +1491,7 @@ bool computeSubgroupsMinHoursDaily()
 					 "Please modify your data accordingly and try again")
 					 .arg(gt.rules.internalSubgroupsList[i]->name)
 					 .arg(gt.rules.daysOfTheWeek[j]),
-					 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+					 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 					 1, 0 );
 				 	
 					if(t==0)
@@ -1280,12 +1524,12 @@ bool computeTeachersMaxHoursDaily()
 			/*if(tmd->weightPercentage!=100){
 				ok=false;
 
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot optimize, because you have constraint teacher max hours daily for teacher %1 with"
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize, because you have constraint teacher max hours daily for teacher %1 with"
 				 " weight (percentage) below 100. Starting with FET version 5.3.0 it is only possible"
 				 " to use 100% weight for such constraints. Please make weight 100% and try again")
 				 .arg(tmd->teacherName),
-				 QObject::tr("Skip rest of max hours problems"), QObject::tr("See next incompatibility max hours"), QString(),
+				 GeneratePreTranslate::tr("Skip rest of max hours problems"), GeneratePreTranslate::tr("See next incompatibility max hours"), QString(),
 				 1, 0 );
 			 	
 				if(t==0)
@@ -1317,8 +1561,8 @@ bool computeTeachersMaxHoursDaily()
 				else{ //cannot proceed
 					ok=false;
 
-					int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-					 QObject::tr("Cannot optimize for teacher %1, because there are too many constraints"
+					int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+					 GeneratePreTranslate::tr("Cannot optimize for teacher %1, because there are too many constraints"
 					 " of type max hours daily relating to him, which cannot be compressed in 2 constraints of this type."
 					 " Two constraints max hours can be compressed into a single one if the max hours are lower"
 					 " in the first one and the weight percentage is higher on the first one."
@@ -1326,10 +1570,9 @@ bool computeTeachersMaxHoursDaily()
 					 " be maximum 2 constraints of type max hours daily.\n\n"
 					 " Example: you are allowed to use 3 constraints: 6 hours 95%, 7 hours 100% and 8 hours 100%,"
 					 " which can be compressed into 2 constraints: 6 hours 95%, 7 hours 100%\n\n"
-					 " Please modify your data accordingly and try again."
-					 " For more details, join the mailing list or email the author")
+					 " Please modify your data accordingly and try again.")
 					 .arg(gt.rules.internalTeachersList[tmd->teacher_ID]->name),
-					 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+					 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 					 1, 0 );
 				 	
 					if(t==0)
@@ -1344,11 +1587,11 @@ bool computeTeachersMaxHoursDaily()
 			/*if(tmd->weightPercentage!=100){
 				ok=false;
 
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot optimize, because you have constraint teachers max hours daily with"
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize, because you have constraint teachers max hours daily with"
 				 " weight (percentage) below 100. Starting with FET version 5.3.0 it is only possible"
 				 " to use 100% weight for such constraints. Please make weight 100% and try again"),
-				 QObject::tr("Skip rest of max hours problems"), QObject::tr("See next incompatibility max hours"), QString(),
+				 GeneratePreTranslate::tr("Skip rest of max hours problems"), GeneratePreTranslate::tr("See next incompatibility max hours"), QString(),
 				 1, 0 );
 			 	
 				if(t==0)
@@ -1381,8 +1624,8 @@ bool computeTeachersMaxHoursDaily()
 					else{ //cannot proceed
 						ok=false;
 
-						int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-						 QObject::tr("Cannot optimize for teacher %1, because there are too many constraints"
+						int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+						 GeneratePreTranslate::tr("Cannot optimize for teacher %1, because there are too many constraints"
 						 " of type max hours daily relating to him, which cannot be compressed in 2 constraints of this type."
 						 " Two constraints max hours can be compressed into a single one if the max hours are lower"
 						 " in the first one and the weight percentage is higher on the first one."
@@ -1390,10 +1633,9 @@ bool computeTeachersMaxHoursDaily()
 						 " be maximum 2 constraints of type max hours daily.\n\n"
 						 " Example: you are allowed to use 3 constraints: 6 hours 95%, 7 hours 100% and 8 hours 100%,"
 						 " which can be compressed into 2 constraints: 6 hours 95%, 7 hours 100%\n\n"
-						 " Please modify your data accordingly and try again."
-						 " For more details, join the mailing list or email the author")
+						 " Please modify your data accordingly and try again.")
 						 .arg(gt.rules.internalTeachersList[tch]->name),
-						 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+						 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 						 1, 0 );
 
 						if(t==0)
@@ -1445,7 +1687,7 @@ bool computeTeachersMaxHoursDaily()
 				ok=false;
 				
 				QString s;
-				s=QObject::tr("Cannot optimize for teacher %1, because there is a constraint of type"
+				s=GeneratePreTranslate::tr("Cannot optimize for teacher %1, because there is a constraint of type"
 				 " max %2 hours daily with 100% weight which cannot be respected because of number of days per week,"
 				 " number of hours per day, teacher max days per week, teacher not available and/or breaks."
 				 " The number of total hours for this teacher is"
@@ -1455,11 +1697,10 @@ bool computeTeachersMaxHoursDaily()
 				 .arg(nHoursPerTeacher[tc])
 				 .arg(total);
 				s+="\n\n";
-				s+=QObject::tr("Please modify your data accordingly and try again"
-				 ". For more details, join the mailing list or email the author");
+				s+=GeneratePreTranslate::tr("Please modify your data accordingly and try again");
 	
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"), s,
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"), s,
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 				 	
 				if(t==0)
@@ -1509,7 +1750,7 @@ bool computeTeachersMaxHoursDaily()
 				ok=false;
 				
 				QString s;
-				s=QObject::tr("Cannot optimize for teacher %1, because there is a constraint of type"
+				s=GeneratePreTranslate::tr("Cannot optimize for teacher %1, because there is a constraint of type"
 				 " max %2 hours daily with 100% weight which cannot be respected because of number of days per week,"
 				 " number of hours per day, teacher max days per week, teacher not available and/or breaks."
 				 " The number of total hours for this teacher is"
@@ -1519,11 +1760,10 @@ bool computeTeachersMaxHoursDaily()
 				 .arg(nHoursPerTeacher[tc])
 				 .arg(total);
 				s+="\n\n";
-				s+=QObject::tr("Please modify your data accordingly and try again"
-				 ". For more details, join the mailing list or email the author");
+				s+=GeneratePreTranslate::tr("Please modify your data accordingly and try again");
 	
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"), s,
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"), s,
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 				 	
 				if(t==0)
@@ -1575,8 +1815,8 @@ bool computeTeachersMaxHoursContinuously()
 				else{ //cannot proceed
 					ok=false;
 
-					int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-					 QObject::tr("Cannot optimize for teacher %1, because there are too many constraints"
+					int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+					 GeneratePreTranslate::tr("Cannot optimize for teacher %1, because there are too many constraints"
 					 " of type max hours continuously relating to him, which cannot be compressed in 2 constraints of this type."
 					 " Two constraints max hours can be compressed into a single one if the max hours are lower"
 					 " in the first one and the weight percentage is higher on the first one."
@@ -1584,10 +1824,9 @@ bool computeTeachersMaxHoursContinuously()
 					 " be maximum 2 constraints of type max hours continuously.\n\n"
 					 " Example: you are allowed to use 3 constraints: 6 hours 95%, 7 hours 100% and 8 hours 100%,"
 					 " which can be compressed into 2 constraints: 6 hours 95%, 7 hours 100%\n\n"
-					 " Please modify your data accordingly and try again."
-					 " For more details, join the mailing list or email the author")
+					 " Please modify your data accordingly and try again.")
 					 .arg(gt.rules.internalTeachersList[tmd->teacher_ID]->name),
-					 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+					 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 					 1, 0 );
 				 	
 					if(t==0)
@@ -1623,8 +1862,8 @@ bool computeTeachersMaxHoursContinuously()
 					else{ //cannot proceed
 						ok=false;
 
-						int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-						 QObject::tr("Cannot optimize for teacher %1, because there are too many constraints"
+						int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+						 GeneratePreTranslate::tr("Cannot optimize for teacher %1, because there are too many constraints"
 						 " of type max hours continuously relating to him, which cannot be compressed in 2 constraints of this type."
 						 " Two constraints max hours can be compressed into a single one if the max hours are lower"
 						 " in the first one and the weight percentage is higher on the first one."
@@ -1632,10 +1871,9 @@ bool computeTeachersMaxHoursContinuously()
 						 " be maximum 2 constraints of type max hours continuously.\n\n"
 						 " Example: you are allowed to use 3 constraints: 6 hours 95%, 7 hours 100% and 8 hours 100%,"
 						 " which can be compressed into 2 constraints: 6 hours 95%, 7 hours 100%\n\n"
-						 " Please modify your data accordingly and try again."
-						 " For more details, join the mailing list or email the author")
+						 " Please modify your data accordingly and try again.")
 						 .arg(gt.rules.internalTeachersList[tch]->name),
-						 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+						 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 						 1, 0 );
 
 						if(t==0)
@@ -1650,18 +1888,17 @@ bool computeTeachersMaxHoursContinuously()
 		foreach(int tch, gt.rules.internalActivitiesList[ai].iTeachersList){
 			if(teachersMaxHoursContinuouslyPercentages1[tch]>=0 && gt.rules.internalActivitiesList[ai].duration > teachersMaxHoursContinuouslyMaxHours1[tch]){
 				QString s;
-				s=QObject::tr("Cannot optimize for teacher %1, because there is a constraint of type"
+				s=GeneratePreTranslate::tr("Cannot optimize for teacher %1, because there is a constraint of type"
 				 " max %2 hours continuously which cannot be respected because of activity with id %3 (which has duration %4).")
 				 .arg(gt.rules.internalTeachersList[tch]->name)
 				 .arg(teachersMaxHoursContinuouslyMaxHours1[tch])
 				 .arg(gt.rules.internalActivitiesList[ai].id)
 				 .arg(gt.rules.internalActivitiesList[ai].duration);
 				s+="\n\n";
-				s+=QObject::tr("Please modify your data accordingly and try again"
-				 ". For more details, join the mailing list or email the author");
+				s+=GeneratePreTranslate::tr("Please modify your data accordingly and try again");
 	
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"), s,
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"), s,
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 				 	
 				if(t==0)
@@ -1669,22 +1906,244 @@ bool computeTeachersMaxHoursContinuously()
 			}
 			if(teachersMaxHoursContinuouslyPercentages2[tch]>=0 && gt.rules.internalActivitiesList[ai].duration > teachersMaxHoursContinuouslyMaxHours2[tch]){
 				QString s;
-				s=QObject::tr("Cannot optimize for teacher %1, because there is a constraint of type"
+				s=GeneratePreTranslate::tr("Cannot optimize for teacher %1, because there is a constraint of type"
 				 " max %2 hours continuously which cannot be respected because of activity with id %3 (which has duration %4).")
 				 .arg(gt.rules.internalTeachersList[tch]->name)
 				 .arg(teachersMaxHoursContinuouslyMaxHours2[tch])
 				 .arg(gt.rules.internalActivitiesList[ai].id)
 				 .arg(gt.rules.internalActivitiesList[ai].duration);
 				s+="\n\n";
-				s+=QObject::tr("Please modify your data accordingly and try again"
-				 ". For more details, join the mailing list or email the author");
+				s+=GeneratePreTranslate::tr("Please modify your data accordingly and try again");
 	
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"), s,
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"), s,
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 				 	
 				if(t==0)
 					return false;
+			}
+		}
+	}
+	
+	return ok;
+}
+
+bool computeTeachersActivityTagMaxHoursDaily()
+{
+	haveTeachersActivityTagMaxHoursDaily=false;
+	
+	bool ok=true;
+	
+	for(int i=0; i<gt.rules.nInternalTeachers; i++){
+		teachersActivityTagMaxHoursDailyMaxHours[i].clear();
+		teachersActivityTagMaxHoursDailyPercentage[i].clear();
+		teachersActivityTagMaxHoursDailyActivityTag[i].clear();
+	}
+
+	for(int i=0; i<gt.rules.nInternalTimeConstraints; i++){
+		if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_TEACHERS_ACTIVITY_TAG_MAX_HOURS_DAILY){
+			haveTeachersActivityTagMaxHoursDaily=true;
+
+			ConstraintTeachersActivityTagMaxHoursDaily* samc=(ConstraintTeachersActivityTagMaxHoursDaily*)gt.rules.internalTimeConstraintsList[i];
+			
+			foreach(int tc, samc->canonicalTeachersList){
+				int pos1=-1, pos2=-1;
+				
+				for(int j=0; j<teachersActivityTagMaxHoursDailyMaxHours[tc].count(); j++){
+					if(teachersActivityTagMaxHoursDailyActivityTag[tc].at(j)==samc->activityTagIndex){
+						if(pos1==-1){
+							pos1=j;
+						}
+						else{
+							assert(pos2==-1);
+							pos2=j;
+						}
+					}
+				}
+				
+				if(pos1==-1){
+					teachersActivityTagMaxHoursDailyActivityTag[tc].append(samc->activityTagIndex);
+					teachersActivityTagMaxHoursDailyMaxHours[tc].append(samc->maxHoursDaily);
+					teachersActivityTagMaxHoursDailyPercentage[tc].append(samc->weightPercentage);
+				}
+				else{
+					if(teachersActivityTagMaxHoursDailyMaxHours[tc].at(pos1) <= samc->maxHoursDaily
+					 && teachersActivityTagMaxHoursDailyPercentage[tc].at(pos1) >= samc->weightPercentage){
+					 	//do nothing
+					}
+					else if(teachersActivityTagMaxHoursDailyMaxHours[tc].at(pos1) >= samc->maxHoursDaily
+					 && teachersActivityTagMaxHoursDailyPercentage[tc].at(pos1) <= samc->weightPercentage){
+					
+						teachersActivityTagMaxHoursDailyActivityTag[tc][pos1]=samc->activityTagIndex;
+						teachersActivityTagMaxHoursDailyMaxHours[tc][pos1]=samc->maxHoursDaily;
+						teachersActivityTagMaxHoursDailyPercentage[tc][pos1]=samc->weightPercentage;
+					}
+					else{
+						if(pos2==-1){
+							teachersActivityTagMaxHoursDailyActivityTag[tc].append(samc->activityTagIndex);
+							teachersActivityTagMaxHoursDailyMaxHours[tc].append(samc->maxHoursDaily);
+							teachersActivityTagMaxHoursDailyPercentage[tc].append(samc->weightPercentage);
+						}
+						else{
+
+							if(teachersActivityTagMaxHoursDailyMaxHours[tc].at(pos2) <= samc->maxHoursDaily
+							 && teachersActivityTagMaxHoursDailyPercentage[tc].at(pos2) >= samc->weightPercentage){
+							 	//do nothing
+							}
+							else if(teachersActivityTagMaxHoursDailyMaxHours[tc].at(pos2) >= samc->maxHoursDaily
+							 && teachersActivityTagMaxHoursDailyPercentage[tc].at(pos2) <= samc->weightPercentage){
+							
+								teachersActivityTagMaxHoursDailyActivityTag[tc][pos2]=samc->activityTagIndex;
+								teachersActivityTagMaxHoursDailyMaxHours[tc][pos2]=samc->maxHoursDaily;
+								teachersActivityTagMaxHoursDailyPercentage[tc][pos2]=samc->weightPercentage;
+							}
+							else{
+								ok=false;
+	
+								int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+								 GeneratePreTranslate::tr("Cannot optimize for teacher %1, because there are too many constraints"
+								 " of type activity tag max hours daily relating to him, which cannot be compressed in 2 constraints of this type."
+								 " Two constraints max hours can be compressed into a single one if the max hours are lower"
+								 " in the first one and the weight percentage is higher on the first one."
+								 " It is possible to use any number of such constraints for a teacher, but their resultant must"
+								 " be maximum 2 constraints of type activity tag max hours daily.\n\n"
+								 " Example: you are allowed to use 3 constraints: 6 hours 95%, 7 hours 100% and 8 hours 100%,"
+								 " which can be compressed into 2 constraints: 6 hours 95%, 7 hours 100%\n\n"
+								 " Please modify your data accordingly and try again.")
+								 .arg(gt.rules.internalTeachersList[tc]->name),
+								 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
+								 1, 0 );
+
+								if(t==0)
+									return false;
+							}
+						}
+					}
+				}
+			}
+		}
+		if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_TEACHER_ACTIVITY_TAG_MAX_HOURS_DAILY){
+			haveTeachersActivityTagMaxHoursDaily=true;
+
+			ConstraintTeacherActivityTagMaxHoursDaily* samc=(ConstraintTeacherActivityTagMaxHoursDaily*)gt.rules.internalTimeConstraintsList[i];
+			
+			foreach(int tc, samc->canonicalTeachersList){
+				int pos1=-1, pos2=-1;
+				
+				for(int j=0; j<teachersActivityTagMaxHoursDailyMaxHours[tc].count(); j++){
+					if(teachersActivityTagMaxHoursDailyActivityTag[tc].at(j)==samc->activityTagIndex){
+						if(pos1==-1){
+							pos1=j;
+						}
+						else{
+							assert(pos2==-1);
+							pos2=j;
+						}
+					}
+				}
+				
+				if(pos1==-1){
+					teachersActivityTagMaxHoursDailyActivityTag[tc].append(samc->activityTagIndex);
+					teachersActivityTagMaxHoursDailyMaxHours[tc].append(samc->maxHoursDaily);
+					teachersActivityTagMaxHoursDailyPercentage[tc].append(samc->weightPercentage);
+				}
+				else{
+					if(teachersActivityTagMaxHoursDailyMaxHours[tc].at(pos1) <= samc->maxHoursDaily
+					 && teachersActivityTagMaxHoursDailyPercentage[tc].at(pos1) >= samc->weightPercentage){
+					 	//do nothing
+					}
+					else if(teachersActivityTagMaxHoursDailyMaxHours[tc].at(pos1) >= samc->maxHoursDaily
+					 && teachersActivityTagMaxHoursDailyPercentage[tc].at(pos1) <= samc->weightPercentage){
+					
+						teachersActivityTagMaxHoursDailyActivityTag[tc][pos1]=samc->activityTagIndex;
+						teachersActivityTagMaxHoursDailyMaxHours[tc][pos1]=samc->maxHoursDaily;
+						teachersActivityTagMaxHoursDailyPercentage[tc][pos1]=samc->weightPercentage;
+					}
+					else{
+						if(pos2==-1){
+							teachersActivityTagMaxHoursDailyActivityTag[tc].append(samc->activityTagIndex);
+							teachersActivityTagMaxHoursDailyMaxHours[tc].append(samc->maxHoursDaily);
+							teachersActivityTagMaxHoursDailyPercentage[tc].append(samc->weightPercentage);
+						}
+						else{
+
+							if(teachersActivityTagMaxHoursDailyMaxHours[tc].at(pos2) <= samc->maxHoursDaily
+							 && teachersActivityTagMaxHoursDailyPercentage[tc].at(pos2) >= samc->weightPercentage){
+							 	//do nothing
+							}
+							else if(teachersActivityTagMaxHoursDailyMaxHours[tc].at(pos2) >= samc->maxHoursDaily
+							 && teachersActivityTagMaxHoursDailyPercentage[tc].at(pos2) <= samc->weightPercentage){
+							
+								teachersActivityTagMaxHoursDailyActivityTag[tc][pos2]=samc->activityTagIndex;
+								teachersActivityTagMaxHoursDailyMaxHours[tc][pos2]=samc->maxHoursDaily;
+								teachersActivityTagMaxHoursDailyPercentage[tc][pos2]=samc->weightPercentage;
+							}
+							else{
+								ok=false;
+	
+								int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+								 GeneratePreTranslate::tr("Cannot optimize for teacher %1, because there are too many constraints"
+								 " of type activity tag max hours daily relating to him, which cannot be compressed in 2 constraints of this type."
+								 " Two constraints max hours can be compressed into a single one if the max hours are lower"
+								 " in the first one and the weight percentage is higher on the first one."
+								 " It is possible to use any number of such constraints for a teacher, but their resultant must"
+								 " be maximum 2 constraints of type activity tag max hours daily.\n\n"
+								 " Example: you are allowed to use 3 constraints: 6 hours 95%, 7 hours 100% and 8 hours 100%,"
+								 " which can be compressed into 2 constraints: 6 hours 95%, 7 hours 100%\n\n"
+								 " Please modify your data accordingly and try again.")
+								 .arg(gt.rules.internalTeachersList[tc]->name),
+								 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
+								 1, 0 );
+
+								if(t==0)
+									return false;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	int navd[MAX_DAYS_PER_WEEK];
+	
+	for(int i=0; i<gt.rules.nInternalTeachers; i++){
+		for(int d=0; d<gt.rules.nDaysPerWeek; d++){
+			navd[d]=0;
+			for(int h=0; h<gt.rules.nHoursPerDay; h++){
+				if(!breakDayHour[d][h] && !teacherNotAvailableDayHour[i][d][h])
+					navd[d]++;
+			}
+		}
+	
+		for(int j=0; j<teachersActivityTagMaxHoursDailyMaxHours[i].count(); j++){
+			int mh=teachersActivityTagMaxHoursDailyMaxHours[i].at(j);
+			double perc=teachersActivityTagMaxHoursDailyPercentage[i].at(j);
+			int at=teachersActivityTagMaxHoursDailyActivityTag[i].at(j);
+			if(perc==100.0){
+				int totalAt=0;
+				foreach(int ai, gt.rules.internalTeachersList[i]->activitiesForTeacher)
+					if(gt.rules.internalActivitiesList[ai].iActivityTagsSet.contains(at))
+						totalAt+=gt.rules.internalActivitiesList[ai].duration;
+						
+				int ava=0;
+				for(int d=0; d<gt.rules.nDaysPerWeek; d++)
+					ava+=min(navd[d], mh);
+					
+				if(ava<totalAt){
+					ok=false;
+					
+					int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+					 GeneratePreTranslate::tr("Cannot optimize for teacher %1, because there is a constraint activity tag %2 max %3 hours daily for it with weight 100\%"
+					 " which cannot be satifisfied, considering the number of available slots (%4) and total duration of activities with this activity tag (%5)"
+					 ". Please correct and try again.", "%2 is the activity tag for this constraint, %3 is the max number of hours daily for this constraint")
+					 .arg(gt.rules.internalTeachersList[i]->name).arg(gt.rules.activityTagsList.at(at)->name).arg(mh).arg(ava).arg(totalAt),
+					 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
+					 1, 0 );
+
+					if(t==0)
+						return false;
+				}
 			}
 		}
 	}
@@ -1764,8 +2223,8 @@ bool computeTeachersActivityTagMaxHoursContinuously()
 							else{
 								ok=false;
 	
-								int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-								 QObject::tr("Cannot optimize for teacher %1, because there are too many constraints"
+								int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+								 GeneratePreTranslate::tr("Cannot optimize for teacher %1, because there are too many constraints"
 								 " of type activity tag max hours continuously relating to him, which cannot be compressed in 2 constraints of this type."
 								 " Two constraints max hours can be compressed into a single one if the max hours are lower"
 								 " in the first one and the weight percentage is higher on the first one."
@@ -1773,10 +2232,9 @@ bool computeTeachersActivityTagMaxHoursContinuously()
 								 " be maximum 2 constraints of type activity tag max hours continuously.\n\n"
 								 " Example: you are allowed to use 3 constraints: 6 hours 95%, 7 hours 100% and 8 hours 100%,"
 								 " which can be compressed into 2 constraints: 6 hours 95%, 7 hours 100%\n\n"
-								 " Please modify your data accordingly and try again."
-								 " For more details, join the mailing list or email the author")
+								 " Please modify your data accordingly and try again.")
 								 .arg(gt.rules.internalTeachersList[tc]->name),
-								 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+								 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 								 1, 0 );
 
 								if(t==0)
@@ -1846,8 +2304,8 @@ bool computeTeachersActivityTagMaxHoursContinuously()
 							else{
 								ok=false;
 	
-								int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-								 QObject::tr("Cannot optimize for teacher %1, because there are too many constraints"
+								int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+								 GeneratePreTranslate::tr("Cannot optimize for teacher %1, because there are too many constraints"
 								 " of type activity tag max hours continuously relating to him, which cannot be compressed in 2 constraints of this type."
 								 " Two constraints max hours can be compressed into a single one if the max hours are lower"
 								 " in the first one and the weight percentage is higher on the first one."
@@ -1855,10 +2313,9 @@ bool computeTeachersActivityTagMaxHoursContinuously()
 								 " be maximum 2 constraints of type activity tag max hours continuously.\n\n"
 								 " Example: you are allowed to use 3 constraints: 6 hours 95%, 7 hours 100% and 8 hours 100%,"
 								 " which can be compressed into 2 constraints: 6 hours 95%, 7 hours 100%\n\n"
-								 " Please modify your data accordingly and try again."
-								 " For more details, join the mailing list or email the author")
+								 " Please modify your data accordingly and try again.")
 								 .arg(gt.rules.internalTeachersList[tc]->name),
-								 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+								 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 								 1, 0 );
 
 								if(t==0)
@@ -1892,12 +2349,12 @@ bool computeTeachersMinHoursDaily()
 			if(tmd->weightPercentage!=100){
 				ok=false;
 
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot optimize, because you have constraint teacher min hours daily for teacher %1 with"
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize, because you have constraint teacher min hours daily for teacher %1 with"
 				 " weight (percentage) below 100. Starting with FET version 5.4.0 it is only possible"
 				 " to use 100% weight for such constraints. Please make weight 100% and try again")
 				 .arg(tmd->teacherName),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 			 	
 				if(t==0)
@@ -1909,13 +2366,13 @@ bool computeTeachersMinHoursDaily()
 			if(tmd->minHoursDaily>gt.rules.nHoursPerDay){
 				ok=false;
 
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot optimize, because you have constraint teacher min hours daily for teacher %1 with"
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize, because you have constraint teacher min hours daily for teacher %1 with"
 				 " %2 min hours daily, and the number of working hours per day is only %3. Please correct and try again")
 				 .arg(tmd->teacherName)
 				 .arg(tmd->minHoursDaily)
 				 .arg(gt.rules.nHoursPerDay),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 			 	
 				if(t==0)
@@ -1935,11 +2392,11 @@ bool computeTeachersMinHoursDaily()
 			if(tmd->weightPercentage!=100){
 				ok=false;
 
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot optimize, because you have constraint teachers min hours daily with"
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize, because you have constraint teachers min hours daily with"
 				 " weight (percentage) below 100. Starting with FET version 5.4.0 it is only possible"
 				 " to use 100% weight for such constraints. Please make weight 100% and try again"),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 			 	
 				if(t==0)
@@ -1951,12 +2408,12 @@ bool computeTeachersMinHoursDaily()
 			if(tmd->minHoursDaily>gt.rules.nHoursPerDay){
 				ok=false;
 
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot optimize, because you have constraint teachers min hours daily with"
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize, because you have constraint teachers min hours daily with"
 				 " %1 min hours daily, and the number of working hours per day is only %2. Please correct and try again")
 				 .arg(tmd->minHoursDaily)
 				 .arg(gt.rules.nHoursPerDay),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 			 	
 				if(t==0)
@@ -1977,15 +2434,15 @@ bool computeTeachersMinHoursDaily()
 			if(nHoursPerTeacher[tc]>0 && teachersMinHoursDailyMinHours[tc]>nHoursPerTeacher[tc]){
 				ok=false;
 
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot optimize, because you have constraint teacher min %1 hours daily for teacher"
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize, because you have constraint teacher min %1 hours daily for teacher"
 				 " %2. This teacher has in total only %3 hours per week, so impossible constraint."
 				 " Please correct and try again")
 				 .arg(teachersMinHoursDailyMinHours[tc])
 				 .arg(gt.rules.internalTeachersList[tc]->name)
 				 .arg(nHoursPerTeacher[tc])
 				 ,
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 			 	
 				if(t==0)
@@ -1995,13 +2452,13 @@ bool computeTeachersMinHoursDaily()
 			if(teachersMinHoursDailyMinHours[tc]<2){
 				ok=false;
 
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot optimize, because you have constraint teacher min %1 hours daily for teacher"
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize, because you have constraint teacher min %1 hours daily for teacher"
 				 " %2. The number of min hours daily should be at least 2, to make a non-trivial constraint. Please correct and try again")
 				 .arg(teachersMinHoursDailyMinHours[tc])
 				 .arg(gt.rules.internalTeachersList[tc]->name)
 				 ,
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 			 	
 				if(t==0)
@@ -2010,6 +2467,216 @@ bool computeTeachersMinHoursDaily()
 		}
 	}
 
+	return ok;
+}
+
+//must be after min hours for teachers
+bool computeTeachersMinDaysPerWeek()
+{
+	bool ok=true;
+	
+	for(int i=0; i<gt.rules.nInternalTeachers; i++){
+		teachersMinDaysPerWeekMinDays[i]=-1;
+		teachersMinDaysPerWeekPercentages[i]=-1;
+	}
+	
+	for(int i=0; i<gt.rules.nInternalTimeConstraints; i++){
+		if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_TEACHER_MIN_DAYS_PER_WEEK){
+			ConstraintTeacherMinDaysPerWeek* tmd=(ConstraintTeacherMinDaysPerWeek*)gt.rules.internalTimeConstraintsList[i];
+
+			//////////
+			if(tmd->weightPercentage!=100){
+				ok=false;
+
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize, because you have constraint teacher min days per week for teacher %1 with"
+				 " weight (percentage) below 100. Please make weight 100% and try again")
+				 .arg(tmd->teacherName),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
+				 1, 0 );
+			 	
+				if(t==0)
+					return false;
+			}
+			//////////
+
+			//////////
+			if(tmd->minDaysPerWeek>gt.rules.nDaysPerWeek){
+				ok=false;
+
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize, because you have constraint teacher min days per week for teacher %1 with"
+				 " %2 min days per week, and the number of working days per week is only %3. Please correct and try again")
+				 .arg(tmd->teacherName)
+				 .arg(tmd->minDaysPerWeek)
+				 .arg(gt.rules.nDaysPerWeek),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
+				 1, 0 );
+			 	
+				if(t==0)
+					return false;
+			}
+			//////////
+
+			if(teachersMinDaysPerWeekMinDays[tmd->teacher_ID]==-1 || teachersMinDaysPerWeekMinDays[tmd->teacher_ID]<tmd->minDaysPerWeek){
+				teachersMinDaysPerWeekMinDays[tmd->teacher_ID]=tmd->minDaysPerWeek;
+				teachersMinDaysPerWeekPercentages[tmd->teacher_ID]=100;
+			}
+		}
+		else if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_TEACHERS_MIN_DAYS_PER_WEEK){
+			ConstraintTeachersMinDaysPerWeek* tmd=(ConstraintTeachersMinDaysPerWeek*)gt.rules.internalTimeConstraintsList[i];
+
+			//////////
+			if(tmd->weightPercentage!=100){
+				ok=false;
+
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize, because you have constraint teachers min days per week with weight"
+				 " (percentage) below 100. Please make weight 100% and try again"),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
+				 1, 0 );
+			 	
+				if(t==0)
+					return false;
+			}
+			//////////
+
+			//////////
+			if(tmd->minDaysPerWeek>gt.rules.nDaysPerWeek){
+				ok=false;
+
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize, because you have constraint teachers min days per week with"
+				 " %1 min days per week, and the number of working days per week is only %2. Please correct and try again")
+				 .arg(tmd->minDaysPerWeek)
+				 .arg(gt.rules.nDaysPerWeek),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
+				 1, 0 );
+			 	
+				if(t==0)
+					return false;
+			}
+			//////////
+			for(int tch=0; tch<gt.rules.nInternalTeachers; tch++){
+				if(teachersMinDaysPerWeekMinDays[tch]==-1 || teachersMinDaysPerWeekMinDays[tch]<tmd->minDaysPerWeek)
+					teachersMinDaysPerWeekMinDays[tch]=tmd->minDaysPerWeek;
+					teachersMinDaysPerWeekPercentages[tch]=100;
+			}
+		}
+	}
+	
+	for(int tc=0; tc<gt.rules.nInternalTeachers; tc++){
+		if(teachersMinDaysPerWeekMinDays[tc]>=0){
+			int md=teachersMinDaysPerWeekMinDays[tc];
+			if(md>gt.rules.internalTeachersList[tc]->activitiesForTeacher.count()){
+				ok=false;
+
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize because for teacher %1 you have min days per week %2 and he has only %3 activities - impossible."
+				 " Please correct and try again.")
+				 .arg(gt.rules.internalTeachersList[tc]->name)
+				 .arg(md)
+				 .arg(gt.rules.internalTeachersList[tc]->activitiesForTeacher.count())
+				 ,
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
+				 1, 0 );
+			 	
+				if(t==0)
+					return false;
+			}
+			
+			if(teachersMinHoursDailyMinHours[tc]>=0){
+				int mh=teachersMinHoursDailyMinHours[tc];
+				
+				if(md*mh>nHoursPerTeacher[tc]){
+					ok=false;
+
+					int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+					 GeneratePreTranslate::tr("Cannot optimize because for teacher %1 you have min days per week %2 and min hours daily %3"
+					 " and he has only %4 working hours - impossible. Please correct and try again.")
+					 .arg(gt.rules.internalTeachersList[tc]->name)
+					 .arg(md)
+					 .arg(mh)
+					 .arg(nHoursPerTeacher[tc])
+					 ,
+					 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
+					 1, 0 );
+			 	
+					if(t==0)
+						return false;
+				}
+			}
+		}
+	}
+
+
+	for(int tc=0; tc<gt.rules.nInternalTeachers; tc++){
+		if(teachersMinDaysPerWeekMinDays[tc]>=0){
+			if(teachersMaxDaysPerWeekMaxDays[tc]>=0){
+				if(teachersMaxDaysPerWeekMaxDays[tc]<teachersMinDaysPerWeekMinDays[tc]){
+					ok=false;
+
+					int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+					 GeneratePreTranslate::tr("Cannot optimize because for teacher %1 you have min days per week %2 > max days per week %3"
+					 " - impossible (min days must be <= max days). Please correct and try again.")
+					 .arg(gt.rules.internalTeachersList[tc]->name)
+					 .arg(teachersMinDaysPerWeekMinDays[tc])
+					 .arg(teachersMaxDaysPerWeekMaxDays[tc])
+					 ,
+					 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
+					 1, 0 );
+			 	
+					if(t==0)
+						return false;
+				}
+			}
+		
+			int med=1; //minimum each day = 1 hour
+			if(teachersMinHoursDailyMinHours[tc]>=0)
+				med=teachersMinHoursDailyMinHours[tc];
+				
+			int navdays=0;
+			
+			for(int d=0; d<gt.rules.nDaysPerWeek; d++){
+				int navhours=0;
+				for(int h=0; h<gt.rules.nHoursPerDay; h++)
+					if(!breakDayHour[d][h] && !teacherNotAvailableDayHour[tc][d][h])
+						navhours++;
+				if(navhours>=med)
+					navdays++;
+			}
+			
+			if(navdays<teachersMinDaysPerWeekMinDays[tc]){
+				ok=false;
+				
+				QString s;
+				
+				if(teachersMinHoursDailyMinHours[tc]>=0){
+					s=GeneratePreTranslate::tr("Cannot optimize because for teacher %1 you have min days per week %2 and only %3"
+					 " available days considering breaks and not available and min hours daily for this teacher. Please correct and try again.")
+					 .arg(gt.rules.internalTeachersList[tc]->name)
+					 .arg(teachersMinDaysPerWeekMinDays[tc])
+					 .arg(navdays);
+				}
+				else{
+					s=GeneratePreTranslate::tr("Cannot optimize because for teacher %1 you have min days per week %2 and only %3"
+					 " available days considering breaks and not available for this teacher. Please correct and try again.")
+					 .arg(gt.rules.internalTeachersList[tc]->name)
+					 .arg(teachersMinDaysPerWeekMinDays[tc])
+					 .arg(navdays);
+				}
+
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"), s ,
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
+				 1, 0 );
+		 	
+				if(t==0)
+					return false;
+			}
+		}
+	}
+
+	
 	return ok;
 }
 
@@ -2045,7 +2712,7 @@ void computeActivitiesNotOverlapping()
 		}
 }
 
-bool computeActivitiesSameStartingTime()
+bool computeActivitiesSameStartingTime(QHash<int, int> & reprSameStartingTime, QHash<int, QSet<int> > & reprSameActivitiesSet)
 {
 	bool reportunder100=true;
 	bool report100=true;
@@ -2074,16 +2741,16 @@ bool computeActivitiesSameStartingTime()
 						
 						s+=sst->getDetailedDescription(gt.rules);
 						s+="\n";
-						s+=QObject::tr("The constraint is impossible to respect, because there are the activities with id-s %1 and %2 which "
-						 "conflict one with another, because they have common students sets or teachers. FET will allow you to continue, "
+						s+=GeneratePreTranslate::tr("The constraint is impossible to respect, because there are the activities with id-s %1 and %2 which "
+						 "conflict one with another, because they have common students sets or teachers or must be not overlapping. FET will allow you to continue, "
 						 "because the weight of this constraint is below 100.0%, "
 						 "but anyway most probably you have made a mistake in this constraint, "
 						 "so it is recommended to modify it.")
 						 .arg(gt.rules.internalActivitiesList[ai1].id)
 						 .arg(gt.rules.internalActivitiesList[ai2].id);
 					
-						int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-						 s, QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+						int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+						 s, GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 						 1, 0 );
 				 	
 						if(t==0)
@@ -2094,14 +2761,14 @@ bool computeActivitiesSameStartingTime()
 						
 						s+=sst->getDetailedDescription(gt.rules);
 						s+="\n";
-						s+=QObject::tr("The constraint is impossible to respect, because there are the activities with id-s %1 and %2 which "
-						 "conflict one with another, because they have common students sets or teachers. The weight of this constraint is 100.0%, "
+						s+=GeneratePreTranslate::tr("The constraint is impossible to respect, because there are the activities with id-s %1 and %2 which "
+						 "conflict one with another, because they have common students sets or teachers or must be not overlapping. The weight of this constraint is 100.0%, "
 						 "so your timetable is impossible. Please correct this constraint.")
 						 .arg(gt.rules.internalActivitiesList[ai1].id)
 						 .arg(gt.rules.internalActivitiesList[ai2].id);
 					
-						int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-						 s, QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+						int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+						 s, GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 						 1, 0 );
 				 	
 						if(t==0)
@@ -2135,6 +2802,92 @@ bool computeActivitiesSameStartingTime()
 			}
 		}
 		
+		
+	//added June 2009, FET-5.10.0
+	bool reportIndirect=true;
+	
+	QMultiHash<int, int> adjMatrix;
+	
+	for(int i=0; i<gt.rules.nInternalTimeConstraints; i++){
+		if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME
+		 &&gt.rules.internalTimeConstraintsList[i]->weightPercentage==100.0){
+			ConstraintActivitiesSameStartingTime* sst=(ConstraintActivitiesSameStartingTime*)gt.rules.internalTimeConstraintsList[i];
+			
+			for(int i=1; i<sst->_n_activities; i++){
+				adjMatrix.insert(sst->_activities[0], sst->_activities[i]);
+				adjMatrix.insert(sst->_activities[i], sst->_activities[0]);
+			}
+		}
+	}
+		
+	QHash<int, int> repr;
+	//repr.clear();
+	
+	QQueue<int> queue;
+	
+	for(int i=0; i<gt.rules.nInternalActivities; i++){
+		int start=i;
+		
+		if(repr.value(start, -1)==-1){ //not visited
+			repr.insert(start, start);
+			queue.enqueue(start);
+			while(!queue.isEmpty()){
+				int crtHead=queue.dequeue();
+				assert(repr.value(crtHead, -1)==start);
+				QList<int> neighList=adjMatrix.values(crtHead);
+				foreach(int neigh, neighList){
+					if(repr.value(neigh, -1)==-1){
+						queue.enqueue(neigh);
+						repr.insert(neigh, start);
+					}
+					else{
+						assert(repr.value(neigh, -1)==start);
+					}
+				}
+			}
+		}
+	}
+
+	for(int i=0; i<gt.rules.nInternalActivities; i++)
+		for(int j=i+1; j<gt.rules.nInternalActivities; j++)
+			if(repr.value(i) == repr.value(j)){
+				if(activitiesConflictingPercentage[i][j]==100){
+					oktocontinue=false;
+					
+					if(reportIndirect){
+						QString s=GeneratePreTranslate::tr("You have a set of impossible constraints activities same starting time, considering all the indirect links between"
+						 " activities same starting time constraints");
+						s+="\n\n";
+						s+=GeneratePreTranslate::tr("The activities with ids %1 and %2 must be simultaneous (request determined indirectly), but they have common teachers and/or students sets or must be not overlapping")
+						 .arg(gt.rules.internalActivitiesList[i].id).arg(gt.rules.internalActivitiesList[j].id);
+					
+						int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+						 s, GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
+						 1, 0 );
+				 	
+						if(t==0)
+							reportIndirect=false;
+					}
+				}
+			}
+	///////////end added 5.10.0, June 2009
+	
+	QHash<int, QSet<int> > hashSet;
+	
+	for(int i=0; i<gt.rules.nInternalActivities; i++){
+		assert(repr.contains(i));
+		int r=repr.value(i);
+		hashSet[r].insert(i); //faster
+		/*QSet<int> s;
+		if(hashSet.contains(r))
+			s=hashSet.value(r);
+		s.insert(i);
+		hashSet.insert(r, s);*/
+	}
+	
+	reprSameStartingTime=repr;
+	reprSameActivitiesSet=hashSet;
+
 	return oktocontinue;
 }
 
@@ -2232,14 +2985,14 @@ bool computeNHoursPerTeacher()
 		if(nHoursPerTeacher[i]>gt.rules.nHoursPerWeek){
 			ok=false;
 
-			int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-			 QObject::tr("Cannot optimize for teacher %1, because the number of hours for teacher is %2 "
+			int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+			 GeneratePreTranslate::tr("Cannot optimize for teacher %1, because the number of hours for teacher is %2 "
 			  " and you have only %3 days x %4 hours in a week.")
 			 .arg(gt.rules.internalTeachersList[i]->name)
 			 .arg(nHoursPerTeacher[i])
 			 .arg(gt.rules.nDaysPerWeek)
 			 .arg(gt.rules.nHoursPerDay),
-			 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+			 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 			 1, 0 );
 		 	
 			if(t==0)
@@ -2255,14 +3008,14 @@ bool computeNHoursPerTeacher()
 		if(nHoursPerTeacher[i]>freeSlots){
 			ok=false;
 
-			int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-			 QObject::tr("Cannot optimize for teacher %1, because the number of hours for teacher is %2 "
+			int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+			 GeneratePreTranslate::tr("Cannot optimize for teacher %1, because the number of hours for teacher is %2 "
 			  " and you have only %3 free slots from constraints teacher not available and/or break. Maybe you inputted wrong constraints teacher"
 			  " not available or break or the number of hours per week is less because of a misunderstanding")
 			 .arg(gt.rules.internalTeachersList[i]->name)
 			 .arg(nHoursPerTeacher[i])
 			 .arg(freeSlots),
-			 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+			 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 			 1, 0 );
 		 	
 			if(t==0)
@@ -2277,15 +3030,15 @@ bool computeNHoursPerTeacher()
 			if(nHoursPerTeacher[i] > nd*gt.rules.nHoursPerDay){
 				ok=false;
 
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot optimize for teacher %1, because the number of hours for teacher is %2"
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize for teacher %1, because the number of hours for teacher is %2"
 				  " and you have only %3 allowed days from constraint teacher max days per week x %4 hours in a day."
 				  " Probably there is an error in your data")
 				 .arg(gt.rules.internalTeachersList[i]->name)
 				 .arg(nHoursPerTeacher[i])
 				 .arg(nd)
 				 .arg(gt.rules.nHoursPerDay),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 		 	
 				if(t==0)
@@ -2334,7 +3087,7 @@ bool computeNHoursPerTeacher()
 			ok=false;
 				
 			QString s;
-			s=QObject::tr("Cannot optimize for teacher %1, because of too constrained"
+			s=GeneratePreTranslate::tr("Cannot optimize for teacher %1, because of too constrained"
 			 " teacher max days per week, teacher not available and/or breaks."
 			 " The number of total hours for this teacher is"
 			 " %2 and the number of available slots is, considering max days per week and all other constraints, %3.")
@@ -2342,11 +3095,10 @@ bool computeNHoursPerTeacher()
 			 .arg(nHoursPerTeacher[tc])
 			 .arg(total);
 			s+="\n\n";
-			s+=QObject::tr("Please modify your data accordingly and try again"
-			 ". For more details, join the mailing list or email the author");
+			s+=GeneratePreTranslate::tr("Please modify your data accordingly and try again");
 	
-			int t=QMessageBox::warning(NULL, QObject::tr("FET warning"), s,
-			 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+			int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"), s,
+			 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 			 1, 0 );
 				 	
 			if(t==0)
@@ -2373,10 +3125,10 @@ bool computeTeachersMaxGapsPerWeekPercentage()
 			if(tg->weightPercentage!=100){
 				ok=false;
 
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot optimize, because you have constraint teachers max gaps per week with"
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize, because you have constraint teachers max gaps per week with"
 				 " weight (percentage) below 100. Please make weight 100% and try again"),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 			 	
 				if(t==0)
@@ -2390,11 +3142,11 @@ bool computeTeachersMaxGapsPerWeekPercentage()
 			if(tg->weightPercentage!=100){
 				ok=false;
 
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot optimize, because you have constraint teacher max gaps per week with"
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize, because you have constraint teacher max gaps per week with"
 				 " weight (percentage) below 100 for teacher %1. Please make weight 100% and try again")
 				 .arg(tg->teacherName),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 			 	
 				if(t==0)
@@ -2419,15 +3171,14 @@ bool computeTeachersMaxGapsPerWeekPercentage()
 				else{
 					ok=false;
 
-					int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-					 QObject::tr("Cannot optimize for teacher %1, because there are two constraints"
+					int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+					 GeneratePreTranslate::tr("Cannot optimize for teacher %1, because there are two constraints"
 					 " of type max gaps per week relating to him, and the weight percentage is higher on the constraint"
 					 " with more gaps allowed. You are allowed only to have for each teacher"
 					 " the most important constraint with maximum weight percentage and minimum gaps allowed"
-					 ". Please modify your data accordingly and try again"
-					 ". For more details, join the mailing list or email the author")
+					 ". Please modify your data accordingly and try again")
 					 .arg(gt.rules.internalTeachersList[j]->name),
-					 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+					 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 					 1, 0 );
 			 	
 					if(t==0)
@@ -2450,15 +3201,14 @@ bool computeTeachersMaxGapsPerWeekPercentage()
 			else{
 				ok=false;
 
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot optimize for teacher %1, because there are two constraints"
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize for teacher %1, because there are two constraints"
 				 " of type max gaps per week relating to him, and the weight percentage is higher on the constraint"
 				 " with more gaps allowed. You are allowed only to have for each teacher"
 				 " the most important constraint with maximum weight percentage and minimum gaps allowed"
-				 ". Please modify your data accordingly and try again"
-				 ". For more details, join the mailing list or email the author")
+				 ". Please modify your data accordingly and try again")
 				 .arg(gt.rules.internalTeachersList[j]->name),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 		 	
 				if(t==0)
@@ -2486,10 +3236,10 @@ bool computeTeachersMaxGapsPerDayPercentage()
 			if(tg->weightPercentage!=100){
 				ok=false;
 
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot optimize, because you have constraint teachers max gaps per day with"
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize, because you have constraint teachers max gaps per day with"
 				 " weight (percentage) below 100. Please make weight 100% and try again"),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 			 	
 				if(t==0)
@@ -2503,11 +3253,11 @@ bool computeTeachersMaxGapsPerDayPercentage()
 			if(tg->weightPercentage!=100){
 				ok=false;
 
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot optimize, because you have constraint teacher max gaps per day with"
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize, because you have constraint teacher max gaps per day with"
 				 " weight (percentage) below 100 for teacher %1. Please make weight 100% and try again")
 				 .arg(tg->teacherName),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 			 	
 				if(t==0)
@@ -2532,15 +3282,14 @@ bool computeTeachersMaxGapsPerDayPercentage()
 				else{
 					ok=false;
 
-					int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-					 QObject::tr("Cannot optimize for teacher %1, because there are two constraints"
+					int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+					 GeneratePreTranslate::tr("Cannot optimize for teacher %1, because there are two constraints"
 					 " of type max gaps per day relating to him, and the weight percentage is higher on the constraint"
 					 " with more gaps allowed. You are allowed only to have for each teacher"
 					 " the most important constraint with maximum weight percentage and minimum gaps allowed"
-					 ". Please modify your data accordingly and try again"
-					 ". For more details, join the mailing list or email the author")
+					 ". Please modify your data accordingly and try again")
 					 .arg(gt.rules.internalTeachersList[j]->name),
-					 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+					 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 					 1, 0 );
 			 	
 					if(t==0)
@@ -2563,15 +3312,14 @@ bool computeTeachersMaxGapsPerDayPercentage()
 			else{
 				ok=false;
 
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot optimize for teacher %1, because there are two constraints"
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize for teacher %1, because there are two constraints"
 				 " of type max gaps per day relating to him, and the weight percentage is higher on the constraint"
 				 " with more gaps allowed. You are allowed only to have for each teacher"
 				 " the most important constraint with maximum weight percentage and minimum gaps allowed"
-				 ". Please modify your data accordingly and try again"
-				 ". For more details, join the mailing list or email the author")
+				 ". Please modify your data accordingly and try again")
 				 .arg(gt.rules.internalTeachersList[j]->name),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 		 	
 				if(t==0)
@@ -2604,14 +3352,14 @@ bool computeNHoursPerSubgroup()
 		if(nHoursPerSubgroup[i]>gt.rules.nHoursPerWeek){
 			ok=false;
 
-			int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-			 QObject::tr("Cannot optimize for subgroup %1, because the number of hours for subgroup is %2 "
+			int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+			 GeneratePreTranslate::tr("Cannot optimize for subgroup %1, because the number of hours for subgroup is %2 "
 			  " and you have only %3 days x %4 hours in a week.")
 			 .arg(gt.rules.internalSubgroupsList[i]->name)
 			 .arg(nHoursPerSubgroup[i])
 			 .arg(gt.rules.nDaysPerWeek)
 			 .arg(gt.rules.nHoursPerDay),
-			 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+			 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 			 1, 0 );
 		 	
 			if(t==0)
@@ -2627,14 +3375,14 @@ bool computeNHoursPerSubgroup()
 		if(nHoursPerSubgroup[i]>freeSlots){
 			ok=false;
 
-			int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-			 QObject::tr("Cannot optimize for subgroup %1, because the number of hours for subgroup is %2 "
+			int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+			 GeneratePreTranslate::tr("Cannot optimize for subgroup %1, because the number of hours for subgroup is %2 "
 			  " and you have only %3 free slots from constraints students set not available and/or break. Maybe you inputted wrong constraints students set"
 			  " not available or break or the number of hours per week is less because of a misunderstanding")
 			 .arg(gt.rules.internalSubgroupsList[i]->name)
 			 .arg(nHoursPerSubgroup[i])
 			 .arg(freeSlots),
-			 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+			 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 			 1, 0 );
 		 	
 			if(t==0)
@@ -2661,36 +3409,75 @@ bool computeMaxDaysPerWeekForTeachers()
 			if(tn->weightPercentage!=100){
 				ok=false;
 
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot optimize, because you have constraint teacher max days per week with"
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize, because you have constraint teacher max days per week with"
 				 " weight (percentage) below 100 for teacher %1. Starting with FET version 5.2.17 it is only possible"
 				 " to use 100% weight for such constraints. Please make weight 100% and try again")
 				 .arg(tn->teacherName),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 			 	
 				if(t==0)
 					return false;
 			}
 
-			if(teachersMaxDaysPerWeekMaxDays[tn->teacher_ID]==-1){
+			if(teachersMaxDaysPerWeekMaxDays[tn->teacher_ID]==-1 ||
+			 (teachersMaxDaysPerWeekMaxDays[tn->teacher_ID]>=0 && teachersMaxDaysPerWeekMaxDays[tn->teacher_ID] > tn->maxDaysPerWeek)){
 				teachersMaxDaysPerWeekMaxDays[tn->teacher_ID]=tn->maxDaysPerWeek;
 				teachersMaxDaysPerWeekWeightPercentages[tn->teacher_ID]=tn->weightPercentage;
 			}
-			else{
+			/*else{
 				ok=false;
 				
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot optimize for teacher %1, because it has at least two constraints max days per week"
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize for teacher %1, because it has at least two constraints max days per week"
 				 ". Please modify your data correspondingly (leave maximum one constraint of type"
 				 " constraint teacher max days per week for each teacher) and try again")
 				 .arg(gt.rules.internalTeachersList[tn->teacher_ID]->name),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 			 
 				if(t==0)
 					break;
+			}*/
+		}
+		else if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_TEACHERS_MAX_DAYS_PER_WEEK){
+			ConstraintTeachersMaxDaysPerWeek* tn=(ConstraintTeachersMaxDaysPerWeek*)gt.rules.internalTimeConstraintsList[i];
+
+			if(tn->weightPercentage!=100){
+				ok=false;
+
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize, because you have constraint teachers max days per week with"
+				 " weight (percentage) below 100. Please make weight 100% and try again"),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
+				 1, 0 );
+			 	
+				if(t==0)
+					return false;
 			}
+			
+			for(int t=0; t<gt.rules.nInternalTeachers; t++){
+				if(teachersMaxDaysPerWeekMaxDays[t]==-1 ||
+				 (teachersMaxDaysPerWeekMaxDays[t]>=0 && teachersMaxDaysPerWeekMaxDays[t] > tn->maxDaysPerWeek)){
+					teachersMaxDaysPerWeekMaxDays[t]=tn->maxDaysPerWeek;
+					teachersMaxDaysPerWeekWeightPercentages[t]=tn->weightPercentage;
+				}
+			}
+			/*else{
+				ok=false;
+				
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize for teacher %1, because it has at least two constraints max days per week"
+				 ". Please modify your data correspondingly (leave maximum one constraint of type"
+				 " constraint teacher max days per week for each teacher) and try again")
+				 .arg(gt.rules.internalTeachersList[tn->teacher_ID]->name),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
+				 1, 0 );
+			 
+				if(t==0)
+					break;
+			}*/
 		}
 	}
 	
@@ -2798,13 +3585,13 @@ bool computeSubgroupsEarlyAndMaxGapsPercentages() //st no gaps & early - part 2
 			oksubgroup=false;
 			ok=false;
 
-			int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-			 QObject::tr("Cannot optimize for subgroup %1, because you have a max gaps constraint"
+			int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+			 GeneratePreTranslate::tr("Cannot optimize for subgroup %1, because you have a max gaps constraint"
 			 " with weight percentage less than 100%. Currently, the algorithm can only"
 			 " optimize with not existing constraint max gaps or existing with 100% weight for it"
 			 ". Please modify your data correspondingly and try again")
 			 .arg(gt.rules.internalSubgroupsList[i]->name),
-			 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+			 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 			 1, 0 );
 			 
 			if(t==0)
@@ -2814,13 +3601,13 @@ bool computeSubgroupsEarlyAndMaxGapsPercentages() //st no gaps & early - part 2
 			oksubgroup=false;
 			ok=false;
 
-			int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-			 QObject::tr("Cannot optimize for subgroup %1, because you have an early max beginnings at second hour constraint"
+			int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+			 GeneratePreTranslate::tr("Cannot optimize for subgroup %1, because you have an early max beginnings at second hour constraint"
 			 " with weight percentage less than 100%. Currently, the algorithm can only"
 			 " optimize with not existing constraint early m.b.a.s.h. or existing with 100% weight for it"
 			 ". Please modify your data correspondingly and try again")
 			 .arg(gt.rules.internalSubgroupsList[i]->name),
-			 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+			 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 			 1, 0 );
 			 
 			if(t==0)
@@ -2830,14 +3617,14 @@ bool computeSubgroupsEarlyAndMaxGapsPercentages() //st no gaps & early - part 2
 			oksubgroup=false;
 			ok=false;
 
-			int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-			 QObject::tr("Cannot optimize for subgroup %1, because a students early max beginnings at second hour constraint"
+			int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+			 GeneratePreTranslate::tr("Cannot optimize for subgroup %1, because a students early max beginnings at second hour constraint"
 			 " exists for this subgroup, and you have not 'no gaps' requirements for this subgroup. "
 			 "The algorithm can 1. optimize with 'early' and 'no gaps'"
 			 " having the same weight percentage or 2. only 'no gaps' optimization"
 			 " without 'early'. Please modify your data correspondingly and try again")
 			 .arg(gt.rules.internalSubgroupsList[i]->name),
-			 QObject::tr("Skip rest of early - no gaps problems"), QObject::tr("See next incompatibility no gaps - early"), QString(),
+			 GeneratePreTranslate::tr("Skip rest of early - no gaps problems"), GeneratePreTranslate::tr("See next incompatibility no gaps - early"), QString(),
 			 1, 0 );
 			 
 			if(t==0)
@@ -2848,8 +3635,8 @@ bool computeSubgroupsEarlyAndMaxGapsPercentages() //st no gaps & early - part 2
 		 	oksubgroup=false;
 			ok=false;
 
-			int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-			 QObject::tr("Cannot optimize for subgroup %1, because early max beginnings at second hour constraint"
+			int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+			 GeneratePreTranslate::tr("Cannot optimize for subgroup %1, because early max beginnings at second hour constraint"
 			 " has weight percentage %2, and 'no gaps' constraint has weight percentage %3."
 			 ". The algorithm can:"
 			 "\n1: Optimize with 'early' and 'no gaps' having the same weight percentage or"
@@ -2858,7 +3645,7 @@ bool computeSubgroupsEarlyAndMaxGapsPercentages() //st no gaps & early - part 2
 			 .arg(gt.rules.internalSubgroupsList[i]->name)
 			 .arg(subgroupsEarlyMaxBeginningsAtSecondHourPercentage[i]).
 			 arg(subgroupsNoGapsPercentage[i]),
-			 QObject::tr("Skip rest of early - no gaps problems"), QObject::tr("See next incompatibility no gaps - early"), QString(),
+			 GeneratePreTranslate::tr("Skip rest of early - no gaps problems"), GeneratePreTranslate::tr("See next incompatibility no gaps - early"), QString(),
 			 1, 0 );
 			 
 			if(t==0)
@@ -2870,15 +3657,15 @@ bool computeSubgroupsEarlyAndMaxGapsPercentages() //st no gaps & early - part 2
 		 	oksubgroup=false;
 			ok=false;
 
-			int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-			 QObject::tr("Cannot optimize for subgroup %1, because early max beginnings at second hour constraint"
+			int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+			 GeneratePreTranslate::tr("Cannot optimize for subgroup %1, because early max beginnings at second hour constraint"
 			 " has max beginnings at second hour %2, and the number of days per week is %3 which is less. It must be that the number of"
 			 " days per week must be greater or equal with the max beginnings at second hour\n"
 			 "Please modify your data correspondingly and try again")
 			 .arg(gt.rules.internalSubgroupsList[i]->name)
 			 .arg(subgroupsEarlyMaxBeginningsAtSecondHourMaxBeginnings[i]).
 			 arg(gt.rules.nDaysPerWeek),
-			 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+			 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 			 1, 0 );
 			 
 			if(t==0)
@@ -2887,6 +3674,87 @@ bool computeSubgroupsEarlyAndMaxGapsPercentages() //st no gaps & early - part 2
 		
 		if(!oksubgroup)
 			ok=false;
+	}
+	
+	return ok;
+}
+
+bool computeSubgroupsMaxGapsPerDayPercentages()
+{
+	haveStudentsMaxGapsPerDay=false;
+
+	for(int i=0; i<gt.rules.nInternalSubgroups; i++){
+		subgroupsMaxGapsPerDayPercentage[i]=-1;
+		subgroupsMaxGapsPerDayMaxGaps[i]=-1;
+	}
+
+	for(int i=0; i<gt.rules.nInternalTimeConstraints; i++){
+		if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_STUDENTS_MAX_GAPS_PER_DAY){
+			haveStudentsMaxGapsPerDay=true;
+			ConstraintStudentsMaxGapsPerDay* sg=(ConstraintStudentsMaxGapsPerDay*) gt.rules.internalTimeConstraintsList[i];
+			for(int j=0; j<gt.rules.nInternalSubgroups; j++){ //weight is 100% for all of them
+				if(subgroupsMaxGapsPerDayPercentage[j] < sg->weightPercentage)
+					subgroupsMaxGapsPerDayPercentage[j] = sg->weightPercentage;
+				if(subgroupsMaxGapsPerDayMaxGaps[j]==-1 || subgroupsMaxGapsPerDayMaxGaps[j] > sg->maxGaps){
+					subgroupsMaxGapsPerDayMaxGaps[j] = sg->maxGaps;
+				}
+			}
+		}
+
+		if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_STUDENTS_SET_MAX_GAPS_PER_DAY){
+			haveStudentsMaxGapsPerDay=true;
+			ConstraintStudentsSetMaxGapsPerDay* sg=(ConstraintStudentsSetMaxGapsPerDay*) gt.rules.internalTimeConstraintsList[i];
+			for(int j=0; j<sg->iSubgroupsList.count(); j++){
+				int s=sg->iSubgroupsList.at(j);
+				
+				if(subgroupsMaxGapsPerDayPercentage[s] < sg->weightPercentage)
+					subgroupsMaxGapsPerDayPercentage[s] = sg->weightPercentage;
+				if(subgroupsMaxGapsPerDayMaxGaps[s]==-1 || subgroupsMaxGapsPerDayMaxGaps[s] > sg->maxGaps){
+					subgroupsMaxGapsPerDayMaxGaps[s] = sg->maxGaps;
+				}
+			}
+		}
+	}
+	
+	bool ok=true;
+	for(int i=0; i<gt.rules.nInternalSubgroups; i++){
+		assert((subgroupsMaxGapsPerDayPercentage[i]==-1 &&
+		 subgroupsMaxGapsPerDayMaxGaps[i]==-1) ||
+		 (subgroupsMaxGapsPerDayPercentage[i]>=0 &&
+		 subgroupsMaxGapsPerDayMaxGaps[i]>=0));
+	
+		bool oksubgroup=true;
+
+		if(subgroupsMaxGapsPerDayPercentage[i]>=0 && subgroupsMaxGapsPerDayPercentage[i]!=100){
+			oksubgroup=false;
+			ok=false;
+
+			int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+			 GeneratePreTranslate::tr("Cannot optimize for subgroup %1, because you have a max gaps constraint"
+			 " with weight percentage less than 100%. Currently, the algorithm can only"
+			 " optimize with not existing constraint max gaps or existing with 100% weight for it"
+			 ". Please modify your data correspondingly and try again")
+			 .arg(gt.rules.internalSubgroupsList[i]->name),
+			 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
+			 1, 0 );
+			 
+			if(t==0)
+				break;
+		}
+
+		if(!oksubgroup)
+			ok=false;
+	}
+
+	for(int i=0; i<gt.rules.nInternalSubgroups; i++){
+		if(subgroupsMaxGapsPerDayMaxGaps[i]>=0){
+			int mgw=gt.rules.nDaysPerWeek*subgroupsMaxGapsPerDayMaxGaps[i];
+			assert(mgw>=0);
+			if(subgroupsMaxGapsPerWeekMaxGaps[i]==-1 || (subgroupsMaxGapsPerWeekMaxGaps[i]>=0 && subgroupsMaxGapsPerWeekMaxGaps[i]>mgw)){
+				subgroupsMaxGapsPerWeekMaxGaps[i]=mgw;
+				subgroupsMaxGapsPerWeekPercentage[i]=100.0;
+			}
+		}
 	}
 	
 	return ok;
@@ -2915,9 +3783,22 @@ bool computeNotAllowedTimesPercentages()
 			for(int k=0; k<gt.rules.nHoursPerDay; k++)
 				teacherNotAvailableDayHour[i][j][k]=false;	
 	
-	for(int i=0; i<gt.rules.nInternalActivities; i++)
+	//old code:
+	/*for(int i=0; i<gt.rules.nInternalActivities; i++)
 		for(int j=0; j<gt.rules.nHoursPerWeek; j++)
-			notAllowedTimesPercentages[i][j]=-1;
+			notAllowedTimesPercentages[i][j]=-1;*/
+			
+	//improvement by Volker Dirr (late activities):
+	for(int i=0; i<gt.rules.nInternalActivities; i++){
+		Activity* act=&gt.rules.internalActivitiesList[i];
+		for(int j=0; j<gt.rules.nHoursPerWeek; j++){
+			int h=j/gt.rules.nDaysPerWeek;
+			if(h+act->duration <= gt.rules.nHoursPerDay)
+				notAllowedTimesPercentages[i][j]=-1;
+			else
+				notAllowedTimesPercentages[i][j]=100;
+		}
+	}
 
 	for(int i=0; i<gt.rules.nInternalTimeConstraints; i++){
 			//TEACHER not available
@@ -2943,8 +3824,8 @@ bool computeNotAllowedTimesPercentages()
 				if(tn->weightPercentage!=100){
 					ok=false;
 
-					QMessageBox::warning(NULL, QObject::tr("FET warning"),
-					 QObject::tr("Cannot optimize, because you have constraints of type "
+					QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+					 GeneratePreTranslate::tr("Cannot optimize, because you have constraints of type "
 					 "teacher not available with weight percentage less than 100\% for teacher %1. Currently, FET can only optimize with "
 					 "constraints teacher not available with 100\% weight (or no constraint). Please "
 					 "modify your data accordingly and try again.").arg(tn->teacher));
@@ -2989,8 +3870,8 @@ bool computeNotAllowedTimesPercentages()
 				if(sn->weightPercentage!=100){
 					ok=false;
 
-					QMessageBox::warning(NULL, QObject::tr("FET warning"),
-					 QObject::tr("Cannot optimize, because you have constraints of type "
+					QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+					 GeneratePreTranslate::tr("Cannot optimize, because you have constraints of type "
 					 "students set not available with weight percentage less than 100\% for students set %1. Currently, FET can only optimize with "
 					 "constraints students set not available with 100\% weight (or no constraint). Please "
 					 "modify your data accordingly and try again.").arg(sn->students));
@@ -3032,8 +3913,8 @@ bool computeNotAllowedTimesPercentages()
 				if(br->weightPercentage!=100){
 					ok=false;
 
-					QMessageBox::warning(NULL, QObject::tr("FET warning"),
-					 QObject::tr("Cannot optimize, because you have constraints of type "
+					QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+					 GeneratePreTranslate::tr("Cannot optimize, because you have constraints of type "
 					 "break with weight percentage less than 100\%. Currently, FET can only optimize with "
 					 "constraints break with 100\% weight (or no constraint). Please "
 					 "modify your data accordingly and try again."));
@@ -3081,12 +3962,12 @@ bool computeNotAllowedTimesPercentages()
 				else{
 					ok=false;
 
-					int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-					 QObject::tr("Cannot optimize, because you have constraints of type "
+					int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+					 GeneratePreTranslate::tr("Cannot optimize, because you have constraints of type "
 					 "activity preferred starting time with no day nor hour selected (for activity with id==%1). "
 					 "Please modify your data accordingly (remove or edit constraint) and try again.")
 					 .arg(gt.rules.internalActivitiesList[ap->activityIndex].id),
-					 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+					 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 					1, 0 );
 
 					if(t==0)
@@ -3306,27 +4187,27 @@ bool computeNotAllowedTimesPercentages()
 	return ok;
 }
 
-bool computeMinNDays()
+bool computeMinDays()
 {
-	QSet<ConstraintMinNDaysBetweenActivities*> mdset;
+	QSet<ConstraintMinDaysBetweenActivities*> mdset;
 
 	bool ok=true;
 
 	for(int j=0; j<gt.rules.nInternalActivities; j++){
-		minNDaysListOfActivities[j].clear();
-		minNDaysListOfMinDays[j].clear();
-		minNDaysListOfConsecutiveIfSameDay[j].clear();
-		minNDaysListOfWeightPercentages[j].clear();
+		minDaysListOfActivities[j].clear();
+		minDaysListOfMinDays[j].clear();
+		minDaysListOfConsecutiveIfSameDay[j].clear();
+		minDaysListOfWeightPercentages[j].clear();
 				
 		//for(int k=0; k<gt.rules.nInternalActivities; k++)
-		//	minNDays[j][k]=0;
+		//	minDays[j][k]=0;
 	}
 
 	for(int i=0; i<gt.rules.nInternalTimeConstraints; i++)
-		if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_MIN_N_DAYS_BETWEEN_ACTIVITIES
+		if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES
 		 /*&&gt.rules.internalTimeConstraintsList[i]->compulsory==true*/){
-			ConstraintMinNDaysBetweenActivities* md=
-			 (ConstraintMinNDaysBetweenActivities*)gt.rules.internalTimeConstraintsList[i];
+			ConstraintMinDaysBetweenActivities* md=
+			 (ConstraintMinDaysBetweenActivities*)gt.rules.internalTimeConstraintsList[i];
 			
 			for(int j=0; j<md->_n_activities; j++){
 				int ai1=md->_activities[j];
@@ -3339,10 +4220,10 @@ bool computeMinNDays()
 							if(!mdset.contains(md)){
 								mdset.insert(md);
 						
-								int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-								 QObject::tr("Cannot optimize, because you have a constraint min n days with duplicate activities. The constraint "
+								int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+								 GeneratePreTranslate::tr("Cannot optimize, because you have a constraint min days with duplicate activities. The constraint "
 								 "is: %1. Please correct that.").arg(md->getDetailedDescription(gt.rules)),
-								 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+								 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 								 1, 0 );
 					
 								if(t==0)
@@ -3350,24 +4231,87 @@ bool computeMinNDays()
 							}
 						}
 						int m=md->minDays;
-						/*if(m>minNDays[ai1][ai2])
-							minNDays[ai1][ai2]=minNDays[ai2][ai1]=m;*/
+						/*if(m>minDays[ai1][ai2])
+							minDays[ai1][ai2]=minDays[ai2][ai1]=m;*/
 						
-						minNDaysListOfActivities[ai1].append(ai2);
-						minNDaysListOfMinDays[ai1].append(m);
+						minDaysListOfActivities[ai1].append(ai2);
+						minDaysListOfMinDays[ai1].append(m);
 						assert(md->weightPercentage >=0 && md->weightPercentage<=100);
-						minNDaysListOfWeightPercentages[ai1].append(md->weightPercentage);
-						minNDaysListOfConsecutiveIfSameDay[ai1].append(md->consecutiveIfSameDay);
+						minDaysListOfWeightPercentages[ai1].append(md->weightPercentage);
+						minDaysListOfConsecutiveIfSameDay[ai1].append(md->consecutiveIfSameDay);
 					}
 			}
 		}
 
 	/*for(int j=0; j<gt.rules.nInternalActivities; j++)
 		for(int k=0; k<gt.rules.nInternalActivities; k++)
-			if(minNDays[j][k]>0){
+			if(minDays[j][k]>0){
 				assert(j!=k);
-				minNDaysListOfActivities[j].append(k);
-				minNDaysListOfMinDays[j].append(minNDays[j][k]);
+				minDaysListOfActivities[j].append(k);
+				minDaysListOfMinDays[j].append(minDays[j][k]);
+			}*/
+			
+	return ok;
+}
+
+bool computeMaxDays()
+{
+	QSet<ConstraintMaxDaysBetweenActivities*> mdset;
+
+	bool ok=true;
+
+	for(int j=0; j<gt.rules.nInternalActivities; j++){
+		maxDaysListOfActivities[j].clear();
+		maxDaysListOfMaxDays[j].clear();
+		maxDaysListOfWeightPercentages[j].clear();
+	}
+
+	for(int i=0; i<gt.rules.nInternalTimeConstraints; i++)
+		if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_MAX_DAYS_BETWEEN_ACTIVITIES
+		 /*&&gt.rules.internalTimeConstraintsList[i]->compulsory==true*/){
+			ConstraintMaxDaysBetweenActivities* md=
+			 (ConstraintMaxDaysBetweenActivities*)gt.rules.internalTimeConstraintsList[i];
+			
+			for(int j=0; j<md->_n_activities; j++){
+				int ai1=md->_activities[j];
+				for(int k=0; k<md->_n_activities; k++)
+					if(j!=k){
+						int ai2=md->_activities[k];
+						if(ai1==ai2){						
+							ok=false;
+							
+							if(!mdset.contains(md)){
+								mdset.insert(md);
+						
+								int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+								 GeneratePreTranslate::tr("Cannot optimize, because you have a constraint max days between activities with duplicate activities. The constraint "
+								 "is: %1. Please correct that.").arg(md->getDetailedDescription(gt.rules)),
+								 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
+								 1, 0 );
+					
+								if(t==0)
+									return ok;
+							}
+						}
+						int m=md->maxDays;
+						/*if(m>minDays[ai1][ai2])
+							minDays[ai1][ai2]=minDays[ai2][ai1]=m;*/
+						
+						maxDaysListOfActivities[ai1].append(ai2);
+						maxDaysListOfMaxDays[ai1].append(m);
+						assert(md->weightPercentage >=0 && md->weightPercentage<=100);
+						maxDaysListOfWeightPercentages[ai1].append(md->weightPercentage);
+						//maxDaysListOfConsecutiveIfSameDay[ai1].append(md->consecutiveIfSameDay);
+					}
+			}
+		}
+
+	/*for(int j=0; j<gt.rules.nInternalActivities; j++)
+		for(int k=0; k<gt.rules.nInternalActivities; k++)
+			if(minDays[j][k]>0){
+				assert(j!=k);
+				minDaysListOfActivities[j].append(k);
+				minDaysListOfMinDays[j].append(minDays[j][k]);
 			}*/
 			
 	return ok;
@@ -3385,7 +4329,7 @@ bool computeMinGapsBetweenActivities()
 		minGapsBetweenActivitiesListOfWeightPercentages[j].clear();
 				
 		//for(int k=0; k<gt.rules.nInternalActivities; k++)
-		//	minNDays[j][k]=0;
+		//	minDays[j][k]=0;
 	}
 
 	for(int i=0; i<gt.rules.nInternalTimeConstraints; i++)
@@ -3407,10 +4351,10 @@ bool computeMinGapsBetweenActivities()
 							if(!mgset.contains(mg)){
 								mgset.insert(mg);
 						
-								int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-								 QObject::tr("Cannot optimize, because you have a constraint min gaps between activities with duplicate activities. The constraint "
+								int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+								 GeneratePreTranslate::tr("Cannot optimize, because you have a constraint min gaps between activities with duplicate activities. The constraint "
 								 "is: %1. Please correct that.").arg(mg->getDetailedDescription(gt.rules)),
-								 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+								 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 								 1, 0 );
 					
 								if(t==0)
@@ -3447,8 +4391,8 @@ bool computeActivitiesConflictingPercentage()
 		ok=false;
 		
 	if(!ok || m<100){
-		QMessageBox::warning(NULL, QObject::tr("FET warning"),
-		 QObject::tr("Cannot optimize, because you have no basic time constraints or its weight is lower than 100.0%. "
+		QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+		 GeneratePreTranslate::tr("Cannot optimize, because you have no basic time constraints or its weight is lower than 100.0%. "
 		 "Please add a basic time constraint (100% weight)"));
 		return false;
 	}
@@ -3465,7 +4409,7 @@ bool computeActivitiesConflictingPercentage()
 		activitiesConflictingPercentage[i][i]=100;
 
 	QProgressDialog progress(NULL);
-	progress.setLabelText(QObject::tr("Precomputing ... please wait"));
+	progress.setLabelText(GeneratePreTranslate::tr("Precomputing ... please wait"));
 	progress.setRange(0, gt.rules.nInternalTeachers+gt.rules.nInternalSubgroups);
 	progress.setModal(true);
 	
@@ -3475,7 +4419,7 @@ bool computeActivitiesConflictingPercentage()
 		progress.setValue(ttt);
 		pqapplication->processEvents();
 		if(progress.wasCanceled()){
-			QMessageBox::information(NULL, QObject::tr("FET information"), QObject::tr("Canceled"));
+			QMessageBox::information(NULL, GeneratePreTranslate::tr("FET information"), GeneratePreTranslate::tr("Canceled"));
 			return false;
 		}
 		
@@ -3490,7 +4434,7 @@ bool computeActivitiesConflictingPercentage()
 		progress.setValue(ttt);
 		pqapplication->processEvents();
 		if(progress.wasCanceled()){
-			QMessageBox::information(NULL, QObject::tr("FET information"), QObject::tr("Canceled"));
+			QMessageBox::information(NULL, GeneratePreTranslate::tr("FET information"), GeneratePreTranslate::tr("Canceled"));
 			return false;
 		}
 		
@@ -3503,10 +4447,46 @@ bool computeActivitiesConflictingPercentage()
 
 	progress.setValue(gt.rules.nInternalTeachers+gt.rules.nInternalSubgroups);
 	
+	//new volker (start)
+	for(int i=0; i<gt.rules.nInternalTimeConstraints; i++){
+		TimeConstraint* tc=gt.rules.internalTimeConstraintsList[i];
+		if(tc->type==CONSTRAINT_ACTIVITIES_NOT_OVERLAPPING){
+			if(tc->weightPercentage==100.0){
+				ConstraintActivitiesNotOverlapping* cno=(ConstraintActivitiesNotOverlapping*) tc;
+				
+				for(int a=0; a<cno->_n_activities; a++){
+					for(int b=0; b<cno->_n_activities; b++){
+						if(cno->_activities[a]!=cno->_activities[b]){
+							activitiesConflictingPercentage[cno->_activities[a]][cno->_activities[b]]=100;
+						}
+					}
+				}
+			}
+			else{
+				ConstraintActivitiesNotOverlapping* cno=(ConstraintActivitiesNotOverlapping*) tc;
+				
+				int ww=int(cno->weightPercentage);
+				if(ww>100)
+					ww=100;
+			
+				for(int a=0; a<cno->_n_activities; a++){
+					for(int b=0; b<cno->_n_activities; b++){
+						if(cno->_activities[a]!=cno->_activities[b]){
+							if(activitiesConflictingPercentage[cno->_activities[a]][cno->_activities[b]] < ww)
+								activitiesConflictingPercentage[cno->_activities[a]][cno->_activities[b]]=ww;
+						}
+					}
+				}
+			}
+		}
+	}
+	//new volker (end)
+
 	return true;
 }
 
 //old
+/*
 #if 0
 bool computeActivitiesConflictingPercentage()
 {
@@ -3525,8 +4505,8 @@ bool computeActivitiesConflictingPercentage()
 		ok=false;
 		
 	if(!ok || m<100){
-		QMessageBox::warning(NULL, QObject::tr("FET warning"),
-		 QObject::tr("Cannot optimize, because you have no basic time constraints or its weight is lower than 100.0%. "
+		QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+		 GeneratePreTranslate::tr("Cannot optimize, because you have no basic time constraints or its weight is lower than 100.0%. "
 		 "Please add a basic time constraint (100% weight)"));
 		return false;
 	}
@@ -3539,7 +4519,7 @@ bool computeActivitiesConflictingPercentage()
 		activitiesConflictingPercentage[i][i]=100;
 		
 	QProgressDialog progress(NULL);
-	progress.setLabelText(QObject::tr("Precomputing ... please wait"));
+	progress.setLabelText(GeneratePreTranslate::tr("Precomputing ... please wait"));
 	progress.setRange(0, gt.rules.nInternalActivities*(gt.rules.nInternalActivities-1)/2);
 	progress.setModal(true);
 	
@@ -3549,7 +4529,7 @@ bool computeActivitiesConflictingPercentage()
 		progress.setValue(ttt);
 		pqapplication->processEvents();
 		if(progress.wasCanceled()){
-			QMessageBox::information(NULL, QObject::tr("FET information"), QObject::tr("Canceled"));
+			QMessageBox::information(NULL, GeneratePreTranslate::tr("FET information"), GeneratePreTranslate::tr("Canceled"));
 			return false;
 		}
 			
@@ -3594,117 +4574,165 @@ bool computeActivitiesConflictingPercentage()
 }
 #endif
 //endif 0
+*/
 
-void computeConstr2ActivitiesConsecutive()
+void computeConstrTwoActivitiesConsecutive()
 {
 	for(int i=0; i<gt.rules.nInternalActivities; i++){
-		constr2ActivitiesConsecutivePercentages[i].clear();
-		constr2ActivitiesConsecutiveActivities[i].clear();
+		constrTwoActivitiesConsecutivePercentages[i].clear();
+		constrTwoActivitiesConsecutiveActivities[i].clear();
 
-		inverseConstr2ActivitiesConsecutivePercentages[i].clear();
-		inverseConstr2ActivitiesConsecutiveActivities[i].clear();
+		inverseConstrTwoActivitiesConsecutivePercentages[i].clear();
+		inverseConstrTwoActivitiesConsecutiveActivities[i].clear();
 	}
 
 	for(int i=0; i<gt.rules.nInternalTimeConstraints; i++)
-		if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_2_ACTIVITIES_CONSECUTIVE){
-			Constraint2ActivitiesConsecutive* c2=(Constraint2ActivitiesConsecutive*)gt.rules.internalTimeConstraintsList[i];
+		if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_TWO_ACTIVITIES_CONSECUTIVE){
+			ConstraintTwoActivitiesConsecutive* c2=(ConstraintTwoActivitiesConsecutive*)gt.rules.internalTimeConstraintsList[i];
 			
 			int fai=c2->firstActivityIndex;
 			int sai=c2->secondActivityIndex;
 			
 			//direct
-			int j=constr2ActivitiesConsecutiveActivities[fai].indexOf(sai); 
+			int j=constrTwoActivitiesConsecutiveActivities[fai].indexOf(sai); 
 			if(j==-1){
-				constr2ActivitiesConsecutiveActivities[fai].append(sai);
-				constr2ActivitiesConsecutivePercentages[fai].append(c2->weightPercentage);
+				constrTwoActivitiesConsecutiveActivities[fai].append(sai);
+				constrTwoActivitiesConsecutivePercentages[fai].append(c2->weightPercentage);
 			}
-			else if(j>=0 && constr2ActivitiesConsecutivePercentages[fai].at(j)<c2->weightPercentage){
-				constr2ActivitiesConsecutivePercentages[fai][j]=c2->weightPercentage;
+			else if(j>=0 && constrTwoActivitiesConsecutivePercentages[fai].at(j)<c2->weightPercentage){
+				constrTwoActivitiesConsecutivePercentages[fai][j]=c2->weightPercentage;
 			}
 
 			//inverse
-			j=inverseConstr2ActivitiesConsecutiveActivities[sai].indexOf(fai); 
+			j=inverseConstrTwoActivitiesConsecutiveActivities[sai].indexOf(fai); 
 			if(j==-1){
-				inverseConstr2ActivitiesConsecutiveActivities[sai].append(fai);
-				inverseConstr2ActivitiesConsecutivePercentages[sai].append(c2->weightPercentage);
+				inverseConstrTwoActivitiesConsecutiveActivities[sai].append(fai);
+				inverseConstrTwoActivitiesConsecutivePercentages[sai].append(c2->weightPercentage);
 			}
-			else if(j>=0 && inverseConstr2ActivitiesConsecutivePercentages[sai].at(j)<c2->weightPercentage){
-				inverseConstr2ActivitiesConsecutivePercentages[sai][j]=c2->weightPercentage;
+			else if(j>=0 && inverseConstrTwoActivitiesConsecutivePercentages[sai].at(j)<c2->weightPercentage){
+				inverseConstrTwoActivitiesConsecutivePercentages[sai][j]=c2->weightPercentage;
 			}
 		}
 }
 
-void computeConstr2ActivitiesGrouped()
+void computeConstrTwoActivitiesGrouped()
 {
 	for(int i=0; i<gt.rules.nInternalActivities; i++){
-		constr2ActivitiesGroupedPercentages[i].clear();
-		constr2ActivitiesGroupedActivities[i].clear();
+		constrTwoActivitiesGroupedPercentages[i].clear();
+		constrTwoActivitiesGroupedActivities[i].clear();
 	}
 
 	for(int i=0; i<gt.rules.nInternalTimeConstraints; i++)
-		if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_2_ACTIVITIES_GROUPED){
-			Constraint2ActivitiesGrouped* c2=(Constraint2ActivitiesGrouped*)gt.rules.internalTimeConstraintsList[i];
+		if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_TWO_ACTIVITIES_GROUPED){
+			ConstraintTwoActivitiesGrouped* c2=(ConstraintTwoActivitiesGrouped*)gt.rules.internalTimeConstraintsList[i];
 			
 			int fai=c2->firstActivityIndex;
 			int sai=c2->secondActivityIndex;
 			
 			//direct
-			int j=constr2ActivitiesGroupedActivities[fai].indexOf(sai); 
+			int j=constrTwoActivitiesGroupedActivities[fai].indexOf(sai); 
 			if(j==-1){
-				constr2ActivitiesGroupedActivities[fai].append(sai);
-				constr2ActivitiesGroupedPercentages[fai].append(c2->weightPercentage);
+				constrTwoActivitiesGroupedActivities[fai].append(sai);
+				constrTwoActivitiesGroupedPercentages[fai].append(c2->weightPercentage);
 			}
-			else if(j>=0 && constr2ActivitiesGroupedPercentages[fai].at(j)<c2->weightPercentage){
-				constr2ActivitiesGroupedPercentages[fai][j]=c2->weightPercentage;
+			else if(j>=0 && constrTwoActivitiesGroupedPercentages[fai].at(j)<c2->weightPercentage){
+				constrTwoActivitiesGroupedPercentages[fai][j]=c2->weightPercentage;
 			}
 
 			//inverse
-			j=constr2ActivitiesGroupedActivities[sai].indexOf(fai); 
+			j=constrTwoActivitiesGroupedActivities[sai].indexOf(fai); 
 			if(j==-1){
-				constr2ActivitiesGroupedActivities[sai].append(fai);
-				constr2ActivitiesGroupedPercentages[sai].append(c2->weightPercentage);
+				constrTwoActivitiesGroupedActivities[sai].append(fai);
+				constrTwoActivitiesGroupedPercentages[sai].append(c2->weightPercentage);
 			}
-			else if(j>=0 && constr2ActivitiesGroupedPercentages[sai].at(j)<c2->weightPercentage){
-				constr2ActivitiesGroupedPercentages[sai][j]=c2->weightPercentage;
+			else if(j>=0 && constrTwoActivitiesGroupedPercentages[sai].at(j)<c2->weightPercentage){
+				constrTwoActivitiesGroupedPercentages[sai][j]=c2->weightPercentage;
 			}
 		}
 }
 
-void computeConstr2ActivitiesOrdered()
+void computeConstrThreeActivitiesGrouped()
 {
 	for(int i=0; i<gt.rules.nInternalActivities; i++){
-		constr2ActivitiesOrderedPercentages[i].clear();
-		constr2ActivitiesOrderedActivities[i].clear();
-
-		inverseConstr2ActivitiesOrderedPercentages[i].clear();
-		inverseConstr2ActivitiesOrderedActivities[i].clear();
+		constrThreeActivitiesGroupedPercentages[i].clear();
+		constrThreeActivitiesGroupedActivities[i].clear();
 	}
 
 	for(int i=0; i<gt.rules.nInternalTimeConstraints; i++)
-		if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_2_ACTIVITIES_ORDERED){
-			Constraint2ActivitiesOrdered* c2=(Constraint2ActivitiesOrdered*)gt.rules.internalTimeConstraintsList[i];
+		if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_THREE_ACTIVITIES_GROUPED){
+			ConstraintThreeActivitiesGrouped* c3=(ConstraintThreeActivitiesGrouped*)gt.rules.internalTimeConstraintsList[i];
+			
+			int fai=c3->firstActivityIndex;
+			int sai=c3->secondActivityIndex;
+			int tai=c3->thirdActivityIndex;
+
+			QPair<int, int> p23(sai, tai);
+			int j=constrThreeActivitiesGroupedActivities[fai].indexOf(p23);
+			if(j==-1){
+				constrThreeActivitiesGroupedActivities[fai].append(p23);
+				constrThreeActivitiesGroupedPercentages[fai].append(c3->weightPercentage);
+			}
+			else if(j>=0 && constrThreeActivitiesGroupedPercentages[fai].at(j)<c3->weightPercentage){
+				constrThreeActivitiesGroupedPercentages[fai][j]=c3->weightPercentage;
+			}
+
+			QPair<int, int> p13(fai, tai);
+			j=constrThreeActivitiesGroupedActivities[sai].indexOf(p13);
+			if(j==-1){
+				constrThreeActivitiesGroupedActivities[sai].append(p13);
+				constrThreeActivitiesGroupedPercentages[sai].append(c3->weightPercentage);
+			}
+			else if(j>=0 && constrThreeActivitiesGroupedPercentages[sai].at(j)<c3->weightPercentage){
+				constrThreeActivitiesGroupedPercentages[sai][j]=c3->weightPercentage;
+			}
+
+			QPair<int, int> p12(fai, sai);
+			j=constrThreeActivitiesGroupedActivities[tai].indexOf(p12);
+			if(j==-1){
+				constrThreeActivitiesGroupedActivities[tai].append(p12);
+				constrThreeActivitiesGroupedPercentages[tai].append(c3->weightPercentage);
+			}
+			else if(j>=0 && constrThreeActivitiesGroupedPercentages[tai].at(j)<c3->weightPercentage){
+				constrThreeActivitiesGroupedPercentages[tai][j]=c3->weightPercentage;
+			}
+		}
+}
+
+void computeConstrTwoActivitiesOrdered()
+{
+	for(int i=0; i<gt.rules.nInternalActivities; i++){
+		constrTwoActivitiesOrderedPercentages[i].clear();
+		constrTwoActivitiesOrderedActivities[i].clear();
+
+		inverseConstrTwoActivitiesOrderedPercentages[i].clear();
+		inverseConstrTwoActivitiesOrderedActivities[i].clear();
+	}
+
+	for(int i=0; i<gt.rules.nInternalTimeConstraints; i++)
+		if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_TWO_ACTIVITIES_ORDERED){
+			ConstraintTwoActivitiesOrdered* c2=(ConstraintTwoActivitiesOrdered*)gt.rules.internalTimeConstraintsList[i];
 			
 			int fai=c2->firstActivityIndex;
 			int sai=c2->secondActivityIndex;
 			
 			//direct
-			int j=constr2ActivitiesOrderedActivities[fai].indexOf(sai); 
+			int j=constrTwoActivitiesOrderedActivities[fai].indexOf(sai); 
 			if(j==-1){
-				constr2ActivitiesOrderedActivities[fai].append(sai);
-				constr2ActivitiesOrderedPercentages[fai].append(c2->weightPercentage);
+				constrTwoActivitiesOrderedActivities[fai].append(sai);
+				constrTwoActivitiesOrderedPercentages[fai].append(c2->weightPercentage);
 			}
-			else if(j>=0 && constr2ActivitiesOrderedPercentages[fai].at(j)<c2->weightPercentage){
-				constr2ActivitiesOrderedPercentages[fai][j]=c2->weightPercentage;
+			else if(j>=0 && constrTwoActivitiesOrderedPercentages[fai].at(j)<c2->weightPercentage){
+				constrTwoActivitiesOrderedPercentages[fai][j]=c2->weightPercentage;
 			}
 
 			//inverse
-			j=inverseConstr2ActivitiesOrderedActivities[sai].indexOf(fai); 
+			j=inverseConstrTwoActivitiesOrderedActivities[sai].indexOf(fai); 
 			if(j==-1){
-				inverseConstr2ActivitiesOrderedActivities[sai].append(fai);
-				inverseConstr2ActivitiesOrderedPercentages[sai].append(c2->weightPercentage);
+				inverseConstrTwoActivitiesOrderedActivities[sai].append(fai);
+				inverseConstrTwoActivitiesOrderedPercentages[sai].append(c2->weightPercentage);
 			}
-			else if(j>=0 && inverseConstr2ActivitiesOrderedPercentages[sai].at(j)<c2->weightPercentage){
-				inverseConstr2ActivitiesOrderedPercentages[sai][j]=c2->weightPercentage;
+			else if(j>=0 && inverseConstrTwoActivitiesOrderedPercentages[sai].at(j)<c2->weightPercentage){
+				inverseConstrTwoActivitiesOrderedPercentages[sai][j]=c2->weightPercentage;
 			}
 		}
 }
@@ -3727,13 +4755,13 @@ bool computeActivityEndsStudentsDayPercentages()
 			if(cae->weightPercentage!=100){
 				ok=false;
 
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot optimize, because you have constraints of type "
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize, because you have constraints of type "
 				 "activity activity ends students day for activity with id==%1 with weight percentage under 100%. "
 				 "Constraint activity ends students day can only have weight percentage 100%. "
 				 "Please modify your data accordingly (remove or edit constraint) and try again.")
 				 .arg(gt.rules.internalActivitiesList[cae->activityIndex].id),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				1, 0 );
 				
 				if(t==0)
@@ -3752,12 +4780,12 @@ bool computeActivityEndsStudentsDayPercentages()
 			if(cae->weightPercentage!=100){
 				ok=false;
 
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot optimize, because you have constraints of type "
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize, because you have constraints of type "
 				 "activity activities end students day with weight percentage under 100%. "
 				 "Constraint activities end students day can only have weight percentage 100%. "
 				 "Please modify your data accordingly (remove or edit constraint) and try again."),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				1, 0 );
 				
 				if(t==0)
@@ -3775,7 +4803,7 @@ bool computeActivityEndsStudentsDayPercentages()
 	return ok;
 }
 
-bool checkMinNDays100Percent()
+bool checkMinDays100Percent()
 {
 	bool ok=true;
 	
@@ -3821,9 +4849,9 @@ bool checkMinNDays100Percent()
 	}
 	
 	for(int i=0; i<gt.rules.nInternalTimeConstraints; i++){
-		if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_MIN_N_DAYS_BETWEEN_ACTIVITIES
+		if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES
 		 &&gt.rules.internalTimeConstraintsList[i]->weightPercentage==100.0){
-			ConstraintMinNDaysBetweenActivities* md=(ConstraintMinNDaysBetweenActivities*)gt.rules.internalTimeConstraintsList[i];			
+			ConstraintMinDaysBetweenActivities* md=(ConstraintMinDaysBetweenActivities*)gt.rules.internalTimeConstraintsList[i];			
 			
 			if(md->minDays>=1){
 				int na=md->_n_activities;
@@ -3831,7 +4859,7 @@ bool checkMinNDays100Percent()
 				if((na-1)*nd+1 > gt.rules.nDaysPerWeek){
 					ok=false;
 						
-					QString s=QObject::tr("Constraint %1 cannot be respected because it contains %2 activities,"
+					QString s=GeneratePreTranslate::tr("Constraint %1 cannot be respected because it contains %2 activities,"
 					 " has weight 100% and has min number of days between activities=%3. The minimum required number of days per week for"
 					 " that would be (nactivities-1)*mindays+1=%4, and you have only %5 days per week - impossible. Please correct this constraint."
 					)
@@ -3842,8 +4870,8 @@ bool checkMinNDays100Percent()
 					 .arg(gt.rules.nDaysPerWeek)
 					 ;
 
-					int t=QMessageBox::warning(NULL, QObject::tr("FET warning"), s, 
-					 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+					int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"), s, 
+					 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 					 1, 0 );
 					
 					if(t==0)
@@ -3874,7 +4902,7 @@ bool checkMinNDays100Percent()
 					if(requestedDaysForTeachers[tc]>daysTeacherIsAvailable[tc]){
 						ok=false;
 						
-						QString s=QObject::tr("Constraint %1 cannot be respected because teacher %2 has at most"
+						QString s=GeneratePreTranslate::tr("Constraint %1 cannot be respected because teacher %2 has at most"
 						 " %3 available days from teacher not available, breaks and teacher max days per week."
 						 " Please lower the weight of this constraint to a value below 100% (it depends"
 						 " on your situation, if 0% is too little, make it 90%, 95% or even 99.75%."
@@ -3886,8 +4914,8 @@ bool checkMinNDays100Percent()
 						 .arg(gt.rules.internalTeachersList[tc]->name)
 						 .arg(daysTeacherIsAvailable[tc]);
 
-						int t=QMessageBox::warning(NULL, QObject::tr("FET warning"), s, 
-						 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+						int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"), s, 
+						 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 						 1, 0 );
 					
 						if(t==0)
@@ -3897,7 +4925,7 @@ bool checkMinNDays100Percent()
 					if(requestedDaysForSubgroups[sb]>daysSubgroupIsAvailable[sb]){
 						ok=false;
 						
-						QString s=QObject::tr("Constraint %1 cannot be respected because subgroup %2 has at most"
+						QString s=GeneratePreTranslate::tr("Constraint %1 cannot be respected because subgroup %2 has at most"
 						 " %3 available days from students set not available and breaks."
 						 " Please lower the weight of this constraint to a value below 100% (it depends"
 						 " on your situation, if 0% is too little, make it 90%, 95% or even 99.75%."
@@ -3909,8 +4937,8 @@ bool checkMinNDays100Percent()
 						 .arg(gt.rules.internalSubgroupsList[sb]->name)
 						 .arg(daysSubgroupIsAvailable[sb]);
 
-						int t=QMessageBox::warning(NULL, QObject::tr("FET warning"), s, 
-						 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+						int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"), s, 
+						 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 						 1, 0 );
 					
 						if(t==0)
@@ -3923,7 +4951,7 @@ bool checkMinNDays100Percent()
 	return ok;
 }
 	
-bool checkMinNDaysConsecutiveIfSameDay()
+bool checkMinDaysConsecutiveIfSameDay()
 {
 	bool ok=true;
 	
@@ -3969,8 +4997,8 @@ bool checkMinNDaysConsecutiveIfSameDay()
 	}
 	
 	for(int i=0; i<gt.rules.nInternalTimeConstraints; i++){
-		if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_MIN_N_DAYS_BETWEEN_ACTIVITIES){
-			ConstraintMinNDaysBetweenActivities* md=(ConstraintMinNDaysBetweenActivities*)gt.rules.internalTimeConstraintsList[i];
+		if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES){
+			ConstraintMinDaysBetweenActivities* md=(ConstraintMinDaysBetweenActivities*)gt.rules.internalTimeConstraintsList[i];
 			if(md->consecutiveIfSameDay){
 				int nReqForTeacher[MAX_TEACHERS];				
 				for(int tc=0; tc<gt.rules.nInternalTeachers; tc++)
@@ -3987,7 +5015,7 @@ bool checkMinNDaysConsecutiveIfSameDay()
 					if(2*daysTeacherIsAvailable[tc] < nReqForTeacher[tc]){
 						ok=false;
 						
-						QString s=QObject::tr("Constraint %1 cannot be respected because teacher %2 has at most"
+						QString s=GeneratePreTranslate::tr("Constraint %1 cannot be respected because teacher %2 has at most"
 						 " %3 available days. You specified for this constraint consecutive if same day=true."
 						 " Currently FET cannot put more than 2 activities in the same day"
 						 " if consecutive if same day is true. You have 2*available days<number of activities in this constraint."
@@ -3999,8 +5027,8 @@ bool checkMinNDaysConsecutiveIfSameDay()
 						 .arg(gt.rules.internalTeachersList[tc]->name)
 						 .arg(daysTeacherIsAvailable[tc]);
 	
-						int t=QMessageBox::warning(NULL, QObject::tr("FET warning"), s, 
-						 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+						int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"), s, 
+						 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 						 1, 0 );
 						
 						if(t==0)
@@ -4023,7 +5051,7 @@ bool checkMinNDaysConsecutiveIfSameDay()
 					if(2*daysSubgroupIsAvailable[sb] < nReqForSubgroup[sb]){
 						ok=false;
 						
-						QString s=QObject::tr("Constraint %1 cannot be respected because subgroup %2 has at most"
+						QString s=GeneratePreTranslate::tr("Constraint %1 cannot be respected because subgroup %2 has at most"
 						 " %3 available days. You specified for this constraint consecutive if same day=true."
 						 " Currently FET cannot put more than 2 activities in the same day"
 						 " if consecutive if same day is true. You have 2*available days<number of activities in this constraint."
@@ -4035,8 +5063,8 @@ bool checkMinNDaysConsecutiveIfSameDay()
 						 .arg(gt.rules.internalSubgroupsList[sb]->name)
 						 .arg(daysSubgroupIsAvailable[sb]);
 
-						int t=QMessageBox::warning(NULL, QObject::tr("FET warning"), s, 
-						 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+						int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"), s, 
+						 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 						 1, 0 );
 					
 						if(t==0)
@@ -4236,12 +5264,12 @@ bool computeTeachersIntervalMaxDaysPerWeek()
 			if(tn->weightPercentage!=100){
 				ok=false;
 
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot optimize, because you have constraint teacher interval max days per week with"
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize, because you have constraint teacher interval max days per week with"
 				 " weight (percentage) below 100 for teacher %1. Starting with FET version 5.6.2 it is only possible"
 				 " to use 100% weight for such constraints. Please make weight 100% and try again")
 				 .arg(tn->teacherName),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 			 	
 				if(t==0)
@@ -4263,12 +5291,12 @@ bool computeTeachersIntervalMaxDaysPerWeek()
 			else{
 				ok=false;
 				
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot optimize for teacher %1, because it has more than two constraints interval max days per week"
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize for teacher %1, because it has more than two constraints interval max days per week"
 				 ". Please modify your data correspondingly (leave maximum two constraint of type"
 				 " constraint teacher(s) interval max days per week for each teacher) and try again")
 				 .arg(gt.rules.internalTeachersList[tn->teacher_ID]->name),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 			 
 				if(t==0)
@@ -4281,11 +5309,11 @@ bool computeTeachersIntervalMaxDaysPerWeek()
 			if(tn->weightPercentage!=100){
 				ok=false;
 
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot optimize, because you have constraint teachers interval max days per week with"
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize, because you have constraint teachers interval max days per week with"
 				 " weight (percentage) below 100. Starting with FET version 5.6.2 it is only possible"
 				 " to use 100% weight for such constraints. Please make weight 100% and try again"),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 			 	
 				if(t==0)
@@ -4308,12 +5336,12 @@ bool computeTeachersIntervalMaxDaysPerWeek()
 				else{
 					ok=false;
 					
-					int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-					 QObject::tr("Cannot optimize for teacher %1, because it has more than two constraints interval max days per week"
+					int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+					 GeneratePreTranslate::tr("Cannot optimize for teacher %1, because it has more than two constraints interval max days per week"
 					 ". Please modify your data correspondingly (leave maximum two constraint of type"
 					 " constraint teacher(s) interval max days per week for each teacher) and try again")
 					 .arg(gt.rules.internalTeachersList[tch]->name),
-					 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+					 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 					 1, 0 );
 				 
 					if(t==0)
@@ -4349,12 +5377,12 @@ bool computeSubgroupsIntervalMaxDaysPerWeek()
 			if(cn->weightPercentage!=100){
 				ok=false;
 
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot optimize, because you have constraint students set interval max days per week with"
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize, because you have constraint students set interval max days per week with"
 				 " weight (percentage) below 100 for students set %1. Starting with FET version 5.6.2 it is only possible"
 				 " to use 100% weight for such constraints. Please make weight 100% and try again")
 				 .arg(cn->students),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 			 	
 				if(t==0)
@@ -4377,12 +5405,12 @@ bool computeSubgroupsIntervalMaxDaysPerWeek()
 				else{
 					ok=false;
 					
-					int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-					 QObject::tr("Cannot optimize for subgroup %1, because it has more than two constraints interval max days per week"
+					int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+					 GeneratePreTranslate::tr("Cannot optimize for subgroup %1, because it has more than two constraints interval max days per week"
 					 ". Please modify your data correspondingly (leave maximum two constraint of type"
 					 " constraint students (set) interval max days per week for each subgroup) and try again")
 					 .arg(gt.rules.internalSubgroupsList[sbg]->name),
-					 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+					 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 					 1, 0 );
 				 
 					if(t==0)
@@ -4396,13 +5424,13 @@ bool computeSubgroupsIntervalMaxDaysPerWeek()
 			if(cn->weightPercentage!=100){
 				ok=false;
 
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot optimize, because you have constraint students interval max days per week with"
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize, because you have constraint students interval max days per week with"
 				 " weight (percentage) below 100. Starting with FET version 5.6.2 it is only possible"
 				 " to use 100% weight for such constraints. Please make weight 100% and try again")
 				 //.arg(cn->students),
 				 ,
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 			 	
 				if(t==0)
@@ -4426,12 +5454,12 @@ bool computeSubgroupsIntervalMaxDaysPerWeek()
 				else{
 					ok=false;
 					
-					int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-					 QObject::tr("Cannot optimize for subgroup %1, because it has more than two constraints interval max days per week"
+					int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+					 GeneratePreTranslate::tr("Cannot optimize for subgroup %1, because it has more than two constraints interval max days per week"
 					 ". Please modify your data correspondingly (leave maximum two constraint of type"
 					 " constraint students (set) interval max days per week for each subgroup) and try again")
 					 .arg(gt.rules.internalSubgroupsList[sbg]->name),
-					 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+					 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 					 1, 0 );
 				 
 					if(t==0)
@@ -4459,8 +5487,8 @@ bool computeBasicSpace()
 		ok=false;
 		
 	if(!ok || m<100){
-		QMessageBox::warning(NULL, QObject::tr("FET warning"),
-		 QObject::tr("Cannot optimize, because you have no basic space constraints or its weight percentage is lower than 100.0%. "
+		QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+		 GeneratePreTranslate::tr("Cannot optimize, because you have no basic space constraints or its weight percentage is lower than 100.0%. "
 		 "Please add a basic space constraint with 100% weight"));
 		return false;
 	}
@@ -4519,11 +5547,11 @@ bool computeActivitiesRoomsPreferences()
 			if(studentsSetHomeRoom.contains(spr->studentsName)){
 				ok=false;
 				
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot generate timetable, because you have more than one constraint of type "
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot generate timetable, because you have more than one constraint of type "
 				 "students set home room(s) for students set %1. Please leave only one of them")
 				 .arg(spr->studentsName),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 	
 				if(t==0)
@@ -4557,11 +5585,11 @@ bool computeActivitiesRoomsPreferences()
 			if(studentsSetHomeRoom.contains(spr->studentsName)){
 				ok=false;
 				
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot generate timetable, because you have more than one constraint of type "
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot generate timetable, because you have more than one constraint of type "
 				 "students set home room(s) for students set %1. Please leave only one of them")
 				 .arg(spr->studentsName),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 	
 				if(t==0)
@@ -4602,11 +5630,11 @@ bool computeActivitiesRoomsPreferences()
 			if(teachersHomeRoom.contains(spr->teacherName)){
 				ok=false;
 				
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot generate timetable, because you have more than one constraint of type "
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot generate timetable, because you have more than one constraint of type "
 				 "teacher home room(s) for teacher %1. Please leave only one of them")
 				 .arg(spr->teacherName),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 	
 				if(t==0)
@@ -4640,11 +5668,11 @@ bool computeActivitiesRoomsPreferences()
 			if(teachersHomeRoom.contains(spr->teacherName)){
 				ok=false;
 				
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot generate timetable, because you have more than one constraint of type "
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot generate timetable, because you have more than one constraint of type "
 				 "teacher home room(s) for teacher %1. Please leave only one of them")
 				 .arg(spr->teacherName),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 	
 				if(t==0)
@@ -4685,11 +5713,11 @@ bool computeActivitiesRoomsPreferences()
 			/*if(subjectsPreferredRoom.contains(spr->subjectName)){
 				ok=false;
 				
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot generate timetable, because you have more than one constraint of type "
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot generate timetable, because you have more than one constraint of type "
 				 "subject preferred room(s) for subject %1. Please leave only one of them")
 				 .arg(spr->subjectName),
-				 QObject::tr("Skip rest of such problems"), QObject::tr("See next problem"), QString(),
+				 GeneratePreTranslate::tr("Skip rest of such problems"), GeneratePreTranslate::tr("See next problem"), QString(),
 				 1, 0 );
 	
 				if(t==0)
@@ -4729,11 +5757,11 @@ bool computeActivitiesRoomsPreferences()
 			/*if(subjectsPreferredRoom.contains(spr->subjectName)){
 				ok=false;
 				
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot generate timetable, because you have more than one constraint of type "
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot generate timetable, because you have more than one constraint of type "
 				 "subject preferred room(s) for subject %1. Please leave only one of them")
 				 .arg(spr->subjectName),
-				 QObject::tr("Skip rest of such problems"), QObject::tr("See next problem"), QString(),
+				 GeneratePreTranslate::tr("Skip rest of such problems"), GeneratePreTranslate::tr("See next problem"), QString(),
 				 1, 0 );
 	
 				if(t==0)
@@ -4786,12 +5814,12 @@ bool computeActivitiesRoomsPreferences()
 			if(subjectsActivityTagsPreferredRoom.contains(pair)){
 				ok=false;
 				
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot generate timetable, because you have more than one constraint of type "
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot generate timetable, because you have more than one constraint of type "
 				 "subject activity tag preferred room(s) for subject %1, activity tag %2. Please leave only one of them")
 				 .arg(spr->subjectName)
 				 .arg(spr->activityTagName),
-				 QObject::tr("Skip rest of such problems"), QObject::tr("See next problem"), QString(),
+				 GeneratePreTranslate::tr("Skip rest of such problems"), GeneratePreTranslate::tr("See next problem"), QString(),
 				 1, 0 );
 	
 				if(t==0)
@@ -4835,12 +5863,12 @@ bool computeActivitiesRoomsPreferences()
 			if(subjectsActivityTagsPreferredRoom.contains(pair)){
 				ok=false;
 				
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot generate timetable, because you have more than one constraint of type "
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot generate timetable, because you have more than one constraint of type "
 				 "subject activity tag preferred room(s) for subject %1, activity tag %2. Please leave only one of them")
 				 .arg(spr->subjectName)
 				 .arg(spr->activityTagName),
-				 QObject::tr("Skip rest of such problems"), QObject::tr("See next problem"), QString(),
+				 GeneratePreTranslate::tr("Skip rest of such problems"), GeneratePreTranslate::tr("See next problem"), QString(),
 				 1, 0 );
 	
 				if(t==0)
@@ -4886,17 +5914,51 @@ bool computeActivitiesRoomsPreferences()
 				}*/
 			}
 		}
+
+		else if(gt.rules.internalSpaceConstraintsList[i]->type==CONSTRAINT_ACTIVITY_TAG_PREFERRED_ROOM){
+			ConstraintActivityTagPreferredRoom* spr=(ConstraintActivityTagPreferredRoom*)gt.rules.internalSpaceConstraintsList[i];
+
+			foreach(int a, spr->_activities){
+				PreferredRoomsItem it;
+				
+				it.percentage=spr->weightPercentage;
+				it.preferredRooms.insert(spr->_room);
+			
+				if(unspecifiedPreferredRoom[a])
+					unspecifiedPreferredRoom[a]=false;
+				
+				activitiesPreferredRoomsList[a].append(it);
+			}
+		}
+		else if(gt.rules.internalSpaceConstraintsList[i]->type==CONSTRAINT_ACTIVITY_TAG_PREFERRED_ROOMS){
+			ConstraintActivityTagPreferredRooms* spr=(ConstraintActivityTagPreferredRooms*)gt.rules.internalSpaceConstraintsList[i];
+
+			foreach(int a, spr->_activities){
+
+				PreferredRoomsItem it;
+				
+				it.percentage=spr->weightPercentage;
+				foreach(int k, spr->_rooms)
+					it.preferredRooms.insert(k);
+			
+				if(unspecifiedPreferredRoom[a])
+					unspecifiedPreferredRoom[a]=false;
+				
+				activitiesPreferredRoomsList[a].append(it);
+			}
+		}
+
 		else if(gt.rules.internalSpaceConstraintsList[i]->type==CONSTRAINT_ACTIVITY_PREFERRED_ROOM){
 			ConstraintActivityPreferredRoom* apr=(ConstraintActivityPreferredRoom*)gt.rules.internalSpaceConstraintsList[i];
 			
 			/*if(activitiesPreferredRoom.contains(apr->activityId)){
 				ok=false;
 				
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot generate timetable, because you have more than one constraint of type "
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot generate timetable, because you have more than one constraint of type "
 				 "activity preferred room(s) for activity with id %1. Please leave only one of them")
 				 .arg(apr->activityId),
-				 QObject::tr("Skip rest of such problems"), QObject::tr("See next problem"), QString(),
+				 GeneratePreTranslate::tr("Skip rest of such problems"), GeneratePreTranslate::tr("See next problem"), QString(),
 				 1, 0 );
 	
 				if(t==0)
@@ -4936,11 +5998,11 @@ bool computeActivitiesRoomsPreferences()
 			/*if(activitiesPreferredRoom.contains(apr->activityId)){
 				ok=false;
 				
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot generate timetable, because you have more than one constraint of type "
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot generate timetable, because you have more than one constraint of type "
 				 "activity preferred room(s) for activity with id %1. Please leave only one of them")
 				 .arg(apr->activityId),
-				 QObject::tr("Skip rest of such problems"), QObject::tr("See next problem"), QString(),
+				 GeneratePreTranslate::tr("Skip rest of such problems"), GeneratePreTranslate::tr("See next problem"), QString(),
 				 1, 0 );
 	
 				if(t==0)
@@ -4990,11 +6052,11 @@ bool computeActivitiesRoomsPreferences()
 			if(activitiesPreferredRoomsPreferredRooms[i].count()==0){
 				ok=false;
 				
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot generate timetable, because for activity with id==%1 "
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot generate timetable, because for activity with id==%1 "
 				 "you have no allowed room (from constraints activity preferred room(s) and subject (activity tag) preferred room(s) )")
 				 .arg(gt.rules.internalActivitiesList[i].id),
-				 QObject::tr("Skip rest of activities without rooms"), QObject::tr("See next problem"), QString(),
+				 GeneratePreTranslate::tr("Skip rest of activities without rooms"), GeneratePreTranslate::tr("See next problem"), QString(),
 				 1, 0 );
 	
 				if(t==0)
@@ -5006,11 +6068,11 @@ bool computeActivitiesRoomsPreferences()
 			if(activitiesHomeRoomsHomeRooms[i].count()==0){
 				ok=false;
 				
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot generate timetable, because for activity with id==%1 "
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot generate timetable, because for activity with id==%1 "
 				 "you have no allowed home room (from constraints students set home room(s) and teacher home room(s))")
 				 .arg(gt.rules.internalActivitiesList[i].id),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 	
 				if(t==0)
@@ -5029,13 +6091,13 @@ bool computeActivitiesRoomsPreferences()
 
 					ok=false;
 					
-					int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-					 QObject::tr("Cannot generate timetable, because for activity with id==%1 "
-					 "you have no allowed preferred room (from subject or subject activity tag or activity preferred room(s)). "
-					 "This means that a constraint preferred room(s) hos 0 rooms in it. "
+					int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+					 GeneratePreTranslate::tr("Cannot generate timetable, because for activity with id==%1 "
+					 "you have no allowed preferred room (from preferred room(s) constraints). "
+					 "This means that a constraint preferred room(s) has 0 rooms in it. "
 					 "This should not happen. Please report possible bug.")
 					 .arg(gt.rules.internalActivitiesList[i].id),
-					 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+					 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 					 1, 0 );
 	
 					if(t==0)
@@ -5052,11 +6114,11 @@ bool computeActivitiesRoomsPreferences()
 				if(okinitial && it.preferredRooms.count()==0){
 					ok=false;
 					
-					int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-					 QObject::tr("Cannot generate timetable, because for activity with id==%1 "
-					 "you have no allowed preferred room (from the allowed number of students)")
+					int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+					 GeneratePreTranslate::tr("Cannot generate timetable, because for activity with id==%1 "
+					 "you have no allowed preferred room (from the allowed number of students and preferred room(s) constraints)")
 					 .arg(gt.rules.internalActivitiesList[i].id),
-					 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+					 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 					 1, 0 );
 	
 					if(t==0)
@@ -5074,11 +6136,11 @@ bool computeActivitiesRoomsPreferences()
 			if(okinitial && activitiesPreferredRoomsPreferredRooms[i].count()==0){
 				ok=false;
 				
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot generate timetable, because for activity with id==%1 "
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot generate timetable, because for activity with id==%1 "
 				 "you have no allowed room (from the allowed number of students)")
 				 .arg(gt.rules.internalActivitiesList[i].id),
-				 QObject::tr("Skip rest of activities without rooms"), QObject::tr("See next problem"), QString(),
+				 GeneratePreTranslate::tr("Skip rest of activities without rooms"), GeneratePreTranslate::tr("See next problem"), QString(),
 				 1, 0 );
 	
 				if(t==0)
@@ -5102,11 +6164,11 @@ jumpOverPrefRoomsNStudents:
 			if(okinitial && activitiesHomeRoomsHomeRooms[i].count()==0){
 				ok=false;
 				
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot generate timetable, because for activity with id==%1 "
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot generate timetable, because for activity with id==%1 "
 				 "you have no allowed home room (from the allowed number of students)")
 				 .arg(gt.rules.internalActivitiesList[i].id),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 	
 				if(t==0)
@@ -5114,6 +6176,43 @@ jumpOverPrefRoomsNStudents:
 			}
 		}
 	}
+	
+	
+	//////////new test, 9 Sept. 2009
+	if(ok){
+		for(int i=0; i<gt.rules.nInternalActivities; i++){
+			if(!unspecifiedPreferredRoom[i]){
+				bool begin=true;
+				QSet<int> allowedRooms;
+				for(int kk=0; kk<activitiesPreferredRoomsList[i].count(); kk++){
+					PreferredRoomsItem& it=activitiesPreferredRoomsList[i][kk];
+					if(it.percentage==100.0){
+						if(begin){
+							allowedRooms=it.preferredRooms;
+							begin=false;
+						}
+						else
+							allowedRooms.intersect(it.preferredRooms);
+					}
+				}
+				if(!begin && allowedRooms.count()==0){
+					ok=false;
+				
+					int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+					 GeneratePreTranslate::tr("Cannot generate the timetable, because for activity with id==%1 "
+					 "you have no allowed preferred room (considering rooms' capacities and constraints preferred"
+					 " room(s) with 100.0% weight percentage)")
+					 .arg(gt.rules.internalActivitiesList[i].id),
+					 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
+					 1, 0 );
+		
+					if(t==0)
+						break;
+				}
+			}
+		}
+	}
+	//////////
 	
 	return ok;
 }
@@ -5135,10 +6234,10 @@ bool computeMaxBuildingChangesPerDayForStudents()
 			if(spr->weightPercentage!=100){
 				ok=false;
 		
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot optimize, because there is a space constraint students set max building changes per day"
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize, because there is a space constraint students set max building changes per day"
 				 " with weight under 100%. Please correct and try again"),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 				 	
 				if(t==0)
@@ -5159,10 +6258,10 @@ bool computeMaxBuildingChangesPerDayForStudents()
 			if(spr->weightPercentage!=100){
 				ok=false;
 		
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot optimize, because there is a space constraint students max building changes per day"
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize, because there is a space constraint students max building changes per day"
 				 " with weight under 100%. Please correct and try again"),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 				 	
 				if(t==0)
@@ -5198,10 +6297,10 @@ bool computeMaxBuildingChangesPerWeekForStudents()
 			if(spr->weightPercentage!=100){
 				ok=false;
 		
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot optimize, because there is a space constraint students set max building changes per week"
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize, because there is a space constraint students set max building changes per week"
 				 " with weight under 100%. Please correct and try again"),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 				 	
 				if(t==0)
@@ -5222,10 +6321,10 @@ bool computeMaxBuildingChangesPerWeekForStudents()
 			if(spr->weightPercentage!=100){
 				ok=false;
 		
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot optimize, because there is a space constraint students max building changes per week"
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize, because there is a space constraint students max building changes per week"
 				 " with weight under 100%. Please correct and try again"),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 				 	
 				if(t==0)
@@ -5261,10 +6360,10 @@ bool computeMinGapsBetweenBuildingChangesForStudents()
 			if(spr->weightPercentage!=100){
 				ok=false;
 		
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot optimize, because there is a space constraint students set min gaps between building changes"
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize, because there is a space constraint students set min gaps between building changes"
 				 " with weight under 100%. Please correct and try again"),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 				 	
 				if(t==0)
@@ -5285,10 +6384,10 @@ bool computeMinGapsBetweenBuildingChangesForStudents()
 			if(spr->weightPercentage!=100){
 				ok=false;
 		
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot optimize, because there is a space constraint students min gaps between building changes"
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize, because there is a space constraint students min gaps between building changes"
 				 " with weight under 100%. Please correct and try again"),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 				 	
 				if(t==0)
@@ -5325,10 +6424,10 @@ bool computeMaxBuildingChangesPerDayForTeachers()
 			if(spr->weightPercentage!=100){
 				ok=false;
 		
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot optimize, because there is a space constraint teacher max building changes per day"
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize, because there is a space constraint teacher max building changes per day"
 				 " with weight under 100%. Please correct and try again"),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 				 	
 				if(t==0)
@@ -5347,10 +6446,10 @@ bool computeMaxBuildingChangesPerDayForTeachers()
 			if(spr->weightPercentage!=100){
 				ok=false;
 		
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot optimize, because there is a space constraint teachers max building changes per day"
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize, because there is a space constraint teachers max building changes per day"
 				 " with weight under 100%. Please correct and try again"),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 				 	
 				if(t==0)
@@ -5386,10 +6485,10 @@ bool computeMaxBuildingChangesPerWeekForTeachers()
 			if(spr->weightPercentage!=100){
 				ok=false;
 		
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot optimize, because there is a space constraint teacher max building changes per week"
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize, because there is a space constraint teacher max building changes per week"
 				 " with weight under 100%. Please correct and try again"),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 				 	
 				if(t==0)
@@ -5408,10 +6507,10 @@ bool computeMaxBuildingChangesPerWeekForTeachers()
 			if(spr->weightPercentage!=100){
 				ok=false;
 		
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot optimize, because there is a space constraint teachers max building changes per week"
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize, because there is a space constraint teachers max building changes per week"
 				 " with weight under 100%. Please correct and try again"),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 				 	
 				if(t==0)
@@ -5447,10 +6546,10 @@ bool computeMinGapsBetweenBuildingChangesForTeachers()
 			if(spr->weightPercentage!=100){
 				ok=false;
 		
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot optimize, because there is a space constraint teacher min gaps between building changes"
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize, because there is a space constraint teacher min gaps between building changes"
 				 " with weight under 100%. Please correct and try again"),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 				 	
 				if(t==0)
@@ -5469,10 +6568,10 @@ bool computeMinGapsBetweenBuildingChangesForTeachers()
 			if(spr->weightPercentage!=100){
 				ok=false;
 		
-				int t=QMessageBox::warning(NULL, QObject::tr("FET warning"),
-				 QObject::tr("Cannot optimize, because there is a space constraint teachers min gaps between building changes"
+				int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"),
+				 GeneratePreTranslate::tr("Cannot optimize, because there is a space constraint teachers min gaps between building changes"
 				 " with weight under 100%. Please correct and try again"),
-				 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 				 	
 				if(t==0)
@@ -5504,6 +6603,7 @@ void computeMustComputeTimetableSubgroups()
 		
 		foreach(int sbg, act->iSubgroupsList)
 			if(subgroupsMaxGapsPerWeekPercentage[sbg]>=0 ||
+			  subgroupsMaxGapsPerDayPercentage[sbg]>=0 ||
 			  subgroupsEarlyMaxBeginningsAtSecondHourPercentage[sbg]>=0 ||
 			  subgroupsMaxHoursDailyPercentages1[sbg]>=0 ||
 			  subgroupsMaxHoursDailyPercentages2[sbg]>=0 ||
@@ -5518,7 +6618,8 @@ void computeMustComputeTimetableSubgroups()
 			  maxBuildingChangesPerWeekForStudentsPercentages[sbg]>=0 ||
 			  minGapsBetweenBuildingChangesForStudentsPercentages[sbg]>=0 ||
 			  
-			  subgroupsActivityTagMaxHoursContinuouslyPercentage[sbg].count()>0
+			  subgroupsActivityTagMaxHoursContinuouslyPercentage[sbg].count()>0 ||
+			  subgroupsActivityTagMaxHoursDailyPercentage[sbg].count()>0
 			  ){
 			  
 				mustComputeTimetableSubgroups[ai].append(sbg);
@@ -5546,6 +6647,8 @@ void computeMustComputeTimetableTeachers()
 			  teachersMaxHoursContinuouslyPercentages2[tch]>=0 ||
 			  teachersMinHoursDailyPercentages[tch]>=0 ||
 			  
+			  teachersMinDaysPerWeekPercentages[tch]>=0 ||
+			  
 			  teachersIntervalMaxDaysPerWeekPercentages1[tch]>=0 ||
 			  teachersIntervalMaxDaysPerWeekPercentages2[tch]>=0 ||
 			  
@@ -5553,7 +6656,8 @@ void computeMustComputeTimetableTeachers()
 			  maxBuildingChangesPerWeekForTeachersPercentages[tch]>=0 ||
 			  minGapsBetweenBuildingChangesForTeachersPercentages[tch]>=0 ||
 			  
-			  teachersActivityTagMaxHoursContinuouslyPercentage[tch].count()>0
+			  teachersActivityTagMaxHoursContinuouslyPercentage[tch].count()>0 ||
+			  teachersActivityTagMaxHoursDailyPercentage[tch].count()>0
 			  ){
 			  
 				mustComputeTimetableTeachers[ai].append(tch);
@@ -5576,9 +6680,9 @@ bool computeFixedActivities()
 		if(notAllowedSlots==gt.rules.nHoursPerWeek){
 			ok=false;
 		
-			QString s=QObject::tr("Activity with id=%1 has no allowed slot - please correct that").arg(gt.rules.internalActivitiesList[ai].id);
-			int t=QMessageBox::warning(NULL, QObject::tr("FET warning"), s,
-			 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+			QString s=GeneratePreTranslate::tr("Activity with id=%1 has no allowed slot - please correct that").arg(gt.rules.internalActivitiesList[ai].id);
+			int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"), s,
+			 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 			 1, 0 );
 				 	
 			if(t==0)
@@ -5649,7 +6753,7 @@ void sortActivities()
 			if(notAllowedTimesPercentages[i][j]>=0)
 				nIncompatible[i]+=notAllowedTimesPercentages[i][j]/100.0;
 		
-		//min n days - no
+		//min days - no
 		
 
 		//teachers max days per week
@@ -5748,10 +6852,10 @@ bool homeRoomsAreOk()
 		if(nHoursRequiredForRoom[r]>nHoursAvailableForRoom[r]){
 			ok=false;
 
-			QString s=QObject::tr("Room %1 has not enough slots for home rooms constraints (requested %2, available %3) - please correct that")
+			QString s=GeneratePreTranslate::tr("Room %1 has not enough slots for home rooms constraints (requested %2, available %3) - please correct that")
 			  .arg(gt.rules.internalRoomsList[r]->name).arg(nHoursRequiredForRoom[r]).arg(nHoursAvailableForRoom[r]);
-			int t=QMessageBox::warning(NULL, QObject::tr("FET warning"), s,
-			 QObject::tr("Skip rest"), QObject::tr("See next"), QString(),
+			int t=QMessageBox::warning(NULL, GeneratePreTranslate::tr("FET warning"), s,
+			 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 			 1, 0 );
 				 	
 			if(t==0)
@@ -5762,7 +6866,7 @@ bool homeRoomsAreOk()
 }
 
 
-void sortActivities()
+void sortActivities(const QHash<int, int> & reprSameStartingTime, const QHash<int, QSet<int> > & reprSameActivitiesSet, QTextStream* initialOrderStream)
 {
 //	const int INF  = 2000000000;
 	const int INF  = 1500000000; //INF and INF2 values of variables may be increased, so they should be INF2>>INF and INF2<<MAXINT(2147.........)
@@ -5785,10 +6889,10 @@ void sortActivities()
 			if(notAllowedRoomTimePercentages[j][k]>=THRESHOLD)
 				nRoomsIncompat[j]++;
 	}
-	int nHoursForRoom[MAX_ROOMS];	
+	double nHoursForRoom[MAX_ROOMS];	
 
 	for(int j=0; j<gt.rules.nInternalRooms; j++)
-		nHoursForRoom[j]=0;
+		nHoursForRoom[j]=0.0;
 
 	//only consider for each activity the constraint preferred room(s) with highest percentage (and then lowest number of rooms)
 	PreferredRoomsItem maxPercentagePrefRooms[MAX_ACTIVITIES];
@@ -5811,27 +6915,82 @@ void sortActivities()
 		if(it.percentage>=THRESHOLD){
 			assert(!unspecifiedPreferredRoom[j]);
 			foreach(int rm, it.preferredRooms)
-				nHoursForRoom[rm]+=gt.rules.internalActivitiesList[j].duration;
+				nHoursForRoom[rm]+=double(gt.rules.internalActivitiesList[j].duration)/double(it.preferredRooms.count());
 		}
 	}
 	
+	
+	//make those with same starting time have conflicts
+	//for instance, if A1 simultaneous with A2 and A2 conflicts with A3. then A1 conflicts with A3
+	//also, A1 will conflict with A2, but this conflict is not counted
+	//idea of Volker Dirr, implementation of Liviu
+	
+	QSet<int> allRepresentants;
+	foreach(int r, reprSameStartingTime) //only values, which are representants
+		allRepresentants.insert(r);
+	
+	foreach(int r, allRepresentants){
+		assert(reprSameActivitiesSet.contains(r));
+		QSet<int> s=reprSameActivitiesSet.value(r);
+		
+		assert(s.count()>=1);
+		if(s.count()>=2){
+			qint8 crth[MAX_ACTIVITIES];
+			qint8 crtv[MAX_ACTIVITIES];
+
+			for(int i=0; i<gt.rules.nInternalActivities; i++){
+				crth[i]=-1; //horizontal
+				crtv[i]=-1; //vertical
+			}
+		
+			foreach(int j, s){
+				for(int i=0; i<gt.rules.nInternalActivities; i++){
+					if(crth[i]<activitiesConflictingPercentage[j][i])
+						crth[i]=activitiesConflictingPercentage[j][i];
+					if(crtv[i]<activitiesConflictingPercentage[i][j])
+						crtv[i]=activitiesConflictingPercentage[i][j];
+				}
+			}
+
+			for(int i=0; i<gt.rules.nInternalActivities; i++)
+				assert(crth[i]==crtv[i]);
+		
+			foreach(int j, s){
+				for(int i=0; i<gt.rules.nInternalActivities; i++){
+					assert(activitiesConflictingPercentage[j][i]<=crth[i]);
+					activitiesConflictingPercentage[j][i]=crth[i];
+
+					assert(activitiesConflictingPercentage[i][j]<=crtv[i]);
+					activitiesConflictingPercentage[i][j]=crtv[i];
+				}
+			}
+		}
+	}
+	//end same starting time
 
 	for(int i=0; i<gt.rules.nInternalActivities; i++){
 		nIncompatible[i]=0;
 		
+		assert(reprSameStartingTime.contains(i));
+		
 		//basic
-		for(int j=0; j<gt.rules.nInternalActivities; j++)
-			if(i!=j && activitiesConflictingPercentage[i][j]>=THRESHOLD){
-				assert(activitiesConflictingPercentage[i][j]==100.0);
-				nIncompatible[i]+=gt.rules.internalActivitiesList[j].duration;
+		for(int j=0; j<gt.rules.nInternalActivities; j++){
+			assert(reprSameStartingTime.contains(j));
+			
+			if(reprSameStartingTime.value(i)!=reprSameStartingTime.value(j)){
+				if(i!=j && activitiesConflictingPercentage[i][j]>=THRESHOLD){
+					//assert(activitiesConflictingPercentage[i][j]==100);
+					nIncompatible[i]+=gt.rules.internalActivitiesList[j].duration;
+				}
 			}
+		}
 				
 		//not available, break, preferred time(s)
 		for(int j=0; j<gt.rules.nHoursPerWeek; j++)
 			if(notAllowedTimesPercentages[i][j]>=THRESHOLD)
 				nIncompatible[i]++;
 		
-		//min n days - no
+		//min days - no
 		
 
 		//teachers max days per week
@@ -5847,13 +7006,23 @@ void sortActivities()
 		//rooms
 		PreferredRoomsItem it=maxPercentagePrefRooms[i];
 		if(it.percentage>=THRESHOLD){
-			int cnt=0;
+			double cnt=0.0;
 			assert(!unspecifiedPreferredRoom[i]);
 			foreach(int rm, it.preferredRooms)
-				cnt+=nRoomsIncompat[rm]+nHoursForRoom[rm]-1; //-1 because we considered also current activity
-				//it seems that it should be -duration, not -1, but I am afraid to change what is functioning all right
-				
-			nIncompatible[i] += cnt / it.preferredRooms.count(); //average for all the rooms
+				cnt+=double(nRoomsIncompat[rm])+nHoursForRoom[rm]-(double(gt.rules.internalActivitiesList[i].duration)/double(it.preferredRooms.count()));
+				 //-duration because we considered also current activity
+			
+			if(cnt<0.0){
+				//assert(cnt+0.01>=0.0); //maybe rouding error, but not too high
+				if(!(cnt+0.01>=0.0)){
+					cout<<"Probable ERROR in file "<<__FILE__<<", line "<<__LINE__<<", cnt should be >=0.0"<<endl;
+				}
+				cnt=0.0;
+			}
+			
+			assert(cnt>=0.0);
+			
+			nIncompatible[i] += int(cnt / double(it.preferredRooms.count())); //average for all the rooms
 		}
 				
 		
@@ -5861,6 +7030,8 @@ void sortActivities()
 		nIncompatible[i]*=gt.rules.internalActivitiesList[i].duration;
 		
 		assert(nIncompatible[i]<INF);
+		
+		assert(nIncompatible[i]>=0);
 		
 		if(fixedTimeActivity[i]){
 			nIncompatible[i]=INF;
@@ -5876,12 +7047,224 @@ void sortActivities()
 		}
 	}
 
+	//DEPRECATED COMMENT
 	//same starting time - not computing, the algo takes care even without correct sorting
 	//it is difficult to sort about same starting time
+	
+	//IT IS POSSIBLE TO SORT ABOUT SAME STARTING TIME, see below, idea of Volker Dirr. It is much faster for some data sets.
+	//(for some data sets, it is 7 times faster)
+	
+	//compute repr:
+	/////////////////
+	QMultiHash<int, int> adjMatrix;
+	
+	for(int i=0; i<gt.rules.nInternalTimeConstraints; i++){
+		if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME
+		 &&gt.rules.internalTimeConstraintsList[i]->weightPercentage==100.0){
+			ConstraintActivitiesSameStartingTime* sst=(ConstraintActivitiesSameStartingTime*)gt.rules.internalTimeConstraintsList[i];
+			
+			for(int i=1; i<sst->_n_activities; i++){
+				adjMatrix.insert(sst->_activities[0], sst->_activities[i]);
+				adjMatrix.insert(sst->_activities[i], sst->_activities[0]);
+			}
+		}
+		else if(gt.rules.internalTimeConstraintsList[i]->type==CONSTRAINT_TWO_ACTIVITIES_CONSECUTIVE
+		 && gt.rules.internalTimeConstraintsList[i]->weightPercentage==100.0){
+			ConstraintTwoActivitiesConsecutive* c2c=(ConstraintTwoActivitiesConsecutive*)gt.rules.internalTimeConstraintsList[i];
+			
+			adjMatrix.insert(c2c->firstActivityIndex, c2c->secondActivityIndex);
+			adjMatrix.insert(c2c->secondActivityIndex, c2c->firstActivityIndex);
+		}
+	}
+		
+	QHash<int, int> repr;
+	//repr.clear();
+	
+	QQueue<int> queue;
+	
+	for(int i=0; i<gt.rules.nInternalActivities; i++){
+		int start=i;
+		
+		if(repr.value(start, -1)==-1){ //not visited
+			repr.insert(start, start);
+			queue.enqueue(start);
+			while(!queue.isEmpty()){
+				int crtHead=queue.dequeue();
+				assert(repr.value(crtHead, -1)==start);
+				QList<int> neighList=adjMatrix.values(crtHead);
+				foreach(int neigh, neighList){
+					if(repr.value(neigh, -1)==-1){
+						queue.enqueue(neigh);
+						repr.insert(neigh, start);
+					}
+					else{
+						assert(repr.value(neigh, -1)==start);
+					}
+				}
+			}
+		}
+	}
+
+	/////////////////
+	
+	//take care of chains of constraints with 100% weight
+	int reprNInc[MAX_ACTIVITIES];
+	for(int i=0; i<gt.rules.nInternalActivities; i++)
+		reprNInc[i]=-1;
+		
+	//repr contains the representant of each activity
+	for(int i=0; i<gt.rules.nInternalActivities; i++){
+		//int MM=nIncompatible[i];
+		assert(repr.contains(i));
+		int r=repr.value(i);
+		
+		int xx=nIncompatible[i];
+		if(fixedTimeActivity[i] && fixedSpaceActivity[i]){
+			assert(xx>=INF2);
+			xx-=(INF2-INF);
+		}
+		
+		assert(xx<INF2);
+		assert(xx>=0);
+		
+		if(reprNInc[r]<xx)
+			reprNInc[r]=xx;
+	}
+
+	for(int i=0; i<gt.rules.nInternalActivities; i++){
+		int r=repr.value(i);
+		assert(reprNInc[r]>=0);
+		if(nIncompatible[i]<reprNInc[r])
+			nIncompatible[i]=reprNInc[r];
+	}
+	
+	//new volker (start), modified by Liviu
+	//takes care of 100% weight constraints (not necessary - already took care above) and also <100% and >=80% weight constraints
+	for(int i=0; i<gt.rules.nInternalTimeConstraints; i++){
+		TimeConstraint* tc=gt.rules.internalTimeConstraintsList[i];
+		if(tc->type==CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME && tc->weightPercentage>=THRESHOLD){
+			ConstraintActivitiesSameStartingTime* c=(ConstraintActivitiesSameStartingTime*) tc;
+			
+			int xx=nIncompatible[c->_activities[0]];
+			if(fixedTimeActivity[c->_activities[0]] && fixedSpaceActivity[c->_activities[0]]){
+				assert(xx>=INF2);
+				xx-=(INF2-INF);
+			}
+			assert(xx>=0);
+			assert(xx<INF2);
+
+			int MM=xx;
+			
+			for(int a=1; a<c->_n_activities; a++){
+				int yy=nIncompatible[c->_activities[a]];
+				if(fixedTimeActivity[c->_activities[a]] && fixedSpaceActivity[c->_activities[a]]){
+					assert(yy>=INF2);
+					yy-=(INF2-INF);
+				}
+				assert(yy>=0);
+				assert(yy<INF2);
+
+				if(MM<yy)
+					MM=yy;
+			}
+			
+			for(int a=0; a<c->_n_activities; a++)
+				if(nIncompatible[c->_activities[a]]<MM)
+					nIncompatible[c->_activities[a]]=MM;
+		}
+		else if(tc->type==CONSTRAINT_TWO_ACTIVITIES_CONSECUTIVE && tc->weightPercentage>=THRESHOLD){
+			ConstraintTwoActivitiesConsecutive* c=(ConstraintTwoActivitiesConsecutive*) tc;
+			
+			int xx=nIncompatible[c->firstActivityIndex];
+			if(fixedTimeActivity[c->firstActivityIndex] && fixedSpaceActivity[c->firstActivityIndex]){
+				assert(xx>=INF2);
+				xx-=(INF2-INF);
+			}
+			assert(xx>=0);
+			assert(xx<INF2);
+			
+			int MM=xx;
+			
+			int yy=nIncompatible[c->secondActivityIndex];
+			if(fixedTimeActivity[c->secondActivityIndex] && fixedSpaceActivity[c->secondActivityIndex]){
+				assert(yy>=INF2);
+				yy-=(INF2-INF);
+			}
+			assert(yy>=0);
+			assert(yy<INF2);
+			
+			if(MM<yy)
+				MM=yy;
+				
+			if(nIncompatible[c->firstActivityIndex] < MM)
+				nIncompatible[c->firstActivityIndex] = MM;
+
+			if(nIncompatible[c->secondActivityIndex] < MM)
+				nIncompatible[c->secondActivityIndex] = MM;
+		}
+		else if(tc->type==CONSTRAINT_TWO_ACTIVITIES_GROUPED && tc->weightPercentage>=THRESHOLD){
+			ConstraintTwoActivitiesGrouped* c=(ConstraintTwoActivitiesGrouped*) tc;
+			
+			int xx=nIncompatible[c->firstActivityIndex];
+			if(fixedTimeActivity[c->firstActivityIndex] && fixedSpaceActivity[c->firstActivityIndex]){
+				assert(xx>=INF2);
+				xx-=(INF2-INF);
+			}
+			assert(xx>=0);
+			assert(xx<INF2);
+			
+			int MM=xx;
+			
+			int yy=nIncompatible[c->secondActivityIndex];
+			if(fixedTimeActivity[c->secondActivityIndex] && fixedSpaceActivity[c->secondActivityIndex]){
+				assert(yy>=INF2);
+				yy-=(INF2-INF);
+			}
+			assert(yy>=0);
+			assert(yy<INF2);
+			
+			if(MM<yy)
+				MM=yy;
+				
+			if(nIncompatible[c->firstActivityIndex] < MM)
+				nIncompatible[c->firstActivityIndex] = MM;
+
+			if(nIncompatible[c->secondActivityIndex] < MM)
+				nIncompatible[c->secondActivityIndex] = MM;
+		}
+	}
+	//new volker (end)
+	
+	
+	//this is to avoid an "impossible to generate" bug in fixed timetables - does not eliminate completely the bug, unfortunately
+	for(int i=0; i<gt.rules.nInternalActivities; i++){
+		if(nIncompatible[i]>=INF && nIncompatible[i]<INF2){
+			if(fixedTimeActivity[i]){
+				nIncompatible[i]=INF;
+		
+				nIncompatible[i]+=gt.rules.internalActivitiesList[i].iSubgroupsList.count()+
+				 gt.rules.internalActivitiesList[i].iTeachersList.count();
+			 
+				assert(nIncompatible[i]>=INF);
+			}
+			else{
+				nIncompatible[i]=INF;
+			}
+		}
+		else if(nIncompatible[i]>=INF2){
+			assert(fixedTimeActivity[i] && fixedSpaceActivity[i]);
+		
+			int xx=nIncompatible[i]-INF2;
+			assert(xx==gt.rules.internalActivitiesList[i].iSubgroupsList.count()+
+			 gt.rules.internalActivitiesList[i].iTeachersList.count());
+		}
+	}
+	
 	
 	//Sort activities in in-creasing order of number of the other activities with which
 	//this activity does not conflict
 	//Selection sort, based on a permutation
+	
 	for(int i=0; i<gt.rules.nInternalActivities; i++)
 		permutation[i]=i;
 		
@@ -5913,40 +7296,40 @@ void sortActivities()
 	cout<<"End - the order of activities (id-s):"<<endl;
 
 	QString s="";
-	s+=QObject::tr("This is the initial evaluation order of activities computed by FET."
+	s+=GeneratePreTranslate::tr("This is the initial evaluation order of activities computed by FET."
 	 " If the generation gets stuck after a certain number of activities, please check the activity"
 	 " corresponding to this number+1. You might find errors in your input.");
 	s+="\n\n";
-	s+=QObject::tr("The initial order of activities (id-s):");
+	s+=GeneratePreTranslate::tr("The initial order of activities (id-s):");
 	s+="\n\n";
 	for(int i=0; i<gt.rules.nInternalActivities; i++){
 		initialOrderOfActivitiesIndices[i]=permutation[i];
 	
-		s+=QObject::tr("No: %1", "Number").arg(i+1);
+		s+=GeneratePreTranslate::tr("No: %1", "Number").arg(i+1);
 		s+=", ";
 	
 		Activity* act=&gt.rules.internalActivitiesList[permutation[i]];
-		s+=QObject::tr("id=%1").arg(act->id);
+		s+=GeneratePreTranslate::tr("Id: %1", "Id of activity").arg(act->id);
 		s+=", ";
 		
-		s+=QObject::tr("teachers:");
-		s+=" ";
-		foreach(QString t, act->teachersNames)
-			s+=t+" ";
-
-		s+=QObject::tr("subject:");
-		s+=" ";
-		s+=act->subjectName+" ";
+		s+=GeneratePreTranslate::tr("Teachers: %1").arg(act->teachersNames.join(", "));
+		s+=", ";
+		s+=GeneratePreTranslate::tr("Subject: %1").arg(act->subjectName);
+		s+=", ";
+		//if(act->activityTagsNames.count()>0)
+			s+=GeneratePreTranslate::tr("Activity tags: %1").arg(act->activityTagsNames.join(", "));
+		s+=", ";
+		s+=GeneratePreTranslate::tr("Students: %1").arg(act->studentsNames.join(", "));
 		
-		s+=QObject::tr("students:");
-		s+=" ";
-		foreach(QString t, act->studentsNames)
-			s+=t+" ";
-
 		s+="\n";
 	}
 	s+="End - the order of activities (id-s)\n";
 	initialOrderOfActivities=s;
+	
+	if(initialOrderStream!=NULL){
+		(*initialOrderStream)<<s;
+		(*initialOrderStream).flush();
+	}
 	//assert(0);
 
 	//RANDOM ORDER

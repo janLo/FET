@@ -18,7 +18,7 @@
 #ifndef MODIFYCONSTRAINTBASICCOMPULSORYSPACEFORM_H
 #define MODIFYCONSTRAINTBASICCOMPULSORYSPACEFORM_H
 
-#include "modifyconstraintbasiccompulsoryspaceform_template.h"
+#include "ui_modifyconstraintbasiccompulsoryspaceform_template.h"
 #include "timetable_defs.h"
 #include "timetable.h"
 #include "fet.h"
@@ -33,13 +33,15 @@
 #include <qlineedit.h>
 #include <q3textedit.h>
 
-class ModifyConstraintBasicCompulsorySpaceForm : public ModifyConstraintBasicCompulsorySpaceForm_template  {
+class ModifyConstraintBasicCompulsorySpaceForm : public QDialog, Ui::ModifyConstraintBasicCompulsorySpaceForm_template  {
+	Q_OBJECT
 public:
 	ConstraintBasicCompulsorySpace* _ctr;
 
 	ModifyConstraintBasicCompulsorySpaceForm(ConstraintBasicCompulsorySpace* ctr);
 	~ModifyConstraintBasicCompulsorySpaceForm();
 
+public slots:
 	void constraintChanged();
 	void ok();
 	void cancel();
