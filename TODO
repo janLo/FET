@@ -1,0 +1,89 @@
+---Derive some time constraints so that the first phase always respects the space
+constraints (compulsory? non-compulsory?). Solve the second phase of the sample 
+input from Marek Jaszuk.
+
+
+GENERAL:
+- Command line options.
+- Add make install. Where should I place the executable?
+- Proper help files.
+- CVS support?
+- Compare this program with proprietary (non-free) applications.
+I saw that the only applications which use a text input file are "Mimosa" and,
+more recently, "Lantiv".
+- Collect results obtained by people worldwide. More input files required.
+
+
+TECHNICAL:
+- ConstraintActivityRequiresRoom
+- ConstraintActivitiesSameEndingTime
+- ConstraintActivitiesNotConsecutive
+- ConstraintActivityRejectedTime ?
+- ConstraintStudentsNoGaps: is it better to consider the importance of
+a gap as 1 or as its length? Currently, it is considered 1.
+- ConstraintStudentsNoMoreThanNGapsDaily
+
+
+WISHLIST:
+
+1----------several users----------------------------------
+- Improve user interface - add help and wizard.
+
+2---------------------------------------------------------
+From Michael Towers:
+
+"
+** Why are such configuration values set as constants which are then compiled into the 
+program? Wouldn't it be better to put these into a resource file, loaded at run time?
+
+** What about a rewrite of the front end in a scripting language - e.g. Python? It might speed 
+development and help debugging. It could also make maintenance of the code easier.
+
+** Is there some way of doing "interactive" timetable development? The human would make 
+suggestions, or place some items, run the program, maybe move a few things around, run the 
+program again ... (Liviu: it would be very simple, the algorithm supports that. Only the 
+interface has to be updated)
+
+** A clear and clean interface to your evolutionary engine as an entity separate from the 
+input/output might be useful.
+
+** What about editing existing activities? Removing them and reentering them from scratch 
+is a bit annoying!
+"
+
+"How compatible my idea of manual intervention is with the genetic algorithm is not clear to me.
+Actually a purely manual approach would probably disallow clashes completely and offer all 
+sorts of visual signals to show where activities could or could not be scheduled, 
+which activities could be scheduled in a particular period, etc. This is something completely 
+different to what you have been working on. Maybe there is some middle way, but I feel some 
+of this stuff would actually be necessary (I do not yet believe that it is practicable to 
+generate timetables purely automatically - the requirements and constraints are too diverse).
+
+It seems to me, it should be possible (but of course only after a lot of work!) to have 
+a beautiful manual timetable editor (which can also print the various timetables, and 
+perhaps save the data sets and results in a database) with an interface to an automatic 
+timetable scheduler which can be used to speed up the work."
+
+3---------------------------------------------------------
+From TheStar:
+
+A constraint to think about is that some activities, and I suspect 'normal school management'
+talks about teachers as in "One teacher per x students".
+
+In the HSC year here, it's about one teacher per 26 students (or something like that).
+At a recent excursion, it was one teacher per 10 students.  Hope that helps :)
+
+..............................
+
+> Of course, you can add each student. I could have implemented this solution.
+> But I doubt that the user has such patience :-)
+
+You could always autogenerate the students...
+"Quick-Build Students"
+ [Properties]
+ [Number]
+ (Build)
+
+And it will generate students with name: AutoGen-11231, ID: 11231, and the like.
+
+The user could then 'select' groups of these students... and... (Just an idea)

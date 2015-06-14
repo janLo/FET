@@ -1,0 +1,71 @@
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
+<class>HelpAboutForm_template</class>
+<widget class="QDialog">
+    <property name="name">
+        <cstring>HelpAboutForm_template</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>446</width>
+            <height>470</height>
+        </rect>
+    </property>
+    <property name="caption">
+        <string>About FET - a free evolutionary timetabling program</string>
+    </property>
+    <grid>
+        <property name="name">
+            <cstring>unnamed</cstring>
+        </property>
+        <property name="margin">
+            <number>11</number>
+        </property>
+        <property name="spacing">
+            <number>6</number>
+        </property>
+        <widget class="QPushButton" row="1" column="0">
+            <property name="name">
+                <cstring>closePushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Close</string>
+            </property>
+        </widget>
+        <widget class="QLabel" row="0" column="0">
+            <property name="name">
+                <cstring>aboutTextLabel</cstring>
+            </property>
+            <property name="text">
+                <string>FET is free software for automatically scheduling 
+the timetable of a school, high-school or faculty.
+
+Version: 3.9.21 (December 2004)
+
+Licensed under GNU/GPL.
+
+Author: Liviu Lalescu,  liviu@lalescu.ro
+
+Web page: http://lalescu.ro/liviu/fet/ (for now)
+
+This project is open source. You are invited to contribute
+to this software and your feed-back would be greatly
+appreciated.
+
+Please support this project by making a donation.
+You can contact the author for that.</string>
+            </property>
+        </widget>
+    </grid>
+</widget>
+<connections>
+    <connection>
+        <sender>closePushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>HelpAboutForm_template</receiver>
+        <slot>close()</slot>
+    </connection>
+</connections>
+<layoutdefaults spacing="6" margin="11"/>
+</UI>

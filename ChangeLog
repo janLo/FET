@@ -1,0 +1,333 @@
+Versions 0.1 - 0.57 - liviu@lalescu.ro
+- Versions 0.1 - 0.57 - no user interface, plenty of bugs.
+-------------------------------------------------------------------------------
+Versions 1.0 - 1.17 - liviu@lalescu.ro
+- Version 1 and above - added text menu.
+- Version 1.5 and above - added Qt GUI.
+- Version 1.8 and above - removed the text menu :-)
+- Version 1.12 - used valgrind to track down an annoying crashing bug. Thanx!
+	This was not the only time I used valgrind to hunt for bugs
+-------------------------------------------------------------------------------
+Versions 2.0 - 2.6 - liviu@lalescu.ro
+- Version 2.0 and above - better Qt GUI.
+- Version 2.1
+- Version 2.2
+- Version 2.3 - added conflicts reporting.
+- Version 2.4 - made a separate list for subjects (not depending on teacher).
+- Version 2.5 - crash bugs fixed.
+- Version 2.6 - crash bugs fixed.
+-------------------------------------------------------------------------------
+Versions 2.7.0 - 2.7.8 - liviu@lalescu.ro
+- Version 2.7.0 - added CHRActivitiesNotSameDay;
+	- added split activities (for high-schools);
+	- changed numbering of the versions (Carsten's suggestion).
+- Version 2.7.1 - added CHRTeachersNoMoreThanXHoursContinuously.
+- Version 2.7.2 - implemented menu item Timetable/Show(teachers) (shows the the timetable for a certain teacher).
+- Version 2.7.3 - user can change the number of hours and days;
+	- list of activities - fixed bug in the interface.
+- Version 2.7.4 - improved the add custom hard restriction and add custom soft restriction dialogs;
+	- allowing to split an activity in two ways: daily exclusion or no daily exclusion;
+	- added CHRTeachersSubgroupsNoMoreThanXHoursDaily (no teacher can teach to a subgroup more than x hours daily) - to be checked thoroughly;
+	- added the possibility to record a position of the simulation on the hard disk and the subsequent retrieval.
+- Version 2.7.5 - bug fixes in activities form.
+- Version 2.7.6 - bug fix in load recorded position.
+- Version 2.7.7 - small bug fixes.
+	- the main engine, interface and intermediate objects are now placed in separated directories
+- Version 2.7.8 - small improvement in students view timetable form
+	- now, the user can click on the table to see details about the activity
+-------------------------------------------------------------------------------
+Versions 2.8.0 - 2.8.5 - liviu@lalescu.ro
+- Version 2.8.0 - bug fixes
+	- added CSRActivityPreferredTime (user may specify for each activity a preferred 
+	time) - (suggested by Sajith V. K.)
+- Version 2.8.1 - bug fixes
+- Version 2.8.2 - added CHRActivitiesSameTime (idea by Sajith V. K., to handle activities
+	having more teachers or more groups from different years. This can be done
+	using dummy groups or dummy teachers).
+	- increased the number of split activities to 8 in the GUI.
+	- now, any unallocated activity has weight 10000.
+- Version 2.8.3 - bug fix - GUI restriction CHRTeacher(Year, Group, Subgroup)NotAvailable
+	corrected, by enabling the day and hour.
+- Version 2.8.4 - small changes in the interface.
+- Version 2.8.5 - changed the name to FET (or fet)
+	- added break periods (with CHRBreak)
+-------------------------------------------------------------------------------
+Versions 2.9.0 - 2.9.6 - liviu@lalescu.ro
+- Version 2.9.0 - bug fix in ConstraintStudentsYearNotAvailable
+	- changed Restriction into Constraint, now you can implement any constraint 
+	as compulsory or not
+- Version 2.9.1 - small crash bug fixed (when erasing a year and pressing Cancel)
+	- added ConstraintActivitiesNotSameTime
+- Version 2.9.2 - bug fix when reading constraints (thanks to Ian Fantom, Marc Falcon)
+- Version 2.9.3 - bug fix when reading constraints (thanks to Michael Towers)
+- Version 2.9.4 - lots of bug fixes (thanks to Michael Towers)
+- Version 2.9.5 - bug fix, new activity is added with correct index
+- Version 2.9.6 - bug fixes
+-------------------------------------------------------------------------------
+- Version 2.10.0 - liviu@lalescu.ro
+	- bug fixes (maybe added a few new ones :-)
+	- FET now uses QString, QValueStack, QDomDocument, QFile and QTextStream classes
+	 (Imre Nagy's suggestion).
+-------------------------------------------------------------------------------
+- Version 3.0.0 pre1 - liviu@lalescu.ro
+	- activities list is now a qt list (QPtrList)
+	- constraints list is now a qt list (QPtrList)
+	- bug fixes
+	- max hours per week is now short integer (instead of char)
+	- removed population initialization method from the ini file and added it 
+	into the GUI
+	- made the simulation somewhat faster, by getting rid of function realTimes(i)
+- Version 3.0.0 pre2 - liviu@lalescu.ro
+	- subjects, teachers, students are now QPtrList.
+	- the file open/saveas dialog now open in working directory
+- Version 3.0.0 pre3 - liviu@lalescu.ro
+	- improved speed by modifying a bit the fitness calculation.
+- Version 3.0.0 pre4 - liviu@lalescu.ro
+	- improved structure of the output xml files
+	- began working at space allocation
+-------------------------------------------------------------------------------
+Versions 3.1.0 - 3.1.4 - liviu@lalescu.ro
+- Version 3.1.0
+	- now the years and groups can have overlapping subgroups (uff)
+	- the activities support more than one set of students (year, group or subgroup)
+- Version 3.1.1
+	- improved speed (instead of 9 seconds, I get now 7 seconds on a test), by
+	reducing redundant computations for teachers and students conflicts
+- Version 3.1.2
+	- space (room) allocation (sigh of relief)
+- Version 3.1.3
+	- fixed bug when reading ConstraintBreak
+	- leak bug fixed, thanks to Valgrind (duplicated constraints were not deleted
+	if Rules::addTimeConstraint returned false)
+	- bug fix: adding/removing constraints and reading input files resets
+	variable Rules::internalStructureComputed to false
+	- corrected ConstraintStudentsEarly
+- Version 3.1.4
+	- improved (very little) ConstraintActivitiesNotSameDay
+	- fixed activity bug: comparing 2 activities for equality now works
+	- now the user can see whether the activities have daily exclusion or not
+-------------------------------------------------------------------------------
+Versions 3.2.0 - 3.2.9 - liviu@lalescu.ro
+- Version 3.2.0
+	- changed the GUI: the user can see all constituent activities and constraints
+	- saving now even basic constraints
+	- the GUI now has filters when viewing constraints and activities
+- Version 3.2.2
+	- now the program compiles in Windows, under VC 6.0
+- Version 3.2.3
+	- corrected small bug in ConstraintActivitiesSameTime and
+	ConstraintActivitiesNotSameTime
+	- ConstraintActivitiesSameTime now works much better for compulsory constraints.
+	I considered that it is better to repair each chromosome so that all
+	the compulsory constraints of this type are fulfilled, before evaluating it.
+	This change was suggested by an input data file from Ian Fantom,
+	which contained a lot of this constraints and the old version was failing
+	lamentably.
+- Version 3.2.4
+	- began internalization (using qtranslator)
+	- began Romanian translation
+- Version 3.2.5
+	- small bug fix
+	- improved internalization
+	- improved Romanian translation
+- Version 3.2.6
+	- now, compulsory ConstraintActivityPreferredTime is implemented better
+	(as a repairing of the choromosome).
+	- improved speed by avoiding two passes through the internal constraints list
+	when computing hard and soft fitness (compulsory or non-compulsory conflicts)
+- Version 3.2.7
+	- Added a FAQ
+- Version 3.2.8
+	- Made the simulation faster (very little) by getting rid of the logging part
+- Version 3.2.9
+	- bug fix in ConstraintActivityPreferredTime (thanks to Michael Towers)
+-------------------------------------------------------------------------------
+Versions 3.3.0 - 3.3.1 - liviu@lalescu.ro
+- Version 3.3.0
+	- small bug fixes in the interface
+- Version 3.3.1
+	- bug fix when reading ConstraintStudentsNotAvailable
+-------------------------------------------------------------------------------
+Versions 3.4.0 - 3.4.8 - liviu@lalescu.ro
+- Version 3.4.0 (pre1 and pre2)
+	- Each activity supports several teachers (3, but this can be easily extended)
+	- Now, the default population size is 2048 (Michael Towers's suggestion).
+	- Bug fixes in ConstraintTeachersNoMoreThanXHoursContinuously
+	- Changed ConstraintStudentsNotAvailable into ConstraintStudentsSetNotAvailable
+		changed ConstraintActivitiesSameTime into ConstraintActivitiesSameStartingTime
+		changed ConstraintActivitiesNotSameTime into ConstraintActivitiesNotOverlapping
+		changed ConstraintStudentsNoWindows into ConstraintStudentsNoGaps
+		changed ConstraintTeachersNoWindows into ConstraintTeachersNoGaps
+		changed ConstraintStudentsNotTooMuch into ConstraintStudentsMaxDaysLength
+- Version 3.4.1 (pre1 and pre2)
+	- Improvements in constraints names
+	- New constraints
+- Version 3.4.2
+	- Improvements in constraints names
+	- New constraints
+- Version 3.4.3
+	- Small bug fix in ConstraintStudentsSetNHoursDaily (thanks to Michael Towers)
+- Version 3.4.4
+	- Made the simulation somewhat faster, by avoiding an unnecessary sorting
+	when the evolution method is three-tournament selection
+- Version 3.4.5
+	- Addings in FAQ
+	- Modified the parameters of the genetic algorithm and now FET can deal better
+	with broken ConstraintNoGaps (students or teachers).
+- Version 3.4.6
+	- The user can now modify the population number from the interface
+	- The default population size is now 8192
+- Version 3.4.7
+	- Bug fix, crashing when logging ConstraintStudentsEarly
+- Version 3.4.8
+	- FET allows now to use two ConstraintMinNDaysBetweenActivities for the same activities
+-------------------------------------------------------------------------------
+Versions 3.5.0 - 3.5.4 - liviu@lalescu.ro
+- Version 3.5.0
+	- Added ConstraintActivityPreferredTimes (suggested by Michael Towers)
+	- Added ConstraintStudentsSetIntervalMaxDaysPerWeek (suggested by Simon Getti)
+	- Added ConstraintActivityEndsDay (suggested by Michael Towers)
+- Version 3.5.1
+	- Added an interface to ConstraintActivityPreferredTimes
+- Version 3.5.2
+	- Bug fix in selecting the first or second best out of three chromosomes (3 tournament)
+- Version 3.5.3
+	- Bug fix - the maximum number of teachers is now 200, instead of 100 (thanks to
+	Gibbon Tamba for reporting this potential bug)
+- Version 3.5.4
+	- When viewing the timetable, it shows the subject for the students and the
+	students for the teachers (suggested by Sajith V. K.)
+--------------------------------------------------------------------------------
+Versions 3.6.0 - 3.6.7 - liviu@lalescu.ro
+- Version 3.6.0
+	- Each room is now represented by name, type and capacity
+	- Added ConstraintRoomNotAvailable
+	- Added ConstraintTeachersNoMoreThanXHoursDaily
+	- Added ConstraintRoomTypeNotAllowedSubjects
+- Version 3.6.1
+	- Improved the days dialog
+	- Improved the hours dialog and added names for the hours. The file structure
+	was a bit changed, but you can open older files and save them as new ones.
+- Version 3.6.2
+	- Small bug fixes in the interface
+- Version 3.6.3
+	- Small bug fixes in the interface
+- Version 3.6.4
+	- Small bug fixes in the interface
+	- Improved add activity dialog
+- Version 3.6.5
+	- The days, hours and add activity dialog are now resizeable
+- Version 3.6.6
+	- Saving of the timetable in xml format is now improved
+- Version 3.6.7
+	- Small bug fixes in the add activity dialog
+---------------------------------------------------------------------------------
+Versions 3.7.0 - 3.7.2 - liviu@lalescu.ro
+- Version 3.7.0
+	- Added the number of students for each students set
+	- The basic space constraints now include the requirement that each room's capacity
+	must be greater or equal to the number of participating students
+- Version 3.7.1
+	- Small bug fixes
+- Version 3.7.2
+	- ConstraintTeacherMaxDaysPerWeek
+	- small bug fix in the interface (when adding ConstraintStudentsSetIntervalMaxDaysPerWeek,
+	the maximum number of days of the spin box is now updated correctly)
+---------------------------------------------------------------------------------
+Versions 3.8.0 - 3.8.5 - liviu@lalescu.ro
+- Version 3.8.0
+	- Added equipments list
+	- Added ConstraintSubjectRequiresEquipment
+	- Small bug fixes
+- Version 3.8.1
+	- Small bug fixes in the interface
+- Version 3.8.2
+	- Bug fix when reading ConstraintRoomNotAvailable (thanks to Jerome Durand)
+- Version 3.8.3
+	- Doxygen options bug corrected
+	- Got rid of some compiler warnings
+- Version 3.8.4
+	- Bug fix: Timetable->Allocate rooms->Start/Continue  - crushed FET if there was no
+	previous Initialization (thanks to Marek Jaszuk)
+	- "Time constraint teacher max days per week broken for teacher:
+	XY.This increases the conflicts factor with 0" (thanks to Marek Jaszuk)
+- Version 3.8.5
+	- Bug fix - when restoring the internal state (time or space), without previously saving
+	the internal state, FET crushed (thanks to Marek Jaszuk)
+	- Improved translation
+	- Now you can write the timetable after initialization or loading the internal state,
+	without starting the simulation
+---------------------------------------------------------------------------------
+Versions 3.9.0 - 3.9.x - liviu@lalescu.ro, French translation by Jerome Durand (fetfr@free.fr),
+	2 conversion scripts by Jerome Durand and Vimal Joseph.
+- Version 3.9.0
+	- Bug fix - medium fitness now is shown correctly (no more negative values). Reported
+	by Marek Jaszuk.
+	- Added a file in the "doc/" directory, explaining how to add/improve translations.
+	- Added Constraint2ActivitiesConsecutive (suggested by Ramanathan Srinivasan).
+	- Added Constraint2ActivitiesGrouped (suggested by Ramanathan Srinivasan).
+	- Added ConstraintActivitiesPreferredTimes (suggested by Vimal Joseph).
+	- Modified a bit the organization of translations.
+	- Added French translation (by Jerome Durand).
+	- Bug fix in ConstraintSubjectRequiresEquipments (non-compulsory constraints
+	were considered compulsory).
+- Version 3.9.1
+	- Small improvement in translations.
+	- Small improvement in Help/About form.
+	- Added 2 scripts in the "results/" directory to convert the xml results (Jerome Durand, Vimal Joseph).
+- Version 3.9.2
+	- ConstraintActivitiesSameStartingTime is now separate (in TimeConstraints2) and improved,
+	that is you can schedule activities in similar blocks (suggested by Ian Fantom).
+	- Small interface improvements.
+- Version 3.9.3
+	- Bug fix in the add constraint activities same starting time dialog - reported by Ian Fantom
+- Version 3.9.4
+	- In the add activity dialog, added 3 check boxes so that the user can select only years,
+	groups, subgroups or a combination of these.
+- Version 3.9.5
+	- Improvement of the Help/About form.
+- Version 3.9.6
+	- Improved the Romanian translation and "Timetable/Export" menu.
+- Version 3.9.7
+	- Bug corrected - the program now saves correctly the compulsory argument when working
+	in another language (suggested by Cristian Gherman).
+- Version 3.9.8
+	- The possibility to add more teachers pe activity (6), by working on the .xml file
+	(suggested by Cristian Gherman).
+	- Got rid of old compatibility loading (file rules_compatibility.cpp).
+- Version 3.9.9
+	- Got rid of some "unused variable" compiler warnings.
+	- Modified a bit the README file.
+- Version 3.9.10
+	- When exiting, the program asks to save the current file (suggested by Nicholas Robinson)
+	- Added ConstraintTeacherRequiresRoom (suggested by Nicholas Robinson).
+- Version 3.9.11
+	- Improved Romanian translation
+- Version 3.9.12
+- Version 3.9.13
+	- Now the fet.ini file is written in the home directory
+- Version 3.9.14
+	- Small bug fix when writing the default ini file
+- Version 3.9.15
+	- Small bug fix when writing the default ini file
+	- Small bug fix in the conflicts reporting section
+- Version 3.9.16
+	- When viewing the timetable for teachers, shows also the subjects
+	(suggested by Nicholas Robinson).
+- Version 3.9.17
+	- small doc/FAQ and TODO files modifications.
+	- small interface improvements.
+- Version 3.9.18
+	- now the program compiles in Microsoft Windows without any change
+	- when reading activities with invalid subject, teacher or students, the program does not
+	crash anymore (thanks to Morten Piil).
+- Version 3.9.19
+	- FET now can deal with translations installed in /usr/share/fet/translations/
+	 (suggested by Radu Spineanu).
+- Version 3.9.20
+	- Moved the directory "results" to "~/.fet/results"
+- Version 3.9.21
+	- The conflicts are now saved in a file ("time_conflicts.txt" and 
+	 "space_conflicts.txt") - suggested by Sebastian Canagaratna.
+	- Now, saving the internal state works correctly in Debian - reported by
+	Sebastian Canagaratna.

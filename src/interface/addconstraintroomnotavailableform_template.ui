@@ -1,0 +1,279 @@
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
+<class>AddConstraintRoomNotAvailableForm_template</class>
+<widget class="QDialog">
+    <property name="name">
+        <cstring>AddConstraintRoomNotAvailableForm_template</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>504</width>
+            <height>468</height>
+        </rect>
+    </property>
+    <property name="caption">
+        <string>FET - Adding a new constraint room not available</string>
+    </property>
+    <widget class="QPushButton">
+        <property name="name">
+            <cstring>addConstraintPushButton</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>40</x>
+                <y>400</y>
+                <width>170</width>
+                <height>31</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>Add constraint</string>
+        </property>
+    </widget>
+    <widget class="QPushButton">
+        <property name="name">
+            <cstring>closePushButton</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>260</x>
+                <y>400</y>
+                <width>170</width>
+                <height>31</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>Close</string>
+        </property>
+    </widget>
+    <widget class="QLabel">
+        <property name="name">
+            <cstring>weightTextLabel</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>131</x>
+                <y>241</y>
+                <width>218</width>
+                <height>38</height>
+            </rect>
+        </property>
+        <property name="frameShape">
+            <enum>NoFrame</enum>
+        </property>
+        <property name="frameShadow">
+            <enum>Plain</enum>
+        </property>
+        <property name="text">
+            <string>Weight (recommended: 1.0)</string>
+        </property>
+    </widget>
+    <widget class="QLineEdit">
+        <property name="name">
+            <cstring>weightLineEdit</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>130</x>
+                <y>270</y>
+                <width>218</width>
+                <height>24</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>1.0</string>
+        </property>
+    </widget>
+    <widget class="QCheckBox">
+        <property name="name">
+            <cstring>compulsoryCheckBox</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>130</x>
+                <y>340</y>
+                <width>220</width>
+                <height>30</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>Compulsory</string>
+        </property>
+        <property name="checked">
+            <bool>true</bool>
+        </property>
+    </widget>
+    <widget class="QGroupBox">
+        <property name="name">
+            <cstring>periodGroupBox</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>70</x>
+                <y>100</y>
+                <width>330</width>
+                <height>120</height>
+            </rect>
+        </property>
+        <property name="title">
+            <string>Period</string>
+        </property>
+        <widget class="QLabel">
+            <property name="name">
+                <cstring>endHourTextLabel</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>240</x>
+                    <y>30</y>
+                    <width>71</width>
+                    <height>40</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>End hour</string>
+            </property>
+        </widget>
+        <widget class="QLabel">
+            <property name="name">
+                <cstring>dayTextLabel</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>10</x>
+                    <y>30</y>
+                    <width>82</width>
+                    <height>40</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Day</string>
+            </property>
+            <property name="buddy" stdset="0">
+                <cstring>dayComboBox</cstring>
+            </property>
+        </widget>
+        <widget class="QComboBox">
+            <property name="name">
+                <cstring>dayComboBox</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>10</x>
+                    <y>70</y>
+                    <width>90</width>
+                    <height>30</height>
+                </rect>
+            </property>
+            <property name="duplicatesEnabled">
+                <bool>false</bool>
+            </property>
+        </widget>
+        <widget class="QComboBox">
+            <property name="name">
+                <cstring>startHourComboBox</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>120</x>
+                    <y>70</y>
+                    <width>90</width>
+                    <height>30</height>
+                </rect>
+            </property>
+            <property name="duplicatesEnabled">
+                <bool>false</bool>
+            </property>
+        </widget>
+        <widget class="QLabel">
+            <property name="name">
+                <cstring>startHourTextLabel</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>120</x>
+                    <y>30</y>
+                    <width>82</width>
+                    <height>40</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Start hour</string>
+            </property>
+        </widget>
+        <widget class="QComboBox">
+            <property name="name">
+                <cstring>endHourComboBox</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>230</x>
+                    <y>70</y>
+                    <width>90</width>
+                    <height>30</height>
+                </rect>
+            </property>
+            <property name="duplicatesEnabled">
+                <bool>false</bool>
+            </property>
+        </widget>
+    </widget>
+    <widget class="QLabel">
+        <property name="name">
+            <cstring>roomTextLabel</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>40</x>
+                <y>20</y>
+                <width>390</width>
+                <height>20</height>
+            </rect>
+        </property>
+        <property name="frameShape">
+            <enum>NoFrame</enum>
+        </property>
+        <property name="frameShadow">
+            <enum>Plain</enum>
+        </property>
+        <property name="text">
+            <string>Room</string>
+        </property>
+        <property name="buddy" stdset="0">
+            <cstring>roomsComboBox</cstring>
+        </property>
+    </widget>
+    <widget class="QComboBox">
+        <property name="name">
+            <cstring>roomsComboBox</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>39</x>
+                <y>45</y>
+                <width>390</width>
+                <height>24</height>
+            </rect>
+        </property>
+    </widget>
+</widget>
+<connections>
+    <connection>
+        <sender>addConstraintPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>AddConstraintRoomNotAvailableForm_template</receiver>
+        <slot>addConstraint()</slot>
+    </connection>
+    <connection>
+        <sender>closePushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>AddConstraintRoomNotAvailableForm_template</receiver>
+        <slot>close()</slot>
+    </connection>
+</connections>
+<slots>
+    <slot>addConstraint()</slot>
+</slots>
+<layoutdefaults spacing="6" margin="11"/>
+</UI>

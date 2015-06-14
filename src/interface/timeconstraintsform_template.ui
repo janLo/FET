@@ -1,0 +1,474 @@
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
+<class>TimeConstraintsForm_template</class>
+<widget class="QDialog">
+    <property name="name">
+        <cstring>TimeConstraintsForm_template</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>926</width>
+            <height>612</height>
+        </rect>
+    </property>
+    <property name="caption">
+        <string>FET - Time constraints</string>
+    </property>
+    <grid>
+        <property name="name">
+            <cstring>unnamed</cstring>
+        </property>
+        <widget class="QListBox" row="1" column="0" rowspan="1" colspan="2">
+            <item>
+                <property name="text">
+                    <string>New Item</string>
+                </property>
+            </item>
+            <property name="name">
+                <cstring>constraintsListBox</cstring>
+            </property>
+        </widget>
+        <widget class="QLabel" row="0" column="0" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>constraintsTextLabel</cstring>
+            </property>
+            <property name="frameShape">
+                <enum>NoFrame</enum>
+            </property>
+            <property name="frameShadow">
+                <enum>Plain</enum>
+            </property>
+            <property name="text">
+                <string>Constraints</string>
+            </property>
+        </widget>
+        <widget class="QLabel" row="0" column="2" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>currentConstraintTextLabel</cstring>
+            </property>
+            <property name="text">
+                <string>Current constraint</string>
+            </property>
+        </widget>
+        <widget class="QTextEdit" row="1" column="2" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>currentConstraintTextEdit</cstring>
+            </property>
+            <property name="readOnly">
+                <bool>true</bool>
+            </property>
+        </widget>
+        <widget class="QGroupBox" row="0" column="4" rowspan="3" colspan="1">
+            <property name="name">
+                <cstring>filterGroupBox</cstring>
+            </property>
+            <property name="title">
+                <string>Filter</string>
+            </property>
+            <grid>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QCheckBox" row="3" column="0">
+                    <property name="name">
+                        <cstring>teachersSubgroupsNoMoreThanXHoursDailyCheckBox</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Teachers-subgroups no more than max hours daily</string>
+                    </property>
+                    <property name="checked">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="1" column="0">
+                    <property name="name">
+                        <cstring>teacherNotAvailableCheckBox</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Teacher not available</string>
+                    </property>
+                    <property name="checked">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="0" column="0">
+                    <property name="name">
+                        <cstring>basicCompulsoryTimeCheckBox</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Basic time constraints</string>
+                    </property>
+                    <property name="checked">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="17" column="0">
+                    <property name="name">
+                        <cstring>minNDaysBetweenActivitiesCheckBox</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Minimum number of days between activities</string>
+                    </property>
+                    <property name="checked">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="16" column="0">
+                    <property name="name">
+                        <cstring>activitiesNotOverlappingCheckBox</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Activities must not overlap</string>
+                    </property>
+                    <property name="checked">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="14" column="0">
+                    <property name="name">
+                        <cstring>studentsSetIntervalMaxDaysPerWeekCheckBox</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Students set interval max days per week</string>
+                    </property>
+                    <property name="checked">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="11" column="0">
+                    <property name="name">
+                        <cstring>studentsSetNoGapsCheckBox</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Avoid students' gaps for a particular set</string>
+                    </property>
+                    <property name="checked">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="7" column="0">
+                    <property name="name">
+                        <cstring>teachersNoMoreThanXHoursDailyCheckBox</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Teachers no more than max hours per day</string>
+                    </property>
+                    <property name="checked">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="4" column="0">
+                    <property name="name">
+                        <cstring>teachersNoGapsCheckBox</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Avoid teachers' gaps</string>
+                    </property>
+                    <property name="checked">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="2" column="0">
+                    <property name="name">
+                        <cstring>teachersNoMoreThanXHoursContinuouslyCheckBox</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Teachers no more than max hours in a row</string>
+                    </property>
+                    <property name="checked">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="6" column="0">
+                    <property name="name">
+                        <cstring>breakCheckBox</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Break period</string>
+                    </property>
+                    <property name="checked">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="5" column="0">
+                    <property name="name">
+                        <cstring>teacherMaxDaysPerWeekCheckBox</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Teacher max days per week</string>
+                    </property>
+                    <property name="checked">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="18" column="0">
+                    <property name="name">
+                        <cstring>activityPreferredTimesCheckBox</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Activity preferred times</string>
+                    </property>
+                    <property name="checked">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="9" column="0">
+                    <property name="name">
+                        <cstring>studentsEarlyCheckBox</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Students begin early</string>
+                    </property>
+                    <property name="checked">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="10" column="0">
+                    <property name="name">
+                        <cstring>studentsNoGapsCheckBox</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Avoid students' gaps for all students</string>
+                    </property>
+                    <property name="checked">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="8" column="0">
+                    <property name="name">
+                        <cstring>studentsSetNotAvailableCheckBox</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Students set not available</string>
+                    </property>
+                    <property name="checked">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="15" column="0">
+                    <property name="name">
+                        <cstring>activityPreferredTimeCheckBox</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Activity preferred time</string>
+                    </property>
+                    <property name="checked">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="19" column="0">
+                    <property name="name">
+                        <cstring>activityEndsDayCheckBox</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Activity ends day</string>
+                    </property>
+                    <property name="checked">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="13" column="0">
+                    <property name="name">
+                        <cstring>studentsSetNHoursDailyCheckBox</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Students set n hours daily</string>
+                    </property>
+                    <property name="checked">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="12" column="0">
+                    <property name="name">
+                        <cstring>studentsNHoursDailyCheckBox</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Students n hours daily</string>
+                    </property>
+                    <property name="checked">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+            </grid>
+        </widget>
+        <widget class="QPushButton" row="2" column="3">
+            <property name="name">
+                <cstring>closePushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Close</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="2" column="0">
+            <property name="name">
+                <cstring>addConstraintPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Add</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="2" column="1" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>removeConstraintPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Remove</string>
+            </property>
+        </widget>
+    </grid>
+</widget>
+<connections>
+    <connection>
+        <sender>constraintsListBox</sender>
+        <signal>highlighted(int)</signal>
+        <receiver>TimeConstraintsForm_template</receiver>
+        <slot>constraintChanged(int)</slot>
+    </connection>
+    <connection>
+        <sender>addConstraintPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>TimeConstraintsForm_template</receiver>
+        <slot>addConstraint()</slot>
+    </connection>
+    <connection>
+        <sender>closePushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>TimeConstraintsForm_template</receiver>
+        <slot>close()</slot>
+    </connection>
+    <connection>
+        <sender>removeConstraintPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>TimeConstraintsForm_template</receiver>
+        <slot>removeConstraint()</slot>
+    </connection>
+    <connection>
+        <sender>teacherNotAvailableCheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>TimeConstraintsForm_template</receiver>
+        <slot>filterChanged()</slot>
+    </connection>
+    <connection>
+        <sender>studentsSetNotAvailableCheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>TimeConstraintsForm_template</receiver>
+        <slot>filterChanged()</slot>
+    </connection>
+    <connection>
+        <sender>teachersNoMoreThanXHoursContinuouslyCheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>TimeConstraintsForm_template</receiver>
+        <slot>filterChanged()</slot>
+    </connection>
+    <connection>
+        <sender>teachersSubgroupsNoMoreThanXHoursDailyCheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>TimeConstraintsForm_template</receiver>
+        <slot>filterChanged()</slot>
+    </connection>
+    <connection>
+        <sender>activityPreferredTimeCheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>TimeConstraintsForm_template</receiver>
+        <slot>filterChanged()</slot>
+    </connection>
+    <connection>
+        <sender>minNDaysBetweenActivitiesCheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>TimeConstraintsForm_template</receiver>
+        <slot>filterChanged()</slot>
+    </connection>
+    <connection>
+        <sender>activitiesNotOverlappingCheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>TimeConstraintsForm_template</receiver>
+        <slot>filterChanged()</slot>
+    </connection>
+    <connection>
+        <sender>breakCheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>TimeConstraintsForm_template</receiver>
+        <slot>filterChanged()</slot>
+    </connection>
+    <connection>
+        <sender>teachersNoGapsCheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>TimeConstraintsForm_template</receiver>
+        <slot>filterChanged()</slot>
+    </connection>
+    <connection>
+        <sender>studentsNoGapsCheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>TimeConstraintsForm_template</receiver>
+        <slot>filterChanged()</slot>
+    </connection>
+    <connection>
+        <sender>studentsEarlyCheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>TimeConstraintsForm_template</receiver>
+        <slot>filterChanged()</slot>
+    </connection>
+    <connection>
+        <sender>studentsNHoursDailyCheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>TimeConstraintsForm_template</receiver>
+        <slot>filterChanged()</slot>
+    </connection>
+    <connection>
+        <sender>basicCompulsoryTimeCheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>TimeConstraintsForm_template</receiver>
+        <slot>filterChanged()</slot>
+    </connection>
+    <connection>
+        <sender>studentsSetNHoursDailyCheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>TimeConstraintsForm_template</receiver>
+        <slot>filterChanged()</slot>
+    </connection>
+    <connection>
+        <sender>studentsSetNoGapsCheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>TimeConstraintsForm_template</receiver>
+        <slot>filterChanged()</slot>
+    </connection>
+    <connection>
+        <sender>activityPreferredTimesCheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>TimeConstraintsForm_template</receiver>
+        <slot>filterChanged()</slot>
+    </connection>
+    <connection>
+        <sender>activityEndsDayCheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>TimeConstraintsForm_template</receiver>
+        <slot>filterChanged()</slot>
+    </connection>
+    <connection>
+        <sender>studentsSetIntervalMaxDaysPerWeekCheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>TimeConstraintsForm_template</receiver>
+        <slot>filterChanged()</slot>
+    </connection>
+    <connection>
+        <sender>teachersNoMoreThanXHoursDailyCheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>TimeConstraintsForm_template</receiver>
+        <slot>filterChanged()</slot>
+    </connection>
+    <connection>
+        <sender>teacherMaxDaysPerWeekCheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>TimeConstraintsForm_template</receiver>
+        <slot>filterChanged()</slot>
+    </connection>
+</connections>
+<slots>
+    <slot>addConstraint()</slot>
+    <slot>constraintChanged(int)</slot>
+    <slot>removeConstraint()</slot>
+    <slot>filterChanged()</slot>
+</slots>
+<layoutdefaults spacing="6" margin="11"/>
+</UI>

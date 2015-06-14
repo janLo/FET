@@ -1,0 +1,248 @@
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
+<class>SpaceConstraintsForm_template</class>
+<widget class="QDialog">
+    <property name="name">
+        <cstring>SpaceConstraintsForm_template</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>793</width>
+            <height>579</height>
+        </rect>
+    </property>
+    <property name="caption">
+        <string>FET - Space constraints</string>
+    </property>
+    <grid>
+        <property name="name">
+            <cstring>unnamed</cstring>
+        </property>
+        <widget class="QLabel" row="0" column="0">
+            <property name="name">
+                <cstring>constraintsTextLabel</cstring>
+            </property>
+            <property name="text">
+                <string>Constraints</string>
+            </property>
+        </widget>
+        <widget class="QLabel" row="0" column="1">
+            <property name="name">
+                <cstring>currentConstraintTextLabel</cstring>
+            </property>
+            <property name="text">
+                <string>Current constraint</string>
+            </property>
+        </widget>
+        <widget class="QListBox" row="1" column="0">
+            <item>
+                <property name="text">
+                    <string>New Item</string>
+                </property>
+            </item>
+            <property name="name">
+                <cstring>constraintsListBox</cstring>
+            </property>
+        </widget>
+        <widget class="QTextEdit" row="1" column="1">
+            <property name="name">
+                <cstring>currentConstraintTextEdit</cstring>
+            </property>
+            <property name="readOnly">
+                <bool>true</bool>
+            </property>
+        </widget>
+        <widget class="QGroupBox" row="0" column="2" rowspan="2" colspan="1">
+            <property name="name">
+                <cstring>filterGroupBox</cstring>
+            </property>
+            <property name="title">
+                <string>Filter</string>
+            </property>
+            <widget class="QCheckBox">
+                <property name="name">
+                    <cstring>basicCompulsorySpaceCheckBox</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>10</x>
+                        <y>30</y>
+                        <width>230</width>
+                        <height>30</height>
+                    </rect>
+                </property>
+                <property name="text">
+                    <string>Basic space constraints</string>
+                </property>
+                <property name="checked">
+                    <bool>true</bool>
+                </property>
+            </widget>
+            <widget class="QCheckBox">
+                <property name="name">
+                    <cstring>roomNotAvailableCheckBox</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>10</x>
+                        <y>80</y>
+                        <width>230</width>
+                        <height>24</height>
+                    </rect>
+                </property>
+                <property name="text">
+                    <string>Room not available</string>
+                </property>
+                <property name="checked">
+                    <bool>true</bool>
+                </property>
+            </widget>
+            <widget class="QCheckBox">
+                <property name="name">
+                    <cstring>roomTypeNotAllowedSubjectsCheckBox</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>10</x>
+                        <y>110</y>
+                        <width>250</width>
+                        <height>24</height>
+                    </rect>
+                </property>
+                <property name="text">
+                    <string>Room type not allowed subjects</string>
+                </property>
+                <property name="checked">
+                    <bool>true</bool>
+                </property>
+            </widget>
+            <widget class="QCheckBox">
+                <property name="name">
+                    <cstring>subjectRequiresEquipmentsCheckBox</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>10</x>
+                        <y>140</y>
+                        <width>250</width>
+                        <height>24</height>
+                    </rect>
+                </property>
+                <property name="text">
+                    <string>Subject requires equipments</string>
+                </property>
+                <property name="checked">
+                    <bool>true</bool>
+                </property>
+            </widget>
+            <widget class="QCheckBox">
+                <property name="name">
+                    <cstring>teacherRequiresRoomCheckBox</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>10</x>
+                        <y>170</y>
+                        <width>250</width>
+                        <height>24</height>
+                    </rect>
+                </property>
+                <property name="text">
+                    <string>Teacher requires room</string>
+                </property>
+                <property name="checked">
+                    <bool>true</bool>
+                </property>
+            </widget>
+        </widget>
+        <widget class="QPushButton" row="2" column="0">
+            <property name="name">
+                <cstring>addConstraintPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Add</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="2" column="1">
+            <property name="name">
+                <cstring>removeConstraintPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Remove</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="3" column="0" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>closePushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Close</string>
+            </property>
+        </widget>
+    </grid>
+</widget>
+<connections>
+    <connection>
+        <sender>constraintsListBox</sender>
+        <signal>highlighted(int)</signal>
+        <receiver>SpaceConstraintsForm_template</receiver>
+        <slot>constraintChanged(int)</slot>
+    </connection>
+    <connection>
+        <sender>addConstraintPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>SpaceConstraintsForm_template</receiver>
+        <slot>addConstraint()</slot>
+    </connection>
+    <connection>
+        <sender>closePushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>SpaceConstraintsForm_template</receiver>
+        <slot>close()</slot>
+    </connection>
+    <connection>
+        <sender>removeConstraintPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>SpaceConstraintsForm_template</receiver>
+        <slot>removeConstraint()</slot>
+    </connection>
+    <connection>
+        <sender>basicCompulsorySpaceCheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>SpaceConstraintsForm_template</receiver>
+        <slot>filterChanged()</slot>
+    </connection>
+    <connection>
+        <sender>roomNotAvailableCheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>SpaceConstraintsForm_template</receiver>
+        <slot>filterChanged()</slot>
+    </connection>
+    <connection>
+        <sender>roomTypeNotAllowedSubjectsCheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>SpaceConstraintsForm_template</receiver>
+        <slot>filterChanged()</slot>
+    </connection>
+    <connection>
+        <sender>subjectRequiresEquipmentsCheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>SpaceConstraintsForm_template</receiver>
+        <slot>filterChanged()</slot>
+    </connection>
+    <connection>
+        <sender>teacherRequiresRoomCheckBox</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>SpaceConstraintsForm_template</receiver>
+        <slot>filterChanged()</slot>
+    </connection>
+</connections>
+<slots>
+    <slot>addConstraint()</slot>
+    <slot>constraintChanged(int)</slot>
+    <slot>removeConstraint()</slot>
+    <slot>filterChanged()</slot>
+</slots>
+<layoutdefaults spacing="6" margin="11"/>
+</UI>

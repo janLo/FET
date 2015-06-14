@@ -1,0 +1,89 @@
+<!DOCTYPE UI><UI version="3.1" stdsetdef="1">
+<class>SubjectsForm_template</class>
+<widget class="QDialog">
+    <property name="name">
+        <cstring>SubjectsForm_template</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>421</width>
+            <height>480</height>
+        </rect>
+    </property>
+    <property name="caption">
+        <string>FET - subjects</string>
+    </property>
+    <grid>
+        <property name="name">
+            <cstring>unnamed</cstring>
+        </property>
+        <property name="margin">
+            <number>11</number>
+        </property>
+        <property name="spacing">
+            <number>6</number>
+        </property>
+        <widget class="QPushButton" row="1" column="1">
+            <property name="name">
+                <cstring>removeSubjectPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Remove current</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="2" column="0">
+            <property name="name">
+                <cstring>closePushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Close</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="1" column="0">
+            <property name="name">
+                <cstring>addSubjectPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Add subject</string>
+            </property>
+        </widget>
+        <widget class="QListBox" row="0" column="0" rowspan="1" colspan="2">
+            <item>
+                <property name="text">
+                    <string>New Item</string>
+                </property>
+            </item>
+            <property name="name">
+                <cstring>subjectsListBox</cstring>
+            </property>
+        </widget>
+    </grid>
+</widget>
+<connections>
+    <connection>
+        <sender>closePushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>SubjectsForm_template</receiver>
+        <slot>close()</slot>
+    </connection>
+    <connection>
+        <sender>addSubjectPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>SubjectsForm_template</receiver>
+        <slot>addSubject()</slot>
+    </connection>
+    <connection>
+        <sender>removeSubjectPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>SubjectsForm_template</receiver>
+        <slot>removeSubject()</slot>
+    </connection>
+</connections>
+<slots>
+    <slot>addSubject()</slot>
+    <slot>removeSubject()</slot>
+</slots>
+<layoutdefaults spacing="6" margin="11"/>
+</UI>

@@ -1,0 +1,185 @@
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
+<class>ActivitiesForm_template</class>
+<widget class="QDialog">
+    <property name="name">
+        <cstring>ActivitiesForm_template</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>573</width>
+            <height>505</height>
+        </rect>
+    </property>
+    <property name="caption">
+        <string>FET - the activities (lectures, courses, seminars, etc.)</string>
+    </property>
+    <grid>
+        <property name="name">
+            <cstring>unnamed</cstring>
+        </property>
+        <widget class="QLabel" row="0" column="0">
+            <property name="name">
+                <cstring>activitiesTextLabel</cstring>
+            </property>
+            <property name="text">
+                <string>Activities</string>
+            </property>
+        </widget>
+        <widget class="QListBox" row="1" column="0" rowspan="2" colspan="2">
+            <item>
+                <property name="text">
+                    <string>New Item</string>
+                </property>
+            </item>
+            <property name="name">
+                <cstring>activitiesListBox</cstring>
+            </property>
+        </widget>
+        <widget class="QLabel" row="0" column="2" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>activityDescriptionTextLabel</cstring>
+            </property>
+            <property name="text">
+                <string>Current activity's description</string>
+            </property>
+        </widget>
+        <widget class="QTextEdit" row="1" column="2" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>currentActivityTextEdit</cstring>
+            </property>
+            <property name="readOnly">
+                <bool>true</bool>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="3" column="3">
+            <property name="name">
+                <cstring>closePushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Close</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="3" column="1" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>removeActivityPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Remove</string>
+            </property>
+        </widget>
+        <widget class="QGroupBox" row="2" column="2" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>filterGroupBox</cstring>
+            </property>
+            <property name="title">
+                <string>Filter</string>
+            </property>
+            <grid>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QComboBox" row="3" column="0">
+                    <property name="name">
+                        <cstring>studentsComboBox</cstring>
+                    </property>
+                </widget>
+                <widget class="QComboBox" row="1" column="0">
+                    <property name="name">
+                        <cstring>teachersComboBox</cstring>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="0" column="0">
+                    <property name="name">
+                        <cstring>teachersTextLabel</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Teacher</string>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="2" column="0">
+                    <property name="name">
+                        <cstring>studentsTextLabel</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Students set</string>
+                    </property>
+                </widget>
+                <widget class="QComboBox" row="5" column="0">
+                    <property name="name">
+                        <cstring>subjectsComboBox</cstring>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="4" column="0">
+                    <property name="name">
+                        <cstring>subjectsTextLabel</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Subject</string>
+                    </property>
+                </widget>
+            </grid>
+        </widget>
+        <widget class="QPushButton" row="3" column="0">
+            <property name="name">
+                <cstring>addActivityPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Add</string>
+            </property>
+        </widget>
+    </grid>
+</widget>
+<connections>
+    <connection>
+        <sender>activitiesListBox</sender>
+        <signal>highlighted(int)</signal>
+        <receiver>ActivitiesForm_template</receiver>
+        <slot>activityChanged(int)</slot>
+    </connection>
+    <connection>
+        <sender>addActivityPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>ActivitiesForm_template</receiver>
+        <slot>addActivity()</slot>
+    </connection>
+    <connection>
+        <sender>removeActivityPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>ActivitiesForm_template</receiver>
+        <slot>removeActivity()</slot>
+    </connection>
+    <connection>
+        <sender>closePushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>ActivitiesForm_template</receiver>
+        <slot>close()</slot>
+    </connection>
+    <connection>
+        <sender>teachersComboBox</sender>
+        <signal>activated(const QString&amp;)</signal>
+        <receiver>ActivitiesForm_template</receiver>
+        <slot>filterChanged()</slot>
+    </connection>
+    <connection>
+        <sender>studentsComboBox</sender>
+        <signal>activated(const QString&amp;)</signal>
+        <receiver>ActivitiesForm_template</receiver>
+        <slot>filterChanged()</slot>
+    </connection>
+    <connection>
+        <sender>subjectsComboBox</sender>
+        <signal>activated(const QString&amp;)</signal>
+        <receiver>ActivitiesForm_template</receiver>
+        <slot>filterChanged()</slot>
+    </connection>
+</connections>
+<slots>
+    <slot>addActivity()</slot>
+    <slot>removeActivity()</slot>
+    <slot>activityChanged( int )</slot>
+    <slot>filterChanged()</slot>
+</slots>
+<layoutdefaults spacing="6" margin="11"/>
+</UI>

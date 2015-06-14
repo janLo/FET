@@ -1,0 +1,88 @@
+//
+//
+// C++ Interface: $MODULE$
+//
+// Description:
+//
+//
+// Author: Liviu Lalescu <liviu@lalescu.ro>, (C) 2003
+//
+// Copyright: See COPYING file that comes with this distribution
+//
+//
+#ifndef STUDENTSSET_H
+#define STUDENTSSET_H
+
+/**
+This class represents a set of students, for instance years, groups or subgroups.
+
+@author Liviu Lalescu
+*/
+
+#include "genetictimetable_defs.h"
+
+#include <qptrlist.h>
+
+const int STUDENTS_SET=0;
+const int STUDENTS_YEAR=1;
+const int STUDENTS_GROUP=2;
+const int STUDENTS_SUBGROUP=3;
+
+class StudentsYear;
+class StudentsGroup;
+class StudentsSubgroup;
+
+typedef QPtrList<StudentsYear> StudentsYearsList;
+typedef QPtrList<StudentsGroup> StudentsGroupsList;
+typedef QPtrList<StudentsSubgroup> StudentsSubgroupsList;
+
+class StudentsSet
+{
+public:
+	QString name;
+	int numberOfStudents;
+	int type;
+
+	StudentsSet();
+	~StudentsSet();
+};
+
+class StudentsYear: public StudentsSet
+{
+public:
+	StudentsGroupsList groupsList;
+
+	StudentsYear();
+	~StudentsYear();
+
+	QString getXMLDescription();
+	QString getDescription();
+	QString getDetailedDescription();
+};
+
+class StudentsGroup: public StudentsSet
+{
+public:
+	StudentsSubgroupsList subgroupsList;
+
+	StudentsGroup();
+	~StudentsGroup();
+
+	QString getXMLDescription();
+	QString getDescription();
+	QString getDetailedDescription();
+};
+
+
+class StudentsSubgroup: public StudentsSet
+{
+public:
+	StudentsSubgroup();
+	~StudentsSubgroup();
+
+	QString getXMLDescription();
+	QString getDescription();
+	QString getDetailedDescription();
+};
+
+#endif

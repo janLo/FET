@@ -1,0 +1,98 @@
+<!DOCTYPE UI><UI version="3.2" stdsetdef="1">
+<class>YearsForm_template</class>
+<widget class="QDialog">
+    <property name="name">
+        <cstring>YearsForm_template</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>492</width>
+            <height>486</height>
+        </rect>
+    </property>
+    <property name="caption">
+        <string>Years of students</string>
+    </property>
+    <grid>
+        <property name="name">
+            <cstring>unnamed</cstring>
+        </property>
+        <widget class="QListBox" row="0" column="0">
+            <item>
+                <property name="text">
+                    <string>New Item</string>
+                </property>
+            </item>
+            <property name="name">
+                <cstring>yearsListBox</cstring>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="1" column="1">
+            <property name="name">
+                <cstring>removeYearPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Remove current</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="1" column="0">
+            <property name="name">
+                <cstring>addYearPushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Add year</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="2" column="0" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>closePushButton</cstring>
+            </property>
+            <property name="text">
+                <string>Close</string>
+            </property>
+        </widget>
+        <widget class="QTextEdit" row="0" column="1">
+            <property name="name">
+                <cstring>detailsTextEdit</cstring>
+            </property>
+            <property name="readOnly">
+                <bool>true</bool>
+            </property>
+        </widget>
+    </grid>
+</widget>
+<connections>
+    <connection>
+        <sender>addYearPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>YearsForm_template</receiver>
+        <slot>addYear()</slot>
+    </connection>
+    <connection>
+        <sender>closePushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>YearsForm_template</receiver>
+        <slot>close()</slot>
+    </connection>
+    <connection>
+        <sender>removeYearPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>YearsForm_template</receiver>
+        <slot>removeYear()</slot>
+    </connection>
+    <connection>
+        <sender>yearsListBox</sender>
+        <signal>highlighted(int)</signal>
+        <receiver>YearsForm_template</receiver>
+        <slot>yearChanged()</slot>
+    </connection>
+</connections>
+<slots>
+    <slot>addYear()</slot>
+    <slot>removeYear()</slot>
+    <slot>yearChanged()</slot>
+</slots>
+<layoutdefaults spacing="6" margin="11"/>
+</UI>

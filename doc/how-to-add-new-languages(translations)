@@ -1,0 +1,46 @@
+FET - How to add new translations (languages)
+---------------------------------------------
+
+STEP 1.
+
+Modify the file "fet-x.x.x/src/interface/interface.pro", by adding a line
+in the TRANSLATIONS section for each language (for instance, adding
+a backslash after the last translation and then "fet_it.ts" for italian).
+
+STEP 2.
+
+Enter the directory "fet-x.x.x/src/interface/" and type "lupdate interface.pro".
+This will create the needed file, named "fet-x.x.x/translations/fet_**.ts".
+
+STEP 3.
+
+Open the file "fet-x.x.x/translations/fet_**.ts" (for example, fet_it.ts)
+with the Qt Linguist and edit it, then save it.
+
+IMPORTANT:
+	Please do not modify the fields "WHOLE YEAR" and "WHOLE GROUP"
+	in the QObject category. They must remain marked as "unfinished" -
+	with a question mark. This is a delicate issue and I do not know
+	how to solve it in an elegant manner.
+	More recently: you must translate "WHOLE YEAR" by "WHOLE YEAR"
+	and "WHOLE GROUP" by "WHOLE GROUP". This might be a temporary solution.
+
+STEP 4.
+
+From Qt Linguist, release the translation as "fet-x.x.x/translations/fet_**.qm"
+(for instance, fet_it.qm).
+
+STEP 5.
+
+Send all the three modified files to the author (for now). You will be added 
+as a contributor, of course.
+
+
+Current stage of the translation:
+
+English and Romanian done by Liviu Lalescu (liviu@lalescu.ro).
+French translation done by Jerome Durand. Public e-mail is fetfr@free.fr.
+	Please check also http://fetfr.free.fr.
+Fresta Alfio (trecyman77@email.it) said that he was willing to translate FET into Italian.
+
+Of course, anyone can redo/improve current translations. The best variants will be chosen.

@@ -1,0 +1,172 @@
+<!DOCTYPE UI><UI version="3.2" stdsetdef="1">
+<class>AddRoomForm_template</class>
+<widget class="QDialog">
+    <property name="name">
+        <cstring>addRoomForm_template</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>305</width>
+            <height>324</height>
+        </rect>
+    </property>
+    <property name="caption">
+        <string>Add Room Dialog</string>
+    </property>
+    <widget class="QLineEdit">
+        <property name="name">
+            <cstring>typeLineEdit</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>70</x>
+                <y>110</y>
+                <width>210</width>
+                <height>26</height>
+            </rect>
+        </property>
+    </widget>
+    <widget class="QLabel">
+        <property name="name">
+            <cstring>nameTextLabel</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>20</x>
+                <y>60</y>
+                <width>50</width>
+                <height>20</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>Name</string>
+        </property>
+    </widget>
+    <widget class="QLabel">
+        <property name="name">
+            <cstring>typeTextLabel</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>20</x>
+                <y>110</y>
+                <width>50</width>
+                <height>20</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>Type</string>
+        </property>
+    </widget>
+    <widget class="QLabel">
+        <property name="name">
+            <cstring>capacityTextLabel</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>20</x>
+                <y>170</y>
+                <width>70</width>
+                <height>20</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>Capacity</string>
+        </property>
+    </widget>
+    <widget class="QLineEdit">
+        <property name="name">
+            <cstring>nameLineEdit</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>70</x>
+                <y>60</y>
+                <width>210</width>
+                <height>26</height>
+            </rect>
+        </property>
+    </widget>
+    <widget class="QPushButton">
+        <property name="name">
+            <cstring>addRoomPushButton</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>30</x>
+                <y>240</y>
+                <width>101</width>
+                <height>31</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>Add room</string>
+        </property>
+    </widget>
+    <widget class="QPushButton">
+        <property name="name">
+            <cstring>closePushButton</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>180</x>
+                <y>240</y>
+                <width>101</width>
+                <height>31</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>Close</string>
+        </property>
+    </widget>
+    <widget class="QSpinBox">
+        <property name="name">
+            <cstring>capacitySpinBox</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>100</x>
+                <y>160</y>
+                <width>60</width>
+                <height>30</height>
+            </rect>
+        </property>
+        <property name="maxValue">
+            <number>1000</number>
+        </property>
+        <property name="minValue">
+            <number>1</number>
+        </property>
+        <property name="value">
+            <number>1000</number>
+        </property>
+    </widget>
+</widget>
+<connections>
+    <connection>
+        <sender>addRoomPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>addRoomForm_template</receiver>
+        <slot>addRoom()</slot>
+    </connection>
+    <connection>
+        <sender>closePushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>addRoomForm_template</receiver>
+        <slot>close()</slot>
+    </connection>
+</connections>
+<tabstops>
+    <tabstop>nameLineEdit</tabstop>
+    <tabstop>typeLineEdit</tabstop>
+    <tabstop>capacitySpinBox</tabstop>
+    <tabstop>addRoomPushButton</tabstop>
+    <tabstop>closePushButton</tabstop>
+</tabstops>
+<slots>
+    <slot>addRoom()</slot>
+</slots>
+<layoutdefaults spacing="6" margin="11"/>
+</UI>
