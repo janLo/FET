@@ -1099,5 +1099,41 @@ Versions 5.4.0 - 5.4.
 	works even if activity has preferred times with high weight on impossible slots
 	(the idea is that if you have constraints activity(ies) preferred times for impossible
 	slots with weight under 100%, you will get eventually a timetable which contradicts these constraints
-	and is viable. This can be considered important bug fix
+	and is viable). This can be considered important bug fix
 	- Greek translation by Dimitrios Ropokis
+- Version 5.4.11
+	- Arabic translation (partial), by Hatim Ali
+	- Small bug fixes in export to html by Volker Dirr
+- Version 5.4.12
+	- Greek translation update by Dimitrios Ropokis
+	- Arabic better support
+	- Arabic translation update by Hatim Ali
+	- Code cleanup
+	- Switched to Qt 4.3.2
+- Version 5.4.13
+	- Small bug fixes in html generated timetable by Volker Dirr
+	- Indonesian translation by Nirwan Yus
+	- Italian translation by Marco Barsotti
+	- Arabic translation update by Hatim Ali
+- Version 5.4.14
+	- Minor interface improvement - in add rooms dialog, pressing Enter now works better, it adds a room,
+	not displays Help
+- Version 5.4.15
+	- Added an Arabic sample file by Hatim Ali
+	- Various translations updates
+	- Update of README file
+	- MAX_ACTIVITIES is now 5000
+- Version 5.4.16
+	- Groups and years timetables contain dashed lines in cells which contain more activities 
+	(suggested by Hatim Ali, done by Volker Dirr)
+	- Arabic translation update by Hatim Ali
+- Version 5.4.17
+	- Faster precomputation
+	- Significant speed improvement in saving html timetables by Liviu Lalescu
+	- Subjects timetables - by Volker Dirr
+	- Increased max students sets to 15000.
+	- Faster statistics for students.
+	- More allowed subgroups and teachers per activity.
+	- Added more redundant tests to check final solution to respect no gaps, early, max gaps, min hours daily
+	- Faster precalculation
+	

@@ -27,6 +27,7 @@
 //                - print rooms timetable
 //                - TIMETABLE_HTML_LEVEL
 //                - print groups and years timetable
+//                - print subjects timetable
 
 
 #include "timetable_defs.h"
@@ -57,13 +58,18 @@ extern bool teachers_schedule_ready;
 extern bool rooms_schedule_ready;
 
 extern Solution best_solution;
-
+extern bool LANGUAGE_STYLE_RIGHT_TO_LEFT;
+extern QString LANGUAGE_FOR_HTML;
 
 extern Timetable gt;
-extern qint16 teachers_timetable_weekly[MAX_TEACHERS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
-extern qint16 students_timetable_weekly[MAX_TOTAL_SUBGROUPS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
-extern qint16 rooms_timetable_weekly[MAX_ROOMS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
+extern qint16 teachers_timetable_weekly[MAX_TEACHERS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];		//the getXXXmatrix have only qint 8
+extern qint16 students_timetable_weekly[MAX_TOTAL_SUBGROUPS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];	//the getXXXmatrix have only qint 8
+extern qint16 rooms_timetable_weekly[MAX_ROOMS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];			//the getXXXmatrix have only qint 8
 
+
+QList<qint16> activitiesForCurrentSubject[MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
+
+QList<qint16> activitiesAtTime[MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
 
 TimetableExport::TimetableExport()
 {
@@ -115,6 +121,8 @@ void TimetableExport::writeSimulationResults(){
 	assert(gt.rules.initialized && gt.rules.internalStructureComputed);
 	//assert(gt.timePopulation.initialized);
 	assert(students_schedule_ready && teachers_schedule_ready && rooms_schedule_ready);
+	assert(TIMETABLE_HTML_LEVEL>=0);
+	assert(TIMETABLE_HTML_LEVEL<=5);
 
 	QString s;
 	QString s2=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);
@@ -197,6 +205,15 @@ void TimetableExport::writeSimulationResults(){
 	writeRoomsTimetableTimeHorizontalHtml(s, sTime, na);
 	s=OUTPUT_DIR+FILE_SEP+s2+"_"+ROOMS_TIMETABLE_TIME_VERTICAL_FILENAME_HTML;
 	writeRoomsTimetableTimeVerticalHtml(s, sTime, na);
+	//subjects
+	s=OUTPUT_DIR+FILE_SEP+s2+"_"+SUBJECTS_TIMETABLE_DAYS_HORIZONTAL_FILENAME_HTML;
+	writeSubjectsTimetableDaysHorizontalHtml(s, sTime, na);
+	s=OUTPUT_DIR+FILE_SEP+s2+"_"+SUBJECTS_TIMETABLE_DAYS_VERTICAL_FILENAME_HTML;
+	writeSubjectsTimetableDaysVerticalHtml(s, sTime, na);
+	s=OUTPUT_DIR+FILE_SEP+s2+"_"+SUBJECTS_TIMETABLE_TIME_HORIZONTAL_FILENAME_HTML;
+	writeSubjectsTimetableTimeHorizontalHtml(s, sTime, na);
+	s=OUTPUT_DIR+FILE_SEP+s2+"_"+SUBJECTS_TIMETABLE_TIME_VERTICAL_FILENAME_HTML;
+	writeSubjectsTimetableTimeVerticalHtml(s, sTime, na);
 	
 	cout<<"Writing simulation results to disk completed successfully"<<endl;
 }
@@ -211,6 +228,8 @@ void TimetableExport::writeSimulationResults(int n){
 	assert(gt.rules.initialized && gt.rules.internalStructureComputed);
 	//assert(gt.timePopulation.initialized);
 	assert(students_schedule_ready && teachers_schedule_ready && rooms_schedule_ready);
+	assert(TIMETABLE_HTML_LEVEL>=0);
+	assert(TIMETABLE_HTML_LEVEL<=5);
 
 	QString s;
 	QString s2=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);
@@ -308,6 +327,15 @@ void TimetableExport::writeSimulationResults(int n){
 	writeRoomsTimetableTimeHorizontalHtml(s, sTime, na);
 	s=finalDestDir+ROOMS_TIMETABLE_TIME_VERTICAL_FILENAME_HTML;
 	writeRoomsTimetableTimeVerticalHtml(s, sTime, na);
+	//subjects
+	s=finalDestDir+SUBJECTS_TIMETABLE_DAYS_HORIZONTAL_FILENAME_HTML;
+	writeSubjectsTimetableDaysHorizontalHtml(s, sTime, na);
+	s=finalDestDir+SUBJECTS_TIMETABLE_DAYS_VERTICAL_FILENAME_HTML;
+	writeSubjectsTimetableDaysVerticalHtml(s, sTime, na);
+	s=finalDestDir+SUBJECTS_TIMETABLE_TIME_HORIZONTAL_FILENAME_HTML;
+	writeSubjectsTimetableTimeHorizontalHtml(s, sTime, na);
+	s=finalDestDir+SUBJECTS_TIMETABLE_TIME_VERTICAL_FILENAME_HTML;
+	writeSubjectsTimetableTimeVerticalHtml(s, sTime, na);
 	
 	cout<<"Writing multiple simulation results to disk completed successfully"<<endl;
 }
@@ -324,16 +352,13 @@ void TimetableExport::writeConflictsTxt(const QString& filename, QString saveTim
 	QFile file(filename);
 	if(!file.open(QIODevice::WriteOnly)){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Cannot open file to write soft conflicts txt. Please check your disk's free space. Saving of soft conflicts aborted."));
-		 
+		 TimetableExport::tr("Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(filename));
 		return;
-	
 		assert(0);
 	}
 	QTextStream tos(&file);
 	tos.setCodec("UTF-8");
 	tos.setGenerateByteOrderMark(true);
-	//tos.setEncoding(QTextStream::UnicodeUTF8);
 	
 	if(placedActivities==gt.rules.nInternalActivities){
 		tos<<TimetableExport::tr("Soft conflicts of %1").arg(INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1))<<"\n";
@@ -359,10 +384,8 @@ void TimetableExport::writeConflictsTxt(const QString& filename, QString saveTim
 	
 	if(file.error()>0){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Writing soft conflicts txt gave error code %1, which means saving is compromised. Please check your disk's free space.")
-		 .arg(file.error()));
+		 TimetableExport::tr("Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(filename).arg(file.error()));
 	}
-								
 	file.close();
 }
 
@@ -379,10 +402,8 @@ void TimetableExport::writeSubgroupsTimetableXml(const QString& xmlfilename)
 	QFile file(xmlfilename);
 	if(!file.open(QIODevice::WriteOnly)){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Cannot open file to write students timetable xml. Please check your disk's free space. Saving of xml students timetable aborted."));
-		 
+		 TimetableExport::tr("Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(xmlfilename));
 		return;
-	
 		assert(0);
 	}
 	QTextStream tos(&file);
@@ -442,10 +463,8 @@ void TimetableExport::writeSubgroupsTimetableXml(const QString& xmlfilename)
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Writing students timetable xml gave error code %1, which means saving is compromised. Please check your disk's free space.")
-		 .arg(file.error()));
+		 TimetableExport::tr("Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(xmlfilename).arg(file.error()));
 	}
-								
 	file.close();
 }
 
@@ -462,10 +481,8 @@ void TimetableExport::writeTeachersTimetableXml(const QString& xmlfilename)
 	QFile file(xmlfilename);
 	if(!file.open(QIODevice::WriteOnly)){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Cannot open file to write teachers timetable xml. Please check your disk's free space. Saving of xml teachers timetable aborted."));
-		 
+		 TimetableExport::tr("Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(xmlfilename));
 		return;
-	
 		assert(0);
 	}
 	QTextStream tos(&file);
@@ -522,10 +539,8 @@ void TimetableExport::writeTeachersTimetableXml(const QString& xmlfilename)
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Writing teachers timetable xml gave error code %1, which means saving is compromised. Please check your disk's free space.")
-		 .arg(file.error()));
+		 TimetableExport::tr("Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(xmlfilename).arg(file.error()));
 	}
-								
 	file.close();
 }
 
@@ -541,16 +556,13 @@ void TimetableExport::writeStylesheetCss(const QString& htmlfilename, QString sa
 	QFile file(htmlfilename);
 	if(!file.open(QIODevice::WriteOnly)){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Cannot open file to write css style file. Please check your disk's free space. Saving of css style file aborted."));
-		 
+		 TimetableExport::tr("Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(htmlfilename));
 		return;
-	
 		assert(0);
 	}
 	QTextStream tos(&file);
 	tos.setCodec("UTF-8");
 	tos.setGenerateByteOrderMark(true);
-	//tos.setEncoding(QTextStream::UnicodeUTF8);
 
 	tos<<"/* "<<TimetableExport::tr("CSS Stylesheet of %1").arg(INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1))<<"\n";
 	if(placedActivities!=gt.rules.nInternalActivities)
@@ -561,13 +573,19 @@ void TimetableExport::writeStylesheetCss(const QString& htmlfilename, QString sa
 	tos<<"/* "<<TimetableExport::tr("To hide an element just write the following phrase into the element")<<": display:none; */\n\n";
 	tos<<"table {\n  page-break-before: always;\n  text-align: center;\n}\n\n";
 	tos<<"table.modulo2 {\n\n}\n\n";
-	tos<<"table.detailed {\n  margin-left:auto; margin-right:auto;\n  text-align: center;\n  border: 0px;\n}\n\n";
+	tos<<"table.detailed {\n  margin-left:auto; margin-right:auto;\n  text-align: center;\n  border: 0px;\n  border-spacing: 0;\n  border-collapse: collapse;\n}\n\n";
 	tos<<"caption {\n\n}\n\n";
 	tos<<"thead {\n\n}\n\n";
-	tos<<"tfoot {\n\n}\n\n";
+	//workaround begin. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
+	tos<<"/* OpenOffice import the tfoot incorrect. So I used tr.foot instead of tfoot.\n";
+	tos<<"   compare http://www.openoffice.org/issues/show_bug.cgi?id=82600\n";
+	tos<<"tfoot {\n\n}*/\n\n";
+	tos<<"tr.foot {\n\n}\n\n";
+	//workaround end
 	tos<<"tbody {\n\n}\n\n";
 	tos<<"th {\n\n}\n\n";
 	tos<<"td {\n\n}\n\n";
+	tos<<"td.detailed {\n  border: 1px dashed silver;\n  border-bottom: 0;\n  border-top: 0;\n}\n\n";
 	if(TIMETABLE_HTML_LEVEL>=2){
 		tos<<"th.xAxis {\n/*width: 8em; */\n}\n\n";
 		tos<<"th.yAxis {\n  height: 8ex;\n}\n\n";
@@ -579,8 +597,8 @@ void TimetableExport::writeStylesheetCss(const QString& htmlfilename, QString sa
 		for(int i=0; i<gt.rules.subjectTagsList.size(); i++){
 			tos << "span.subjecttag_"<<protect2id(gt.rules.subjectTagsList[i]->name)<<" {\n\n}\n\n";
 		}
-		for(int i=0; i<gt.rules.yearsList.size(); i++){
-			StudentsYear* sty=gt.rules.yearsList[i];
+		for(int i=0; i<gt.rules.augmentedYearsList.size(); i++){
+			StudentsYear* sty=gt.rules.augmentedYearsList[i];
 			tos << "span.student_"<<protect2id(sty->name)<<" {\n\n}\n\n";
 			for(int j=0; j<sty->groupsList.size(); j++){
 				StudentsGroup* stg=sty->groupsList[j];
@@ -609,11 +627,8 @@ void TimetableExport::writeStylesheetCss(const QString& htmlfilename, QString sa
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Writing css style file gave error code %1, which means saving is compromised. Please check your disk's free space.")
-		 .arg(file.error()));
+		 TimetableExport::tr("Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(htmlfilename).arg(file.error()));
 	}
-						
-
 	file.close();
 }
 
@@ -633,21 +648,21 @@ void TimetableExport::writeSubgroupsTimetableDaysHorizontalHtml(const QString& h
 	QFile file(htmlfilename);
 	if(!file.open(QIODevice::WriteOnly)){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Cannot open file to write subgroups timetable html days horizontal. Please check your disk's free space. Saving of html subgroups timetable aborted."));
-		 
+		 TimetableExport::tr("Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(htmlfilename));
 		return;
-
 		assert(0);
 	}
 	QTextStream tos(&file);
 	tos.setCodec("UTF-8");
 	tos.setGenerateByteOrderMark(true);
-	//tos.setEncoding(QTextStream::UnicodeUTF8);
 
 	tos<<"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n";
 	tos<<"  \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n\n";
 
-	tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\">\n";
+	if(LANGUAGE_STYLE_RIGHT_TO_LEFT==false)
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\">\n";
+	else
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\" dir=\"rtl\">\n";
 	tos<<"  <head>\n";
 	tos<<"    <title>"<<protect2(gt.rules.institutionName)<<"</title>\n";
 	tos<<"    <meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\" />\n";
@@ -679,11 +694,11 @@ void TimetableExport::writeSubgroupsTimetableDaysHorizontalHtml(const QString& h
 
 	tos<<"    <p>\n      <strong>"<<TimetableExport::tr("Institution name")<<":</strong> "<<protect2(gt.rules.institutionName)<<"<br />\n";
 	tos<<"      <strong>"<<TimetableExport::tr("Comments")<<":</strong> "<<protect2(gt.rules.comments)<<"\n    </p>\n"; 
-		
+
 	tos<<"    <p><strong>"<<TimetableExport::tr("Table of content")<<"</strong></p>\n";
 	tos<<"    <ul>\n";
-	for(int i=0; i<gt.rules.yearsList.size(); i++){
-		StudentsYear* sty=gt.rules.yearsList[i];
+	for(int i=0; i<gt.rules.augmentedYearsList.size(); i++){
+		StudentsYear* sty=gt.rules.augmentedYearsList[i];
 		tos<<"      <li>\n        "<<TimetableExport::tr("Year")<<" "<<protect2(sty->name)<<"\n        <ul>\n";
 		for(int j=0; j<sty->groupsList.size(); j++){
 			StudentsGroup* stg=sty->groupsList[j];
@@ -717,8 +732,9 @@ void TimetableExport::writeSubgroupsTimetableDaysHorizontalHtml(const QString& h
 		}
 		tos<<"        </tr>\n";
 		tos<<"      </thead>\n";
-
+		/*workaround. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
 		tos<<"      <tfoot><tr><td></td><td colspan=\""<<gt.rules.nDaysPerWeek<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr></tfoot>\n";
+		*/
 		tos<<"      <tbody>\n";
 		for(int j=0; j<gt.rules.nHoursPerDay; j++){
 			tos<<"        <tr>\n";
@@ -752,7 +768,7 @@ void TimetableExport::writeSubgroupsTimetableDaysHorizontalHtml(const QString& h
 									case 3 : tos<<" <span class=\"subjecttag\">"<<protect2(act->subjectTagName)<<"</span>"; break;
 									case 4 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
 									case 5 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\" onmouseover=\"highlight('subjecttag_"<<protect2id(act->subjectTagName)<<"')\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
-									default: tos<<protect2(act->subjectTagName); break;
+									default: tos<<" "<<protect2(act->subjectTagName); break;
 								}
 							if(TIMETABLE_HTML_LEVEL>=3)
 								tos<<"</div>";
@@ -796,6 +812,9 @@ void TimetableExport::writeSubgroupsTimetableDaysHorizontalHtml(const QString& h
 			}
 			tos<<"        </tr>\n";
 		}
+		//workaround begin. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
+		tos<<"      <tr class=\"foot\"><td></td><td colspan=\""<<gt.rules.nDaysPerWeek<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr>\n";
+		//workaround end.
 		tos<<"      </tbody>\n";
 		if(subgroup!=gt.rules.nInternalSubgroups-1){
 			tos<<"    </table>\n    <p>&nbsp;</p>\n";
@@ -810,10 +829,8 @@ void TimetableExport::writeSubgroupsTimetableDaysHorizontalHtml(const QString& h
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Writing subgroups timetable html days horizontal gave error code %1, which means saving is compromised. Please check your disk's free space.")
-		 .arg(file.error()));
+		 TimetableExport::tr("Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(htmlfilename).arg(file.error()));
 	}
-								
 	file.close();
 }
 
@@ -833,21 +850,21 @@ void TimetableExport::writeSubgroupsTimetableDaysVerticalHtml(const QString& htm
 	QFile file(htmlfilename);
 	if(!file.open(QIODevice::WriteOnly)){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Cannot open file to write subgroups timetable html days vertical. Please check your disk's free space. Saving of html subgroups timetable aborted."));
-		 
+		 TimetableExport::tr("Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(htmlfilename));
 		return;
-
 		assert(0);
 	}
 	QTextStream tos(&file);
 	tos.setCodec("UTF-8");
 	tos.setGenerateByteOrderMark(true);
-	//tos.setEncoding(QTextStream::UnicodeUTF8);
 
 	tos<<"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n";
 	tos<<"  \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n\n";
 
-	tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\">\n";
+	if(LANGUAGE_STYLE_RIGHT_TO_LEFT==false)
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\">\n";
+	else
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\" dir=\"rtl\">\n";
 	tos<<"  <head>\n";
 	tos<<"    <title>"<<protect2(gt.rules.institutionName)<<"</title>\n";
 	tos<<"    <meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\" />\n";
@@ -878,12 +895,12 @@ void TimetableExport::writeSubgroupsTimetableDaysVerticalHtml(const QString& htm
 		tos<<"    <h1>"<<TimetableExport::tr("Warning! Only %1 out of %2 activities placed!").arg(placedActivities).arg(gt.rules.nInternalActivities)<<"</h1>\n";
 
 	tos<<"    <p>\n      <strong>"<<TimetableExport::tr("Institution name")<<":</strong> "<<protect2(gt.rules.institutionName)<<"<br />\n";
-	tos<<"      <strong>"<<TimetableExport::tr("Comments")<<":</strong> "<<protect2(gt.rules.comments)<<"\n    </p>\n"; 
+	tos<<"      <strong>"<<TimetableExport::tr("Comments")<<":</strong> "<<protect2(gt.rules.comments)<<"\n    </p>\n";
 		
 	tos<<"    <p><strong>"<<TimetableExport::tr("Table of content")<<"</strong></p>\n";
 	tos<<"    <ul>\n";
-	for(int i=0; i<gt.rules.yearsList.size(); i++){
-		StudentsYear* sty=gt.rules.yearsList[i];
+	for(int i=0; i<gt.rules.augmentedYearsList.size(); i++){
+		StudentsYear* sty=gt.rules.augmentedYearsList[i];
 		tos<<"      <li>\n        "<<TimetableExport::tr("Year")<<" "<<protect2(sty->name)<<"\n        <ul>\n";
 		for(int j=0; j<sty->groupsList.size(); j++){
 			StudentsGroup* stg=sty->groupsList[j];
@@ -917,8 +934,9 @@ void TimetableExport::writeSubgroupsTimetableDaysVerticalHtml(const QString& htm
 		}
 		tos<<"        </tr>\n";
 		tos<<"      </thead>\n";
-
+		/*workaround. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
 		tos<<"      <tfoot><tr><td></td><td colspan=\""<<gt.rules.nHoursPerDay<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr></tfoot>\n";
+		*/
 		tos<<"      <tbody>\n";
 		for(int k=0; k<gt.rules.nDaysPerWeek; k++){
 			tos<<"        <tr>\n";
@@ -953,7 +971,7 @@ void TimetableExport::writeSubgroupsTimetableDaysVerticalHtml(const QString& htm
 									case 3 : tos<<" <span class=\"subjecttag\">"<<protect2(act->subjectTagName)<<"</span>"; break;
 									case 4 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
 									case 5 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\" onmouseover=\"highlight('subjecttag_"<<protect2id(act->subjectTagName)<<"')\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
-									default: tos<<protect2(act->subjectTagName); break;
+									default: tos<<" "<<protect2(act->subjectTagName); break;
 								}
 							if(TIMETABLE_HTML_LEVEL>=3)
 								tos<<"</div>";
@@ -998,6 +1016,9 @@ void TimetableExport::writeSubgroupsTimetableDaysVerticalHtml(const QString& htm
 			}
 			tos<<"        </tr>\n";
 		}
+		//workaround begin. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
+		tos<<"      <tr class=\"foot\"><td></td><td colspan=\""<<gt.rules.nHoursPerDay<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr>\n";
+		//workaround end.
 		tos<<"      </tbody>\n";
 		if(subgroup!=gt.rules.nInternalSubgroups-1){
 			tos<<"    </table>\n    <p>&nbsp;</p>\n";
@@ -1013,10 +1034,8 @@ void TimetableExport::writeSubgroupsTimetableDaysVerticalHtml(const QString& htm
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Writing subgroups timetable html days vertical gave error code %1, which means saving is compromised. Please check your disk's free space.")
-		 .arg(file.error()));
+		 TimetableExport::tr("Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(htmlfilename).arg(file.error()));
 	}
-								
 	file.close();
 }
 
@@ -1036,21 +1055,21 @@ void TimetableExport::writeSubgroupsTimetableTimeVerticalHtml(const QString& htm
 	QFile file(htmlfilename);
 	if(!file.open(QIODevice::WriteOnly)){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Cannot open file to write subgroups timetable html time vertical. Please check your disk's free space. Saving of html subgroups timetable aborted."));
-		 
+		 TimetableExport::tr("Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(htmlfilename));
 		return;
-
 		assert(0);
 	}
 	QTextStream tos(&file);
 	tos.setCodec("UTF-8");
 	tos.setGenerateByteOrderMark(true);
-	//tos.setEncoding(QTextStream::UnicodeUTF8);
 
 	tos<<"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n";
 	tos<<"  \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n\n";
 
-	tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\">\n";
+	if(LANGUAGE_STYLE_RIGHT_TO_LEFT==false)
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\">\n";
+	else
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\" dir=\"rtl\">\n";
 	tos<<"  <head>\n";
 	tos<<"    <title>"<<protect2(gt.rules.institutionName)<<"</title>\n";
 	tos<<"    <meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\" />\n";
@@ -1092,8 +1111,9 @@ void TimetableExport::writeSubgroupsTimetableTimeVerticalHtml(const QString& htm
 		tos << gt.rules.internalSubgroupsList[i]->name << "</th>";
 	}
 	tos<<"</tr>\n      </thead>\n";
-
+	/*workaround. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
 	tos<<"      <tfoot><tr><td colspan=\"2\"></td><td colspan=\""<<gt.rules.nInternalSubgroups<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr></tfoot>\n";
+	*/
 	tos<<"      <tbody>\n";
 	for(int k=0; k<gt.rules.nDaysPerWeek; k++){
 		for(int j=0; j<gt.rules.nHoursPerDay; j++){
@@ -1132,7 +1152,7 @@ void TimetableExport::writeSubgroupsTimetableTimeVerticalHtml(const QString& htm
 									case 3 : tos<<" <span class=\"subjecttag\">"<<protect2(act->subjectTagName)<<"</span>"; break;
 									case 4 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
 									case 5 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\" onmouseover=\"highlight('subjecttag_"<<protect2id(act->subjectTagName)<<"')\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
-									default: tos<<protect2(act->subjectTagName); break;
+									default: tos<<" "<<protect2(act->subjectTagName); break;
 								}
 							if(TIMETABLE_HTML_LEVEL>=3)
 								tos<<"</div>";
@@ -1177,15 +1197,16 @@ void TimetableExport::writeSubgroupsTimetableTimeVerticalHtml(const QString& htm
 			tos<<"        </tr>\n";
 		}
 	}
+	//workaround begin. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
+	tos<<"      <tr class=\"foot\"><td colspan=\"2\"></td><td colspan=\""<<gt.rules.nInternalSubgroups<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr>\n";
+	//workaround end.
 	tos << "      </tbody>\n    </table>\n";
 	tos << "  </body>\n</html>\n\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Writing subgroups timetable html time vertical gave error code %1, which means saving is compromised. Please check your disk's free space.")
-		 .arg(file.error()));
-	}
-								
+		 TimetableExport::tr("Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(htmlfilename).arg(file.error()));
+	}	
 	file.close();
 }
 
@@ -1204,21 +1225,21 @@ void TimetableExport::writeSubgroupsTimetableTimeHorizontalHtml(const QString& h
 	QFile file(htmlfilename);
 	if(!file.open(QIODevice::WriteOnly)){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Cannot open file to write subgroups timetable html time horizontal. Please check your disk's free space. Saving of html subgroups timetable aborted."));
-		 
+		 TimetableExport::tr("Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(htmlfilename));
 		return;
-
 		assert(0);
 	}
 	QTextStream tos(&file);
 	tos.setCodec("UTF-8");
 	tos.setGenerateByteOrderMark(true);
-	//tos.setEncoding(QTextStream::UnicodeUTF8);
 
 	tos<<"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n";
 	tos<<"  \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n\n";
 
-	tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\">\n";
+	if(LANGUAGE_STYLE_RIGHT_TO_LEFT==false)
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\">\n";
+	else
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\" dir=\"rtl\">\n";
 	tos<<"  <head>\n";
 	tos<<"    <title>"<<protect2(gt.rules.institutionName)<<"</title>\n";
 	tos<<"    <meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\" />\n";
@@ -1266,8 +1287,9 @@ void TimetableExport::writeSubgroupsTimetableTimeHorizontalHtml(const QString& h
 		}
 	tos<<"        </tr>\n";
 	tos<<"      </thead>\n";
-
+	/*workaround. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
 	tos<<"      <tfoot><tr><td></td><td colspan=\""<<gt.rules.nHoursPerDay*gt.rules.nDaysPerWeek<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr></tfoot>\n";
+	*/
 	tos<<"      <tbody>\n";
 	for(int i=0; i<gt.rules.nInternalSubgroups; i++){
 		tos << "        <tr>\n";
@@ -1302,7 +1324,7 @@ void TimetableExport::writeSubgroupsTimetableTimeHorizontalHtml(const QString& h
 									case 3 : tos<<" <span class=\"subjecttag\">"<<protect2(act->subjectTagName)<<"</span>"; break;
 									case 4 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
 									case 5 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\" onmouseover=\"highlight('subjecttag_"<<protect2id(act->subjectTagName)<<"')\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
-									default: tos<<protect2(act->subjectTagName); break;
+									default: tos<<" "<<protect2(act->subjectTagName); break;
 								}
 							if(TIMETABLE_HTML_LEVEL>=3)
 								tos<<"</div>";
@@ -1347,15 +1369,16 @@ void TimetableExport::writeSubgroupsTimetableTimeHorizontalHtml(const QString& h
 		}
 		tos<<"        </tr>\n";
 	}
+	//workaround begin. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
+	tos<<"      <tr class=\"foot\"><td></td><td colspan=\""<<gt.rules.nHoursPerDay*gt.rules.nDaysPerWeek<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr>\n";
+	//workaround end.
 	tos << "      </tbody>\n    </table>\n";
 	tos << "  </body>\n</html>\n\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Writing students timetable html time horizontal gave error code %1, which means saving is compromised. Please check your disk's free space.")
-		 .arg(file.error()));
+		 TimetableExport::tr("Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(htmlfilename).arg(file.error()));
 	}
-								
 	file.close();
 }
 
@@ -1375,21 +1398,21 @@ void TimetableExport::writeGroupsTimetableDaysHorizontalHtml(const QString& html
 	QFile file(htmlfilename);
 	if(!file.open(QIODevice::WriteOnly)){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Cannot open file to write groups timetable html days horizontal. Please check your disk's free space. Saving of html groups timetable aborted."));
-		 
+		 TimetableExport::tr("Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(htmlfilename));
 		return;
-
 		assert(0);
 	}
 	QTextStream tos(&file);
 	tos.setCodec("UTF-8");
 	tos.setGenerateByteOrderMark(true);
-	//tos.setEncoding(QTextStream::UnicodeUTF8);
 
 	tos<<"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n";
 	tos<<"  \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n\n";
 
-	tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\">\n";
+	if(LANGUAGE_STYLE_RIGHT_TO_LEFT==false)
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\">\n";
+	else
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\" dir=\"rtl\">\n";
 	tos<<"  <head>\n";
 	tos<<"    <title>"<<protect2(gt.rules.institutionName)<<"</title>\n";
 	tos<<"    <meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\" />\n";
@@ -1424,8 +1447,8 @@ void TimetableExport::writeGroupsTimetableDaysHorizontalHtml(const QString& html
 		
 	tos<<"    <p><strong>"<<TimetableExport::tr("Table of content")<<"</strong></p>\n";
 	tos<<"    <ul>\n";
-	for(int i=0; i<gt.rules.yearsList.size(); i++){
-		StudentsYear* sty=gt.rules.yearsList[i];
+	for(int i=0; i<gt.rules.augmentedYearsList.size(); i++){
+		StudentsYear* sty=gt.rules.augmentedYearsList[i];
 		tos<<"      <li>\n        "<<TimetableExport::tr("Year")<<" "<<protect2(sty->name)<<"\n        <ul>\n";
 		for(int j=0; j<sty->groupsList.size(); j++){
 			StudentsGroup* stg=sty->groupsList[j];
@@ -1441,8 +1464,8 @@ void TimetableExport::writeGroupsTimetableDaysHorizontalHtml(const QString& html
 	bool PRINT_DETAILED=true;
 	do{
 		int group=0;
-		for(int i=0; i<gt.rules.yearsList.size(); i++){
-			StudentsYear* sty=gt.rules.yearsList[i];
+		for(int i=0; i<gt.rules.augmentedYearsList.size(); i++){
+			StudentsYear* sty=gt.rules.augmentedYearsList[i];
 			for(int g=0; g<sty->groupsList.size(); g++){
 				StudentsGroup* stg=sty->groupsList[g];
 				tos<<"    <table id=\"table_"<<protect2id(stg->name);
@@ -1464,8 +1487,9 @@ void TimetableExport::writeGroupsTimetableDaysHorizontalHtml(const QString& html
 				}
 				tos<<"        </tr>\n";
 				tos<<"      </thead>\n";
-
+				/*workaround. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
 				tos<<"      <tfoot><tr><td></td><td colspan=\""<<gt.rules.nDaysPerWeek<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr></tfoot>\n";
+				*/
 				tos<<"      <tbody>\n";
 				for(int j=0; j<gt.rules.nHoursPerDay; j++){
 					tos<<"        <tr>\n";
@@ -1479,12 +1503,17 @@ void TimetableExport::writeGroupsTimetableDaysHorizontalHtml(const QString& html
 						allActivities.clear();
 						for(int sg=0; sg<stg->subgroupsList.size(); sg++){
 							StudentsSubgroup* sts=stg->subgroupsList[sg];
+							//old code by Volker
+							/*
 							for(int subgroup=0; subgroup<gt.rules.nInternalSubgroups; subgroup++){
 								QString subgroup_name = gt.rules.internalSubgroupsList[subgroup]->name;
 								if(subgroup_name==sts->name)
+							*/
+							//speed improvement by Liviu
+							int subgroup=sts->indexInInternalSubgroupsList;
 									if(!(allActivities.contains(students_timetable_weekly[subgroup][k][j])))
 												allActivities<<students_timetable_weekly[subgroup][k][j];
-							}
+							//}
 						}
 						assert(!allActivities.isEmpty());
 						int ai=allActivities[0]; //activity index
@@ -1512,7 +1541,7 @@ void TimetableExport::writeGroupsTimetableDaysHorizontalHtml(const QString& html
 												case 3 : tos<<" <span class=\"subjecttag\">"<<protect2(act->subjectTagName)<<"</span>"; break;
 												case 4 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
 												case 5 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\" onmouseover=\"highlight('subjecttag_"<<protect2id(act->subjectTagName)<<"')\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
-												default: tos<<protect2(act->subjectTagName); break;
+												default: tos<<" "<<protect2(act->subjectTagName); break;
 											}
 										if(TIMETABLE_HTML_LEVEL>=3)
 											tos<<"</div>";
@@ -1556,15 +1585,21 @@ void TimetableExport::writeGroupsTimetableDaysHorizontalHtml(const QString& html
 						} else{
 							if(PRINT_DETAILED==false) tos<<"          <td>\?\?\?</td>\n";
 							else{
-								tos<<"          <td><table class=\"detailed\"";
-								
+								if(TIMETABLE_HTML_LEVEL>=1)
+									tos<<"          <td><table class=\"detailed\">";
+								else
+									tos<<"          <td><table>";
 								if(TIMETABLE_HTML_LEVEL>=3)
 									tos<<"<tr class=\"student line0\">";
+								else	tos<<"<tr>";
 								for(int a=0; a<allActivities.size(); a++){
 									ai=allActivities[a];
 									Activity* act=&gt.rules.internalActivitiesList[ai];
 									if(ai!=UNALLOCATED_ACTIVITY){
-										tos<<"<td>";
+										if(TIMETABLE_HTML_LEVEL>=1)
+											tos<<"<td class=\"detailed\">";
+										else
+											tos<<"<td>";
 										if(act->studentsNames.size()>0){
 											for(QStringList::Iterator st=act->studentsNames.begin(); st!=act->studentsNames.end(); st++){
 												switch(TIMETABLE_HTML_LEVEL){
@@ -1580,14 +1615,17 @@ void TimetableExport::writeGroupsTimetableDaysHorizontalHtml(const QString& html
 									}
 								}
 								tos<<"</tr>";
-								tos<<"<tr class=\"line1\">";
+								if(TIMETABLE_HTML_LEVEL>=3)
+									tos<<"<tr class=\"line1\">";
+								else	tos<<"<tr>";
 								for(int a=0; a<allActivities.size(); a++){
 									ai=allActivities[a];
 									Activity* act=&gt.rules.internalActivitiesList[ai];
 									if(ai!=UNALLOCATED_ACTIVITY){
-										if(TIMETABLE_HTML_LEVEL>=3)
+										if(TIMETABLE_HTML_LEVEL>=1)
+											tos<<"<td class=\"detailed\">";
+										else
 											tos<<"<td>";
-										else tos<<"<td>";
 										if(act->subjectName.size()>0||act->subjectTagName.size()>0){
 											if(act->subjectName.size()>0)
 												switch(TIMETABLE_HTML_LEVEL){
@@ -1601,21 +1639,24 @@ void TimetableExport::writeGroupsTimetableDaysHorizontalHtml(const QString& html
 													case 3 : tos<<" <span class=\"subjecttag\">"<<protect2(act->subjectTagName)<<"</span>"; break;
 													case 4 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
 													case 5 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\" onmouseover=\"highlight('subjecttag_"<<protect2id(act->subjectTagName)<<"')\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
-													default: tos<<protect2(act->subjectTagName); break;
+													default: tos<<" "<<protect2(act->subjectTagName); break;
 												}
 										}
 										tos<<"</td>";
 									}
 								}
 								tos<<"</tr>";
-								tos<<"<tr class=\"teacher line2\">";
+								if(TIMETABLE_HTML_LEVEL>=3)
+									tos<<"<tr class=\"teacher line2\">";
+								else	tos<<"<tr>";
 								for(int a=0; a<allActivities.size(); a++){
 									ai=allActivities[a];
 									Activity* act=&gt.rules.internalActivitiesList[ai];
 									if(ai!=UNALLOCATED_ACTIVITY){
-										if(TIMETABLE_HTML_LEVEL>=3)
+										if(TIMETABLE_HTML_LEVEL>=1)
+											tos<<"<td class=\"detailed\">";
+										else
 											tos<<"<td>";
-										else tos<<"<td>";
 										if(act->teachersNames.size()>0){
 											for(QStringList::Iterator it=act->teachersNames.begin(); it!=act->teachersNames.end(); it++){
 												switch(TIMETABLE_HTML_LEVEL){
@@ -1631,15 +1672,18 @@ void TimetableExport::writeGroupsTimetableDaysHorizontalHtml(const QString& html
 									}
 								}
 								tos<<"</tr>";
-								tos<<"<tr class=\"room line3\">";
+								if(TIMETABLE_HTML_LEVEL>=3)
+									tos<<"<tr class=\"room line3\">";
+								else	tos<<"<tr>";
 								for(int a=0; a<allActivities.size(); a++){
 									ai=allActivities[a];
 									Activity* act=&gt.rules.internalActivitiesList[ai];
 									if(ai!=UNALLOCATED_ACTIVITY){
 										int r=best_solution.rooms[ai];
-										if(TIMETABLE_HTML_LEVEL>=3)
+										if(TIMETABLE_HTML_LEVEL>=1)
+											tos<<"<td class=\"detailed\">";
+										else
 											tos<<"<td>";
-										else tos<<"<td>";
 										if(r!=UNALLOCATED_SPACE && r!=UNSPECIFIED_ROOM){
 											if(act->subjectName.size()>0)
 												switch(TIMETABLE_HTML_LEVEL){
@@ -1658,8 +1702,11 @@ void TimetableExport::writeGroupsTimetableDaysHorizontalHtml(const QString& html
 					}
 					tos<<"        </tr>\n";
 				}
+				//workaround begin. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
+				tos<<"      <tr class=\"foot\"><td></td><td colspan=\""<<gt.rules.nDaysPerWeek<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr>\n";
+				//workaround end.
 				tos<<"      </tbody>\n";
-				if(((i!=gt.rules.yearsList.size()-1) && (g!=sty->groupsList.size())) || (PRINT_DETAILED==true)){
+				if(((i!=gt.rules.augmentedYearsList.size()-1) && (g!=sty->groupsList.size())) || (PRINT_DETAILED==true)){
 					tos<<"    </table>\n    <p>&nbsp;</p>\n";
 					tos<<"    <p><a href=\""<<"#top\">"<<TimetableExport::tr("back to the top")<<"</a></p>\n";
 					tos<<"    <p>&nbsp;</p>\n\n";
@@ -1677,8 +1724,7 @@ void TimetableExport::writeGroupsTimetableDaysHorizontalHtml(const QString& html
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Writing groups timetable html days horizontal gave error code %1, which means saving is compromised. Please check your disk's free space.")
-		 .arg(file.error()));
+		 TimetableExport::tr("Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(htmlfilename).arg(file.error()));
 	}
 	file.close();
 }
@@ -1699,21 +1745,21 @@ void TimetableExport::writeGroupsTimetableDaysVerticalHtml(const QString& htmlfi
 	QFile file(htmlfilename);
 	if(!file.open(QIODevice::WriteOnly)){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Cannot open file to write groups timetable html days vertical. Please check your disk's free space. Saving of html groups timetable aborted."));
-		 
+		 TimetableExport::tr("Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(htmlfilename));
 		return;
-
 		assert(0);
 	}
 	QTextStream tos(&file);
 	tos.setCodec("UTF-8");
 	tos.setGenerateByteOrderMark(true);
-	//tos.setEncoding(QTextStream::UnicodeUTF8);
 
 	tos<<"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n";
 	tos<<"  \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n\n";
 
-	tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\">\n";
+	if(LANGUAGE_STYLE_RIGHT_TO_LEFT==false)
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\">\n";
+	else
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\" dir=\"rtl\">\n";
 	tos<<"  <head>\n";
 	tos<<"    <title>"<<protect2(gt.rules.institutionName)<<"</title>\n";
 	tos<<"    <meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\" />\n";
@@ -1748,8 +1794,8 @@ void TimetableExport::writeGroupsTimetableDaysVerticalHtml(const QString& htmlfi
 		
 	tos<<"    <p><strong>"<<TimetableExport::tr("Table of content")<<"</strong></p>\n";
 	tos<<"    <ul>\n";
-	for(int i=0; i<gt.rules.yearsList.size(); i++){
-		StudentsYear* sty=gt.rules.yearsList[i];
+	for(int i=0; i<gt.rules.augmentedYearsList.size(); i++){
+		StudentsYear* sty=gt.rules.augmentedYearsList[i];
 		tos<<"      <li>\n        "<<TimetableExport::tr("Year")<<" "<<protect2(sty->name)<<"\n        <ul>\n";
 		for(int j=0; j<sty->groupsList.size(); j++){
 			StudentsGroup* stg=sty->groupsList[j];
@@ -1765,8 +1811,8 @@ void TimetableExport::writeGroupsTimetableDaysVerticalHtml(const QString& htmlfi
 	bool PRINT_DETAILED=true;
 	do{
 		int group=0;
-		for(int i=0; i<gt.rules.yearsList.size(); i++){
-			StudentsYear* sty=gt.rules.yearsList[i];
+		for(int i=0; i<gt.rules.augmentedYearsList.size(); i++){
+			StudentsYear* sty=gt.rules.augmentedYearsList[i];
 			for(int g=0; g<sty->groupsList.size(); g++){
 				StudentsGroup* stg=sty->groupsList[g];
 				tos<<"    <table id=\"table_"<<protect2id(stg->name);
@@ -1788,8 +1834,9 @@ void TimetableExport::writeGroupsTimetableDaysVerticalHtml(const QString& htmlfi
 				}
 				tos<<"        </tr>\n";
 				tos<<"      </thead>\n";
-
+				/*workaround. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
 				tos<<"      <tfoot><tr><td></td><td colspan=\""<<gt.rules.nHoursPerDay<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr></tfoot>\n";
+				*/
 				tos<<"      <tbody>\n";
 				for(int k=0; k<gt.rules.nDaysPerWeek; k++){
 					tos<<"        <tr>\n";
@@ -1803,12 +1850,17 @@ void TimetableExport::writeGroupsTimetableDaysVerticalHtml(const QString& htmlfi
 						allActivities.clear();
 						for(int sg=0; sg<stg->subgroupsList.size(); sg++){
 							StudentsSubgroup* sts=stg->subgroupsList[sg];
+							//old code by Volker
+							/*
 							for(int subgroup=0; subgroup<gt.rules.nInternalSubgroups; subgroup++){
 								QString subgroup_name = gt.rules.internalSubgroupsList[subgroup]->name;
 								if(subgroup_name==sts->name)
+							*/
+							//speed improvement by Liviu
+							int subgroup=sts->indexInInternalSubgroupsList;
 									if(!(allActivities.contains(students_timetable_weekly[subgroup][k][j])))
 												allActivities<<students_timetable_weekly[subgroup][k][j];
-							}
+							//}
 						}
 						assert(!allActivities.isEmpty());
 						int ai=allActivities[0]; //activity index
@@ -1836,7 +1888,7 @@ void TimetableExport::writeGroupsTimetableDaysVerticalHtml(const QString& htmlfi
 												case 3 : tos<<" <span class=\"subjecttag\">"<<protect2(act->subjectTagName)<<"</span>"; break;
 												case 4 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
 												case 5 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\" onmouseover=\"highlight('subjecttag_"<<protect2id(act->subjectTagName)<<"')\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
-												default: tos<<protect2(act->subjectTagName); break;
+												default: tos<<" "<<protect2(act->subjectTagName); break;
 											}
 										if(TIMETABLE_HTML_LEVEL>=3)
 											tos<<"</div>";
@@ -1880,15 +1932,21 @@ void TimetableExport::writeGroupsTimetableDaysVerticalHtml(const QString& htmlfi
 						} else{
 							if(PRINT_DETAILED==false) tos<<"          <td>\?\?\?</td>\n";
 							else{
-								tos<<"          <td><table class=\"detailed\"";
-								
+								if(TIMETABLE_HTML_LEVEL>=1)
+									tos<<"          <td><table class=\"detailed\">";
+								else
+									tos<<"          <td><table>";
 								if(TIMETABLE_HTML_LEVEL>=3)
 									tos<<"<tr class=\"student line0\">";
+								else	tos<<"<tr>";
 								for(int a=0; a<allActivities.size(); a++){
 									ai=allActivities[a];
 									Activity* act=&gt.rules.internalActivitiesList[ai];
 									if(ai!=UNALLOCATED_ACTIVITY){
-										tos<<"<td>";
+										if(TIMETABLE_HTML_LEVEL>=1)
+											tos<<"<td class=\"detailed\">";
+										else
+											tos<<"<td>";
 										if(act->studentsNames.size()>0){
 											for(QStringList::Iterator st=act->studentsNames.begin(); st!=act->studentsNames.end(); st++){
 												switch(TIMETABLE_HTML_LEVEL){
@@ -1904,14 +1962,17 @@ void TimetableExport::writeGroupsTimetableDaysVerticalHtml(const QString& htmlfi
 									}
 								}
 								tos<<"</tr>";
-								tos<<"<tr class=\"line1\">";
+								if(TIMETABLE_HTML_LEVEL>=3)
+									tos<<"<tr class=\"line1\">";
+								else	tos<<"<tr>";
 								for(int a=0; a<allActivities.size(); a++){
 									ai=allActivities[a];
 									Activity* act=&gt.rules.internalActivitiesList[ai];
 									if(ai!=UNALLOCATED_ACTIVITY){
-										if(TIMETABLE_HTML_LEVEL>=3)
+										if(TIMETABLE_HTML_LEVEL>=1)
+											tos<<"<td class=\"detailed\">";
+										else
 											tos<<"<td>";
-										else tos<<"<td>";
 										if(act->subjectName.size()>0||act->subjectTagName.size()>0){
 											if(act->subjectName.size()>0)
 												switch(TIMETABLE_HTML_LEVEL){
@@ -1925,21 +1986,24 @@ void TimetableExport::writeGroupsTimetableDaysVerticalHtml(const QString& htmlfi
 													case 3 : tos<<" <span class=\"subjecttag\">"<<protect2(act->subjectTagName)<<"</span>"; break;
 													case 4 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
 													case 5 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\" onmouseover=\"highlight('subjecttag_"<<protect2id(act->subjectTagName)<<"')\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
-													default: tos<<protect2(act->subjectTagName); break;
+													default: tos<<" "<<protect2(act->subjectTagName); break;
 												}
 										}
 										tos<<"</td>";
 									}
 								}
 								tos<<"</tr>";
-								tos<<"<tr class=\"teacher line2\">";
+								if(TIMETABLE_HTML_LEVEL>=3)
+									tos<<"<tr class=\"teacher line2\">";
+								else	tos<<"<tr>";
 								for(int a=0; a<allActivities.size(); a++){
 									ai=allActivities[a];
 									Activity* act=&gt.rules.internalActivitiesList[ai];
 									if(ai!=UNALLOCATED_ACTIVITY){
-										if(TIMETABLE_HTML_LEVEL>=3)
+										if(TIMETABLE_HTML_LEVEL>=1)
+											tos<<"<td class=\"detailed\">";
+										else
 											tos<<"<td>";
-										else tos<<"<td>";
 										if(act->teachersNames.size()>0){
 											for(QStringList::Iterator it=act->teachersNames.begin(); it!=act->teachersNames.end(); it++){
 												switch(TIMETABLE_HTML_LEVEL){
@@ -1955,15 +2019,18 @@ void TimetableExport::writeGroupsTimetableDaysVerticalHtml(const QString& htmlfi
 									}
 								}
 								tos<<"</tr>";
-								tos<<"<tr class=\"room line3\">";
+								if(TIMETABLE_HTML_LEVEL>=3)
+									tos<<"<tr class=\"room line3\">";
+								else	tos<<"<tr>";
 								for(int a=0; a<allActivities.size(); a++){
 									ai=allActivities[a];
 									Activity* act=&gt.rules.internalActivitiesList[ai];
 									if(ai!=UNALLOCATED_ACTIVITY){
 										int r=best_solution.rooms[ai];
-										if(TIMETABLE_HTML_LEVEL>=3)
+										if(TIMETABLE_HTML_LEVEL>=1)
+											tos<<"<td class=\"detailed\">";
+										else
 											tos<<"<td>";
-										else tos<<"<td>";
 										if(r!=UNALLOCATED_SPACE && r!=UNSPECIFIED_ROOM){
 											if(act->subjectName.size()>0)
 												switch(TIMETABLE_HTML_LEVEL){
@@ -1982,8 +2049,11 @@ void TimetableExport::writeGroupsTimetableDaysVerticalHtml(const QString& htmlfi
 					}
 					tos<<"        </tr>\n";
 				}
+				//workaround begin. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
+				tos<<"      <tr class=\"foot\"><td></td><td colspan=\""<<gt.rules.nHoursPerDay<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr>\n";
+				//workaround end.
 				tos<<"      </tbody>\n";
-				if(((i!=gt.rules.yearsList.size()-1) && (g!=sty->groupsList.size())) || (PRINT_DETAILED==true)){
+				if(((i!=gt.rules.augmentedYearsList.size()-1) && (g!=sty->groupsList.size())) || (PRINT_DETAILED==true)){
 					tos<<"    </table>\n    <p>&nbsp;</p>\n";
 					tos<<"    <p><a href=\""<<"#top\">"<<TimetableExport::tr("back to the top")<<"</a></p>\n";
 					tos<<"    <p>&nbsp;</p>\n\n";
@@ -2001,10 +2071,8 @@ void TimetableExport::writeGroupsTimetableDaysVerticalHtml(const QString& htmlfi
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Writing groups timetable html days vertical gave error code %1, which means saving is compromised. Please check your disk's free space.")
-		 .arg(file.error()));
+		 TimetableExport::tr("Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(htmlfilename).arg(file.error()));
 	}
-								
 	file.close();
 }
 
@@ -2024,21 +2092,21 @@ void TimetableExport::writeGroupsTimetableTimeVerticalHtml(const QString& htmlfi
 	QFile file(htmlfilename);
 	if(!file.open(QIODevice::WriteOnly)){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Cannot open file to write groups timetable html time vertical. Please check your disk's free space. Saving of html groups timetable aborted."));
-		 
+		 TimetableExport::tr("Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(htmlfilename));
 		return;
-
 		assert(0);
 	}
 	QTextStream tos(&file);
 	tos.setCodec("UTF-8");
 	tos.setGenerateByteOrderMark(true);
-	//tos.setEncoding(QTextStream::UnicodeUTF8);
 
 	tos<<"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n";
 	tos<<"  \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n\n";
 
-	tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\">\n";
+	if(LANGUAGE_STYLE_RIGHT_TO_LEFT==false)
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\">\n";
+	else
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\" dir=\"rtl\">\n";
 	tos<<"  <head>\n";
 	tos<<"    <title>"<<protect2(gt.rules.institutionName)<<"</title>\n";
 	tos<<"    <meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\" />\n";
@@ -2077,8 +2145,8 @@ void TimetableExport::writeGroupsTimetableTimeVerticalHtml(const QString& htmlfi
 		tos<<"      <caption>"<<protect2(gt.rules.institutionName)<<"</caption>\n";
 
 		tos<<"      <thead>\n        <tr><td colspan=\"2\"></td>";
-		for(int i=0; i<gt.rules.yearsList.size(); i++){
-			StudentsYear* sty=gt.rules.yearsList[i];
+		for(int i=0; i<gt.rules.augmentedYearsList.size(); i++){
+			StudentsYear* sty=gt.rules.augmentedYearsList[i];
 			for(int g=0; g<sty->groupsList.size(); g++){
 				StudentsGroup* stg=sty->groupsList[g];
 				if(TIMETABLE_HTML_LEVEL>=2)
@@ -2090,7 +2158,9 @@ void TimetableExport::writeGroupsTimetableTimeVerticalHtml(const QString& htmlfi
 		}
 		
 		tos<<"</tr>\n      </thead>\n";
+		/*workaround. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
 		tos<<"      <tfoot><tr><td colspan=\"2\"></td><td colspan=\""<<gt.rules.nInternalSubgroups<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr></tfoot>\n";
+		*/
 		tos<<"      <tbody>\n";
 		for(int k=0; k<gt.rules.nDaysPerWeek; k++){
 			for(int j=0; j<gt.rules.nHoursPerDay; j++){
@@ -2104,20 +2174,25 @@ void TimetableExport::writeGroupsTimetableTimeVerticalHtml(const QString& htmlfi
 					tos<<"          <th>";
 				tos << protect2(gt.rules.hoursOfTheDay[j]) << "</th>\n";
 				int group=0;
-				for(int i=0; i<gt.rules.yearsList.size(); i++){
-					StudentsYear* sty=gt.rules.yearsList[i];
+				for(int i=0; i<gt.rules.augmentedYearsList.size(); i++){
+					StudentsYear* sty=gt.rules.augmentedYearsList[i];
 					for(int g=0; g<sty->groupsList.size(); g++){
 						StudentsGroup* stg=sty->groupsList[g];
 						QList<qint16> allActivities;
 						allActivities.clear();
 						for(int sg=0; sg<stg->subgroupsList.size(); sg++){
 							StudentsSubgroup* sts=stg->subgroupsList[sg];
+							//old code by Volker
+							/*
 							for(int subgroup=0; subgroup<gt.rules.nInternalSubgroups; subgroup++){
 								QString subgroup_name = gt.rules.internalSubgroupsList[subgroup]->name;
 								if(subgroup_name==sts->name)
+							*/
+							//speed improvement by Liviu
+							int subgroup=sts->indexInInternalSubgroupsList;
 									if(!(allActivities.contains(students_timetable_weekly[subgroup][k][j])))
 												allActivities<<students_timetable_weekly[subgroup][k][j];
-							}
+							//}
 						}
 						assert(!allActivities.isEmpty());
 						int ai=allActivities[0]; //activity index
@@ -2145,7 +2220,7 @@ void TimetableExport::writeGroupsTimetableTimeVerticalHtml(const QString& htmlfi
 												case 3 : tos<<" <span class=\"subjecttag\">"<<protect2(act->subjectTagName)<<"</span>"; break;
 												case 4 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
 												case 5 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\" onmouseover=\"highlight('subjecttag_"<<protect2id(act->subjectTagName)<<"')\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
-												default: tos<<protect2(act->subjectTagName); break;
+												default: tos<<" "<<protect2(act->subjectTagName); break;
 											}
 										if(TIMETABLE_HTML_LEVEL>=3)
 											tos<<"</div>";
@@ -2189,15 +2264,21 @@ void TimetableExport::writeGroupsTimetableTimeVerticalHtml(const QString& htmlfi
 						} else{
 							if(PRINT_DETAILED==false) tos<<"          <td>\?\?\?</td>\n";
 							else{
-								tos<<"          <td><table class=\"detailed\"";
-								
+								if(TIMETABLE_HTML_LEVEL>=1)
+									tos<<"          <td><table class=\"detailed\">";
+								else
+									tos<<"          <td><table>";
 								if(TIMETABLE_HTML_LEVEL>=3)
 									tos<<"<tr class=\"student line0\">";
+								else	tos<<"<tr>";
 								for(int a=0; a<allActivities.size(); a++){
 									ai=allActivities[a];
 									Activity* act=&gt.rules.internalActivitiesList[ai];
 									if(ai!=UNALLOCATED_ACTIVITY){
-										tos<<"<td>";
+										if(TIMETABLE_HTML_LEVEL>=1)
+											tos<<"<td class=\"detailed\">";
+										else
+											tos<<"<td>";
 										if(act->studentsNames.size()>0){
 											for(QStringList::Iterator st=act->studentsNames.begin(); st!=act->studentsNames.end(); st++){
 												switch(TIMETABLE_HTML_LEVEL){
@@ -2213,14 +2294,17 @@ void TimetableExport::writeGroupsTimetableTimeVerticalHtml(const QString& htmlfi
 									}
 								}
 								tos<<"</tr>";
-								tos<<"<tr class=\"line1\">";
+								if(TIMETABLE_HTML_LEVEL>=3)
+									tos<<"<tr class=\"line1\">";
+								else	tos<<"<tr>";
 								for(int a=0; a<allActivities.size(); a++){
 									ai=allActivities[a];
 									Activity* act=&gt.rules.internalActivitiesList[ai];
 									if(ai!=UNALLOCATED_ACTIVITY){
-										if(TIMETABLE_HTML_LEVEL>=3)
+										if(TIMETABLE_HTML_LEVEL>=1)
+											tos<<"<td class=\"detailed\">";
+										else
 											tos<<"<td>";
-										else tos<<"<td>";
 										if(act->subjectName.size()>0||act->subjectTagName.size()>0){
 											if(act->subjectName.size()>0)
 												switch(TIMETABLE_HTML_LEVEL){
@@ -2234,21 +2318,24 @@ void TimetableExport::writeGroupsTimetableTimeVerticalHtml(const QString& htmlfi
 													case 3 : tos<<" <span class=\"subjecttag\">"<<protect2(act->subjectTagName)<<"</span>"; break;
 													case 4 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
 													case 5 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\" onmouseover=\"highlight('subjecttag_"<<protect2id(act->subjectTagName)<<"')\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
-													default: tos<<protect2(act->subjectTagName); break;
+													default: tos<<" "<<protect2(act->subjectTagName); break;
 												}
 										}
 										tos<<"</td>";
 									}
 								}
 								tos<<"</tr>";
-								tos<<"<tr class=\"teacher line2\">";
+								if(TIMETABLE_HTML_LEVEL>=3)
+									tos<<"<tr class=\"teacher line2\">";
+								else	tos<<"<tr>";
 								for(int a=0; a<allActivities.size(); a++){
 									ai=allActivities[a];
 									Activity* act=&gt.rules.internalActivitiesList[ai];
 									if(ai!=UNALLOCATED_ACTIVITY){
-										if(TIMETABLE_HTML_LEVEL>=3)
+										if(TIMETABLE_HTML_LEVEL>=1)
+											tos<<"<td class=\"detailed\">";
+										else
 											tos<<"<td>";
-										else tos<<"<td>";
 										if(act->teachersNames.size()>0){
 											for(QStringList::Iterator it=act->teachersNames.begin(); it!=act->teachersNames.end(); it++){
 												switch(TIMETABLE_HTML_LEVEL){
@@ -2264,15 +2351,18 @@ void TimetableExport::writeGroupsTimetableTimeVerticalHtml(const QString& htmlfi
 									}
 								}
 								tos<<"</tr>";
-								tos<<"<tr class=\"room line3\">";
+								if(TIMETABLE_HTML_LEVEL>=3)
+									tos<<"<tr class=\"room line3\">";
+								else	tos<<"<tr>";
 								for(int a=0; a<allActivities.size(); a++){
 									ai=allActivities[a];
 									Activity* act=&gt.rules.internalActivitiesList[ai];
 									if(ai!=UNALLOCATED_ACTIVITY){
 										int r=best_solution.rooms[ai];
-										if(TIMETABLE_HTML_LEVEL>=3)
+										if(TIMETABLE_HTML_LEVEL>=1)
+											tos<<"<td class=\"detailed\">";
+										else
 											tos<<"<td>";
-										else tos<<"<td>";
 										if(r!=UNALLOCATED_SPACE && r!=UNSPECIFIED_ROOM){
 											if(act->subjectName.size()>0)
 												switch(TIMETABLE_HTML_LEVEL){
@@ -2294,6 +2384,9 @@ void TimetableExport::writeGroupsTimetableTimeVerticalHtml(const QString& htmlfi
 				tos<<"        </tr>\n";
 			}
 		}
+		//workaround begin. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
+		tos<<"      <tr class=\"foot\"><td colspan=\"2\"></td><td colspan=\""<<gt.rules.nInternalSubgroups<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr>\n";
+		//workaround end.
 		tos<<"      </tbody>\n";
 		if(PRINT_DETAILED==true){
 			tos<<"    </table>\n    <p>&nbsp;</p>\n";
@@ -2306,15 +2399,12 @@ void TimetableExport::writeGroupsTimetableTimeVerticalHtml(const QString& htmlfi
 		if(PRINT_DETAILED==true) PRINT_DETAILED=false;
 		else PRINT_DETAILED=true;
 	} while(PRINT_DETAILED!=true);
-	tos << "      </tbody>\n    </table>\n";
 	tos << "  </body>\n</html>\n\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Writing groups timetable html time vertical gave error code %1, which means saving is compromised. Please check your disk's free space.")
-		 .arg(file.error()));
+		 TimetableExport::tr("Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(htmlfilename).arg(file.error()));
 	}
-								
 	file.close();
 }
 
@@ -2332,21 +2422,21 @@ void TimetableExport::writeGroupsTimetableTimeHorizontalHtml(const QString& html
 	QFile file(htmlfilename);
 	if(!file.open(QIODevice::WriteOnly)){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Cannot open file to write groups timetable html time horizontal. Please check your disk's free space. Saving of html groups timetable aborted."));
-		 
+		 TimetableExport::tr("Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(htmlfilename));
 		return;
-
 		assert(0);
 	}
 	QTextStream tos(&file);
 	tos.setCodec("UTF-8");
 	tos.setGenerateByteOrderMark(true);
-	//tos.setEncoding(QTextStream::UnicodeUTF8);
 
 	tos<<"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n";
 	tos<<"  \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n\n";
 
-	tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\">\n";
+	if(LANGUAGE_STYLE_RIGHT_TO_LEFT==false)
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\">\n";
+	else
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\" dir=\"rtl\">\n";
 	tos<<"  <head>\n";
 	tos<<"    <title>"<<protect2(gt.rules.institutionName)<<"</title>\n";
 	tos<<"    <meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\" />\n";
@@ -2399,13 +2489,14 @@ void TimetableExport::writeGroupsTimetableTimeHorizontalHtml(const QString& html
 			}
 		tos<<"        </tr>\n";
 		tos<<"      </thead>\n";
-		
+		/*workaround. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
 		tos<<"      <tfoot><tr><td colspan=\"2\"></td><td colspan=\""<<gt.rules.nInternalSubgroups<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr></tfoot>\n";
+		*/
 		tos<<"      <tbody>\n";
 		
 		int group=0;
-		for(int i=0; i<gt.rules.yearsList.size(); i++){
-			StudentsYear* sty=gt.rules.yearsList[i];
+		for(int i=0; i<gt.rules.augmentedYearsList.size(); i++){
+			StudentsYear* sty=gt.rules.augmentedYearsList[i];
 			for(int g=0; g<sty->groupsList.size(); g++){
 				StudentsGroup* stg=sty->groupsList[g];
 				tos << "        <tr>\n";
@@ -2420,12 +2511,17 @@ void TimetableExport::writeGroupsTimetableTimeHorizontalHtml(const QString& html
 						allActivities.clear();
 						for(int sg=0; sg<stg->subgroupsList.size(); sg++){
 							StudentsSubgroup* sts=stg->subgroupsList[sg];
+							//old code by Volker
+							/*
 							for(int subgroup=0; subgroup<gt.rules.nInternalSubgroups; subgroup++){
 								QString subgroup_name = gt.rules.internalSubgroupsList[subgroup]->name;
 								if(subgroup_name==sts->name)
+							*/
+							//speed improvement by Liviu
+							int subgroup=sts->indexInInternalSubgroupsList;
 									if(!(allActivities.contains(students_timetable_weekly[subgroup][k][j])))
 												allActivities<<students_timetable_weekly[subgroup][k][j];
-							}
+							//}
 						}
 						assert(!allActivities.isEmpty());
 						int ai=allActivities[0]; //activity index
@@ -2453,7 +2549,7 @@ void TimetableExport::writeGroupsTimetableTimeHorizontalHtml(const QString& html
 												case 3 : tos<<" <span class=\"subjecttag\">"<<protect2(act->subjectTagName)<<"</span>"; break;
 												case 4 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
 												case 5 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\" onmouseover=\"highlight('subjecttag_"<<protect2id(act->subjectTagName)<<"')\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
-												default: tos<<protect2(act->subjectTagName); break;
+												default: tos<<" "<<protect2(act->subjectTagName); break;
 											}
 										if(TIMETABLE_HTML_LEVEL>=3)
 											tos<<"</div>";
@@ -2497,15 +2593,21 @@ void TimetableExport::writeGroupsTimetableTimeHorizontalHtml(const QString& html
 						} else{
 							if(PRINT_DETAILED==false) tos<<"          <td>\?\?\?</td>\n";
 							else{
-								tos<<"          <td><table class=\"detailed\"";
-								
+								if(TIMETABLE_HTML_LEVEL>=1)
+									tos<<"          <td><table class=\"detailed\">";
+								else
+									tos<<"          <td><table>";
 								if(TIMETABLE_HTML_LEVEL>=3)
 									tos<<"<tr class=\"student line0\">";
+								else	tos<<"<tr>";
 								for(int a=0; a<allActivities.size(); a++){
 									ai=allActivities[a];
 									Activity* act=&gt.rules.internalActivitiesList[ai];
 									if(ai!=UNALLOCATED_ACTIVITY){
-										tos<<"<td>";
+										if(TIMETABLE_HTML_LEVEL>=1)
+											tos<<"<td class=\"detailed\">";
+										else
+											tos<<"<td>";
 										if(act->studentsNames.size()>0){
 											for(QStringList::Iterator st=act->studentsNames.begin(); st!=act->studentsNames.end(); st++){
 												switch(TIMETABLE_HTML_LEVEL){
@@ -2521,14 +2623,17 @@ void TimetableExport::writeGroupsTimetableTimeHorizontalHtml(const QString& html
 									}
 								}
 								tos<<"</tr>";
-								tos<<"<tr class=\"line1\">";
+								if(TIMETABLE_HTML_LEVEL>=3)
+									tos<<"<tr class=\"line1\">";
+								else	tos<<"<tr>";
 								for(int a=0; a<allActivities.size(); a++){
 									ai=allActivities[a];
 									Activity* act=&gt.rules.internalActivitiesList[ai];
 									if(ai!=UNALLOCATED_ACTIVITY){
-										if(TIMETABLE_HTML_LEVEL>=3)
+										if(TIMETABLE_HTML_LEVEL>=1)
+											tos<<"<td class=\"detailed\">";
+										else
 											tos<<"<td>";
-										else tos<<"<td>";
 										if(act->subjectName.size()>0||act->subjectTagName.size()>0){
 											if(act->subjectName.size()>0)
 												switch(TIMETABLE_HTML_LEVEL){
@@ -2542,21 +2647,24 @@ void TimetableExport::writeGroupsTimetableTimeHorizontalHtml(const QString& html
 													case 3 : tos<<" <span class=\"subjecttag\">"<<protect2(act->subjectTagName)<<"</span>"; break;
 													case 4 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
 													case 5 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\" onmouseover=\"highlight('subjecttag_"<<protect2id(act->subjectTagName)<<"')\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
-													default: tos<<protect2(act->subjectTagName); break;
+													default: tos<<" "<<protect2(act->subjectTagName); break;
 												}
 										}
 										tos<<"</td>";
 									}
 								}
 								tos<<"</tr>";
-								tos<<"<tr class=\"teacher line2\">";
+								if(TIMETABLE_HTML_LEVEL>=3)
+									tos<<"<tr class=\"teacher line2\">";
+								else	tos<<"<tr>";
 								for(int a=0; a<allActivities.size(); a++){
 									ai=allActivities[a];
 									Activity* act=&gt.rules.internalActivitiesList[ai];
 									if(ai!=UNALLOCATED_ACTIVITY){
-										if(TIMETABLE_HTML_LEVEL>=3)
+										if(TIMETABLE_HTML_LEVEL>=1)
+											tos<<"<td class=\"detailed\">";
+										else
 											tos<<"<td>";
-										else tos<<"<td>";
 										if(act->teachersNames.size()>0){
 											for(QStringList::Iterator it=act->teachersNames.begin(); it!=act->teachersNames.end(); it++){
 												switch(TIMETABLE_HTML_LEVEL){
@@ -2572,15 +2680,18 @@ void TimetableExport::writeGroupsTimetableTimeHorizontalHtml(const QString& html
 									}
 								}
 								tos<<"</tr>";
-								tos<<"<tr class=\"room line3\">";
+								if(TIMETABLE_HTML_LEVEL>=3)
+									tos<<"<tr class=\"room line3\">";
+								else	tos<<"<tr>";
 								for(int a=0; a<allActivities.size(); a++){
 									ai=allActivities[a];
 									Activity* act=&gt.rules.internalActivitiesList[ai];
 									if(ai!=UNALLOCATED_ACTIVITY){
 										int r=best_solution.rooms[ai];
-										if(TIMETABLE_HTML_LEVEL>=3)
+										if(TIMETABLE_HTML_LEVEL>=1)
+											tos<<"<td class=\"detailed\">";
+										else
 											tos<<"<td>";
-										else tos<<"<td>";
 										if(r!=UNALLOCATED_SPACE && r!=UNSPECIFIED_ROOM){
 											if(act->subjectName.size()>0)
 												switch(TIMETABLE_HTML_LEVEL){
@@ -2602,6 +2713,9 @@ void TimetableExport::writeGroupsTimetableTimeHorizontalHtml(const QString& html
 				group++;
 			}
 		}
+		//workaround begin. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
+		tos<<"      <tr class=\"foot\"><td colspan=\"2\"></td><td colspan=\""<<gt.rules.nInternalSubgroups<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr>\n";
+		//workaround end.
 		tos<<"      </tbody>\n";
 		if(PRINT_DETAILED==true){
 			tos<<"    </table>\n    <p>&nbsp;</p>\n";
@@ -2614,15 +2728,12 @@ void TimetableExport::writeGroupsTimetableTimeHorizontalHtml(const QString& html
 		if(PRINT_DETAILED==true) PRINT_DETAILED=false;
 		else PRINT_DETAILED=true;
 	} while(PRINT_DETAILED!=true);
-	tos << "      </tbody>\n    </table>\n";
 	tos << "  </body>\n</html>\n\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Writing groups timetable html time horizontal gave error code %1, which means saving is compromised. Please check your disk's free space.")
-		 .arg(file.error()));
+		 TimetableExport::tr("Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(htmlfilename).arg(file.error()));
 	}
-								
 	file.close();
 }
 
@@ -2642,21 +2753,21 @@ void TimetableExport::writeYearsTimetableDaysHorizontalHtml(const QString& htmlf
 	QFile file(htmlfilename);
 	if(!file.open(QIODevice::WriteOnly)){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Cannot open file to write years timetable html days horizontal. Please check your disk's free space. Saving of html years timetable aborted."));
-		 
+		 TimetableExport::tr("Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(htmlfilename));
 		return;
-
 		assert(0);
 	}
 	QTextStream tos(&file);
 	tos.setCodec("UTF-8");
 	tos.setGenerateByteOrderMark(true);
-	//tos.setEncoding(QTextStream::UnicodeUTF8);
 
 	tos<<"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n";
 	tos<<"  \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n\n";
 
-	tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\">\n";
+	if(LANGUAGE_STYLE_RIGHT_TO_LEFT==false)
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\">\n";
+	else
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\" dir=\"rtl\">\n";
 	tos<<"  <head>\n";
 	tos<<"    <title>"<<protect2(gt.rules.institutionName)<<"</title>\n";
 	tos<<"    <meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\" />\n";
@@ -2691,8 +2802,8 @@ void TimetableExport::writeYearsTimetableDaysHorizontalHtml(const QString& htmlf
 		
 	tos<<"    <p><strong>"<<TimetableExport::tr("Table of content")<<"</strong></p>\n";
 	tos<<"    <ul>\n";
-	for(int i=0; i<gt.rules.yearsList.size(); i++){
-		StudentsYear* sty=gt.rules.yearsList[i];
+	for(int i=0; i<gt.rules.augmentedYearsList.size(); i++){
+		StudentsYear* sty=gt.rules.augmentedYearsList[i];
 		tos<<"      <li>\n        "<<TimetableExport::tr("Year");
 		tos<<" <a href=\""<<"#table_"<<protect2id(sty->name)<<"_DETAILED\">"<<protect2(sty->name)<<" ("<<tr("Detailed")<<")</a> /";
 		tos<<" <a href=\""<<"#table_"<<protect2id(sty->name)<<"\">"<<protect2(sty->name)<<" ("<<tr("Less detailed")<<")</a>\n";
@@ -2702,8 +2813,8 @@ void TimetableExport::writeYearsTimetableDaysHorizontalHtml(const QString& htmlf
 
 	bool PRINT_DETAILED=true;
 	do{
-		for(int year=0; year<gt.rules.yearsList.size(); year++){
-			StudentsYear* sty=gt.rules.yearsList[year];
+		for(int year=0; year<gt.rules.augmentedYearsList.size(); year++){
+			StudentsYear* sty=gt.rules.augmentedYearsList[year];
 				tos<<"    <table id=\"table_"<<protect2id(sty->name);
 				if(PRINT_DETAILED==true) tos<<"_DETAILED";
 				tos<<"\" border=\"1\"";
@@ -2723,8 +2834,9 @@ void TimetableExport::writeYearsTimetableDaysHorizontalHtml(const QString& htmlf
 				}
 				tos<<"        </tr>\n";
 				tos<<"      </thead>\n";
-
+				/*workaround. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
 				tos<<"      <tfoot><tr><td></td><td colspan=\""<<gt.rules.nDaysPerWeek<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr></tfoot>\n";
+				*/
 				tos<<"      <tbody>\n";
 				for(int j=0; j<gt.rules.nHoursPerDay; j++){
 					tos<<"        <tr>\n";
@@ -2740,12 +2852,17 @@ void TimetableExport::writeYearsTimetableDaysHorizontalHtml(const QString& htmlf
 							StudentsGroup* stg=sty->groupsList[g];
 							for(int sg=0; sg<stg->subgroupsList.size(); sg++){
 								StudentsSubgroup* sts=stg->subgroupsList[sg];
+								//old code by Volker
+								/*
 								for(int subgroup=0; subgroup<gt.rules.nInternalSubgroups; subgroup++){
 									QString subgroup_name = gt.rules.internalSubgroupsList[subgroup]->name;
 									if(subgroup_name==sts->name)
+								*/
+								//speed improvement by Liviu
+								int subgroup=sts->indexInInternalSubgroupsList;
 										if(!(allActivities.contains(students_timetable_weekly[subgroup][k][j])))
 													allActivities<<students_timetable_weekly[subgroup][k][j];
-								}
+								//}
 							}
 						}
 						assert(!allActivities.isEmpty());
@@ -2774,7 +2891,7 @@ void TimetableExport::writeYearsTimetableDaysHorizontalHtml(const QString& htmlf
 												case 3 : tos<<" <span class=\"subjecttag\">"<<protect2(act->subjectTagName)<<"</span>"; break;
 												case 4 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
 												case 5 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\" onmouseover=\"highlight('subjecttag_"<<protect2id(act->subjectTagName)<<"')\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
-												default: tos<<protect2(act->subjectTagName); break;
+												default: tos<<" "<<protect2(act->subjectTagName); break;
 											}
 										if(TIMETABLE_HTML_LEVEL>=3)
 											tos<<"</div>";
@@ -2818,15 +2935,21 @@ void TimetableExport::writeYearsTimetableDaysHorizontalHtml(const QString& htmlf
 						} else{
 							if(PRINT_DETAILED==false) tos<<"          <td>\?\?\?</td>\n";
 							else{
-								tos<<"          <td><table class=\"detailed\"";
-								
+								if(TIMETABLE_HTML_LEVEL>=1)
+									tos<<"          <td><table class=\"detailed\">";
+								else
+									tos<<"          <td><table>";
 								if(TIMETABLE_HTML_LEVEL>=3)
 									tos<<"<tr class=\"student line0\">";
+								else	tos<<"<tr>";
 								for(int a=0; a<allActivities.size(); a++){
 									ai=allActivities[a];
 									Activity* act=&gt.rules.internalActivitiesList[ai];
 									if(ai!=UNALLOCATED_ACTIVITY){
-										tos<<"<td>";
+										if(TIMETABLE_HTML_LEVEL>=1)
+											tos<<"<td class=\"detailed\">";
+										else
+											tos<<"<td>";
 										if(act->studentsNames.size()>0){
 											for(QStringList::Iterator st=act->studentsNames.begin(); st!=act->studentsNames.end(); st++){
 												switch(TIMETABLE_HTML_LEVEL){
@@ -2842,14 +2965,17 @@ void TimetableExport::writeYearsTimetableDaysHorizontalHtml(const QString& htmlf
 									}
 								}
 								tos<<"</tr>";
-								tos<<"<tr class=\"line1\">";
+								if(TIMETABLE_HTML_LEVEL>=3)
+									tos<<"<tr class=\"line1\">";
+								else	tos<<"<tr>";
 								for(int a=0; a<allActivities.size(); a++){
 									ai=allActivities[a];
 									Activity* act=&gt.rules.internalActivitiesList[ai];
 									if(ai!=UNALLOCATED_ACTIVITY){
-										if(TIMETABLE_HTML_LEVEL>=3)
+										if(TIMETABLE_HTML_LEVEL>=1)
+											tos<<"<td class=\"detailed\">";
+										else
 											tos<<"<td>";
-										else tos<<"<td>";
 										if(act->subjectName.size()>0||act->subjectTagName.size()>0){
 											if(act->subjectName.size()>0)
 												switch(TIMETABLE_HTML_LEVEL){
@@ -2863,21 +2989,24 @@ void TimetableExport::writeYearsTimetableDaysHorizontalHtml(const QString& htmlf
 													case 3 : tos<<" <span class=\"subjecttag\">"<<protect2(act->subjectTagName)<<"</span>"; break;
 													case 4 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
 													case 5 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\" onmouseover=\"highlight('subjecttag_"<<protect2id(act->subjectTagName)<<"')\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
-													default: tos<<protect2(act->subjectTagName); break;
+													default: tos<<" "<<protect2(act->subjectTagName); break;
 												}
 										}
 										tos<<"</td>";
 									}
 								}
 								tos<<"</tr>";
-								tos<<"<tr class=\"teacher line2\">";
+								if(TIMETABLE_HTML_LEVEL>=3)
+									tos<<"<tr class=\"teacher line2\">";
+								else	tos<<"<tr>";
 								for(int a=0; a<allActivities.size(); a++){
 									ai=allActivities[a];
 									Activity* act=&gt.rules.internalActivitiesList[ai];
 									if(ai!=UNALLOCATED_ACTIVITY){
-										if(TIMETABLE_HTML_LEVEL>=3)
+										if(TIMETABLE_HTML_LEVEL>=1)
+											tos<<"<td class=\"detailed\">";
+										else
 											tos<<"<td>";
-										else tos<<"<td>";
 										if(act->teachersNames.size()>0){
 											for(QStringList::Iterator it=act->teachersNames.begin(); it!=act->teachersNames.end(); it++){
 												switch(TIMETABLE_HTML_LEVEL){
@@ -2893,15 +3022,18 @@ void TimetableExport::writeYearsTimetableDaysHorizontalHtml(const QString& htmlf
 									}
 								}
 								tos<<"</tr>";
-								tos<<"<tr class=\"room line3\">";
+								if(TIMETABLE_HTML_LEVEL>=3)
+									tos<<"<tr class=\"room line3\">";
+								else	tos<<"<tr>";
 								for(int a=0; a<allActivities.size(); a++){
 									ai=allActivities[a];
 									Activity* act=&gt.rules.internalActivitiesList[ai];
 									if(ai!=UNALLOCATED_ACTIVITY){
 										int r=best_solution.rooms[ai];
-										if(TIMETABLE_HTML_LEVEL>=3)
+										if(TIMETABLE_HTML_LEVEL>=1)
+											tos<<"<td class=\"detailed\">";
+										else
 											tos<<"<td>";
-										else tos<<"<td>";
 										if(r!=UNALLOCATED_SPACE && r!=UNSPECIFIED_ROOM){
 											if(act->subjectName.size()>0)
 												switch(TIMETABLE_HTML_LEVEL){
@@ -2920,8 +3052,11 @@ void TimetableExport::writeYearsTimetableDaysHorizontalHtml(const QString& htmlf
 					}
 					tos<<"        </tr>\n";
 				}
+				//workaround begin. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
+				tos<<"      <tr class=\"foot\"><td></td><td colspan=\""<<gt.rules.nDaysPerWeek<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr>\n";
+				//workaround end.
 				tos<<"      </tbody>\n";
-				if((year!=gt.rules.yearsList.size()-1) || (PRINT_DETAILED==true)){
+				if((year!=gt.rules.augmentedYearsList.size()-1) || (PRINT_DETAILED==true)){
 					tos<<"    </table>\n    <p>&nbsp;</p>\n";
 					tos<<"    <p><a href=\""<<"#top\">"<<TimetableExport::tr("back to the top")<<"</a></p>\n";
 					tos<<"    <p>&nbsp;</p>\n\n";
@@ -2938,8 +3073,7 @@ void TimetableExport::writeYearsTimetableDaysHorizontalHtml(const QString& htmlf
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Writing years timetable html days horizontal gave error code %1, which means saving is compromised. Please check your disk's free space.")
-		 .arg(file.error()));
+		 TimetableExport::tr("Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(htmlfilename).arg(file.error()));
 	}
 	file.close();
 }
@@ -2959,21 +3093,21 @@ void TimetableExport::writeYearsTimetableDaysVerticalHtml(const QString& htmlfil
 	QFile file(htmlfilename);
 	if(!file.open(QIODevice::WriteOnly)){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Cannot open file to write years timetable html days vertical. Please check your disk's free space. Saving of html years timetable aborted."));
-		 
+		 TimetableExport::tr("Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(htmlfilename));
 		return;
-
 		assert(0);
 	}
 	QTextStream tos(&file);
 	tos.setCodec("UTF-8");
 	tos.setGenerateByteOrderMark(true);
-	//tos.setEncoding(QTextStream::UnicodeUTF8);
 
 	tos<<"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n";
 	tos<<"  \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n\n";
 
-	tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\">\n";
+	if(LANGUAGE_STYLE_RIGHT_TO_LEFT==false)
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\">\n";
+	else
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\" dir=\"rtl\">\n";
 	tos<<"  <head>\n";
 	tos<<"    <title>"<<protect2(gt.rules.institutionName)<<"</title>\n";
 	tos<<"    <meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\" />\n";
@@ -3008,8 +3142,8 @@ void TimetableExport::writeYearsTimetableDaysVerticalHtml(const QString& htmlfil
 		
 	tos<<"    <p><strong>"<<TimetableExport::tr("Table of content")<<"</strong></p>\n";
 	tos<<"    <ul>\n";
-	for(int i=0; i<gt.rules.yearsList.size(); i++){
-		StudentsYear* sty=gt.rules.yearsList[i];
+	for(int i=0; i<gt.rules.augmentedYearsList.size(); i++){
+		StudentsYear* sty=gt.rules.augmentedYearsList[i];
 		tos<<"      <li>\n        "<<TimetableExport::tr("Year");
 		tos<<" <a href=\""<<"#table_"<<protect2id(sty->name)<<"_DETAILED\">"<<protect2(sty->name)<<" ("<<tr("Detailed")<<")</a> /";
 		tos<<" <a href=\""<<"#table_"<<protect2id(sty->name)<<"\">"<<protect2(sty->name)<<" ("<<tr("Less detailed")<<")</a>\n";
@@ -3019,8 +3153,8 @@ void TimetableExport::writeYearsTimetableDaysVerticalHtml(const QString& htmlfil
 
 	bool PRINT_DETAILED=true;
 	do{
-		for(int year=0; year<gt.rules.yearsList.size(); year++){
-				StudentsYear* sty=gt.rules.yearsList[year];
+		for(int year=0; year<gt.rules.augmentedYearsList.size(); year++){
+				StudentsYear* sty=gt.rules.augmentedYearsList[year];
 				tos<<"    <table id=\"table_"<<protect2id(sty->name);
 				if(PRINT_DETAILED==true) tos<<"_DETAILED";
 				tos<<"\" border=\"1\"";
@@ -3040,8 +3174,9 @@ void TimetableExport::writeYearsTimetableDaysVerticalHtml(const QString& htmlfil
 				}
 				tos<<"        </tr>\n";
 				tos<<"      </thead>\n";
-
+				/*workaround. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
 				tos<<"      <tfoot><tr><td></td><td colspan=\""<<gt.rules.nHoursPerDay<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr></tfoot>\n";
+				*/
 				tos<<"      <tbody>\n";
 				for(int k=0; k<gt.rules.nDaysPerWeek; k++){
 					tos<<"        <tr>\n";
@@ -3058,12 +3193,17 @@ void TimetableExport::writeYearsTimetableDaysVerticalHtml(const QString& htmlfil
 							StudentsGroup* stg=sty->groupsList[g];
 							for(int sg=0; sg<stg->subgroupsList.size(); sg++){
 								StudentsSubgroup* sts=stg->subgroupsList[sg];
+								//old code by Volker
+								/*
 								for(int subgroup=0; subgroup<gt.rules.nInternalSubgroups; subgroup++){
 									QString subgroup_name = gt.rules.internalSubgroupsList[subgroup]->name;
 									if(subgroup_name==sts->name)
+								*/
+								//speed improvement by Liviu
+								int subgroup=sts->indexInInternalSubgroupsList;
 										if(!(allActivities.contains(students_timetable_weekly[subgroup][k][j])))
 													allActivities<<students_timetable_weekly[subgroup][k][j];
-								}
+								//}
 							}
 						}
 						assert(!allActivities.isEmpty());
@@ -3092,7 +3232,7 @@ void TimetableExport::writeYearsTimetableDaysVerticalHtml(const QString& htmlfil
 												case 3 : tos<<" <span class=\"subjecttag\">"<<protect2(act->subjectTagName)<<"</span>"; break;
 												case 4 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
 												case 5 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\" onmouseover=\"highlight('subjecttag_"<<protect2id(act->subjectTagName)<<"')\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
-												default: tos<<protect2(act->subjectTagName); break;
+												default: tos<<" "<<protect2(act->subjectTagName); break;
 											}
 										if(TIMETABLE_HTML_LEVEL>=3)
 											tos<<"</div>";
@@ -3136,15 +3276,21 @@ void TimetableExport::writeYearsTimetableDaysVerticalHtml(const QString& htmlfil
 						} else{
 							if(PRINT_DETAILED==false) tos<<"          <td>\?\?\?</td>\n";
 							else{
-								tos<<"          <td><table class=\"detailed\"";
-								
+								if(TIMETABLE_HTML_LEVEL>=1)
+									tos<<"          <td><table class=\"detailed\">";
+								else
+									tos<<"          <td><table>";
 								if(TIMETABLE_HTML_LEVEL>=3)
 									tos<<"<tr class=\"student line0\">";
+								else	tos<<"<tr>";
 								for(int a=0; a<allActivities.size(); a++){
 									ai=allActivities[a];
 									Activity* act=&gt.rules.internalActivitiesList[ai];
 									if(ai!=UNALLOCATED_ACTIVITY){
-										tos<<"<td>";
+										if(TIMETABLE_HTML_LEVEL>=1)
+											tos<<"<td class=\"detailed\">";
+										else
+											tos<<"<td>";
 										if(act->studentsNames.size()>0){
 											for(QStringList::Iterator st=act->studentsNames.begin(); st!=act->studentsNames.end(); st++){
 												switch(TIMETABLE_HTML_LEVEL){
@@ -3160,14 +3306,17 @@ void TimetableExport::writeYearsTimetableDaysVerticalHtml(const QString& htmlfil
 									}
 								}
 								tos<<"</tr>";
-								tos<<"<tr class=\"line1\">";
+								if(TIMETABLE_HTML_LEVEL>=3)
+									tos<<"<tr class=\"line1\">";
+								else	tos<<"<tr>";
 								for(int a=0; a<allActivities.size(); a++){
 									ai=allActivities[a];
 									Activity* act=&gt.rules.internalActivitiesList[ai];
 									if(ai!=UNALLOCATED_ACTIVITY){
-										if(TIMETABLE_HTML_LEVEL>=3)
+										if(TIMETABLE_HTML_LEVEL>=1)
+											tos<<"<td class=\"detailed\">";
+										else
 											tos<<"<td>";
-										else tos<<"<td>";
 										if(act->subjectName.size()>0||act->subjectTagName.size()>0){
 											if(act->subjectName.size()>0)
 												switch(TIMETABLE_HTML_LEVEL){
@@ -3181,21 +3330,24 @@ void TimetableExport::writeYearsTimetableDaysVerticalHtml(const QString& htmlfil
 													case 3 : tos<<" <span class=\"subjecttag\">"<<protect2(act->subjectTagName)<<"</span>"; break;
 													case 4 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
 													case 5 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\" onmouseover=\"highlight('subjecttag_"<<protect2id(act->subjectTagName)<<"')\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
-													default: tos<<protect2(act->subjectTagName); break;
+													default: tos<<" "<<protect2(act->subjectTagName); break;
 												}
 										}
 										tos<<"</td>";
 									}
 								}
 								tos<<"</tr>";
-								tos<<"<tr class=\"teacher line2\">";
+								if(TIMETABLE_HTML_LEVEL>=3)
+									tos<<"<tr class=\"teacher line2\">";
+								else	tos<<"<tr>";
 								for(int a=0; a<allActivities.size(); a++){
 									ai=allActivities[a];
 									Activity* act=&gt.rules.internalActivitiesList[ai];
 									if(ai!=UNALLOCATED_ACTIVITY){
-										if(TIMETABLE_HTML_LEVEL>=3)
+										if(TIMETABLE_HTML_LEVEL>=1)
+											tos<<"<td class=\"detailed\">";
+										else
 											tos<<"<td>";
-										else tos<<"<td>";
 										if(act->teachersNames.size()>0){
 											for(QStringList::Iterator it=act->teachersNames.begin(); it!=act->teachersNames.end(); it++){
 												switch(TIMETABLE_HTML_LEVEL){
@@ -3211,15 +3363,18 @@ void TimetableExport::writeYearsTimetableDaysVerticalHtml(const QString& htmlfil
 									}
 								}
 								tos<<"</tr>";
-								tos<<"<tr class=\"room line3\">";
+								if(TIMETABLE_HTML_LEVEL>=3)
+									tos<<"<tr class=\"room line3\">";
+								else	tos<<"<tr>";
 								for(int a=0; a<allActivities.size(); a++){
 									ai=allActivities[a];
 									Activity* act=&gt.rules.internalActivitiesList[ai];
 									if(ai!=UNALLOCATED_ACTIVITY){
 										int r=best_solution.rooms[ai];
-										if(TIMETABLE_HTML_LEVEL>=3)
+										if(TIMETABLE_HTML_LEVEL>=1)
+											tos<<"<td class=\"detailed\">";
+										else
 											tos<<"<td>";
-										else tos<<"<td>";
 										if(r!=UNALLOCATED_SPACE && r!=UNSPECIFIED_ROOM){
 											if(act->subjectName.size()>0)
 												switch(TIMETABLE_HTML_LEVEL){
@@ -3238,8 +3393,11 @@ void TimetableExport::writeYearsTimetableDaysVerticalHtml(const QString& htmlfil
 					}
 					tos<<"        </tr>\n";
 				}
+				//workaround begin. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
+				tos<<"      <tr class=\"foot\"><td></td><td colspan=\""<<gt.rules.nHoursPerDay<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr>\n";
+				//workaround end.
 				tos<<"      </tbody>\n";
-				if((year!=gt.rules.yearsList.size()-1) &&  (PRINT_DETAILED==true)){
+				if((year!=gt.rules.augmentedYearsList.size()-1) &&  (PRINT_DETAILED==true)){
 					tos<<"    </table>\n    <p>&nbsp;</p>\n";
 					tos<<"    <p><a href=\""<<"#top\">"<<TimetableExport::tr("back to the top")<<"</a></p>\n";
 					tos<<"    <p>&nbsp;</p>\n\n";
@@ -3256,10 +3414,8 @@ void TimetableExport::writeYearsTimetableDaysVerticalHtml(const QString& htmlfil
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Writing years timetable html days vertical gave error code %1, which means saving is compromised. Please check your disk's free space.")
-		 .arg(file.error()));
+		 TimetableExport::tr("Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(htmlfilename).arg(file.error()));
 	}
-								
 	file.close();
 }
 
@@ -3279,21 +3435,21 @@ void TimetableExport::writeYearsTimetableTimeVerticalHtml(const QString& htmlfil
 	QFile file(htmlfilename);
 	if(!file.open(QIODevice::WriteOnly)){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Cannot open file to write years timetable html time vertical. Please check your disk's free space. Saving of html years timetable aborted."));
-		 
+		 TimetableExport::tr("Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(htmlfilename));
 		return;
-
 		assert(0);
 	}
 	QTextStream tos(&file);
 	tos.setCodec("UTF-8");
 	tos.setGenerateByteOrderMark(true);
-	//tos.setEncoding(QTextStream::UnicodeUTF8);
 
 	tos<<"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n";
 	tos<<"  \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n\n";
 
-	tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\">\n";
+	if(LANGUAGE_STYLE_RIGHT_TO_LEFT==false)
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\">\n";
+	else
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\" dir=\"rtl\">\n";
 	tos<<"  <head>\n";
 	tos<<"    <title>"<<protect2(gt.rules.institutionName)<<"</title>\n";
 	tos<<"    <meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\" />\n";
@@ -3332,8 +3488,8 @@ void TimetableExport::writeYearsTimetableTimeVerticalHtml(const QString& htmlfil
 		tos<<"      <caption>"<<protect2(gt.rules.institutionName)<<"</caption>\n";
 
 		tos<<"      <thead>\n        <tr><td colspan=\"2\"></td>";
-		for(int i=0; i<gt.rules.yearsList.size(); i++){
-			StudentsYear* sty=gt.rules.yearsList[i];
+		for(int i=0; i<gt.rules.augmentedYearsList.size(); i++){
+			StudentsYear* sty=gt.rules.augmentedYearsList[i];
 				if(TIMETABLE_HTML_LEVEL>=2)
 					tos<<"          <th class=\"xAxis\">";
 				else
@@ -3342,7 +3498,9 @@ void TimetableExport::writeYearsTimetableTimeVerticalHtml(const QString& htmlfil
 		}
 		
 		tos<<"</tr>\n      </thead>\n";
+		/*workaround. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
 		tos<<"      <tfoot><tr><td colspan=\"2\"></td><td colspan=\""<<gt.rules.nInternalSubgroups<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr></tfoot>\n";
+		*/
 		tos<<"      <tbody>\n";
 		for(int k=0; k<gt.rules.nDaysPerWeek; k++){
 			for(int j=0; j<gt.rules.nHoursPerDay; j++){
@@ -3355,20 +3513,25 @@ void TimetableExport::writeYearsTimetableTimeVerticalHtml(const QString& htmlfil
 				else
 					tos<<"          <th>";
 				tos << protect2(gt.rules.hoursOfTheDay[j]) << "</th>\n";
-				for(int year=0; year<gt.rules.yearsList.size(); year++){
-						StudentsYear* sty=gt.rules.yearsList[year];
+				for(int year=0; year<gt.rules.augmentedYearsList.size(); year++){
+						StudentsYear* sty=gt.rules.augmentedYearsList[year];
 						QList<qint16> allActivities;
 						allActivities.clear();
 						for(int g=0; g<sty->groupsList.size(); g++){
 							StudentsGroup* stg=sty->groupsList[g];
 							for(int sg=0; sg<stg->subgroupsList.size(); sg++){
 								StudentsSubgroup* sts=stg->subgroupsList[sg];
+								//old code by Volker
+								/*
 								for(int subgroup=0; subgroup<gt.rules.nInternalSubgroups; subgroup++){
 									QString subgroup_name = gt.rules.internalSubgroupsList[subgroup]->name;
 									if(subgroup_name==sts->name)
+								*/
+								//speed improvement by Liviu
+								int subgroup=sts->indexInInternalSubgroupsList;
 										if(!(allActivities.contains(students_timetable_weekly[subgroup][k][j])))
 													allActivities<<students_timetable_weekly[subgroup][k][j];
-								}
+								//}
 							}
 						}
 						assert(!allActivities.isEmpty());
@@ -3397,7 +3560,7 @@ void TimetableExport::writeYearsTimetableTimeVerticalHtml(const QString& htmlfil
 												case 3 : tos<<" <span class=\"subjecttag\">"<<protect2(act->subjectTagName)<<"</span>"; break;
 												case 4 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
 												case 5 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\" onmouseover=\"highlight('subjecttag_"<<protect2id(act->subjectTagName)<<"')\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
-												default: tos<<protect2(act->subjectTagName); break;
+												default: tos<<" "<<protect2(act->subjectTagName); break;
 											}
 										if(TIMETABLE_HTML_LEVEL>=3)
 											tos<<"</div>";
@@ -3441,15 +3604,21 @@ void TimetableExport::writeYearsTimetableTimeVerticalHtml(const QString& htmlfil
 						} else{
 							if(PRINT_DETAILED==false) tos<<"          <td>\?\?\?</td>\n";
 							else{
-								tos<<"          <td><table class=\"detailed\"";
-								
+								if(TIMETABLE_HTML_LEVEL>=1)
+									tos<<"          <td><table class=\"detailed\">";
+								else
+									tos<<"          <td><table>";
 								if(TIMETABLE_HTML_LEVEL>=3)
 									tos<<"<tr class=\"student line0\">";
+								else	tos<<"<tr>";
 								for(int a=0; a<allActivities.size(); a++){
 									ai=allActivities[a];
 									Activity* act=&gt.rules.internalActivitiesList[ai];
 									if(ai!=UNALLOCATED_ACTIVITY){
-										tos<<"<td>";
+										if(TIMETABLE_HTML_LEVEL>=1)
+											tos<<"<td class=\"detailed\">";
+										else
+											tos<<"<td>";
 										if(act->studentsNames.size()>0){
 											for(QStringList::Iterator st=act->studentsNames.begin(); st!=act->studentsNames.end(); st++){
 												switch(TIMETABLE_HTML_LEVEL){
@@ -3465,14 +3634,17 @@ void TimetableExport::writeYearsTimetableTimeVerticalHtml(const QString& htmlfil
 									}
 								}
 								tos<<"</tr>";
-								tos<<"<tr class=\"line1\">";
+								if(TIMETABLE_HTML_LEVEL>=3)
+									tos<<"<tr class=\"line1\">";
+								else	tos<<"<tr>";
 								for(int a=0; a<allActivities.size(); a++){
 									ai=allActivities[a];
 									Activity* act=&gt.rules.internalActivitiesList[ai];
 									if(ai!=UNALLOCATED_ACTIVITY){
-										if(TIMETABLE_HTML_LEVEL>=3)
+										if(TIMETABLE_HTML_LEVEL>=1)
+											tos<<"<td class=\"detailed\">";
+										else
 											tos<<"<td>";
-										else tos<<"<td>";
 										if(act->subjectName.size()>0||act->subjectTagName.size()>0){
 											if(act->subjectName.size()>0)
 												switch(TIMETABLE_HTML_LEVEL){
@@ -3486,21 +3658,24 @@ void TimetableExport::writeYearsTimetableTimeVerticalHtml(const QString& htmlfil
 													case 3 : tos<<" <span class=\"subjecttag\">"<<protect2(act->subjectTagName)<<"</span>"; break;
 													case 4 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
 													case 5 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\" onmouseover=\"highlight('subjecttag_"<<protect2id(act->subjectTagName)<<"')\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
-													default: tos<<protect2(act->subjectTagName); break;
+													default: tos<<" "<<protect2(act->subjectTagName); break;
 												}
 										}
 										tos<<"</td>";
 									}
 								}
 								tos<<"</tr>";
-								tos<<"<tr class=\"teacher line2\">";
+								if(TIMETABLE_HTML_LEVEL>=3)
+									tos<<"<tr class=\"teacher line2\">";
+								else	tos<<"<tr>";
 								for(int a=0; a<allActivities.size(); a++){
 									ai=allActivities[a];
 									Activity* act=&gt.rules.internalActivitiesList[ai];
 									if(ai!=UNALLOCATED_ACTIVITY){
-										if(TIMETABLE_HTML_LEVEL>=3)
+										if(TIMETABLE_HTML_LEVEL>=1)
+											tos<<"<td class=\"detailed\">";
+										else
 											tos<<"<td>";
-										else tos<<"<td>";
 										if(act->teachersNames.size()>0){
 											for(QStringList::Iterator it=act->teachersNames.begin(); it!=act->teachersNames.end(); it++){
 												switch(TIMETABLE_HTML_LEVEL){
@@ -3516,15 +3691,18 @@ void TimetableExport::writeYearsTimetableTimeVerticalHtml(const QString& htmlfil
 									}
 								}
 								tos<<"</tr>";
-								tos<<"<tr class=\"room line3\">";
+								if(TIMETABLE_HTML_LEVEL>=3)
+									tos<<"<tr class=\"room line3\">";
+								else	tos<<"<tr>";
 								for(int a=0; a<allActivities.size(); a++){
 									ai=allActivities[a];
 									Activity* act=&gt.rules.internalActivitiesList[ai];
 									if(ai!=UNALLOCATED_ACTIVITY){
 										int r=best_solution.rooms[ai];
-										if(TIMETABLE_HTML_LEVEL>=3)
+										if(TIMETABLE_HTML_LEVEL>=1)
+											tos<<"<td class=\"detailed\">";
+										else
 											tos<<"<td>";
-										else tos<<"<td>";
 										if(r!=UNALLOCATED_SPACE && r!=UNSPECIFIED_ROOM){
 											if(act->subjectName.size()>0)
 												switch(TIMETABLE_HTML_LEVEL){
@@ -3544,6 +3722,9 @@ void TimetableExport::writeYearsTimetableTimeVerticalHtml(const QString& htmlfil
 				tos<<"        </tr>\n";
 			}
 		}
+		//workaround begin. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
+		tos<<"      <tr class=\"foot\"><td colspan=\"2\"></td><td colspan=\""<<gt.rules.nInternalSubgroups<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr>\n";
+		//workaround end.
 		tos<<"      </tbody>\n";
 		if(PRINT_DETAILED==true){
 			tos<<"    </table>\n    <p>&nbsp;</p>\n";
@@ -3556,15 +3737,12 @@ void TimetableExport::writeYearsTimetableTimeVerticalHtml(const QString& htmlfil
 		if(PRINT_DETAILED==true) PRINT_DETAILED=false;
 		else PRINT_DETAILED=true;
 	} while(PRINT_DETAILED!=true);
-	tos << "      </tbody>\n    </table>\n";
 	tos << "  </body>\n</html>\n\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Writing years timetable html time vertical gave error code %1, which means saving is compromised. Please check your disk's free space.")
-		 .arg(file.error()));
+		 TimetableExport::tr("Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(htmlfilename).arg(file.error()));
 	}
-								
 	file.close();
 }
 
@@ -3582,21 +3760,21 @@ void TimetableExport::writeYearsTimetableTimeHorizontalHtml(const QString& htmlf
 	QFile file(htmlfilename);
 	if(!file.open(QIODevice::WriteOnly)){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Cannot open file to write years timetable html time horizontal. Please check your disk's free space. Saving of html years timetable aborted."));
-		 
+		 TimetableExport::tr("Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(htmlfilename));
 		return;
-
 		assert(0);
 	}
 	QTextStream tos(&file);
 	tos.setCodec("UTF-8");
 	tos.setGenerateByteOrderMark(true);
-	//tos.setEncoding(QTextStream::UnicodeUTF8);
 
 	tos<<"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n";
 	tos<<"  \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n\n";
 
-	tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\">\n";
+	if(LANGUAGE_STYLE_RIGHT_TO_LEFT==false)
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\">\n";
+	else
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\" dir=\"rtl\">\n";
 	tos<<"  <head>\n";
 	tos<<"    <title>"<<protect2(gt.rules.institutionName)<<"</title>\n";
 	tos<<"    <meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\" />\n";
@@ -3649,12 +3827,13 @@ void TimetableExport::writeYearsTimetableTimeHorizontalHtml(const QString& htmlf
 			}
 		tos<<"        </tr>\n";
 		tos<<"      </thead>\n";
-		
+		/*workaround. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
 		tos<<"      <tfoot><tr><td colspan=\"2\"></td><td colspan=\""<<gt.rules.nInternalSubgroups<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr></tfoot>\n";
+		*/
 		tos<<"      <tbody>\n";
 		
-		for(int year=0; year<gt.rules.yearsList.size(); year++){
-			StudentsYear* sty=gt.rules.yearsList[year];
+		for(int year=0; year<gt.rules.augmentedYearsList.size(); year++){
+			StudentsYear* sty=gt.rules.augmentedYearsList[year];
 				tos << "        <tr>\n";
 				if(TIMETABLE_HTML_LEVEL>=2)
 					tos<<"          <th class=\"yAxis\">";
@@ -3669,12 +3848,17 @@ void TimetableExport::writeYearsTimetableTimeHorizontalHtml(const QString& htmlf
 							StudentsGroup* stg=sty->groupsList[g];
 							for(int sg=0; sg<stg->subgroupsList.size(); sg++){
 								StudentsSubgroup* sts=stg->subgroupsList[sg];
+								//old code by Volker
+								/*
 								for(int subgroup=0; subgroup<gt.rules.nInternalSubgroups; subgroup++){
 									QString subgroup_name = gt.rules.internalSubgroupsList[subgroup]->name;
 									if(subgroup_name==sts->name)
+								*/
+								//speed improvement by Liviu
+								int subgroup=sts->indexInInternalSubgroupsList;
 										if(!(allActivities.contains(students_timetable_weekly[subgroup][k][j])))
 													allActivities<<students_timetable_weekly[subgroup][k][j];
-								}
+								//}
 							}
 						}
 						assert(!allActivities.isEmpty());
@@ -3703,7 +3887,7 @@ void TimetableExport::writeYearsTimetableTimeHorizontalHtml(const QString& htmlf
 												case 3 : tos<<" <span class=\"subjecttag\">"<<protect2(act->subjectTagName)<<"</span>"; break;
 												case 4 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
 												case 5 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\" onmouseover=\"highlight('subjecttag_"<<protect2id(act->subjectTagName)<<"')\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
-												default: tos<<protect2(act->subjectTagName); break;
+												default: tos<<" "<<protect2(act->subjectTagName); break;
 											}
 										if(TIMETABLE_HTML_LEVEL>=3)
 											tos<<"</div>";
@@ -3747,15 +3931,21 @@ void TimetableExport::writeYearsTimetableTimeHorizontalHtml(const QString& htmlf
 						} else{
 							if(PRINT_DETAILED==false) tos<<"          <td>\?\?\?</td>\n";
 							else{
-								tos<<"          <td><table class=\"detailed\"";
-								
+								if(TIMETABLE_HTML_LEVEL>=1)
+									tos<<"          <td><table class=\"detailed\">";
+								else
+									tos<<"          <td><table>";
 								if(TIMETABLE_HTML_LEVEL>=3)
 									tos<<"<tr class=\"student line0\">";
+								else	tos<<"<tr>";
 								for(int a=0; a<allActivities.size(); a++){
 									ai=allActivities[a];
 									Activity* act=&gt.rules.internalActivitiesList[ai];
 									if(ai!=UNALLOCATED_ACTIVITY){
-										tos<<"<td>";
+										if(TIMETABLE_HTML_LEVEL>=1)
+											tos<<"<td class=\"detailed\">";
+										else
+											tos<<"<td>";
 										if(act->studentsNames.size()>0){
 											for(QStringList::Iterator st=act->studentsNames.begin(); st!=act->studentsNames.end(); st++){
 												switch(TIMETABLE_HTML_LEVEL){
@@ -3771,14 +3961,17 @@ void TimetableExport::writeYearsTimetableTimeHorizontalHtml(const QString& htmlf
 									}
 								}
 								tos<<"</tr>";
-								tos<<"<tr class=\"line1\">";
+								if(TIMETABLE_HTML_LEVEL>=3)
+									tos<<"<tr class=\"line1\">";
+								else	tos<<"<tr>";
 								for(int a=0; a<allActivities.size(); a++){
 									ai=allActivities[a];
 									Activity* act=&gt.rules.internalActivitiesList[ai];
 									if(ai!=UNALLOCATED_ACTIVITY){
-										if(TIMETABLE_HTML_LEVEL>=3)
+										if(TIMETABLE_HTML_LEVEL>=1)
+											tos<<"<td class=\"detailed\">";
+										else
 											tos<<"<td>";
-										else tos<<"<td>";
 										if(act->subjectName.size()>0||act->subjectTagName.size()>0){
 											if(act->subjectName.size()>0)
 												switch(TIMETABLE_HTML_LEVEL){
@@ -3792,21 +3985,24 @@ void TimetableExport::writeYearsTimetableTimeHorizontalHtml(const QString& htmlf
 													case 3 : tos<<" <span class=\"subjecttag\">"<<protect2(act->subjectTagName)<<"</span>"; break;
 													case 4 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
 													case 5 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\" onmouseover=\"highlight('subjecttag_"<<protect2id(act->subjectTagName)<<"')\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
-													default: tos<<protect2(act->subjectTagName); break;
+													default: tos<<" "<<protect2(act->subjectTagName); break;
 												}
 										}
 										tos<<"</td>";
 									}
 								}
 								tos<<"</tr>";
-								tos<<"<tr class=\"teacher line2\">";
+								if(TIMETABLE_HTML_LEVEL>=3)
+									tos<<"<tr class=\"teacher line2\">";
+								else	tos<<"<tr>";
 								for(int a=0; a<allActivities.size(); a++){
 									ai=allActivities[a];
 									Activity* act=&gt.rules.internalActivitiesList[ai];
 									if(ai!=UNALLOCATED_ACTIVITY){
-										if(TIMETABLE_HTML_LEVEL>=3)
+										if(TIMETABLE_HTML_LEVEL>=1)
+											tos<<"<td class=\"detailed\">";
+										else
 											tos<<"<td>";
-										else tos<<"<td>";
 										if(act->teachersNames.size()>0){
 											for(QStringList::Iterator it=act->teachersNames.begin(); it!=act->teachersNames.end(); it++){
 												switch(TIMETABLE_HTML_LEVEL){
@@ -3822,15 +4018,18 @@ void TimetableExport::writeYearsTimetableTimeHorizontalHtml(const QString& htmlf
 									}
 								}
 								tos<<"</tr>";
-								tos<<"<tr class=\"room line3\">";
+								if(TIMETABLE_HTML_LEVEL>=3)
+									tos<<"<tr class=\"room line3\">";
+								else	tos<<"<tr>";
 								for(int a=0; a<allActivities.size(); a++){
 									ai=allActivities[a];
 									Activity* act=&gt.rules.internalActivitiesList[ai];
 									if(ai!=UNALLOCATED_ACTIVITY){
 										int r=best_solution.rooms[ai];
-										if(TIMETABLE_HTML_LEVEL>=3)
+										if(TIMETABLE_HTML_LEVEL>=1)
+											tos<<"<td class=\"detailed\">";
+										else
 											tos<<"<td>";
-										else tos<<"<td>";
 										if(r!=UNALLOCATED_SPACE && r!=UNSPECIFIED_ROOM){
 											if(act->subjectName.size()>0)
 												switch(TIMETABLE_HTML_LEVEL){
@@ -3851,6 +4050,9 @@ void TimetableExport::writeYearsTimetableTimeHorizontalHtml(const QString& htmlf
 				}
 				tos<<"        </tr>\n";
 		}
+		//workaround begin. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
+		tos<<"      <tr class=\"foot\"><td></td><td colspan=\""<<gt.rules.nHoursPerDay*gt.rules.nDaysPerWeek<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr>\n";
+		//workaround end.
 		tos<<"      </tbody>\n";
 		if(PRINT_DETAILED==true){
 			tos<<"    </table>\n    <p>&nbsp;</p>\n";
@@ -3863,15 +4065,12 @@ void TimetableExport::writeYearsTimetableTimeHorizontalHtml(const QString& htmlf
 		if(PRINT_DETAILED==true) PRINT_DETAILED=false;
 		else PRINT_DETAILED=true;
 	} while(PRINT_DETAILED!=true);
-	tos << "      </tbody>\n    </table>\n";
 	tos << "  </body>\n</html>\n\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Writing years timetable html time horizontal gave error code %1, which means saving is compromised. Please check your disk's free space.")
-		 .arg(file.error()));
+		 TimetableExport::tr("Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(htmlfilename).arg(file.error()));
 	}
-								
 	file.close();
 }
 
@@ -3892,21 +4091,21 @@ void TimetableExport::writeTeachersTimetableDaysHorizontalHtml(const QString& ht
 	QFile file(htmlfilename);
 	if(!file.open(QIODevice::WriteOnly)){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Cannot open file to write teachers timetable html days horizontal. Please check your disk's free space. Saving of html teachers timetable aborted."));
-		 
+		 TimetableExport::tr("Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(htmlfilename));
 		return;
-
 		assert(0);
 	}
 	QTextStream tos(&file);
 	tos.setCodec("UTF-8");
 	tos.setGenerateByteOrderMark(true);
-	//tos.setEncoding(QTextStream::UnicodeUTF8);
 
 	tos<<"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n";
 	tos<<"  \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n\n";
 
-	tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\">\n";
+	if(LANGUAGE_STYLE_RIGHT_TO_LEFT==false)
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\">\n";
+	else
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\" dir=\"rtl\">\n";
 	tos<<"  <head>\n";
 	tos<<"    <title>"<<protect2(gt.rules.institutionName)<<"</title>\n";
 	tos<<"    <meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\" />\n";
@@ -3966,8 +4165,9 @@ void TimetableExport::writeTeachersTimetableDaysHorizontalHtml(const QString& ht
 		}
 		tos<<"        </tr>\n";
 		tos<<"      </thead>\n";
-
+		/*workaround. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
 		tos<<"      <tfoot><tr><td></td><td colspan=\""<<gt.rules.nDaysPerWeek<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr></tfoot>\n";
+		*/
 		tos<<"      <tbody>\n";
 		for(int j=0; j<gt.rules.nHoursPerDay; j++){
 			tos<<"        <tr>\n";
@@ -4017,7 +4217,7 @@ void TimetableExport::writeTeachersTimetableDaysHorizontalHtml(const QString& ht
 									case 3 : tos<<" <span class=\"subjecttag\">"<<protect2(act->subjectTagName)<<"</span>"; break;
 									case 4 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
 									case 5 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\" onmouseover=\"highlight('subjecttag_"<<protect2id(act->subjectTagName)<<"')\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
-									default: tos<<protect2(act->subjectTagName); break;
+									default: tos<<" "<<protect2(act->subjectTagName); break;
 								}
 							if(TIMETABLE_HTML_LEVEL>=3)
 								tos<<"</div>";
@@ -4045,6 +4245,9 @@ void TimetableExport::writeTeachersTimetableDaysHorizontalHtml(const QString& ht
 			}
 			tos<<"        </tr>\n";
 		}
+		//workaround begin. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
+		tos<<"      <tr class=\"foot\"><td></td><td colspan=\""<<gt.rules.nDaysPerWeek<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr>\n";
+		//workaround end.
 		tos<<"      </tbody>\n";
 		if(teacher!=gt.rules.nInternalTeachers-1){
 			tos<<"    </table>\n    <p>&nbsp;</p>\n";
@@ -4059,10 +4262,8 @@ void TimetableExport::writeTeachersTimetableDaysHorizontalHtml(const QString& ht
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Writing teachers timetable html days horizontal gave error code %1, which means saving is compromised. Please check your disk's free space.")
-		 .arg(file.error()));
+		 TimetableExport::tr("Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(htmlfilename).arg(file.error()));
 	}
-								
 	file.close();
 }
 
@@ -4081,21 +4282,21 @@ void TimetableExport::writeTeachersTimetableDaysVerticalHtml(const QString& html
 	QFile file(htmlfilename);
 	if(!file.open(QIODevice::WriteOnly)){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Cannot open file to write teachers timetable html days vertical. Please check your disk's free space. Saving of html teachers timetable aborted."));
-		 
+		 TimetableExport::tr("Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(htmlfilename));
 		return;
-
 		assert(0);
 	}
 	QTextStream tos(&file);
 	tos.setCodec("UTF-8");
 	tos.setGenerateByteOrderMark(true);
-	//tos.setEncoding(QTextStream::UnicodeUTF8);
 
 	tos<<"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n";
 	tos<<"  \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n\n";
 
-	tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\">\n";
+	if(LANGUAGE_STYLE_RIGHT_TO_LEFT==false)
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\">\n";
+	else
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\" dir=\"rtl\">\n";
 	tos<<"  <head>\n";
 	tos<<"    <title>"<<protect2(gt.rules.institutionName)<<"</title>\n";
 	tos<<"    <meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\" />\n";
@@ -4156,8 +4357,9 @@ void TimetableExport::writeTeachersTimetableDaysVerticalHtml(const QString& html
 		}
 		tos<<"        </tr>\n";
 		tos<<"      </thead>\n";
-
+		/*workaround. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
 		tos<<"      <tfoot><tr><td></td><td colspan=\""<<gt.rules.nHoursPerDay<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr></tfoot>\n";
+		*/
 		tos<<"      <tbody>\n";
 		for(int k=0; k<gt.rules.nDaysPerWeek; k++){
 			tos<<"        <tr>\n";
@@ -4207,7 +4409,7 @@ void TimetableExport::writeTeachersTimetableDaysVerticalHtml(const QString& html
 									case 3 : tos<<" <span class=\"subjecttag\">"<<protect2(act->subjectTagName)<<"</span>"; break;
 									case 4 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
 									case 5 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\" onmouseover=\"highlight('subjecttag_"<<protect2id(act->subjectTagName)<<"')\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
-									default: tos<<protect2(act->subjectTagName); break;
+									default: tos<<" "<<protect2(act->subjectTagName); break;
 								}
 							if(TIMETABLE_HTML_LEVEL>=3)
 								tos<<"</div>";
@@ -4236,6 +4438,9 @@ void TimetableExport::writeTeachersTimetableDaysVerticalHtml(const QString& html
 			}
 			tos<<"        </tr>\n";
 		}
+		//workaround begin. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
+		tos<<"      <tr class=\"foot\"><td></td><td colspan=\""<<gt.rules.nHoursPerDay<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr>\n";
+		//workaround end.
 		tos<<"      </tbody>\n";
 		if(teacher!=gt.rules.nInternalTeachers-1){
 			tos<<"    </table>\n    <p>&nbsp;</p>\n";
@@ -4250,10 +4455,8 @@ void TimetableExport::writeTeachersTimetableDaysVerticalHtml(const QString& html
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Writing teachers timetable html days vertical gave error code %1, which means saving is compromised. Please check your disk's free space.")
-		 .arg(file.error()));
+		 TimetableExport::tr("Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(htmlfilename).arg(file.error()));
 	}
-								
 	file.close();
 }
 
@@ -4271,21 +4474,21 @@ void TimetableExport::writeTeachersTimetableTimeVerticalHtml(const QString& html
 	QFile file(htmlfilename);
 	if(!file.open(QIODevice::WriteOnly)){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Cannot open file to write teachers timetable html time vertical. Please check your disk's free space. Saving of html teachers timetable aborted."));
-		 
+		 TimetableExport::tr("Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(htmlfilename));
 		return;
-
 		assert(0);
 	}
 	QTextStream tos(&file);
 	tos.setCodec("UTF-8");
 	tos.setGenerateByteOrderMark(true);
-	//tos.setEncoding(QTextStream::UnicodeUTF8);
 
 	tos<<"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n";
 	tos<<"  \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n\n";
 
-	tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\">\n";
+	if(LANGUAGE_STYLE_RIGHT_TO_LEFT==false)
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\">\n";
+	else
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\" dir=\"rtl\">\n";
 	tos<<"  <head>\n";
 	tos<<"    <title>"<<protect2(gt.rules.institutionName)<<"</title>\n";
 	tos<<"    <meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\" />\n";
@@ -4327,8 +4530,9 @@ void TimetableExport::writeTeachersTimetableTimeVerticalHtml(const QString& html
 		tos << gt.rules.internalTeachersList[i]->name << "</th>";
 	}
 	tos<<"</tr>\n      </thead>\n";
-
+	/*workaround. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
 	tos<<"      <tfoot><tr><td colspan=\"2\"></td><td colspan=\""<<gt.rules.nInternalTeachers<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr></tfoot>\n";
+	*/
 	tos<<"      <tbody>\n";
 	for(int k=0; k<gt.rules.nDaysPerWeek; k++){
 		for(int j=0; j<gt.rules.nHoursPerDay; j++){
@@ -4382,7 +4586,7 @@ void TimetableExport::writeTeachersTimetableTimeVerticalHtml(const QString& html
 									case 3 : tos<<" <span class=\"subjecttag\">"<<protect2(act->subjectTagName)<<"</span>"; break;
 									case 4 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
 									case 5 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\" onmouseover=\"highlight('subjecttag_"<<protect2id(act->subjectTagName)<<"')\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
-									default: tos<<protect2(act->subjectTagName); break;
+									default: tos<<" "<<protect2(act->subjectTagName); break;
 								}
 							if(TIMETABLE_HTML_LEVEL>=3)
 								tos<<"</div>";
@@ -4411,15 +4615,16 @@ void TimetableExport::writeTeachersTimetableTimeVerticalHtml(const QString& html
 			tos<<"        </tr>\n";
 		}
 	}
+	//workaround begin. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
+	tos<<"      <tr class=\"foot\"><td colspan=\"2\"></td><td colspan=\""<<gt.rules.nInternalTeachers<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr>\n";
+	//workaround end.
 	tos << "      </tbody>\n    </table>\n";
 	tos << "  </body>\n</html>\n\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Writing teachers timetable html time vertical gave error code %1, which means saving is compromised. Please check your disk's free space.")
-		 .arg(file.error()));
+		 TimetableExport::tr("Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(htmlfilename).arg(file.error()));
 	}
-								
 	file.close();
 }
 
@@ -4438,21 +4643,21 @@ void TimetableExport::writeTeachersTimetableTimeHorizontalHtml(const QString& ht
 	QFile file(htmlfilename);
 	if(!file.open(QIODevice::WriteOnly)){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Cannot open file to write teachers timetable html time horizontal. Please check your disk's free space. Saving of html teachers timetable aborted."));
-		 
+		 TimetableExport::tr("Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(htmlfilename));
 		return;
-
 		assert(0);
 	}
 	QTextStream tos(&file);
 	tos.setCodec("UTF-8");
 	tos.setGenerateByteOrderMark(true);
-	//tos.setEncoding(QTextStream::UnicodeUTF8);
 
 	tos<<"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n";
 	tos<<"  \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n\n";
 
-	tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\">\n";
+	if(LANGUAGE_STYLE_RIGHT_TO_LEFT==false)
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\">\n";
+	else
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\" dir=\"rtl\">\n";
 	tos<<"  <head>\n";
 	tos<<"    <title>"<<protect2(gt.rules.institutionName)<<"</title>\n";
 	tos<<"    <meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\" />\n";
@@ -4500,8 +4705,9 @@ void TimetableExport::writeTeachersTimetableTimeHorizontalHtml(const QString& ht
 		}
 	tos<<"        </tr>\n";
 	tos<<"      </thead>\n";
-
+	/*workaround. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
 	tos<<"      <tfoot><tr><td></td><td colspan=\""<<gt.rules.nHoursPerDay*gt.rules.nDaysPerWeek<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr></tfoot>\n";
+	*/
 	tos<<"      <tbody>\n";
 	for(int i=0; i<gt.rules.nInternalTeachers; i++){
 		tos << "        <tr>\n";
@@ -4552,7 +4758,7 @@ void TimetableExport::writeTeachersTimetableTimeHorizontalHtml(const QString& ht
 									case 3 : tos<<" <span class=\"subjecttag\">"<<protect2(act->subjectTagName)<<"</span>"; break;
 									case 4 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
 									case 5 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\" onmouseover=\"highlight('subjecttag_"<<protect2id(act->subjectTagName)<<"')\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
-									default: tos<<protect2(act->subjectTagName); break;
+									default: tos<<" "<<protect2(act->subjectTagName); break;
 								}
 							if(TIMETABLE_HTML_LEVEL>=3)
 								tos<<"</div>";
@@ -4581,15 +4787,16 @@ void TimetableExport::writeTeachersTimetableTimeHorizontalHtml(const QString& ht
 		}
 		tos<<"        </tr>\n";
 	}
+	//workaround begin. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
+	tos<<"      <tr class=\"foot\"><td></td><td colspan=\""<<gt.rules.nHoursPerDay*gt.rules.nDaysPerWeek<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr>\n";
+	//workaround end.
 	tos << "      </tbody>\n    </table>\n";
 	tos << "  </body>\n</html>\n\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Writing teachers timetable html time horizontal gave error code %1, which means saving is compromised. Please check your disk's free space.")
-		 .arg(file.error()));
+		 TimetableExport::tr("Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(htmlfilename).arg(file.error()));
 	}
-								
 	file.close();
 }
 
@@ -4606,21 +4813,21 @@ void TimetableExport::writeRoomsTimetableDaysHorizontalHtml(const QString& htmlf
 	QFile file(htmlfilename);
 	if(!file.open(QIODevice::WriteOnly)){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Cannot open file to write rooms timetable html days horizontal. Please check your disk's free space. Saving of html rooms timetable aborted."));
-		 
+		 TimetableExport::tr("Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(htmlfilename));
 		return;
-
 		assert(0);
 	}
 	QTextStream tos(&file);
 	tos.setCodec("UTF-8");
 	tos.setGenerateByteOrderMark(true);
-	//tos.setEncoding(QTextStream::UnicodeUTF8);
 
 	tos<<"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n";
 	tos<<"  \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n\n";
 
-	tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\">\n";
+	if(LANGUAGE_STYLE_RIGHT_TO_LEFT==false)
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\">\n";
+	else
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\" dir=\"rtl\">\n";
 	tos<<"  <head>\n";
 	tos<<"    <title>"<<protect2(gt.rules.institutionName)<<"</title>\n";
 	tos<<"    <meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\" />\n";
@@ -4683,8 +4890,9 @@ void TimetableExport::writeRoomsTimetableDaysHorizontalHtml(const QString& htmlf
 			}
 			tos<<"        </tr>\n";
 			tos<<"      </thead>\n";
-
+			/*workaround. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
 			tos<<"      <tfoot><tr><td></td><td colspan=\""<<gt.rules.nDaysPerWeek<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr></tfoot>\n";
+			*/
 			tos<<"      <tbody>\n";
 			for(int j=0; j<gt.rules.nHoursPerDay; j++){
 				tos<<"        <tr>\n";
@@ -4750,7 +4958,7 @@ void TimetableExport::writeRoomsTimetableDaysHorizontalHtml(const QString& htmlf
 										case 3 : tos<<" <span class=\"subjecttag\">"<<protect2(act->subjectTagName)<<"</span>"; break;
 										case 4 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
 										case 5 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\" onmouseover=\"highlight('subjecttag_"<<protect2id(act->subjectTagName)<<"')\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
-										default: tos<<protect2(act->subjectTagName); break;
+										default: tos<<" "<<protect2(act->subjectTagName); break;
 									}
 								if(TIMETABLE_HTML_LEVEL>=3)
 									tos<<"</div>";
@@ -4764,6 +4972,9 @@ void TimetableExport::writeRoomsTimetableDaysHorizontalHtml(const QString& htmlf
 				}
 				tos<<"        </tr>\n";
 			}
+			//workaround begin. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
+			tos<<"      <tr class=\"foot\"><td></td><td colspan=\""<<gt.rules.nDaysPerWeek<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr>\n";
+			//workaround end.
 			tos<<"      </tbody>\n";
 			if(room!=gt.rules.nInternalRooms-1){
 				tos<<"    </table>\n    <p>&nbsp;</p>\n";
@@ -4779,10 +4990,8 @@ void TimetableExport::writeRoomsTimetableDaysHorizontalHtml(const QString& htmlf
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Writing rooms timetable html days horizontal gave error code %1, which means saving is compromised. Please check your disk's free space.")
-		 .arg(file.error()));
+		 TimetableExport::tr("Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(htmlfilename).arg(file.error()));
 	}
-								
 	file.close();
 }
 
@@ -4799,8 +5008,7 @@ void TimetableExport::writeRoomsTimetableDaysVerticalHtml(const QString& htmlfil
 	QFile file(htmlfilename);
 	if(!file.open(QIODevice::WriteOnly)){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Cannot open file to write rooms timetable html days vertical. Please check your disk's free space. Saving of html rooms timetable aborted."));
-		 
+		 TimetableExport::tr("Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(htmlfilename));
 		return;
 
 		assert(0);
@@ -4808,12 +5016,14 @@ void TimetableExport::writeRoomsTimetableDaysVerticalHtml(const QString& htmlfil
 	QTextStream tos(&file);
 	tos.setCodec("UTF-8");
 	tos.setGenerateByteOrderMark(true);
-	//tos.setEncoding(QTextStream::UnicodeUTF8);
 
 	tos<<"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n";
 	tos<<"  \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n\n";
 
-	tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\">\n";
+	if(LANGUAGE_STYLE_RIGHT_TO_LEFT==false)
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\">\n";
+	else
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\" dir=\"rtl\">\n";
 	tos<<"  <head>\n";
 	tos<<"    <title>"<<protect2(gt.rules.institutionName)<<"</title>\n";
 	tos<<"    <meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\" />\n";
@@ -4844,7 +5054,7 @@ void TimetableExport::writeRoomsTimetableDaysVerticalHtml(const QString& htmlfil
 		tos<<"    <h1> "<<TimetableExport::tr("Warning! Only %1 out of %2 activities placed!").arg(placedActivities).arg(gt.rules.nInternalActivities)<<"</h1>\n";
 
 	tos<<"    <p>\n      <strong>"<<TimetableExport::tr("Institution name")<<":</strong> "<<protect2(gt.rules.institutionName)<<"<br />\n";
-	tos<<"      <strong>"<<TimetableExport::tr("Comments")<<":</strong> "<<protect2(gt.rules.comments)<<"\n    </p>\n"; 	
+	tos<<"      <strong>"<<TimetableExport::tr("Comments")<<":</strong> "<<protect2(gt.rules.comments)<<"\n    </p>\n"; 
 		
 	if(gt.rules.nInternalRooms==0)
 		tos<<"    <h1>"<<TimetableExport::tr("No rooms recorded in fet for %1.").arg(protect2(gt.rules.institutionName))<<"</h1>\n";
@@ -4877,8 +5087,9 @@ void TimetableExport::writeRoomsTimetableDaysVerticalHtml(const QString& htmlfil
 			}
 			tos<<"        </tr>\n";
 			tos<<"      </thead>\n";
-
+			/*workaround. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
 			tos<<"      <tfoot><tr><td></td><td colspan=\""<<gt.rules.nHoursPerDay<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr></tfoot>\n";
+			*/
 			tos<<"      <tbody>\n";
 			for(int k=0; k<gt.rules.nDaysPerWeek; k++){
 				tos<<"        <tr>\n";
@@ -4944,7 +5155,7 @@ void TimetableExport::writeRoomsTimetableDaysVerticalHtml(const QString& htmlfil
 										case 3 : tos<<" <span class=\"subjecttag\">"<<protect2(act->subjectTagName)<<"</span>"; break;
 										case 4 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
 										case 5 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\" onmouseover=\"highlight('subjecttag_"<<protect2id(act->subjectTagName)<<"')\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
-										default: tos<<protect2(act->subjectTagName); break;
+										default: tos<<" "<<protect2(act->subjectTagName); break;
 									}
 								if(TIMETABLE_HTML_LEVEL>=3)
 									tos<<"</div>";
@@ -4959,6 +5170,9 @@ void TimetableExport::writeRoomsTimetableDaysVerticalHtml(const QString& htmlfil
 				}
 				tos<<"        </tr>\n";
 			}
+			//workaround begin. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
+			tos<<"      <tr class=\"foot\"><td></td><td colspan=\""<<gt.rules.nHoursPerDay<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr>\n";
+			//workaround end.
 			tos<<"      </tbody>\n";
 			if(room!=gt.rules.nInternalRooms-1){
 				tos<<"    </table>\n    <p>&nbsp;</p>\n";
@@ -4974,10 +5188,8 @@ void TimetableExport::writeRoomsTimetableDaysVerticalHtml(const QString& htmlfil
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Writing rooms timetable html days vertical gave error code %1, which means saving is compromised. Please check your disk's free space.")
-		 .arg(file.error()));
+		 TimetableExport::tr("Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(htmlfilename).arg(file.error()));
 	}
-								
 	file.close();
 }
 
@@ -4995,21 +5207,21 @@ void TimetableExport::writeRoomsTimetableTimeVerticalHtml(const QString& htmlfil
 	QFile file(htmlfilename);
 	if(!file.open(QIODevice::WriteOnly)){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Cannot open file to write rooms timetable html time vertical. Please check your disk's free space. Saving of html rooms timetable aborted."));
-		 
+		 TimetableExport::tr("Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(htmlfilename));
 		return;
-
 		assert(0);
 	}
 	QTextStream tos(&file);
 	tos.setCodec("UTF-8");
 	tos.setGenerateByteOrderMark(true);
-	//tos.setEncoding(QTextStream::UnicodeUTF8);
 
 	tos<<"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n";
 	tos<<"  \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n\n";
 
-	tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\">\n";
+	if(LANGUAGE_STYLE_RIGHT_TO_LEFT==false)
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\">\n";
+	else
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\" dir=\"rtl\">\n";
 	tos<<"  <head>\n";
 	tos<<"    <title>"<<protect2(gt.rules.institutionName)<<"</title>\n";
 	tos<<"    <meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\" />\n";
@@ -5053,8 +5265,9 @@ void TimetableExport::writeRoomsTimetableTimeVerticalHtml(const QString& htmlfil
 			tos << gt.rules.internalRoomsList[i]->name << "</th>";
 		}
 		tos<<"</tr>\n      </thead>\n";
-
+		/*workaround. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
 		tos<<"      <tfoot><tr><td colspan=\"2\"></td><td colspan=\""<<gt.rules.nInternalRooms<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr></tfoot>\n";
+		*/
 		tos<<"      <tbody>\n";
 		for(int k=0; k<gt.rules.nDaysPerWeek; k++){
 			for(int j=0; j<gt.rules.nHoursPerDay; j++){
@@ -5124,7 +5337,7 @@ void TimetableExport::writeRoomsTimetableTimeVerticalHtml(const QString& htmlfil
 										case 3 : tos<<" <span class=\"subjecttag\">"<<protect2(act->subjectTagName)<<"</span>"; break;
 										case 4 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
 										case 5 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\" onmouseover=\"highlight('subjecttag_"<<protect2id(act->subjectTagName)<<"')\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
-										default: tos<<protect2(act->subjectTagName); break;
+										default: tos<<" "<<protect2(act->subjectTagName); break;
 									}
 								if(TIMETABLE_HTML_LEVEL>=3)
 									tos<<"</div>";
@@ -5139,16 +5352,17 @@ void TimetableExport::writeRoomsTimetableTimeVerticalHtml(const QString& htmlfil
 				tos<<"        </tr>\n";
 			}
 		}
+		//workaround begin. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
+		tos<<"      <tr class=\"foot\"><td colspan=\"2\"></td><td colspan=\""<<gt.rules.nInternalRooms<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr>\n";
+		//workaround end.
 		tos << "      </tbody>\n    </table>\n";
 	}
 	tos << "  </body>\n</html>\n\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Writing rooms timetable html time vertical gave error code %1, which means saving is compromised. Please check your disk's free space.")
-		 .arg(file.error()));
+		 TimetableExport::tr("Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(htmlfilename).arg(file.error()));
 	}
-								
 	file.close();
 }
 
@@ -5166,21 +5380,21 @@ void TimetableExport::writeRoomsTimetableTimeHorizontalHtml(const QString& htmlf
 	QFile file(htmlfilename);
 	if(!file.open(QIODevice::WriteOnly)){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Cannot open file to write rooms timetable html time horizontal. Please check your disk's free space. Saving of html rooms timetable aborted."));
-		 
+		 TimetableExport::tr("Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(htmlfilename));
 		return;
-
 		assert(0);
 	}
 	QTextStream tos(&file);
 	tos.setCodec("UTF-8");
 	tos.setGenerateByteOrderMark(true);
-	//tos.setEncoding(QTextStream::UnicodeUTF8);
 
 	tos<<"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n";
 	tos<<"  \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n\n";
 
-	tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\">\n";
+	if(LANGUAGE_STYLE_RIGHT_TO_LEFT==false)
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\">\n";
+	else
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\" dir=\"rtl\">\n";
 	tos<<"  <head>\n";
 	tos<<"    <title>"<<protect2(gt.rules.institutionName)<<"</title>\n";
 	tos<<"    <meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\" />\n";
@@ -5231,8 +5445,9 @@ void TimetableExport::writeRoomsTimetableTimeHorizontalHtml(const QString& htmlf
 			}
 		tos<<"        </tr>\n";
 		tos<<"      </thead>\n";
-
+		/*workaround. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
 		tos<<"      <tfoot><tr><td></td><td colspan=\""<<gt.rules.nHoursPerDay*gt.rules.nDaysPerWeek<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr></tfoot>\n";
+		*/
 		tos<<"      <tbody>\n";
 		for(int i=0; i<gt.rules.nInternalRooms; i++){
 			tos << "        <tr>\n";
@@ -5299,7 +5514,7 @@ void TimetableExport::writeRoomsTimetableTimeHorizontalHtml(const QString& htmlf
 										case 3 : tos<<" <span class=\"subjecttag\">"<<protect2(act->subjectTagName)<<"</span>"; break;
 										case 4 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
 										case 5 : tos<<" <span class=\"subjecttag\"><span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\" onmouseover=\"highlight('subjecttag_"<<protect2id(act->subjectTagName)<<"')\">"<<protect2(act->subjectTagName)<<"</span></span>"; break;
-										default: tos<<protect2(act->subjectTagName); break;
+										default: tos<<" "<<protect2(act->subjectTagName); break;
 									}
 								if(TIMETABLE_HTML_LEVEL>=3)
 									tos<<"</div>";
@@ -5314,15 +5529,1061 @@ void TimetableExport::writeRoomsTimetableTimeHorizontalHtml(const QString& htmlf
 			}
 			tos<<"        </tr>\n";
 		}
+		//workaround begin. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
+		tos<<"      <tr class=\"foot\"><td></td><td colspan=\""<<gt.rules.nHoursPerDay*gt.rules.nDaysPerWeek<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr>\n";
+		//workaround end.
 		tos << "      </tbody>\n    </table>\n";
 	}
 	tos << "  </body>\n</html>\n\n";
 
 	if(file.error()>0){
 		QMessageBox::critical(NULL, QObject::tr("FET critical"),
-		 QObject::tr("Writing rooms timetable html time horizontal gave error code %1, which means saving is compromised. Please check your disk's free space.")
-		 .arg(file.error()));
+		 TimetableExport::tr("Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(htmlfilename).arg(file.error()));
 	}
-								
+	file.close();
+}
+
+
+//Now print the subjects
+
+//XHTML generation code by Volker Dirr (http://timetabling.de/)
+/**
+Function writing the subjects' timetable in html format to a file.
+Days horizontal
+*/
+void TimetableExport::writeSubjectsTimetableDaysHorizontalHtml(const QString& htmlfilename, QString saveTime, int placedActivities){
+	assert(gt.rules.initialized && gt.rules.internalStructureComputed);
+	//assert(gt.timePopulation.initialized);
+	assert(students_schedule_ready && teachers_schedule_ready && rooms_schedule_ready);
+
+	//Now we print the results to an HTML file
+	QFile file(htmlfilename);
+	if(!file.open(QIODevice::WriteOnly)){
+		QMessageBox::critical(NULL, QObject::tr("FET critical"),
+		 TimetableExport::tr("Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(htmlfilename));
+		return;
+		assert(0);
+	}
+	QTextStream tos(&file);
+	tos.setCodec("UTF-8");
+	tos.setGenerateByteOrderMark(true);
+
+	tos<<"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n";
+	tos<<"  \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n\n";
+
+	if(LANGUAGE_STYLE_RIGHT_TO_LEFT==false)
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\">\n";
+	else
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\" dir=\"rtl\">\n";
+	tos<<"  <head>\n";
+	tos<<"    <title>"<<protect2(gt.rules.institutionName)<<"</title>\n";
+	tos<<"    <meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\" />\n";
+	if(TIMETABLE_HTML_LEVEL>=1){
+		QString cssfilename=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1)+"_"+STYLESHEET_CSS;
+		tos<<"    <link rel=\"stylesheet\" media=\"all\" href=\""<<cssfilename<<"\" type=\"text/css\" />\n";
+	}
+	if(TIMETABLE_HTML_LEVEL>=5){  // the following JavaScript code is pretty similar to an example of Les Richardson ( http://richtech.ca/openadmin/index.html )
+		tos<<"    <meta http-equiv=\"Content-Script-Type\" content=\"text/javascript\" />\n";
+		tos<<"    <script type=\"text/javascript\">\n";
+		tos<<"      function highlight(classval) {\n";
+		tos<<"        var spans = document.getElementsByTagName('span');\n";
+		tos<<"        for(var i=0;spans.length>i;i++) {\n";
+		tos<<"          if (spans[i].className == classval) {\n";
+		tos<<"            spans[i].style.backgroundColor = 'lime';\n";
+		tos<<"          } else {\n";
+		tos<<"            spans[i].style.backgroundColor = 'white';\n";
+		tos<<"          }\n";
+		tos<<"        }\n";
+		tos<<"      }\n";
+		tos<<"    </script>\n";
+	}
+	tos<<"  </head>\n\n";
+
+	tos<<"  <body id=\"top\">\n";
+
+	if(placedActivities!=gt.rules.nInternalActivities)
+		tos<<"    <h1>"<<TimetableExport::tr("Warning! Only %1 out of %2 activities placed!").arg(placedActivities).arg(gt.rules.nInternalActivities)<<"</h1>\n";
+
+	tos<<"    <p>\n      <strong>"<<TimetableExport::tr("Institution name")<<":</strong> "<<protect2(gt.rules.institutionName)<<"<br />\n";
+	tos<<"      <strong>"<<TimetableExport::tr("Comments")<<":</strong> "<<protect2(gt.rules.comments)<<"\n    </p>\n"; 
+
+	tos<<"    <p><strong>"<<TimetableExport::tr("Table of content")<<"</strong></p>\n";
+	tos<<"    <ul>\n";
+	for(int i=0; i<gt.rules.subjectsList.size(); i++){
+		tos<<"      <li>\n        "<<TimetableExport::tr("Subject");
+		tos<<" <a href=\""<<"#table_"<<protect2id(gt.rules.subjectsList[i]->name)<<"\">"<<gt.rules.subjectsList[i]->name<<"</a>\n";
+		tos<<"      </li>\n";
+	}
+	tos<<"    </ul>\n    <p>&nbsp;</p>\n\n";
+
+
+	for(int subject=0; subject<gt.rules.subjectsList.size(); subject++){
+		///////Liviu here
+		for(int d=0; d<gt.rules.nDaysPerWeek; d++)
+			for(int h=0; h<gt.rules.nHoursPerDay; h++)
+				activitiesForCurrentSubject[d][h].clear();
+		foreach(int ai, gt.rules.activitiesForSubject[subject])
+			if(best_solution.times[ai]!=UNALLOCATED_TIME){
+				int d=best_solution.times[ai]%gt.rules.nDaysPerWeek;
+				int h=best_solution.times[ai]/gt.rules.nDaysPerWeek;
+				Activity* act=&gt.rules.internalActivitiesList[ai];
+				for(int dd=0; dd < act->duration && h+dd < gt.rules.nHoursPerDay; dd++)
+					activitiesForCurrentSubject[d][h+dd].append(ai);
+			}
+		///////end Liviu
+	
+		tos<<"    <table id=\"table_"<<protect2id(gt.rules.subjectsList[subject]->name);
+		tos<<"\" border=\"1\"";
+		if(subject%2==0) tos<<" class=\"modulo2\"";
+		tos<<">\n";
+
+		tos<<"      <caption>"<<protect2(gt.rules.institutionName)<<"</caption>\n";
+
+		tos<<"      <thead>\n        <tr><td rowspan=\"2\"></td><th colspan=\""<<gt.rules.nDaysPerWeek<<"\">"<<protect2(gt.rules.subjectsList[subject]->name)<<"</th></tr>\n";
+		tos<<"        <tr>\n          <!-- span -->\n";
+		for(int j=0; j<gt.rules.nDaysPerWeek; j++){
+			if(TIMETABLE_HTML_LEVEL>=2)
+				tos<<"          <th class=\"xAxis\">";
+			else
+				tos<<"          <th>";
+			tos<<protect2(gt.rules.daysOfTheWeek[j])<<"</th>\n";
+		}
+		tos<<"        </tr>\n";
+		tos<<"      </thead>\n";
+		/*workaround. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
+		tos<<"      <tfoot><tr><td></td><td colspan=\""<<gt.rules.nDaysPerWeek<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr></tfoot>\n";
+		*/
+		tos<<"      <tbody>\n";
+		for(int j=0; j<gt.rules.nHoursPerDay; j++){
+			tos<<"        <tr>\n";
+			if(TIMETABLE_HTML_LEVEL>=2)
+				tos<<"          <th class=\"yAxis\">";
+			else
+				tos<<"          <th>";
+			tos<<protect2(gt.rules.hoursOfTheDay[j])<<"</th>\n";
+			for(int k=0; k<gt.rules.nDaysPerWeek; k++){
+				QList<qint16> allActivities;
+				
+				//Liviu:
+				allActivities=activitiesForCurrentSubject[k][j];
+				
+				/*
+				allActivities.clear();
+				//Now get the activitiy ids. I don't run through the InternalActivitiesList, even that is faster. I run through subgroupsList, because by that the activites are sorted by that in the html-table.
+				for(int subgroup=0; subgroup<gt.rules.nInternalSubgroups; subgroup++){
+					if(students_timetable_weekly[subgroup][k][j]!=UNALLOCATED_ACTIVITY){
+						Activity* act=&gt.rules.internalActivitiesList[students_timetable_weekly[subgroup][k][j]];
+						if(act->subjectName==gt.rules.subjectsList[subject]->name)
+							if(!(allActivities.contains(students_timetable_weekly[subgroup][k][j]))){
+								allActivities<<students_timetable_weekly[subgroup][k][j];
+							}
+					}
+				}
+				//Now run through the teachers timetable, because activities without a students set are still missing.
+				for(int teacher=0; teacher<gt.rules.nInternalTeachers; teacher++){
+					if(teachers_timetable_weekly[teacher][k][j]!=UNALLOCATED_ACTIVITY){
+						Activity* act=&gt.rules.internalActivitiesList[teachers_timetable_weekly[teacher][k][j]];
+						if(act->subjectName==gt.rules.subjectsList[subject]->name)
+							if(!(allActivities.contains(teachers_timetable_weekly[teacher][k][j]))){
+								assert(act->studentsNames.isEmpty());
+								allActivities<<teachers_timetable_weekly[teacher][k][j];
+							}
+					}
+				}*/
+				if(allActivities.isEmpty())
+					tos<<"          <td>---</td>\n";
+				else {
+					int ai=allActivities[0]; //activity index
+					if(TIMETABLE_HTML_LEVEL>=1)
+						tos<<"          <td><table class=\"detailed\">";
+					else
+						tos<<"          <td><table>";
+					if(TIMETABLE_HTML_LEVEL>=3)
+						tos<<"<tr class=\"line0 subjecttag\">";
+					else	tos<<"<tr>";
+					for(int a=0; a<allActivities.size(); a++){
+						ai=allActivities[a];
+						Activity* act=&gt.rules.internalActivitiesList[ai];
+						if(TIMETABLE_HTML_LEVEL>=1)
+							tos<<"<td class=\"detailed\">";
+						else
+							tos<<"<td>";
+						if(act->subjectTagName.size()>0)
+							switch(TIMETABLE_HTML_LEVEL){
+								case 4 : tos<<"<span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\">"<<protect2(act->subjectTagName)<<"</span>"; break;
+								case 5 : tos<<"<span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\" onmouseover=\"highlight('subjecttag_"<<protect2id(act->subjectTagName)<<"')\">"<<protect2(act->subjectTagName)<<"</span>"; break;
+								default: tos<<protect2(act->subjectTagName); break;
+							}
+						tos<<"</td>";
+					}
+					tos<<"</tr>";
+					if(TIMETABLE_HTML_LEVEL>=3)
+						tos<<"<tr class=\"student line1\">";
+					else	tos<<"<tr>";
+					for(int a=0; a<allActivities.size(); a++){
+						ai=allActivities[a];
+						Activity* act=&gt.rules.internalActivitiesList[ai];
+						if(TIMETABLE_HTML_LEVEL>=1)
+							tos<<"<td class=\"detailed\">";
+						else
+							tos<<"<td>";
+						if(act->studentsNames.size()>0){
+							for(QStringList::Iterator st=act->studentsNames.begin(); st!=act->studentsNames.end(); st++){
+								switch(TIMETABLE_HTML_LEVEL){
+									case 4 : tos<<"<span class=\"student_"<<protect2id(*st)<<"\">"<<protect2(*st)<<"</span>"; break;
+									case 5 : tos<<"<span class=\"student_"<<protect2id(*st)<<"\" onmouseover=\"highlight('student_"<<protect2id(*st)<<"')\">"<<protect2(*st)<<"</span>"; break;
+									default: tos<<protect2(*st); break;
+								}
+								if(st!=act->studentsNames.end()-1)
+									tos<<", ";
+							}
+						}
+						tos<<"</td>";	
+					}
+					tos<<"</tr>";
+					if(TIMETABLE_HTML_LEVEL>=3)
+						tos<<"<tr class=\"teacher line2\">";
+						else	tos<<"<tr>";
+						for(int a=0; a<allActivities.size(); a++){
+						ai=allActivities[a];
+						Activity* act=&gt.rules.internalActivitiesList[ai];
+						if(TIMETABLE_HTML_LEVEL>=1)
+							tos<<"<td class=\"detailed\">";
+						else
+							tos<<"<td>";
+						if(act->teachersNames.size()>0){
+							for(QStringList::Iterator it=act->teachersNames.begin(); it!=act->teachersNames.end(); it++){
+								switch(TIMETABLE_HTML_LEVEL){
+									case 4 : tos<<"<span class=\"teacher_"<<protect2id(*it)<<"\">"<<protect2(*it)<<"</span>"; break;
+									case 5 : tos<<"<span class=\"teacher_"<<protect2id(*it)<<"\" onmouseover=\"highlight('teacher_"<<protect2id(*it)<<"')\">"<<protect2(*it)<<"</span>"; break;
+									default: tos<<protect2(*it); break;
+								}
+								if(it!=act->teachersNames.end()-1)
+									tos<<", ";
+							}
+						}
+						tos<<"</td>";
+					}
+					tos<<"</tr>";
+					if(TIMETABLE_HTML_LEVEL>=3)
+						tos<<"<tr class=\"room line3\">";
+					else	tos<<"<tr>";
+					for(int a=0; a<allActivities.size(); a++){
+						ai=allActivities[a];
+						Activity* act=&gt.rules.internalActivitiesList[ai];
+						int r=best_solution.rooms[ai];
+						if(TIMETABLE_HTML_LEVEL>=1)
+							tos<<"<td class=\"detailed\">";
+						else
+							tos<<"<td>";
+						if(r!=UNALLOCATED_SPACE && r!=UNSPECIFIED_ROOM){
+							if(act->subjectName.size()>0)
+								switch(TIMETABLE_HTML_LEVEL){
+									case 4 : tos<<"<span class=\"room_"<<protect2id(gt.rules.internalRoomsList[r]->name)<<"\">"<<protect2(gt.rules.internalRoomsList[r]->name)<<"</span>"; break;
+									case 5 : tos<<"<span class=\"room_"<<protect2id(gt.rules.internalRoomsList[r]->name)<<"\" onmouseover=\"highlight('room_"<<protect2id(gt.rules.internalRoomsList[r]->name)<<"')\">"<<protect2(gt.rules.internalRoomsList[r]->name)<<"</span>"; break;
+									default: tos<<protect2(gt.rules.internalRoomsList[r]->name); break;
+								}
+						}
+						tos<<"</td>";
+					}
+					tos<<"</tr>";
+					tos<<"</table></td>\n";
+				}
+			}
+			tos<<"        </tr>\n";
+		}
+		//workaround begin. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
+		tos<<"      <tr class=\"foot\"><td></td><td colspan=\""<<gt.rules.nDaysPerWeek<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr>\n";
+		//workaround end.
+		tos<<"      </tbody>\n";
+		if((subject!=gt.rules.subjectsList.size()-1)){
+			tos<<"    </table>\n    <p>&nbsp;</p>\n";
+			tos<<"    <p><a href=\""<<"#top\">"<<TimetableExport::tr("back to the top")<<"</a></p>\n";
+			tos<<"    <p>&nbsp;</p>\n\n";
+		} else {
+			tos<<"    </table>\n    <p>&nbsp;</p>\n";
+			tos<<"    <p><a href=\""<<"#top\">"<<TimetableExport::tr("back to the top")<<"</a></p>\n";
+		}
+	}
+	tos<<"  </body>\n</html>\n\n";
+
+	if(file.error()>0){
+		QMessageBox::critical(NULL, QObject::tr("FET critical"),
+		 TimetableExport::tr("Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(htmlfilename).arg(file.error()));
+	}
+	file.close();
+}
+
+
+//XHTML generation code by Volker Dirr (http://timetabling.de/)
+/**
+Function writing the subjects' timetable in html format to a file.
+Days vertical
+*/
+void TimetableExport::writeSubjectsTimetableDaysVerticalHtml(const QString& htmlfilename, QString saveTime, int placedActivities){
+	assert(gt.rules.initialized && gt.rules.internalStructureComputed);
+	//assert(gt.timePopulation.initialized);
+	assert(students_schedule_ready && teachers_schedule_ready && rooms_schedule_ready);
+
+	//Now we print the results to an HTML file
+	QFile file(htmlfilename);
+	if(!file.open(QIODevice::WriteOnly)){
+		QMessageBox::critical(NULL, QObject::tr("FET critical"),
+		 TimetableExport::tr("Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(htmlfilename));
+		return;
+		assert(0);
+	}
+	QTextStream tos(&file);
+	tos.setCodec("UTF-8");
+	tos.setGenerateByteOrderMark(true);
+
+	tos<<"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n";
+	tos<<"  \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n\n";
+
+	if(LANGUAGE_STYLE_RIGHT_TO_LEFT==false)
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\">\n";
+	else
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\" dir=\"rtl\">\n";
+	tos<<"  <head>\n";
+	tos<<"    <title>"<<protect2(gt.rules.institutionName)<<"</title>\n";
+	tos<<"    <meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\" />\n";
+	if(TIMETABLE_HTML_LEVEL>=1){
+		QString cssfilename=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1)+"_"+STYLESHEET_CSS;
+		tos<<"    <link rel=\"stylesheet\" media=\"all\" href=\""<<cssfilename<<"\" type=\"text/css\" />\n";
+	}
+	if(TIMETABLE_HTML_LEVEL>=5){  // the following JavaScript code is pretty similar to an example of Les Richardson ( http://richtech.ca/openadmin/index.html )
+		tos<<"    <meta http-equiv=\"Content-Script-Type\" content=\"text/javascript\" />\n";
+		tos<<"    <script type=\"text/javascript\">\n";
+		tos<<"      function highlight(classval) {\n";
+		tos<<"        var spans = document.getElementsByTagName('span');\n";
+		tos<<"        for(var i=0;spans.length>i;i++) {\n";
+		tos<<"          if (spans[i].className == classval) {\n";
+		tos<<"            spans[i].style.backgroundColor = 'lime';\n";
+		tos<<"          } else {\n";
+		tos<<"            spans[i].style.backgroundColor = 'white';\n";
+		tos<<"          }\n";
+		tos<<"        }\n";
+		tos<<"      }\n";
+		tos<<"    </script>\n";
+	}
+	tos<<"  </head>\n\n";
+
+	tos<<"  <body id=\"top\">\n\n";
+
+	if(placedActivities!=gt.rules.nInternalActivities)
+		tos<<"    <h1>"<<TimetableExport::tr("Warning! Only %1 out of %2 activities placed!").arg(placedActivities).arg(gt.rules.nInternalActivities)<<"</h1>\n";
+
+	tos<<"    <p>\n      <strong>"<<TimetableExport::tr("Institution name")<<":</strong> "<<protect2(gt.rules.institutionName)<<"<br />\n";
+	tos<<"      <strong>"<<TimetableExport::tr("Comments")<<":</strong> "<<protect2(gt.rules.comments)<<"\n    </p>\n"; 
+
+	tos<<"    <p><strong>"<<TimetableExport::tr("Table of content")<<"</strong></p>\n";
+	tos<<"    <ul>\n";
+	for(int i=0; i<gt.rules.subjectsList.size(); i++){
+		tos<<"      <li>\n        "<<TimetableExport::tr("Subject");
+		tos<<" <a href=\""<<"#table_"<<protect2id(gt.rules.subjectsList[i]->name)<<"\">"<<gt.rules.subjectsList[i]->name<<"</a>\n";
+		tos<<"      </li>\n";
+	}
+	tos<<"    </ul>\n    <p>&nbsp;</p>\n\n";
+
+	for(int subject=0; subject<gt.rules.subjectsList.size(); subject++){
+		///////Liviu here
+		for(int d=0; d<gt.rules.nDaysPerWeek; d++)
+			for(int h=0; h<gt.rules.nHoursPerDay; h++)
+				activitiesForCurrentSubject[d][h].clear();
+		foreach(int ai, gt.rules.activitiesForSubject[subject])
+			if(best_solution.times[ai]!=UNALLOCATED_TIME){
+				int d=best_solution.times[ai]%gt.rules.nDaysPerWeek;
+				int h=best_solution.times[ai]/gt.rules.nDaysPerWeek;
+				Activity* act=&gt.rules.internalActivitiesList[ai];
+				for(int dd=0; dd < act->duration && h+dd < gt.rules.nHoursPerDay; dd++)
+					activitiesForCurrentSubject[d][h+dd].append(ai);
+			}
+		///////end Liviu
+
+		tos<<"    <table id=\"table_"<<protect2id(gt.rules.subjectsList[subject]->name);
+		tos<<"\" border=\"1\"";
+		if(subject%2==0) tos<<" class=\"modulo2\"";
+		tos<<">\n";
+
+		tos<<"      <caption>"<<protect2(gt.rules.institutionName)<<"</caption>\n";
+
+		tos<<"      <thead>\n        <tr><td rowspan=\"2\"></td><th colspan=\""<<gt.rules.nHoursPerDay<<"\">"<<protect2(gt.rules.subjectsList[subject]->name)<<"</th></tr>\n";
+		tos<<"        <tr>\n          <!-- span -->\n";
+		for(int j=0; j<gt.rules.nHoursPerDay; j++){
+			if(TIMETABLE_HTML_LEVEL>=2)
+				tos<<"          <th class=\"xAxis\">";
+			else
+				tos<<"          <th>";
+			tos<<protect2(gt.rules.hoursOfTheDay[j])<<"</th>\n";
+		}
+		tos<<"        </tr>\n";
+		tos<<"      </thead>\n";
+		/*workaround. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
+		tos<<"      <tfoot><tr><td></td><td colspan=\""<<gt.rules.nHoursPerDay<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr></tfoot>\n";
+		*/
+		tos<<"      <tbody>\n";
+		for(int k=0; k<gt.rules.nDaysPerWeek; k++){
+			tos<<"        <tr>\n";
+			if(TIMETABLE_HTML_LEVEL>=2)
+				tos<<"          <th class=\"yAxis\">";
+			else
+				tos<<"          <th>";
+			tos<<protect2(gt.rules.daysOfTheWeek[k])<<"</th>\n";
+			for(int j=0; j<gt.rules.nHoursPerDay; j++){
+				QList<qint16> allActivities;
+
+				//Liviu:
+				allActivities=activitiesForCurrentSubject[k][j];
+
+				/*
+				allActivities.clear();
+				//Now get the activitiy ids. I don't run through the InternalActivitiesList, even that is faster. I run through subgroupsList, because by that the activites are sorted by that in the html-table.
+				for(int subgroup=0; subgroup<gt.rules.nInternalSubgroups; subgroup++){
+					if(students_timetable_weekly[subgroup][k][j]!=UNALLOCATED_ACTIVITY){
+						Activity* act=&gt.rules.internalActivitiesList[students_timetable_weekly[subgroup][k][j]];
+						if(act->subjectName==gt.rules.subjectsList[subject]->name)
+							if(!(allActivities.contains(students_timetable_weekly[subgroup][k][j]))){
+								allActivities<<students_timetable_weekly[subgroup][k][j];
+							}
+					}
+				}
+				//Now run through the teachers timetable, because activities without a students set are still missing.
+				for(int teacher=0; teacher<gt.rules.nInternalTeachers; teacher++){
+					if(teachers_timetable_weekly[teacher][k][j]!=UNALLOCATED_ACTIVITY){
+						Activity* act=&gt.rules.internalActivitiesList[teachers_timetable_weekly[teacher][k][j]];
+						if(act->subjectName==gt.rules.subjectsList[subject]->name)
+							if(!(allActivities.contains(teachers_timetable_weekly[teacher][k][j]))){
+								assert(act->studentsNames.isEmpty());
+								allActivities<<teachers_timetable_weekly[teacher][k][j];
+							}
+					}
+				}
+				*/
+				
+				if(allActivities.isEmpty())
+					tos<<"          <td>---</td>\n";
+				else {
+					int ai=allActivities[0]; //activity index
+					if(TIMETABLE_HTML_LEVEL>=1)
+						tos<<"          <td><table class=\"detailed\">";
+					else
+						tos<<"          <td><table>";
+					if(TIMETABLE_HTML_LEVEL>=3)
+						tos<<"<tr class=\"line0 subjecttag\">";
+					else	tos<<"<tr>";
+					for(int a=0; a<allActivities.size(); a++){
+						ai=allActivities[a];
+						Activity* act=&gt.rules.internalActivitiesList[ai];
+						if(TIMETABLE_HTML_LEVEL>=1)
+							tos<<"<td class=\"detailed\">";
+						else
+							tos<<"<td>";
+						if(act->subjectTagName.size()>0)
+							switch(TIMETABLE_HTML_LEVEL){
+								case 4 : tos<<"<span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\">"<<protect2(act->subjectTagName)<<"</span>"; break;
+								case 5 : tos<<"<span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\" onmouseover=\"highlight('subjecttag_"<<protect2id(act->subjectTagName)<<"')\">"<<protect2(act->subjectTagName)<<"</span>"; break;
+								default: tos<<protect2(act->subjectTagName); break;
+							}
+						tos<<"</td>";
+					}
+					tos<<"</tr>";
+					if(TIMETABLE_HTML_LEVEL>=3)
+						tos<<"<tr class=\"student line1\">";
+					else	tos<<"<tr>";
+					for(int a=0; a<allActivities.size(); a++){
+						ai=allActivities[a];
+						Activity* act=&gt.rules.internalActivitiesList[ai];
+						if(TIMETABLE_HTML_LEVEL>=1)
+							tos<<"<td class=\"detailed\">";
+						else
+							tos<<"<td>";
+						if(act->studentsNames.size()>0){
+							for(QStringList::Iterator st=act->studentsNames.begin(); st!=act->studentsNames.end(); st++){
+								switch(TIMETABLE_HTML_LEVEL){
+									case 4 : tos<<"<span class=\"student_"<<protect2id(*st)<<"\">"<<protect2(*st)<<"</span>"; break;
+									case 5 : tos<<"<span class=\"student_"<<protect2id(*st)<<"\" onmouseover=\"highlight('student_"<<protect2id(*st)<<"')\">"<<protect2(*st)<<"</span>"; break;
+									default: tos<<protect2(*st); break;
+								}
+								if(st!=act->studentsNames.end()-1)
+									tos<<", ";
+							}
+						}
+						tos<<"</td>";	
+					}
+					tos<<"</tr>";
+					if(TIMETABLE_HTML_LEVEL>=3)
+						tos<<"<tr class=\"teacher line2\">";
+						else	tos<<"<tr>";
+						for(int a=0; a<allActivities.size(); a++){
+						ai=allActivities[a];
+						Activity* act=&gt.rules.internalActivitiesList[ai];
+						if(TIMETABLE_HTML_LEVEL>=1)
+							tos<<"<td class=\"detailed\">";
+						else
+							tos<<"<td>";
+						if(act->teachersNames.size()>0){
+							for(QStringList::Iterator it=act->teachersNames.begin(); it!=act->teachersNames.end(); it++){
+								switch(TIMETABLE_HTML_LEVEL){
+									case 4 : tos<<"<span class=\"teacher_"<<protect2id(*it)<<"\">"<<protect2(*it)<<"</span>"; break;
+									case 5 : tos<<"<span class=\"teacher_"<<protect2id(*it)<<"\" onmouseover=\"highlight('teacher_"<<protect2id(*it)<<"')\">"<<protect2(*it)<<"</span>"; break;
+									default: tos<<protect2(*it); break;
+								}
+								if(it!=act->teachersNames.end()-1)
+									tos<<", ";
+							}
+						}
+						tos<<"</td>";
+					}
+					tos<<"</tr>";
+					if(TIMETABLE_HTML_LEVEL>=3)
+						tos<<"<tr class=\"room line3\">";
+					else	tos<<"<tr>";
+					for(int a=0; a<allActivities.size(); a++){
+						ai=allActivities[a];
+						Activity* act=&gt.rules.internalActivitiesList[ai];
+						int r=best_solution.rooms[ai];
+						if(TIMETABLE_HTML_LEVEL>=1)
+							tos<<"<td class=\"detailed\">";
+						else
+							tos<<"<td>";
+						if(r!=UNALLOCATED_SPACE && r!=UNSPECIFIED_ROOM){
+							if(act->subjectName.size()>0)
+								switch(TIMETABLE_HTML_LEVEL){
+									case 4 : tos<<"<span class=\"room_"<<protect2id(gt.rules.internalRoomsList[r]->name)<<"\">"<<protect2(gt.rules.internalRoomsList[r]->name)<<"</span>"; break;
+									case 5 : tos<<"<span class=\"room_"<<protect2id(gt.rules.internalRoomsList[r]->name)<<"\" onmouseover=\"highlight('room_"<<protect2id(gt.rules.internalRoomsList[r]->name)<<"')\">"<<protect2(gt.rules.internalRoomsList[r]->name)<<"</span>"; break;
+									default: tos<<protect2(gt.rules.internalRoomsList[r]->name); break;
+								}
+						}
+						tos<<"</td>";
+					}
+					tos<<"</tr>";
+					tos<<"</table></td>\n";
+				}
+			}
+		tos<<"        </tr>\n";
+		}
+		//workaround begin. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
+		tos<<"      <tr class=\"foot\"><td></td><td colspan=\""<<gt.rules.nHoursPerDay<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr>\n";
+		//workaround end.
+		tos<<"      </tbody>\n";
+		if((subject!=gt.rules.subjectsList.size()-1)){
+			tos<<"    </table>\n    <p>&nbsp;</p>\n";
+			tos<<"    <p><a href=\""<<"#top\">"<<TimetableExport::tr("back to the top")<<"</a></p>\n";
+			tos<<"    <p>&nbsp;</p>\n\n";
+		} else {
+			tos<<"    </table>\n    <p>&nbsp;</p>\n";
+			tos<<"    <p><a href=\""<<"#top\">"<<TimetableExport::tr("back to the top")<<"</a></p>\n";
+		}
+	}
+	tos << "  </body>\n</html>\n\n";
+
+	if(file.error()>0){
+		QMessageBox::critical(NULL, QObject::tr("FET critical"),
+		 TimetableExport::tr("Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(htmlfilename).arg(file.error()));
+	}
+	file.close();
+}
+
+
+//XHTML generation code by Volker Dirr (http://timetabling.de/)
+/**
+Function writing the subjects' timetable html format to a file
+Time vertical
+*/
+
+void TimetableExport::writeSubjectsTimetableTimeVerticalHtml(const QString& htmlfilename, QString saveTime, int placedActivities){
+	assert(gt.rules.initialized && gt.rules.internalStructureComputed);
+	//assert(gt.timePopulation.initialized);
+	assert(students_schedule_ready && teachers_schedule_ready && rooms_schedule_ready);
+
+	//Now we print the results to an HTML file
+	QFile file(htmlfilename);
+	if(!file.open(QIODevice::WriteOnly)){
+		QMessageBox::critical(NULL, QObject::tr("FET critical"),
+		 TimetableExport::tr("Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(htmlfilename));
+		return;
+		assert(0);
+	}
+	QTextStream tos(&file);
+	tos.setCodec("UTF-8");
+	tos.setGenerateByteOrderMark(true);
+
+	tos<<"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n";
+	tos<<"  \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n\n";
+
+	if(LANGUAGE_STYLE_RIGHT_TO_LEFT==false)
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\">\n";
+	else
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\" dir=\"rtl\">\n";
+	tos<<"  <head>\n";
+	tos<<"    <title>"<<protect2(gt.rules.institutionName)<<"</title>\n";
+	tos<<"    <meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\" />\n";
+	if(TIMETABLE_HTML_LEVEL>=1){
+		QString cssfilename=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1)+"_"+STYLESHEET_CSS;
+		tos<<"    <link rel=\"stylesheet\" media=\"all\" href=\""<<cssfilename<<"\" type=\"text/css\" />\n";
+	}
+	if(TIMETABLE_HTML_LEVEL>=5){  // the following JavaScript code is pretty similar to an example of Les Richardson ( http://richtech.ca/openadmin/index.html )
+		tos<<"    <meta http-equiv=\"Content-Script-Type\" content=\"text/javascript\" />\n";
+		tos<<"    <script type=\"text/javascript\">\n";
+		tos<<"      function highlight(classval) {\n";
+		tos<<"        var spans = document.getElementsByTagName('span');\n";
+		tos<<"        for(var i=0;spans.length>i;i++) {\n";
+		tos<<"          if (spans[i].className == classval) {\n";
+		tos<<"            spans[i].style.backgroundColor = 'lime';\n";
+		tos<<"          } else {\n";
+		tos<<"            spans[i].style.backgroundColor = 'white';\n";
+		tos<<"          }\n";
+		tos<<"        }\n";
+		tos<<"      }\n";
+		tos<<"    </script>\n";
+	}
+	tos<<"  </head>\n\n";
+
+	tos<<"  <body>\n";
+
+	if(placedActivities!=gt.rules.nInternalActivities)
+		tos<<"    <h1>"<<TimetableExport::tr("Warning! Only %1 out of %2 activities placed!").arg(placedActivities).arg(gt.rules.nInternalActivities)<<"</h1>\n";
+
+
+	tos<<"    <table id=\"table_"<<protect2id(gt.rules.institutionName)<<"\" border=\"1\">\n";
+
+	tos<<"      <caption>"<<protect2(gt.rules.institutionName)<<"</caption>\n";
+
+	tos<<"      <thead>\n        <tr><td colspan=\"2\"></td>";
+	for(int i=0; i<gt.rules.subjectsList.size(); i++){
+			if(TIMETABLE_HTML_LEVEL>=2)
+				tos<<"          <th class=\"xAxis\">";
+			else
+				tos<<"          <th>";
+			tos << gt.rules.subjectsList[i]->name << "</th>";
+	}
+		
+	tos<<"</tr>\n      </thead>\n";
+	/*workaround. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
+	tos<<"      <tfoot><tr><td colspan=\"2\"></td><td colspan=\""<<gt.rules.nInternalSubgroups<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr></tfoot>\n";
+	*/
+	tos<<"      <tbody>\n";
+
+
+	//LIVIU
+	for(int k=0; k<gt.rules.nDaysPerWeek; k++)
+		for(int j=0; j<gt.rules.nHoursPerDay; j++)
+			activitiesAtTime[k][j].clear();
+	for(int i=0; i<gt.rules.nInternalActivities; i++) {
+		Activity* act=&gt.rules.internalActivitiesList[i];
+		if(best_solution.times[i]!=UNALLOCATED_TIME) {
+			int hour=best_solution.times[i]/gt.rules.nDaysPerWeek;
+			int day=best_solution.times[i]%gt.rules.nDaysPerWeek;
+			for(int dd=0; dd < act->duration && hour+dd < gt.rules.nHoursPerDay; dd++)
+				activitiesAtTime[day][hour+dd].append(i);
+		}
+	}
+	///////
+
+
+	for(int k=0; k<gt.rules.nDaysPerWeek; k++){
+		for(int j=0; j<gt.rules.nHoursPerDay; j++){
+			tos << "        <tr>\n";
+			if(j==0)
+				tos << "        <th rowspan=\"" << gt.rules.nHoursPerDay  << "\">" << protect2vert(gt.rules.daysOfTheWeek[k]) << "</th>\n";
+			else tos <<"          <!-- span -->\n";
+			if(TIMETABLE_HTML_LEVEL>=2)
+				tos<<"          <th class=\"yAxis\">";
+			else
+				tos<<"          <th>";
+			tos << protect2(gt.rules.hoursOfTheDay[j]) << "</th>\n";
+
+
+			for(int subject=0; subject<gt.rules.subjectsList.size(); subject++){
+				QList<qint16> allActivities;
+				allActivities.clear();
+				
+				foreach(int ai, gt.rules.activitiesForSubject[subject])
+					if(activitiesAtTime[k][j].contains(ai)){
+						assert(!allActivities.contains(ai));
+						allActivities.append(ai);
+					}
+				
+				/*//Now get the activitiy ids. I don't run through the InternalActivitiesList, even that is faster. I run through subgroupsList, because by that the activites are sorted by that in the html-table.
+				for(int subgroup=0; subgroup<gt.rules.nInternalSubgroups; subgroup++){
+					if(students_timetable_weekly[subgroup][k][j]!=UNALLOCATED_ACTIVITY){
+						Activity* act=&gt.rules.internalActivitiesList[students_timetable_weekly[subgroup][k][j]];
+						if(act->subjectName==gt.rules.subjectsList[subject]->name)
+							if(!(allActivities.contains(students_timetable_weekly[subgroup][k][j]))){
+								allActivities<<students_timetable_weekly[subgroup][k][j];
+							}
+					}
+				}
+				//Now run through the teachers timetable, because activities without a students set are still missing.
+				for(int teacher=0; teacher<gt.rules.nInternalTeachers; teacher++){
+					if(teachers_timetable_weekly[teacher][k][j]!=UNALLOCATED_ACTIVITY){
+						Activity* act=&gt.rules.internalActivitiesList[teachers_timetable_weekly[teacher][k][j]];
+						if(act->subjectName==gt.rules.subjectsList[subject]->name)
+							if(!(allActivities.contains(teachers_timetable_weekly[teacher][k][j]))){
+								assert(act->studentsNames.isEmpty());
+								allActivities<<teachers_timetable_weekly[teacher][k][j];
+							}
+					}
+				}*/
+				if(allActivities.isEmpty())
+					tos<<"          <td>---</td>\n";
+				else {
+					int ai=allActivities[0]; //activity index
+					if(TIMETABLE_HTML_LEVEL>=1)
+						tos<<"          <td><table class=\"detailed\">";
+					else
+						tos<<"          <td><table>";
+					if(TIMETABLE_HTML_LEVEL>=3)
+						tos<<"<tr class=\"line0 subjecttag\">";
+					else	tos<<"<tr>";
+					for(int a=0; a<allActivities.size(); a++){
+						ai=allActivities[a];
+						Activity* act=&gt.rules.internalActivitiesList[ai];
+						if(TIMETABLE_HTML_LEVEL>=1)
+							tos<<"<td class=\"detailed\">";
+						else
+							tos<<"<td>";
+						if(act->subjectTagName.size()>0)
+							switch(TIMETABLE_HTML_LEVEL){
+								case 4 : tos<<"<span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\">"<<protect2(act->subjectTagName)<<"</span>"; break;
+								case 5 : tos<<"<span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\" onmouseover=\"highlight('subjecttag_"<<protect2id(act->subjectTagName)<<"')\">"<<protect2(act->subjectTagName)<<"</span>"; break;
+								default: tos<<protect2(act->subjectTagName); break;
+							}
+						tos<<"</td>";
+					}
+					tos<<"</tr>";
+					if(TIMETABLE_HTML_LEVEL>=3)
+						tos<<"<tr class=\"student line1\">";
+					else	tos<<"<tr>";
+					for(int a=0; a<allActivities.size(); a++){
+						ai=allActivities[a];
+						Activity* act=&gt.rules.internalActivitiesList[ai];
+						if(TIMETABLE_HTML_LEVEL>=1)
+							tos<<"<td class=\"detailed\">";
+						else
+							tos<<"<td>";
+						if(act->studentsNames.size()>0){
+							for(QStringList::Iterator st=act->studentsNames.begin(); st!=act->studentsNames.end(); st++){
+								switch(TIMETABLE_HTML_LEVEL){
+									case 4 : tos<<"<span class=\"student_"<<protect2id(*st)<<"\">"<<protect2(*st)<<"</span>"; break;
+									case 5 : tos<<"<span class=\"student_"<<protect2id(*st)<<"\" onmouseover=\"highlight('student_"<<protect2id(*st)<<"')\">"<<protect2(*st)<<"</span>"; break;
+									default: tos<<protect2(*st); break;
+								}
+								if(st!=act->studentsNames.end()-1)
+									tos<<", ";
+							}
+						}
+						tos<<"</td>";	
+					}
+					tos<<"</tr>";
+					if(TIMETABLE_HTML_LEVEL>=3)
+						tos<<"<tr class=\"teacher line2\">";
+						else	tos<<"<tr>";
+						for(int a=0; a<allActivities.size(); a++){
+						ai=allActivities[a];
+						Activity* act=&gt.rules.internalActivitiesList[ai];
+						if(TIMETABLE_HTML_LEVEL>=1)
+							tos<<"<td class=\"detailed\">";
+						else
+							tos<<"<td>";
+						if(act->teachersNames.size()>0){
+							for(QStringList::Iterator it=act->teachersNames.begin(); it!=act->teachersNames.end(); it++){
+								switch(TIMETABLE_HTML_LEVEL){
+									case 4 : tos<<"<span class=\"teacher_"<<protect2id(*it)<<"\">"<<protect2(*it)<<"</span>"; break;
+									case 5 : tos<<"<span class=\"teacher_"<<protect2id(*it)<<"\" onmouseover=\"highlight('teacher_"<<protect2id(*it)<<"')\">"<<protect2(*it)<<"</span>"; break;
+									default: tos<<protect2(*it); break;
+								}
+								if(it!=act->teachersNames.end()-1)
+									tos<<", ";
+							}
+						}
+						tos<<"</td>";
+					}
+					tos<<"</tr>";
+					if(TIMETABLE_HTML_LEVEL>=3)
+						tos<<"<tr class=\"room line3\">";
+					else	tos<<"<tr>";
+					for(int a=0; a<allActivities.size(); a++){
+						ai=allActivities[a];
+						Activity* act=&gt.rules.internalActivitiesList[ai];
+						int r=best_solution.rooms[ai];
+						if(TIMETABLE_HTML_LEVEL>=1)
+							tos<<"<td class=\"detailed\">";
+						else
+							tos<<"<td>";
+						if(r!=UNALLOCATED_SPACE && r!=UNSPECIFIED_ROOM){
+							if(act->subjectName.size()>0)
+								switch(TIMETABLE_HTML_LEVEL){
+									case 4 : tos<<"<span class=\"room_"<<protect2id(gt.rules.internalRoomsList[r]->name)<<"\">"<<protect2(gt.rules.internalRoomsList[r]->name)<<"</span>"; break;
+									case 5 : tos<<"<span class=\"room_"<<protect2id(gt.rules.internalRoomsList[r]->name)<<"\" onmouseover=\"highlight('room_"<<protect2id(gt.rules.internalRoomsList[r]->name)<<"')\">"<<protect2(gt.rules.internalRoomsList[r]->name)<<"</span>"; break;
+									default: tos<<protect2(gt.rules.internalRoomsList[r]->name); break;
+								}
+						}
+						tos<<"</td>";
+					}
+					tos<<"</tr>";
+					tos<<"</table></td>\n";
+				}
+			}
+			tos<<"        </tr>\n";
+		}
+	}
+	//workaround begin. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
+	tos<<"      <tr class=\"foot\"><td colspan=\"2\"></td><td colspan=\""<<gt.rules.nInternalSubgroups<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr>\n";
+	//workaround end.
+	tos<<"      </tbody>\n    </table>\n";
+	tos << "  </body>\n</html>\n\n";
+
+	if(file.error()>0){
+		QMessageBox::critical(NULL, QObject::tr("FET critical"),
+		 TimetableExport::tr("Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(htmlfilename).arg(file.error()));
+	}
+	file.close();
+}
+
+//XHTML generation code by Volker Dirr (http://timetabling.de/)
+/**
+Function writing the subjects' timetable in html format to a file.
+Time horizontal
+*/
+void TimetableExport::writeSubjectsTimetableTimeHorizontalHtml(const QString& htmlfilename, QString saveTime, int placedActivities){
+	assert(gt.rules.initialized && gt.rules.internalStructureComputed);
+	//assert(gt.timePopulation.initialized);
+	assert(students_schedule_ready && teachers_schedule_ready && rooms_schedule_ready);
+
+	//Now we print the results to an HTML file
+	QFile file(htmlfilename);
+	if(!file.open(QIODevice::WriteOnly)){
+		QMessageBox::critical(NULL, QObject::tr("FET critical"),
+		 TimetableExport::tr("Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(htmlfilename));
+		return;
+		assert(0);
+	}
+	QTextStream tos(&file);
+	tos.setCodec("UTF-8");
+	tos.setGenerateByteOrderMark(true);
+
+	tos<<"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n";
+	tos<<"  \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n\n";
+
+	if(LANGUAGE_STYLE_RIGHT_TO_LEFT==false)
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\">\n";
+	else
+		tos<<"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""<<LANGUAGE_FOR_HTML<<"\" xml:lang=\""<<LANGUAGE_FOR_HTML<<"\" dir=\"rtl\">\n";
+	tos<<"  <head>\n";
+	tos<<"    <title>"<<protect2(gt.rules.institutionName)<<"</title>\n";
+	tos<<"    <meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\" />\n";
+	if(TIMETABLE_HTML_LEVEL>=1){
+		QString cssfilename=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1)+"_"+STYLESHEET_CSS;
+		tos<<"    <link rel=\"stylesheet\" media=\"all\" href=\""<<cssfilename<<"\" type=\"text/css\" />\n";
+	}
+	if(TIMETABLE_HTML_LEVEL>=5){  // the following JavaScript code is pretty similar to an example of Les Richardson ( http://richtech.ca/openadmin/index.html )
+		tos<<"    <meta http-equiv=\"Content-Script-Type\" content=\"text/javascript\" />\n";
+		tos<<"    <script type=\"text/javascript\">\n";
+		tos<<"      function highlight(classval) {\n";
+		tos<<"        var spans = document.getElementsByTagName('span');\n";
+		tos<<"        for(var i=0;spans.length>i;i++) {\n";
+		tos<<"          if (spans[i].className == classval) {\n";
+		tos<<"            spans[i].style.backgroundColor = 'lime';\n";
+		tos<<"          } else {\n";
+		tos<<"            spans[i].style.backgroundColor = 'white';\n";
+		tos<<"          }\n";
+		tos<<"        }\n";
+		tos<<"      }\n";
+		tos<<"    </script>\n";
+	}
+	tos<<"  </head>\n\n";
+
+	tos<<"  <body>\n";
+
+	if(placedActivities!=gt.rules.nInternalActivities)
+		tos<<"    <h1>"<<TimetableExport::tr("Warning! Only %1 out of %2 activities placed!").arg(placedActivities).arg(gt.rules.nInternalActivities)<<"</h1>\n";
+	tos<<"    <table id=\"table_"<<protect2id(gt.rules.institutionName)<<"\" border=\"1\">\n";
+
+	tos<<"      <caption>"<<protect2(gt.rules.institutionName)<<"</caption>\n";
+
+	tos<<"      <thead>\n        <tr><td rowspan=\"2\"></td>";
+
+	for(int k=0; k<gt.rules.nDaysPerWeek; k++)
+		tos << "<th colspan=\"" << gt.rules.nHoursPerDay <<"\">" << protect2(gt.rules.daysOfTheWeek[k]) << "</th>";
+	tos <<"</tr>\n";
+	tos<<"        <tr>\n          <!-- span -->\n";
+	for(int k=0; k<gt.rules.nDaysPerWeek; k++)
+		for(int j=0; j<gt.rules.nHoursPerDay; j++){
+			if(TIMETABLE_HTML_LEVEL>=2)
+				tos<<"          <th class=\"xAxis\">";
+			else
+				tos<<"          <th>";
+			tos << protect2(gt.rules.hoursOfTheDay[j]) << "</th>\n";
+		}
+	tos<<"        </tr>\n";
+	tos<<"      </thead>\n";
+	/*workaround. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
+	tos<<"      <tfoot><tr><td colspan=\"2\"></td><td colspan=\""<<gt.rules.nInternalSubgroups<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr></tfoot>\n";
+	*/
+	tos<<"      <tbody>\n";
+	for(int subject=0; subject<gt.rules.subjectsList.size(); subject++){
+		tos << "        <tr>\n";
+		if(TIMETABLE_HTML_LEVEL>=2)
+			tos << "        <th class=\"yAxis\">" << protect2(gt.rules.subjectsList[subject]->name) << "</th>\n";
+		else
+			tos << "        <th>" << protect2(gt.rules.subjectsList[subject]->name) << "</th>\n";
+
+		///////Liviu here
+		for(int d=0; d<gt.rules.nDaysPerWeek; d++)
+			for(int h=0; h<gt.rules.nHoursPerDay; h++)
+				activitiesForCurrentSubject[d][h].clear();
+		foreach(int ai, gt.rules.activitiesForSubject[subject])
+			if(best_solution.times[ai]!=UNALLOCATED_TIME){
+				int d=best_solution.times[ai]%gt.rules.nDaysPerWeek;
+				int h=best_solution.times[ai]/gt.rules.nDaysPerWeek;
+				Activity* act=&gt.rules.internalActivitiesList[ai];
+				for(int dd=0; dd < act->duration && h+dd < gt.rules.nHoursPerDay; dd++)
+					activitiesForCurrentSubject[d][h+dd].append(ai);
+			}
+		///////end Liviu
+
+		for(int k=0; k<gt.rules.nDaysPerWeek; k++){
+			for(int j=0; j<gt.rules.nHoursPerDay; j++){
+				QList<qint16> allActivities;
+
+				allActivities=activitiesForCurrentSubject[k][j];
+
+
+				/*allActivities.clear();
+				//Now get the activitiy ids. I don't run through the InternalActivitiesList, even that is faster. I run through subgroupsList, because by that the activites are sorted by that in the html-table.
+				for(int subgroup=0; subgroup<gt.rules.nInternalSubgroups; subgroup++){
+					if(students_timetable_weekly[subgroup][k][j]!=UNALLOCATED_ACTIVITY){
+						Activity* act=&gt.rules.internalActivitiesList[students_timetable_weekly[subgroup][k][j]];
+						if(act->subjectName==gt.rules.subjectsList[subject]->name)
+							if(!(allActivities.contains(students_timetable_weekly[subgroup][k][j]))){
+								allActivities<<students_timetable_weekly[subgroup][k][j];
+							}
+					}
+				}
+				//Now run through the teachers timetable, because activities without a students set are still missing.
+				for(int teacher=0; teacher<gt.rules.nInternalTeachers; teacher++){
+					if(teachers_timetable_weekly[teacher][k][j]!=UNALLOCATED_ACTIVITY){
+						Activity* act=&gt.rules.internalActivitiesList[teachers_timetable_weekly[teacher][k][j]];
+						if(act->subjectName==gt.rules.subjectsList[subject]->name)
+							if(!(allActivities.contains(teachers_timetable_weekly[teacher][k][j]))){
+								assert(act->studentsNames.isEmpty());
+								allActivities<<teachers_timetable_weekly[teacher][k][j];
+							}
+					}
+				}*/
+				if(allActivities.isEmpty())
+					tos<<"          <td>---</td>\n";
+				else {
+					int ai=allActivities[0]; //activity index
+					if(TIMETABLE_HTML_LEVEL>=1)
+						tos<<"          <td><table class=\"detailed\">";
+					else
+						tos<<"          <td><table>";
+					if(TIMETABLE_HTML_LEVEL>=3)
+						tos<<"<tr class=\"line0 subjecttag\">";
+					else	tos<<"<tr>";
+					for(int a=0; a<allActivities.size(); a++){
+						ai=allActivities[a];
+						Activity* act=&gt.rules.internalActivitiesList[ai];
+						if(TIMETABLE_HTML_LEVEL>=1)
+							tos<<"<td class=\"detailed\">";
+						else
+							tos<<"<td>";
+						if(act->subjectTagName.size()>0)
+							switch(TIMETABLE_HTML_LEVEL){
+								case 4 : tos<<"<span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\">"<<protect2(act->subjectTagName)<<"</span>"; break;
+								case 5 : tos<<"<span class=\"subjecttag_"<<protect2id(act->subjectTagName)<<"\" onmouseover=\"highlight('subjecttag_"<<protect2id(act->subjectTagName)<<"')\">"<<protect2(act->subjectTagName)<<"</span>"; break;
+								default: tos<<protect2(act->subjectTagName); break;
+							}
+						tos<<"</td>";
+					}
+					tos<<"</tr>";
+					if(TIMETABLE_HTML_LEVEL>=3)
+						tos<<"<tr class=\"student line1\">";
+					else	tos<<"<tr>";
+					for(int a=0; a<allActivities.size(); a++){
+						ai=allActivities[a];
+						Activity* act=&gt.rules.internalActivitiesList[ai];
+						if(TIMETABLE_HTML_LEVEL>=1)
+							tos<<"<td class=\"detailed\">";
+						else
+							tos<<"<td>";
+						if(act->studentsNames.size()>0){
+							for(QStringList::Iterator st=act->studentsNames.begin(); st!=act->studentsNames.end(); st++){
+								switch(TIMETABLE_HTML_LEVEL){
+									case 4 : tos<<"<span class=\"student_"<<protect2id(*st)<<"\">"<<protect2(*st)<<"</span>"; break;
+									case 5 : tos<<"<span class=\"student_"<<protect2id(*st)<<"\" onmouseover=\"highlight('student_"<<protect2id(*st)<<"')\">"<<protect2(*st)<<"</span>"; break;
+									default: tos<<protect2(*st); break;
+								}
+								if(st!=act->studentsNames.end()-1)
+									tos<<", ";
+							}
+						}
+						tos<<"</td>";	
+					}
+					tos<<"</tr>";
+					if(TIMETABLE_HTML_LEVEL>=3)
+						tos<<"<tr class=\"teacher line2\">";
+						else	tos<<"<tr>";
+						for(int a=0; a<allActivities.size(); a++){
+						ai=allActivities[a];
+						Activity* act=&gt.rules.internalActivitiesList[ai];
+						if(TIMETABLE_HTML_LEVEL>=1)
+							tos<<"<td class=\"detailed\">";
+						else
+							tos<<"<td>";
+						if(act->teachersNames.size()>0){
+							for(QStringList::Iterator it=act->teachersNames.begin(); it!=act->teachersNames.end(); it++){
+								switch(TIMETABLE_HTML_LEVEL){
+									case 4 : tos<<"<span class=\"teacher_"<<protect2id(*it)<<"\">"<<protect2(*it)<<"</span>"; break;
+									case 5 : tos<<"<span class=\"teacher_"<<protect2id(*it)<<"\" onmouseover=\"highlight('teacher_"<<protect2id(*it)<<"')\">"<<protect2(*it)<<"</span>"; break;
+									default: tos<<protect2(*it); break;
+								}
+								if(it!=act->teachersNames.end()-1)
+									tos<<", ";
+							}
+						}
+						tos<<"</td>";
+					}
+					tos<<"</tr>";
+					if(TIMETABLE_HTML_LEVEL>=3)
+						tos<<"<tr class=\"room line3\">";
+					else	tos<<"<tr>";
+					for(int a=0; a<allActivities.size(); a++){
+						ai=allActivities[a];
+						Activity* act=&gt.rules.internalActivitiesList[ai];
+						int r=best_solution.rooms[ai];
+						if(TIMETABLE_HTML_LEVEL>=1)
+							tos<<"<td class=\"detailed\">";
+						else
+							tos<<"<td>";
+						if(r!=UNALLOCATED_SPACE && r!=UNSPECIFIED_ROOM){
+							if(act->subjectName.size()>0)
+								switch(TIMETABLE_HTML_LEVEL){
+									case 4 : tos<<"<span class=\"room_"<<protect2id(gt.rules.internalRoomsList[r]->name)<<"\">"<<protect2(gt.rules.internalRoomsList[r]->name)<<"</span>"; break;
+									case 5 : tos<<"<span class=\"room_"<<protect2id(gt.rules.internalRoomsList[r]->name)<<"\" onmouseover=\"highlight('room_"<<protect2id(gt.rules.internalRoomsList[r]->name)<<"')\">"<<protect2(gt.rules.internalRoomsList[r]->name)<<"</span>"; break;
+									default: tos<<protect2(gt.rules.internalRoomsList[r]->name); break;
+								}
+						}
+						tos<<"</td>";
+					}
+					tos<<"</tr>";
+					tos<<"</table></td>\n";
+				}
+			}
+		}
+		tos<<"        </tr>\n";
+	}
+	//workaround begin. compare http://www.openoffice.org/issues/show_bug.cgi?id=82600
+	tos<<"      <tr class=\"foot\"><td></td><td colspan=\""<<gt.rules.nHoursPerDay*gt.rules.nDaysPerWeek<<"\">"<<TimetableExport::tr("Timetable generated with FET %1 on %2").arg(FET_VERSION).arg(saveTime)<<"</td></tr>\n";
+	//workaround end.
+	tos<<"      </tbody>\n    </table>\n";
+	tos << "  </body>\n</html>\n\n";
+
+	if(file.error()>0){
+		QMessageBox::critical(NULL, QObject::tr("FET critical"),
+		 TimetableExport::tr("Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(htmlfilename).arg(file.error()));
+	}
 	file.close();
 }

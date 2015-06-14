@@ -1,3 +1,50 @@
+Multiple processor - split multiple timetable generation on multiple processors
+
+--------------------------------------------------------------------------------
+
+ConstraintsStudentsEarlyMaxBeginningsAtSecondHour
+
+Students min hours daily to consider only working days (???)
+
+----------------------------------------------------------------------------------
+
+From Maciej Deorowicz:
+
+Buildings for rooms and constraint students max building changes per day
+and constraint students min gaps between building changes.
+
+ConstraintActivitiesPreferredRoom(s) (like acts. pref. times)
+
+
+Maybe similar request with min gaps between building changes, from Marco Barsotti:
+
+>    - I have more teachers with some activity in some classes at a *first
+>    address* (subject tag 1). They have also some activity with some *other
+>    classes* at a *second address* (subject tag 2). When I define an
+>    activity and I add a subject tag, I would like to be able (select)
+> impose a gap after that activity IF (and only IF) *next activity (for
+> teacher*) has a different subject tag. Can you plan to add a such
+> constraint? - 
+
+
+Maybe similar request from Horatiu Halmajan:
+
+Students moving between buildings - we have classrooms in 5 different
+locations and we are trying to limit the number of daily movements for
+students
+
+----------------------------------------------------------------------------------
+
+From Hatim Ali:
+
+ConstraintTeachersMaxHoursContinuously
+
+> Dear all
+> please can you add "A set teachers has same timetabe (day+hour)" to make 2
+> teachers or more work in the same time (not same subject) and off in the
+> same time, (all period , all gaps ) . thanks
+
+----------------------------------------------------------------------------------
 
 From Peter Ambroz:
 
@@ -9,6 +56,49 @@ From Peter Ambroz:
  for some class (set of students) with some weight, so that the generated  
  timetable will contain room name for every activity. And then I could  
  print timetable for each particular room.
+
+----------------------------------------------------------------------------------
+
+From Abdul Hadi Kamel Abdullah
+
+Why did you remove the "Teachers-subjecttags max hours continously"
+constraint in the new version of FET. It's very important to us.
+
+Without that , the results I got was not so conducive, where a teacher has
+to give theoretical lectures (the ones with subject_tag = 'S' for more than
+two hours.
+
+The existing two constraints that for teachers which are 'Teachers no more
+than X hours continously' and 'Teachers no more than X hours daily' cannot
+prevent a teacher to have more than certain number of hours for a
+particular subject_tag.
+
+For example:
+
+lets say,
+
+It's better to for a teacher have a timetable on monday as the following :
+CASE A
+
+Time : 8am -10 am subject: CSC134   subject_tag : S (means
+theoretical-lecture session)
+Time : 10am -12pm       subject: CSC203   subject_tag : M (means lab
+session)
+Time : 2 pm - 4 pm      subject: ITT300         subject_tag : S (means
+theoretical-lecture session)
+
+than the following:
+CASE B
+
+Time : 8am -10 am subject: CSC134   subject_tag : S (means
+theoretical-lecture session)
+Time : 10 am - 12 pm    subject: ITT300         subject_tag : S (means
+theoretical-lecture session)
+Time : 2pm -4pm   subject: CSC203   subject_tag : M (means lab session)
+
+where the teacher in CASE B has to a give theoretical-lectures (in other
+words give a continous speech) for 4 hours continously, which most of
+teachers don't like.
 
 ----------------------------------------------------------------------------------
 
@@ -52,26 +142,6 @@ teachers timetable - very useful if you want to find somebody to replace you
 
 ----------------------------------------------------------------------------------
 
-From Maciej Deorowicz:
-
-Buildings for rooms and constraint students max building changes per day
-and constraint students min gaps between building changes.
-
-ConstraintActivitiesPreferredRoom(s) (like acts. pref. times)
-
-
-Maybe similar request with min gaps between building changes, from Marco Barsotti:
-
->    - I have more teachers with some activity in some classes at a *first
->    address* (subject tag 1). They have also some activity with some *other
->    classes* at a *second address* (subject tag 2). When I define an
->    activity and I add a subject tag, I would like to be able (select)
-> impose a gap after that activity IF (and only IF) *next activity (for
-> teacher*) has a different subject tag. Can you plan to add a such
-> constraint? - 
-
-----------------------------------------------------------------------------------
-
 From my80s:
 
 > i checked and i read again my emails,
@@ -87,6 +157,19 @@ From my80s:
 
 If u could add constraint 'teacher max gaps daily'
 it would be really very helpfull for me.
+
+
+> also in program we have
+> a matrix with days x hours = n x n
+> if this is allocated from some activity it should get error in
+> precomputing in real time
+> if we put another activity 100% in same cell
+>
+> that would take less time to find mistakes
+
+----
+
+export as odt (OpenOffice.org) table (spreadsheet)
 
 ----------------------------------------------------------------------------------
 
@@ -117,6 +200,13 @@ From Danail Traichev:
 > posibility to select multiple activities, and to filter them by "subject
 > group", or at least by "selected subjects". That will make entering
 > constraints like in my case easy.
+
+----------------------------------------------------------------------------------
+
+From Volker Dirr (15 October 2007):
+
+maybe it's possible to do XXX::setLayoutDirection(XXX::LeftToRight) only to the filename or language in menu.
+(bracket bug in Arabic translation)
 
 ----------------------------------------------------------------------------------
 
@@ -457,23 +547,13 @@ I think it will be better if the FET can support a single timetable data
 repository (using client-server model) in a database that can be input/view
 by several users simultaneously.
 
-6---------------------------------------------------------
-From Scott Sweeting:
-I have come up with another idea for FET. �You currently have a timetable - both 
-individual and compiled - for rooms, students and teachers. �How about have another 
-one for subjects? �This would be in both forms - individual and compiled - and would 
-contain the teacher(s), group(s) and room(s) for each activity. �This would allow 
-you to see when a subject is being taught, which is handy for school and university 
-environments. �This would allow you to cover all four areas - rooms, students, 
-teachers and subjects.
-
-7----------------------------------------------------------
+6----------------------------------------------------------
 From Patrick Fox:
 I was wondering if a discreet Fet graphic in the background of the
 window program, would be better than having nothing when you start the
 software ?
 
-8---------------------------------------------------------
+7---------------------------------------------------------
 From Volker Dirr:
 If you think that other people don�t like this default constaint how about
 making a menu "default settings". there you can add "langurage" and my
@@ -492,7 +572,7 @@ because it isn�t not to bad if it happen (having a lesson twice a day" only a 
 or do something like "time constraints (activities) - max n activities with same subject per day"
 or "time constraints (activities) - max n (grouped) activities with same subject per day". (but he have to differ between activities and subactivities. is�t nonsens to subactivities, it has just sense with activities.)
 
-9---------------------------------------------------------
+8---------------------------------------------------------
 From Joseph M Fontana:
 
 Yesterday I was doing some testing and I was able to create some
@@ -505,7 +585,7 @@ created the previous day and I went to view teachers-with rooms. To my
 surprise FET asked me to allocate the rooms again (message saying:
 "please allocate the rooms, firstly").
 
-10---------------------------------------------------------
+9---------------------------------------------------------
 From fsh_felix
 I hope you can enhance the software with an IMPORT utility to read 
 text files for (in the order of:)
