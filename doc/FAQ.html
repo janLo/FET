@@ -3,7 +3,7 @@
 <HEAD>
 	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-1">
 	<TITLE></TITLE>
-	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.3  (Linux)">
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 2.0  (Linux)">
 	<META NAME="AUTHOR" CONTENT="Lalescu Liviu">
 	<META NAME="CREATED" CONTENT="20050228;17341200">
 	<META NAME="CHANGEDBY" CONTENT="Liviu Lalescu">
@@ -158,8 +158,8 @@ you might need that.</P>
 <P>-------------------------------------------------------------------------------</P>
 <P><BR><BR>
 </P>
-<P>Q: What means bi-weekly activity?</P>
-<P>A: An activity which takes place once at two weeks (maybe this
+<P>Q: What does a bi-weekly activity mean?</P>
+<P>A: An activity which takes place once every two weeks (maybe this
 concept is not usual, but I considered it from the beginning because
 my faculty needed that).</P>
 <P><BR><BR>
@@ -199,14 +199,15 @@ loading/saving part.</P>
 <P>- Time (hours) and space (rooms) allocations are 2 similar phases.
 You must read my paper to see the reasons why you can firstly
 allocate the hours and then the rooms.</P>
-<P>- I use for the teachers, subjects, students (years, groups,
+<P>- I used for the teachers, subjects, students (years, groups,
 subgroups), activities and constraints a QPtrList. Before starting
 the simulation, all this information is copied into some arrays, to
 speed up the computation. Now, the simulation works by considering
-each teacher, subject and activity an index in these new arrays (the
-timetables are represented as matrices, indexed by the the teacher
-(students, rooms), day and hour, and have integer values, which
-represent activity indices (indices in this second copied arrays).</P>
+each teacher, subject and activity as an index in these new arrays
+(the timetables are represented as matrices, indexed by the the
+teacher (students, rooms), day and hour, and have integer values,
+which represent activity indices (indices in this second copied
+arrays).</P>
 <P>- I used int16 sometimes just because of the memory consumption</P>
 <P>- With 8192 maximum population and 2500 maximum activities, class
 GeneticTimetable has the size of about 160 megabytes (I hope I
@@ -223,10 +224,10 @@ activities the class Rules has size of ~160Mb.</P>
 </P>
 <P>Q: Could you please detail the use of weights in constraints?</P>
 <P>A: The weight of any constraint can be a real number (double).
-BUT: I preferred that any return value of a constraint to be an
-integer, which is this real value rounded up to the nearest integer
-(reasons of speed). For the moment, please try to work with integer
-weights (between 1 and 100).</P>
+BUT: I preferred that any return value of a constraint be an integer,
+which is this real value rounded up to the nearest integer (reasons
+of speed). For the moment, please try to work with integer weights
+(between 1 and 100).</P>
 <P>-------------------------------------------------------------------------------</P>
 <P><BR><BR>
 </P>
@@ -239,9 +240,9 @@ Jaszuk, will not yield perfect solutions for the second phase,
 although there exists a perfect solution, found manually.</P>
 <P><BR><BR>
 </P>
-<P>There are two solutions: 1) FET to work in a single phase (but the
-time will be a bit longer) or 2) add some time constraints so as the
-solution to the first phase will always respect all the space
+<P>There are two solutions: 1) Get FET to work in a single phase (but
+the time will be a bit longer) or 2) add some time constraints so as
+the solution to the first phase will always respect all the space
 constraints (very complicated: all the constraints might be
 compulsory or non-compulsory and the execution time is very long).</P>
 <P><BR><BR>
@@ -271,30 +272,30 @@ placement. In this case, please use ConstraintActivityPreferredTimes
 with only one preferred time.</P>
 <P>Example: 5 days per week</P>
 <P>5 activities daily exclusive</P>
-<P>activity 1 - preferred on monday</P>
-<P>activity 2 - preferred on monday</P>
-<P>activity 3 - preferred on tuesday</P>
-<P>activity 4 - preferred on thursday</P>
+<P>activity 1 - preferred on Monday</P>
+<P>activity 2 - preferred on Monday</P>
+<P>activity 3 - preferred on Tuesday</P>
+<P>activity 4 - preferred on Thursday</P>
 <P>activity 5 - anytime</P>
 <P>The best solution will contain 2 conflicts, and a possible
 solution would be:</P>
-<P>act 1 - mon</P>
-<P>act 2 - tue</P>
-<P>act 3 - wed</P>
-<P>act 4 - thu</P>
-<P>act 5 - fri</P>
+<P>act 1 - Mon</P>
+<P>act 2 - Tue</P>
+<P>act 3 - Wed</P>
+<P>act 4 - Thu</P>
+<P>act 5 - Fri</P>
 <P>If you use ConstraintActivityPreferredTimes, you will get only one
 conflict:</P>
-<P>act 1 - mon</P>
-<P>act 2 - wed</P>
-<P>act 3 - tue</P>
-<P>act 4 - thu</P>
-<P>act 5 - fri</P>
+<P>act 1 - Mon</P>
+<P>act 2 - Wed</P>
+<P>act 3 - Tue</P>
+<P>act 4 - Thu</P>
+<P>act 5 &ndash; Fri</P>
 <P>-------------------------------------------------------------------------------</P>
 <P><BR><BR>
 </P>
 <P>Q: What advantages has FET over other applications?</P>
-<P>A: - It is free software</P>
+<P>A: - It is free software and...</P>
 <P>- Supports weekly and biweekly activities (my university of
 Craiova, Romania, needed that);</P>
 <P>- Independent subgroups, overlapping or independent groups,
@@ -340,12 +341,10 @@ free software.</P>
 <P>Is FET the first free timetabling software (GNU/GPL)? Hmmm... the
 first one was Tablix, as I found out after finishing FET. You can see
 links to this software if you look in the LINKS file or if you search
-it on the internet.</P>
+it on the Internet.</P>
 <P><BR><BR>
 </P>
 <P>-------------------------------------------------------------------------------</P>
-<P><BR><BR>
-</P>
 <P>Q: What is the difference between unallocated and random
 initialization? Which one is better?</P>
 <P>A: This means the method of initializing the population of
@@ -353,11 +352,7 @@ solution candidates. It seems (practical results) that unallocated
 initialization is better. I have not read about unallocated
 initialization anywhere, but it seems to me more natural and I have
 an empirical explanation somewhere on my thesis.</P>
-<P><BR><BR>
-</P>
 <P>-------------------------------------------------------------------------------</P>
-<P><BR><BR>
-</P>
 <P>Q: Help on ConstraintMinNDaysBetweenActivities.</P>
 <P>A: It refers to a set of activities and involves a constant, N.
 For every pair of activities in the set, it does not allow the
@@ -368,31 +363,23 @@ by at least one day</P>
 <P>Example: 3 activities and N=2. Then, one can place them on Monday,
 Wednesday and Friday (5 days week).</P>
 <P>Example2: 2 activities, N=3. Then, one can place them on Monday
-and Thursday, on Monday and Friday, then on Tuesday andFriday (5 days
-week).</P>
+and Thursday, on Monday and Friday, then on Tuesday and Friday (5
+days week).</P>
 <P><BR><BR>
 </P>
 <P>-------------------------------------------------------------------------------</P>
-<P><BR><BR>
-</P>
 <P>Q: Is it easy to add new constraints to FET?</P>
 <P>A: It is very easy. I can say that I am able to implement a new
 constraint in a matter of hours. You can find a description of this
 procedure in file /.../fet-x.x.x/doc/how-to-implement-new-constraints</P>
-<P><BR><BR>
-</P>
 <P>-------------------------------------------------------------------------------</P>
-<P><BR><BR>
-</P>
 <P>Q: Help on ConstraintStudentsEarly.</P>
 <P>A: It is a constraint that imposes the condition that all the
 students must begin their courses as early as possible. You have to
 be careful with this constraint: if any set of students begins the
-classes later than the first hour in a certain day, you</P>
-<P>will get a conflict.</P>
-<P><BR><BR>
-</P>
-<P>-------------------------------------------------------------------------------</P>
+classes later than the first hour in a certain day, you will get a
+conflict.</P>
+<P>------------------------------------------------------------------------------</P>
 <P><BR><BR>
 </P>
 <P>Q: FET fails to solve my timetable.</P>
@@ -403,14 +390,12 @@ compulsory constraints or by making them non-compulsory</P>
 <P><BR><BR>
 </P>
 <P>-------------------------------------------------------------------------------</P>
-<P><BR><BR>
-</P>
 <P>Q: Do the weights have any importance? What is the best way to
 choose them?</P>
 <P>---The comment below was written when FET used only mutation which
 randomized an activity's starting time.</P>
 <P>A: Yes, the weights are important, but unfortunately I cannot
-answer to the second question.</P>
+answer the second question.</P>
 <P>I can justify the first affirmation by an example: the considered
 file is named (for the moment) sample4. As it is right now, it is a
 good example of a very constraint timetable, difficult to schedule by
@@ -424,7 +409,7 @@ constraints conflicts (usually 1).</P>
 raised their importance (weight) and lowered the weight of the gaps
 constraints. The results came as a very unpleasant surprise for me: I
 never obtained less than 3 conflicts, with an average of 6. What
-conclusions can be derived: I am currently thinking and analysing
+conclusions can be derived: I am currently thinking and analyzing
 this issue. Until someone will come up with a plausible explanation,
 I think that: the weights of the constraints are influencing the
 conflicts function. The function can have more or less local minima
@@ -432,20 +417,19 @@ conflicts function. The function can have more or less local minima
 encouraged to play with different weights.</P>
 <P><BR><BR>
 </P>
-<P>New comment: FET-s algorithm favorises the one-mutation
-transitions, that is, from a candidate solution you obtain a new
-candidate solution with a single activity rescheduled. The old
-candidate solution and the new one must have a good fitness, to be
-preferred in the evolutionary process. Basic constraints are more
-likely to be respected by this mutation, whereas gaps constraints
-require more mutations and the intermediary candidate solutions are
-not so fit and therefore the chances are lower of finding the good
-solution.</P>
+<P>New comment: FET-s algorithm favors the one-mutation transitions,
+that is, from a candidate solution you obtain a new candidate
+solution with a single activity rescheduled. The old candidate
+solution and the new one must have a good fitness, to be preferred in
+the evolutionary process. Basic constraints are more likely to be
+respected by this mutation, whereas gaps constraints require more
+mutations and the intermediary candidate solutions are not so fit and
+therefore the chances are lower of finding the good solution.</P>
 <P><BR><BR>
 </P>
-<P>---The comment below was written after I chosed to introduce also
+<P>---The comment below was written after I chose to introduce also
 the second kind of mutation, a swapping of two random activities.
-This swapping was very benefical, and now the results are the same,
+This swapping was very beneficial, and now the results are the same,
 regardless of the weights (I am only referring to the above example).
 The reason is that this random swap helps FET transform a candidate
 solution which does break gaps constraints into a candidate solution
@@ -453,8 +437,6 @@ which does not.</P>
 <P><BR><BR>
 </P>
 <P>-------------------------------------------------------------------------------</P>
-<P><BR><BR>
-</P>
 <P>Q: Can I use FET to do interactive timetabling?</P>
 <P>A: Yes, but this is not easy. All the part regarding data
 representation and gradually construction of the solution is working,
@@ -493,8 +475,6 @@ week when it is permitted to have activities in this time interval.</P>
 <P><BR><BR>
 </P>
 <P>-------------------------------------------------------------------------------</P>
-<P><BR><BR>
-</P>
 <P>Q: Help on Constraint2ActivitiesConsecutive.</P>
 <P>A: A user needed a timetable to respect the requirement that 2
 activities follow one after the other (order is important). For
@@ -505,8 +485,6 @@ weekly (not bi-weekly) and again multiplied with 2 if the second
 activity is weekly.</P>
 <P>-&gt;added - 15 May 2004.</P>
 <P>-&gt;modified - 20 February 2005.</P>
-<P><BR><BR>
-</P>
 <P>-------------------------------------------------------------------------------</P>
 <P><BR><BR>
 </P>

@@ -42,9 +42,17 @@ using namespace std;
 #include "modifyconstraintmaxroomchangesperdayforteachersform.h"
 #include "modifyconstraintmaxroomchangesperdayforstudentsform.h"
 
+#include <QDesktopWidget>
+
 AllSpaceConstraintsForm::AllSpaceConstraintsForm()
 {
-	this->visibleConstraintsList.setAutoDelete(false);
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+	
 	this->filterChanged();
 }
 
@@ -64,13 +72,15 @@ void AllSpaceConstraintsForm::filterChanged()
 {
 	this->visibleConstraintsList.clear();
 	constraintsListBox->clear();
-	for(SpaceConstraint* ctr=gt.rules.spaceConstraintsList.first(); ctr; ctr=gt.rules.spaceConstraintsList.next())
+	for(int i=0; i<gt.rules.spaceConstraintsList.size(); i++){
+		SpaceConstraint* ctr=gt.rules.spaceConstraintsList[i];
 		if(filterOk(ctr)){
 			QString s;
 			s=ctr->getDescription(gt.rules);
-			visibleConstraintsList.append(ctr);
+			visibleConstraintsList << ctr; //append
 			constraintsListBox->insertItem(s);
 		}
+	}
 
 	constraintsListBox->setCurrentItem(0);
 	this->constraintChanged(constraintsListBox->currentItem());
@@ -81,8 +91,8 @@ void AllSpaceConstraintsForm::constraintChanged(int index)
 	if(index<0)
 		return;
 	QString s;
-	assert((uint)(index)<this->visibleConstraintsList.count());
-	SpaceConstraint* ctr=this->visibleConstraintsList.at(index);
+	assert(index<this->visibleConstraintsList.size());
+	SpaceConstraint* ctr=this->visibleConstraintsList[index];
 	assert(ctr!=NULL);
 	s=ctr->getDetailedDescription(gt.rules);
 	currentConstraintTextEdit->setText(s);
@@ -95,7 +105,7 @@ void AllSpaceConstraintsForm::modifyConstraint()
 		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected constraint"));
 		return;
 	}
-	SpaceConstraint* ctr=this->visibleConstraintsList.at(i);
+	SpaceConstraint* ctr=this->visibleConstraintsList[i];
 
 	if(ctr->type==CONSTRAINT_BASIC_COMPULSORY_SPACE){
 		ModifyConstraintBasicCompulsorySpaceForm* form=
@@ -219,7 +229,7 @@ void AllSpaceConstraintsForm::removeConstraint()
 		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected constraint"));
 		return;
 	}
-	SpaceConstraint* ctr=this->visibleConstraintsList.at(i);
+	SpaceConstraint* ctr=this->visibleConstraintsList[i];
 	/*if(ctr->type==CONSTRAINT_BASIC_COMPULSORY_SPACE){
 		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("You cannot erase the basic space constraints"));
 		return;

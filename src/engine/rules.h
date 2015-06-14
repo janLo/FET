@@ -38,7 +38,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include <qstring.h>
 #include <qfile.h>
 #include <qtextstream.h>
-#include <qptrvector.h>
+#include <q3ptrvector.h>
 
 /**
 This class contains the processed input (all the information regarding
@@ -249,6 +249,10 @@ public:
 	Rules();
 
 	~Rules();
+	
+	void setInstitutionName(const QString& newInstitutionName);
+	
+	void setComments(const QString& newComments);
 
 	/**
 	Adds a new teacher to the list of teachers
@@ -442,10 +446,12 @@ public:
 		const QStringList& _studentsNames,
 		int _duration, /*duration, in hours*/
 		int _totalDuration,
-		int _parity, /*parity: PARITY_WEEKLY or PARITY_BIWEEKLY*/
+		int _parity, /*parity: PARITY_WEEKLY or PARITY_FORTNIGHTLY*/
 		bool _active,
 		int _preferredDay,
-		int _preferredHour);
+		int _preferredHour,
+		bool _computeNTotalStudents,
+		int _nTotalStudents);
 
 	/**
 	Adds a new split activity to the list of activities.
@@ -469,7 +475,9 @@ public:
 		bool _active[],
 		int _minDayDistance,
 		int _preferredDays[],
-		int _preferredHours[]);
+		int _preferredHours[],
+		bool _computeNTotalStudents,
+		int _nTotalStudents);
 
 	/**
 	Removes only the activity with this id.
@@ -496,12 +504,14 @@ public:
 		const QString& _subjectName, 
 		const QString& _subjectTagName, 
 		const QStringList& _studentsNames,
-		int _nTotalStudents,
+		//int _nTotalStudents,
 	 	int _nSplits,
 		int _totalDuration,
 		int _durations[],
 		int _parities[],
-		bool _active[]);
+		bool _active[],
+		bool _computeNTotalStudents,
+		int nTotalStudents);
 
 	/**
 	Adds a new equipment (already allocated).
@@ -535,7 +545,7 @@ public:
 	Adds a new building (already allocated).
 	Returns true on success, false for already existing building (same name).
 	*/
-	bool addBuilding(Building* eq);
+	bool addBuilding(Building* bu);
 
 	/**
 	Returns -1 if not found or the index in the buildings list if found.

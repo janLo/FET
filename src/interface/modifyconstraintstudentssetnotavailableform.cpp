@@ -22,10 +22,19 @@
 #include <qlabel.h>
 #include <qlineedit.h>
 
+#include <QDesktopWidget>
+
 #define yesNo(x)	((x)==0?QObject::tr("no"):QObject::tr("yes"))
 
 ModifyConstraintStudentsSetNotAvailableForm::ModifyConstraintStudentsSetNotAvailableForm(ConstraintStudentsSetNotAvailable* ctr)
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+	
 	this->_ctr=ctr;
 	
 	compulsoryCheckBox->setChecked(ctr->compulsory);
@@ -48,17 +57,20 @@ ModifyConstraintStudentsSetNotAvailableForm::~ModifyConstraintStudentsSetNotAvai
 void ModifyConstraintStudentsSetNotAvailableForm::updateStudentsComboBox(){
 	studentsComboBox->clear();
 	int i=0, j=-1;
-	for(StudentsYear* sty=gt.rules.yearsList.first(); sty; sty=gt.rules.yearsList.next()){
+	for(int m=0; m<gt.rules.yearsList.size(); m++){
+		StudentsYear* sty=gt.rules.yearsList[m];
 		studentsComboBox->insertItem(sty->name);
 		if(sty->name==this->_ctr->students)
 			j=i;
 		i++;
-		for(StudentsGroup* stg=sty->groupsList.first(); stg; stg=sty->groupsList.next()){
+		for(int n=0; n<sty->groupsList.size(); n++){
+			StudentsGroup* stg=sty->groupsList[n];
 			studentsComboBox->insertItem(stg->name);
 			if(stg->name==this->_ctr->students)
 				j=i;
 			i++;
-			for(StudentsSubgroup* sts=stg->subgroupsList.first(); sts; sts=stg->subgroupsList.next()){
+			for(int p=0; p<stg->subgroupsList.size(); p++){
+				StudentsSubgroup* sts=stg->subgroupsList[p];
 				studentsComboBox->insertItem(sts->name);
 				if(sts->name==this->_ctr->students)
 					j=i;

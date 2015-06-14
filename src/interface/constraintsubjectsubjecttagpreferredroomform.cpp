@@ -19,21 +19,35 @@
 #include "addconstraintsubjectsubjecttagpreferredroomform.h"
 #include "modifyconstraintsubjectsubjecttagpreferredroomform.h"
 
+#include <QDesktopWidget>
+
 ConstraintSubjectSubjectTagPreferredRoomForm::ConstraintSubjectSubjectTagPreferredRoomForm()
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	roomsComboBox->insertItem("");
-	for(Room* rm=gt.rules.roomsList.first(); rm; rm=gt.rules.roomsList.next())
+	for(int i=0; i<gt.rules.roomsList.size(); i++){
+		Room* rm=gt.rules.roomsList[i];
 		roomsComboBox->insertItem(rm->name);
+	}
 
 	subjectsComboBox->insertItem("");
-	for(Subject* sb=gt.rules.subjectsList.first(); sb; sb=gt.rules.subjectsList.next())
+	for(int i=0; i<gt.rules.subjectsList.size(); i++){
+		Subject* sb=gt.rules.subjectsList[i];
 		subjectsComboBox->insertItem(sb->name);
+	}
 
 	subjectTagsComboBox->insertItem("");
-	for(SubjectTag* st=gt.rules.subjectTagsList.first(); st; st=gt.rules.subjectTagsList.next())
+	for(int i=0; i<gt.rules.subjectTagsList.size(); i++){
+		SubjectTag* st=gt.rules.subjectTagsList[i];
 		subjectTagsComboBox->insertItem(st->name);
+	}
 
-	this->visibleConstraintsList.setAutoDelete(false);
 	this->filterChanged();
 }
 
@@ -57,18 +71,20 @@ void ConstraintSubjectSubjectTagPreferredRoomForm::filterChanged()
 {
 	this->visibleConstraintsList.clear();
 	constraintsListBox->clear();
-	for(SpaceConstraint* ctr=gt.rules.spaceConstraintsList.first(); ctr; ctr=gt.rules.spaceConstraintsList.next())
+	for(int i=0; i<gt.rules.spaceConstraintsList.size(); i++){
+		SpaceConstraint* ctr=gt.rules.spaceConstraintsList[i];
 		if(filterOk(ctr)){
 			visibleConstraintsList.append(ctr);
 			constraintsListBox->insertItem(ctr->getDescription(gt.rules));
 		}
+	}
 }
 
 void ConstraintSubjectSubjectTagPreferredRoomForm::constraintChanged(int index)
 {
 	if(index<0)
 		return;
-	assert((uint)(index)<this->visibleConstraintsList.count());
+	assert(index<this->visibleConstraintsList.size());
 	SpaceConstraint* ctr=this->visibleConstraintsList.at(index);
 	assert(ctr!=NULL);
 	currentConstraintTextEdit->setText(ctr->getDetailedDescription(gt.rules));
@@ -76,8 +92,8 @@ void ConstraintSubjectSubjectTagPreferredRoomForm::constraintChanged(int index)
 
 void ConstraintSubjectSubjectTagPreferredRoomForm::addConstraint()
 {
-	AddConstraintSubjectSubjectTagPreferredRoomForm *addConstraintSubjectSubjectTagPreferredRoomForm=new AddConstraintSubjectSubjectTagPreferredRoomForm();
-	addConstraintSubjectSubjectTagPreferredRoomForm->exec();
+	AddConstraintSubjectSubjectTagPreferredRoomForm *form=new AddConstraintSubjectSubjectTagPreferredRoomForm();
+	form->exec();
 
 	filterChanged();
 	
@@ -93,9 +109,9 @@ void ConstraintSubjectSubjectTagPreferredRoomForm::modifyConstraint()
 	}
 	SpaceConstraint* ctr=this->visibleConstraintsList.at(i);
 
-	ModifyConstraintSubjectSubjectTagPreferredRoomForm *modifyConstraintSubjectSubjectTagPreferredRoomForm
+	ModifyConstraintSubjectSubjectTagPreferredRoomForm *form
 	 = new ModifyConstraintSubjectSubjectTagPreferredRoomForm((ConstraintSubjectSubjectTagPreferredRoom*)ctr);
-	modifyConstraintSubjectSubjectTagPreferredRoomForm->exec();
+	form->exec();
 
 	filterChanged();
 	constraintsListBox->setCurrentItem(i);

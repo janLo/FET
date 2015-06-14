@@ -22,10 +22,19 @@
 #include <qlabel.h>
 #include <qlineedit.h>
 
+#include <QDesktopWidget>
+
 #define yesNo(x)	((x)==0?QObject::tr("no"):QObject::tr("yes"))
 
 AddConstraintStudentsSetNotAvailableForm::AddConstraintStudentsSetNotAvailableForm()
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	updatePeriodGroupBox();
 	updateStudentsSetComboBox();
 }
@@ -37,11 +46,14 @@ AddConstraintStudentsSetNotAvailableForm::~AddConstraintStudentsSetNotAvailableF
 void AddConstraintStudentsSetNotAvailableForm::updateStudentsSetComboBox()
 {
 	studentsComboBox->clear();	
-	for(StudentsYear* sty=gt.rules.yearsList.first(); sty; sty=gt.rules.yearsList.next()){
+	for(int i=0; i<gt.rules.yearsList.size(); i++){
+		StudentsYear* sty=gt.rules.yearsList[i];
 		studentsComboBox->insertItem(sty->name);
-		for(StudentsGroup* stg=sty->groupsList.first(); stg; stg=sty->groupsList.next()){
+		for(int j=0; j<sty->groupsList.size(); j++){
+			StudentsGroup* stg=sty->groupsList[j];
 			studentsComboBox->insertItem(stg->name);
-			for(StudentsSubgroup* sts=stg->subgroupsList.first(); sts; sts=stg->subgroupsList.next()){
+			for(int k=0; k<stg->subgroupsList.size(); k++){
+				StudentsSubgroup* sts=stg->subgroupsList[k];
 				studentsComboBox->insertItem(sts->name);
 			}
 		}

@@ -40,16 +40,6 @@ QString Subject::getDetailedDescription()
 	return s;
 }
 
-int SubjectsList::compareItems(QPtrCollection::Item item1, QPtrCollection::Item item2)
-{
-	if(((Subject*)item1)->name > ((Subject*)item2)->name)
-		return 1;
-	else if(((Subject*)item1)->name < ((Subject*)item2)->name)
-		return -1;
-	else
-		return 0;
-}
-
 QString Subject::getDetailedDescriptionWithConstraints(Rules& r)
 {
 	QString s=this->getDetailedDescription();
@@ -57,7 +47,8 @@ QString Subject::getDetailedDescriptionWithConstraints(Rules& r)
 	s+="--------------------------------------------------\n";
 	s+=QObject::tr("Time constraints directly related to this subject:");
 	s+="\n";
-	for(TimeConstraint* c=r.timeConstraintsList.first(); c; c=r.timeConstraintsList.next()){
+	for(int i=0; i<r.timeConstraintsList.size(); i++){
+		TimeConstraint* c=r.timeConstraintsList[i];
 		if(c->isRelatedToSubject(this)){
 			s+="\n";
 			s+=c->getDetailedDescription(r);
@@ -67,7 +58,8 @@ QString Subject::getDetailedDescriptionWithConstraints(Rules& r)
 	s+="--------------------------------------------------\n";
 	s+=QObject::tr("Space constraints directly related to this subject:");
 	s+="\n";
-	for(SpaceConstraint* c=r.spaceConstraintsList.first(); c; c=r.spaceConstraintsList.next()){
+	for(int i=0; i<r.spaceConstraintsList.size(); i++){
+		SpaceConstraint* c=r.spaceConstraintsList[i];
 		if(c->isRelatedToSubject(this)){
 			s+="\n";
 			s+=c->getDetailedDescription(r);
@@ -76,4 +68,9 @@ QString Subject::getDetailedDescriptionWithConstraints(Rules& r)
 	s+="--------------------------------------------------\n";
 
 	return s;
+}
+
+int subjectsAscending(const Subject* s1, const Subject* s2)
+{
+	return s1->name < s2->name;
 }

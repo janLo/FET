@@ -112,7 +112,7 @@ dniach pomiędzy parami zajęć</translation>
     </message>
     <message>
         <source>Bi-weekly (once at two weeks)</source>
-        <translation>Co dwa tygodnie</translation>
+        <translation type="obsolete">Co dwa tygodnie</translation>
     </message>
     <message>
         <source>Duration</source>
@@ -128,7 +128,7 @@ dniach pomiędzy parami zajęć</translation>
     </message>
     <message>
         <source>Bi-weekly</source>
-        <translation>Co dwa tygodnie</translation>
+        <translation type="obsolete">Co dwa tygodnie</translation>
     </message>
     <message>
         <source>3</source>
@@ -222,6 +222,18 @@ dniach pomiędzy parami zajęć</translation>
     <message>
         <source>Active</source>
         <translation>Aktywny</translation>
+    </message>
+    <message>
+        <source>Fortnightly (once at two weeks)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fortnightly</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Number of students (-1 for automatic computing)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -781,6 +793,26 @@ dodane ograniczenie tej samej godziny początkowej)</translation>
         <source>Activity</source>
         <translation>Zajęcia</translation>
     </message>
+    <message>
+        <source>Filter</source>
+        <translation type="unfinished">Filtr</translation>
+    </message>
+    <message>
+        <source>Students set</source>
+        <translation type="unfinished">Grupa studentów</translation>
+    </message>
+    <message>
+        <source>Teacher</source>
+        <translation type="unfinished">Nauczyciel</translation>
+    </message>
+    <message>
+        <source>Subject</source>
+        <translation type="unfinished">Przedmiot</translation>
+    </message>
+    <message>
+        <source>Subject tag</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AddConstraintActivityPreferredTimesForm_template</name>
@@ -811,6 +843,26 @@ dodane ograniczenie tej samej godziny początkowej)</translation>
     <message>
         <source>Compulsory</source>
         <translation>Obowiązkowe</translation>
+    </message>
+    <message>
+        <source>Filter</source>
+        <translation type="unfinished">Filtr</translation>
+    </message>
+    <message>
+        <source>Students set</source>
+        <translation type="unfinished">Grupa studentów</translation>
+    </message>
+    <message>
+        <source>Teacher</source>
+        <translation type="unfinished">Nauczyciel</translation>
+    </message>
+    <message>
+        <source>Subject tag</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subject</source>
+        <translation type="unfinished">Przedmiot</translation>
     </message>
 </context>
 <context>
@@ -1871,6 +1923,57 @@ dodane ograniczenie tej samej godziny początkowej)</translation>
     </message>
 </context>
 <context>
+    <name>AddConstraintTeacherIntervalMaxDaysPerWeekForm_template</name>
+    <message>
+        <source>FET - Add new constraint teacher interval max days per week dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Bieżące ograniczenie</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="unfinished">1.0</translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teacher</source>
+        <translation type="unfinished">Nauczyciel</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Zamknij</translation>
+    </message>
+    <message>
+        <source>Add current constraint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Compulsory constraint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Period</source>
+        <translation type="unfinished">Okres</translation>
+    </message>
+    <message>
+        <source>Start hour</source>
+        <translation type="unfinished">Godzina początkowa</translation>
+    </message>
+    <message>
+        <source>End hour</source>
+        <translation type="unfinished">Godzina końcowa</translation>
+    </message>
+    <message>
+        <source>Max days per week</source>
+        <translation type="unfinished">Max dni w tygodniu</translation>
+    </message>
+</context>
+<context>
     <name>AddConstraintTeacherMaxDaysPerWeekForm_template</name>
     <message>
         <source>FET - Add new constraint teacher max days per week dialog</source>
@@ -2102,6 +2205,41 @@ dodane ograniczenie tej samej godziny początkowej)</translation>
     <message>
         <source>Compulsory constraint</source>
         <translation>Ograniczenie obowiązkowe</translation>
+    </message>
+</context>
+<context>
+    <name>AddConstraintTeachersMinHoursDailyForm_template</name>
+    <message>
+        <source>FET - Add new constraint teachers min hours daily dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add current constraint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Zamknij</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Bieżące ograniczenie</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="unfinished">1.0</translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Min hours daily</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Compulsory constraint</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3916,6 +4054,45 @@ dodane ograniczenie tej samej godziny początkowej)</translation>
     </message>
 </context>
 <context>
+    <name>ConstraintTeacherIntervalMaxDaysPerWeekForm_template</name>
+    <message>
+        <source>FET - Time constraints teacher interval max days per week</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Item</source>
+        <translation type="unfinished">Nowa pozycja</translation>
+    </message>
+    <message>
+        <source>Constraints</source>
+        <translation type="unfinished">Ograniczenia</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Zamknij</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Dodaj</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Bieżące ograniczenie</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished">Usuń</translation>
+    </message>
+    <message>
+        <source>Modify</source>
+        <translation type="unfinished">Zmień</translation>
+    </message>
+    <message>
+        <source>Filter</source>
+        <translation type="unfinished">Filtr</translation>
+    </message>
+</context>
+<context>
     <name>ConstraintTeacherMaxDaysPerWeekForm_template</name>
     <message>
         <source>FET - Time constraints teacher max days per week</source>
@@ -4139,6 +4316,41 @@ dodane ograniczenie tej samej godziny początkowej)</translation>
     <message>
         <source>Constraints</source>
         <translation>Ograniczenia</translation>
+    </message>
+</context>
+<context>
+    <name>ConstraintTeachersMinHoursDailyForm_template</name>
+    <message>
+        <source>FET - Time constraints teachers min hours daily</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Item</source>
+        <translation type="unfinished">Nowa pozycja</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Zamknij</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Dodaj</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Bieżące ograniczenie</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished">Usuń</translation>
+    </message>
+    <message>
+        <source>Modify</source>
+        <translation type="unfinished">Zmień</translation>
+    </message>
+    <message>
+        <source>Constraints</source>
+        <translation type="unfinished">Ograniczenia</translation>
     </message>
 </context>
 <context>
@@ -5097,6 +5309,38 @@ dodane ograniczenie tej samej godziny początkowej)</translation>
         <source>&amp;nl (Dutch)</source>
         <translation>&amp;nl (niderlandzki)</translation>
     </message>
+    <message>
+        <source>&amp;de (German)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teachers statistics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Students statistics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Statistics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subjects statistics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teacher interval max days per week</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teachers min hours daily</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;hu (Hungarian)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>GroupsForm_template</name>
@@ -5153,11 +5397,11 @@ dodane ograniczenie tej samej godziny początkowej)</translation>
     <name>HelpAboutForm_template</name>
     <message>
         <source>About FET - a free evolutionary timetabling program</source>
-        <translation>O FET - wolnym oprogramowaniu do układania rozkładu zajęć</translation>
+        <translation type="obsolete">O FET - wolnym oprogramowaniu do układania rozkładu zajęć</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation>Zamknij</translation>
+        <translation type="obsolete">Zamknij</translation>
     </message>
     <message>
         <source>Author</source>
@@ -5195,22 +5439,12 @@ Na polski przekłada Radosław Pasiok
         <translation>Odnośniki</translation>
     </message>
     <message>
-        <source>[1] H.S.C.Lee, Timetabling Highly Constrained Systems via Genetic Algorithms, Masters Thesis, University of Philippines, Diliman, Quezon City, 2000 (free, on the internet).
-
-[2] A.Schaerf, A Survey of Automated Timetabling, Artificial Intelligence Review 13(2), 87-127, 1999 (free, on the internet).
-
-[3] S.Tongchim, Coarse-Grained Parallel Genetic Algorithm for Solving the Timetable Problem, Proc. of the 3rd Annual Nat.Symp.on Computational Science and Engineering. Bangkok, Thailand, 1999 (free, on the internet).
-
-[4] Z.Michalewicz, Genetic Algorithms + Data Structures = Evolution Programs (2nd ed.), Springer-Verlag, 1994</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>Thanks to</source>
         <translation>Podziękowania</translation>
     </message>
     <message>
         <source>Sponsors</source>
-        <translation>Sponsorzy</translation>
+        <translation type="obsolete">Sponsorzy</translation>
     </message>
     <message>
         <source>In chronological order:
@@ -5251,264 +5485,35 @@ Na polski przekłada Radosław Pasiok
 <byte value="x9"/>(zapala@konto.pl)</translation>
     </message>
     <message>
-        <source>In chronological order:
-
-Sebastian Canagaratna, Department of Chemistry, Ohio Northern University
-
-Raita Mihail Doru
-
-Tom Hosty</source>
+        <source>About FET - a free timetabling program</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>French translation - by Jerome Durand 
-<byte value="x9"/>(fetfr@free.fr, http://fetfr.free.fr/ )
-
-Catalan translation - by Miguel Gea Milvaques 
-<byte value="x9"/>(debian@miguelgea.com)
-
-Romanian translation - by Liviu Lalescu 
-<byte value="x9"/>(Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address))
-
-Malay translation - by Abdul Hadi Kamel
-<byte value="x9"/>(hadikamel@perlis.uitm.edu.my)
-
-Polish translation - by Radoslaw Pasiok
-<byte value="x9"/>(zapala@konto.pl)
-
-Turkish translation - by Mehmet Gezmisoglu
-<byte value="x9"/>(m_gezmisoglu@hotmail.com)
-
-Dutch translation - by Niels Fikse
-<byte value="x9"/>(k.fikse AT student.utwente.nl)</source>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:Sans Serif; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;[1] H.S.C.Lee, Timetabling Highly Constrained Systems via Genetic Algorithms, Masters Thesis, University of Philippines, Diliman, Quezon City, 2000 (free, on the internet).&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;[2] A.Schaerf, A Survey of Automated Timetabling, Artificial Intelligence Review 13(2), 87-127, 1999 (free, on the internet).&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;[3] S.Tongchim, Coarse-Grained Parallel Genetic Algorithm for Solving the Timetable Problem, Proc. of the 3rd Annual Nat.Symp.on Computational Science and Engineering. Bangkok, Thailand, 1999 (free, on the internet).&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;[4] Z.Michalewicz, Genetic Algorithms + Data Structures = Evolution Programs (2nd ed.), Springer-Verlag, 1994&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>FET is free software for automatically scheduling the timetable of a school, high-school or faculty.
-
-Version: 3.18.2 (January 2006)
-
-Licensed under GNU/GPL.
-
-Author: Liviu Lalescu, Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)
-
-FET web page: http://lalescu.ro/liviu/fet/
-
-This project is open source. You are invited to contribute to this software and your feed-back would be greatly appreciated.
-
-Please support this project by making a donation. You can contact the author or a translator for that.</source>
+        <source>Contributors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>(chronologically)
---------------------
-
-Costin Badica<byte value="x9"/>- my teacher. He actually made me begin this project and provided me with documentation and advices.
-
-Carsten Niehaus - suggestions.
-
-Imre Nagy <byte value="x9"/>- e-mail list (does not work anymore), suggestions.
-
-Sajith V. K. <byte value="x9"/>- suggestions
-
-Michael Towers<byte value="x9"/>- lots of bugs reported, sample files, suggestions, front/back-end.
-
-Antti Leppik<byte value="x9"/>- sample file, suggestions.
-
-Ian Fantom<byte value="x9"/>- sample file, suggestions.
-
-Simon Ghetti<byte value="x9"/>- sample files, suggestions.
-
-Gibbon Tamba - sample file, bug reported.
-
-Jerome Durand - bug reported, French translation (fetfr@free.fr, please also see http://fetfr.free.fr/).
-
-Marek Jaszuk - bugs reported, suggestions, sample file.
-
-Ramanathan Srinivasan - suggestions.
-
-Vimal Joseph - suggestions, a script to convert the .xml results into .tex.
-
-Cristian Gherman - bug reported, suggestions.
-<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>
-Nicholas Robinson - suggestions.
-
-Radu Spineanu <byte value="x9"/>- Debian package.
-
-Morten Piil<byte value="x9"/>- bug reported, sample file.
-
-Sebastian Canagaratna - lots of suggestions, bugs reported, sample files.
-
-Abdul Hadi Kamel - sample file, bugs reported, Malay translation.
-
-Miguel Gea Milvaques - Catalan translation.
-
-Frank de Bruijn - bug reported.
-
-Radoslaw Pasiok - Polish translation.
-
-Daan Huntjens - bug reported, sample file, suggestions, partial Dutch translation.
-
-Yush Yuen - sample file.
-
-Scott Sweeting - sample file, suggestions, icon for FET.
-
-Dragos Petrascu - suggestions.
-
-Daniel S. - suggestions, help files for the constraints.
-
-Gianluca Salvo - suggested Constraint2ActivitiesOrdered.
-
-Sebastian O&apos;Halloran - suggestions.
-
-Mehmet Gezmisoglu - Turkish translation.
-
-Tom Hosty (tomhosty@hotmail.com) - sample file, bugs reported, user&apos;s guide.
-
-Niels Fikse - Dutch translation.
-
-Simon Bohlin - suggestions.</source>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:Sans Serif; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Code contributors:&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Volker Dirr (Volker at dirr-computer dot de) - implemented and tested two-point and uniform crossover. Currently, FET uses only two-point crossover. This is clearly an improvement over the 1-point crossover, originally implemented in FET.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>sathia silan (thrilosyen81@yahoo.com)   (2006-01-09 10:45:34+02) (Rating: 5 stars out of 5)
-<byte value="x9"/>
-its good piece of G/A software...help me in studying G/A more..
-
----------------------------------------------------------------------
-
-Tom Hosty (tomhosty@hotmail.com)   (2005-11-20 23:29:05+02) (Rating: 5 stars out of 5)
-<byte value="x9"/>
-I am a teacher with 30+ years experience. This is an excellent program, written by a young man who is obviously a genius. He welcomes your ideas and responds immediately. And it&apos;s free! (I tried a couple of commercial programs first - an English one costing 675 English pounds and a Finnish one costing over 300 English pounds).
-
----------------------------------------------------------------------
-
-Nakul Dhotre (mail_me@rock.com)   (2005-10-29 22:45:08+03) (Rating: 4 stars out of 5)
-<byte value="x9"/>
-This is a great piece of software and a very good example of the huge potential genetic algorithms have.
-
-I never thaught making timetables might be such a difficult task when i was a kid .. but with this thing even a kid can make timetable for the whole school.
-
----------------------------------------------------------------------
-
-drew (DrDrew@Gmail.com)   (2005-10-10 14:42:38+03)
-<byte value="x9"/>
-Do you know konosys ?
-That&apos;s the best timetable generator. Fet seems to be arranged !!
-
----------------------------------------------------------------------
-
-Raita Mihail (mircea8844@yahoo.com)   (2005-09-14 21:50:20+03) (Rating: 5 stars out of 5)
-<byte value="x9"/>
-Este super!
-
----------------------------------------------------------------------
-
-Rica (aurelian.pavel@email.ro)   (2005-09-11 12:46:05+03) (Rating: 5 stars out of 5)
-<byte value="x9"/>
-Este un program superb. L-am recomandat calduros tuturor. Multumim!
-
-Aurelian Pavel,
-Gr. Sc. de Ind. Usoara, Sighisoara
-
----------------------------------------------------------------------
-
-radu (sunt@acasa.ro)   (2005-08-03 23:40:27+03)
-<byte value="x9"/>
-programul e foarte bun. si e gratis... asta e deja pasiune.
-
-multa bafta mai departe.
-
-R. Nemeth, CT &quot;C. Brancusi&quot;, Oradea.
-
----------------------------------------------------------------------
-
-j. weimenglee (weimenglee@gmail.com)   (2005-06-22 18:34:13+03) (Rating: 1 star out of 5)
-<byte value="x9"/>
-too bad
-
----------------------------------------------------------------------
-
-Sema (skweli@yahoo.fr)   (2005-06-21 11:43:06+03) (Rating: 1 star out of 5)
-<byte value="x9"/>
-it&apos;s not for universities. it doesnt look professional.
-
----------------------------------------------------------------------
-
-Adrian Hernandez Santisteban (filosofo@gmail.com)   (2005-06-13 02:32:55+03) (Rating: 5 stars out of 5)
-<byte value="x9"/>
-I am a member of a literacy campaign in MEXICO. We are a non-profit organization that work to improve the quality of life of those ones who did not recieved a proper education. We like to thank you very much for this program, it is excellent. It helped us resolve all our logistic problems.
-
----------------------------------------------------------------------
-
-ely mustapha (mustapha.ahmedly@esct.rnu.tn)   (2005-05-18 12:55:57+03) (Rating: 5 stars out of 5)
-<byte value="x9"/>
-Excellent programme. De telles solutions manquent sur le net. Merci encore.
-
----------------------------------------------------------------------
-
-rezgui (rezguiwahid@yahoo.fr)   (2005-04-21 18:46:34+03)
-<byte value="x9"/>
-an excellent program for timetabling,but i want to complie it on windows architecture
-
----------------------------------------------------------------------
-
-Erik Happaerts (erik.happaerts@ehb.be)   (2005-03-26 11:59:25+02)
-<byte value="x9"/>
-The software looks very good. It&apos;s a pity that there isn&apos;t a multi-user interface. At our university multiple people are in charge of planning. It would be great if the program could use a central database.
-
----------------------------------------------------------------------
-
-Abdul Hadi Kamel (hadikamel@perlis.uitm.edu.my)   (2005-02-07 04:39:22+02)
-<byte value="x9"/>
-I have tested your software using our University&apos;s time-tabling data.
-Any advice in developing a good front-end web-based for your fet program?
-
-The comments are :
-
-a) Generally it&apos;s an excellent program for time tabling although it takes a long time to run before we can get the results.
-
-b) You should upgrade the interface to allow users to update/modify the data that have been keyed in.
-
-c) It&apos;s good to consider having options to keep the input and output data in MySQL database, besides xml.
-
-d)I hope the fet will continue to be an Open-source program in the future.
-
-by
-Hadi Kamel
-UiTM Arau, Perlis Malaysia.
-
----------------------------------------------------------------------
-
-Hallaj (Hallajs@Gmail.Com)   (2005-01-19 22:42:45+02) (Rating: 5 stars out of 5)
-<byte value="x9"/>
-Very very nice software. I love the idea of it being build with QT. It somewhat enables the X usage on *nix machines. Thumbs up for the developer!
-
----------------------------------------------------------------------
-
-Morten Piil (fet@piilinfo.dk)   (2004-12-29 22:49:42+02)
-<byte value="x9"/>
-Execellent program and you can&apos;t beat the price. It sometimes hangs though
-
----------------------------------------------------------------------
-
-Nelson Hereveri (nhereveri@gmail.com)   (2004-12-07 17:58:45+02) (Rating: 4 stars out of 5)
-<byte value="x9"/>
-Muy buen software, yo lo he utilizado en conjunto con PHP4, DOM, XSLT, CSS y Sablotron.
-El nico problema es que demora un poco, pero quizs sea mi PC.
-Buen Trabajo, Felicidades.
-
-----------------------------------------------------------------------
-
-Cristian Gherman (c-gherman@home.ro)   (2004-11-28 12:14:39+02) (Rating: 4 stars out of 5)
-<byte value="x9"/>
-Un program extraordinar.
-
------------------------------------------------------------------------
-
-Eraldo Paulesu (eraldo.paulesu@unimib.it)   (2004-11-15 03:19:34+02)
-<byte value="x9"/>
-It looks an excellent software for schools of all grades but not for universities</source>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:Sans Serif; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;FET is free software for automatically scheduling the timetable of a school, high-school or faculty.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Version: 4.2.8 (February 2007)&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Licensed under GNU/GPL.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Author: Liviu Lalescu, Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Please see also Contributors and Translators tabs&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;FET web page: http://lalescu.ro/liviu/fet/&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;This project is open source. You are invited to contribute to this software and your feed-back would be greatly appreciated.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Please support this project by making a donation. You can contact the author, a contributor or a translator for that.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:Sans Serif; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;French translation &lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>Jerome Durand (fetfr AT free.fr, http://fetfr.free.fr/).&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>updated by Patrick Fox (patrick.fox AT laposte.net)&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Catalan translation&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>Miguel Gea Milvaques (debian AT miguelgea.com)&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Romanian translation&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>Liviu Lalescu (Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu,&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>in particular you can find here the e-mail address).&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Malay translation&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>Abdul Hadi Kamel (hadikamel AT perlis.uitm.edu.my)&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Polish translation&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>Radoslaw Pasiok (zapala AT konto.pl)&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Turkish translation&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>initial translator - Mehmet Gezmisoglu (m_gezmisoglu AT hotmail.com)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>updates and many improvements - Mahir Nacar (mahirnacar AT email.com)&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Dutch translation&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>Niels Fikse (k.fikse AT student.utwente.nl)&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;German translation&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>Volker Dirr (Volker AT dirr-computer.de)&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Hungarian translation&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>Ferenczi Viktor (cx AT cx.hu)&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:Sans Serif; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;(chronologically)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;--------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Costin Badica<byte value="x9"/>- my teacher. He actually made me begin this project and provided me with documentation and advices.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Carsten Niehaus - suggestions.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Imre Nagy <byte value="x9"/>- e-mail list (does not work anymore), suggestions.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Sajith V. K. <byte value="x9"/>- suggestions&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Michael Towers<byte value="x9"/>- lots of bugs reported, sample files, suggestions, front/back-end.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Antti Leppik<byte value="x9"/>- sample file, suggestions.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Ian Fantom<byte value="x9"/>- sample file, suggestions.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Simon Ghetti<byte value="x9"/>- sample files, suggestions.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Gibbon Tamba - sample file, bug reported.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Jerome Durand - bug reported, French translation (fetfr@free.fr, please also see http://fetfr.free.fr/).&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Marek Jaszuk - bugs reported, suggestions, sample file.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Ramanathan Srinivasan - suggestions.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Vimal Joseph - suggestions, a script to convert the .xml results into .tex.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Cristian Gherman - bug reported, suggestions.&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Nicholas Robinson - suggestions.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Radu Spineanu <byte value="x9"/>- Debian package.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Morten Piil<byte value="x9"/>- bug reported, sample file.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Sebastian Canagaratna - lots of suggestions, bugs reported, sample files.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Abdul Hadi Kamel - sample file, bugs reported, Malay translation.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Miguel Gea Milvaques - Catalan translation.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Frank de Bruijn - bug reported.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Radoslaw Pasiok - Polish translation.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Daan Huntjens - bug reported, sample file, suggestions, partial Dutch translation.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Yush Yuen - sample file.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Scott Sweeting - sample file, suggestions, icon for FET.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Dragos Petrascu - suggestions.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Daniel S. - suggestions, help files for the constraints.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Gianluca Salvo - suggested Constraint2ActivitiesOrdered.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Sebastian O&apos;Halloran - suggestions.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Mehmet Gezmisoglu - Turkish translation.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Tom Hosty (tomhosty@hotmail.com) - sample file, bugs reported, user&apos;s guide.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Niels Fikse - Dutch translation.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Simon Bohlin - suggestions.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Volker Dirr - German translation, bug reports, suggestions, 2-point and uniform crossover implementation and testing.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Les Richardson - update of the FAQ.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Gabi Danon - instructions on how to compile/run FET on Mac OS X.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Manolo Par - suggested ConstraintTeachersMinHoursDaily&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Viktor Ferenczi - bug report.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Paul Legere - Windows compilation.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Patrick Fox - improved French translation.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Andres Chandia - icons.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Ferenczi Viktor - Hungarian translation.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Zoran Zdravkovski - bug reports.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message encoding="UTF-8">
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:Sans Serif; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Igen June&lt;/span&gt; (&lt;a href=&quot;mailto:igen_june%40yahoo.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;igen_june@yahoo.com&lt;/span&gt;&lt;/a&gt;)   &lt;span style=&quot; color:#808080;&quot;&gt;&lt;font size=&quot;2&quot;&gt;(2007-01-15 10:03:05+02) &lt;/font&gt;&lt;/span&gt;(Rating: 4 stars out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Thanks. I try to learn this sofware. I think very usefull and comfortable for my daily task in my school (Saint Mary College Indonesia; Bengawan 6 Bandung).&lt;/p&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Jaime Hyland&lt;/span&gt; (&lt;a href=&quot;mailto:jaime%40ireland.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;jaime@ireland.com&lt;/span&gt;&lt;/a&gt;)   &lt;span style=&quot; color:#808080;&quot;&gt;&lt;font size=&quot;2&quot;&gt;(2006-11-17 09:29:07+02) &lt;/font&gt;&lt;/span&gt;(Rating: 5 stars out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;An excellent program, well documented and thoroughly explained.&lt;br /&gt;&lt;br /&gt;Very impressive.&lt;/p&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;oktay&lt;/span&gt; (&lt;a href=&quot;mailto:okt_ay%40hotmail.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;okt_ay@hotmail.com&lt;/span&gt;&lt;/a&gt;)   &lt;span style=&quot; color:#808080;&quot;&gt;&lt;font size=&quot;2&quot;&gt;(2006-11-09 04:32:41+02) &lt;/font&gt;&lt;/span&gt;(Rating: 5 stars out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;thax for such an excellent job&lt;/p&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Ioan Cioca&lt;/span&gt; (&lt;a href=&quot;mailto:iciocaus%40yahoo.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;iciocaus@yahoo.com&lt;/span&gt;&lt;/a&gt;)   &lt;span style=&quot; color:#808080;&quot;&gt;&lt;font size=&quot;2&quot;&gt;(2006-10-20 15:17:36+03) &lt;/font&gt;&lt;/span&gt;(Rating: 5 stars out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Dincolo de aprecierile elogioase pe care as fi si eu tentat sa le fac...orarul ogindeste mai cu seama munca si perseverenta autorului&lt;/p&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Shie Benaderet&lt;/span&gt; (&lt;a href=&quot;mailto:shierone%40gmail.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;shierone@gmail.com&lt;/span&gt;&lt;/a&gt;)   &lt;span style=&quot; color:#808080;&quot;&gt;&lt;font size=&quot;2&quot;&gt;(2006-09-05 09:08:48+03) &lt;/font&gt;&lt;/span&gt;(Rating: 4 stars out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Foarte Bine. Nu... Minunat!&lt;/p&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Mahir Nacar&lt;/span&gt; (&lt;a href=&quot;mailto:mahirnacar%40email.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;mahirnacar@email.com&lt;/span&gt;&lt;/a&gt;)   &lt;span style=&quot; color:#808080;&quot;&gt;&lt;font size=&quot;2&quot;&gt;(2006-08-24 16:03:25+03)&lt;/font&gt;&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;This software is the most flexible timetabling software, i have ever seen. Generally, these kinds of software about timetabling have their own constants. You can not rule the software, but the software dictates you its own limited frame. &lt;br /&gt;However, with FET, you can add-remove any constarints at your timetable, because it has very generic and modular commands. The use of these commands is like an usual computer programming activity.&lt;br /&gt;&lt;br /&gt;The only problem at my FET experience is that, the software could not solve the conflicts in a meaningful time, whenever the number of activities and constraints added, exceeded hundreds. The algoritm must be continuesly improved in order to get the software to operate like the practical style of human judgement.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;farrouj redouane (farrouj@hotmail.fr)   (2006-06-24 15:51:28+03) (Rating: 5 stars out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;FET C&apos;est le meilleur generateur d&apos;horaire&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Pranjal Daterao (only_pranjal@yahoo.com)   (2006-03-13 11:42:27+02)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Very Nice Algorithm. But Sometimes it hangs.. Excellent program.. Keep it up.. :-)&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Patrick Fox (patrick.fox@laposte.net)   (2006-03-11 11:50:01+02) (Rating: 4 stars out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Good work, it will soon be a piece of software know in each french school !&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Still can be improved.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Nizar TLILI (nizar.tlili@gmail.com)   (2006-01-27 13:23:38+02) (Rating: 3 stars out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Congratulations for your efforts.&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;I think I am interested in developing an extension for FET.&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Really, FET is very efficient!!!&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Juma (jlungo@yahoo.com)   (2006-01-15 18:09:29+02)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;it sounds good. congratulations&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;sathia silan (thrilosyen81@yahoo.com)   (2006-01-09 10:45:34+02) (Rating: 5 stars out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;its good piece of G/A software...help me in studying G/A more..&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Tom Hosty (tomhosty@hotmail.com)   (2005-11-20 23:29:05+02) (Rating: 5 stars out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;I am a teacher with 30+ years experience. This is an excellent program, written by a young man who is obviously a genius. He welcomes your ideas and responds immediately. And it&apos;s free! (I tried a couple of commercial programs first - an English one costing 675 English pounds and a Finnish one costing over 300 English pounds).&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Nakul Dhotre (mail_me@rock.com)   (2005-10-29 22:45:08+03) (Rating: 4 stars out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;This is a great piece of software and a very good example of the huge potential genetic algorithms have.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;I never thaught making timetables might be such a difficult task when i was a kid .. but with this thing even a kid can make timetable for the whole school.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;drew (DrDrew@Gmail.com)   (2005-10-10 14:42:38+03)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Do you know konosys ?&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;That&apos;s the best timetable generator. Fet seems to be arranged !!&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Raita Mihail (mircea8844@yahoo.com)   (2005-09-14 21:50:20+03) (Rating: 5 stars out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Este super!&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Rica (aurelian.pavel@email.ro)   (2005-09-11 12:46:05+03) (Rating: 5 stars out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Este un program superb. L-am recomandat calduros tuturor. Multumim!&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Aurelian Pavel,&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Gr. Sc. de Ind. Usoara, Sighisoara&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;radu (sunt@acasa.ro)   (2005-08-03 23:40:27+03)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;programul e foarte bun. si e gratis... asta e deja pasiune.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;multa bafta mai departe.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;R. Nemeth, CT &quot;C. Brancusi&quot;, Oradea.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;j. weimenglee (weimenglee@gmail.com)   (2005-06-22 18:34:13+03) (Rating: 1 star out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;too bad&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Sema (skweli@yahoo.fr)   (2005-06-21 11:43:06+03) (Rating: 1 star out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;it&apos;s not for universities. it doesnt look professional.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Adrian Hernandez Santisteban (filosofo@gmail.com)   (2005-06-13 02:32:55+03) (Rating: 5 stars out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;I am a member of a literacy campaign in MEXICO. We are a non-profit organization that work to improve the quality of life of those ones who did not recieved a proper education. We like to thank you very much for this program, it is excellent. It helped us resolve all our logistic problems.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;ely mustapha (mustapha.ahmedly@esct.rnu.tn)   (2005-05-18 12:55:57+03) (Rating: 5 stars out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Excellent programme. De telles solutions manquent sur le net. Merci encore.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;rezgui (rezguiwahid@yahoo.fr)   (2005-04-21 18:46:34+03)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;an excellent program for timetabling,but i want to complie it on windows architecture&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Erik Happaerts (erik.happaerts@ehb.be)   (2005-03-26 11:59:25+02)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The software looks very good. It&apos;s a pity that there isn&apos;t a multi-user interface. At our university multiple people are in charge of planning. It would be great if the program could use a central database.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Abdul Hadi Kamel (hadikamel@perlis.uitm.edu.my)   (2005-02-07 04:39:22+02)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;I have tested your software using our University&apos;s time-tabling data.&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Any advice in developing a good front-end web-based for your fet program?&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The comments are :&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;a) Generally it&apos;s an excellent program for time tabling although it takes a long time to run before we can get the results.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;b) You should upgrade the interface to allow users to update/modify the data that have been keyed in.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;c) It&apos;s good to consider having options to keep the input and output data in MySQL database, besides xml.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;d)I hope the fet will continue to be an Open-source program in the future.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;by&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Hadi Kamel&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;UiTM Arau, Perlis Malaysia.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Hallaj (Hallajs@Gmail.Com)   (2005-01-19 22:42:45+02) (Rating: 5 stars out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Very very nice software. I love the idea of it being build with QT. It somewhat enables the X usage on *nix machines. Thumbs up for the developer!&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Morten Piil (fet@piilinfo.dk)   (2004-12-29 22:49:42+02)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Execellent program and you can&apos;t beat the price. It sometimes hangs though&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Nelson Hereveri (nhereveri@gmail.com)   (2004-12-07 17:58:45+02) (Rating: 4 stars out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Muy buen software, yo lo he utilizado en conjunto con PHP4, DOM, XSLT, CSS y Sablotron.&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;El nico problema es que demora un poco, pero quizs sea mi PC.&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Buen Trabajo, Felicidades.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;----------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Cristian Gherman (c-gherman@home.ro)   (2004-11-28 12:14:39+02) (Rating: 4 stars out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Un program extraordinar.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;-----------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Eraldo Paulesu (eraldo.paulesu@unimib.it)   (2004-11-15 03:19:34+02)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;It looks an excellent software for schools of all grades but not for universities&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5536,281 +5541,507 @@ It looks an excellent software for schools of all grades but not for universitie
         <source>Close</source>
         <translation>Zamknij</translation>
     </message>
-    <message>
+    <message encoding="UTF-8">
         <source>FET FAQ:
+
 --------
 
+
+
 Q: What is the organization of FET input data?
-A: <byte value="x9"/>- Students - organized into sets (years, containing groups, containing subgroups).
-<byte value="x9"/>- Teachers.
-<byte value="x9"/>- Subjects (the names of the possible courses, eg. Maths, Physics, etc.).
-<byte value="x9"/>- Rooms (classrooms).
-<byte value="x9"/>- Activities: a coupling of one or more teachers, a subject and one or more students set. This is usually named a course, a lecture, a laboratory and so on.
-<byte value="x9"/>- Constraints. They can be: time constraints (referring to the allocated day and hour) or space constraints (referring to rooms allocation). They can also be compulsory or non-compulsory. ConstraintBasicCompulsoryTime and ConstraintBasicCompulsorySpace are two implicit constraints of any timetable. They are added automatically. Also automatically added are ConstraintActivityPreferredTime, added by FET when a new activity is inserted. Each constraint has a weight. The implicit constraints have the weight 1.0. You can choose the weight of the other constraints and you are encouraged to play with that. How to calculate the conflict factor of a constraint? Basically, the number of conflicts, multiplied with 1 for biweekly activities and with 2 for weekly activities, and then multiplied with the weight. 
+
+A: - Students - organized into sets (years, containing groups, containing subgroups).
+
+- Teachers.
+
+- Subjects (the names of the possible courses, eg. Maths, Physics, etc.).
+
+- Rooms (classrooms).
+
+- Activities: a coupling of one or more teachers, a subject and one or more students set. This is usually named a course, a lecture, a laboratory and so on.
+
+- Constraints. They can be: time constraints (referring to the allocated day and hour) or space constraints (referring to rooms allocation). They can also be compulsory or non-compulsory. ConstraintBasicCompulsoryTime and ConstraintBasicCompulsorySpace are two implicit constraints of any timetable. They are added automatically. Also automatically added are ConstraintActivityPreferredTime, added by FET when a new activity is inserted. Each constraint has a weight. The implicit constraints have the weight 1.0. You can choose the weight of the other constraints and you are encouraged to play with that. How to calculate the conflict factor of a constraint? Basically, the number of conflicts, multiplied with 1 for biweekly activities and with 2 for weekly activities, and then multiplied with the weight.
+
+
 
 PS: Please try to work with integer weights, for now (between 1 and 100).
 
+
+
 New adding: the FET data set also may contain a list of equipments and a list of subject tags.
 
+
+
 -------------------------------------------------------------------------------
+
+
 
 Q: How does FET work?
+
 A: A really simple genetic algorithm. You can read my papers (available on my web site - http://lalescu.ro/liviu/fet/) about it.
+
 The essence (hour allocation only): each possible timetable is represented by an array, say times[i], where i goes from 0 to the number of activities - 1. The location times[i] represents the allocated time for activity i. This is the representation.
+
 Now, it applies a genetic algorithm (using notions like selection, crossover, mutation, etc.) to obtain a close to optimal solution (hopefully).
+
+
 
 -------------------------------------------------------------------------------
 
+
+
 Q: How can I obtain a good timetable and why do I get different results each time?
+
 A: The generation of the timetable is a random process; please restart and try again if you are dissatisfied with the results. Also, you can increase the population number. For the moment, the population number is limited to 8192 but, if you have plenty of RAM, you can make it as big as you want (8192 means about 160 megabytes of memory). This variable is stored in the file src/engine/genetictimetable_defs.h and is named MAX_POPULATION_NUMBER.
+
+
 
 NEW ADDING - 18 Oct. 2004: you can decrease the variable MAX_ACTIVITIES to the number of activities you have in your school, then increase MAX_POPULATION_NUMBER. I have achieved results with MAX_ACTIVITIES set to 400 and MAX_POPULATION_NUMBER set to 65536. These variables can be found in the file src/engine/genetictimetable_defs.h. Please run a &quot;make clean&quot; before running &quot;make&quot; (there is a bug in gcc, I think).
 
+
+
 NEW ADDING - 14 Feb. 2005: The variable MAX_ACTIVITIES is now set by default to 1250, and MAX_POPULATION_NUMBER to 8192.
 
+
+
 -------------------------------------------------------------------------------
+
+
 
 Q: What is the structure of the students FET can handle?
+
 A: FET was designed to allow any school structure:
-<byte value="x9"/>- independent subgroups (non-overlapping);
-<byte value="x9"/>- overlapping groups (several subgroups) and years (several groups).
-<byte value="x9"/>
--------------------------------------------------------------------------------
-<byte value="x9"/>
-Q: How can one work with overlapping structures of students?
-A: If you have overlapping groups, then you must define the smallest independent subgroup, which does not overlap with any other subgroup. Example: you have 1 group, subject sport (which must be taught to boys and girls separately) and subject physics, which is an optional subject and only some students would like to have this course (yes, FET can manage optional subjects). Then, you must define the subgroups: boys who want physics, boys who do not want physics, girls who want physics, girls who do not want physics. Now, it is very easy. Just define 
-group girls=subgroup girls who want physics + girls who do not want physics, 
-group boys=subgroup boys who want physics + boys who do not physics
-group physics=boys who want physics + girls who want physics. 
-Then, you can add as many activities as you want to the corresponding groups:
-Activity1: teacher A, group girls, subject sport;
-Activity2: teacher B, group boys, subject sport;
-Activity3: teacher C, group physics, subject optional physics.
+
+- independent subgroups (non-overlapping);
+
+- overlapping groups (several subgroups) and years (several groups).
 
 -------------------------------------------------------------------------------
-<byte value="x9"/>
+
+Q: How can one work with overlapping structures of students?
+
+A: If you have overlapping groups, then you must define the smallest independent subgroup, which does not overlap with any other subgroup. Example: you have 1 group, subject sport (which must be taught to boys and girls separately) and subject physics, which is an optional subject and only some students would like to have this course (yes, FET can manage optional subjects). Then, you must define the subgroups: boys who want physics, boys who do not want physics, girls who want physics, girls who do not want physics. Now, it is very easy. Just define
+
+group girls=subgroup girls who want physics + girls who do not want physics,
+
+group boys=subgroup boys who want physics + boys who do not physics
+
+group physics=boys who want physics + girls who want physics.
+
+Then, you can add as many activities as you want to the corresponding groups:
+
+Activity1: teacher A, group girls, subject sport;
+
+Activity2: teacher B, group boys, subject sport;
+
+Activity3: teacher C, group physics, subject optional physics.
+
+
+
+-------------------------------------------------------------------------------
+
 Q: Can you add more students sets or teachers to a single activity?
+
 A: Yes, you can add several students sets (subgroups, groups or years) and several teachers per activity.
+
+
 
 NEW ADDING - 18 Oct. 2004: The interface permits only 3 teachers and 4 students sets per activity. But you can edit by hand the input file and add there as more as 6 teachers per activity. Nobody asked me for more than 6 teachers and 4 students sets.
 
+
+
 -------------------------------------------------------------------------------
+
+
 
 Q: What represents the weight of the constraints?
+
 A: The importance of the respective constraint, relative to other constraints. For the moment, please try to use integer weights (between 1 and 100). I never had to use different values than 1, but you might need that.
 
+
+
 -------------------------------------------------------------------------------
+
+
 
 Q: How can I increase the power of search?
+
 A: You will have to increase the population number.
 
--------------------------------------------------------------------------------
 
-Q: What means bi-weekly activity?
-A: An activity which takes place once at two weeks (maybe this concept is not usual, but I considered it from the beginning because my faculty needed that).
 
 -------------------------------------------------------------------------------
+
+
+
+Q: What does a bi-weekly activity mean?
+
+A: An activity which takes place once every two weeks (maybe this concept is not usual, but I considered it from the beginning because my faculty needed that).
+
+
+
+-------------------------------------------------------------------------------
+
+
 
 Q: Why are all the conflicts reported with double importance?
+
 A: Because they are conflicts referring to weekly activities. For biweekly ones, they will appear with single importance.
 
+
+
 -------------------------------------------------------------------------------
+
+
 
 Q: How can I contribute to/support FET?
+
 A: Please see the TODO file. Also, you can send any comment/suggestion to the author.
+
 FET is free software and any donation would be great. Please contact the author for that.
+
+
 
 -------------------------------------------------------------------------------
 
+
+
 Q: What is the algorithm behind FET?
+
 A: A simple genetic algorithm applied on a simple data representation.
-<byte value="x9"/>In the future, I hope I will put here some real description of the algorithm. Until then,here are different tricks needed to understand the program:
+
+In the future, I hope I will put here some real description of the algorithm. Until then,here are different tricks needed to understand the program:
+
 - The genetic algorithm and representation behind the program looks very simple to me now and I think it can be explained in at most 2 hours. The engine is also not so hard to understand. The nightmare is the graphical user interface, data representation and loading/saving part.
+
 - Time (hours) and space (rooms) allocations are 2 similar phases. You must read my paper to see the reasons why you can firstly allocate the hours and then the rooms.
-- I use for the teachers, subjects, students (years, groups, subgroups), activities and constraints a QPtrList. Before starting the simulation, all this information is copied into some arrays, to speed up the computation. Now, the simulation works by considering each teacher, subject and activity an index in these new arrays (the timetables are represented as matrices, indexed by the the teacher (students, rooms), day and hour, and have integer values, which represent activity indices (indices in this second copied arrays).
+
+- I used for the teachers, subjects, students (years, groups, subgroups), activities and constraints a QPtrList. Before starting the simulation, all this information is copied into some arrays, to speed up the computation. Now, the simulation works by considering each teacher, subject and activity as an index in these new arrays (the timetables are represented as matrices, indexed by the the teacher (students, rooms), day and hour, and have integer values, which represent activity indices (indices in this second copied arrays).
+
 - I used int16 sometimes just because of the memory consumption
+
 - With 8192 maximum population and 2500 maximum activities, class GeneticTimetable has the size of about 160 megabytes (I hope I remember well). In fact, it contains an array of 2500*8192*2*2 of 16 bit integers, which is ~160Mb of memory.
+
+
 
 Modification (21 Feb. 2005) - with 8192 population size and 1250 activities the class Rules has size of ~160Mb.
 
+
+
 -------------------------------------------------------------------------------
+
+
 
 Q: Could you please detail the use of weights in constraints?
-A: The weight of any constraint can be a real number (double). BUT: I preferred that any return value of a constraint to be an integer, which is this real value rounded up to the nearest integer (reasons of speed). For the moment, please try to work with integer weights (between 1 and 100).
-<byte value="x9"/>
+
+A: The weight of any constraint can be a real number (double). BUT: I preferred that any return value of a constraint be an integer, which is this real value rounded up to the nearest integer (reasons of speed). For the moment, please try to work with integer weights (between 1 and 100).
+
 -------------------------------------------------------------------------------
+
+
 
 Q: Could you please explain why FET works in two phases, first the time, then the space?
+
 A: For reasons of speed. But in the two phase allocation the first phase might find solutions that are not compatible with the second phase (for example, working with the sample number 12, from Marek Jaszuk, will not yield perfect solutions for the second phase, although there exists a perfect solution, found manually.
 
-There are two solutions: 1) FET to work in a single phase (but the time will be a bit longer) or 2) add some time constraints so as the solution to the first phase will always respect all the space constraints (very complicated: all the constraints might be compulsory or non-compulsory and the execution time is very long).
+
+
+There are two solutions: 1) Get FET to work in a single phase (but the time will be a bit longer) or 2) add some time constraints so as the solution to the first phase will always respect all the space constraints (very complicated: all the constraints might be compulsory or non-compulsory and the execution time is very long).
+
+
 
 This is a research problem.
-<byte value="x9"/>
--------------------------------------------------------------------------------
-<byte value="x9"/>
-Q: How does ConstraintActivitiesSameStartingTime work?
-A: <byte value="x9"/>- for compulsory constraints, the solution candidate is repaired before evaluation (so all solutions will respect these constraints and there will be no conflicts reported). This is faster, as an input file from user Ian Fantom proved.
-<byte value="x9"/>- for non-compulsory constraints, the method is conflict reporting (slower, worse than the above method).
 
 -------------------------------------------------------------------------------
-<byte value="x9"/>
-Q: How does ConstraintActivityPreferredTime work?
-A: <byte value="x9"/>- for compulsory constraints, the solution candidate is repaired before evaluation (so all solutions will respect these constraints and there will be no conflicts reported). This is faster (proved practically, not theoretically).
-<byte value="x9"/>- for non-compulsory constraints, the method is conflict reporting. The procedure reports a conflicts factor that is increasing with the distance to the desired period. This might generate worse solutions, if you are only interested in the exact placement. In this case, please use ConstraintActivityPreferredTimes with only one preferred time.
-<byte value="x9"/><byte value="x9"/>Example: 5 days per week
-<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>5 activities daily exclusive
-<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>activity 1 - preferred on monday
-<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>activity 2 - preferred on monday
-<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>activity 3 - preferred on tuesday
-<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>activity 4 - preferred on thursday
-<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>activity 5 - anytime
-<byte value="x9"/><byte value="x9"/>The best solution will contain 2 conflicts, and a possible solution would be:
-<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>act 1 - mon
-<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>act 2 - tue
-<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>act 3 - wed
-<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>act 4 - thu
-<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>act 5 - fri
-<byte value="x9"/><byte value="x9"/>If you use ConstraintActivityPreferredTimes, you will get only one conflict:
-<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>act 1 - mon
-<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>act 2 - wed
-<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>act 3 - tue
-<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>act 4 - thu
-<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>act 5 - fri
-<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>
+
+Q: How does ConstraintActivitiesSameStartingTime work?
+
+A: - for compulsory constraints, the solution candidate is repaired before evaluation (so all solutions will respect these constraints and there will be no conflicts reported). This is faster, as an input file from user Ian Fantom proved.
+
+- for non-compulsory constraints, the method is conflict reporting (slower, worse than the above method).
+
+
+
 -------------------------------------------------------------------------------
+
+Q: How does ConstraintActivityPreferredTime work?
+
+A: - for compulsory constraints, the solution candidate is repaired before evaluation (so all solutions will respect these constraints and there will be no conflicts reported). This is faster (proved practically, not theoretically).
+
+- for non-compulsory constraints, the method is conflict reporting. The procedure reports a conflicts factor that is increasing with the distance to the desired period. This might generate worse solutions, if you are only interested in the exact placement. In this case, please use ConstraintActivityPreferredTimes with only one preferred time.
+
+Example: 5 days per week
+
+5 activities daily exclusive
+
+activity 1 - preferred on Monday
+
+activity 2 - preferred on Monday
+
+activity 3 - preferred on Tuesday
+
+activity 4 - preferred on Thursday
+
+activity 5 - anytime
+
+The best solution will contain 2 conflicts, and a possible solution would be:
+
+act 1 - Mon
+
+act 2 - Tue
+
+act 3 - Wed
+
+act 4 - Thu
+
+act 5 - Fri
+
+If you use ConstraintActivityPreferredTimes, you will get only one conflict:
+
+act 1 - Mon
+
+act 2 - Wed
+
+act 3 - Tue
+
+act 4 - Thu
+
+act 5 – Fri
+
+-------------------------------------------------------------------------------
+
+
 
 Q: What advantages has FET over other applications?
-A: <byte value="x9"/>- It is free software
-<byte value="x9"/>- Supports weekly and biweekly activities (my university of Craiova, Romania, needed that);
-<byte value="x9"/>- Independent subgroups, overlapping or independent groups, overlapping or independent years (flexible enough to permit any kind of students structure). FET can even be used to manage every individual student, if you really need that;
-<byte value="x9"/>- Possibility of optional activities;
-<byte value="x9"/>- Many kinds of constraints, possibility to add many more (please suggest!).
+
+A: - It is free software and...
+
+- Supports weekly and biweekly activities (my university of Craiova, Romania, needed that);
+
+- Independent subgroups, overlapping or independent groups, overlapping or independent years (flexible enough to permit any kind of students structure). FET can even be used to manage every individual student, if you really need that;
+
+- Possibility of optional activities;
+
+- Many kinds of constraints, possibility to add many more (please suggest!).
+
+
 
 -------------------------------------------------------------------------------
+
+
 
 Q: What are the disadvantages of FET, compared to other applications?
-A:<byte value="x9"/>- Very unfriendly (no help, primitive graphical user interface);
-<byte value="x9"/>- Potentially buggy. I do not have enough sample files for testing FET (and I hate testing :-)
-<byte value="x9"/>
+
+A: - Very unfriendly (no help, primitive graphical user interface);
+
+- Potentially buggy. I do not have enough sample files for testing FET (and I hate testing :-)
+
 -------------------------------------------------------------------------------
+
+
 
 Q: Does FET compile on other operating systems than GNU/Linux?
+
 A: FET can be compiled easily in operating systems which are similar to GNU/Linux. I will provide help to compile this program on any operating system. In particular, FET can be compiled on Microsoft Windows, if you install Qt from trolltech.com.
+
+
 
 -------------------------------------------------------------------------------
 
+
+
 Q: Does FET claim to be the best timetabling software in the world, like all the other timetabling applications?
+
 A: I cannot pretend that, because I could not compare FET with other applications (if you could help me, that would be great). All I can say right now is that I did not see any application with as many kinds of constraints and such flexibility as FET, and besides being free software.
 
-Is FET the first free timetabling software (GNU/GPL)? Hmmm... the first one was Tablix, as I found out after finishing FET. You can see links to this software if you look in the LINKS file or if you search it on the internet.
+
+
+Is FET the first free timetabling software (GNU/GPL)? Hmmm... the first one was Tablix, as I found out after finishing FET. You can see links to this software if you look in the LINKS file or if you search it on the Internet.
+
+
 
 -------------------------------------------------------------------------------
 
 Q: What is the difference between unallocated and random initialization? Which one is better?
+
 A: This means the method of initializing the population of solution candidates. It seems (practical results) that unallocated initialization is better. I have not read about unallocated initialization anywhere, but it seems to me more natural and I have an empirical explanation somewhere on my thesis.
 
 -------------------------------------------------------------------------------
 
 Q: Help on ConstraintMinNDaysBetweenActivities.
+
 A: It refers to a set of activities and involves a constant, N. For every pair of activities in the set, it does not allow the distance(in days) between them to be less than N. If you specify N=1, then this constraint means that no two activities can be scheduled in the same day. N=2 means that each two subactivities must be separated by at least one day
+
 Example: 3 activities and N=2. Then, one can place them on Monday, Wednesday and Friday (5 days week).
-Example2: 2 activities, N=3. Then, one can place them on Monday and Thursday, on Monday and Friday, then on Tuesday andFriday (5 days week).
+
+Example2: 2 activities, N=3. Then, one can place them on Monday and Thursday, on Monday and Friday, then on Tuesday and Friday (5 days week).
+
+
 
 -------------------------------------------------------------------------------
 
 Q: Is it easy to add new constraints to FET?
+
 A: It is very easy. I can say that I am able to implement a new constraint in a matter of hours. You can find a description of this procedure in file /.../fet-x.x.x/doc/how-to-implement-new-constraints
 
 -------------------------------------------------------------------------------
 
 Q: Help on ConstraintStudentsEarly.
-A: It is a constraint that imposes the condition that all the students must begin their courses as early as possible. You have to be careful with this constraint: if any set of students<byte value="x9"/>begins the classes later than the first hour in a certain day, you
-will get a conflict.
 
--------------------------------------------------------------------------------
+A: It is a constraint that imposes the condition that all the students must begin their courses as early as possible. You have to be careful with this constraint: if any set of students begins the classes later than the first hour in a certain day, you will get a conflict.
+
+------------------------------------------------------------------------------
+
+
 
 Q: FET fails to solve my timetable.
+
 A: Please try to use a greater population size. Then, try more simulations. If that does not solve your problem, please try to relax the conditions on the timetable. You can accomplish that by deleting compulsory constraints or by making them non-compulsory
+
+
 
 -------------------------------------------------------------------------------
 
 Q: Do the weights have any importance? What is the best way to choose them?
-<byte value="x9"/>---The comment below was written when FET used only mutation which randomized an activity&apos;s starting time.
-A: Yes, the weights are important, but unfortunately I cannot answer to the second question.
-<byte value="x9"/>I can justify the first affirmation by an example: the considered file is named (for the moment) sample4. As it is right now, it is a good example of a very constraint timetable, difficult to schedule by FET. The weights are chosen such that the basic constraints have a smaller weight than the constraint avoiding the gaps for the students. I think that after about 4 tries, FET manages to find a clash-free timetable (I am only referring to compulsory constraints). There was no trial in which FET failed with more than 3 compulsory constraints conflicts (usually 1).
-I wanted to impose the more important basic constraints, so I raised their importance (weight) and lowered the weight of the gaps constraints. The results came as a very unpleasant surprise for me: I never obtained less than 3 conflicts, with an average of 6. What conclusions can be derived: I am currently thinking and analysing this issue. Until someone will come up with a plausible explanation, I think that: the weights of the constraints are influencing the conflicts function. The function can have more or less local minima (which are a headache for genetic algorithms designers). You are encouraged to play with different weights.
 
-New comment: FET-s algorithm favorises the one-mutation transitions, that is, from a candidate solution you obtain a new candidate solution with a single activity rescheduled. The old candidate solution and the new one must have a good fitness, to be preferred in the evolutionary process. Basic constraints are more likely to be respected by this mutation, whereas gaps constraints require more mutations and the intermediary candidate solutions are not so fit and therefore the chances are lower of finding the good solution.
+---The comment below was written when FET used only mutation which randomized an activity&apos;s starting time.
 
-<byte value="x9"/>---The comment below was written after I chosed to introduce also the second kind of mutation, a swapping of two random activities. This swapping was very benefical, and now the results are the same, regardless of the weights (I am only referring to the above example). The reason is that this random swap helps FET transform a candidate solution which does break gaps constraints into a candidate solution which does not.
+A: Yes, the weights are important, but unfortunately I cannot answer the second question.
+
+I can justify the first affirmation by an example: the considered file is named (for the moment) sample4. As it is right now, it is a good example of a very constraint timetable, difficult to schedule by FET. The weights are chosen such that the basic constraints have a smaller weight than the constraint avoiding the gaps for the students. I think that after about 4 tries, FET manages to find a clash-free timetable (I am only referring to compulsory constraints). There was no trial in which FET failed with more than 3 compulsory constraints conflicts (usually 1).
+
+I wanted to impose the more important basic constraints, so I raised their importance (weight) and lowered the weight of the gaps constraints. The results came as a very unpleasant surprise for me: I never obtained less than 3 conflicts, with an average of 6. What conclusions can be derived: I am currently thinking and analyzing this issue. Until someone will come up with a plausible explanation, I think that: the weights of the constraints are influencing the conflicts function. The function can have more or less local minima (which are a headache for genetic algorithms designers). You are encouraged to play with different weights.
+
+
+
+New comment: FET-s algorithm favors the one-mutation transitions, that is, from a candidate solution you obtain a new candidate solution with a single activity rescheduled. The old candidate solution and the new one must have a good fitness, to be preferred in the evolutionary process. Basic constraints are more likely to be respected by this mutation, whereas gaps constraints require more mutations and the intermediary candidate solutions are not so fit and therefore the chances are lower of finding the good solution.
+
+
+
+---The comment below was written after I chose to introduce also the second kind of mutation, a swapping of two random activities. This swapping was very beneficial, and now the results are the same, regardless of the weights (I am only referring to the above example). The reason is that this random swap helps FET transform a candidate solution which does break gaps constraints into a candidate solution which does not.
+
+
 
 -------------------------------------------------------------------------------
 
 Q: Can I use FET to do interactive timetabling?
+
 A: Yes, but this is not easy. All the part regarding data representation and gradually construction of the solution is working, only the interface has to be updated.
-<byte value="x9"/>Anyway, when you add a compulsory ConstraintActivityPreferredTime, it means that you fixed that activity. You can use this feature for a semi-automatic or even manual timetabling, but it is not so convenient.
+
+Anyway, when you add a compulsory ConstraintActivityPreferredTime, it means that you fixed that activity. You can use this feature for a semi-automatic or even manual timetabling, but it is not so convenient.
+
+
 
 -------------------------------------------------------------------------------
 
+
+
 Q: Help on ConstraintActivityPreferredTimes.
+
 A: You can specify a set of time slots when this activity can be scheduled (a kind of OR of more ConstraintActivityPreferredTime).
+
+
 
 Important: For only one non-compulsory preferred time, ConstraintActivityPreferredTimes might behave better than ConstraintActivityPreferredTime, depending on whether you are interested in minimizing the distance to this preferred time or only in reaching the exact preferred time. Please see the detailed observation in the explanation of ConstraintActivityPreferredTime
 
+
+
 -------------------------------------------------------------------------------
 
+
+
 Q: Help on ConstraintStudentsSetIntervalMaxDaysPerWeek.
+
 A: Quite a difficult and long name. A user needed a constraint to disallow more than 2 afternoons per week for a students set. This constraint is more general. You can specify an interval (by the start and end hour), a students set and the maximum number of days in a week when it is permitted to have activities in this time interval.
+
+
 
 -------------------------------------------------------------------------------
 
 Q: Help on Constraint2ActivitiesConsecutive.
+
 A: A user needed a timetable to respect the requirement that 2 activities follow one after the other (order is important). For compulsory and non-compulsory, normal error reporting is done. The conflicts are a difference in days + a difference in hours. The number of conflicts is multiplied with 2 if the first activity is weekly (not bi-weekly) and again multiplied with 2 if the second activity is weekly.
-<byte value="x9"/><byte value="x9"/>-&gt;added - 15 May 2004.
-<byte value="x9"/>-&gt;modified - 20 February 2005.
+
+-&gt;added - 15 May 2004.
+
+-&gt;modified - 20 February 2005.
 
 -------------------------------------------------------------------------------
+
+
 
 Q: Help on Constraint2ActivitiesGrouped.
-A: A user needed a timetable to respect the requirement that 2 activities follow one after the other (order is not important).For compulsory and non-compulsory, normal error reporting is done. The conflicts reported are: the difference in days+:<byte value="x9"/><byte value="x9"/>- the difference in hours if the activities are too far from each other
-<byte value="x9"/>- a constant number if the activities overlap
-<byte value="x9"/>- 0 if the hours are OK.
+
+A: A user needed a timetable to respect the requirement that 2 activities follow one after the other (order is not important).For compulsory and non-compulsory, normal error reporting is done. The conflicts reported are: the difference in days+: - the difference in hours if the activities are too far from each other
+
+- a constant number if the activities overlap
+
+- 0 if the hours are OK.
+
 The number of conflicts is multiplied with 2 if the first activity is weekly (not bi-weekly) and again multiplied with 2 if the second activity is weekly.
 
-<byte value="x9"/>-&gt;added - 15 May 2004.
+
+
+-&gt;added - 15 May 2004.
+
+
 
 -------------------------------------------------------------------------------
+
+
 
 Q: Help on ConstraintActivitiesPreferredTimes.
+
 A: A user suggested that ConstraintActivityPreferredTimes should be more general. Now, you can specify a teacher, the students and a subject as a filter to a set of activities that must be scheduled in certain intervals.
 
-<byte value="x9"/>-&gt;added - 15 May 2004.
+
+
+-&gt;added - 15 May 2004.
+
+
 
 -------------------------------------------------------------------------------
+
+
 
 Q: After finding the timetable of our school, suppose that a single teacher needs to modify his timetable and the rest would like to keep their timetable unchanged. Thus, it is needed to fix all the activities of the rest of the teachers and re-allocate the hours. Can FET deal with such a situation?
-A: Yes, FET can deal with that. Just add many compulsory ConstraintActivityPreferredTime-s, one for each activity that you would like to be fixed (the preferred time will be the one from the previous allocation). This will not slow down the allocation,
-because compulsory constraints of this type are dealt with in a special way (repairing of the chromosomes, to be more specific).
 
-<byte value="x9"/>-&gt;added - 17 November 2004.
+A: Yes, FET can deal with that. Just add many compulsory ConstraintActivityPreferredTime-s, one for each activity that you would like to be fixed (the preferred time will be the one from the previous allocation). This will not slow down the allocation, because compulsory constraints of this type are dealt with in a special way (repairing of the chromosomes, to be more specific).
+
+
+
+-&gt;added - 17 November 2004.
+
+
 
 -------------------------------------------------------------------------------
+
+
 
 Q: What about introducing duplicate constraints in the timetable data?
+
 A: It will slow down the automatic allocation, so please don&apos;t.
 
-<byte value="x9"/>-&gt; added - 12 February 2005.
+
+
+-&gt; added - 12 February 2005.
+
+
 
 -------------------------------------------------------------------------------
 
+
+
 Q: What about the one phase and 2 phases automatic allocation?
+
 A: If FET fails to solve your timetable in 2 phases (it has many broken space constraints), try a single phase allocation
-<byte value="x9"/><byte value="x9"/>-&gt; added - 14 February 2005.
+
+-&gt; added - 14 February 2005.
+
 
 
 this documentation by Liviu Lalescu</source>
-        <translation>Polskie tłumaczenie FAQ znajduje się w katalogu fet-x.xx.x/doc/pl/ w pliku FAQ_pl.html</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6570,8 +6801,14 @@ this documentation by Daniel S.</source>
     <message>
         <source>Number of start hours (periods) per day
 (please specify also the name of the last hour of the day)</source>
-        <translation>Liczba godzin rozpoczęcia zajęć w dniu (ilość przedziałów czasowych) 
+        <translation type="obsolete">Liczba godzin rozpoczęcia zajęć w dniu (ilość przedziałów czasowych) 
 (określ również godzinę kończącą dzień)</translation>
+    </message>
+    <message>
+        <source>Number of start hours (periods) per day
+(please specify also the name of the last hour of the day)
+Please be careful, you will have to input n+1 names</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6617,7 +6854,7 @@ this documentation by Daniel S.</source>
     </message>
     <message>
         <source>Bi-weekly (once at two weeks)</source>
-        <translation>Co dwa tygodnie</translation>
+        <translation type="obsolete">Co dwa tygodnie</translation>
     </message>
     <message>
         <source>2</source>
@@ -6625,7 +6862,7 @@ this documentation by Daniel S.</source>
     </message>
     <message>
         <source>Bi-weekly</source>
-        <translation>Co dwa tygodnie</translation>
+        <translation type="obsolete">Co dwa tygodnie</translation>
     </message>
     <message>
         <source>3</source>
@@ -6730,6 +6967,24 @@ this documentation by Daniel S.</source>
     <message>
         <source>Active</source>
         <translation>Aktywny</translation>
+    </message>
+    <message>
+        <source>Fortnightly (once at two weeks)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fortnightly</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This value cannot be changed. If you need to 
+modify it, please remove the corresponding 
+(sub-)activities and add a new split activity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Number of students (-1 for automatic computing)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -7260,6 +7515,26 @@ oddzielone przecinkami.</translation>
         <source>Activity</source>
         <translation>Zajęcia</translation>
     </message>
+    <message>
+        <source>Filter</source>
+        <translation type="unfinished">Filtr</translation>
+    </message>
+    <message>
+        <source>Students set</source>
+        <translation type="unfinished">Grupa studentów</translation>
+    </message>
+    <message>
+        <source>Teacher</source>
+        <translation type="unfinished">Nauczyciel</translation>
+    </message>
+    <message>
+        <source>Subject</source>
+        <translation type="unfinished">Przedmiot</translation>
+    </message>
+    <message>
+        <source>Subject tag</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ModifyConstraintActivityPreferredTimesForm_template</name>
@@ -7290,6 +7565,26 @@ oddzielone przecinkami.</translation>
     <message>
         <source>Compulsory</source>
         <translation>Obowiązkowe</translation>
+    </message>
+    <message>
+        <source>Filter</source>
+        <translation type="unfinished">Filtr</translation>
+    </message>
+    <message>
+        <source>Students set</source>
+        <translation type="unfinished">Grupa studentów</translation>
+    </message>
+    <message>
+        <source>Teacher</source>
+        <translation type="unfinished">Nauczyciel</translation>
+    </message>
+    <message>
+        <source>Subject</source>
+        <translation type="unfinished">Przedmiot</translation>
+    </message>
+    <message>
+        <source>Subject tag</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -8350,6 +8645,61 @@ oddzielone przecinkami.</translation>
     </message>
 </context>
 <context>
+    <name>ModifyConstraintTeacherIntervalMaxDaysPerWeekForm_template</name>
+    <message>
+        <source>FET - Modify constraint teacher not available dialog</source>
+        <translation type="obsolete">FET - Zmiana ograniczenia: nauczyciel niedostępny</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Bieżące ograniczenie</translation>
+    </message>
+    <message>
+        <source>Period</source>
+        <translation type="unfinished">Okres</translation>
+    </message>
+    <message>
+        <source>Start hour</source>
+        <translation type="unfinished">Godzina początkowa</translation>
+    </message>
+    <message>
+        <source>End hour</source>
+        <translation type="unfinished">Godzina końcowa</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="unfinished">1.0</translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teacher</source>
+        <translation type="unfinished">Nauczyciel</translation>
+    </message>
+    <message>
+        <source>Compulsory constraint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Anuluj</translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Max days per week</source>
+        <translation type="unfinished">Max dni w tygodniu</translation>
+    </message>
+    <message>
+        <source>FET - Modify constraint teacher interval max days per week dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ModifyConstraintTeacherMaxDaysPerWeekForm_template</name>
     <message>
         <source>FET - Modify constraint teacher max days per week dialog</source>
@@ -8581,6 +8931,41 @@ oddzielone przecinkami.</translation>
     <message>
         <source>Max hours daily</source>
         <translation>Max godzin dziennie</translation>
+    </message>
+</context>
+<context>
+    <name>ModifyConstraintTeachersMinHoursDailyForm_template</name>
+    <message>
+        <source>FET - Modify constraint teachers min hours daily dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Anuluj</translation>
+    </message>
+    <message>
+        <source>Compulsory constraint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation type="unfinished">Bieżące ograniczenie</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation type="unfinished">1.0</translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Min hours daily</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -8945,7 +9330,7 @@ Jeżeli naprawdę tego potrzebujesz, proszę zgłoś się do autora programu</tr
     </message>
     <message>
         <source>Bi-weekly activity</source>
-        <translation>Zajęcia co dwa tygodnie</translation>
+        <translation type="obsolete">Zajęcia co dwa tygodnie</translation>
     </message>
     <message>
         <source>Preferred day=%1</source>
@@ -9392,7 +9777,7 @@ Związane z nią podgrupy, zajęcia i ograniczenia nie zostały usunięte</trans
     <message>
         <source>Simulation paused.
 Press button to continue.</source>
-        <translation>Symulacja wstrzymana.
+        <translation type="obsolete">Symulacja wstrzymana.
 Naciśnij przycisk aby kontynuować.</translation>
     </message>
     <message>
@@ -9455,7 +9840,7 @@ Naciśnij przycisk aby kontynuować.</translation>
     </message>
     <message>
         <source>error in timetableallocateroomsform.cpp (1)</source>
-        <translation>błąd w timetableallocateroomsform.cpp (1)</translation>
+        <translation type="obsolete">błąd w timetableallocateroomsform.cpp (1)</translation>
     </message>
     <message>
         <source>You didn&apos;t allocate the hours prior to allocating the rooms</source>
@@ -9463,7 +9848,7 @@ Naciśnij przycisk aby kontynuować.</translation>
     </message>
     <message>
         <source>error in timetableallocatehoursroomsform.cpp (1)</source>
-        <translation>błąd w timetableallocatehoursroomsform.cpp (1)</translation>
+        <translation type="obsolete">błąd w timetableallocatehoursroomsform.cpp (1)</translation>
     </message>
     <message>
         <source>You have entered simulation with 0 rooms...aborting</source>
@@ -9734,7 +10119,7 @@ zmienionych nazwach będą prawidłowo obsługiwane)</translation>
     <message>
         <source>Bi-weekly activity
 </source>
-        <translation>Zajęcia co dwa tygodnie
+        <translation type="obsolete">Zajęcia co dwa tygodnie
 </translation>
     </message>
     <message>
@@ -11358,7 +11743,7 @@ liczby zmian budynków dla studentów w danym dniu
     </message>
     <message>
         <source>Bi-weekly, </source>
-        <translation>Co dwa tygodnie, </translation>
+        <translation type="obsolete">Co dwa tygodnie, </translation>
     </message>
     <message>
         <source>A: yes</source>
@@ -11541,6 +11926,142 @@ Please check the %1 directory</source>
         <translation>Pliki iCal (*.ics) zostały zapisane (osobno dla każdej podgrupy).
 Proszę sprawdzić katalog %1</translation>
     </message>
+    <message>
+        <source>Fortnightly activity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please exit and restart FET to activate language change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fortnightly, </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fortnightly activity
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot update institution name during simulation
+Please stop simulation before this</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot update comments during simulation
+Please stop simulation before this</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Added the following constraint:
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FET - a free evolutionary timetabling program</source>
+        <translation type="unfinished">FET - wolny program do ewolucyjnego układania planów</translation>
+    </message>
+    <message>
+        <source>FET - %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No. of sub-activities</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No. of hours</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Students set</source>
+        <translation type="unfinished">Grupa studentów</translation>
+    </message>
+    <message>
+        <source>Teacher interval max days per week</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teacher interval max. days per week</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time constraint teacher interval max days per week broken for</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>,S:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>,St:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Number of students=%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Number of students: automatically computed from component students sets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Number of students: computed from corresponding students sets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>NSt:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Constraint NOT added - duplicate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teachers min %1 hours daily</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teachers must not have less than %1 hours daily</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time constraint teacher min %1 hours daily broken for teacher %2, on day %3.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teachers no less than min hours daily</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Min hours daily=%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teachers no less than min hours daily </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This activity id has other constraint of this type attached
+Please remove the other constraints of type activity preferred time
+referring to this activity before proceeding</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This activity id has other constraint of this type attached
+Please remove the other constraints of type activity preferred times
+referring to this activity before proceeding</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duration=%1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QObject::QObject</name>
@@ -11633,6 +12154,33 @@ Proszę sprawdzić katalog %1</translation>
     <message>
         <source>Building</source>
         <translation>Budynek</translation>
+    </message>
+</context>
+<context>
+    <name>StudentsStatisticsForm_template</name>
+    <message>
+        <source>FET - Students statistics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Zamknij</translation>
+    </message>
+    <message>
+        <source>GroupBox</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show subgroups</source>
+        <translation type="unfinished">Pokaż podgrupy</translation>
+    </message>
+    <message>
+        <source>Show groups</source>
+        <translation type="unfinished">Pokaż grupy</translation>
+    </message>
+    <message>
+        <source>Show Years</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -11769,6 +12317,17 @@ Proszę sprawdzić katalog %1</translation>
     </message>
 </context>
 <context>
+    <name>SubjectsStatisticsForm_template</name>
+    <message>
+        <source>FET - Subjects statistics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Zamknij</translation>
+    </message>
+</context>
+<context>
     <name>TeachersForm_template</name>
     <message>
         <source>Teachers</source>
@@ -11805,6 +12364,17 @@ Proszę sprawdzić katalog %1</translation>
     <message>
         <source>De-activate all activities for selected teacher</source>
         <translation>Dezaktywuj wszystkie zajęcia wybranego nauczyciela</translation>
+    </message>
+</context>
+<context>
+    <name>TeachersStatisticsForm_template</name>
+    <message>
+        <source>FET - Teachers statistics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Zamknij</translation>
     </message>
 </context>
 <context>
@@ -11847,7 +12417,7 @@ kontynuować automatyczne generowanie od zapisanej pozycji)</translation>
     </message>
     <message>
         <source>Pause</source>
-        <translation>Wstrzymaj</translation>
+        <translation type="obsolete">Wstrzymaj</translation>
     </message>
     <message>
         <source>Stop</source>
@@ -11903,7 +12473,7 @@ kontynuować automatyczne generowanie od zapisanej pozycji)</translation>
     </message>
     <message>
         <source>Pause</source>
-        <translation>Wstrzymaj</translation>
+        <translation type="obsolete">Wstrzymaj</translation>
     </message>
     <message>
         <source>Stop</source>
@@ -11959,7 +12529,7 @@ kontynuować automatyczne generowanie od zapisanej pozycji)</translation>
     </message>
     <message>
         <source>Pause</source>
-        <translation>Wstrzymaj</translation>
+        <translation type="obsolete">Wstrzymaj</translation>
     </message>
     <message>
         <source>Stop</source>

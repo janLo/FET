@@ -24,14 +24,14 @@
 #include "fet.h"
 #include "fetmainform.h"
 
-#include <qcombobox.h>
+#include <q3combobox.h>
 #include <qmessagebox.h>
-#include <qgroupbox.h>
+#include <q3groupbox.h>
 #include <qspinbox.h>
 #include <qcheckbox.h>
 #include <qpushbutton.h>
 #include <qlineedit.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 
 class ModifyConstraintActivityPreferredTimeForm : public ModifyConstraintActivityPreferredTimeForm_template  {
 public:
@@ -46,6 +46,14 @@ public:
 	void constraintChanged();
 	void ok();
 	void cancel();
+
+	bool filterOk(Activity* a);
+	void filterChanged();
+	
+private:
+	//the id's of the activities listed in the activities combo
+	QList<int> activitiesList;
+
 };
 
 #endif

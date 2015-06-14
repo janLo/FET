@@ -19,11 +19,22 @@
 #include "addconstraintsubjectpreferredroomsform.h"
 #include "modifyconstraintsubjectpreferredroomsform.h"
 
+#include <QDesktopWidget>
+
 ConstraintSubjectPreferredRoomsForm::ConstraintSubjectPreferredRoomsForm()
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	subjectsComboBox->insertItem("");
-	for(Subject* sb=gt.rules.subjectsList.first(); sb; sb=gt.rules.subjectsList.next())
+	for(int i=0; i<gt.rules.subjectsList.size(); i++){
+		Subject* sb=gt.rules.subjectsList[i];
 		subjectsComboBox->insertItem(sb->name);
+	}
 
 	this->refreshConstraintsListBox();
 }
@@ -34,16 +45,17 @@ ConstraintSubjectPreferredRoomsForm::~ConstraintSubjectPreferredRoomsForm()
 
 void ConstraintSubjectPreferredRoomsForm::refreshConstraintsListBox()
 {
-	this->visibleConstraintsList.setAutoDelete(false);
 	this->visibleConstraintsList.clear();
 	constraintsListBox->clear();
-	for(SpaceConstraint* ctr=gt.rules.spaceConstraintsList.first(); ctr; ctr=gt.rules.spaceConstraintsList.next())
+	for(int i=0; i<gt.rules.spaceConstraintsList.size(); i++){
+		SpaceConstraint* ctr=gt.rules.spaceConstraintsList[i];
 		if(filterOk(ctr)){
 			QString s;
 			s=ctr->getDescription(gt.rules);
 			visibleConstraintsList.append(ctr);
 			constraintsListBox->insertItem(s);
 		}
+	}
 
 	constraintsListBox->setCurrentItem(0);
 	this->constraintChanged(constraintsListBox->currentItem());
@@ -69,7 +81,7 @@ void ConstraintSubjectPreferredRoomsForm::constraintChanged(int index)
 	if(index<0)
 		return;
 	QString s;
-	assert((uint)(index)<this->visibleConstraintsList.count());
+	assert(index<this->visibleConstraintsList.size());
 	SpaceConstraint* ctr=this->visibleConstraintsList.at(index);
 	assert(ctr!=NULL);
 	s=ctr->getDetailedDescription(gt.rules);
@@ -78,8 +90,8 @@ void ConstraintSubjectPreferredRoomsForm::constraintChanged(int index)
 
 void ConstraintSubjectPreferredRoomsForm::addConstraint()
 {
-	AddConstraintSubjectPreferredRoomsForm *addConstraintSubjectPreferredRoomsForm=new AddConstraintSubjectPreferredRoomsForm();
-	addConstraintSubjectPreferredRoomsForm->exec();
+	AddConstraintSubjectPreferredRoomsForm *form=new AddConstraintSubjectPreferredRoomsForm();
+	form->exec();
 
 	this->refreshConstraintsListBox();
 }
@@ -93,8 +105,8 @@ void ConstraintSubjectPreferredRoomsForm::modifyConstraint()
 	}
 	SpaceConstraint* ctr=this->visibleConstraintsList.at(i);
 
-	ModifyConstraintSubjectPreferredRoomsForm *modifyConstraintSubjectPreferredRoomsForm=new ModifyConstraintSubjectPreferredRoomsForm((ConstraintSubjectPreferredRooms*)ctr);
-	modifyConstraintSubjectPreferredRoomsForm->exec();
+	ModifyConstraintSubjectPreferredRoomsForm *form=new ModifyConstraintSubjectPreferredRoomsForm((ConstraintSubjectPreferredRooms*)ctr);
+	form->exec();
 
 	this->refreshConstraintsListBox();
 	

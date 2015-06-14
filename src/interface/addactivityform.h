@@ -26,14 +26,14 @@
 
 #include "fetmainform.h"
 
-#include <qcombobox.h>
+#include <q3combobox.h>
 #include <qmessagebox.h>
-#include <qgroupbox.h>
+#include <q3groupbox.h>
 #include <qspinbox.h>
 #include <qcheckbox.h>
 #include <qpushbutton.h>
 #include <qlineedit.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 
 
 class AddActivityForm : public AddActivityForm_template  {

@@ -18,13 +18,23 @@
 #include "addroomform.h"
 
 #include <qlineedit.h>
-#include <qcombobox.h>
+#include <q3combobox.h>
+
+#include <QDesktopWidget>
 
 AddRoomForm::AddRoomForm()
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	typesComboBox->clear();
 	typesComboBox->setDuplicatesEnabled(false);
-	for(Room* rm=gt.rules.roomsList.first(); rm; rm=gt.rules.roomsList.next()){
+	for(int i=0; i<gt.rules.roomsList.size(); i++){
+		Room* rm=gt.rules.roomsList[i];
 		int i;
 		for(i=0; i<typesComboBox->count(); i++)
 			if(typesComboBox->text(i)==rm->type)
@@ -35,8 +45,8 @@ AddRoomForm::AddRoomForm()
 
 	buildingsComboBox->clear();
 	buildingsComboBox->insertItem("");
-	for(Building* bu=gt.rules.buildingsList.first(); bu; bu=gt.rules.buildingsList.next())
-		buildingsComboBox->insertItem(bu->name);
+	for(int i=0; i<gt.rules.buildingsList.size(); i++)
+		buildingsComboBox->insertItem(gt.rules.buildingsList.at(i)->name);
 }
 
 AddRoomForm::~AddRoomForm()

@@ -19,9 +19,17 @@
 #include "addconstraintstudentsnogapsform.h"
 #include "modifyconstraintstudentsnogapsform.h"
 
+#include <QDesktopWidget>
+
 ConstraintStudentsNoGapsForm::ConstraintStudentsNoGapsForm()
 {
-	this->visibleConstraintsList.setAutoDelete(false);
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	this->filterChanged();
 }
 
@@ -41,18 +49,20 @@ void ConstraintStudentsNoGapsForm::filterChanged()
 {
 	this->visibleConstraintsList.clear();
 	constraintsListBox->clear();
-	for(TimeConstraint* ctr=gt.rules.timeConstraintsList.first(); ctr; ctr=gt.rules.timeConstraintsList.next())
+	for(int i=0; i<gt.rules.timeConstraintsList.size(); i++){
+		TimeConstraint* ctr=gt.rules.timeConstraintsList[i];
 		if(filterOk(ctr)){
 			visibleConstraintsList.append(ctr);
 			constraintsListBox->insertItem(ctr->getDescription(gt.rules));
 		}
+	}
 }
 
 void ConstraintStudentsNoGapsForm::constraintChanged(int index)
 {
 	if(index<0)
 		return;
-	assert((uint)(index)<this->visibleConstraintsList.count());
+	assert(index<this->visibleConstraintsList.size());
 	TimeConstraint* ctr=this->visibleConstraintsList.at(index);
 	assert(ctr!=NULL);
 	currentConstraintTextEdit->setText(ctr->getDetailedDescription(gt.rules));
@@ -60,8 +70,8 @@ void ConstraintStudentsNoGapsForm::constraintChanged(int index)
 
 void ConstraintStudentsNoGapsForm::addConstraint()
 {
-	AddConstraintStudentsNoGapsForm *addConstraintStudentsNoGapsForm=new AddConstraintStudentsNoGapsForm();
-	addConstraintStudentsNoGapsForm->exec();
+	AddConstraintStudentsNoGapsForm *form=new AddConstraintStudentsNoGapsForm();
+	form->exec();
 
 	filterChanged();
 	
@@ -77,9 +87,9 @@ void ConstraintStudentsNoGapsForm::modifyConstraint()
 	}
 	TimeConstraint* ctr=this->visibleConstraintsList.at(i);
 
-	ModifyConstraintStudentsNoGapsForm *modifyConstraintStudentsNoGapsForm
+	ModifyConstraintStudentsNoGapsForm *form
 	 = new ModifyConstraintStudentsNoGapsForm((ConstraintStudentsNoGaps*)ctr);
-	modifyConstraintStudentsNoGapsForm->exec();
+	form->exec();
 
 	filterChanged();
 	constraintsListBox->setCurrentItem(i);

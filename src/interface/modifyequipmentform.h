@@ -28,7 +28,7 @@
 
 #include <qspinbox.h>
 #include <qlineedit.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 
 
 class ModifyEquipmentForm : public ModifyEquipmentForm_template {

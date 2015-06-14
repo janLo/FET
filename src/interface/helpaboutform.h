@@ -18,9 +18,9 @@
 #ifndef HELPABOUTFORM_H
 #define HELPABOUTFORM_H
 
-#include "helpaboutform_template.h"
+#include "ui_helpaboutform_template.h"
 
-class HelpAboutForm : public HelpAboutForm_template
+class HelpAboutForm : public QDialog, Ui::HelpAboutForm_template
 {
 public: 
 	HelpAboutForm();

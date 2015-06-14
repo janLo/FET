@@ -22,7 +22,13 @@ along with FET; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+/*
+2-point and uniform crossover code by Volker Dirr, Volker at dirr-computer dot de
+*/
+
 #include <iostream>
+//Added by qt3to4:
+#include <QTextStream>
 using namespace std;
 
 #include "genetictimetable_defs.h"
@@ -47,6 +53,8 @@ int better(Rules& r, SpaceChromosome& c1, SpaceChromosome& c2, const int days[/*
 
 //critical function here - must be optimized for speed
 void SpaceChromosome::copy(Rules& r, SpaceChromosome& c){
+	this->spaceChangedForMatrixCalculation=c.spaceChangedForMatrixCalculation;
+
 	this->_hardFitness=c._hardFitness;
 	this->_softFitness=c._softFitness;
 
@@ -64,13 +72,15 @@ void SpaceChromosome::init(Rules& r){
 		this->rooms[i]=UNALLOCATED_SPACE;
 
 	this->_hardFitness=this->_softFitness=-1;
+	
+	this->spaceChangedForMatrixCalculation=true;
 }
 
 bool SpaceChromosome::read(Rules& r, const QString& filename){
 	assert(r.initialized);
 
 	QFile file(filename);
-	if(!file.open(IO_ReadOnly))
+	if(!file.open(QIODevice::ReadOnly))
 		assert(0);
 	QTextStream tis(&file);
 	this->read(r, tis);
@@ -85,7 +95,7 @@ bool SpaceChromosome::read(Rules &r, QTextStream &tis){
 
 	for(int i=0; i<r.nInternalActivities; i++){
 		tis >> this->rooms[i];
-		if(tis.eof()){
+		if(tis.atEnd()){
 			//The rules and the solution do not match (1)
 			return false;
 		}
@@ -97,6 +107,8 @@ bool SpaceChromosome::read(Rules &r, QTextStream &tis){
 	}
 
 	this->_hardFitness=this->_softFitness=-1;
+	
+	this->spaceChangedForMatrixCalculation=true;
 
 	return true;
 }
@@ -105,7 +117,7 @@ void SpaceChromosome::write(Rules& r, const QString &filename){
 	assert(r.initialized);
 
 	QFile file(filename);
-	if(!file.open(IO_WriteOnly))
+	if(!file.open(QIODevice::WriteOnly))
 		assert(0);
 	QTextStream tos(&file);
 	this->write(r, tos);
@@ -129,6 +141,8 @@ void SpaceChromosome::makeRoomsUnallocated(Rules& r){
 		this->rooms[i]=UNALLOCATED_SPACE;
 
 	this->_hardFitness=this->_softFitness=-1;
+	
+	this->spaceChangedForMatrixCalculation=true;
 }
 
 void SpaceChromosome::makeRoomsRandom(Rules& r){
@@ -139,12 +153,23 @@ void SpaceChromosome::makeRoomsRandom(Rules& r){
 		this->rooms[i] = rand()%r.nInternalRooms;
 
 	this->_hardFitness = this->_softFitness = -1;
+
+	this->spaceChangedForMatrixCalculation=true;
 }
 
 
 int SpaceChromosome::hardFitness(Rules& r, const int days[/*MAX_ACTIVITIES*/], const int hours[/*MAX_ACTIVITIES*/], QString* conflictsString){
 	assert(r.initialized);
 	assert(r.internalStructureComputed);
+	
+	/*
+	if(this->_hardFitness>=0 && this->spaceChangedForMatrixCalculation){
+		cout<<"this->_hardFitness=="<<this->_hardFitness<<endl;
+		cout<<"this->spaceChangedForMatrixCalculation=="<<this->spaceChangedForMatrixCalculation<<endl;
+	}*/
+	
+	if(this->_hardFitness>=0)
+		assert(this->spaceChangedForMatrixCalculation==false);
 
 	if(this->_hardFitness>=0 && conflictsString==NULL)
 	//If you want to see the log, you have to recompute the fitness, even if it is
@@ -162,6 +187,8 @@ int SpaceChromosome::hardFitness(Rules& r, const int days[/*MAX_ACTIVITIES*/], c
 			if(r.fixedRoom[i]>=0)
 				assert(r.fixedRoom[i]==this->rooms[i]);
 		}
+		
+	this->spaceChangedForMatrixCalculation=true;
 
 	this->_hardFitness=0;
 	for(int i=0; i<r.nInternalSpaceConstraints; i++)
@@ -182,12 +209,18 @@ int SpaceChromosome::softFitness(Rules& r, const int days[/*MAX_ACTIVITIES*/], c
 	for(int i=0; i<r.nInternalSpaceConstraints; i++)
 		if(r.internalSpaceConstraintsList[i]->compulsory==false)
 			this->_softFitness += r.internalSpaceConstraintsList[i]->fitness(*this, r, days, hours, conflictsString);
-
+			
 	return this->_softFitness;
 }
 
 //critical function here - must be optimized for speed
-void SpaceChromosome::crossover(Rules& r, SpaceChromosome& c1, SpaceChromosome& c2){
+void SpaceChromosome::crossover(Rules& r, SpaceChromosome& c1, SpaceChromosome& c2)
+{
+	this->twoPointCrossover(r, c1, c2);
+}
+
+//critical function here - must be optimized for speed
+void SpaceChromosome::onePointCrossover(Rules& r, SpaceChromosome& c1, SpaceChromosome& c2){
 	assert(r.internalStructureComputed);
 
 	int q=rand()%(r.nInternalActivities+1);
@@ -200,6 +233,74 @@ void SpaceChromosome::crossover(Rules& r, SpaceChromosome& c1, SpaceChromosome& 
 	//memcpy(rooms+q, c2.rooms+q, (r.nActivities-q)*sizeof(rooms[0]));
 
 	this->_hardFitness = this->_softFitness = -1;
+
+	this->spaceChangedForMatrixCalculation=true;
+}
+
+//critical function here - must be optimized for speed
+//code contributed by Volker Dirr
+void SpaceChromosome::twoPointCrossover(Rules& r, SpaceChromosome& c1, SpaceChromosome& c2)
+{
+	assert(r.internalStructureComputed);
+	
+	int p=rand()%(r.nInternalActivities);
+	int q;
+	
+	do{
+		q=rand()%(r.nInternalActivities);
+	}while(p==q);
+	 
+	if(p>q){
+		int w=q;
+		q=p;
+		p=w;
+	}
+	int z=rand()%2;
+	int i;
+	
+	if(z==0){
+		for(i=0; i<p; i++)
+			this->rooms[i]=c1.rooms[i];
+		for(; i<q; i++)
+			this->rooms[i]=c2.rooms[i];
+		for(; i<r.nInternalActivities; i++)
+			this->rooms[i]=c1.rooms[i];
+	}
+	else{
+		for(i=0; i<p; i++)
+			this->rooms[i]=c2.rooms[i];
+		for(; i<q; i++)
+			this->rooms[i]=c1.rooms[i];
+		for(; i<r.nInternalActivities; i++)
+			this->rooms[i]=c2.rooms[i];
+	}
+	 
+	this->_hardFitness = this->_softFitness = -1;
+	this->spaceChangedForMatrixCalculation=true;
+}
+
+//critical function here - must be optimized for speed
+//code contributed by Volker Dirr
+void SpaceChromosome::uniformCrossover(Rules& r, SpaceChromosome& c1, SpaceChromosome& c2)
+{
+	assert(r.internalStructureComputed);
+	
+	int z;
+	int dom=(rand()%40)+30;
+	for(int i=0; i<r.nInternalActivities; i++){
+		if(c1.rooms[i]==c2.rooms[i])
+			this->rooms[i]=c1.rooms[i];
+		else{
+			z=rand()%100;
+			if(z<dom)
+				this->rooms[i]=c1.rooms[i];
+			else
+				this->rooms[i]=c2.rooms[i];
+		}
+	}
+	
+	this->_hardFitness = this->_softFitness = -1;
+	this->spaceChangedForMatrixCalculation=true;
 }
 
 //critical function here - must be optimized for speed
@@ -221,6 +322,8 @@ void SpaceChromosome::mutate1(Rules& r){
 	this->rooms[q]=k; //exchange the values
 
 	this->_hardFitness = this->_softFitness = -1;
+
+	this->spaceChangedForMatrixCalculation=true;
 }
 
 //critical function here - must be optimized for speed
@@ -234,6 +337,8 @@ void SpaceChromosome::mutate2(Rules& r)
 	this->rooms[p]=k;
 
 	this->_hardFitness = this->_softFitness = -1;
+
+	this->spaceChangedForMatrixCalculation=true;
 }
 
 int SpaceChromosome::getRoomsMatrix(
@@ -266,14 +371,16 @@ int SpaceChromosome::getRoomsMatrix(
 					a[room][day][hour+dd]+=2;
 				}
 				else{
-					assert(act->parity==PARITY_BIWEEKLY);
+					assert(act->parity==PARITY_FORTNIGHTLY);
 					conflicts += tmp<2 ? 0 : 1;
 					a[room][day][hour+dd]++;
 				}
 			}
 		}
 	}
-
+	
+	this->spaceChangedForMatrixCalculation=false;
+	
 	return conflicts;
 }
 

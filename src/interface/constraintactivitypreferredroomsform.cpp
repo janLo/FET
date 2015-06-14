@@ -19,8 +19,17 @@
 #include "addconstraintactivitypreferredroomsform.h"
 #include "modifyconstraintactivitypreferredroomsform.h"
 
+#include <QDesktopWidget>
+
 ConstraintActivityPreferredRoomsForm::ConstraintActivityPreferredRoomsForm()
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	this->refreshConstraintsListBox();
 }
 
@@ -30,16 +39,17 @@ ConstraintActivityPreferredRoomsForm::~ConstraintActivityPreferredRoomsForm()
 
 void ConstraintActivityPreferredRoomsForm::refreshConstraintsListBox()
 {
-	this->visibleConstraintsList.setAutoDelete(false);
 	this->visibleConstraintsList.clear();
 	constraintsListBox->clear();
-	for(SpaceConstraint* ctr=gt.rules.spaceConstraintsList.first(); ctr; ctr=gt.rules.spaceConstraintsList.next())
+	for(int i=0; i<gt.rules.spaceConstraintsList.size(); i++){
+		SpaceConstraint* ctr=gt.rules.spaceConstraintsList[i];
 		if(filterOk(ctr)){
 			QString s;
 			s=ctr->getDescription(gt.rules);
 			visibleConstraintsList.append(ctr);
 			constraintsListBox->insertItem(s);
 		}
+	}
 
 	constraintsListBox->setCurrentItem(0);
 	this->constraintChanged(constraintsListBox->currentItem());
@@ -58,7 +68,7 @@ void ConstraintActivityPreferredRoomsForm::constraintChanged(int index)
 	if(index<0)
 		return;
 	QString s;
-	assert((uint)(index)<this->visibleConstraintsList.count());
+	assert(index<this->visibleConstraintsList.size());
 	SpaceConstraint* ctr=this->visibleConstraintsList.at(index);
 	assert(ctr!=NULL);
 	s=ctr->getDetailedDescription(gt.rules);
@@ -67,8 +77,8 @@ void ConstraintActivityPreferredRoomsForm::constraintChanged(int index)
 
 void ConstraintActivityPreferredRoomsForm::addConstraint()
 {
-	AddConstraintActivityPreferredRoomsForm *addConstraintActivityPreferredRoomsForm=new AddConstraintActivityPreferredRoomsForm();
-	addConstraintActivityPreferredRoomsForm->exec();
+	AddConstraintActivityPreferredRoomsForm *form=new AddConstraintActivityPreferredRoomsForm();
+	form->exec();
 
 	this->refreshConstraintsListBox();
 }
@@ -82,8 +92,8 @@ void ConstraintActivityPreferredRoomsForm::modifyConstraint()
 	}
 	SpaceConstraint* ctr=this->visibleConstraintsList.at(i);
 
-	ModifyConstraintActivityPreferredRoomsForm *modifyConstraintActivityPreferredRoomsForm=new ModifyConstraintActivityPreferredRoomsForm((ConstraintActivityPreferredRooms*)ctr);
-	modifyConstraintActivityPreferredRoomsForm->exec();
+	ModifyConstraintActivityPreferredRoomsForm *form=new ModifyConstraintActivityPreferredRoomsForm((ConstraintActivityPreferredRooms*)ctr);
+	form->exec();
 
 	this->refreshConstraintsListBox();
 	

@@ -23,14 +23,14 @@
 #include "genetictimetable.h"
 #include "fet.h"
 
-#include <qcombobox.h>
+#include <q3combobox.h>
 #include <qmessagebox.h>
-#include <qgroupbox.h>
+#include <q3groupbox.h>
 #include <qspinbox.h>
 #include <qcheckbox.h>
 #include <qpushbutton.h>
 #include <qlineedit.h>
-#include <qtable.h>
+#include <q3table.h>
 #include <qapplication.h>
 #include <qstring.h>
 #include <qthread.h>
@@ -39,17 +39,19 @@
 class TimetableAllocateRoomsForm;
 
 class SpaceSolvingThread: public QThread{
+	Q_OBJECT
+
 public:
-
-	TimetableAllocateRoomsForm* callingForm;
-
-	SpaceSolvingThread();
-
 	void run();
+	
+signals:
+	void generationComputed(int generation);
 };
 
 class TimetableAllocateRoomsForm : public TimetableAllocateRoomsForm_template
 {
+	Q_OBJECT	
+
 public:
 
 	TimetableAllocateRoomsForm();
@@ -60,9 +62,15 @@ public:
 
 	void stop();
 
-	void pause();
-
 	void write();
+
+	void savePosition();
+
+	void loadPosition();
+
+	void initializeUnallocated();
+
+	void initializeRandomly();
 
 	void generationLogging(int generation);
 
@@ -120,14 +128,9 @@ public:
 	void writeRoomsTimetableDaysVerticalHtml(const QString& htmlfilename);
 
 	void getRoomsTimetable(SpaceChromosome& c);
-
-	void savePosition();
-
-	void loadPosition();
-
-	void initializeUnallocated();
-
-	void initializeRandomly();
+	
+private slots:
+	void updateGeneration(int generation);
 };
 
 #endif

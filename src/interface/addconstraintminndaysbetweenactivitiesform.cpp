@@ -21,10 +21,19 @@
 #include <qradiobutton.h>
 #include <qlabel.h>
 #include <qlineedit.h>
-#include <qtable.h>
+#include <q3table.h>
+
+#include <QDesktopWidget>
 
 AddConstraintMinNDaysBetweenActivitiesForm::AddConstraintMinNDaysBetweenActivitiesForm()
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+	
 	updateActivitiesListBox();
 	
 	minDaysSpinBox->setMinValue(1);
@@ -43,7 +52,8 @@ void AddConstraintMinNDaysBetweenActivitiesForm::updateActivitiesListBox()
 	this->activitiesList.clear();
 	this->selectedActivitiesList.clear();
 
-	for(Activity* ac=gt.rules.activitiesList.first(); ac; ac=gt.rules.activitiesList.next()){
+	for(int i=0; i<gt.rules.activitiesList.size(); i++){
+		Activity* ac=gt.rules.activitiesList[i];
 		activitiesListBox->insertItem(ac->getDescription(gt.rules));
 		this->activitiesList.append(ac->id);
 	}
@@ -76,7 +86,7 @@ void AddConstraintMinNDaysBetweenActivitiesForm::addConstraint()
 			QObject::tr("Only one selected activity"));
 		return;
 	}
-	if(this->selectedActivitiesList.count()>(uint)(MAX_CONSTRAINT_MIN_N_DAYS_BETWEEN_ACTIVITIES)){
+	if(this->selectedActivitiesList.size()>MAX_CONSTRAINT_MIN_N_DAYS_BETWEEN_ACTIVITIES){
 		QMessageBox::warning(this, QObject::tr("FET information"),
 			QObject::tr("Please report error to the author\nMAX_CONSTRAINT_MIN_N_DAYS_BETWEEN_ACTIVITIES must be increased (you have too many activities)"));
 		return;
@@ -84,7 +94,7 @@ void AddConstraintMinNDaysBetweenActivitiesForm::addConstraint()
 	
 	int ids[MAX_CONSTRAINT_MIN_N_DAYS_BETWEEN_ACTIVITIES];
 	int i;
-	QValueList<int>::iterator it;
+	QList<int>::iterator it;
 	for(i=0, it=this->selectedActivitiesList.begin(); it!=this->selectedActivitiesList.end(); it++, i++)
 		ids[i]=*it;
 	
@@ -109,7 +119,7 @@ void AddConstraintMinNDaysBetweenActivitiesForm::addActivity()
 	if(activitiesListBox->currentItem()<0)
 		return;
 	int tmp=activitiesListBox->currentItem();
-	int _id=*(this->activitiesList.at(tmp));
+	int _id=this->activitiesList.at(tmp);
 	
 	QString actName=activitiesListBox->currentText();
 	assert(actName!="");
@@ -130,9 +140,7 @@ void AddConstraintMinNDaysBetweenActivitiesForm::removeActivity()
 	if(selectedActivitiesListBox->currentItem()<0 || selectedActivitiesListBox->count()<=0)
 		return;		
 	int tmp=selectedActivitiesListBox->currentItem();
-	int _id=*(this->selectedActivitiesList.at(tmp));
 	
 	selectedActivitiesListBox->removeItem(selectedActivitiesListBox->currentItem());
-	int tmp2=this->selectedActivitiesList.remove(_id);
-	assert(tmp2==1);
+	this->selectedActivitiesList.removeAt(tmp);
 }

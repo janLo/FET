@@ -18,10 +18,19 @@
 #include "modifyroomform.h"
 
 #include <qlineedit.h>
-#include <qcombobox.h>
+#include <q3combobox.h>
+
+#include <QDesktopWidget>
 
 ModifyRoomForm::ModifyRoomForm(const QString& initialRoomName, const QString& initialRoomType, const QString& initialRoomBuilding, int initialRoomCapacity)
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	this->_initialRoomName=initialRoomName;
 	this->_initialRoomType=initialRoomType;
 	this->_initialRoomBuilding=initialRoomBuilding;
@@ -34,7 +43,8 @@ ModifyRoomForm::ModifyRoomForm(const QString& initialRoomName, const QString& in
 	typesComboBox->clear();
 	typesComboBox->setDuplicatesEnabled(false);
 	int i=0, j=-1;
-	for(Room* rm=gt.rules.roomsList.first(); rm; rm=gt.rules.roomsList.next()){
+	for(int ri=0; ri<gt.rules.roomsList.size(); ri++){
+		Room* rm=gt.rules.roomsList[ri];
 		int k;
 		for(k=0; k<typesComboBox->count(); k++)
 			if(typesComboBox->text(k)==rm->type)
@@ -57,9 +67,9 @@ ModifyRoomForm::ModifyRoomForm(const QString& initialRoomName, const QString& in
 	if(initialRoomBuilding=="")
 		j=i;
 	i++;
-	for(Building* bu=gt.rules.buildingsList.first(); bu; bu=gt.rules.buildingsList.next(), i++){
-		buildingsComboBox->insertItem(bu->name);
-		if(bu->name==initialRoomBuilding)
+	for(int k=0; k<gt.rules.buildingsList.size(); k++, i++){
+		buildingsComboBox->insertItem(gt.rules.buildingsList.at(i)->name);
+		if(gt.rules.buildingsList.at(i)->name==initialRoomBuilding)
 			j=i;
 	}
 	assert(j>=0);

@@ -1,6 +1,12 @@
 FET - How to add new translations (languages)
 ---------------------------------------------
 
+PLEASE E-MAIL THE AUTHOR OR THE MAILING LIST IF YOU WANT TO
+TRANSLATE FET INTO YOUR LANGUAGE. THE STEPS BELOW
+ARE INCOMPLETE AT THE TIME BEING.
+
+
+
 These instructions are for GNU/Linux users, who have the source
 version of FET. Windows users please e-mail the author for details.
 

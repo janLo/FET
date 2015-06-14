@@ -19,16 +19,24 @@
 #include "modifyroomform.h"
 #include "roomsequipmentsform.h"
 
-#include <qlistbox.h>
+#include <q3listbox.h>
 #include <qinputdialog.h>
+
+#include <QDesktopWidget>
 
 RoomsForm::RoomsForm()
  : RoomsForm_template()
 {
-	visibleRoomsList.setAutoDelete(false);
-	
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	typesComboBox->insertItem("");
-	for(Room* rm=gt.rules.roomsList.first(); rm; rm=gt.rules.roomsList.next()){
+	for(int k=0; k<gt.rules.roomsList.size(); k++){
+		Room* rm=gt.rules.roomsList[k];
 		int i;
 		for(i=0; i<typesComboBox->count(); i++)
 			if(typesComboBox->text(i)==rm->type)
@@ -39,8 +47,8 @@ RoomsForm::RoomsForm()
 	typesComboBox->setCurrentItem(0);
 
 	buildingsComboBox->insertItem("");
-	for(Building* bu=gt.rules.buildingsList.first(); bu; bu=gt.rules.buildingsList.next())
-		buildingsComboBox->insertItem(bu->name);
+	for(int i=0; i<gt.rules.buildingsList.size(); i++)
+		buildingsComboBox->insertItem(gt.rules.buildingsList.at(i)->name);
 	buildingsComboBox->setCurrentItem(0);
 	
 	this->filterChanged();
@@ -71,14 +79,15 @@ void RoomsForm::filterChanged()
 {
 	QString s;
 	roomsListBox->clear();
-	assert(visibleRoomsList.autoDelete()==false);
 	visibleRoomsList.clear();
-	for(Room* rm=gt.rules.roomsList.first(); rm; rm=gt.rules.roomsList.next())
+	for(int i=0; i<gt.rules.roomsList.size(); i++){
+		Room* rm=gt.rules.roomsList[i];
 		if(this->filterOk(rm)){
 			s=rm->getDescription();
 			visibleRoomsList.append(rm);
 			roomsListBox->insertItem(s);
 		}
+	}
 	roomChanged(roomsListBox->currentItem());
 }
 
@@ -91,7 +100,8 @@ void RoomsForm::addRoom()
 	
 	typesComboBox->clear();
 	typesComboBox->insertItem("");
-	for(Room* rm=gt.rules.roomsList.first(); rm; rm=gt.rules.roomsList.next()){
+	for(int k=0; k<gt.rules.roomsList.size(); k++){
+		Room* rm=gt.rules.roomsList[k];
 		int i;
 		for(i=0; i<typesComboBox->count(); i++)
 			if(typesComboBox->text(i)==rm->type)
@@ -164,8 +174,10 @@ void RoomsForm::sortRooms()
 	gt.rules.sortRoomsAlphabetically();
 
 	roomsListBox->clear();
-	for(Room* rm=gt.rules.roomsList.first(); rm; rm=gt.rules.roomsList.next())
+	for(int i=0; i<gt.rules.roomsList.size(); i++){
+		Room* rm=gt.rules.roomsList[i];
 		roomsListBox->insertItem(rm->name);
+	}
 }
 
 void RoomsForm::modifyRoom()
@@ -177,12 +189,13 @@ void RoomsForm::modifyRoom()
 	}
 	
 	Room* rm=visibleRoomsList.at(ci);
-	ModifyRoomForm* modifyRoomForm=new ModifyRoomForm(rm->name, rm->type, rm->building, rm->capacity);
-	modifyRoomForm->exec();
+	ModifyRoomForm* form=new ModifyRoomForm(rm->name, rm->type, rm->building, rm->capacity);
+	form->exec();
 
 	typesComboBox->clear();
 	typesComboBox->insertItem("");
-	for(Room* rm=gt.rules.roomsList.first(); rm; rm=gt.rules.roomsList.next()){
+	for(int k=0; k<gt.rules.roomsList.size(); k++){
+		Room* rm=gt.rules.roomsList[k];
 		int i;
 		for(i=0; i<typesComboBox->count(); i++)
 			if(typesComboBox->text(i)==rm->type)

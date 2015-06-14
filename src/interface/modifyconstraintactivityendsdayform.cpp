@@ -22,10 +22,19 @@
 #include <qlabel.h>
 #include <qlineedit.h>
 
+#include <QDesktopWidget>
+
 #define yesNo(x)	((x)==0?QObject::tr("no"):QObject::tr("yes"))
 
 ModifyConstraintActivityEndsDayForm::ModifyConstraintActivityEndsDayForm(ConstraintActivityEndsDay* ctr)
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	this->_ctr=ctr;
 	
 	compulsoryCheckBox->setChecked(ctr->compulsory);
@@ -41,7 +50,8 @@ ModifyConstraintActivityEndsDayForm::~ModifyConstraintActivityEndsDayForm()
 void ModifyConstraintActivityEndsDayForm::updateActivitiesComboBox(){
 	activitiesComboBox->clear();
 	int i=0, j=-1;
-	for(Activity* act=gt.rules.activitiesList.first(); act; act=gt.rules.activitiesList.next(), i++){
+	for(int k=0; k<gt.rules.activitiesList.size(); k++, i++){
+		Activity* act=gt.rules.activitiesList[k];
 		activitiesComboBox->insertItem(act->getDescription(gt.rules));
 		if(act->id==this->_ctr->activityId)
 			j=i;
@@ -75,7 +85,7 @@ void ModifyConstraintActivityEndsDayForm::constraintChanged()
 	
 	int id;
 	int tmp2=activitiesComboBox->currentItem();
-	if(tmp2<0 || (uint)(tmp2)>=gt.rules.activitiesList.count()){
+	if(tmp2<0 || tmp2>=gt.rules.activitiesList.size()){
 		s+=QObject::tr("Invalid activity");
 		s+="\n";
 	}
@@ -104,7 +114,7 @@ void ModifyConstraintActivityEndsDayForm::ok()
 		compulsory=true;
 
 	int tmp2=activitiesComboBox->currentItem();
-	if(tmp2<0 || (uint)(tmp2)>=gt.rules.activitiesList.count()){
+	if(tmp2<0 || tmp2>=gt.rules.activitiesList.size()){
 		QMessageBox::warning(this, QObject::tr("FET information"),
 			QObject::tr("Invalid activity"));
 		return;

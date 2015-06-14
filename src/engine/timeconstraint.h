@@ -27,9 +27,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #include "genetictimetable_defs.h"
 
-#include <qstring.h>
-#include <qptrlist.h>
-#include <qstringlist.h>
+#include <QString>
+#include <QList>
+#include <QStringList>
 
 class Rules;
 class TimeChromosome;
@@ -40,7 +40,7 @@ class Subject;
 class SubjectTag;
 class StudentsSet;
 
-typedef QPtrList<TimeConstraint> TimeConstraintsList;
+typedef QList<TimeConstraint*> TimeConstraintsList;
 
 const int CONSTRAINT_GENERIC_TIME										=0;
 
@@ -51,32 +51,34 @@ const int CONSTRAINT_TEACHERS_MAX_HOURS_CONTINUOUSLY					=3;
 const int CONSTRAINT_TEACHERS_SUBGROUPS_MAX_HOURS_DAILY					=4;
 const int CONSTRAINT_TEACHERS_NO_GAPS									=5;
 const int CONSTRAINT_TEACHERS_MAX_HOURS_DAILY							=6;
-const int CONSTRAINT_TEACHER_MAX_DAYS_PER_WEEK							=7;
+const int CONSTRAINT_TEACHERS_MIN_HOURS_DAILY							=7;
+const int CONSTRAINT_TEACHER_MAX_DAYS_PER_WEEK							=8;
+const int CONSTRAINT_TEACHER_INTERVAL_MAX_DAYS_PER_WEEK					=9;
 
-const int CONSTRAINT_BREAK												=8;
+const int CONSTRAINT_BREAK												=10;
 
-const int CONSTRAINT_STUDENTS_EARLY										=9;
-const int CONSTRAINT_STUDENTS_SET_NOT_AVAILABLE							=10;
-const int CONSTRAINT_STUDENTS_N_HOURS_DAILY								=11;
-const int CONSTRAINT_STUDENTS_SET_N_HOURS_DAILY							=12;
-const int CONSTRAINT_STUDENTS_NO_GAPS									=13;
-const int CONSTRAINT_STUDENTS_SET_NO_GAPS								=14;
-const int CONSTRAINT_STUDENTS_SET_INTERVAL_MAX_DAYS_PER_WEEK			=15;
+const int CONSTRAINT_STUDENTS_EARLY										=11;
+const int CONSTRAINT_STUDENTS_SET_NOT_AVAILABLE							=12;
+const int CONSTRAINT_STUDENTS_N_HOURS_DAILY								=13;
+const int CONSTRAINT_STUDENTS_SET_N_HOURS_DAILY							=14;
+const int CONSTRAINT_STUDENTS_NO_GAPS									=15;
+const int CONSTRAINT_STUDENTS_SET_NO_GAPS								=16;
+const int CONSTRAINT_STUDENTS_SET_INTERVAL_MAX_DAYS_PER_WEEK			=17;
 
-const int CONSTRAINT_ACTIVITY_PREFERRED_TIME							=16;
-const int CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME						=17;
-const int CONSTRAINT_ACTIVITIES_NOT_OVERLAPPING							=18;
-const int CONSTRAINT_MIN_N_DAYS_BETWEEN_ACTIVITIES						=19;
-const int CONSTRAINT_ACTIVITY_PREFERRED_TIMES							=20;
-const int CONSTRAINT_ACTIVITY_ENDS_DAY									=21;
-const int CONSTRAINT_2_ACTIVITIES_CONSECUTIVE							=22;
-const int CONSTRAINT_2_ACTIVITIES_ORDERED								=23;
-const int CONSTRAINT_2_ACTIVITIES_GROUPED								=24;
-const int CONSTRAINT_ACTIVITIES_PREFERRED_TIMES							=25;
-const int CONSTRAINT_ACTIVITIES_SAME_STARTING_HOUR						=26;
+const int CONSTRAINT_ACTIVITY_PREFERRED_TIME							=18;
+const int CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME						=19;
+const int CONSTRAINT_ACTIVITIES_NOT_OVERLAPPING							=20;
+const int CONSTRAINT_MIN_N_DAYS_BETWEEN_ACTIVITIES						=21;
+const int CONSTRAINT_ACTIVITY_PREFERRED_TIMES							=22;
+const int CONSTRAINT_ACTIVITY_ENDS_DAY									=23;
+const int CONSTRAINT_2_ACTIVITIES_CONSECUTIVE							=24;
+const int CONSTRAINT_2_ACTIVITIES_ORDERED								=25;
+const int CONSTRAINT_2_ACTIVITIES_GROUPED								=26;
+const int CONSTRAINT_ACTIVITIES_PREFERRED_TIMES							=27;
+const int CONSTRAINT_ACTIVITIES_SAME_STARTING_HOUR						=28;
 
-const int CONSTRAINT_TEACHERS_SUBJECT_TAGS_MAX_HOURS_CONTINUOUSLY		=27;
-const int CONSTRAINT_TEACHERS_SUBJECT_TAG_MAX_HOURS_CONTINUOUSLY		=28;
+const int CONSTRAINT_TEACHERS_SUBJECT_TAGS_MAX_HOURS_CONTINUOUSLY		=29;
+const int CONSTRAINT_TEACHERS_SUBJECT_TAG_MAX_HOURS_CONTINUOUSLY		=30;
 
 /**
 This class represents a time constraint
@@ -337,7 +339,7 @@ in the scheduling time for all pairs of activities.
 The difference in the scheduling time for a pair of
 activities is considered the sum between the difference in the starting
 day and the difference in the starting hour.
-TODO: Weekly activities are counted as two and bi-weekly activities as one
+TODO: Weekly activities are counted as two and fortnightly activities as one
 (really necessary?).
 IMPORTANT: Starting with version 3.2.3, the compulsory constraints of this kind
 implement chromosome repairing, so no conflicts will be reported
@@ -606,6 +608,42 @@ public:
 };
 
 /**
+This is a constraint, aimed at obtaining timetables
+which do not allow less than X hours in a day for any teacher
+*/
+class ConstraintTeachersMinHoursDaily: public TimeConstraint{
+public:
+	/**
+	The minimum hours daily
+	*/
+	int minHoursDaily;
+
+	ConstraintTeachersMinHoursDaily();
+
+	ConstraintTeachersMinHoursDaily(double w, bool c, int minhours);
+
+	QString getXmlDescription(Rules& r);
+
+	bool computeInternalStructure(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	int fitness(TimeChromosome& c, Rules& r, QString* conflictsString=NULL);
+
+	bool isRelatedToActivity(Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToSubjectTag(SubjectTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+};
+
+/**
 A constraint aimed at obtaining timetables
 which do not allow for a certain teacher and a certain
 subgroup more than X hours per day
@@ -658,7 +696,7 @@ public:
 	/**
 	The teacher's name
 	*/
-	QString teacher;
+	QString teacherName;
 
 	/**
 	The teacher's id, or index in the rules
@@ -858,7 +896,7 @@ This is a constraint. It adds, to the fitness of
 the chromosome, a fitness factor that is related to how early
 the students begin their courses. The result is a timetable
 having more activities scheduled at the beginning of the day.
-IMPORTANT: biweekly activities are treated as weekly ones,
+IMPORTANT: fortnightly activities are treated as weekly ones,
 for speed and because in normal situations this does not matter.
 */
 class ConstraintStudentsEarly: public TimeConstraint{
@@ -1034,6 +1072,67 @@ public:
 	ConstraintStudentsSetIntervalMaxDaysPerWeek();
 
 	ConstraintStudentsSetIntervalMaxDaysPerWeek(double w, bool c, const QString& sn, int start_hour, int end_hour, int n_intervals);
+
+	bool computeInternalStructure(Rules& r);
+
+	QString getXmlDescription(Rules& r);
+
+	QString getDescription(Rules& r);
+
+	QString getDetailedDescription(Rules& r);
+
+	int fitness(TimeChromosome& c, Rules& r, QString* conflictsString=NULL);
+
+	bool isRelatedToActivity(Activity* a);
+	
+	bool isRelatedToTeacher(Teacher* t);
+
+	bool isRelatedToSubject(Subject* s);
+
+	bool isRelatedToSubjectTag(SubjectTag* s);
+	
+	bool isRelatedToStudentsSet(Rules& r, StudentsSet* s);
+};
+
+/**
+This is a custom constraint.
+For a certain teacher:
+The purpose is that a certain interval not be scheduled more than n times in a week
+(for example, there must be only 2 occupied intervals between hours 3 and 6,
+which might be on Monday and on Tuesday.
+*/
+class ConstraintTeacherIntervalMaxDaysPerWeek: public TimeConstraint{
+public:
+	/**
+	The start hour
+	*/
+	int h1;
+
+	/**
+	The end hour
+	*/
+	int h2;
+
+	/**
+	The name of the teacher
+	*/
+	QString teacher;
+
+	/**
+	The max. number of intervals
+	*/
+	int n;
+
+	//internal variables
+	
+	/**
+	The index of the teacher
+	*/
+	int teacherIndex;
+
+	ConstraintTeacherIntervalMaxDaysPerWeek();
+
+	ConstraintTeacherIntervalMaxDaysPerWeek(double w, bool c, const QString& tn, int start_hour, int end_hour, int n_intervals);
 
 	bool computeInternalStructure(Rules& r);
 
@@ -1280,7 +1379,7 @@ This is a time constraint.
 PURPOSE: you have two activities that you want to schedule one after
 the other, not necessarily in the same day or adjacent. Order is important.
 It adds, to the fitness of the chromosome, the weight multimplied with 2 if the first
-activity is weekly (not bi-weekly) and with again with 2 if the second activity
+activity is weekly (not fortnightly) and with again with 2 if the second activity
 is weekly, if the condition is broken.
 */
 class Constraint2ActivitiesOrdered: public TimeConstraint{
@@ -1482,7 +1581,7 @@ The number of conflicts is considered the sum of differences
 in the scheduling time for all pairs of activities.
 The difference in the scheduling time for a pair of
 activities is considered the difference in the starting hour.
-TODO: Weekly activities are counted as two and bi-weekly activities as one
+TODO: Weekly activities are counted as two and fortnightly activities as one
 (really necessary?).
 IMPORTANT: The compulsory constraints of this kind
 implement chromosome repairing, so no conflicts will be reported

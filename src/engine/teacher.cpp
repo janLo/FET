@@ -47,7 +47,8 @@ QString Teacher::getDetailedDescriptionWithConstraints(Rules& r)
 	s+="--------------------------------------------------\n";
 	s+=QObject::tr("Time constraints directly related to this teacher:");
 	s+="\n";
-	for(TimeConstraint* c=r.timeConstraintsList.first(); c; c=r.timeConstraintsList.next()){
+	for(int i=0; i<r.timeConstraintsList.size(); i++){
+		TimeConstraint* c=r.timeConstraintsList[i];
 		if(c->isRelatedToTeacher(this)){
 			s+="\n";
 			s+=c->getDetailedDescription(r);
@@ -57,7 +58,8 @@ QString Teacher::getDetailedDescriptionWithConstraints(Rules& r)
 	s+="--------------------------------------------------\n";
 	s+=QObject::tr("Space constraints directly related to this teacher:");
 	s+="\n";
-	for(SpaceConstraint* c=r.spaceConstraintsList.first(); c; c=r.spaceConstraintsList.next()){
+	for(int i=0; i<r.spaceConstraintsList.size(); i++){
+		SpaceConstraint* c=r.spaceConstraintsList[i];
 		if(c->isRelatedToTeacher(this)){
 			s+="\n";
 			s+=c->getDetailedDescription(r);
@@ -68,12 +70,7 @@ QString Teacher::getDetailedDescriptionWithConstraints(Rules& r)
 	return s;
 }
 
-int TeachersList::compareItems(QPtrCollection::Item item1,QPtrCollection::Item item2)
+int teachersAscending(const Teacher* t1, const Teacher* t2)
 {
-	if(((Teacher*)item1)->name>((Teacher*)item2)->name)
-		return 1;
-	else if(((Teacher*)item1)->name<((Teacher*)item2)->name)
-		return -1;
-	else
-		return 0;
+	return t1->name < t2->name;
 }

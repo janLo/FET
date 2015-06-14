@@ -21,10 +21,19 @@
 #include <qradiobutton.h>
 #include <qlabel.h>
 #include <qlineedit.h>
-#include <qtable.h>
+#include <q3table.h>
+
+#include <QDesktopWidget>
 
 ModifyConstraintSubjectPreferredRoomForm::ModifyConstraintSubjectPreferredRoomForm(ConstraintSubjectPreferredRoom* ctr)
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	this->_ctr=ctr;
 	
 	compulsoryCheckBox->setChecked(ctr->compulsory);
@@ -42,7 +51,8 @@ void ModifyConstraintSubjectPreferredRoomForm::updateSubjectsComboBox()
 {
 	int i=0, j=-1;
 	subjectsComboBox->clear();
-	for(Subject* sb=gt.rules.subjectsList.first(); sb; sb=gt.rules.subjectsList.next()){
+	for(int k=0; k<gt.rules.subjectsList.size(); k++){
+		Subject* sb=gt.rules.subjectsList[k];
 		subjectsComboBox->insertItem(sb->name);
 		if(sb->name==this->_ctr->subjectName)
 			j=i;
@@ -56,7 +66,8 @@ void ModifyConstraintSubjectPreferredRoomForm::updateRoomsComboBox()
 {
 	int i=0, j=-1;
 	roomsComboBox->clear();
-	for(Room* rm=gt.rules.roomsList.first(); rm; rm=gt.rules.roomsList.next()){
+	for(int k=0; k<gt.rules.roomsList.size(); k++){
+		Room* rm=gt.rules.roomsList[k];
 		roomsComboBox->insertItem(rm->name);
 		if(rm->name==this->_ctr->roomName)
 			j=i;

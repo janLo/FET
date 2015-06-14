@@ -21,10 +21,18 @@
 #include <qradiobutton.h>
 #include <qlabel.h>
 #include <qlineedit.h>
-#include <qtable.h>
+#include <q3table.h>
+
+#include <QDesktopWidget>
 
 AddConstraintMinimizeNumberOfRoomsForTeachersForm::AddConstraintMinimizeNumberOfRoomsForTeachersForm()
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
 }
 
 AddConstraintMinimizeNumberOfRoomsForTeachersForm::~AddConstraintMinimizeNumberOfRoomsForTeachersForm()

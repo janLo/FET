@@ -655,14 +655,153 @@ Versions 3.17.0 - 3.17.12
 	- Added the e-mails of the translators and changed contact information for Liviu Lalescu.
 	- Began Dutch translation (by Niels Fikse).
 ---------------------------------------------------------------------------------
-Versions 3.18.0 - 3.18.x
-	- Liviu Lalescu,
-	Polish translation update by Radoslaw Pasiok
+Versions 3.18.0 - 3.18.1
+	- Liviu Lalescu
 - Version 3.18.0
 	- Added the possibility to export to iCalendar (suggested by Simon Bohlin).
 - Version 3.18.1
 	- Small bug fix.
-- Version 3.18.2
+---------------------------------------------------------------------------------
+Versions 4.0.0 - 4.0.9
+	- Liviu Lalescu,
+	Polish translation update by Radoslaw Pasiok
+- Version 4.0.0
 	- Changed MY into MS (Malay language).
 	- Improved the languages menu.
 	- Improved Polish translation (by Radoslaw Pasiok).
+	- Bug fix (when pressing the "Write results",FET crashed
+	- Began porting to Qt 4
+	- Improved the threads code in the allocate menus
+	- Made MAX_SUBGROUPS_PER_GROUP=100 (suggested by Andreas Goranson)
+- Version 4.0.1
+	- Various improvements
+- Version 4.0.2
+	- Changed the list of activities, buildings, equipments, rooms, space constraints,
+	students years, students groups, students subgroups, subject, subject tag, teachers
+	and time constraints to be QList, instead of Q3PtrList.
+	- Small leakages fixed
+	- Small bug fixes
+- Version 4.0.3
+	- Bug fix - when erasing a year or group, removing now all corresponding constraints
+	(even those referring to erased groups or subgroups). Crash bug fix - when removing
+	a year which contained groups with constraints pointing to them (bug prior to 4.0.0)
+	- Crash bug fix, when opening a file after another containing rooms
+	(bug introduced in version 4.0.0)
+- Version 4.0.4
+	- Bug fix - updating the generation in timetable allocate menu works correctly
+	(previously, it updated generation as 1, 3, 5, ...). This was solved by adding
+	a QSemaphore condition in the allocation thread
+- Version 4.0.5
+	- After pressing Exit, the user can cancel exit.
+	- Added a check if FET has write access on the local hard disk.
+	- Now the institution name and comments windows are non-modal.
+- Version 4.0.6
+	- Bug fix - when starting new rules, it does not crash anymore.
+- Version 4.0.7
+	- Changed biweekly into fortnightly (suggested by Tom Hosty).
+	- Crash bug fix (when modifying an activity). This bug was introduced
+	in the 4.0 series.
+- Version 4.0.8
+	- Bug fix - after pressing "stop" and "write", the program crashed.
+	Reported by Pat Siddharta. This was a bug previous to 4.0.0
+- Version 4.0.9
+	- Bug fix - when dealing only with one year or group, the results are now
+	displayed correctly (bug introduced in 4.0 versions).
+---------------------------------------------------------------------------------
+Versions 4.1.0 - 4.1.10
+	- Liviu Lalescu,
+	- German translation by Volker Dirr	
+	- FAQ improvement by Les Richardson
+- Version 4.1.0
+	- In the Modify Activity Dialog, the "split into..." spin box is now showed correctly
+	- Added German translation (by Volker Dirr)
+	- Improved viewing the timetable dialogs (suggested by Volker Dirr). Now the table
+	column and row description contain the name of the hours and days.
+- Version 4.1.1
+	- In the Modify Activity Dialog, the "split into..." spin box is now shaded,
+	to show that the modification of it is impossible (suggested by Volker Dirr).
+	- The default value for "minimum required distance in days between sub-activities"
+	in the add activity dialog is now 1 (suggested by Volker Dirr).
+	- The main window title now contains the name of the file (suggested by Volker Dirr).
+	- The add and modify activity dialogs are improved (suggested by Volker Dirr).
+	- Now the windows contain maximize/minimize buttons also on Microsoft Windows
+	(suggested by Volker Dirr).
+	- Added teachers, subjects and students statistics (suggested by Volker Dirr).
+- Version 4.1.2
+	- The windows are now centered about the screen.
+	- Removed unused "pause" buttons in allocation menus.
+- Version 4.1.3
+	- The constraint activity preferred times and constraint activities
+	preferred times add and modify dialog are improved (suggested by Volker Dirr).
+- Version 4.1.4
+	- Improved dialogs constraint activity preferred time and constraint
+	activity preferred times, by adding a description next to the
+	activity id (suggested by Volker Dirr).
+	- Corrected a small bug in ConstraintStudentsSetIntervalMaxDaysPerWeek
+	(in reporting conflicts, the subgroup was not correct).
+	- Added ConstraintTeacherIntervalMaxDaysPerWeek (suggested by
+	Daan Huntjens).
+- Version 4.1.5
+	- Bug fix - trying to add duplicate constraint activity preferred time
+	reports now a duplicate instead of "please report error" (reported
+	by Volker Dirr).
+	- FAQ improvement by Les Richardson.
+- Version 4.1.6
+	- The number of students can now be set for a particular activity
+	(suggested by Abdul Hadi Kamel)
+	- Bug fix - when removing or modifying the students sets for an
+	activity, the number of students for that activity are modified
+	accordingly.
+	- Small bug fixes
+- Version 4.1.7
+	- The default population size is now MAX_POPULATION_SIZE
+	instead of 8192 (suggested by Volker Dirr).
+	- Added a description on how to compile/run FET on Max OS X (by Gabi Danon).
+	- Bug fix, when erasing a year, group or subgroup (reported by Volker Dirr).
+	This bug was introduced in version 4.1.6.
+- Version 4.1.8
+	- Improved readability and corrected possible future bugs, by adding a
+	chromosome property called "timeChangedForMatrixCalculation" and 
+	"spaceChangedForMatrixCalculation" (suggested by Volker Dirr).
+	- The minimum population size in the dialog is now 3
+	(suggested by Volker Dirr).
+- Version 4.1.9
+	- Possible small bug fix (reported by Volker Dirr).
+- Version 4.1.10
+	- Possible bug fix (reported by Volker Dirr).
+---------------------------------------------------------------------------------
+Versions 4.2.0 - 4.2.x
+	- Liviu Lalescu,
+	- 2-point and uniform crossover implemented and tested by Volker Dirr
+	- Turkish language update by Mahir Nacar
+	- French translation update by Patrick Fox
+- Version 4.2.0
+	- Implemented 2-point and uniform crossover, by Mr. Volker Dirr.
+	The default crossover method is 2-point, which should give better results
+	than the 1-point crossover.
+	- Added ConstraintTeachersMinHoursDaily (suggested by Manolo Par).
+- Version 4.2.1
+	- Bug fix - when renaming a students set which is contained in some activities
+	(reported by Viktor Ferenczi)
+- Version 4.2.2
+	- The statistics dialogs show only active activities (suggested by Volker Dirr)
+	- Turkish translation update by Mahir Nacar
+- Version 4.2.3
+- Version 4.2.4
+	- French translation improved by Patrick Fox.
+- Version 4.2.5
+	- Small interface improvements, the add constraint activity preferred time
+	and add constraint activity preferred times contains a filter (suggested 
+	by Abdul Hadi Kamel)
+- Version 4.2.6
+	- Small interface improvements, the modify constraint activity preferred time
+	and modify constraint activity preferred times contains a filter (suggested 
+	by Abdul Hadi Kamel)
+- Version 4.2.7
+	- Added Hungarian translation (incomplete), by Ferenczi Viktor.
+	- Output files (besides the .fet data file) now handle correctly special
+	local characters (suggested by Zoran Zdravkovski).
+	-Add and modify activity dialog now report correctly the current name,
+	including local characters (reported by Zoran Zdravkovski).
+- Version 4.2.8
+	- Added Macedonian translation (by Zoran Zdravkovski).

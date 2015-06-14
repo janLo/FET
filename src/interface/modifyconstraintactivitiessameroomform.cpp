@@ -21,10 +21,21 @@
 #include <qradiobutton.h>
 #include <qlabel.h>
 #include <qlineedit.h>
-#include <qtable.h>
+#include <q3table.h>
+
+#include <QList>
+
+#include <QDesktopWidget>
 
 ModifyConstraintActivitiesSameRoomForm::ModifyConstraintActivitiesSameRoomForm(ConstraintActivitiesSameRoom* ctr)
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	this->_ctr=ctr;
 	updateActivitiesListBox();
 	
@@ -34,10 +45,12 @@ ModifyConstraintActivitiesSameRoomForm::ModifyConstraintActivitiesSameRoomForm(C
 	for(int i=0; i<ctr->n_activities; i++){
 		int actId=ctr->activitiesId[i];
 		this->selectedActivitiesList.append(actId);
-		Activity* act;
-		for(act=gt.rules.activitiesList.first(); act; act=gt.rules.activitiesList.next())
+		Activity* act=NULL;
+		for(int k=0; k<gt.rules.activitiesList.size(); k++){
+			act=gt.rules.activitiesList[k];
 			if(act->id==actId)
 				break;
+		}
 		assert(act);
 		this->selectedActivitiesListBox->insertItem(act->getDescription(gt.rules));
 	}
@@ -55,7 +68,8 @@ void ModifyConstraintActivitiesSameRoomForm::updateActivitiesListBox()
 	this->activitiesList.clear();
 	this->selectedActivitiesList.clear();
 
-	for(Activity* ac=gt.rules.activitiesList.first(); ac; ac=gt.rules.activitiesList.next()){
+	for(int i=0; i<gt.rules.activitiesList.size(); i++){
+		Activity* ac=gt.rules.activitiesList[i];
 		activitiesListBox->insertItem(ac->getDescription(gt.rules));
 		this->activitiesList.append(ac->id);
 	}
@@ -76,24 +90,24 @@ void ModifyConstraintActivitiesSameRoomForm::ok()
 	if(compulsoryCheckBox->isChecked())
 		compulsory=true;
 
-	if(this->selectedActivitiesList.count()==0){
+	if(this->selectedActivitiesList.size()==0){
 		QMessageBox::warning(this, QObject::tr("FET information"),
 			QObject::tr("Empty list of selected activities"));
 		return;
 	}
-	if(this->selectedActivitiesList.count()==1){
+	if(this->selectedActivitiesList.size()==1){
 		QMessageBox::warning(this, QObject::tr("FET information"),
 			QObject::tr("Only one selected activity"));
 		return;
 	}
-	if(this->selectedActivitiesList.count()>(uint)(MAX_CONSTRAINT_ACTIVITIES_SAME_ROOM)){
+	if(this->selectedActivitiesList.size()>MAX_CONSTRAINT_ACTIVITIES_SAME_ROOM){
 		QMessageBox::warning(this, QObject::tr("FET information"),
 			QObject::tr("Please report error to the author\nMAX_CONSTRAINT_ACTIVITIES_SAME_ROOM must be increased (you have too many activities)"));
 		return;
 	}
 	
 	int i;
-	QValueList<int>::iterator it;
+	QList<int>::iterator it;
 	for(i=0, it=this->selectedActivitiesList.begin(); it!=this->selectedActivitiesList.end(); it++, i++)
 		this->_ctr->activitiesId[i]=*it;
 	this->_ctr->n_activities=i;
@@ -116,7 +130,7 @@ void ModifyConstraintActivitiesSameRoomForm::addActivity()
 	if(activitiesListBox->currentItem()<0)
 		return;
 	int tmp=activitiesListBox->currentItem();
-	int _id=*(this->activitiesList.at(tmp));
+	int _id=this->activitiesList.at(tmp);
 	
 	QString actName=activitiesListBox->currentText();
 	assert(actName!="");
@@ -137,9 +151,7 @@ void ModifyConstraintActivitiesSameRoomForm::removeActivity()
 	if(selectedActivitiesListBox->currentItem()<0 || selectedActivitiesListBox->count()<=0)
 		return;		
 	int tmp=selectedActivitiesListBox->currentItem();
-	int _id=*(this->selectedActivitiesList.at(tmp));
 	
-	selectedActivitiesListBox->removeItem(selectedActivitiesListBox->currentItem());
-	int tmp2=this->selectedActivitiesList.remove(_id);
-	assert(tmp2==1);
+	selectedActivitiesListBox->removeItem(tmp);
+	this->selectedActivitiesList.removeAt(tmp);
 }

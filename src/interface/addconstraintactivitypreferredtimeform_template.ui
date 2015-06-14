@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>585</width>
-            <height>251</height>
+            <width>706</width>
+            <height>541</height>
         </rect>
     </property>
     <property name="caption">
@@ -19,152 +19,284 @@
         <property name="name">
             <cstring>unnamed</cstring>
         </property>
-        <widget class="QPushButton" row="5" column="0" rowspan="1" colspan="2">
+        <widget class="QLayoutWidget" row="0" column="0">
             <property name="name">
-                <cstring>addConstraintPushButton</cstring>
-            </property>
-            <property name="text">
-                <string>Add current constraint</string>
-            </property>
-        </widget>
-        <widget class="QPushButton" row="5" column="2">
-            <property name="name">
-                <cstring>closePushButton</cstring>
-            </property>
-            <property name="text">
-                <string>Close</string>
-            </property>
-        </widget>
-        <widget class="QCheckBox" row="4" column="0" rowspan="1" colspan="2">
-            <property name="name">
-                <cstring>compulsoryCheckBox</cstring>
-            </property>
-            <property name="text">
-                <string>Compulsory constraint</string>
-            </property>
-            <property name="checked">
-                <bool>true</bool>
-            </property>
-        </widget>
-        <widget class="QLabel" row="0" column="2">
-            <property name="name">
-                <cstring>currentConstraintTextLabel</cstring>
-            </property>
-            <property name="frameShape">
-                <enum>NoFrame</enum>
-            </property>
-            <property name="frameShadow">
-                <enum>Plain</enum>
-            </property>
-            <property name="text">
-                <string>Current constraint</string>
-            </property>
-        </widget>
-        <widget class="QTextEdit" row="1" column="2" rowspan="4" colspan="1">
-            <property name="name">
-                <cstring>currentConstraintTextEdit</cstring>
-            </property>
-            <property name="readOnly">
-                <bool>true</bool>
-            </property>
-        </widget>
-        <widget class="QGroupBox" row="3" column="0" rowspan="1" colspan="2">
-            <property name="name">
-                <cstring>periodGroupBox</cstring>
-            </property>
-            <property name="title">
-                <string>Period</string>
+                <cstring>layout9</cstring>
             </property>
             <grid>
                 <property name="name">
                     <cstring>unnamed</cstring>
                 </property>
-                <widget class="QLabel" row="0" column="0">
+                <widget class="QLayoutWidget" row="1" column="0">
                     <property name="name">
-                        <cstring>dayTextLabel</cstring>
+                        <cstring>layout8</cstring>
                     </property>
-                    <property name="text">
-                        <string>Day</string>
-                    </property>
+                    <vbox>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <widget class="QLabel">
+                            <property name="name">
+                                <cstring>activityTextLabel</cstring>
+                            </property>
+                            <property name="frameShape">
+                                <enum>NoFrame</enum>
+                            </property>
+                            <property name="frameShadow">
+                                <enum>Plain</enum>
+                            </property>
+                            <property name="text">
+                                <string>Activity</string>
+                            </property>
+                        </widget>
+                        <widget class="QComboBox">
+                            <property name="name">
+                                <cstring>activitiesComboBox</cstring>
+                            </property>
+                            <property name="editable">
+                                <bool>false</bool>
+                            </property>
+                            <property name="insertionPolicy">
+                                <enum>NoInsertion</enum>
+                            </property>
+                            <property name="autoCompletion">
+                                <bool>false</bool>
+                            </property>
+                            <property name="duplicatesEnabled">
+                                <bool>false</bool>
+                            </property>
+                        </widget>
+                    </vbox>
                 </widget>
-                <widget class="QComboBox" row="1" column="0">
+                <widget class="QLayoutWidget" row="2" column="0">
                     <property name="name">
-                        <cstring>dayComboBox</cstring>
+                        <cstring>layout8</cstring>
                     </property>
-                    <property name="duplicatesEnabled">
-                        <bool>false</bool>
-                    </property>
+                    <grid>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <widget class="QCheckBox" row="4" column="0">
+                            <property name="name">
+                                <cstring>compulsoryCheckBox</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Compulsory constraint</string>
+                            </property>
+                            <property name="checked">
+                                <bool>true</bool>
+                            </property>
+                        </widget>
+                        <spacer row="1" column="0">
+                            <property name="name">
+                                <cstring>spacer2</cstring>
+                            </property>
+                            <property name="orientation">
+                                <enum>Vertical</enum>
+                            </property>
+                            <property name="sizeType">
+                                <enum>Expanding</enum>
+                            </property>
+                            <property name="sizeHint">
+                                <size>
+                                    <width>21</width>
+                                    <height>71</height>
+                                </size>
+                            </property>
+                        </spacer>
+                        <widget class="QLabel" row="0" column="1">
+                            <property name="name">
+                                <cstring>currentConstraintTextLabel</cstring>
+                            </property>
+                            <property name="frameShape">
+                                <enum>NoFrame</enum>
+                            </property>
+                            <property name="frameShadow">
+                                <enum>Plain</enum>
+                            </property>
+                            <property name="text">
+                                <string>Current constraint</string>
+                            </property>
+                        </widget>
+                        <widget class="QGroupBox" row="3" column="0">
+                            <property name="name">
+                                <cstring>periodGroupBox</cstring>
+                            </property>
+                            <property name="title">
+                                <string>Period</string>
+                            </property>
+                            <grid>
+                                <property name="name">
+                                    <cstring>unnamed</cstring>
+                                </property>
+                                <widget class="QLabel" row="0" column="0">
+                                    <property name="name">
+                                        <cstring>dayTextLabel</cstring>
+                                    </property>
+                                    <property name="text">
+                                        <string>Day</string>
+                                    </property>
+                                </widget>
+                                <widget class="QComboBox" row="1" column="0">
+                                    <property name="name">
+                                        <cstring>dayComboBox</cstring>
+                                    </property>
+                                    <property name="duplicatesEnabled">
+                                        <bool>false</bool>
+                                    </property>
+                                </widget>
+                                <widget class="QLabel" row="0" column="1">
+                                    <property name="name">
+                                        <cstring>startHourTextLabel</cstring>
+                                    </property>
+                                    <property name="text">
+                                        <string>Start hour</string>
+                                    </property>
+                                </widget>
+                                <widget class="QComboBox" row="1" column="1">
+                                    <property name="name">
+                                        <cstring>startHourComboBox</cstring>
+                                    </property>
+                                    <property name="duplicatesEnabled">
+                                        <bool>false</bool>
+                                    </property>
+                                </widget>
+                            </grid>
+                        </widget>
+                        <widget class="QTextEdit" row="1" column="1" rowspan="4" colspan="1">
+                            <property name="name">
+                                <cstring>currentConstraintTextEdit</cstring>
+                            </property>
+                            <property name="readOnly">
+                                <bool>true</bool>
+                            </property>
+                        </widget>
+                        <widget class="QLayoutWidget" row="2" column="0">
+                            <property name="name">
+                                <cstring>layout10</cstring>
+                            </property>
+                            <hbox>
+                                <property name="name">
+                                    <cstring>unnamed</cstring>
+                                </property>
+                                <widget class="QLabel">
+                                    <property name="name">
+                                        <cstring>weightTextLabel</cstring>
+                                    </property>
+                                    <property name="frameShape">
+                                        <enum>NoFrame</enum>
+                                    </property>
+                                    <property name="frameShadow">
+                                        <enum>Plain</enum>
+                                    </property>
+                                    <property name="text">
+                                        <string>Weight (recommended: 1.0)</string>
+                                    </property>
+                                </widget>
+                                <widget class="QLineEdit">
+                                    <property name="name">
+                                        <cstring>weightLineEdit</cstring>
+                                    </property>
+                                    <property name="text">
+                                        <string>1.0</string>
+                                    </property>
+                                </widget>
+                            </hbox>
+                        </widget>
+                    </grid>
                 </widget>
-                <widget class="QLabel" row="0" column="1">
+                <widget class="QLayoutWidget" row="3" column="0">
                     <property name="name">
-                        <cstring>startHourTextLabel</cstring>
+                        <cstring>layout14</cstring>
                     </property>
-                    <property name="text">
-                        <string>Start hour</string>
-                    </property>
+                    <hbox>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <widget class="QPushButton">
+                            <property name="name">
+                                <cstring>addConstraintPushButton</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Add current constraint</string>
+                            </property>
+                        </widget>
+                        <widget class="QPushButton">
+                            <property name="name">
+                                <cstring>closePushButton</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Close</string>
+                            </property>
+                        </widget>
+                    </hbox>
                 </widget>
-                <widget class="QComboBox" row="1" column="1">
+                <widget class="QGroupBox" row="0" column="0">
                     <property name="name">
-                        <cstring>startHourComboBox</cstring>
+                        <cstring>periodGroupBox_2</cstring>
                     </property>
-                    <property name="duplicatesEnabled">
-                        <bool>false</bool>
+                    <property name="title">
+                        <string>Filter</string>
                     </property>
+                    <grid>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <widget class="QComboBox" row="1" column="1">
+                            <property name="name">
+                                <cstring>studentsComboBox</cstring>
+                            </property>
+                        </widget>
+                        <widget class="QLabel" row="0" column="1">
+                            <property name="name">
+                                <cstring>studentsTextLabel</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Students set</string>
+                            </property>
+                        </widget>
+                        <widget class="QComboBox" row="1" column="0">
+                            <property name="name">
+                                <cstring>teachersComboBox</cstring>
+                            </property>
+                        </widget>
+                        <widget class="QLabel" row="0" column="0">
+                            <property name="name">
+                                <cstring>teachersTextLabel</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Teacher</string>
+                            </property>
+                        </widget>
+                        <widget class="QComboBox" row="4" column="0">
+                            <property name="name">
+                                <cstring>subjectsComboBox</cstring>
+                            </property>
+                        </widget>
+                        <widget class="QLabel" row="2" column="0" rowspan="2" colspan="1">
+                            <property name="name">
+                                <cstring>subjectsTextLabel</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Subject</string>
+                            </property>
+                        </widget>
+                        <widget class="QLabel" row="2" column="1">
+                            <property name="name">
+                                <cstring>subjectTagsTextLabel</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Subject tag</string>
+                            </property>
+                        </widget>
+                        <widget class="QComboBox" row="3" column="1" rowspan="2" colspan="1">
+                            <property name="name">
+                                <cstring>subjectTagsComboBox</cstring>
+                            </property>
+                        </widget>
+                    </grid>
                 </widget>
             </grid>
-        </widget>
-        <widget class="QLineEdit" row="2" column="1">
-            <property name="name">
-                <cstring>weightLineEdit</cstring>
-            </property>
-            <property name="text">
-                <string>1.0</string>
-            </property>
-        </widget>
-        <widget class="QLabel" row="2" column="0">
-            <property name="name">
-                <cstring>weightTextLabel</cstring>
-            </property>
-            <property name="frameShape">
-                <enum>NoFrame</enum>
-            </property>
-            <property name="frameShadow">
-                <enum>Plain</enum>
-            </property>
-            <property name="text">
-                <string>Weight (recommended: 1.0)</string>
-            </property>
-        </widget>
-        <widget class="QComboBox" row="1" column="0" rowspan="1" colspan="2">
-            <property name="name">
-                <cstring>activitiesComboBox</cstring>
-            </property>
-            <property name="editable">
-                <bool>false</bool>
-            </property>
-            <property name="insertionPolicy">
-                <enum>NoInsertion</enum>
-            </property>
-            <property name="autoCompletion">
-                <bool>false</bool>
-            </property>
-            <property name="duplicatesEnabled">
-                <bool>false</bool>
-            </property>
-        </widget>
-        <widget class="QLabel" row="0" column="0" rowspan="1" colspan="2">
-            <property name="name">
-                <cstring>activityTextLabel</cstring>
-            </property>
-            <property name="frameShape">
-                <enum>NoFrame</enum>
-            </property>
-            <property name="frameShadow">
-                <enum>Plain</enum>
-            </property>
-            <property name="text">
-                <string>Activity</string>
-            </property>
         </widget>
     </grid>
 </widget>
@@ -211,10 +343,35 @@
         <receiver>AddConstraintActivityPreferredTimeForm_template</receiver>
         <slot>constraintChanged()</slot>
     </connection>
+    <connection>
+        <sender>teachersComboBox</sender>
+        <signal>activated(const QString&amp;)</signal>
+        <receiver>AddConstraintActivityPreferredTimeForm_template</receiver>
+        <slot>filterChanged()</slot>
+    </connection>
+    <connection>
+        <sender>studentsComboBox</sender>
+        <signal>activated(const QString&amp;)</signal>
+        <receiver>AddConstraintActivityPreferredTimeForm_template</receiver>
+        <slot>filterChanged()</slot>
+    </connection>
+    <connection>
+        <sender>subjectsComboBox</sender>
+        <signal>activated(const QString&amp;)</signal>
+        <receiver>AddConstraintActivityPreferredTimeForm_template</receiver>
+        <slot>filterChanged()</slot>
+    </connection>
+    <connection>
+        <sender>subjectTagsComboBox</sender>
+        <signal>activated(const QString&amp;)</signal>
+        <receiver>AddConstraintActivityPreferredTimeForm_template</receiver>
+        <slot>filterChanged()</slot>
+    </connection>
 </connections>
 <slots>
     <slot>addCurrentConstraint()</slot>
     <slot>constraintChanged()</slot>
+    <slot>filterChanged()</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

@@ -21,14 +21,24 @@
 #include <qradiobutton.h>
 #include <qlabel.h>
 #include <qlineedit.h>
-#include <qtable.h>
+#include <q3table.h>
+
+#include <QDesktopWidget>
 
 ModifyConstraintActivityPreferredRoomsForm::ModifyConstraintActivityPreferredRoomsForm(ConstraintActivityPreferredRooms* ctr)
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	updateRoomsListBox();
 
 	int j=-1, i=0;
-	for(Activity* ac=gt.rules.activitiesList.first(); ac; ac=gt.rules.activitiesList.next()){
+	for(int k=0; k<gt.rules.activitiesList.size(); k++){
+		Activity* ac=gt.rules.activitiesList[k];
 		activitiesComboBox->insertItem(ac->getDescription(gt.rules));
 		if(ac->id==ctr->activityId){
 			assert(j==-1);
@@ -57,8 +67,10 @@ void ModifyConstraintActivityPreferredRoomsForm::updateRoomsListBox()
 	roomsListBox->clear();
 	selectedRoomsListBox->clear();
 
-	for(Room* rm=gt.rules.roomsList.first(); rm; rm=gt.rules.roomsList.next())
+	for(int i=0; i<gt.rules.roomsList.size(); i++){
+		Room* rm=gt.rules.roomsList[i];
 		roomsListBox->insertItem(rm->name);
+	}
 }
 
 void ModifyConstraintActivityPreferredRoomsForm::ok()

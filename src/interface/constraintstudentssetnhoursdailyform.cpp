@@ -19,20 +19,32 @@
 #include "addconstraintstudentssetnhoursdailyform.h"
 #include "modifyconstraintstudentssetnhoursdailyform.h"
 
+#include <QDesktopWidget>
+
 ConstraintStudentsSetNHoursDailyForm::ConstraintStudentsSetNHoursDailyForm()
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	studentsComboBox->insertItem("");
-	for(StudentsYear* sty=gt.rules.yearsList.first(); sty; sty=gt.rules.yearsList.next()){
+
+	for(int i=0; i<gt.rules.yearsList.size(); i++){
+		StudentsYear* sty=gt.rules.yearsList[i];
 		studentsComboBox->insertItem(sty->name);
-		for(StudentsGroup* stg=sty->groupsList.first(); stg; stg=sty->groupsList.next()){
+		for(int j=0; j<sty->groupsList.size(); j++){
+			StudentsGroup* stg=sty->groupsList[j];
 			studentsComboBox->insertItem(stg->name);
-			for(StudentsSubgroup* sts=stg->subgroupsList.first(); sts; sts=stg->subgroupsList.next()){
-				studentsComboBox->insertItem(sts->name);		
-			}		
+			for(int k=0; k<stg->subgroupsList.size(); k++){
+				StudentsSubgroup* sts=stg->subgroupsList[k];
+				studentsComboBox->insertItem(sts->name);
+			}
 		}
 	}
 
-	this->visibleConstraintsList.setAutoDelete(false);
 	this->filterChanged();
 }
 
@@ -54,18 +66,20 @@ void ConstraintStudentsSetNHoursDailyForm::filterChanged()
 {
 	this->visibleConstraintsList.clear();
 	constraintsListBox->clear();
-	for(TimeConstraint* ctr=gt.rules.timeConstraintsList.first(); ctr; ctr=gt.rules.timeConstraintsList.next())
+	for(int i=0; i<gt.rules.timeConstraintsList.size(); i++){
+		TimeConstraint* ctr=gt.rules.timeConstraintsList[i];
 		if(filterOk(ctr)){
 			visibleConstraintsList.append(ctr);
 			constraintsListBox->insertItem(ctr->getDescription(gt.rules));
 		}
+	}
 }
 
 void ConstraintStudentsSetNHoursDailyForm::constraintChanged(int index)
 {
 	if(index<0)
 		return;
-	assert((uint)(index)<this->visibleConstraintsList.count());
+	assert(index<this->visibleConstraintsList.size());
 	TimeConstraint* ctr=this->visibleConstraintsList.at(index);
 	assert(ctr!=NULL);
 	currentConstraintTextEdit->setText(ctr->getDetailedDescription(gt.rules));
@@ -73,8 +87,8 @@ void ConstraintStudentsSetNHoursDailyForm::constraintChanged(int index)
 
 void ConstraintStudentsSetNHoursDailyForm::addConstraint()
 {
-	AddConstraintStudentsSetNHoursDailyForm *addConstraintStudentsSetNHoursDailyForm=new AddConstraintStudentsSetNHoursDailyForm();
-	addConstraintStudentsSetNHoursDailyForm->exec();
+	AddConstraintStudentsSetNHoursDailyForm *form=new AddConstraintStudentsSetNHoursDailyForm();
+	form->exec();
 
 	filterChanged();
 	
@@ -90,9 +104,9 @@ void ConstraintStudentsSetNHoursDailyForm::modifyConstraint()
 	}
 	TimeConstraint* ctr=this->visibleConstraintsList.at(i);
 
-	ModifyConstraintStudentsSetNHoursDailyForm *modifyConstraintStudentsSetNHoursDailyForm
+	ModifyConstraintStudentsSetNHoursDailyForm *form
 	 = new ModifyConstraintStudentsSetNHoursDailyForm((ConstraintStudentsSetNHoursDaily*)ctr);
-	modifyConstraintStudentsSetNHoursDailyForm->exec();
+	form->exec();
 
 	filterChanged();
 	constraintsListBox->setCurrentItem(i);

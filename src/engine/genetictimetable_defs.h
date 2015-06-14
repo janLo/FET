@@ -70,7 +70,7 @@ const int MAX_GROUPS_PER_YEAR=100;
 /**
 Maximum number of allowed subgroups per group of students
 */
-const int MAX_SUBGROUPS_PER_GROUP=50;
+const int MAX_SUBGROUPS_PER_GROUP=100;
 
 /**
 The maximum total number of different groups of students

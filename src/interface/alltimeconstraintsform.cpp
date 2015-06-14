@@ -31,6 +31,7 @@
 #include "modifyconstraintteachermaxdaysperweekform.h"
 #include "modifyconstraintteachersmaxhourscontinuouslyform.h"
 #include "modifyconstraintteachersmaxhoursdailyform.h"
+#include "modifyconstraintteachersminhoursdailyform.h"
 #include "modifyconstraintteacherssubgroupsmaxhoursdailyform.h"
 #include "modifyconstraintactivitypreferredtimeform.h"
 #include "modifyconstraintstudentssetnogapsform.h"
@@ -38,6 +39,7 @@
 #include "modifyconstraintteachersnogapsform.h"
 #include "modifyconstraintstudentsearlyform.h"
 #include "modifyconstraintstudentssetintervalmaxdaysperweekform.h"
+#include "modifyconstraintteacherintervalmaxdaysperweekform.h"
 #include "modifyconstraintstudentssetnhoursdailyform.h"
 #include "modifyconstraintstudentsnhoursdailyform.h"
 #include "modifyconstraintactivityendsdayform.h"
@@ -46,11 +48,23 @@
 #include "modifyconstraintteacherssubjecttagsmaxhourscontinuouslyform.h"
 #include "modifyconstraintteacherssubjecttagmaxhourscontinuouslyform.h"
 
+#include <QDesktopWidget>
+
 AllTimeConstraintsForm::AllTimeConstraintsForm()
 {
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
+	setWindowFlags(Qt::Window);
+	
 	constraintsListBox->clear();
-	for(TimeConstraint* ctr=gt.rules.timeConstraintsList.first(); ctr; ctr=gt.rules.timeConstraintsList.next())
-			constraintsListBox->insertItem(ctr->getDescription(gt.rules));
+	for(int i=0; i<gt.rules.timeConstraintsList.size(); i++){
+		TimeConstraint* ctr=gt.rules.timeConstraintsList[i];
+		constraintsListBox->insertItem(ctr->getDescription(gt.rules));
+	}
 }
 
 AllTimeConstraintsForm::~AllTimeConstraintsForm()
@@ -61,8 +75,8 @@ void AllTimeConstraintsForm::constraintChanged(int index)
 {
 	if(index<0)
 		return;
-	assert((uint)(index)<gt.rules.timeConstraintsList.count());
-	TimeConstraint* ctr=gt.rules.timeConstraintsList.at(index);
+	assert(index<gt.rules.timeConstraintsList.size());
+	TimeConstraint* ctr=gt.rules.timeConstraintsList[index];
 	assert(ctr!=NULL);
 	QString s=ctr->getDetailedDescription(gt.rules);
 	currentConstraintTextEdit->setText(s);
@@ -75,7 +89,7 @@ void AllTimeConstraintsForm::removeConstraint()
 		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected constraint"));
 		return;
 	}
-	TimeConstraint* ctr=gt.rules.timeConstraintsList.at(i);
+	TimeConstraint* ctr=gt.rules.timeConstraintsList[i];
 	/*if(ctr->type==CONSTRAINT_BASIC_COMPULSORY_TIME){
 		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("You cannot erase the basic time constraints"));
 		return;
@@ -110,7 +124,7 @@ void AllTimeConstraintsForm::modifyConstraint()
 		QMessageBox::information(this, QObject::tr("FET information"), QObject::tr("Invalid selected constraint"));
 		return;
 	}
-	TimeConstraint* ctr=gt.rules.timeConstraintsList.at(i);
+	TimeConstraint* ctr=gt.rules.timeConstraintsList[i];
 	
 	if(ctr->type==CONSTRAINT_BASIC_COMPULSORY_TIME){
 		ModifyConstraintBasicCompulsoryTimeForm* form=
@@ -182,6 +196,11 @@ void AllTimeConstraintsForm::modifyConstraint()
 		 new ModifyConstraintTeachersMaxHoursDailyForm((ConstraintTeachersMaxHoursDaily*)ctr);
 		form->exec();
 	}
+	else if(ctr->type==CONSTRAINT_TEACHERS_MIN_HOURS_DAILY){
+		ModifyConstraintTeachersMinHoursDailyForm* form=
+		 new ModifyConstraintTeachersMinHoursDailyForm((ConstraintTeachersMinHoursDaily*)ctr);
+		form->exec();
+	}
 	else if(ctr->type==CONSTRAINT_TEACHERS_SUBGROUPS_MAX_HOURS_DAILY){
 		ModifyConstraintTeachersSubgroupsMaxHoursDailyForm* form=
 		 new ModifyConstraintTeachersSubgroupsMaxHoursDailyForm((ConstraintTeachersSubgroupsMaxHoursDaily*)ctr);
@@ -215,6 +234,11 @@ void AllTimeConstraintsForm::modifyConstraint()
 	else if(ctr->type==CONSTRAINT_STUDENTS_SET_INTERVAL_MAX_DAYS_PER_WEEK){
 		ModifyConstraintStudentsSetIntervalMaxDaysPerWeekForm* form=
 		 new ModifyConstraintStudentsSetIntervalMaxDaysPerWeekForm((ConstraintStudentsSetIntervalMaxDaysPerWeek*)ctr);
+		form->exec();
+	}
+	else if(ctr->type==CONSTRAINT_TEACHER_INTERVAL_MAX_DAYS_PER_WEEK){
+		ModifyConstraintTeacherIntervalMaxDaysPerWeekForm* form=
+		 new ModifyConstraintTeacherIntervalMaxDaysPerWeekForm((ConstraintTeacherIntervalMaxDaysPerWeek*)ctr);
 		form->exec();
 	}
 	else if(ctr->type==CONSTRAINT_STUDENTS_SET_N_HOURS_DAILY){
@@ -258,8 +282,10 @@ void AllTimeConstraintsForm::modifyConstraint()
 	}
 
 	constraintsListBox->clear();
-	for(TimeConstraint* ctr=gt.rules.timeConstraintsList.first(); ctr; ctr=gt.rules.timeConstraintsList.next())
-			constraintsListBox->insertItem(ctr->getDescription(gt.rules));
+	for(int i=0; i<gt.rules.timeConstraintsList.size(); i++){
+		TimeConstraint* ctr=gt.rules.timeConstraintsList[i];
+		constraintsListBox->insertItem(ctr->getDescription(gt.rules));
+	}
 
 	constraintsListBox->setCurrentItem(i);
 }

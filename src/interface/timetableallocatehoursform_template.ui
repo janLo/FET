@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.1" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
 <class>TimetableAllocateHoursForm_template</class>
 <widget class="QDialog">
     <property name="name">
@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>566</width>
-            <height>533</height>
+            <width>570</width>
+            <height>474</height>
         </rect>
     </property>
     <property name="caption">
@@ -91,17 +91,6 @@ the automatic generation from the saved position)</string>
                 <string>Start/Continue</string>
             </property>
         </widget>
-        <widget class="QPushButton" row="2" column="1" rowspan="1" colspan="2">
-            <property name="name">
-                <cstring>pausePushButton</cstring>
-            </property>
-            <property name="enabled">
-                <bool>false</bool>
-            </property>
-            <property name="text">
-                <string>Pause</string>
-            </property>
-        </widget>
         <widget class="QPushButton" row="2" column="3">
             <property name="name">
                 <cstring>stopPushButton</cstring>
@@ -137,12 +126,6 @@ the automatic generation from the saved position)</string>
         <signal>clicked()</signal>
         <receiver>TimetableAllocateHoursForm_template</receiver>
         <slot>start()</slot>
-    </connection>
-    <connection>
-        <sender>pausePushButton</sender>
-        <signal>clicked()</signal>
-        <receiver>TimetableAllocateHoursForm_template</receiver>
-        <slot>pause()</slot>
     </connection>
     <connection>
         <sender>stopPushButton</sender>

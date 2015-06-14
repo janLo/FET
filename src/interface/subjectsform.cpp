@@ -19,16 +19,27 @@
 #include "teacher.h"
 #include "subject.h"
 
-#include <qlistbox.h>
+#include <q3listbox.h>
 #include <qinputdialog.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
+
+#include <QDesktopWidget>
 
 SubjectsForm::SubjectsForm()
  : SubjectsForm_template()
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	subjectsListBox->clear();
-	for(Subject* sbj=gt.rules.subjectsList.first(); sbj; sbj=gt.rules.subjectsList.next())
+	for(int i=0; i<gt.rules.subjectsList.size(); i++){
+		Subject* sbj=gt.rules.subjectsList[i];
 		subjectsListBox->insertItem(sbj->name);
+	}
 		
 	if(subjectsListBox->count()>0){
 		subjectsListBox->setCurrentItem(0);
@@ -132,10 +143,12 @@ void SubjectsForm::renameSubject()
 void SubjectsForm::sortSubjects()
 {
 	gt.rules.sortSubjectsAlphabetically();
-
+	
 	subjectsListBox->clear();
-	for(Subject* sbj=gt.rules.subjectsList.first(); sbj; sbj=gt.rules.subjectsList.next())
-		subjectsListBox->insertItem(sbj->name);	
+	for(int i=0; i<gt.rules.subjectsList.size(); i++){
+		Subject* sbj=gt.rules.subjectsList[i];
+		subjectsListBox->insertItem(sbj->name);
+	}
 }
 
 void SubjectsForm::subjectChanged(int index)

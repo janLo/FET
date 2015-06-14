@@ -18,16 +18,26 @@
 #include "fet.h"
 #include "fetmainform.h"
 
-#include <qlistbox.h>
+#include <q3listbox.h>
 #include <qinputdialog.h>
 
+#include <QDesktopWidget>
 
 SubgroupsForm::SubgroupsForm()
  : SubgroupsForm_template()
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	yearsListBox->clear();
-	for(StudentsYear* year=gt.rules.yearsList.first(); year; year=gt.rules.yearsList.next())
+	for(int i=0; i<gt.rules.yearsList.size(); i++){
+		StudentsYear* year=gt.rules.yearsList[i];
 		yearsListBox->insertItem(year->name);
+	}
 
 	yearChanged(yearsListBox->currentText());
 }
@@ -54,10 +64,10 @@ void SubgroupsForm::addSubgroup()
 	int groupIndex=gt.rules.searchGroup(yearName, groupName);
 	assert(groupIndex>=0);
 
-	AddStudentsSubgroupForm* addStudentsSubgroupForm=new AddStudentsSubgroupForm();
-	addStudentsSubgroupForm->yearNameLineEdit->setText(yearName);
-	addStudentsSubgroupForm->groupNameLineEdit->setText(groupName);
-	addStudentsSubgroupForm->exec();
+	AddStudentsSubgroupForm* form=new AddStudentsSubgroupForm();
+	form->yearNameLineEdit->setText(yearName);
+	form->groupNameLineEdit->setText(groupName);
+	form->exec();
 
 	groupChanged(groupsListBox->currentText());
 }
@@ -106,14 +116,19 @@ void SubgroupsForm::removeSubgroup()
 void SubgroupsForm::yearChanged(const QString &yearName)
 {
 	int yearIndex=gt.rules.searchYear(yearName);
-	if(yearIndex<0)
-		return;
+	if(yearIndex<0){
+		if(gt.rules.yearsList.size()>0)
+			yearIndex=0;
+		else	
+			return;
+	}
 	StudentsYear* sty=gt.rules.yearsList.at(yearIndex);
 
 	groupsListBox->clear();
-	StudentsGroup* stg;
-	for(stg=sty->groupsList.first(); stg; stg=sty->groupsList.next())
+	for(int i=0; i<sty->groupsList.size(); i++){
+		StudentsGroup* stg=sty->groupsList[i];
 		groupsListBox->insertItem(stg->name);
+	}
 
 	groupChanged(groupsListBox->currentText());
 }
@@ -122,18 +137,30 @@ void SubgroupsForm::groupChanged(const QString &groupName)
 {
 	QString yearName=yearsListBox->currentText();
 	int yearIndex=gt.rules.searchYear(yearName);
-	if(yearIndex<0)
-		return;
-	int groupIndex=gt.rules.searchGroup(yearName, groupName);
-	if(groupIndex<0)
-		return;
-
+	if(yearIndex<0){
+		if(gt.rules.yearsList.size()>0){
+			yearIndex=0;
+			yearName=gt.rules.yearsList.at(0)->name;
+		}
+		else	
+			return;
+	}
 	StudentsYear* sty=gt.rules.yearsList.at(yearIndex);
+	int groupIndex=gt.rules.searchGroup(yearName, groupName);
+	if(groupIndex<0){
+		if(sty->groupsList.size()>0)
+			groupIndex=0;
+		else
+			return;
+	}
+
 	StudentsGroup* stg=sty->groupsList.at(groupIndex);
-	StudentsSubgroup* sts;
+
 	subgroupsListBox->clear();
-	for(sts=stg->subgroupsList.first(); sts; sts=stg->subgroupsList.next())
+	for(int i=0; i<stg->subgroupsList.size(); i++){
+		StudentsSubgroup* sts=stg->subgroupsList[i];
 		subgroupsListBox->insertItem(sts->name);
+	}
 }
 
 void SubgroupsForm::subgroupChanged(const QString &subgroupName)
@@ -200,8 +227,8 @@ void SubgroupsForm::modifySubgroup()
 	
 	int numberOfStudents=gt.rules.searchStudentsSet(subgroupName)->numberOfStudents;
 	
-	ModifyStudentsSubgroupForm* modifyStudentsSubgroupForm=new ModifyStudentsSubgroupForm(yearName, groupName, subgroupName, numberOfStudents);
-	modifyStudentsSubgroupForm->exec();
+	ModifyStudentsSubgroupForm* form=new ModifyStudentsSubgroupForm(yearName, groupName, subgroupName, numberOfStudents);
+	form->exec();
 
 	groupChanged(groupName);
 	

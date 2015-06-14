@@ -21,10 +21,19 @@
 #include <qradiobutton.h>
 #include <qlabel.h>
 #include <qlineedit.h>
-#include <qtable.h>
+#include <q3table.h>
+
+#include <QDesktopWidget>
 
 ModifyConstraintSubjectRequiresEquipmentsForm::ModifyConstraintSubjectRequiresEquipmentsForm(ConstraintSubjectRequiresEquipments* ctr)
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	this->_ctr=ctr;
 	
 	compulsoryCheckBox->setChecked(ctr->compulsory);
@@ -46,7 +55,8 @@ void ModifyConstraintSubjectRequiresEquipmentsForm::updateSubjectsComboBox()
 {
 	int i=0, j=-1;
 	subjectsComboBox->clear();
-	for(Subject* sb=gt.rules.subjectsList.first(); sb; sb=gt.rules.subjectsList.next()){
+	for(int k=0; k<gt.rules.subjectsList.size(); k++){
+		Subject* sb=gt.rules.subjectsList[k];
 		subjectsComboBox->insertItem(sb->name);
 		if(sb->name==this->_ctr->subjectName)
 			j=i;
@@ -59,8 +69,10 @@ void ModifyConstraintSubjectRequiresEquipmentsForm::updateSubjectsComboBox()
 void ModifyConstraintSubjectRequiresEquipmentsForm::updateEquipmentsListBox()
 {
 	allEquipmentsListBox->clear();
-	for(Equipment* eq=gt.rules.equipmentsList.first(); eq; eq=gt.rules.equipmentsList.next())
+	for(int i=0; i<gt.rules.equipmentsList.size(); i++){
+		Equipment* eq=gt.rules.equipmentsList[i];
 		allEquipmentsListBox->insertItem(eq->name);
+	}
 }
 
 void ModifyConstraintSubjectRequiresEquipmentsForm::cancel()

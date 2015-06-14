@@ -21,10 +21,19 @@
 #include <qradiobutton.h>
 #include <qlabel.h>
 #include <qlineedit.h>
-#include <qtable.h>
+#include <q3table.h>
+
+#include <QDesktopWidget>
 
 AddConstraintSubjectSubjectTagPreferredRoomForm::AddConstraintSubjectSubjectTagPreferredRoomForm()
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	updateSubjectsComboBox();
 	updateSubjectTagsComboBox();
 	updateRoomsComboBox();
@@ -37,22 +46,28 @@ AddConstraintSubjectSubjectTagPreferredRoomForm::~AddConstraintSubjectSubjectTag
 void AddConstraintSubjectSubjectTagPreferredRoomForm::updateSubjectsComboBox()
 {
 	subjectsComboBox->clear();
-	for(Subject* sb=gt.rules.subjectsList.first(); sb; sb=gt.rules.subjectsList.next())
+	for(int i=0; i<gt.rules.subjectsList.size(); i++){
+		Subject* sb=gt.rules.subjectsList[i];
 		subjectsComboBox->insertItem(sb->name);
+	}
 }
 
 void AddConstraintSubjectSubjectTagPreferredRoomForm::updateSubjectTagsComboBox()
 {
 	subjectTagsComboBox->clear();
-	for(SubjectTag* st=gt.rules.subjectTagsList.first(); st; st=gt.rules.subjectTagsList.next())
+	for(int i=0; i<gt.rules.subjectTagsList.size(); i++){
+		SubjectTag* st=gt.rules.subjectTagsList[i];
 		subjectTagsComboBox->insertItem(st->name);
+	}
 }
 
 void AddConstraintSubjectSubjectTagPreferredRoomForm::updateRoomsComboBox()
 {
 	roomsComboBox->clear();
-	for(Room* rm=gt.rules.roomsList.first(); rm; rm=gt.rules.roomsList.next())
+	for(int i=0; i<gt.rules.roomsList.size(); i++){
+		Room* rm=gt.rules.roomsList[i];
 		roomsComboBox->insertItem(rm->name);
+	}
 }
 
 void AddConstraintSubjectSubjectTagPreferredRoomForm::addConstraint()

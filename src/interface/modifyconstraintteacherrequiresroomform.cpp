@@ -21,10 +21,19 @@
 #include <qradiobutton.h>
 #include <qlabel.h>
 #include <qlineedit.h>
-#include <qtable.h>
+#include <q3table.h>
+
+#include <QDesktopWidget>
 
 ModifyConstraintTeacherRequiresRoomForm::ModifyConstraintTeacherRequiresRoomForm(ConstraintTeacherRequiresRoom* ctr)
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	this->_ctr=ctr;
 	
 	compulsoryCheckBox->setChecked(ctr->compulsory);
@@ -42,7 +51,8 @@ void ModifyConstraintTeacherRequiresRoomForm::updateTeachersComboBox()
 {
 	teachersComboBox->clear();
 	int i=0, j=-1;
-	for(Teacher* tc=gt.rules.teachersList.first(); tc; tc=gt.rules.teachersList.next()){
+	for(int k=0; k<gt.rules.teachersList.size(); k++){
+		Teacher* tc=gt.rules.teachersList[k];
 		teachersComboBox->insertItem(tc->name);
 		if(tc->name==this->_ctr->teacherName)
 			j=i;
@@ -56,7 +66,8 @@ void ModifyConstraintTeacherRequiresRoomForm::updateRoomsComboBox()
 {
 	roomsComboBox->clear();
 	int i=0, j=-1;
-	for(Room* rm=gt.rules.roomsList.first(); rm; rm=gt.rules.roomsList.next()){
+	for(int k=0; k<gt.rules.roomsList.size(); k++){
+		Room* rm=gt.rules.roomsList[k];
 		roomsComboBox->insertItem(rm->name);
 		if(rm->name==this->_ctr->roomName)
 			j=i;

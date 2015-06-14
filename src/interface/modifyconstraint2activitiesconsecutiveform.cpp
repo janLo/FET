@@ -22,10 +22,19 @@
 #include <qlabel.h>
 #include <qlineedit.h>
 
+#include <QDesktopWidget>
+
 #define yesNo(x)	((x)==0?QObject::tr("no"):QObject::tr("yes"))
 
 ModifyConstraint2ActivitiesConsecutiveForm::ModifyConstraint2ActivitiesConsecutiveForm(Constraint2ActivitiesConsecutive* ctr)
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	this->_ctr=ctr;
 	
 	activitiesIdsLineEdit->setText(QString::number(ctr->firstActivityId)+","+QString::number(ctr->secondActivityId));

@@ -20,16 +20,27 @@
 #include "subject.h"
 #include "subjecttag.h"
 
-#include <qlistbox.h>
+#include <q3listbox.h>
 #include <qinputdialog.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
+
+#include <QDesktopWidget>
 
 SubjectTagsForm::SubjectTagsForm()
  : SubjectTagsForm_template()
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	subjectTagsListBox->clear();
-	for(SubjectTag* sbt=gt.rules.subjectTagsList.first(); sbt; sbt=gt.rules.subjectTagsList.next())
+	for(int i=0; i<gt.rules.subjectTagsList.size(); i++){
+		SubjectTag* sbt=gt.rules.subjectTagsList[i];
 		subjectTagsListBox->insertItem(sbt->name);
+	}
 		
 	if(subjectTagsListBox->count()>0){
 		subjectTagsListBox->setCurrentItem(0);
@@ -135,8 +146,10 @@ void SubjectTagsForm::sortSubjectTags()
 	gt.rules.sortSubjectTagsAlphabetically();
 
 	subjectTagsListBox->clear();
-	for(SubjectTag* sbt=gt.rules.subjectTagsList.first(); sbt; sbt=gt.rules.subjectTagsList.next())
-		subjectTagsListBox->insertItem(sbt->name);	
+	for(int i=0; i<gt.rules.subjectTagsList.size(); i++){
+		SubjectTag* sbt=gt.rules.subjectTagsList[i];
+		subjectTagsListBox->insertItem(sbt->name);
+	}
 }
 
 void SubjectTagsForm::subjectTagChanged(int index)

@@ -19,17 +19,29 @@
 #include "addconstraintsubjectsubjecttagrequireequipmentsform.h"
 #include "modifyconstraintsubjectsubjecttagrequireequipmentsform.h"
 
+#include <QDesktopWidget>
+
 ConstraintSubjectSubjectTagRequireEquipmentsForm::ConstraintSubjectSubjectTagRequireEquipmentsForm()
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	subjectsComboBox->insertItem("");
-	for(Subject* sb=gt.rules.subjectsList.first(); sb; sb=gt.rules.subjectsList.next())
+	for(int i=0; i<gt.rules.subjectsList.size(); i++){
+		Subject* sb=gt.rules.subjectsList[i];
 		subjectsComboBox->insertItem(sb->name);
+	}
 		
 	subjectTagsComboBox->insertItem("");
-	for(SubjectTag* st=gt.rules.subjectTagsList.first(); st; st=gt.rules.subjectTagsList.next())
+	for(int i=0; i<gt.rules.subjectTagsList.size(); i++){
+		SubjectTag* st=gt.rules.subjectTagsList[i];
 		subjectTagsComboBox->insertItem(st->name);
+	}
 
-	this->visibleConstraintsList.setAutoDelete(false);
 	this->filterChanged();
 }
 
@@ -52,18 +64,20 @@ void ConstraintSubjectSubjectTagRequireEquipmentsForm::filterChanged()
 {
 	this->visibleConstraintsList.clear();
 	constraintsListBox->clear();
-	for(SpaceConstraint* ctr=gt.rules.spaceConstraintsList.first(); ctr; ctr=gt.rules.spaceConstraintsList.next())
+	for(int i=0; i<gt.rules.spaceConstraintsList.size(); i++){
+		SpaceConstraint* ctr=gt.rules.spaceConstraintsList[i];
 		if(filterOk(ctr)){
 			visibleConstraintsList.append(ctr);
 			constraintsListBox->insertItem(ctr->getDescription(gt.rules));
 		}
+	}
 }
 
 void ConstraintSubjectSubjectTagRequireEquipmentsForm::constraintChanged(int index)
 {
 	if(index<0)
 		return;
-	assert((uint)(index)<this->visibleConstraintsList.count());
+	assert(index<this->visibleConstraintsList.size());
 	SpaceConstraint* ctr=this->visibleConstraintsList.at(index);
 	assert(ctr!=NULL);
 	currentConstraintTextEdit->setText(ctr->getDetailedDescription(gt.rules));
@@ -71,8 +85,8 @@ void ConstraintSubjectSubjectTagRequireEquipmentsForm::constraintChanged(int ind
 
 void ConstraintSubjectSubjectTagRequireEquipmentsForm::addConstraint()
 {
-	AddConstraintSubjectSubjectTagRequireEquipmentsForm *addConstraintSubjectSubjectTagRequireEquipmentsForm=new AddConstraintSubjectSubjectTagRequireEquipmentsForm();
-	addConstraintSubjectSubjectTagRequireEquipmentsForm->exec();
+	AddConstraintSubjectSubjectTagRequireEquipmentsForm *form=new AddConstraintSubjectSubjectTagRequireEquipmentsForm();
+	form->exec();
 
 	filterChanged();
 	
@@ -88,9 +102,9 @@ void ConstraintSubjectSubjectTagRequireEquipmentsForm::modifyConstraint()
 	}
 	SpaceConstraint* ctr=this->visibleConstraintsList.at(i);
 
-	ModifyConstraintSubjectSubjectTagRequireEquipmentsForm *modifyConstraintSubjectSubjectTagRequireEquipmentsForm
+	ModifyConstraintSubjectSubjectTagRequireEquipmentsForm *form
 	 = new ModifyConstraintSubjectSubjectTagRequireEquipmentsForm((ConstraintSubjectSubjectTagRequireEquipments*)ctr);
-	modifyConstraintSubjectSubjectTagRequireEquipmentsForm->exec();
+	form->exec();
 
 	filterChanged();
 	constraintsListBox->setCurrentItem(i);

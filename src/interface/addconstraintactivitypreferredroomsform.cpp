@@ -21,13 +21,23 @@
 #include <qradiobutton.h>
 #include <qlabel.h>
 #include <qlineedit.h>
-#include <qtable.h>
+#include <q3table.h>
+
+#include <QDesktopWidget>
 
 AddConstraintActivityPreferredRoomsForm::AddConstraintActivityPreferredRoomsForm()
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+						
 	updateRoomsListBox();
 	
-	for(Activity* ac=gt.rules.activitiesList.first(); ac; ac=gt.rules.activitiesList.next()){
+	for(int i=0; i<gt.rules.activitiesList.size(); i++){
+		Activity* ac=gt.rules.activitiesList[i];
 		activitiesComboBox->insertItem(ac->getDescription(gt.rules));
 	}
 }
@@ -41,8 +51,10 @@ void AddConstraintActivityPreferredRoomsForm::updateRoomsListBox()
 	roomsListBox->clear();
 	selectedRoomsListBox->clear();
 
-	for(Room* rm=gt.rules.roomsList.first(); rm; rm=gt.rules.roomsList.next())
+	for(int i=0; i<gt.rules.roomsList.size(); i++){
+		Room* rm= gt.rules.roomsList[i];
 		roomsListBox->insertItem(rm->name);
+	}
 }
 
 void AddConstraintActivityPreferredRoomsForm::addConstraint()
@@ -83,7 +95,7 @@ void AddConstraintActivityPreferredRoomsForm::addConstraint()
 			QObject::tr("Invalid selected activity"));
 		return;	
 	}	
-	int id=gt.rules.activitiesList.at(activitiesComboBox->currentItem())->id;
+	int id=gt.rules.activitiesList[activitiesComboBox->currentItem()]->id;
 	
 	QStringList roomsList;
 	for(uint i=0; i<selectedRoomsListBox->count(); i++)

@@ -21,21 +21,22 @@
 #include "fetmainform.h"
 #include "fet.h"
 
-#include <qcombobox.h>
+#include <q3combobox.h>
 #include <qmessagebox.h>
-#include <qgroupbox.h>
+#include <q3groupbox.h>
 #include <qspinbox.h>
 #include <qcheckbox.h>
 #include <qpushbutton.h>
 #include <qlineedit.h>
-#include <qtable.h>
+#include <q3table.h>
 #include <qapplication.h>
-#include <qlistbox.h>
+#include <q3listbox.h>
 #include <qlabel.h>
-#include <qtable.h>
-#include <qtextedit.h>
+#include <q3table.h>
+#include <q3textedit.h>
 #include <qstring.h>
 
+#include <QDesktopWidget>
 
 extern bool students_schedule_ready;
 extern bool teachers_schedule_ready;
@@ -50,9 +51,18 @@ extern SpaceChromosome best_space_chromosome;
 
 TimetableViewStudentsWithRoomsForm::TimetableViewStudentsWithRoomsForm()
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	yearsListBox->clear();
-	for(StudentsYear* sty=gt.rules.yearsList.first(); sty; sty=gt.rules.yearsList.next())
+	for(int i=0; i<gt.rules.yearsList.size(); i++){
+		StudentsYear* sty=gt.rules.yearsList[i];
 		yearsListBox->insertItem(sty->name);
+	}
 	yearChanged(yearsListBox->currentText());
 }
 
@@ -62,37 +72,53 @@ TimetableViewStudentsWithRoomsForm::~TimetableViewStudentsWithRoomsForm()
 
 void TimetableViewStudentsWithRoomsForm::yearChanged(const QString &yearName)
 {
-	if(yearName==NULL)
-		return;
-
 	int yearIndex=gt.rules.searchYear(yearName);
-	if(yearIndex<0)
-		return;
+	if(yearIndex<0){
+		if(gt.rules.yearsList.size()>0)
+			yearIndex=0;
+		else
+			return;
+	}
 
 	groupsListBox->clear();
 	StudentsYear* sty=gt.rules.yearsList.at(yearIndex);
-	for(StudentsGroup* stg=sty->groupsList.first(); stg; stg=sty->groupsList.next())
+	for(int i=0; i<sty->groupsList.size(); i++){
+		StudentsGroup* stg=sty->groupsList[i];
 		groupsListBox->insertItem(stg->name);
+	}
 
 	groupChanged(groupsListBox->currentText());
 }
 
 void TimetableViewStudentsWithRoomsForm::groupChanged(const QString &groupName)
 {
-	int yearIndex=gt.rules.searchYear(yearsListBox->currentText());
-	if(yearIndex<0)
-		return;
+	QString yearName=yearsListBox->currentText();
+	int yearIndex=gt.rules.searchYear(yearName);
+	if(yearIndex<0){
+		if(gt.rules.yearsList.size()>0){
+			yearIndex=0;
+			yearName=gt.rules.yearsList.at(0)->name;
+		}
+		else
+			return;
+	}
 
-	int groupIndex=gt.rules.searchGroup(yearsListBox->currentText(), groupName);
-	if(groupIndex<0)
-		return;
+	StudentsYear* sty=gt.rules.yearsList.at(yearIndex);
+	int groupIndex=gt.rules.searchGroup(yearName, groupName);
+	if(groupIndex<0){
+		if(sty->groupsList.size()>0)
+			groupIndex=0;		
+		else
+			return;
+	}
 
 	subgroupsListBox->clear();
 	
-	StudentsYear* sty=gt.rules.yearsList.at(yearIndex);
 	StudentsGroup* stg=sty->groupsList.at(groupIndex);
-	for(StudentsSubgroup* sts=stg->subgroupsList.first(); sts; sts=stg->subgroupsList.next())
+	for(int i=0; i<stg->subgroupsList.size(); i++){
+		StudentsSubgroup* sts=stg->subgroupsList[i];
 		subgroupsListBox->insertItem(sts->name);
+	}
 }
 
 void TimetableViewStudentsWithRoomsForm::subgroupChanged(const QString &subgroupName)
@@ -111,11 +137,11 @@ void TimetableViewStudentsWithRoomsForm::updateStudentsTimetableTable(){
 	QString groupname;
 	QString subgroupname;
 
-	if(yearsListBox->currentText()==NULL)
+	if(yearsListBox->currentText()==QString::null)
 		return;
-	if(groupsListBox->currentText()==NULL)
+	if(groupsListBox->currentText()==QString::null)
 		return;
-	if(subgroupsListBox->currentText()==NULL)
+	if(subgroupsListBox->currentText()==QString::null)
 		return;
 
 	yearname = yearsListBox->currentText();
@@ -133,12 +159,14 @@ void TimetableViewStudentsWithRoomsForm::updateStudentsTimetableTable(){
 	classNameTextLabel->setText(s);
 
 	assert(gt.rules.initialized);
-	studentsTimetableTable->setNumRows(gt.rules.nHoursPerDay+1);
-	studentsTimetableTable->setNumCols(gt.rules.nDaysPerWeek+1);
+	studentsTimetableTable->setNumRows(gt.rules.nHoursPerDay);
+	studentsTimetableTable->setNumCols(gt.rules.nDaysPerWeek);
 	for(int j=0; j<gt.rules.nDaysPerWeek; j++)
-		studentsTimetableTable->setText(0, j+1, gt.rules.daysOfTheWeek[j]);
+		//studentsTimetableTable->setText(0, j+1, gt.rules.daysOfTheWeek[j]);
+		studentsTimetableTable->horizontalHeader()->setLabel(j, gt.rules.daysOfTheWeek[j]);
 	for(int i=0; i<gt.rules.nHoursPerDay; i++)
-		studentsTimetableTable->setText(i+1, 0, gt.rules.hoursOfTheDay[i]);
+		//studentsTimetableTable->setText(i+1, 0, gt.rules.hoursOfTheDay[i]);
+		studentsTimetableTable->verticalHeader()->setLabel(i, gt.rules.hoursOfTheDay[i]);
 		
 	assert(rooms_schedule_ready);
 	SpaceChromosome& c=best_space_chromosome;
@@ -185,10 +213,10 @@ void TimetableViewStudentsWithRoomsForm::updateStudentsTimetableTable(){
 					roomName=gt.rules.internalRoomsList[ri]->name;
 				s+=roomName;
 			}
-			studentsTimetableTable->setText(j+1, k+1, s);
+			studentsTimetableTable->setText(j, k, s);
 		}
 	}
-	for(int i=0; i<=gt.rules.nHoursPerDay; i++)
+	for(int i=0; i<gt.rules.nHoursPerDay; i++)
 		studentsTimetableTable->adjustRow(i); //added in version 3_9_16, on 16 Oct. 2004
 }
 
@@ -201,11 +229,11 @@ void TimetableViewStudentsWithRoomsForm::detailActivity(int row, int col)
 	QString groupname;
 	QString subgroupname;
 
-	if(yearsListBox->currentText()==NULL)
+	if(yearsListBox->currentText()==QString::null)
 		return;
-	if(groupsListBox->currentText()==NULL)
+	if(groupsListBox->currentText()==QString::null)
 		return;
-	if(subgroupsListBox->currentText()==NULL)
+	if(subgroupsListBox->currentText()==QString::null)
 		return;
 
 	yearname = yearsListBox->currentText();
@@ -222,8 +250,8 @@ void TimetableViewStudentsWithRoomsForm::detailActivity(int row, int col)
 		if(gt.rules.internalSubgroupsList[i]==sts)
 			break;
 	assert(i<gt.rules.nInternalSubgroups);
-	int j=row-1;
-	int k=col-1;
+	int j=row;
+	int k=col;
 	s="";
 	if(j>=0 && k>=0){
 		int ai=students_timetable_week1[i][k][j]; //activity index
@@ -293,11 +321,11 @@ void TimetableViewStudentsWithRoomsForm::lock(bool lockTime, bool lockSpace)
 	QString groupname;
 	QString subgroupname;
 
-	if(yearsListBox->currentText()==NULL)
+	if(yearsListBox->currentText()==QString::null)
 		return;
-	if(groupsListBox->currentText()==NULL)
+	if(groupsListBox->currentText()==QString::null)
 		return;
-	if(subgroupsListBox->currentText()==NULL)
+	if(subgroupsListBox->currentText()==QString::null)
 		return;
 
 	yearname = yearsListBox->currentText();
@@ -319,7 +347,7 @@ void TimetableViewStudentsWithRoomsForm::lock(bool lockTime, bool lockSpace)
 	//lock selected activities
 	for(int j=0; j<gt.rules.nHoursPerDay; j++){
 		for(int k=0; k<gt.rules.nDaysPerWeek; k++){
-			if(studentsTimetableTable->isSelected(j+1, k+1)){
+			if(studentsTimetableTable->isSelected(j, k)){
 				int ai=students_timetable_week1[i][k][j];
 				if(ai!=UNALLOCATED_ACTIVITY){
 					int time=tc->times[ai];
@@ -367,7 +395,7 @@ void TimetableViewStudentsWithRoomsForm::lock(bool lockTime, bool lockSpace)
 						bool t=gt.rules.addTimeConstraint(ctr);
 						if(t)
 							QMessageBox::information(this, QObject::tr("FET information"), 
-							 QObject::tr("Added the following constraint:\n"+ctr->getDetailedDescription(gt.rules)));
+							 QObject::tr("Added the following constraint:\n%1").arg(ctr->getDetailedDescription(gt.rules)));
 						else{
 							QMessageBox::warning(this, QObject::tr("FET information"), 
 							 QObject::tr("Constraint\n%1 NOT added - duplicate").arg(ctr->getDetailedDescription(gt.rules)));
@@ -381,7 +409,7 @@ void TimetableViewStudentsWithRoomsForm::lock(bool lockTime, bool lockSpace)
 						bool t=gt.rules.addSpaceConstraint(ctr);
 						if(t)
 							QMessageBox::information(this, QObject::tr("FET information"), 
-							 QObject::tr("Added the following constraint:\n"+ctr->getDetailedDescription(gt.rules)));
+							 QObject::tr("Added the following constraint:\n%1").arg(ctr->getDetailedDescription(gt.rules)));
 						else{
 							QMessageBox::warning(this, QObject::tr("FET information"), 
 							 QObject::tr("Constraint\n%1 NOT added - duplicate").arg(ctr->getDetailedDescription(gt.rules)));

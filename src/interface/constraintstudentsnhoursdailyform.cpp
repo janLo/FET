@@ -19,9 +19,17 @@
 #include "addconstraintstudentsnhoursdailyform.h"
 #include "modifyconstraintstudentsnhoursdailyform.h"
 
+#include <QDesktopWidget>
+
 ConstraintStudentsNHoursDailyForm::ConstraintStudentsNHoursDailyForm()
 {
-	this->visibleConstraintsList.setAutoDelete(false);
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	this->filterChanged();
 }
 
@@ -41,18 +49,20 @@ void ConstraintStudentsNHoursDailyForm::filterChanged()
 {
 	this->visibleConstraintsList.clear();
 	constraintsListBox->clear();
-	for(TimeConstraint* ctr=gt.rules.timeConstraintsList.first(); ctr; ctr=gt.rules.timeConstraintsList.next())
+	for(int i=0; i<gt.rules.timeConstraintsList.size(); i++){
+		TimeConstraint* ctr=gt.rules.timeConstraintsList[i];
 		if(filterOk(ctr)){
 			visibleConstraintsList.append(ctr);
 			constraintsListBox->insertItem(ctr->getDescription(gt.rules));
 		}
+	}
 }
 
 void ConstraintStudentsNHoursDailyForm::constraintChanged(int index)
 {
 	if(index<0)
 		return;
-	assert((uint)(index)<this->visibleConstraintsList.count());
+	assert(index<this->visibleConstraintsList.size());
 	TimeConstraint* ctr=this->visibleConstraintsList.at(index);
 	assert(ctr!=NULL);
 	currentConstraintTextEdit->setText(ctr->getDetailedDescription(gt.rules));
@@ -60,8 +70,8 @@ void ConstraintStudentsNHoursDailyForm::constraintChanged(int index)
 
 void ConstraintStudentsNHoursDailyForm::addConstraint()
 {
-	AddConstraintStudentsNHoursDailyForm *addConstraintStudentsNHoursDailyForm=new AddConstraintStudentsNHoursDailyForm();
-	addConstraintStudentsNHoursDailyForm->exec();
+	AddConstraintStudentsNHoursDailyForm *form=new AddConstraintStudentsNHoursDailyForm();
+	form->exec();
 
 	filterChanged();
 	
@@ -77,9 +87,9 @@ void ConstraintStudentsNHoursDailyForm::modifyConstraint()
 	}
 	TimeConstraint* ctr=this->visibleConstraintsList.at(i);
 
-	ModifyConstraintStudentsNHoursDailyForm *modifyConstraintStudentsNHoursDailyForm
+	ModifyConstraintStudentsNHoursDailyForm *form
 	 = new ModifyConstraintStudentsNHoursDailyForm((ConstraintStudentsNHoursDaily*)ctr);
-	modifyConstraintStudentsNHoursDailyForm->exec();
+	form->exec();
 
 	filterChanged();
 	constraintsListBox->setCurrentItem(i);

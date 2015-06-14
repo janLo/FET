@@ -21,22 +21,25 @@
 #include "genetictimetable.h"
 #include "fet.h"
 
-#include <qcombobox.h>
+#include <q3combobox.h>
 #include <qmessagebox.h>
-#include <qgroupbox.h>
+#include <q3groupbox.h>
 #include <qspinbox.h>
 #include <qcheckbox.h>
 #include <qpushbutton.h>
 #include <qlineedit.h>
-#include <qtable.h>
+#include <q3table.h>
 #include <qapplication.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qstring.h>
 #include <qtextstream.h>
 #include <qfile.h>
 
-static const bool SIMULATION_LOGGING=false; //warning: making "true" here slows down the program,
-	//introducing an additional sorting if the evolution method is three-tournament.
+#include <QDesktopWidget>
+
+#include <QSemaphore>
+
+QSemaphore semaphore;
 
 #include <iostream>
 #include <fstream>
@@ -45,16 +48,8 @@ using namespace std;
 static QMutex mutex;
 static SpaceSolvingThread spaceSolvingThread;
 
-extern QApplication *pqapplication;
-
 //Represents the current state - simulation running or stopped.
 extern bool simulation_running;
-
-//Communication variables when the simulation is running.
-static bool simulation_stopped=false;
-static bool simulation_paused=false;
-static bool simulation_write_results=false;
-static bool simulation_save_position=false;
 
 extern bool students_schedule_ready;
 extern bool teachers_schedule_ready;
@@ -64,149 +59,17 @@ extern SpaceChromosome best_space_chromosome;
 
 extern QString spaceConflictsString;
 
-TimetableAllocateRoomsForm::TimetableAllocateRoomsForm()
-{
-	simulation_running=false;
-}
-
-TimetableAllocateRoomsForm::~TimetableAllocateRoomsForm()
-{
-}
-
-SpaceSolvingThread::SpaceSolvingThread()
-{
-	callingForm=NULL;
-}
-
 void SpaceSolvingThread::run()
 {
-	assert(callingForm!=NULL);
-
-	pqapplication->lock();
-
-	callingForm->startPushButton->setDisabled(TRUE);
-	callingForm->stopPushButton->setEnabled(TRUE);
-	callingForm->pausePushButton->setEnabled(TRUE);
-	callingForm->savePositionPushButton->setEnabled(TRUE);
-	callingForm->loadPositionPushButton->setDisabled(TRUE);
-	callingForm->initializeUnallocatedPushButton->setDisabled(TRUE);
-	callingForm->initializeRandomlyPushButton->setDisabled(TRUE);
-	callingForm->closePushButton->setDisabled(TRUE);
-
-	pqapplication->unlock();
-
-	callingForm->simulationRunning();
-
-	pqapplication->lock();
-
-	callingForm->startPushButton->setEnabled(TRUE);
-	callingForm->stopPushButton->setDisabled(TRUE);
-	callingForm->pausePushButton->setDisabled(TRUE);
-	callingForm->savePositionPushButton->setDisabled(TRUE);
-	callingForm->loadPositionPushButton->setEnabled(TRUE);
-	callingForm->initializeUnallocatedPushButton->setEnabled(TRUE);
-	callingForm->initializeRandomlyPushButton->setEnabled(TRUE);
-	callingForm->closePushButton->setEnabled(TRUE);
-
-	pqapplication->unlock();
-}
-
-void TimetableAllocateRoomsForm::generationLogging(int generation){
-	assert(gt.rules.initialized && gt.rules.internalStructureComputed);
-	assert(gt.spacePopulation.initialized);
-
-	SpaceChromosome& c1=gt.spacePopulation.bestChromosome(gt.rules);
-	if(SIMULATION_LOGGING==true){
-		SpaceChromosome& c2=gt.spacePopulation.worstChromosome(gt.rules);
-		SpaceChromosome& c3=gt.spacePopulation.medianChromosome(gt.rules);
-		double th=gt.spacePopulation.totalHardFitness(gt.rules);
-		double ts=gt.spacePopulation.totalSoftFitness(gt.rules);
-
-		//write to log file
-		logg<<"Generation number "<<generation+1<<endl;
-
-		logg<<"      Best chromosome:";
-		logg<<" HardFitness="<<c1.hardFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours);
-		logg<<", SoftFitness="<<c1.softFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours)<<endl;
-
-		logg<<"    Median chromosome:";
-		logg<<" HardFitness="<<c3.hardFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours);
-		logg<<", SoftFitness="<<c3.softFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours)<<endl;
-
-		logg<<"     Worst chromosome:";
-		logg<<" HardFitness="<<c2.hardFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours);
-		logg<<", SoftFitness="<<c2.softFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours)<<endl;
-
-		logg<<"    Medium HardFitness="<<th/gt.spacePopulation.n;
-		logg<<", Medium SoftFitness="<<ts/gt.spacePopulation.n;
-
-		logg<<endl<<flush;
-
-		//write to display
-		cout<<"Generation number "<<generation+1<<endl;
-
-		cout<<"      Best chromosome:";
-		cout<<" HardFitness="<<c1.hardFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours);
-		cout<<", SoftFitness="<<c1.softFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours)<<endl;
-
-		cout<<"    Median chromosome:";
-		cout<<" HardFitness="<<c3.hardFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours);
-		cout<<", SoftFitness="<<c3.softFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours)<<endl;
-
-		cout<<"     Worst chromosome:";
-		cout<<" HardFitness="<<c2.hardFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours);
-		cout<<", SoftFitness="<<c2.softFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours)<<endl;
-
-		cout<<"    Medium HardFitness="<<th/gt.spacePopulation.n;
-		cout<<", Medium SoftFitness="<<ts/gt.spacePopulation.n;
-
-		cout<<endl<<flush;
-	}
-
-	//write to the Qt interface
-	QString s;
-	s = "Generation:";
-	s+=QString::number(generation+1)+"\n";
-	s+="Compulsory constraints conflicts:";
-	s+=QString::number(c1.hardFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours))+"\n";
-	s+="Non-compulsory constraints conflicts:";
-	s+=QString::number(c1.softFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours));
-	pqapplication->lock();
-	currentResultsTextEdit->setText(s);
-	currentResultsTextEdit->repaint();
-	pqapplication->unlock();
-}
-
-void TimetableAllocateRoomsForm::simulationRunning(){
-	simulation_running=true;
-
-	pqapplication->lock();
-#ifdef WIN32
-	QMessageBox::information(NULL, QObject::tr("FET information"),
-		QObject::tr("Entering simulation..."));
-#else
-	QMessageBox::information(this, QObject::tr("FET information"),
-		QObject::tr("Entering simulation..."));
-#endif
-	pqapplication->unlock();
-
 	//To print current time (starting time)
 	time_t ltime;
 	tzset();
 	/* Get UNIX-style time and display as number and string. */
 	time( &ltime );
 
-	//open log file
-	QString s=OUTPUT_DIR;
-	s+=FILE_SEP;
-	s+=SPACE_LOG_FILENAME_TXT;
-
-	logg.open((const char*)s);
-
-	logg<<"Population number="<<gt.spacePopulation.populationNumber()<<endl;
-	logg<<"Current time is: "<<ctime( &ltime )<<endl<<endl;
-
 	for(int i=0; i<max_generations; i++){
+		mutex.lock();
+	
 		if(evolution_method==1){
 			gt.spacePopulation.evolve1(gt.rules);
 		}
@@ -214,14 +77,14 @@ void TimetableAllocateRoomsForm::simulationRunning(){
 			gt.spacePopulation.evolve2(gt.rules);
 		}
 		else{
-			QMessageBox::critical(this, QObject::tr("FET information"),
-				QObject::tr("error in timetableallocateroomsform.cpp (1)"));
 			assert(0);
 		}
-
-		pqapplication->lock();
-		generationLogging(i);
-		pqapplication->unlock();
+		
+		mutex.unlock();
+		
+		emit(generationComputed(i));
+		
+		semaphore.acquire();
 
 		time_t tmp;
 		time( &tmp );
@@ -229,86 +92,74 @@ void TimetableAllocateRoomsForm::simulationRunning(){
 		if(tmp-ltime>=timelimit){
 			break;
 		}
-
-		mutex.lock();
-		if(simulation_stopped){
-			mutex.unlock();
+		
+		if(!simulation_running)
 			break;
-		}
-		else
-			mutex.unlock();
+	}
+}
 
-		mutex.lock();
-		if(simulation_paused){
-			simulation_paused=0;
-			mutex.unlock();
-			pqapplication->lock();
-#ifdef WIN32
-			QMessageBox::information(NULL, QObject::tr("FET information"),
-				QObject::tr("Simulation paused.\nPress button to continue."));
-#else
-			QMessageBox::information(this, QObject::tr("FET information"),
-				QObject::tr("Simulation paused.\nPress button to continue."));
-#endif
-			pqapplication->unlock();
-		}
-		else
-			mutex.unlock();
+TimetableAllocateRoomsForm::TimetableAllocateRoomsForm()
+{
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
 
-		mutex.lock();
-		if(simulation_save_position){
-			simulation_save_position=false;
-			QString s=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);
-			gt.spacePopulation.write(gt.rules, OUTPUT_DIR+FILE_SEP+s+"_space_population_state.txt");
-			mutex.unlock();
-			pqapplication->lock();
-#ifdef WIN32
-			QMessageBox::information(NULL, QObject::tr("FET information"),
-				QObject::tr("Simulation position saved to hard disk.\nPress button to continue."));
-#else
-			QMessageBox::information(this, QObject::tr("FET information"),
-				QObject::tr("Simulation position saved to hard disk.\nPress button to continue."));
-#endif
-			pqapplication->unlock();
-		}
-		else
-			mutex.unlock();
+	simulation_running=false;
+	
+	connect(&spaceSolvingThread, SIGNAL(generationComputed(int)),
+	 this, SLOT(updateGeneration(int)));
+}
 
-		mutex.lock();
-		if(simulation_write_results){
-			simulation_write_results=false;
-			pqapplication->lock();
+TimetableAllocateRoomsForm::~TimetableAllocateRoomsForm()
+{
+}
 
-			SpaceChromosome &c=gt.spacePopulation.bestChromosome(gt.rules);
-			getRoomsTimetable(c);
-
-			//update the string representing the conflicts
-			spaceConflictsString = "";
-			spaceConflictsString += "COMPULSORY CONSTRAINTS CONFLICTS (more important):\n";
-			c.hardFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours, &spaceConflictsString);
-			spaceConflictsString += "\n--------------------------\n\n";
-			spaceConflictsString += "NON-COMPULSORY CONSTRAINTS CONFLICTS (less important):\n";
-			c.softFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours, &spaceConflictsString);
-
-			writeSimulationResults(c);
-
-			pqapplication->unlock();
-			mutex.unlock();
-		}
-		else
-			mutex.unlock();
+void TimetableAllocateRoomsForm::start(){
+	if(!gt.rules.initialized || gt.rules.activitiesList.isEmpty()){
+		QMessageBox::critical(this, QObject::tr("FET information"),
+			QObject::tr("You have entered simulation with uninitialized rules or 0 activities...aborting"));
+		assert(0);
+		exit(1);
+		return;
+	}
+	//if(!gt.rules.internalStructureComputed){
+	if(!gt.spacePopulation.initialized){
+		QMessageBox::information(this, QObject::tr("FET information"), 
+			QObject::tr("You didn't initialize or load the initial state"));
+		return;
 	}
 
-	//Print ending time
-	time( &ltime );
-	logg<<endl<<"Current time is: "<<ctime( &ltime )<<endl;
+	if(!(students_schedule_ready && teachers_schedule_ready)){
+		QMessageBox::information(this, QObject::tr("FET information"), 
+			QObject::tr("You didn't allocate the hours prior to allocating the rooms"));
+		return;
+	}
+	
+	startPushButton->setDisabled(TRUE);
+	stopPushButton->setEnabled(TRUE);
+	savePositionPushButton->setEnabled(TRUE);
+	loadPositionPushButton->setDisabled(TRUE);
+	initializeUnallocatedPushButton->setDisabled(TRUE);
+	initializeRandomlyPushButton->setDisabled(TRUE);
+	closePushButton->setDisabled(TRUE);
+	
+	QMessageBox::information(this, QObject::tr("FET information"),
+	 QObject::tr("Entering simulation..."));				
+	
+	simulation_running=true;
+	
+	spaceSolvingThread.start();
+}
 
-	logg.close();
+void TimetableAllocateRoomsForm::stop(){
+	simulation_running=false;
+	
+	mutex.lock();
 
 	SpaceChromosome &c=gt.spacePopulation.bestChromosome(gt.rules);
-
-	mutex.lock(); //needed because of the updateStudentsTimetable
-	pqapplication->lock();
 
 	getRoomsTimetable(c);
 	
@@ -322,10 +173,160 @@ void TimetableAllocateRoomsForm::simulationRunning(){
 
 	writeSimulationResults(c);
 
-	pqapplication->unlock();
 	mutex.unlock();
 
-	simulation_running=false;
+	QMessageBox::information(this, QObject::tr("FET information"),
+		QObject::tr("Simulation completed successfully"));
+		
+	startPushButton->setEnabled(TRUE);
+	stopPushButton->setDisabled(TRUE);
+	savePositionPushButton->setDisabled(TRUE);
+	loadPositionPushButton->setEnabled(TRUE);
+	initializeUnallocatedPushButton->setEnabled(TRUE);
+	initializeRandomlyPushButton->setEnabled(TRUE);
+	closePushButton->setEnabled(TRUE);								
+}
+
+void TimetableAllocateRoomsForm::updateGeneration(int generation){
+	assert(gt.rules.initialized && gt.rules.internalStructureComputed);
+	assert(gt.spacePopulation.initialized);
+	
+	mutex.lock();
+
+	SpaceChromosome& c=gt.spacePopulation.bestChromosome(gt.rules);
+
+	//write to the Qt interface
+	QString s;
+	s = "Generation:";
+	s+=QString::number(generation+1)+"\n";
+	s+="Compulsory constraints conflicts:";
+	s+=QString::number(c.hardFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours))+"\n";
+	s+="Non-compulsory constraints conflicts:";
+	s+=QString::number(c.softFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours));
+
+	mutex.unlock();
+
+	currentResultsTextEdit->setText(s);
+	
+	semaphore.release();
+}
+
+void TimetableAllocateRoomsForm::write()
+{
+	mutex.lock();
+
+	SpaceChromosome &c=gt.spacePopulation.bestChromosome(gt.rules);
+	
+	getRoomsTimetable(c);
+	
+	//update the string representing the conflicts
+	spaceConflictsString = "";
+	spaceConflictsString += "COMPULSORY CONSTRAINTS CONFLICTS (more important):\n";
+	c.hardFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours, &spaceConflictsString);
+	spaceConflictsString += "\n--------------------------\n\n";
+	spaceConflictsString += "NON-COMPULSORY CONSTRAINTS CONFLICTS (less important):\n";
+	c.softFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours, &spaceConflictsString);
+	
+	writeSimulationResults(c);
+
+	mutex.unlock();
+
+	QMessageBox::information(this, QObject::tr("FET information"),
+		QObject::tr("Simulation results should be successfully written. You may check now Timetable/View"));
+}
+
+void TimetableAllocateRoomsForm::savePosition()
+{
+	mutex.lock();
+
+	QString s=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);
+	gt.spacePopulation.write(gt.rules, OUTPUT_DIR+FILE_SEP+s+"_space_population_state.txt");
+	
+	mutex.unlock();
+	
+	QMessageBox::information(this, QObject::tr("FET information"),
+	 QObject::tr("Simulation position saved to hard disk.\nPress button to continue."));																										
+}
+
+void TimetableAllocateRoomsForm::loadPosition()
+{
+	if(!gt.rules.initialized || gt.rules.activitiesList.isEmpty()){
+		QMessageBox::critical(this, QObject::tr("FET information"),
+			QObject::tr("You have entered simulation with uninitialized rules or 0 activities...aborting"));
+		assert(0);
+		exit(1);
+		return;
+	}
+
+	bool prev_state=gt.spacePopulation.initialized;
+	gt.spacePopulation.init(gt.rules, population_number, gt.timePopulation.bestChromosome(gt.rules));
+	QString s=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);
+	bool existing_file=gt.spacePopulation.read(gt.rules, OUTPUT_DIR+FILE_SEP+s+"_space_population_state.txt");
+	if(existing_file==false) //for versions older or equal to 3.9.21
+		existing_file=gt.spacePopulation.read(gt.rules, OUTPUT_DIR+FILE_SEP+"space_population_state.txt");
+	if(existing_file==false){
+		QMessageBox::warning(this, QObject::tr("FET information"),
+			QObject::tr("You did not save any internal state yet - aborting operation"));
+		gt.spacePopulation.initialized=prev_state;
+		return;
+	}
+	QMessageBox::information(this, QObject::tr("FET information"),
+		QObject::tr("Simulation position restored from hard disk. You may now continue the simulation"));
+	this->writeResultsPushButton->setEnabled(TRUE);
+}
+
+void TimetableAllocateRoomsForm::initializeUnallocated()
+{
+	if(!gt.rules.initialized){
+		QMessageBox::critical(this, QObject::tr("FET information"),
+			QObject::tr("You have entered simulation with uninitialized rules...aborting"));
+		assert(0);
+		exit(1);
+		return;
+	}
+	if(gt.rules.activitiesList.isEmpty()){
+		QMessageBox::critical(this, QObject::tr("FET information"),
+			QObject::tr("You have entered simulation with 0 activities...aborting"));
+		assert(0);
+		exit(1);
+		return;
+	}
+
+	assert(gt.rules.internalStructureComputed);
+	assert(students_schedule_ready && teachers_schedule_ready);
+
+	gt.spacePopulation.init(gt.rules, population_number, gt.timePopulation.bestChromosome(gt.rules));
+	gt.spacePopulation.makeRoomsUnallocated(gt.rules);
+	QMessageBox::information(this, QObject::tr("FET information"),
+		QObject::tr("Initialized with unallocated data - now you can start simulation"));
+	this->writeResultsPushButton->setEnabled(TRUE);
+}
+
+void TimetableAllocateRoomsForm::initializeRandomly()
+{
+	if(!gt.rules.initialized){
+		QMessageBox::critical(this, QObject::tr("FET information"),
+			QObject::tr("You have entered simulation with uninitialized rules...aborting"));
+		assert(0);
+		exit(1);
+		return;
+	}
+	if(gt.rules.activitiesList.isEmpty()){
+		QMessageBox::critical(this, QObject::tr("FET information"),
+			QObject::tr("You have entered simulation with 0 activities...aborting"));
+		assert(0);
+		exit(1);
+		return;
+	}
+
+	assert(gt.rules.internalStructureComputed);
+	assert(students_schedule_ready && teachers_schedule_ready);
+
+	gt.spacePopulation.init(gt.rules, population_number, gt.timePopulation.bestChromosome(gt.rules));
+	gt.spacePopulation.makeRoomsRandom(gt.rules);
+	QMessageBox::information(this, QObject::tr("FET information"),
+		QObject::tr("Initialized with random data - now you can start simulation"));
+	this->writeResultsPushButton->setEnabled(TRUE);
 }
 
 void TimetableAllocateRoomsForm::writeSimulationResults(SpaceChromosome &c){
@@ -357,9 +358,10 @@ void TimetableAllocateRoomsForm::writeSimulationResults(SpaceChromosome &c){
 	//write the space conflicts - in txt mode
 	s=OUTPUT_DIR+FILE_SEP+s2+"_"+SPACE_CONFLICTS_FILENAME;
 	QFile file(s);
-	if(!file.open(IO_WriteOnly))
+	if(!file.open(QIODevice::WriteOnly))
 		assert(0);
 	QTextStream tos(&file);
+	tos.setEncoding(QTextStream::UnicodeUTF8);
 	tos<<spaceConflictsString<<endl;
 	file.close();
 	//now write the solution in xml and html
@@ -408,9 +410,10 @@ void TimetableAllocateRoomsForm::writeRoomsTimetableXml(const QString& xmlfilena
 
 	//Writing the timetable in xml format
 	QFile file(xmlfilename);
-	if(!file.open(IO_WriteOnly))
+	if(!file.open(QIODevice::WriteOnly))
 		assert(0);
 	QTextStream tos(&file);
+	tos.setEncoding(QTextStream::UnicodeUTF8);
 	tos << "<" << protect(ROOMS_TIMETABLE_TAG) << ">\n";
 
 	for(int i=0; i<gt.rules.nInternalRooms; i++){
@@ -468,11 +471,13 @@ void TimetableAllocateRoomsForm::writeStudentsTimetableWithRoomsDaysHorizontalHt
 
 	//Now we print the results to an HTML file
 	QFile file(htmlfilename);
-	if(!file.open(IO_WriteOnly))
+	if(!file.open(QIODevice::WriteOnly))
 		assert(0);
 	QTextStream tos(&file);
-
+	tos.setEncoding(QTextStream::UnicodeUTF8);
+	
 	tos<<"<html>\n";
+	tos<<"<meta content=\"text/html; charset=utf-8\">\n";
 	tos<<"<title>"<<protect2(gt.rules.institutionName)<<"</title>\n";
 	tos<<"<body>\n";
 	
@@ -562,11 +567,13 @@ void TimetableAllocateRoomsForm::writeStudentsTimetableWithRoomsDaysVerticalHtml
 
 	//Now we print the results to an HTML file
 	QFile file(htmlfilename);
-	if(!file.open(IO_WriteOnly))
+	if(!file.open(QIODevice::WriteOnly))
 		assert(0);
 	QTextStream tos(&file);
-
+	tos.setEncoding(QTextStream::UnicodeUTF8);
+	
 	tos<<"<html>\n";
+	tos<<"<meta content=\"text/html; charset=utf-8\">\n";
 	tos<<"<title>"<<protect2(gt.rules.institutionName)<<"</title>\n";
 	tos<<"<body>\n";
 	
@@ -656,10 +663,13 @@ void TimetableAllocateRoomsForm::writeTeachersTimetableWithRooms1DaysHorizontalH
 
 	//Writing the timetable in xml format
 	QFile file(htmlfilename);
-	if(!file.open(IO_WriteOnly))
+	if(!file.open(QIODevice::WriteOnly))
 		assert(0);
 	QTextStream tos(&file);
-	tos<<"<html>\n<title>"<<protect2(gt.rules.institutionName)<<"</title>\n";
+	tos.setEncoding(QTextStream::UnicodeUTF8);
+	tos<<"<html>\n";
+	tos<<"<meta content=\"text/html; charset=utf-8\">\n";
+	tos<<"<title>"<<protect2(gt.rules.institutionName)<<"</title>\n";
 	tos<<"<body>\n";
 	tos<<"<center><h3>"<<protect2(gt.rules.institutionName)<<"</h3></center><br>\n";
 
@@ -747,10 +757,13 @@ void TimetableAllocateRoomsForm::writeTeachersTimetableWithRooms1DaysVerticalHtm
 
 	//Writing the timetable in xml format
 	QFile file(htmlfilename);
-	if(!file.open(IO_WriteOnly))
+	if(!file.open(QIODevice::WriteOnly))
 		assert(0);
 	QTextStream tos(&file);
-	tos<<"<html>\n<title>"<<protect2(gt.rules.institutionName)<<"</title>\n";
+	tos.setEncoding(QTextStream::UnicodeUTF8);
+	tos<<"<html>\n";
+	tos<<"<meta content=\"text/html; charset=utf-8\">\n";
+	tos<<"<title>"<<protect2(gt.rules.institutionName)<<"</title>\n";
 	tos<<"<body>\n";
 	tos<<"<center><h3>"<<protect2(gt.rules.institutionName)<<"</h3></center><br>\n";
 
@@ -839,10 +852,13 @@ void TimetableAllocateRoomsForm::writeTeachersTimetableWithRooms2Html(const QStr
 
 	//Writing the timetable in xml format
 	QFile file(htmlfilename);
-	if(!file.open(IO_WriteOnly))
+	if(!file.open(QIODevice::WriteOnly))
 		assert(0);
 	QTextStream tos(&file);
-	tos << "<html>\n<body>\n<table border=\"1\">\n";
+	tos.setEncoding(QTextStream::UnicodeUTF8);
+	tos << "<html>\n";
+	tos<<"<meta content=\"text/html; charset=utf-8\">\n";
+	tos<<"<body>\n<table border=\"1\">\n";
 	
 	tos<<"<tr><td></td>\n";
 	for(int k=0; k<gt.rules.nDaysPerWeek; k++)
@@ -927,10 +943,12 @@ void TimetableAllocateRoomsForm::writeRoomsTimetableDaysHorizontalHtml(const QSt
 
 	//Writing the timetable in xml format
 	QFile file(htmlfilename);
-	if(!file.open(IO_WriteOnly))
+	if(!file.open(QIODevice::WriteOnly))
 		assert(0);
 	QTextStream tos(&file);
+	tos.setEncoding(QTextStream::UnicodeUTF8);
 	tos<<"<html>\n";
+	tos<<"<meta content=\"text/html; charset=utf-8\">\n";
 	tos<<"<title>"<<protect2(gt.rules.institutionName)<<"</title>\n";
 	tos<<"<body>";
 	tos<<"<center><h3>"<<protect2(gt.rules.institutionName)<<"</h3></center><br/>\n";
@@ -1000,10 +1018,12 @@ void TimetableAllocateRoomsForm::writeRoomsTimetableDaysVerticalHtml(const QStri
 
 	//Writing the timetable in xml format
 	QFile file(htmlfilename);
-	if(!file.open(IO_WriteOnly))
+	if(!file.open(QIODevice::WriteOnly))
 		assert(0);
 	QTextStream tos(&file);
+	tos.setEncoding(QTextStream::UnicodeUTF8);
 	tos<<"<html>\n";
+	tos<<"<meta content=\"text/html; charset=utf-8\">\n";
 	tos<<"<title>"<<protect2(gt.rules.institutionName)<<"</title>\n";
 	tos<<"<body>";
 	tos<<"<center><h3>"<<protect2(gt.rules.institutionName)<<"</h3></center><br/>\n";
@@ -1058,158 +1078,4 @@ void TimetableAllocateRoomsForm::writeRoomsTimetableDaysVerticalHtml(const QStri
 	tos<<"</body>\n</html>\n";
 
 	file.close();
-}
-
-void TimetableAllocateRoomsForm::start(){
-	simulation_paused=false;
-	simulation_stopped=false;
-	simulation_save_position=false;
-
-	if(!gt.rules.initialized || gt.rules.activitiesList.isEmpty()){
-		QMessageBox::critical(this, QObject::tr("FET information"),
-			QObject::tr("You have entered simulation with uninitialized rules or 0 activities...aborting"));
-		assert(0);
-		exit(1);
-		return;
-	}
-	//if(!gt.rules.internalStructureComputed){
-	if(!gt.spacePopulation.initialized){
-		QMessageBox::information(this, QObject::tr("FET information"), 
-			QObject::tr("You didn't initialize or load the initial state"));
-		return;
-	}
-
-	if(!(students_schedule_ready && teachers_schedule_ready)){
-		QMessageBox::information(this, QObject::tr("FET information"), 
-			QObject::tr("You didn't allocate the hours prior to allocating the rooms"));
-		return;
-	}
-
-	spaceSolvingThread.callingForm=this;
-	spaceSolvingThread.start();
-}
-
-void TimetableAllocateRoomsForm::stop(){
-	mutex.lock();
-	simulation_stopped=true;
-	mutex.unlock();
-
-	QMessageBox::information(this, QObject::tr("FET information"),
-		QObject::tr("Simulation completed successfully"));
-}
-
-void TimetableAllocateRoomsForm::pause(){
-	mutex.lock();
-	simulation_paused=true;
-	mutex.unlock();
-}
-
-void TimetableAllocateRoomsForm::write(){
-	if(simulation_running){
-		mutex.lock();
-		simulation_write_results=true;
-		mutex.unlock();
-	}
-	else{
-		SpaceChromosome &c=gt.spacePopulation.bestChromosome(gt.rules);
-		getRoomsTimetable(c);
-		writeSimulationResults(c);
-
-		//update the string representing the conflicts
-		spaceConflictsString = "";
-		spaceConflictsString += "COMPULSORY CONSTRAINTS CONFLICTS (more important):\n";
-		c.hardFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours, &spaceConflictsString);
-		spaceConflictsString += "\n--------------------------\n\n";
-		spaceConflictsString += "NON-COMPULSORY CONSTRAINTS CONFLICTS (less important):\n";
-		c.softFitness(gt.rules, gt.spacePopulation.days, gt.spacePopulation.hours, &spaceConflictsString);
-	}
-
-	QMessageBox::information(this, QObject::tr("FET information"),
-		QObject::tr("Simulation results should be successfully written. You may check now Timetable/View"));
-}
-
-void TimetableAllocateRoomsForm::savePosition()
-{
-	simulation_save_position=true;
-}
-
-void TimetableAllocateRoomsForm::loadPosition()
-{
-	if(!gt.rules.initialized || gt.rules.activitiesList.isEmpty()){
-		QMessageBox::critical(this, QObject::tr("FET information"),
-			QObject::tr("You have entered simulation with uninitialized rules or 0 activities...aborting"));
-		assert(0);
-		exit(1);
-		return;
-	}
-
-	bool prev_state=gt.spacePopulation.initialized;
-	gt.spacePopulation.init(gt.rules, population_number, gt.timePopulation.bestChromosome(gt.rules));
-	QString s=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);
-	bool existing_file=gt.spacePopulation.read(gt.rules, OUTPUT_DIR+FILE_SEP+s+"_space_population_state.txt");
-	if(existing_file==false) //for versions older or equal to 3.9.21
-		existing_file=gt.spacePopulation.read(gt.rules, OUTPUT_DIR+FILE_SEP+"space_population_state.txt");
-	if(existing_file==false){
-		QMessageBox::warning(this, QObject::tr("FET information"),
-			QObject::tr("You did not save any internal state yet - aborting operation"));
-		gt.spacePopulation.initialized=prev_state;
-		return;
-	}
-	QMessageBox::information(this, QObject::tr("FET information"),
-		QObject::tr("Simulation position restored from hard disk. You may now continue the simulation"));
-	this->writeResultsPushButton->setEnabled(TRUE);
-}
-
-void TimetableAllocateRoomsForm::initializeUnallocated()
-{
-	if(!gt.rules.initialized){
-		QMessageBox::critical(this, QObject::tr("FET information"),
-			QObject::tr("You have entered simulation with uninitialized rules...aborting"));
-		assert(0);
-		exit(1);
-		return;
-	}
-	if(gt.rules.activitiesList.isEmpty()){
-		QMessageBox::critical(this, QObject::tr("FET information"),
-			QObject::tr("You have entered simulation with 0 activities...aborting"));
-		assert(0);
-		exit(1);
-		return;
-	}
-
-	assert(gt.rules.internalStructureComputed);
-	assert(students_schedule_ready && teachers_schedule_ready);
-
-	gt.spacePopulation.init(gt.rules, population_number, gt.timePopulation.bestChromosome(gt.rules));
-	gt.spacePopulation.makeRoomsUnallocated(gt.rules);
-	QMessageBox::information(this, QObject::tr("FET information"),
-		QObject::tr("Initialized with unallocated data - now you can start simulation"));
-	this->writeResultsPushButton->setEnabled(TRUE);
-}
-
-void TimetableAllocateRoomsForm::initializeRandomly()
-{
-	if(!gt.rules.initialized){
-		QMessageBox::critical(this, QObject::tr("FET information"),
-			QObject::tr("You have entered simulation with uninitialized rules...aborting"));
-		assert(0);
-		exit(1);
-		return;
-	}
-	if(gt.rules.activitiesList.isEmpty()){
-		QMessageBox::critical(this, QObject::tr("FET information"),
-			QObject::tr("You have entered simulation with 0 activities...aborting"));
-		assert(0);
-		exit(1);
-		return;
-	}
-
-	assert(gt.rules.internalStructureComputed);
-	assert(students_schedule_ready && teachers_schedule_ready);
-
-	gt.spacePopulation.init(gt.rules, population_number, gt.timePopulation.bestChromosome(gt.rules));
-	gt.spacePopulation.makeRoomsRandom(gt.rules);
-	QMessageBox::information(this, QObject::tr("FET information"),
-		QObject::tr("Initialized with random data - now you can start simulation"));
-	this->writeResultsPushButton->setEnabled(TRUE);
 }

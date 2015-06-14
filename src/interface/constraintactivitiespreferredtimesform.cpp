@@ -19,8 +19,17 @@
 #include "addconstraintactivitiespreferredtimesform.h"
 #include "modifyconstraintactivitiespreferredtimesform.h"
 
+#include <QDesktopWidget>
+
 ConstraintActivitiesPreferredTimesForm::ConstraintActivitiesPreferredTimesForm()
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	this->refreshConstraintsListBox();
 }
 
@@ -30,16 +39,17 @@ ConstraintActivitiesPreferredTimesForm::~ConstraintActivitiesPreferredTimesForm(
 
 void ConstraintActivitiesPreferredTimesForm::refreshConstraintsListBox()
 {
-	this->visibleConstraintsList.setAutoDelete(false);
 	this->visibleConstraintsList.clear();
 	constraintsListBox->clear();
-	for(TimeConstraint* ctr=gt.rules.timeConstraintsList.first(); ctr; ctr=gt.rules.timeConstraintsList.next())
+	for(int i=0; i<gt.rules.timeConstraintsList.size(); i++){
+		TimeConstraint* ctr=gt.rules.timeConstraintsList[i];
 		if(filterOk(ctr)){
 			QString s;
 			s=ctr->getDescription(gt.rules);
 			visibleConstraintsList.append(ctr);
 			constraintsListBox->insertItem(s);
 		}
+	}
 
 	constraintsListBox->setCurrentItem(0);
 	this->constraintChanged(constraintsListBox->currentItem());
@@ -58,7 +68,7 @@ void ConstraintActivitiesPreferredTimesForm::constraintChanged(int index)
 	if(index<0)
 		return;
 	QString s;
-	assert((uint)(index)<this->visibleConstraintsList.count());
+	assert(index<this->visibleConstraintsList.size());
 	TimeConstraint* ctr=this->visibleConstraintsList.at(index);
 	assert(ctr!=NULL);
 	s=ctr->getDetailedDescription(gt.rules);
@@ -67,8 +77,8 @@ void ConstraintActivitiesPreferredTimesForm::constraintChanged(int index)
 
 void ConstraintActivitiesPreferredTimesForm::addConstraint()
 {
-	AddConstraintActivitiesPreferredTimesForm *addConstraintActivitiesPreferredTimesForm=new AddConstraintActivitiesPreferredTimesForm();
-	addConstraintActivitiesPreferredTimesForm->exec();
+	AddConstraintActivitiesPreferredTimesForm *form=new AddConstraintActivitiesPreferredTimesForm();
+	form->exec();
 
 	this->refreshConstraintsListBox();
 }
@@ -82,8 +92,8 @@ void ConstraintActivitiesPreferredTimesForm::modifyConstraint()
 	}
 	TimeConstraint* ctr=this->visibleConstraintsList.at(i);
 
-	ModifyConstraintActivitiesPreferredTimesForm *modifyConstraintActivitiesPreferredTimesForm=new ModifyConstraintActivitiesPreferredTimesForm((ConstraintActivitiesPreferredTimes*)ctr);
-	modifyConstraintActivitiesPreferredTimesForm->exec();
+	ModifyConstraintActivitiesPreferredTimesForm *form=new ModifyConstraintActivitiesPreferredTimesForm((ConstraintActivitiesPreferredTimes*)ctr);
+	form->exec();
 
 	this->refreshConstraintsListBox();
 	

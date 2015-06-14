@@ -15,8 +15,10 @@
 
 #include "genetictimetable.h"
 
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qstring.h>
+
+#include <QDesktopWidget>
 
 extern GeneticTimetable gt;
 extern QString timeConflictsString;
@@ -24,6 +26,13 @@ extern QString timeConflictsString;
 TimetableShowConflictsTimeForm::TimetableShowConflictsTimeForm()
  : TimetableShowConflictsTimeForm_template()
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	conflictsTextEdit->setText(timeConflictsString);
 }
 

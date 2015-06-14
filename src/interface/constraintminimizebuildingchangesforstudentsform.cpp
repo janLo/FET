@@ -19,9 +19,17 @@
 #include "addconstraintminimizebuildingchangesforstudentsform.h"
 #include "modifyconstraintminimizebuildingchangesforstudentsform.h"
 
+#include <QDesktopWidget>
+
 ConstraintMinimizeBuildingChangesForStudentsForm::ConstraintMinimizeBuildingChangesForStudentsForm()
 {
-	this->visibleConstraintsList.setAutoDelete(false);
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	this->filterChanged();
 }
 
@@ -41,18 +49,20 @@ void ConstraintMinimizeBuildingChangesForStudentsForm::filterChanged()
 {
 	this->visibleConstraintsList.clear();
 	constraintsListBox->clear();
-	for(SpaceConstraint* ctr=gt.rules.spaceConstraintsList.first(); ctr; ctr=gt.rules.spaceConstraintsList.next())
+	for(int i=0; i<gt.rules.spaceConstraintsList.size(); i++){
+		SpaceConstraint* ctr=gt.rules.spaceConstraintsList[i];
 		if(filterOk(ctr)){
 			visibleConstraintsList.append(ctr);
 			constraintsListBox->insertItem(ctr->getDescription(gt.rules));
 		}
+	}
 }
 
 void ConstraintMinimizeBuildingChangesForStudentsForm::constraintChanged(int index)
 {
 	if(index<0)
 		return;
-	assert((uint)(index)<this->visibleConstraintsList.count());
+	assert(index<this->visibleConstraintsList.size());
 	SpaceConstraint* ctr=this->visibleConstraintsList.at(index);
 	assert(ctr!=NULL);
 	currentConstraintTextEdit->setText(ctr->getDetailedDescription(gt.rules));
@@ -60,8 +70,8 @@ void ConstraintMinimizeBuildingChangesForStudentsForm::constraintChanged(int ind
 
 void ConstraintMinimizeBuildingChangesForStudentsForm::addConstraint()
 {
-	AddConstraintMinimizeBuildingChangesForStudentsForm *addConstraintMinimizeBuildingChangesForStudentsForm=new AddConstraintMinimizeBuildingChangesForStudentsForm();
-	addConstraintMinimizeBuildingChangesForStudentsForm->exec();
+	AddConstraintMinimizeBuildingChangesForStudentsForm *form=new AddConstraintMinimizeBuildingChangesForStudentsForm();
+	form->exec();
 
 	filterChanged();
 	
@@ -77,9 +87,9 @@ void ConstraintMinimizeBuildingChangesForStudentsForm::modifyConstraint()
 	}
 	SpaceConstraint* ctr=this->visibleConstraintsList.at(i);
 
-	ModifyConstraintMinimizeBuildingChangesForStudentsForm *modifyConstraintMinimizeBuildingChangesForStudentsForm
+	ModifyConstraintMinimizeBuildingChangesForStudentsForm *form
 	 = new ModifyConstraintMinimizeBuildingChangesForStudentsForm((ConstraintMinimizeBuildingChangesForStudents*)ctr);
-	modifyConstraintMinimizeBuildingChangesForStudentsForm->exec();
+	form->exec();
 
 	filterChanged();
 	constraintsListBox->setCurrentItem(i);

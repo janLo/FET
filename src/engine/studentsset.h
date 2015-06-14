@@ -15,7 +15,7 @@
 
 #include "genetictimetable_defs.h"
 
-#include <qptrlist.h>
+#include <QList>
 
 const int STUDENTS_SET=0;
 const int STUDENTS_YEAR=1;
@@ -28,20 +28,11 @@ class StudentsSubgroup;
 
 class Rules;
 
-class StudentsYearsList: public QPtrList<StudentsYear>
-{
-	int compareItems(QPtrCollection::Item, QPtrCollection::Item);
-};
+typedef QList<StudentsYear*> StudentsYearsList;
 
-class StudentsGroupsList: public QPtrList<StudentsGroup>
-{
-	int compareItems(QPtrCollection::Item, QPtrCollection::Item);
-};
+typedef QList<StudentsGroup*> StudentsGroupsList;
 
-class StudentsSubgroupsList: public QPtrList<StudentsSubgroup>
-{
-	int compareItems(QPtrCollection::Item, QPtrCollection::Item);
-};
+typedef QList<StudentsSubgroup*> StudentsSubgroupsList;
 
 /**
 This class represents a set of students, for instance years, groups or subgroups.
@@ -98,5 +89,11 @@ public:
 	QString getDetailedDescription();
 	QString getDetailedDescriptionWithConstraints(Rules& r);
 };
+
+int yearsAscending(const StudentsYear* y1, const StudentsYear* y2);
+
+int groupsAscending(const StudentsGroup* g1, const StudentsGroup* g2);
+
+int subgroupsAscending(const StudentsSubgroup* s1, const StudentsSubgroup* s2);
 
 #endif

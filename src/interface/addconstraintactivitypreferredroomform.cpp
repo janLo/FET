@@ -21,10 +21,19 @@
 #include <qradiobutton.h>
 #include <qlabel.h>
 #include <qlineedit.h>
-#include <qtable.h>
+#include <q3table.h>
+
+#include <QDesktopWidget>
 
 AddConstraintActivityPreferredRoomForm::AddConstraintActivityPreferredRoomForm()
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+						
 	updateActivitiesComboBox();
 	updateRoomsComboBox();
 }
@@ -36,15 +45,19 @@ AddConstraintActivityPreferredRoomForm::~AddConstraintActivityPreferredRoomForm(
 void AddConstraintActivityPreferredRoomForm::updateActivitiesComboBox()
 {
 	activitiesComboBox->clear();
-	for(Activity* act=gt.rules.activitiesList.first(); act; act=gt.rules.activitiesList.next())
+	for(int i=0; i<gt.rules.activitiesList.size(); i++){
+		Activity* act=gt.rules.activitiesList[i];
 		activitiesComboBox->insertItem(act->getDescription(gt.rules));
+	}
 }
 
 void AddConstraintActivityPreferredRoomForm::updateRoomsComboBox()
 {
 	roomsComboBox->clear();
-	for(Room* rm=gt.rules.roomsList.first(); rm; rm=gt.rules.roomsList.next())
+	for(int i=0; i<gt.rules.roomsList.size(); i++){
+		Room* rm=gt.rules.roomsList[i];
 		roomsComboBox->insertItem(rm->name);
+	}
 }
 
 void AddConstraintActivityPreferredRoomForm::addConstraint()

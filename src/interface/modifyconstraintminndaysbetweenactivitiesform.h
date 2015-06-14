@@ -24,16 +24,17 @@
 #include "fet.h"
 #include "fetmainform.h"
 
-#include <qcombobox.h>
-#include <qlistbox.h>
+#include <q3combobox.h>
+#include <q3listbox.h>
 #include <qmessagebox.h>
-#include <qgroupbox.h>
+#include <q3groupbox.h>
 #include <qspinbox.h>
 #include <qcheckbox.h>
 #include <qpushbutton.h>
 #include <qlineedit.h>
-#include <qtextedit.h>
-#include <qvaluelist.h>
+#include <q3textedit.h>
+
+#include <QList>
 
 class ModifyConstraintMinNDaysBetweenActivitiesForm : public ModifyConstraintMinNDaysBetweenActivitiesForm_template  {
 public:
@@ -51,9 +52,9 @@ public:
 private:
 	ConstraintMinNDaysBetweenActivities* _ctr;
 	//the id's of the activities listed in the activities list
-	QValueList<int> activitiesList;
+	QList<int> activitiesList;
 	//the id-s of the activities listed in the list of selected activities
-	QValueList<int> selectedActivitiesList;
+	QList<int> selectedActivitiesList;
 };
 
 #endif

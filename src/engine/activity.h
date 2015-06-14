@@ -27,15 +27,16 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #include "genetictimetable_defs.h"
 
-#include <qstring.h>
 #include <qfile.h>
-#include <qptrlist.h>
-#include <qstringlist.h>
+
+#include <QString>
+#include <QList>
+#include <QStringList>
 
 class Rules;
 class Activity;
 
-typedef QPtrList<Activity> ActivitiesList;
+typedef QList<Activity*> ActivitiesList;
 
 /**
 Used for an activity's parity, if it was not yet initialized.
@@ -50,7 +51,7 @@ const int PARITY_WEEKLY=0;
 /**
 Used for an activity, if it is occuring once at two weeks.
 */
-const int PARITY_BIWEEKLY=1;
+const int PARITY_FORTNIGHTLY=1;
 
 /**
 This class represents an activity.
@@ -86,7 +87,7 @@ public:
 	int duration;
 
 	/**
-	The parity: weekly (PARITY_WEEKLY) or once at two weeks (PARITY_BIWEEKLY).
+	The parity: weekly (PARITY_WEEKLY) or once at two weeks (PARITY_FORTNIGHTLY).
 	*/
 	int parity;
 
@@ -110,9 +111,19 @@ public:
 	int activityGroupId;
 
 	/**
-	The number of students who are attending this activity
+	The number of students who are attending this activity.
+	If computeNTotalStudentsFromSets is false, this number
+	is given. If it is true, this number should be calculated
+	from the sets involved.
 	*/
 	int nTotalStudents;
+	
+	/**
+	If true, we will have to compute the number of total students from the 
+	involved students sets. If false, it means that nTotalStudents is given
+	and must not be recalculated.
+	*/
+	bool computeNTotalStudents;
 	
 	/**
 	True if this activity is active, that is it will be taken into consideration
@@ -184,7 +195,9 @@ public:
 		int _duration,
 		int _totalDuration,
 		int _parity,
-		bool _active);
+		bool _active,
+		bool _computeNTotalStudents,
+		int _nTotalStudents);
 		
 	bool searchTeacher(const QString& teacherName);
 
@@ -203,12 +216,13 @@ public:
 	/**
 	Removes this students set from the list of students
 	*/
-	void removeStudents(const QString& studentsName);
+	void removeStudents(Rules& r, const QString& studentsName, int nStudents);
 
 	/**
 	Renames this students set in the list of students
+	The assumption is that the number of students in this renamed set remain the same
 	*/
-	void renameStudents(const QString& initialStudentsName, const QString& finalStudentsName);
+	void renameStudents(Rules& r, const QString& initialStudentsName, const QString& finalStudentsName);
 
 	/**
 	Computes the internal structure

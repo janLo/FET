@@ -24,36 +24,52 @@
 #include "modifyactivityform.h"
 
 #include <qstring.h>
-#include <qlistbox.h>
+#include <q3listbox.h>
 #include <qmessagebox.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
+
+#include <QDesktopWidget>
 
 ActivitiesForm::ActivitiesForm()
 {
-	visibleActivitiesList.setAutoDelete(false);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
 
 	teachersComboBox->insertItem("");
-	for(Teacher* tch=gt.rules.teachersList.first(); tch; tch=gt.rules.teachersList.next())
+	for(int i=0; i<gt.rules.teachersList.size(); i++){
+		Teacher* tch=gt.rules.teachersList[i];
 		teachersComboBox->insertItem(tch->name);
+	}
 	teachersComboBox->setCurrentItem(0);
 
 	subjectsComboBox->insertItem("");
-	for(Subject* sb=gt.rules.subjectsList.first(); sb; sb=gt.rules.subjectsList.next())
+	for(int i=0; i<gt.rules.subjectsList.size(); i++){
+		Subject* sb=gt.rules.subjectsList[i];
 		subjectsComboBox->insertItem(sb->name);
+	}
 	subjectsComboBox->setCurrentItem(0);
 
 	subjectTagsComboBox->insertItem("");
-	for(SubjectTag* st=gt.rules.subjectTagsList.first(); st; st=gt.rules.subjectTagsList.next())
+	for(int i=0; i<gt.rules.subjectTagsList.size(); i++){
+		SubjectTag* st=gt.rules.subjectTagsList[i];
 		subjectTagsComboBox->insertItem(st->name);
+	}
 	subjectTagsComboBox->setCurrentItem(0);
 
 	studentsComboBox->insertItem("");
-	for(StudentsYear* sty=gt.rules.yearsList.first(); sty; sty=gt.rules.yearsList.next()){
+	for(int i=0; i<gt.rules.yearsList.size(); i++){
+		StudentsYear* sty=gt.rules.yearsList[i];
 		studentsComboBox->insertItem(sty->name);
-		for(StudentsGroup* stg=sty->groupsList.first(); stg; stg=sty->groupsList.next()){
+		for(int j=0; j<sty->groupsList.size(); j++){
+			StudentsGroup* stg=sty->groupsList[j];
 			studentsComboBox->insertItem(stg->name);
-			for(StudentsSubgroup* sts=stg->subgroupsList.first(); sts; sts=stg->subgroupsList.next())
+			for(int k=0; k<stg->subgroupsList.size(); k++){
+				StudentsSubgroup* sts=stg->subgroupsList[k];
 				studentsComboBox->insertItem(sts->name);
+			}
 		}
 	}
 	studentsComboBox->setCurrentItem(0);
@@ -112,14 +128,15 @@ void ActivitiesForm::filterChanged()
 {
 	QString s;
 	activitiesListBox->clear();
-	assert(visibleActivitiesList.autoDelete()==false);
 	visibleActivitiesList.clear();
-	for(Activity* act=gt.rules.activitiesList.first(); act; act=gt.rules.activitiesList.next())
+	for(int i=0; i<gt.rules.activitiesList.size(); i++){
+		Activity* act=gt.rules.activitiesList[i];
 		if(this->filterOk(act)){
 			s=act->getDescription(gt.rules);
 			visibleActivitiesList.append(act);
 			activitiesListBox->insertItem(s);
 		}
+	}
 	activityChanged(activitiesListBox->currentItem());
 }
 
@@ -144,7 +161,7 @@ void ActivitiesForm::removeActivity()
 		return;
 	}
 
-	Activity* act=visibleActivitiesList.at(ind);
+	Activity* act=visibleActivitiesList[ind];
 	assert(act!=NULL);
 
 	QString s;
@@ -180,12 +197,13 @@ void ActivitiesForm::modifyActivity()
 		return;
 	}
 
-	Activity* act=visibleActivitiesList.at(ind);
+	Activity* act=visibleActivitiesList[ind];
 	assert(act!=NULL);
 	
 	if(act->isSplit()){
 		int nSplit=0;
-		for(Activity* act2=gt.rules.activitiesList.first(); act2; act2=gt.rules.activitiesList.next()){
+		for(int i=0; i<gt.rules.activitiesList.size(); i++){
+			Activity* act2=gt.rules.activitiesList[i];
 			if(act2->activityGroupId==act->activityGroupId)
 				nSplit++;
 			if(nSplit>8){
@@ -213,7 +231,7 @@ void ActivitiesForm::activityChanged(int index)
 	}
 
 	QString s;
-	Activity* act=visibleActivitiesList.at(index);
+	Activity* act=visibleActivitiesList[index];
 
 	assert(act!=NULL);
 	s=act->getDetailedDescriptionWithConstraints(gt.rules);

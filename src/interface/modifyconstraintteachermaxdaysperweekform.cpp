@@ -22,10 +22,19 @@
 #include <qlabel.h>
 #include <qlineedit.h>
 
+#include <QDesktopWidget>
+
 #define yesNo(x)	((x)==0?QObject::tr("no"):QObject::tr("yes"))
 
 ModifyConstraintTeacherMaxDaysPerWeekForm::ModifyConstraintTeacherMaxDaysPerWeekForm(ConstraintTeacherMaxDaysPerWeek* ctr)
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	this->_ctr=ctr;
 	
 	compulsoryCheckBox->setChecked(ctr->compulsory);
@@ -46,9 +55,10 @@ ModifyConstraintTeacherMaxDaysPerWeekForm::~ModifyConstraintTeacherMaxDaysPerWee
 void ModifyConstraintTeacherMaxDaysPerWeekForm::updateTeachersComboBox(){
 	teachersComboBox->clear();
 	int i=0, j=-1;
-	for(Teacher* tch=gt.rules.teachersList.first(); tch; tch=gt.rules.teachersList.next(), i++){
+	for(int k=0; k<gt.rules.teachersList.size(); k++, i++){
+		Teacher* tch=gt.rules.teachersList[k];
 		teachersComboBox->insertItem(tch->name);
-		if(tch->name==this->_ctr->teacher)
+		if(tch->name==this->_ctr->teacherName)
 			j=i;
 	}
 	assert(j>=0);
@@ -119,7 +129,7 @@ void ModifyConstraintTeacherMaxDaysPerWeekForm::ok()
 	this->_ctr->weight=weight;
 	this->_ctr->compulsory=compulsory;
 	this->_ctr->maxDaysPerWeek=max_days;
-	this->_ctr->teacher=teacher_name;
+	this->_ctr->teacherName=teacher_name;
 
 	gt.rules.internalStructureComputed=false;
 	

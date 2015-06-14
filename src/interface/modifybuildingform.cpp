@@ -19,8 +19,17 @@
 
 #include <qlineedit.h>
 
+#include <QDesktopWidget>
+
 ModifyBuildingForm::ModifyBuildingForm(const QString& initialBuildingName)
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	this->_initialBuildingName=initialBuildingName;
 	nameLineEdit->setText(initialBuildingName);
 	nameLineEdit->selectAll();

@@ -20,10 +20,19 @@
 #include <qradiobutton.h>
 #include <qlabel.h>
 #include <qlineedit.h>
-#include <qtable.h>
+#include <q3table.h>
+
+#include <QDesktopWidget>
 
 RoomsEquipmentsForm::RoomsEquipmentsForm()
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	updateRoomsComboBox();
 	updateAllEquipmentsListBox();
 	if(gt.rules.roomsList.count()==0)
@@ -53,15 +62,19 @@ void RoomsEquipmentsForm::roomChanged(int i)
 void RoomsEquipmentsForm::updateRoomsComboBox()
 {
 	roomsComboBox->clear();
-	for(Room* room=gt.rules.roomsList.first(); room; room=gt.rules.roomsList.next())
+	for(int i=0; i<gt.rules.roomsList.size(); i++){
+		Room* room=gt.rules.roomsList[i];
 		roomsComboBox->insertItem(room->name);
+	}
 }
 
 void RoomsEquipmentsForm::updateAllEquipmentsListBox()
 {
 	allEquipmentsListBox->clear();
-	for(Equipment* eq=gt.rules.equipmentsList.first(); eq; eq=gt.rules.equipmentsList.next())
+	for(int i=0; i<gt.rules.equipmentsList.size(); i++){
+		Equipment* eq=gt.rules.equipmentsList[i];
 		allEquipmentsListBox->insertItem(eq->name);
+	}
 }
 
 void RoomsEquipmentsForm::addEquipment()

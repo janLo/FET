@@ -18,23 +18,34 @@
 #include "modifyconstraintactivitiesnotoverlappingform.h"
 #include "spaceconstraint.h"
 
+#include <QDesktopWidget>
+
 #include <qradiobutton.h>
 #include <qlabel.h>
 #include <qlineedit.h>
-#include <qtable.h>
+#include <q3table.h>
 
 ModifyConstraintActivitiesNotOverlappingForm::ModifyConstraintActivitiesNotOverlappingForm(ConstraintActivitiesNotOverlapping* ctr)
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	this->_ctr=ctr;
 	updateActivitiesListBox();
 	
 	for(int i=0; i<ctr->n_activities; i++){
 		int actId=ctr->activitiesId[i];
-		this->notOverlappingActivitiesList.append(actId);
-		Activity* act;
-		for(act=gt.rules.activitiesList.first(); act; act=gt.rules.activitiesList.next())
+		this->notOverlappingActivitiesList << actId ; //append
+		Activity* act=NULL;
+		for(int k=0; k<gt.rules.activitiesList.size(); k++){
+			act=gt.rules.activitiesList[k];
 			if(act->id==actId)
 				break;
+		}
 		assert(act);
 		this->notOverlappingActivitiesListBox->insertItem(act->getDescription(gt.rules));
 	}
@@ -55,7 +66,8 @@ void ModifyConstraintActivitiesNotOverlappingForm::updateActivitiesListBox()
 	this->activitiesList.clear();
 	this->notOverlappingActivitiesList.clear();
 
-	for(Activity* ac=gt.rules.activitiesList.first(); ac; ac=gt.rules.activitiesList.next()){
+	for(int i=0; i<gt.rules.activitiesList.size(); i++){
+		Activity* ac=gt.rules.activitiesList[i];
 		activitiesListBox->insertItem(ac->getDescription(gt.rules));
 		this->activitiesList.append(ac->id);
 	}
@@ -86,14 +98,14 @@ void ModifyConstraintActivitiesNotOverlappingForm::ok()
 			QObject::tr("Only one selected activity"));
 		return;
 	}
-	if(this->notOverlappingActivitiesList.count()>(uint)(MAX_CONSTRAINT_ACTIVITIES_NOT_OVERLAPPING)){
+	if(this->notOverlappingActivitiesList.size()>MAX_CONSTRAINT_ACTIVITIES_NOT_OVERLAPPING){
 		QMessageBox::warning(this, QObject::tr("FET information"),
 			QObject::tr("Please report error to the author\nMAX_CONSTRAINT_ACTIVITIES_NOT_OVERLAPPING must be increased (you have too many activities)"));
 		return;
 	}
 	
 	int i;
-	QValueList<int>::iterator it;
+	QList<int>::iterator it;
 	for(i=0, it=this->notOverlappingActivitiesList.begin(); it!=this->notOverlappingActivitiesList.end(); it++, i++)
 		this->_ctr->activitiesId[i]=*it;
 	this->_ctr->n_activities=i;
@@ -116,7 +128,7 @@ void ModifyConstraintActivitiesNotOverlappingForm::addActivity()
 	if(activitiesListBox->currentItem()<0)
 		return;
 	int tmp=activitiesListBox->currentItem();
-	int _id=*(this->activitiesList.at(tmp));
+	int _id=this->activitiesList.at(tmp);
 	
 	QString actName=activitiesListBox->currentText();
 	assert(actName!="");
@@ -137,9 +149,7 @@ void ModifyConstraintActivitiesNotOverlappingForm::removeActivity()
 	if(notOverlappingActivitiesListBox->currentItem()<0 || notOverlappingActivitiesListBox->count()<=0)
 		return;		
 	int tmp=notOverlappingActivitiesListBox->currentItem();
-	int _id=*(this->notOverlappingActivitiesList.at(tmp));
 	
 	notOverlappingActivitiesListBox->removeItem(notOverlappingActivitiesListBox->currentItem());
-	int tmp2=this->notOverlappingActivitiesList.remove(_id);
-	assert(tmp2==1);
+	this->notOverlappingActivitiesList.removeAt(tmp);
 }

@@ -21,10 +21,19 @@
 #include <qradiobutton.h>
 #include <qlabel.h>
 #include <qlineedit.h>
-#include <qtable.h>
+#include <q3table.h>
+
+#include <QDesktopWidget>
 
 ModifyConstraintRoomTypeNotAllowedSubjectsForm::ModifyConstraintRoomTypeNotAllowedSubjectsForm(ConstraintRoomTypeNotAllowedSubjects* ctr)
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	this->_ctr=ctr;
 	
 	compulsoryCheckBox->setChecked(ctr->compulsory);
@@ -46,7 +55,8 @@ void ModifyConstraintRoomTypeNotAllowedSubjectsForm::updateTypesComboBox()
 {
 	int k=0, j=-1;
 	typesComboBox->clear();
-	for(Room* room=gt.rules.roomsList.first(); room; room=gt.rules.roomsList.next()){
+	for(int m=0; m<gt.rules.roomsList.size(); m++){
+		Room* room=gt.rules.roomsList[m];
 		//insert without duplicates
 		int i;
 		for(i=0; i<typesComboBox->count(); i++)
@@ -65,8 +75,10 @@ void ModifyConstraintRoomTypeNotAllowedSubjectsForm::updateTypesComboBox()
 void ModifyConstraintRoomTypeNotAllowedSubjectsForm::updateSubjectsListBox()
 {
 	subjectsListBox->clear();
-	for(Subject* sb=gt.rules.subjectsList.first(); sb; sb=gt.rules.subjectsList.next())
+	for(int i=0; i<gt.rules.subjectsList.size(); i++){
+		Subject* sb=gt.rules.subjectsList[i];
 		subjectsListBox->insertItem(sb->name);
+	}
 }
 
 void ModifyConstraintRoomTypeNotAllowedSubjectsForm::cancel()

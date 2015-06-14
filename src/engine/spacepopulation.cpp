@@ -29,7 +29,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #include <stdlib.h>
 
-#include <qvaluestack.h>
+#include <q3valuestack.h>
+//Added by qt3to4:
+#include <QTextStream>
 
 SpacePopulation::SpacePopulation(){
 	this->initialized=false;
@@ -223,8 +225,8 @@ void SpacePopulation::sort(Rules& ru, int left, int right){
 	Sort(l, j);
 	Sort(j+1, r);*/
 
-	QValueStack<int> stack1;
-	QValueStack<int> stack2;
+	Q3ValueStack<int> stack1;
+	Q3ValueStack<int> stack2;
 	stack1.push(left);
 	stack2.push(right);
 
@@ -373,7 +375,7 @@ bool SpacePopulation::read(Rules& r, const QString& filename)
 {
 	QFile file(filename);
 	
-	if(!file.open(IO_ReadOnly))
+	if(!file.open(QIODevice::ReadOnly))
 		return false;
 		
 	QTextStream tis(&file);
@@ -394,7 +396,7 @@ void SpacePopulation::write(Rules& r, QTextStream &tos)
 void SpacePopulation::write(Rules& r, const QString& filename)
 {
 	QFile file(filename);
-	if(!file.open(IO_WriteOnly))
+	if(!file.open(QIODevice::WriteOnly))
 		assert(0);
 	QTextStream tos(&file);
 	this->write(r, tos);

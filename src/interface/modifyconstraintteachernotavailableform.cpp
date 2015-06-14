@@ -22,10 +22,19 @@
 #include <qlabel.h>
 #include <qlineedit.h>
 
+#include <QDesktopWidget>
+
 #define yesNo(x)	((x)==0?QObject::tr("no"):QObject::tr("yes"))
 
 ModifyConstraintTeacherNotAvailableForm::ModifyConstraintTeacherNotAvailableForm(ConstraintTeacherNotAvailable* ctr)
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	this->_ctr=ctr;
 	
 	compulsoryCheckBox->setChecked(ctr->compulsory);
@@ -48,7 +57,8 @@ ModifyConstraintTeacherNotAvailableForm::~ModifyConstraintTeacherNotAvailableFor
 void ModifyConstraintTeacherNotAvailableForm::updateTeachersComboBox(){
 	teachersComboBox->clear();
 	int i=0, j=-1;
-	for(Teacher* tch=gt.rules.teachersList.first(); tch; tch=gt.rules.teachersList.next(), i++){
+	for(int k=0; k<gt.rules.teachersList.size(); k++, i++){
+		Teacher* tch=gt.rules.teachersList[k];
 		teachersComboBox->insertItem(tch->name);
 		if(tch->name==this->_ctr->teacherName)
 			j=i;

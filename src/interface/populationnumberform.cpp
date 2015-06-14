@@ -20,14 +20,23 @@
 #include <qslider.h>
 #include <qlabel.h>
 
+#include <QDesktopWidget>
+
 PopulationNumberForm::PopulationNumberForm()
  : PopulationNumberForm_template()
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	this->p_n=population_number;
 
 	populationNumberSlider->setMaxValue(MAX_POPULATION_SIZE);
 	populationNumberSlider->setValue(population_number);
-	populationNumberSlider->setMinValue(1);
+	populationNumberSlider->setMinValue(3);
 
 	QString s=QObject::tr("Population number (power of search)");
 	s+="\n";

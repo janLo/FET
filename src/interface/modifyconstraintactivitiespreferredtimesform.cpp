@@ -21,13 +21,22 @@
 #include <qradiobutton.h>
 #include <qlabel.h>
 #include <qlineedit.h>
-#include <qtable.h>
+#include <q3table.h>
+
+#include <QDesktopWidget>
 
 #define YES	(QObject::tr("Yes"))
 #define NO	(QObject::tr("No"))
 
 ModifyConstraintActivitiesPreferredTimesForm::ModifyConstraintActivitiesPreferredTimesForm(ConstraintActivitiesPreferredTimes* ctr)
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	this->_ctr=ctr;
 
 	updateTeachersComboBox();
@@ -35,13 +44,15 @@ ModifyConstraintActivitiesPreferredTimesForm::ModifyConstraintActivitiesPreferre
 	updateSubjectsComboBox();
 	updateSubjectTagsComboBox();
 
-	preferredTimesTable->setNumRows(gt.rules.nHoursPerDay+1);
-	preferredTimesTable->setNumCols(gt.rules.nDaysPerWeek+1);
+	preferredTimesTable->setNumRows(gt.rules.nHoursPerDay);
+	preferredTimesTable->setNumCols(gt.rules.nDaysPerWeek);
 
 	for(int j=0; j<gt.rules.nDaysPerWeek; j++)
-		preferredTimesTable->setText(0, j+1, gt.rules.daysOfTheWeek[j]);
+		//preferredTimesTable->setText(0, j+1, gt.rules.daysOfTheWeek[j]);
+		preferredTimesTable->horizontalHeader()->setLabel(j, gt.rules.daysOfTheWeek[j]);
 	for(int i=0; i<gt.rules.nHoursPerDay; i++)
-		preferredTimesTable->setText(i+1, 0, gt.rules.hoursOfTheDay[i]);
+		//preferredTimesTable->setText(i+1, 0, gt.rules.hoursOfTheDay[i]);
+		preferredTimesTable->verticalHeader()->setLabel(i, gt.rules.hoursOfTheDay[i]);
 
 	bool currentMatrix[MAX_HOURS_PER_DAY][MAX_DAYS_PER_WEEK];
 	for(int i=0; i<gt.rules.nHoursPerDay; i++)
@@ -58,9 +69,9 @@ ModifyConstraintActivitiesPreferredTimesForm::ModifyConstraintActivitiesPreferre
 	for(int i=0; i<gt.rules.nHoursPerDay; i++)
 		for(int j=0; j<gt.rules.nDaysPerWeek; j++)
 			if(!currentMatrix[i][j])
-				preferredTimesTable->setText(i+1, j+1, NO);
+				preferredTimesTable->setText(i, j, NO);
 			else
-				preferredTimesTable->setText(i+1, j+1, YES);
+				preferredTimesTable->setText(i, j, YES);
 				
 	compulsoryCheckBox->setChecked(ctr->compulsory);
 	weightLineEdit->setText(QString::number(ctr->weight));
@@ -75,16 +86,16 @@ void ModifyConstraintActivitiesPreferredTimesForm::tableClicked(int row, int col
 	if(&button!=NULL && &mousePos!=NULL)
 		; //to avoid "unused parameter" compiler warning
 
-	row--; col--;
+	//row--; col--;
 	if(row>=0 && row<gt.rules.nHoursPerDay && col>=0 && col<gt.rules.nDaysPerWeek){
-		QString s=preferredTimesTable->text(row+1, col+1);
+		QString s=preferredTimesTable->text(row, col);
 		if(s==YES)
 			s=NO;
 		else{
 			assert(s==NO);
 			s=YES;
 		}
-		preferredTimesTable->setText(row+1, col+1, s);
+		preferredTimesTable->setText(row, col, s);
 	}
 }
 
@@ -95,7 +106,8 @@ void ModifyConstraintActivitiesPreferredTimesForm::updateTeachersComboBox(){
 	if(this->_ctr->teacherName=="")
 		j=i;
 	i++;
-	for(Teacher* t=gt.rules.teachersList.first(); t; t=gt.rules.teachersList.next()){
+	for(int k=0; k<gt.rules.teachersList.size(); k++){
+		Teacher* t=gt.rules.teachersList[k];
 		teachersComboBox->insertItem(t->name);
 		if(t->name==this->_ctr->teacherName)
 			j=i;
@@ -112,17 +124,20 @@ void ModifyConstraintActivitiesPreferredTimesForm::updateStudentsComboBox(){
 	if(this->_ctr->studentsName=="")
 		j=i;
 	i++;
-	for(StudentsYear* sty=gt.rules.yearsList.first(); sty; sty=gt.rules.yearsList.next()){
+	for(int m=0; m<gt.rules.yearsList.size(); m++){
+		StudentsYear* sty=gt.rules.yearsList[m];
 		studentsComboBox->insertItem(sty->name);
 		if(sty->name==this->_ctr->studentsName)
 			j=i;
 		i++;
-		for(StudentsGroup* stg=sty->groupsList.first(); stg; stg=sty->groupsList.next()){
+		for(int n=0; n<sty->groupsList.size(); n++){
+			StudentsGroup* stg=sty->groupsList[n];
 			studentsComboBox->insertItem(stg->name);
 			if(stg->name==this->_ctr->studentsName)
 				j=i;
 			i++;
-			for(StudentsSubgroup* sts=stg->subgroupsList.first(); sts; sts=stg->subgroupsList.next()){
+			for(int p=0; p<stg->subgroupsList.size(); p++){
+				StudentsSubgroup* sts=stg->subgroupsList[p];
 				studentsComboBox->insertItem(sts->name);
 				if(sts->name==this->_ctr->studentsName)
 					j=i;
@@ -141,7 +156,8 @@ void ModifyConstraintActivitiesPreferredTimesForm::updateSubjectsComboBox(){
 	if(this->_ctr->subjectName=="")
 		j=i;
 	i++;
-	for(Subject* s=gt.rules.subjectsList.first(); s; s=gt.rules.subjectsList.next()){
+	for(int k=0; k<gt.rules.subjectsList.size(); k++){
+		Subject* s=gt.rules.subjectsList[k];
 		subjectsComboBox->insertItem(s->name);
 		if(s->name==this->_ctr->subjectName)
 			j=i;
@@ -158,7 +174,8 @@ void ModifyConstraintActivitiesPreferredTimesForm::updateSubjectTagsComboBox(){
 	if(this->_ctr->subjectTagName=="")
 		j=i;
 	i++;
-	for(SubjectTag* s=gt.rules.subjectTagsList.first(); s; s=gt.rules.subjectTagsList.next()){
+	for(int k=0; k<gt.rules.subjectTagsList.size(); k++){
+		SubjectTag* s=gt.rules.subjectTagsList[k];
 		subjectTagsComboBox->insertItem(s->name);
 		if(s->name==this->_ctr->subjectTagName)
 			j=i;
@@ -209,7 +226,7 @@ void ModifyConstraintActivitiesPreferredTimesForm::ok()
 	int n=0;
 	for(int i=0; i<gt.rules.nHoursPerDay; i++)
 		for(int j=0; j<gt.rules.nDaysPerWeek; j++)
-			if(preferredTimesTable->text(i+1, j+1)==YES){
+			if(preferredTimesTable->text(i, j)==YES){
 				if(n>=MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_TIMES){
 					QString s=QObject::tr("Not enough slots (too many \"Yes\" values).");
 					s+="\n";

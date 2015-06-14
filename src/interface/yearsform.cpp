@@ -20,16 +20,27 @@
 #include "fetmainform.h"
 #include "studentsset.h"
 
-#include <qlistbox.h>
+#include <q3listbox.h>
 #include <qinputdialog.h>
 #include <qstring.h>
+
+#include <QDesktopWidget>
 
 YearsForm::YearsForm()
  : YearsForm_template()
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	yearsListBox->clear();
-	for(StudentsYear* year=gt.rules.yearsList.first(); year; year=gt.rules.yearsList.next())
+	for(int i=0; i<gt.rules.yearsList.size(); i++){
+		StudentsYear* year=gt.rules.yearsList[i];
 		yearsListBox->insertItem(year->name);
+	}
 }
 
 
@@ -39,12 +50,14 @@ YearsForm::~YearsForm()
 
 void YearsForm::addYear()
 {
-	AddStudentsYearForm* addStudentsYearForm=new AddStudentsYearForm();
-	addStudentsYearForm->exec();
+	AddStudentsYearForm* form=new AddStudentsYearForm();
+	form->exec();
 
 	yearsListBox->clear();
-	for(StudentsYear* year=gt.rules.yearsList.first(); year; year=gt.rules.yearsList.next())
+	for(int i=0; i<gt.rules.yearsList.size(); i++){
+		StudentsYear* year=gt.rules.yearsList[i];
 		yearsListBox->insertItem(year->name);
+	}
 }
 
 void YearsForm::removeYear()
@@ -82,8 +95,10 @@ void YearsForm::sortYears()
 	gt.rules.sortYearsAlphabetically();
 
 	yearsListBox->clear();
-	for(StudentsYear* year=gt.rules.yearsList.first(); year; year=gt.rules.yearsList.next())
+	for(int i=0; i<gt.rules.yearsList.size(); i++){
+		StudentsYear* year=gt.rules.yearsList[i];
 		yearsListBox->insertItem(year->name);
+	}
 }
 
 void YearsForm::modifyYear()
@@ -96,12 +111,14 @@ void YearsForm::modifyYear()
 	QString yearName=yearsListBox->currentText();
 	int numberOfStudents=gt.rules.searchStudentsSet(yearName)->numberOfStudents;
 
-	ModifyStudentsYearForm* modifyStudentsYearForm=new ModifyStudentsYearForm(yearName, numberOfStudents);
-	modifyStudentsYearForm->exec();
+	ModifyStudentsYearForm* form=new ModifyStudentsYearForm(yearName, numberOfStudents);
+	form->exec();
 
 	yearsListBox->clear();
-	for(StudentsYear* year=gt.rules.yearsList.first(); year; year=gt.rules.yearsList.next())
+	for(int i=0; i<gt.rules.yearsList.size(); i++){
+		StudentsYear* year=gt.rules.yearsList[i];
 		yearsListBox->insertItem(year->name);
+	}
 
 	yearsListBox->setCurrentItem(ci);
 }

@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.2" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
 <class>DaysForm_template</class>
 <widget class="QDialog">
     <property name="name">
@@ -224,25 +224,22 @@
             <property name="title">
                 <string>Number of working days per week</string>
             </property>
-            <widget class="QSpinBox">
+            <grid>
                 <property name="name">
-                    <cstring>daysSpinBox</cstring>
+                    <cstring>unnamed</cstring>
                 </property>
-                <property name="geometry">
-                    <rect>
-                        <x>410</x>
-                        <y>20</y>
-                        <width>80</width>
-                        <height>26</height>
-                    </rect>
-                </property>
-                <property name="maxValue">
-                    <number>100</number>
-                </property>
-                <property name="minValue">
-                    <number>1</number>
-                </property>
-            </widget>
+                <widget class="QSpinBox" row="0" column="0">
+                    <property name="name">
+                        <cstring>daysSpinBox</cstring>
+                    </property>
+                    <property name="maxValue">
+                        <number>100</number>
+                    </property>
+                    <property name="minValue">
+                        <number>1</number>
+                    </property>
+                </widget>
+            </grid>
         </widget>
     </grid>
 </widget>
@@ -285,9 +282,6 @@
     <tabstop>okPushButton</tabstop>
     <tabstop>cancelPushButton</tabstop>
 </tabstops>
-<includes>
-    <include location="local" impldecl="in implementation">daysform_template.ui.h</include>
-</includes>
 <slots>
     <slot>daysChanged()</slot>
     <slot>ok()</slot>

@@ -19,14 +19,24 @@
 #include "addconstraintteacherssubjecttagmaxhourscontinuouslyform.h"
 #include "modifyconstraintteacherssubjecttagmaxhourscontinuouslyform.h"
 
+#include <QDesktopWidget>
+
 ConstraintTeachersSubjectTagMaxHoursContinuouslyForm::ConstraintTeachersSubjectTagMaxHoursContinuouslyForm()
 {
-	this->visibleConstraintsList.setAutoDelete(false);
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	this->filterChanged();
 	
 	subjectTagsComboBox->insertItem("");
-	for(SubjectTag* s=gt.rules.subjectTagsList.first(); s; s=gt.rules.subjectTagsList.next())
+	for(int i=0; i<gt.rules.subjectTagsList.size(); i++){
+		SubjectTag* s=gt.rules.subjectTagsList[i];
 		subjectTagsComboBox->insertItem(s->name);
+	}
 }
 
 ConstraintTeachersSubjectTagMaxHoursContinuouslyForm::~ConstraintTeachersSubjectTagMaxHoursContinuouslyForm()
@@ -47,18 +57,20 @@ void ConstraintTeachersSubjectTagMaxHoursContinuouslyForm::filterChanged()
 {
 	this->visibleConstraintsList.clear();
 	constraintsListBox->clear();
-	for(TimeConstraint* ctr=gt.rules.timeConstraintsList.first(); ctr; ctr=gt.rules.timeConstraintsList.next())
+	for(int i=0; i<gt.rules.timeConstraintsList.size(); i++){
+		TimeConstraint* ctr=gt.rules.timeConstraintsList[i];
 		if(filterOk(ctr)){
 			visibleConstraintsList.append(ctr);
 			constraintsListBox->insertItem(ctr->getDescription(gt.rules));
 		}
+	}
 }
 
 void ConstraintTeachersSubjectTagMaxHoursContinuouslyForm::constraintChanged(int index)
 {
 	if(index<0)
 		return;
-	assert((uint)(index)<this->visibleConstraintsList.count());
+	assert(index<this->visibleConstraintsList.size());
 	TimeConstraint* ctr=this->visibleConstraintsList.at(index);
 	assert(ctr!=NULL);
 	currentConstraintTextEdit->setText(ctr->getDetailedDescription(gt.rules));
@@ -66,8 +78,8 @@ void ConstraintTeachersSubjectTagMaxHoursContinuouslyForm::constraintChanged(int
 
 void ConstraintTeachersSubjectTagMaxHoursContinuouslyForm::addConstraint()
 {
-	AddConstraintTeachersSubjectTagMaxHoursContinuouslyForm *addConstraintTeachersSubjectTagMaxHoursContinuouslyForm=new AddConstraintTeachersSubjectTagMaxHoursContinuouslyForm();
-	addConstraintTeachersSubjectTagMaxHoursContinuouslyForm->exec();
+	AddConstraintTeachersSubjectTagMaxHoursContinuouslyForm *form=new AddConstraintTeachersSubjectTagMaxHoursContinuouslyForm();
+	form->exec();
 
 	filterChanged();
 	
@@ -83,9 +95,9 @@ void ConstraintTeachersSubjectTagMaxHoursContinuouslyForm::modifyConstraint()
 	}
 	TimeConstraint* ctr=this->visibleConstraintsList.at(i);
 
-	ModifyConstraintTeachersSubjectTagMaxHoursContinuouslyForm *modifyConstraintTeachersSubjectTagMaxHoursContinuouslyForm
+	ModifyConstraintTeachersSubjectTagMaxHoursContinuouslyForm *form
 	 = new ModifyConstraintTeachersSubjectTagMaxHoursContinuouslyForm((ConstraintTeachersSubjectTagMaxHoursContinuously*)ctr);
-	modifyConstraintTeachersSubjectTagMaxHoursContinuouslyForm->exec();
+	form->exec();
 
 	filterChanged();
 	constraintsListBox->setCurrentItem(i);

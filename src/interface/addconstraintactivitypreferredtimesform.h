@@ -24,15 +24,17 @@
 #include "fet.h"
 #include "fetmainform.h"
 
-#include <qcombobox.h>
+#include <q3combobox.h>
 #include <qmessagebox.h>
-#include <qgroupbox.h>
+#include <q3groupbox.h>
 #include <qspinbox.h>
 #include <qcheckbox.h>
 #include <qpushbutton.h>
 #include <qlineedit.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qpoint.h>
+
+#include <QList>
 
 class AddConstraintActivityPreferredTimesForm : public AddConstraintActivityPreferredTimesForm_template  {
 public:
@@ -44,6 +46,13 @@ public:
 	void addConstraint();
 	
 	void tableClicked(int, int, int, const QPoint&);
+	
+	bool filterOk(Activity* a);
+	void filterChanged();
+	
+private:
+	//the id's of the activities listed in the activities combo
+	QList<int> activitiesList;
 };
 
 #endif

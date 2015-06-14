@@ -1,4 +1,23 @@
+
+test other selection algorithm:
+ - stochastic universal sampling (work in progress by Volker Dirr)
+
+code better mutation algorithm:
+ - chromosome need "don´t care" flag for "activity prefered time" (work in progress by Volker Dirr)
+
+
+long time goals:
+
+code cover planning (open)
+
+code lesson planning (open)  
+
+
 GENERAL:
+-The population size must somehow be great enough so that the screen will not freeze 
+when allocating (this happens to too little population size). I do not know for sure 
+what this number is. Also, the population size must be greater than 2, so that FET
+does not crash. Implement this minimum number, so that FET does not crash.
 - Change "Equipments" into "Equipment"
 - Check the memory leaks. In Valgrind it shows some leakage, I don't know where from
 - Add translation in other languages
@@ -140,3 +159,117 @@ Also it will be interesting to have some graphical output of the
 simulation of the GA (ex. Constraint violation per evolution step, mean of
 population fitness, etc.)
 
+9----------------------------------------------------------
+From Patrick Fox:
+I was wondering if a discreet Fet graphic in the background of the
+window program, would be better than having nothing when you start the
+software ?
+
+10---------------------------------------------------------
+From Volker Dirr:
+If you think that other people don´t like this default constaint how about
+making a menu "default settings". there you can add "langurage" and my
+defalut wish. maybe there are other parameters, that can be set in this
+settings. i guess that there a people who want set duration to 2 or 4 by
+default.
+
+Add the parameter "always maximaize window" in the "settings"
+
+it would be nice to have something like "time constraints (subjects) - max n hours per day the same subject".
+so compulsory min n days between activities is nearly similar to compulsory max n hours per day the same subject (except subjects with duration 2 and more)
+but non-compulsory min n days between activities is somhing very diffrent then non-compulsory max n hours per day the same subject.
+i look forwad to a option like "non-compulsory max n hours per day the same subject".
+because it isn´t not to bad if it happen (having a lesson twice a day" only a few times.
+
+or do something like "time constraints (activities) - max n activities with same subject per day"
+or "time constraints (activities) - max n (grouped) activities with same subject per day". (but he have to differ between activities and subactivities. is´t nonsens to subactivities, it has just sense with activities.)
+
+11---------------------------------------------------------
+From Jehanzeb Qayyum:
+Your answer to my first question worked but there is a problem, in the 
+time table view (html file) i get the name of the subject repeated 'n' 
+times if the subject takes 'n' slots for a period. Is there anyway i 
+make the subject name appear once for all consecutive slots.
+
+12---------------------------------------------------------
+From Joseph M Fontana:
+
+Yesterday I was doing some testing and I was able to create some
+simple timetables where I could view teachers-with rooms after all the
+allocations had been completed. Before leaving I saved the file where
+I thought all of the information would be kept.
+
+This morning, I wanted to continue testing and I opened the file I
+created the previous day and I went to view teachers-with rooms. To my
+surprise FET asked me to allocate the rooms again (message saying:
+"please allocate the rooms, firstly").
+
+13---------------------------------------------------------
+From Volker Dirr:
+> > so the current "problem" is:
+> > if you allocate a timetable and stop or interrupt allocatation, 
+then
+> > the timetable is saved in /results/.
+> > if you restart allocation now, then the old timetable will be lost,
+> > because the new (maybe more worse timetable, because you allocate
+> > just a second) has the same name, so the old results will be
+> > overwritten.
+> >
+> > i think this is a TODO to ask the user before overwriting the
+> > results or ask for a new name.
+> 
+> I don't think this is necessary, Volker, the files might become too 
+numerous.
+> 
+
+currently we are doing this with untis. we save several timetables and 
+choose the best manualy. we do this, because untis didn´t differ 
+between some constraints.
+for example:
+a timetable with 1 teacher who have 5 gap-times.
+an other timetable have 5 teachers with 1 gap-time per teacher.
+
+so this timetabels are as good as the other, but of course we prefer 
+the second one.
+
+14---------------------------------------------------------
+From Joshua N. Pritikin
+Can we have an option on the "add new activity dialog" to make the 
+preferred day & hour compulsory? Compulsory constraints are MUCH faster 
+to allocate than non-compulsory constraints.
+
+> > On second thought, rather than clutter the "add new activity dialog," a
+> > "lock all" menu item would probably be just as good.
+> 
+> I don't understand. You mean to lock all activities in the current timetable, 
+> like when viewing the timetable?
+
+Yes.
+
+When viewing the timetable, you can only lock the activities you can 
+select on the screen. I'd like the option to lock all activities in the 
+current timetable.
+
+15---------------------------------------------------------
+From fsh_felix
+I hope you can enhance the software with an IMPORT utility to read 
+text files for (in the order of:)
+(a)  Subjects
+(b)  Teachers
+(c)  Class groups and subgroups
+(d)  Equipment, Buildings and Rooms
+(e)  Activities in the form of
+     Subject1
+     Teacher1, Class groups1 or subgroups1, hours of lesson
+     Teacher2, Class groups2 or subgroups2, hours of lesson
+     ...
+     Subject2   
+     Teacher1, Class groups1 or subgroups1, hours of lesson
+     Teacher2, Class groups2 or subgroups2, hours of lesson
+     ...
+
+The above files allow different course timetabling planners to plan 
+and write their requirements in text files or excel files (which can 
+be exported to text files) in a standard format before the scheduler 
+(normally one person) who keys in the requirements in the timetabling 
+software for the different courses to maximize the use of resources.

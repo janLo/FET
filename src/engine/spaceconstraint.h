@@ -27,9 +27,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #include "genetictimetable_defs.h"
 
-#include <qstring.h>
-#include <qptrlist.h>
-#include <qstringlist.h>
+#include <QString>
+#include  <QList>
+#include <QStringList>
 
 class Rules;
 class SpaceChromosome;
@@ -43,7 +43,7 @@ class Equipment;
 class Building;
 class Room;
 
-typedef QPtrList<SpaceConstraint> SpaceConstraintsList;
+typedef QList<SpaceConstraint*> SpaceConstraintsList;
 
 const int CONSTRAINT_GENERIC_SPACE								=1001; //time constraints are beginning from 1
 const int CONSTRAINT_BASIC_COMPULSORY_SPACE						=1002; //space constraints from 1001

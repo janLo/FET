@@ -21,20 +21,22 @@
 #include "fetmainform.h"
 #include "fet.h"
 
-#include <qcombobox.h>
+#include <q3combobox.h>
 #include <qmessagebox.h>
-#include <qgroupbox.h>
+#include <q3groupbox.h>
 #include <qspinbox.h>
 #include <qcheckbox.h>
 #include <qpushbutton.h>
 #include <qlineedit.h>
-#include <qtable.h>
+#include <q3table.h>
 #include <qapplication.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qstring.h>
-#include <qlistbox.h>
+#include <q3listbox.h>
 #include <qlabel.h>
-#include <qtable.h>
+#include <q3table.h>
+
+#include <QDesktopWidget>
 
 extern bool students_schedule_ready;
 extern bool teachers_schedule_ready;
@@ -47,6 +49,13 @@ extern SpaceChromosome best_space_chromosome;
 
 TimetableViewRoomsForm::TimetableViewRoomsForm()
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+	
 	roomsListBox->clear();
 	for(int i=0; i<gt.rules.nInternalRooms; i++)
 		roomsListBox->insertItem(gt.rules.internalRoomsList[i]->name);
@@ -59,7 +68,7 @@ TimetableViewRoomsForm::~TimetableViewRoomsForm()
 
 void TimetableViewRoomsForm::roomChanged(const QString &roomName)
 {
-	if(roomName==NULL)
+	if(roomName==QString::null)
 		return;
 
 	int roomIndex=gt.rules.searchRoom(roomName);
@@ -84,12 +93,14 @@ void TimetableViewRoomsForm::updateRoomsTimetableTable(){
 	roomNameTextLabel->setText(s);
 
 	assert(gt.rules.initialized);
-	roomsTimetableTable->setNumRows(gt.rules.nHoursPerDay+1);
-	roomsTimetableTable->setNumCols(gt.rules.nDaysPerWeek+1);
+	roomsTimetableTable->setNumRows(gt.rules.nHoursPerDay);
+	roomsTimetableTable->setNumCols(gt.rules.nDaysPerWeek);
 	for(int j=0; j<gt.rules.nDaysPerWeek; j++)
-		roomsTimetableTable->setText(0, j+1, gt.rules.daysOfTheWeek[j]);
+		//roomsTimetableTable->setText(0, j+1, gt.rules.daysOfTheWeek[j]);
+		roomsTimetableTable->horizontalHeader()->setLabel(j, gt.rules.daysOfTheWeek[j]);
 	for(int i=0; i<gt.rules.nHoursPerDay; i++)
-		roomsTimetableTable->setText(i+1, 0, gt.rules.hoursOfTheDay[i]);
+		//roomsTimetableTable->setText(i+1, 0, gt.rules.hoursOfTheDay[i]);
+		roomsTimetableTable->verticalHeader()->setLabel(i, gt.rules.hoursOfTheDay[i]);
 
 	int roomIndex=gt.rules.searchRoom(roomName);
 	assert(roomIndex>=0);
@@ -110,10 +121,10 @@ void TimetableViewRoomsForm::updateRoomsTimetableTable(){
 				assert(act!=NULL);
 				s += "/" + act->subjectName + " " + act->subjectTagName;
 			}
-			roomsTimetableTable->setText(j+1, k+1, s);
+			roomsTimetableTable->setText(j, k, s);
 		}
 	}
-	for(int i=0; i<=gt.rules.nHoursPerDay; i++)
+	for(int i=0; i<gt.rules.nHoursPerDay; i++)
 		roomsTimetableTable->adjustRow(i); //added in version 3_12_20
 }
 
@@ -124,7 +135,7 @@ void TimetableViewRoomsForm::detailActivity(int row, int col){
 	QString s;
 	QString roomName;
 
-	if(roomsListBox->currentText()==NULL)
+	if(roomsListBox->currentText()==QString::null)
 		return;
 
 	roomName = roomsListBox->currentText();
@@ -133,8 +144,8 @@ void TimetableViewRoomsForm::detailActivity(int row, int col){
 
 	int roomIndex=gt.rules.searchRoom(roomName);
 	assert(roomIndex>=0);
-	int j=row-1;
-	int k=col-1;
+	int j=row;
+	int k=col;
 	s = "";
 	if(j>=0 && k>=0){
 		int ai=rooms_timetable_week1[roomIndex][k][j]; //activity index
@@ -181,7 +192,7 @@ void TimetableViewRoomsForm::lock(bool lockTime, bool lockSpace)
 
 	//find room index
 	QString roomName;
-	if(roomsListBox->currentText()==NULL)
+	if(roomsListBox->currentText()==QString::null)
 		return;
 	roomName = roomsListBox->currentText();
 	int i=gt.rules.searchRoom(roomName);
@@ -193,7 +204,7 @@ void TimetableViewRoomsForm::lock(bool lockTime, bool lockSpace)
 	//lock selected activities
 	for(int j=0; j<gt.rules.nHoursPerDay; j++){
 		for(int k=0; k<gt.rules.nDaysPerWeek; k++){
-			if(roomsTimetableTable->isSelected(j+1, k+1)){
+			if(roomsTimetableTable->isSelected(j, k)){
 				int ai=rooms_timetable_week1[i][k][j];
 				if(ai!=UNALLOCATED_ACTIVITY){
 					int time=tc->times[ai];
@@ -241,7 +252,7 @@ void TimetableViewRoomsForm::lock(bool lockTime, bool lockSpace)
 						bool t=gt.rules.addTimeConstraint(ctr);
 						if(t)
 							QMessageBox::information(this, QObject::tr("FET information"), 
-							 QObject::tr("Added the following constraint:\n"+ctr->getDetailedDescription(gt.rules)));
+							 QObject::tr("Added the following constraint:\n%1").arg(ctr->getDetailedDescription(gt.rules)));
 						else{
 							QMessageBox::warning(this, QObject::tr("FET information"), 
 							 QObject::tr("Constraint\n%1 NOT added - duplicate").arg(ctr->getDetailedDescription(gt.rules)));
@@ -255,7 +266,7 @@ void TimetableViewRoomsForm::lock(bool lockTime, bool lockSpace)
 						bool t=gt.rules.addSpaceConstraint(ctr);
 						if(t)
 							QMessageBox::information(this, QObject::tr("FET information"), 
-							 QObject::tr("Added the following constraint:\n"+ctr->getDetailedDescription(gt.rules)));
+							 QObject::tr("Added the following constraint:\n%1").arg(ctr->getDetailedDescription(gt.rules)));
 						else{
 							QMessageBox::warning(this, QObject::tr("FET information"), 
 							 QObject::tr("Constraint\n%1 NOT added - duplicate").arg(ctr->getDetailedDescription(gt.rules)));

@@ -236,11 +236,13 @@ int ConstraintBasicCompulsorySpace::fitness(
 
 	//This constraint fitness calculation routine is called firstly,
 	//so we can compute the rooms conflicts faster this way.
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.spaceChangedForMatrixCalculation){
 		roomsConflicts = c.getRoomsMatrix(r, days, hours, roomsMatrix);
 
 		crt_chrom = &c;
 		crt_rules = &r;
+		
+		c.spaceChangedForMatrixCalculation=false;
 	}
 	else{
 		assert(rooms_conflicts>=0);
@@ -278,7 +280,7 @@ int ConstraintBasicCompulsorySpace::fitness(
 			}
 
 		//Below, for rooms, please remember that 2 means a weekly activity
-		//and 1 bi-weekly one. So, is the matrix roomsMatrix[rooms][day][hour]==2,
+		//and 1 fortnightly one. So, is the matrix roomsMatrix[rooms][day][hour]==2,
 		//it is ok.
 
 		//Calculates the number of rooms exhaustion (when a room is occupied
@@ -349,7 +351,7 @@ int ConstraintBasicCompulsorySpace::fitness(
 			}
 
 		//Below, for rooms, please remember that 2 means a weekly activity
-		//and 1 bi-weekly one. So, is the matrix roomsMatrix[rooms][day][hour]==2,
+		//and 1 fortnightly one. So, is the matrix roomsMatrix[rooms][day][hour]==2,
 		//it is ok.
 
 		//Calculates the number of rooms exhaustion (when a room is occupied
@@ -373,8 +375,8 @@ int ConstraintBasicCompulsorySpace::fitness(
 					}
 				}
 	}
-	if(roomsConflicts!=-1)
-		assert(nre==roomsConflicts); //just a check, works only on logged fitness calculation
+	/*if(roomsConflicts!=-1)
+		assert(nre==roomsConflicts);*/ //just a check, works only on logged fitness calculation
 
 	return int (ceil ( weight * (unallocated + nre + nor) ) ); //fitness factor
 }
@@ -519,11 +521,13 @@ int ConstraintRoomNotAvailable::fitness(
 	QString* conflictsString)
 {
 	//if the matrices roomsMatrix is already calculated, do not calculate it again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.spaceChangedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, days, hours, roomsMatrix);
 
 		crt_chrom = &c;
 		crt_rules = &r;
+		
+		c.spaceChangedForMatrixCalculation=false;
 	}
 
 	//Calculates the number of hours when the roomr is supposed to be occupied,
@@ -741,11 +745,13 @@ int ConstraintRoomTypeNotAllowedSubjects::fitness(
 	QString* conflictsString)
 {
 	//if the matrix roomsMatrix is already calculated, do not calculate it again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.spaceChangedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, days, hours, roomsMatrix);
 
 		crt_chrom = &c;
 		crt_rules = &r;
+		
+		c.spaceChangedForMatrixCalculation=false;
 	}
 
 	//Calculates the number of conflicts - the type of the room
@@ -986,11 +992,13 @@ int ConstraintSubjectRequiresEquipments::fitness(
 	QString* conflictsString)
 {
 	//if the matrix roomsMatrix is already calculated, do not calculate it again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.spaceChangedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, days, hours, roomsMatrix);
 
 		crt_chrom = &c;
 		crt_rules = &r;
+		
+		c.spaceChangedForMatrixCalculation=false;
 	}
 
 	//Calculates the number of conflicts.
@@ -1249,11 +1257,13 @@ int ConstraintSubjectSubjectTagRequireEquipments::fitness(
 	QString* conflictsString)
 {
 	//if the matrix roomsMatrix is already calculated, do not calculate it again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.spaceChangedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, days, hours, roomsMatrix);
 
 		crt_chrom = &c;
 		crt_rules = &r;
+		
+		c.spaceChangedForMatrixCalculation=false;
 	}
 
 	//Calculates the number of conflicts.
@@ -1474,11 +1484,13 @@ int ConstraintTeacherRequiresRoom::fitness(
 	QString* conflictsString)
 {
 	//if the matrix roomsMatrix is already calculated, do not calculate it again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.spaceChangedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, days, hours, roomsMatrix);
 
 		crt_chrom = &c;
 		crt_rules = &r;
+		
+		c.spaceChangedForMatrixCalculation=false;
 	}
 
 	//Calculates the number of conflicts
@@ -1693,11 +1705,13 @@ int ConstraintTeacherSubjectRequireRoom::fitness(
 	QString* conflictsString)
 {
 	//if the matrix roomsMatrix is already calculated, do not calculate it again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.spaceChangedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, days, hours, roomsMatrix);
 
 		crt_chrom = &c;
 		crt_rules = &r;
+		
+		c.spaceChangedForMatrixCalculation=false;
 	}
 
 	//Calculates the number of conflicts
@@ -1890,11 +1904,13 @@ int ConstraintMinimizeNumberOfRoomsForStudents::fitness(
 	{
 
 	//if the matrix roomsMatrix is already calculated, do not calculate it again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.spaceChangedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, days, hours, roomsMatrix);
 
 		crt_chrom = &c;
 		crt_rules = &r;
+		
+		c.spaceChangedForMatrixCalculation=false;
 	}
 
 	assert(r.internalStructureComputed);
@@ -2115,11 +2131,13 @@ int ConstraintMinimizeNumberOfRoomsForTeachers::fitness(
 	{
 
 	//if the matrix roomsMatrix is already calculated, do not calculate it again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.spaceChangedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, days, hours, roomsMatrix);
 
 		crt_chrom = &c;
 		crt_rules = &r;
+		
+		c.spaceChangedForMatrixCalculation=false;
 	}
 
 	assert(r.internalStructureComputed);
@@ -2368,11 +2386,13 @@ int ConstraintActivityPreferredRoom::fitness(
 	QString* conflictsString)
 {
 	//if the matrix roomsMatrix is already calculated, do not calculate it again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.spaceChangedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, days, hours, roomsMatrix);
 
 		crt_chrom = &c;
 		crt_rules = &r;
+		
+		c.spaceChangedForMatrixCalculation=false;
 	}
 
 	//Calculates the number of conflicts
@@ -2492,7 +2512,7 @@ ConstraintActivityPreferredRooms::ConstraintActivityPreferredRooms(double w, boo
 	this->type=CONSTRAINT_ACTIVITY_PREFERRED_ROOMS;
 	this->activityId=aid;
 	this->roomsNames=roomsList;
-	assert(roomsList.count()<=(uint)MAX_CONSTRAINT_ACTIVITY_PREFERRED_ROOMS);
+	assert(roomsList.size()<=MAX_CONSTRAINT_ACTIVITY_PREFERRED_ROOMS);
 }
 
 bool ConstraintActivityPreferredRooms::computeInternalStructure(Rules& r)
@@ -2581,11 +2601,13 @@ int ConstraintActivityPreferredRooms::fitness(
 	QString* conflictsString)
 {
 	//if the matrix roomsMatrix is already calculated, do not calculate it again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.spaceChangedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, days, hours, roomsMatrix);
 
 		crt_chrom = &c;
 		crt_rules = &r;
+		
+		c.spaceChangedForMatrixCalculation=false;
 	}
 
 	//Calculates the number of conflicts
@@ -2756,10 +2778,11 @@ void ConstraintActivitiesSameRoom::removeUseless(Rules& r)
 		this->_activities[i]=-1;
 
 	for(int i=0; i<this->n_activities; i++){
-		Activity* act;
-		for(act=r.activitiesList.first(); act; act=r.activitiesList.next())
+		for(int k=0; k<r.activitiesList.size(); k++){
+			Activity* act=r.activitiesList[k];
 			if(act->id==this->activitiesId[i])
 				this->_activities[i]=act->id;
+		}
 	}
 
 	int i, j;
@@ -2829,11 +2852,13 @@ int ConstraintActivitiesSameRoom::fitness(
 	assert(r.internalStructureComputed);
 
 	//if the matrices roomsMatrix is already calculated, do not calculate it again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.spaceChangedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, days, hours, roomsMatrix);
 
 		crt_chrom = &c;
 		crt_rules = &r;
+		
+		c.spaceChangedForMatrixCalculation=false;
 	}
 
 	int nbroken;
@@ -3064,11 +3089,13 @@ int ConstraintSubjectSubjectTagPreferredRoom::fitness(
 	QString* conflictsString)
 {
 	//if the matrix roomsMatrix is already calculated, do not calculate it again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.spaceChangedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, days, hours, roomsMatrix);
 
 		crt_chrom = &c;
 		crt_rules = &r;
+		
+		c.spaceChangedForMatrixCalculation=false;
 	}
 
 	//Calculates the number of conflicts.
@@ -3209,7 +3236,7 @@ ConstraintSubjectSubjectTagPreferredRooms::ConstraintSubjectSubjectTagPreferredR
 	this->subjectName=subj;
 	this->subjectTagName=subt;
 	this->roomsNames=rms;
-	assert(rms.count()<=(uint)MAX_CONSTRAINT_SUBJECT_SUBJECT_TAG_PREFERRED_ROOMS);
+	assert(rms.size()<=MAX_CONSTRAINT_SUBJECT_SUBJECT_TAG_PREFERRED_ROOMS);
 }
 
 bool ConstraintSubjectSubjectTagPreferredRooms::computeInternalStructure(Rules& r)
@@ -3300,11 +3327,13 @@ int ConstraintSubjectSubjectTagPreferredRooms::fitness(
 	QString* conflictsString)
 {
 	//if the matrix roomsMatrix is already calculated, do not calculate it again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.spaceChangedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, days, hours, roomsMatrix);
 
 		crt_chrom = &c;
 		crt_rules = &r;
+		
+		c.spaceChangedForMatrixCalculation=false;
 	}
 
 	//Calculates the number of conflicts.
@@ -3525,11 +3554,13 @@ int ConstraintSubjectPreferredRoom::fitness(
 	QString* conflictsString)
 {
 	//if the matrix roomsMatrix is already calculated, do not calculate it again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.spaceChangedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, days, hours, roomsMatrix);
 
 		crt_chrom = &c;
 		crt_rules = &r;
+		
+		c.spaceChangedForMatrixCalculation=false;
 	}
 
 	//Calculates the number of conflicts.
@@ -3670,7 +3701,7 @@ ConstraintSubjectPreferredRooms::ConstraintSubjectPreferredRooms(double w, bool 
 	this->type=CONSTRAINT_SUBJECT_PREFERRED_ROOMS;
 	this->subjectName=subj;
 	this->roomsNames=rms;
-	assert(rms.count()<=(uint)MAX_CONSTRAINT_SUBJECT_PREFERRED_ROOMS);
+	assert(rms.size()<=MAX_CONSTRAINT_SUBJECT_PREFERRED_ROOMS);
 }
 
 bool ConstraintSubjectPreferredRooms::computeInternalStructure(Rules& r)
@@ -3757,11 +3788,13 @@ int ConstraintSubjectPreferredRooms::fitness(
 	QString* conflictsString)
 {
 	//if the matrix roomsMatrix is already calculated, do not calculate it again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.spaceChangedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, days, hours, roomsMatrix);
 
 		crt_chrom = &c;
 		crt_rules = &r;
+		
+		c.spaceChangedForMatrixCalculation=false;
 	}
 
 	//Calculates the number of conflicts.
@@ -3979,11 +4012,13 @@ int ConstraintMaxBuildingChangesPerDayForTeachers::fitness(
 	int nbroken=0;
 
 	//if the matrix roomsMatrix is already calculated, do not calculate it again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.spaceChangedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, days, hours, roomsMatrix);
 
 		crt_chrom = &c;
 		crt_rules = &r;
+		
+		c.spaceChangedForMatrixCalculation=false;
 	}
 	
 	if(crt_chrom_2!=&c){
@@ -4205,11 +4240,13 @@ int ConstraintMaxBuildingChangesPerDayForStudents::fitness(
 	int nbroken=0;
 
 	//if the matrix roomsMatrix is already calculated, do not calculate it again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.spaceChangedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, days, hours, roomsMatrix);
 
 		crt_chrom = &c;
 		crt_rules = &r;
+		
+		c.spaceChangedForMatrixCalculation=false;
 	}
 	
 	if(crt_chrom_3!=&c){
@@ -4431,11 +4468,13 @@ int ConstraintMaxRoomChangesPerDayForTeachers::fitness(
 	int nbroken=0;
 
 	//if the matrix roomsMatrix is already calculated, do not calculate it again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.spaceChangedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, days, hours, roomsMatrix);
 
 		crt_chrom = &c;
 		crt_rules = &r;
+		
+		c.spaceChangedForMatrixCalculation=false;
 	}
 	
 	if(crt_chrom_2!=&c){
@@ -4653,11 +4692,13 @@ int ConstraintMaxRoomChangesPerDayForStudents::fitness(
 	int nbroken=0;
 
 	//if the matrix roomsMatrix is already calculated, do not calculate it again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || rooms_conflicts<0 || c.spaceChangedForMatrixCalculation){
 		rooms_conflicts = c.getRoomsMatrix(r, days, hours, roomsMatrix);
 
 		crt_chrom = &c;
 		crt_rules = &r;
+		
+		c.spaceChangedForMatrixCalculation=false;
 	}
 	
 	if(crt_chrom_3!=&c){

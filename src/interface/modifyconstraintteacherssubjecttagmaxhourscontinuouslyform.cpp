@@ -18,6 +18,8 @@
 #include "modifyconstraintteacherssubjecttagmaxhourscontinuouslyform.h"
 #include "timeconstraint.h"
 
+#include <QDesktopWidget>
+
 #include <qradiobutton.h>
 #include <qlabel.h>
 #include <qlineedit.h>
@@ -26,13 +28,21 @@
 
 ModifyConstraintTeachersSubjectTagMaxHoursContinuouslyForm::ModifyConstraintTeachersSubjectTagMaxHoursContinuouslyForm(ConstraintTeachersSubjectTagMaxHoursContinuously* ctr)
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	this->_ctr=ctr;
 	
 	compulsoryCheckBox->setChecked(ctr->compulsory);
 	weightLineEdit->setText(QString::number(ctr->weight));
 	
 	int i=0, j=-1;
-	for(SubjectTag* s=gt.rules.subjectTagsList.first(); s; s=gt.rules.subjectTagsList.next()){
+	for(int k=0; k<gt.rules.subjectTagsList.size(); k++){
+		SubjectTag* s=gt.rules.subjectTagsList[k];
 		subjectTagsComboBox->insertItem(s->name);
 		if(s->name==ctr->subjectTagName)
 			j=i;

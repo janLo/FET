@@ -19,16 +19,27 @@
 #include "fetmainform.h"
 #include "studentsset.h"
 
-#include <qlistbox.h>
+#include <q3listbox.h>
 #include <qinputdialog.h>
 #include <qstring.h>
+
+#include <QDesktopWidget>
 
 GroupsForm::GroupsForm()
  : GroupsForm_template()
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	yearsListBox->clear();
-	for(StudentsYear* year=gt.rules.yearsList.first(); year; year=gt.rules.yearsList.next())
+	for(int i=0; i<gt.rules.yearsList.size(); i++){
+		StudentsYear* year=gt.rules.yearsList[i];
 		yearsListBox->insertItem(year->name);
+	}
 
 	yearChanged(yearsListBox->currentText());
 }
@@ -48,9 +59,9 @@ void GroupsForm::addGroup()
 	int yearIndex=gt.rules.searchYear(yearName);
 	assert(yearIndex>=0);
 
-	AddStudentsGroupForm* addStudentsGroupForm=new AddStudentsGroupForm();
-	addStudentsGroupForm->yearNameLineEdit->setText(yearName);
-	addStudentsGroupForm->exec();
+	AddStudentsGroupForm* form=new AddStudentsGroupForm();
+	form->yearNameLineEdit->setText(yearName);
+	form->exec();
 
 	yearChanged(yearsListBox->currentText());
 }
@@ -93,15 +104,21 @@ void GroupsForm::removeGroup()
 void GroupsForm::yearChanged(const QString &yearName)
 {
 	int yearIndex=gt.rules.searchYear(yearName);
-	if(yearIndex<0)
-		return;
+	if(yearIndex<0){
+		if(gt.rules.yearsList.size()>0){
+			yearIndex=0;
+		}
+		else
+			return;
+	}
 
 	groupsListBox->clear();
 
 	StudentsYear* sty=gt.rules.yearsList.at(yearIndex);
-	StudentsGroup* stg;
-	for(stg=sty->groupsList.first(); stg; stg=sty->groupsList.next())
+	for(int i=0; i<sty->groupsList.size(); i++){
+		StudentsGroup* stg=sty->groupsList[i];
 		groupsListBox->insertItem(stg->name);
+	}
 }
 
 void GroupsForm::groupChanged(const QString &groupName)
@@ -151,8 +168,8 @@ void GroupsForm::modifyGroup()
 
 	int numberOfStudents=gt.rules.searchStudentsSet(groupName)->numberOfStudents;
 	
-	ModifyStudentsGroupForm* modifyStudentsGroupForm=new ModifyStudentsGroupForm(yearName, groupName, numberOfStudents);
-	modifyStudentsGroupForm->exec();
+	ModifyStudentsGroupForm* form=new ModifyStudentsGroupForm(yearName, groupName, numberOfStudents);
+	form->exec();
 
 	yearChanged(yearsListBox->currentText());
 	

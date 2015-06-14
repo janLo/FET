@@ -43,7 +43,9 @@ Activity::Activity(
 	int _duration,
 	int _totalDuration,
 	int _parity,
-	bool _active)
+	bool _active,
+	bool _computeNTotalStudents,
+	int _nTotalStudents)
 {
 	this->id=_id;
 	this->activityGroupId=_activityGroupId;
@@ -55,11 +57,18 @@ Activity::Activity(
 	this->totalDuration=_totalDuration;
 	this->parity=_parity;
 	this->active=_active;
-
-	this->nTotalStudents=0;
-	for(QStringList::Iterator it=this->studentsNames.begin(); it!=this->studentsNames.end(); it++){
-		StudentsSet* ss=r.searchStudentsSet(*it);
-		this->nTotalStudents += ss->numberOfStudents;
+	this->computeNTotalStudents=_computeNTotalStudents;
+	
+	if(_computeNTotalStudents==true){	
+		this->nTotalStudents=0;
+		for(QStringList::Iterator it=this->studentsNames.begin(); it!=this->studentsNames.end(); it++){
+			StudentsSet* ss=r.searchStudentsSet(*it);
+			this->nTotalStudents += ss->numberOfStudents;
+		}
+	}
+	else{
+		assert(_nTotalStudents>=0);
+		this->nTotalStudents=_nTotalStudents;
 	}
 }
 
@@ -106,16 +115,36 @@ bool Activity::searchStudents(const QString& studentsName)
 	return this->studentsNames.find(studentsName)!=this->studentsNames.end();
 }
 
-void Activity::removeStudents(const QString& studentsName)
+void Activity::removeStudents(Rules& r, const QString& studentsName, int nStudents)
 {
-	this->studentsNames.remove(studentsName);
+	int t=this->studentsNames.remove(studentsName);
+
+	if(t>0 && this->computeNTotalStudents==true){
+		/*StudentsSet* s=r.searchStudentsSet(studentsName);
+		assert(s!=NULL);
+		this->nTotalStudents-=s->numberOfStudents;*/
+		this->nTotalStudents-=nStudents;
+		assert(this->nTotalStudents>=0);
+	}
 }
 
-void Activity::renameStudents(const QString& initialStudentsName, const QString& finalStudentsName)
+void Activity::renameStudents(Rules& r, const QString& initialStudentsName, const QString& finalStudentsName)
 {
 	int t=0;
 	for(QStringList::iterator it=this->studentsNames.begin(); it!=this->studentsNames.end(); it++)
 		if((*it)==initialStudentsName){
+			/*if(this->computeNTotalStudents==true){
+				StudentsSet* s=r.searchStudentsSet(initialStudentsName);
+				assert(s!=NULL);
+				this->nTotalStudents-=s->numberOfStudents;
+				
+				StudentsSet* s2=r.searchStudentsSet(finalStudentsName);
+				assert(s2!=NULL);
+				this->nTotalStudents+=s2->numberOfStudents;
+				
+				assert(this->nTotalStudents>=0);
+			}*/
+		
 			*it=finalStudentsName;
 			t++;
 		}
@@ -174,7 +203,8 @@ void Activity::computeInternalStructure(Rules& r)
 		}
 		else if(ss->type==STUDENTS_GROUP){
 			StudentsGroup* stg=(StudentsGroup*)ss;
-			for(StudentsSubgroup* sts=stg->subgroupsList.first(); sts; sts=stg->subgroupsList.next()){
+			for(int k=0; k<stg->subgroupsList.size(); k++){
+				StudentsSubgroup* sts=stg->subgroupsList[k];
 				int tmp;
 				for(tmp=0; tmp<=r.nInternalSubgroups; tmp++)
 					if(r.internalSubgroupsList[tmp]->name == sts->name)
@@ -198,8 +228,10 @@ void Activity::computeInternalStructure(Rules& r)
 		}
 		else if(ss->type==STUDENTS_YEAR){
 			StudentsYear* sty=(StudentsYear*)ss;
-			for(StudentsGroup* stg=sty->groupsList.first(); stg; stg=sty->groupsList.next()){
-				for(StudentsSubgroup* sts=stg->subgroupsList.first(); sts; sts=stg->subgroupsList.next()){
+			for(int k=0; k<sty->groupsList.size(); k++){
+				StudentsGroup* stg=sty->groupsList[k];
+				for(int l=0; l<stg->subgroupsList.size(); l++){
+					StudentsSubgroup* sts=stg->subgroupsList[l];
 					int tmp;
 					for(tmp=0; tmp<=r.nInternalSubgroups; tmp++)
 						if(r.internalSubgroupsList[tmp]->name == sts->name)
@@ -246,8 +278,8 @@ QString Activity::getXmlDescription(Rules& r)
 	if(this->parity==PARITY_WEEKLY)
 		s+="	<Weekly></Weekly>\n";
 	else{
-		assert(this->parity==PARITY_BIWEEKLY);
-		s+="	<Biweekly></Biweekly>\n";
+		assert(this->parity==PARITY_FORTNIGHTLY);
+		s+="	<Fortnightly></Fortnightly>\n";
 	}
 	if(this->active==true)
 		s+="	<Active>yes</Active>\n";
@@ -255,6 +287,9 @@ QString Activity::getXmlDescription(Rules& r)
 		s+="	<Active>no</Active>\n";
 	for(QStringList::Iterator it=this->studentsNames.begin(); it!=this->studentsNames.end(); it++)
 		s+="	<Students>" + protect(*it) + "</Students>\n";
+
+	if(this->computeNTotalStudents==false)
+		s+="	<Number_Of_Students>"+QString::number(this->nTotalStudents)+"</Number_Of_Students>\n";
 
 	s+="</Activity>";
 
@@ -289,13 +324,16 @@ QString Activity::getDescription(Rules& r)
 	if(this->isSplit())
 		s += QObject::tr("TD:") + QString::number(this->totalDuration) + ", ";
 
-	if(this->parity==PARITY_BIWEEKLY)
-		s+=QObject::tr("Bi-weekly, ");
+	if(this->parity==PARITY_FORTNIGHTLY)
+		s+=QObject::tr("Fortnightly, ");
 		
 	if(this->active==true)
-		s+=QObject::tr("A: yes");
+		s+=QObject::tr("A: yes")+", ";
 	else
-		s+=QObject::tr("A: no");
+		s+=QObject::tr("A: no")+", ";
+		
+	if(this->computeNTotalStudents==false)
+		s+=QObject::tr("NSt:")+QString::number(this->nTotalStudents);
 
 	return s;
 }
@@ -323,8 +361,8 @@ QString Activity::getDetailedDescription(Rules &r)
 	if(this->isSplit())
 		s += QObject::tr("Total duration=") + QString::number(this->totalDuration) + "\n";
 
-	if(this->parity==PARITY_BIWEEKLY)
-		s+=QObject::tr("Bi-weekly activity\n");
+	if(this->parity==PARITY_FORTNIGHTLY)
+		s+=QObject::tr("Fortnightly activity\n");
 	else
 		s+=QObject::tr("Weekly activity\n");
 		
@@ -333,13 +371,19 @@ QString Activity::getDetailedDescription(Rules &r)
 	else
 		s+=QObject::tr("Active: no\n");
 		
-	int nStud=0;
-	for(QStringList::Iterator it=this->studentsNames.begin(); it!=this->studentsNames.end(); it++){
-		StudentsSet* ss=r.searchStudentsSet(*it);
-		nStud += ss->numberOfStudents;
+	if(this->computeNTotalStudents==true){
+		int nStud=0;
+		for(QStringList::Iterator it=this->studentsNames.begin(); it!=this->studentsNames.end(); it++){
+			StudentsSet* ss=r.searchStudentsSet(*it);
+			nStud += ss->numberOfStudents;
+		}
+		s+=QObject::tr("Total number of students=%1").arg(nStud);
+		s+="\n";
 	}
-	s+=QObject::tr("Total number of students=%1").arg(this->nTotalStudents);
-	s+="\n";
+	else{
+		s+=QObject::tr("Total number of students=%1").arg(this->nTotalStudents);
+		s+="\n";
+	}
 
 	return s;
 }
@@ -351,7 +395,8 @@ QString Activity::getDetailedDescriptionWithConstraints(Rules &r)
 	s+="--------------------------------------------------\n";
 	s+=QObject::tr("Time constraints directly related to this activity:");
 	s+="\n";
-	for(TimeConstraint* c=r.timeConstraintsList.first(); c; c=r.timeConstraintsList.next()){
+	for(int i=0; i<r.timeConstraintsList.size(); i++){
+		TimeConstraint* c=r.timeConstraintsList[i];
 		if(c->isRelatedToActivity(this)){
 			s+="\n";
 			s+=c->getDetailedDescription(r);
@@ -361,7 +406,8 @@ QString Activity::getDetailedDescriptionWithConstraints(Rules &r)
 	s+="--------------------------------------------------\n";
 	s+=QObject::tr("Space constraints directly related to this activity:");
 	s+="\n";
-	for(SpaceConstraint* c=r.spaceConstraintsList.first(); c; c=r.spaceConstraintsList.next()){
+	for(int i=0; i<r.spaceConstraintsList.size(); i++){
+		SpaceConstraint* c=r.spaceConstraintsList[i];
 		if(c->isRelatedToActivity(this)){
 			s+="\n";
 			s+=c->getDetailedDescription(r);

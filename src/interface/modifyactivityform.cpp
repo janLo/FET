@@ -23,6 +23,8 @@
 #include <qlabel.h>
 #include <qtabwidget.h>
 
+#include <QDesktopWidget>
+
 #define subTab(i)	subactivitiesTabWidget->page(i)
 #define par(i)		(i==0?parity1CheckBox:			\
 			(i==1?parity2CheckBox:					\
@@ -51,11 +53,20 @@
 
 ModifyActivityForm::ModifyActivityForm(int id, int activityGroupId)
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	this->_id=id;
 	this->_activityGroupId=activityGroupId;
-	for(Activity* act=gt.rules.activitiesList.first(); act; act=gt.rules.activitiesList.next())
+	for(int i=0; i<gt.rules.activitiesList.size(); i++){
+		Activity* act=gt.rules.activitiesList[i];
 		if(act->activityGroupId==this->_activityGroupId && act->id==this->_id)
 			this->_activity=act;
+	}
 			
 	this->_teachers=this->_activity->teachersNames;
 	this->_subject = this->_activity->subjectName;
@@ -66,7 +77,8 @@ ModifyActivityForm::ModifyActivityForm(int id, int activityGroupId)
 	
 	if(this->_activityGroupId!=0){
 		nSplit=0;
-		for(Activity* act=gt.rules.activitiesList.first(); act; act=gt.rules.activitiesList.next())
+		for(int i=0; i<gt.rules.activitiesList.size(); i++){
+			Activity* act=gt.rules.activitiesList[i];
 			if(act->activityGroupId==this->_activityGroupId){
 				if(nSplit>=8){
 					assert(0);
@@ -74,16 +86,17 @@ ModifyActivityForm::ModifyActivityForm(int id, int activityGroupId)
 				else{
 					if(this->_id==act->id)
 						subactivitiesTabWidget->setCurrentPage(nSplit);
-					par(nSplit)->setChecked(act->parity==PARITY_BIWEEKLY);
+					par(nSplit)->setChecked(act->parity==PARITY_FORTNIGHTLY);
 					dur(nSplit)->setValue(act->duration);
 					activ(nSplit)->setChecked(act->active);
 					nSplit++;
 				}
 			}
+		}
 	}
 	else{
 		nSplit=1;
-		par(0)->setChecked(this->_activity->parity==PARITY_BIWEEKLY);
+		par(0)->setChecked(this->_activity->parity==PARITY_FORTNIGHTLY);
 		dur(0)->setValue(this->_activity->duration);
 		activ(0)->setChecked(this->_activity->active);
 	}
@@ -91,6 +104,9 @@ ModifyActivityForm::ModifyActivityForm(int id, int activityGroupId)
 	splitSpinBox->setMinValue(nSplit);
 	splitSpinBox->setMaxValue(nSplit);	
 	splitSpinBox->setValue(nSplit);	
+	
+	if(this->_activity->computeNTotalStudents==false)
+		nStudentsSpinBox->setValue(this->_activity->nTotalStudents);
 	
 	updateStudentsListBox();
 	updateTeachersListBox();
@@ -111,8 +127,10 @@ ModifyActivityForm::~ModifyActivityForm()
 void ModifyActivityForm::updateTeachersListBox()
 {
 	allTeachersListBox->clear();
-	for(Teacher* tch=gt.rules.teachersList.first(); tch; tch=gt.rules.teachersList.next())
+	for(int i=0; i<gt.rules.teachersList.size(); i++){
+		Teacher* tch=gt.rules.teachersList[i];
 		allTeachersListBox->insertItem(tch->name);
+	}
 		
 	selectedTeachersListBox->clear();
 	for(QStringList::Iterator it=this->_teachers.begin(); it!=this->_teachers.end(); it++)
@@ -125,7 +143,8 @@ void ModifyActivityForm::updateSubjectsComboBox()
 {
 	int i=0, j=-1;
 	subjectsComboBox->clear();
-	for(Subject* sbj=gt.rules.subjectsList.first(); sbj; sbj=gt.rules.subjectsList.next(), i++){
+	for(int k=0; k<gt.rules.subjectsList.size(); k++, i++){
+		Subject* sbj=gt.rules.subjectsList[k];
 		subjectsComboBox->insertItem(sbj->name);
 		if(sbj->name==this->_subject)
 			j=i;
@@ -144,7 +163,8 @@ void ModifyActivityForm::updateSubjectTagsComboBox()
 	if(this->_subjectTag=="")
 		j=i;
 	i++;
-	for(SubjectTag* sbt=gt.rules.subjectTagsList.first(); sbt; sbt=gt.rules.subjectTagsList.next(), i++){
+	for(int k=0; k<gt.rules.subjectTagsList.size(); k++, i++){
+		SubjectTag* sbt=gt.rules.subjectTagsList[k];
 		subjectTagsComboBox->insertItem(sbt->name);
 		if(sbt->name==this->_subjectTag)
 			j=i;
@@ -158,12 +178,16 @@ void ModifyActivityForm::updateSubjectTagsComboBox()
 void ModifyActivityForm::updateStudentsListBox()
 {
 	allStudentsListBox->clear();
-	for(StudentsYear* sty=gt.rules.yearsList.first(); sty; sty=gt.rules.yearsList.next()){
+	for(int i=0; i<gt.rules.yearsList.size(); i++){
+		StudentsYear* sty=gt.rules.yearsList[i];
 		allStudentsListBox->insertItem(sty->name);
-		for(StudentsGroup* stg=sty->groupsList.first(); stg; stg=sty->groupsList.next()){
+		for(int j=0; j<sty->groupsList.size(); j++){
+			StudentsGroup* stg=sty->groupsList[j];
 			allStudentsListBox->insertItem(stg->name);
-			for(StudentsSubgroup* sts=stg->subgroupsList.first(); sts; sts=stg->subgroupsList.next())
+			for(int k=0; k<stg->subgroupsList.size(); k++){
+				StudentsSubgroup* sts=stg->subgroupsList[k];
 				allStudentsListBox->insertItem(sts->name);
+			}
 		}
 	}
 	
@@ -247,26 +271,35 @@ void ModifyActivityForm::activityChanged()
 	s+="\n";
 	
 	for(uint i=0; i<selectedTeachersListBox->count(); i++){
-		s+=QObject::tr(QString("Teacher=%1").arg(selectedTeachersListBox->text(i)));
+		s+=QObject::tr("Teacher=%1").arg(selectedTeachersListBox->text(i));
 		s+="\n";
 	}
 
-	s+=QObject::tr(QString("Subject=%1").arg(subjectsComboBox->currentText()));
+	s+=QObject::tr("Subject=%1").arg(subjectsComboBox->currentText());
 	s+="\n";
 	if(subjectTagsComboBox->currentText()!=""){
-		s+=QObject::tr(QString("Subject tag=%1").arg(subjectTagsComboBox->currentText()));
+		s+=QObject::tr("Subject tag=%1").arg(subjectTagsComboBox->currentText());
 		s+="\n";
 	}
 	for(uint i=0; i<selectedStudentsListBox->count(); i++){
-		s+=QObject::tr(QString("Students=%1").arg(selectedStudentsListBox->text(i)));
+		s+=QObject::tr("Students=%1").arg(selectedStudentsListBox->text(i));
 		s+="\n";
+	}
+	
+	if(nStudentsSpinBox->value()==-1){
+		s+=QObject::tr("Number of students: computed from corresponding students sets");
+		s+="\n";	
+	}
+	else{
+		s+=QObject::tr("Number of students=%1").arg(nStudentsSpinBox->value());
+		s+="\n";	
 	}
 
 	if(splitSpinBox->value()==1){
-		s+=QObject::tr(QString("Duration=%1").arg(dur(0)->value()));
+		s+=QObject::tr("Duration=%1").arg(dur(0)->value());
 		s+="\n";
 		if(par(0)->isChecked()){
-			s+=QObject::tr("Bi-weekly activity");
+			s+=QObject::tr("Fortnightly activity");
 			s+="\n";
 		}
 		
@@ -280,17 +313,17 @@ void ModifyActivityForm::activityChanged()
 		}
 	}
 	else{
-		s+=QObject::tr(QString("This activity will be split into %1 lessons per week").arg(splitSpinBox->value()));
+		s+=QObject::tr("This activity will be split into %1 lessons per week").arg(splitSpinBox->value());
 		s+="\n";
 		s+="\n";
 
 		for(int i=0; i<splitSpinBox->value(); i++){
 			s+=QObject::tr("Componenent %1:").arg(i+1);
 			s+="\n";
-			s+=QObject::tr(QString("Duration=%1").arg(dur(i)->value()));
+			s+=QObject::tr("Duration=%1").arg(dur(i)->value());
 			s+="\n";
 			if(par(i)->isChecked()){
-				s+=QObject::tr("Bi-weekly activity");
+				s+=QObject::tr("Fortnightly activity");
 				s+="\n";
 			}
 			if(activ(i)->isChecked()){
@@ -385,14 +418,22 @@ void ModifyActivityForm::ok()
 		durations[i]=dur(i)->value();
 		parities[i]=PARITY_WEEKLY;
 		if(par(i)->isChecked())
-			parities[i]=PARITY_BIWEEKLY;
+			parities[i]=PARITY_FORTNIGHTLY;
 		active[i]=activ(i)->isChecked();
 
 		totalduration+=durations[i];
 	}
 
-	gt.rules.modifyActivity(this->_id, this->_activityGroupId, teachers_names, subject_name,
-	 subject_tag_name,students_names, total_number_of_students, nsplit, totalduration, durations, parities, active);
+	if(nStudentsSpinBox->value()==-1){
+		gt.rules.modifyActivity(this->_id, this->_activityGroupId, teachers_names, subject_name,
+		 subject_tag_name,students_names, nsplit, totalduration, durations, parities, active,
+		 (nStudentsSpinBox->value()==-1), total_number_of_students);
+	}
+	else{
+		gt.rules.modifyActivity(this->_id, this->_activityGroupId, teachers_names, subject_name,
+		 subject_tag_name,students_names, nsplit, totalduration, durations, parities, active,
+		 (nStudentsSpinBox->value()==-1), nStudentsSpinBox->value());
+	}
 	
 	this->close();
 }

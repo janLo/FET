@@ -158,12 +158,14 @@ int ConstraintBasicCompulsoryTime::fitness(TimeChromosome& c, Rules& r, QString*
 
 	//This constraint fitness calculation routine is called firstly,
 	//so we can compute the teacher and subgroups conflicts faster this way.
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || subgroups_conflicts<0 || teachers_conflicts<0 || c.timeChangedForMatrixCalculation){
 		subgroupsConflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
 		teachersConflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom = &c;
 		crt_rules = &r;
+		
+		c.timeChangedForMatrixCalculation=false;
 	}
 	else{
 		assert(subgroups_conflicts>=0);
@@ -201,7 +203,7 @@ int ConstraintBasicCompulsoryTime::fitness(TimeChromosome& c, Rules& r, QString*
 					if(r.internalActivitiesList[i].parity==PARITY_WEEKLY)
 						tmp=2;
 					else{
-						assert(r.internalActivitiesList[i].parity==PARITY_BIWEEKLY);
+						assert(r.internalActivitiesList[i].parity==PARITY_FORTNIGHTLY);
 						tmp=1;
 					}
 					late += (h+dd-r.nHoursPerDay) * tmp * r.internalActivitiesList[i].nSubgroups;
@@ -213,7 +215,7 @@ int ConstraintBasicCompulsoryTime::fitness(TimeChromosome& c, Rules& r, QString*
 		}
 
 		//Below, for teachers and students, please remember that 2 means a weekly activity
-		//and 1 bi-weekly one. So, if the matrix teachersMatrix[teacher][day][hour]==2, it is ok.
+		//and 1 fortnightly one. So, if the matrix teachersMatrix[teacher][day][hour]==2, it is ok.
 
 		//Calculates the number of teachers exhaustion (when he has to teach more than
 		//one activity at the same time)
@@ -270,7 +272,7 @@ int ConstraintBasicCompulsoryTime::fitness(TimeChromosome& c, Rules& r, QString*
 					if(r.internalActivitiesList[i].parity==PARITY_WEEKLY)
 						tmp=2;
 					else{
-						assert(r.internalActivitiesList[i].parity==PARITY_BIWEEKLY);
+						assert(r.internalActivitiesList[i].parity==PARITY_FORTNIGHTLY);
 						tmp=1;
 					}
 					late += (h+dd-r.nHoursPerDay) * tmp * r.internalActivitiesList[i].nSubgroups;
@@ -293,7 +295,7 @@ int ConstraintBasicCompulsoryTime::fitness(TimeChromosome& c, Rules& r, QString*
 		}
 
 		//Below, for teachers and students, please remember that 2 means a weekly activity
-		//and 1 bi-weekly one. So, if the matrix teachersMatrix[teacher][day][hour]==2,
+		//and 1 fortnightly one. So, if the matrix teachersMatrix[teacher][day][hour]==2,
 		//that is ok.
 
 		//Calculates the number of teachers exhaustion (when he has to teach more than
@@ -344,9 +346,18 @@ int ConstraintBasicCompulsoryTime::fitness(TimeChromosome& c, Rules& r, QString*
 					}
 				}
 	}
+
+	/*if(nte!=teachersConflicts){
+		cout<<"nte=="<<nte<<", teachersConflicts=="<<teachersConflicts<<endl;
+		cout<<c.getTeachersMatrix(r, teachersMatrix)<<endl;
+	}
+	if(nse!=subgroupsConflicts){
+		cout<<"nse=="<<nse<<", subgroupsConflicts=="<<subgroupsConflicts<<endl;
+		cout<<c.getSubgroupsMatrix(r, subgroupsMatrix)<<endl;
+	}*/
 	
-	assert(nte==teachersConflicts); //just a check, works only on logged fitness calculation
-	assert(nse==subgroupsConflicts);
+	/*assert(nte==teachersConflicts); //just a check, works only on logged fitness calculation
+	assert(nse==subgroupsConflicts);*/
 
 	return int (ceil ( weight * (unallocated + late + nte + nse) ) ); //conflicts factor
 }
@@ -461,12 +472,14 @@ bool ConstraintTeacherNotAvailable::computeInternalStructure(Rules& r){
 int ConstraintTeacherNotAvailable::fitness(TimeChromosome& c, Rules& r, QString *conflictsString)
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || subgroups_conflicts<0 || teachers_conflicts<0 || c.timeChangedForMatrixCalculation){
 		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
 		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
+		
+		c.timeChangedForMatrixCalculation=false;
 	}
 
 	//Calculates the number of hours when the teacher is supposed to be teaching, but he is not available
@@ -585,7 +598,8 @@ bool ConstraintStudentsSetNotAvailable::computeInternalStructure(Rules& r){
 	}
 	else if(ss->type==STUDENTS_GROUP){
 		StudentsGroup* stg=(StudentsGroup*)ss;
-		for(StudentsSubgroup* sts=stg->subgroupsList.first(); sts; sts=stg->subgroupsList.next()){
+		for(int i=0; i<stg->subgroupsList.size(); i++){
+			StudentsSubgroup* sts=stg->subgroupsList[i];
 			int tmp;
 			for(tmp=0; tmp<=r.nInternalSubgroups; tmp++)
 				if(r.internalSubgroupsList[tmp]->name == sts->name)
@@ -597,8 +611,10 @@ bool ConstraintStudentsSetNotAvailable::computeInternalStructure(Rules& r){
 	}
 	else if(ss->type==STUDENTS_YEAR){
 		StudentsYear* sty=(StudentsYear*)ss;
-		for(StudentsGroup* stg=sty->groupsList.first(); stg; stg=sty->groupsList.next()){
-			for(StudentsSubgroup* sts=stg->subgroupsList.first(); sts; sts=stg->subgroupsList.next()){
+		for(int i=0; i<sty->groupsList.size(); i++){
+			StudentsGroup* stg=sty->groupsList[i];
+			for(int j=0; j<stg->subgroupsList.size(); j++){
+				StudentsSubgroup* sts=stg->subgroupsList[j];
 				int tmp;
 				for(tmp=0; tmp<=r.nInternalSubgroups; tmp++)
 					if(r.internalSubgroupsList[tmp]->name == sts->name)
@@ -656,12 +672,14 @@ QString ConstraintStudentsSetNotAvailable::getDetailedDescription(Rules& r){
 int ConstraintStudentsSetNotAvailable::fitness(TimeChromosome& c, Rules& r, QString *conflictsString)
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || subgroups_conflicts<0 || teachers_conflicts<0 || c.timeChangedForMatrixCalculation){
 		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
 		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
+		
+		c.timeChangedForMatrixCalculation=false;
 	}
 
 	//Calculates the number of hours when the students' set is supposed to be attend the course,
@@ -804,10 +822,11 @@ void ConstraintActivitiesSameStartingTime::removeUseless(Rules& r)
 		this->_activities[j]=-1;
 
 	for(int i=0; i<this->n_activities; i++){
-		Activity* act;
-		for(act=r.activitiesList.first(); act; act=r.activitiesList.next())
+		for(int k=0; k<r.activitiesList.size(); k++){
+			Activity* act=r.activitiesList[k];
 			if(act->id==this->activitiesId[i])
 				this->_activities[i]=act->id;
+		}
 	}
 
 	int i, j;
@@ -1049,10 +1068,11 @@ void ConstraintActivitiesNotOverlapping::removeUseless(Rules& r)
 		this->_activities[j]=-1;
 
 	for(int i=0; i<this->n_activities; i++){
-		Activity* act;
-		for(act=r.activitiesList.first(); act; act=r.activitiesList.next())
+		for(int k=0; k<r.activitiesList.size(); k++){
+			Activity* act=r.activitiesList[k];
 			if(act->id==this->activitiesId[i])
 				this->_activities[i]=act->id;
+		}
 	}
 
 	int i, j;
@@ -1186,7 +1206,7 @@ int ConstraintActivitiesNotOverlapping::fitness(TimeChromosome& c, Rules& r, QSt
 								tt+=stop-start;
 						}
 
-						//The overlapping hours, considering weekly activities more important than biweekly ones
+						//The overlapping hours, considering weekly activities more important than fortnightly ones
 						int tmp=tt;
 
 						//activity weekly - counts as double
@@ -1338,10 +1358,11 @@ void ConstraintMinNDaysBetweenActivities::removeUseless(Rules& r)
 		this->_activities[j]=-1;
 
 	for(int i=0; i<this->n_activities; i++){
-		Activity* act;
-		for(act=r.activitiesList.first(); act; act=r.activitiesList.next())
+		for(int k=0; k<r.activitiesList.size(); k++){
+			Activity* act=r.activitiesList[k];
 			if(act->id==this->activitiesId[i])
 				this->_activities[i]=act->id;
+		}
 	}
 
 	int i, j;
@@ -1620,12 +1641,14 @@ QString ConstraintTeachersMaxHoursContinuously::getDetailedDescription(Rules& r)
 int ConstraintTeachersMaxHoursContinuously::fitness(TimeChromosome& c, Rules& r, QString* conflictsString)
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || subgroups_conflicts<0 || teachers_conflicts<0 || c.timeChangedForMatrixCalculation){
 		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
 		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
+		
+		c.timeChangedForMatrixCalculation=false;
 	}
 
 	int nbroken;
@@ -1640,7 +1663,7 @@ int ConstraintTeachersMaxHoursContinuously::fitness(TimeChromosome& c, Rules& r,
 					if(teachersMatrix[i][d][h]>0){
 						n_cont_hours++;
 						if(n_cont_hours>this->maxHoursContinuously)
-							nbroken+=2; //Bi-weekly activities are treated here as weekly ones, for the sake of simplicity
+							nbroken+=2; //Fortnightly activities are treated here as weekly ones, for the sake of simplicity
 					}
 					else
 						n_cont_hours=0;
@@ -1658,7 +1681,7 @@ int ConstraintTeachersMaxHoursContinuously::fitness(TimeChromosome& c, Rules& r,
 					if(teachersMatrix[i][d][h]>0){
 						n_cont_hours++;
 						if(n_cont_hours>this->maxHoursContinuously){
-							nbroken+=2; //Bi-weekly activities are treated here as weekly ones, for the sake of simplicity
+							nbroken+=2; //Fortnightly activities are treated here as weekly ones, for the sake of simplicity
 
 							if(conflictsString!=NULL){
 								(*conflictsString)+=(QObject::tr(
@@ -1792,12 +1815,14 @@ QString ConstraintTeachersMaxHoursDaily::getDetailedDescription(Rules& r){
 int ConstraintTeachersMaxHoursDaily::fitness(TimeChromosome& c, Rules& r, QString* conflictsString)
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || subgroups_conflicts<0 || teachers_conflicts<0 || c.timeChangedForMatrixCalculation){
 		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
 		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
+		
+		c.timeChangedForMatrixCalculation=false;
 	}
 
 	int nbroken;
@@ -1813,7 +1838,7 @@ int ConstraintTeachersMaxHoursDaily::fitness(TimeChromosome& c, Rules& r, QStrin
 						n_hours_daily++;
 
 				if(n_hours_daily>this->maxHoursDaily)
-					nbroken+=2; //Bi-weekly activities are treated here as weekly ones, for the sake of simplicity
+					nbroken+=2; //Fortnightly activities are treated here as weekly ones, for the sake of simplicity
 			}
 		}
 	}
@@ -1828,7 +1853,7 @@ int ConstraintTeachersMaxHoursDaily::fitness(TimeChromosome& c, Rules& r, QStrin
 						n_hours_daily++;
 
 				if(n_hours_daily>this->maxHoursDaily){
-					nbroken+=2; //Bi-weekly activities are treated here as weekly ones, for the sake of simplicity
+					nbroken+=2; //Fortnightly activities are treated here as weekly ones, for the sake of simplicity
 
 					if(conflictsString!=NULL){
 						(*conflictsString)+=(QObject::tr(
@@ -1882,6 +1907,172 @@ bool ConstraintTeachersMaxHoursDaily::isRelatedToSubjectTag(SubjectTag* s)
 }
 
 bool ConstraintTeachersMaxHoursDaily::isRelatedToStudentsSet(Rules& r, StudentsSet* s)
+{
+	if(s)
+		;
+	if(&r)
+		;
+
+	return false;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+
+ConstraintTeachersMinHoursDaily::ConstraintTeachersMinHoursDaily()
+	: TimeConstraint()
+{
+	this->type=CONSTRAINT_TEACHERS_MIN_HOURS_DAILY;
+}
+
+ConstraintTeachersMinHoursDaily::ConstraintTeachersMinHoursDaily(double w, bool c, int minhours)
+ : TimeConstraint(w, c)
+ {
+	assert(minhours>0);
+	this->minHoursDaily=minhours;
+
+	this->type=CONSTRAINT_TEACHERS_MIN_HOURS_DAILY;
+}
+
+bool ConstraintTeachersMinHoursDaily::computeInternalStructure(Rules& r)
+{
+	if(&r!=NULL)
+		;
+	return true;
+}
+
+QString ConstraintTeachersMinHoursDaily::getXmlDescription(Rules& r){
+	if(&r!=NULL)
+		;
+
+	QString s="<ConstraintTeachersMinHoursDaily>\n";
+	s+="	<Weight>"+QString::number(this->weight)+"</Weight>\n";
+	s+="	<Compulsory>";s+=yesNo(this->compulsory);s+="</Compulsory>\n";
+	s+="	<Minimum_Hours_Daily>"+QString::number(this->minHoursDaily)+"</Minimum_Hours_Daily>\n";
+	s+="</ConstraintTeachersMinHoursDaily>\n";
+	return s;
+}
+
+QString ConstraintTeachersMinHoursDaily::getDescription(Rules& r){
+	if(&r!=NULL)
+		;
+
+	QString s;
+	s+=(QObject::tr("Teachers min %1 hours daily").arg(this->minHoursDaily));s+=", ";
+	s+=(QObject::tr("W:%1").arg(this->weight));s+=", ";
+	s+=(QObject::tr("C:%1").arg(yesNoTranslated(this->compulsory)));
+
+	return s;
+}
+
+QString ConstraintTeachersMinHoursDaily::getDetailedDescription(Rules& r){
+	if(&r!=NULL)
+		;
+
+	QString s=QObject::tr("Time constraint");s+="\n";
+	s+=(QObject::tr("Teachers must not have less than %1 hours daily").arg(this->minHoursDaily));s+="\n";
+	s+=(QObject::tr("Weight=%1").arg(this->weight));s+="\n";
+	s+=(QObject::tr("Compulsory=%1").arg(yesNoTranslated(this->compulsory)));s+="\n";
+
+	return s;
+}
+
+//critical function here - must be optimized for speed
+int ConstraintTeachersMinHoursDaily::fitness(TimeChromosome& c, Rules& r, QString* conflictsString)
+{
+	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
+	if(crt_chrom!=&c || crt_rules!=&r || subgroups_conflicts<0 || teachers_conflicts<0 || c.timeChangedForMatrixCalculation){
+		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
+		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
+
+		crt_chrom=&c;
+		crt_rules=&r;
+		
+		c.timeChangedForMatrixCalculation=false;
+	}
+
+	int nbroken;
+
+	//without logging
+	if(conflictsString==NULL){
+		nbroken=0;
+		for(int i=0; i<r.nInternalTeachers; i++){
+			for(int d=0; d<r.nDaysPerWeek; d++){
+				int n_hours_daily=0;
+				for(int h=0; h<r.nHoursPerDay; h++)
+					if(teachersMatrix[i][d][h]>0)
+						n_hours_daily++;
+
+				if(n_hours_daily<this->minHoursDaily)
+					nbroken+=2; //Fortnightly activities are treated here as weekly ones, for the sake of simplicity
+			}
+		}
+	}
+	//with logging
+	else{
+		nbroken=0;
+		for(int i=0; i<r.nInternalTeachers; i++){
+			for(int d=0; d<r.nDaysPerWeek; d++){
+				int n_hours_daily=0;
+				for(int h=0; h<r.nHoursPerDay; h++)
+					if(teachersMatrix[i][d][h]>0)
+						n_hours_daily++;
+
+				if(n_hours_daily<this->minHoursDaily){
+					nbroken+=2; //Fortnightly activities are treated here as weekly ones, for the sake of simplicity
+
+					if(conflictsString!=NULL){
+						(*conflictsString)+=(QObject::tr(
+							"Time constraint teacher min %1 hours daily broken for teacher %2, on day %3.")
+							.arg(QString::number(this->minHoursDaily))
+							.arg(r.internalTeachersList[i]->name)
+							.arg(r.daysOfTheWeek[d])
+							)
+							+
+							(QObject::tr(". This increases the conflicts total by %1").arg(QString::number(2*weight)))
+							+ "\n";
+					}
+				}
+			}
+		}
+	}
+
+	return int (ceil ( weight * nbroken ) );
+}
+
+bool ConstraintTeachersMinHoursDaily::isRelatedToActivity(Activity* a)
+{
+	if(a)
+		;
+
+	return false;
+}
+
+bool ConstraintTeachersMinHoursDaily::isRelatedToTeacher(Teacher* t)
+{
+	if(t)
+		;
+
+	return true;
+}
+
+bool ConstraintTeachersMinHoursDaily::isRelatedToSubject(Subject* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintTeachersMinHoursDaily::isRelatedToSubjectTag(SubjectTag* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintTeachersMinHoursDaily::isRelatedToStudentsSet(Rules& r, StudentsSet* s)
 {
 	if(s)
 		;
@@ -2086,14 +2277,14 @@ ConstraintTeacherMaxDaysPerWeek::ConstraintTeacherMaxDaysPerWeek()
 ConstraintTeacherMaxDaysPerWeek::ConstraintTeacherMaxDaysPerWeek(double w, bool c, int maxnd, QString tn)
 	 : TimeConstraint(w, c)
 {
-	this->teacher = tn;
+	this->teacherName = tn;
 	this->maxDaysPerWeek=maxnd;
 	this->type=CONSTRAINT_TEACHER_MAX_DAYS_PER_WEEK;
 }
 
 bool ConstraintTeacherMaxDaysPerWeek::computeInternalStructure(Rules& r)
 {
-	this->teacher_ID=r.searchTeacher(this->teacher);
+	this->teacher_ID=r.searchTeacher(this->teacherName);
 	assert(this->teacher_ID>=0);
 	return true;
 }
@@ -2106,7 +2297,7 @@ QString ConstraintTeacherMaxDaysPerWeek::getXmlDescription(Rules& r)
 	QString s="<ConstraintTeacherMaxDaysPerWeek>\n";
 	s+="	<Weight>"+QString::number(this->weight)+"</Weight>\n";
 	s+="	<Compulsory>";s+=yesNo(this->compulsory);s+="</Compulsory>\n";
-	s+="	<Teacher_Name>"+protect(this->teacher)+"</Teacher_Name>\n";
+	s+="	<Teacher_Name>"+protect(this->teacherName)+"</Teacher_Name>\n";
 	s+="	<Max_Days_Per_Week>"+QString::number(this->maxDaysPerWeek)+"</Max_Days_Per_Week>\n";
 	s+="</ConstraintTeacherMaxDaysPerWeek>\n";
 	return s;
@@ -2119,7 +2310,7 @@ QString ConstraintTeacherMaxDaysPerWeek::getDescription(Rules& r){
 	QString s=QObject::tr("Teacher max days per week");s+=", ";
 	s+=(QObject::tr("W:%1").arg(this->weight));s+=", ";
 	s+=(QObject::tr("C:%1").arg(yesNoTranslated(this->compulsory)));s+=", ";
-	s+=(QObject::tr("T:%1").arg(this->teacher));s+=", ";
+	s+=(QObject::tr("T:%1").arg(this->teacherName));s+=", ";
 	s+=(QObject::tr("MD:%1").arg(this->maxDaysPerWeek));
 
 	return s;
@@ -2133,7 +2324,7 @@ QString ConstraintTeacherMaxDaysPerWeek::getDetailedDescription(Rules& r){
 	s+=QObject::tr("Teacher max. days per week");s+="\n";
 	s+=(QObject::tr("Weight=%1").arg(this->weight));s+="\n";
 	s+=(QObject::tr("Compulsory=%1").arg(yesNoTranslated(this->compulsory)));s+="\n";
-	s+=(QObject::tr("Teacher=%1").arg(this->teacher));s+="\n";
+	s+=(QObject::tr("Teacher=%1").arg(this->teacherName));s+="\n";
 	s+=(QObject::tr("Max. days per week=%1").arg(this->maxDaysPerWeek));s+="\n";
 
 	return s;
@@ -2143,12 +2334,14 @@ QString ConstraintTeacherMaxDaysPerWeek::getDetailedDescription(Rules& r){
 int ConstraintTeacherMaxDaysPerWeek::fitness(TimeChromosome& c, Rules& r, QString *conflictsString)
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || subgroups_conflicts<0 || teachers_conflicts<0 || c.timeChangedForMatrixCalculation){
 		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
 		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
+		
+		c.timeChangedForMatrixCalculation=false;
 	}
 
 	int nbroken;
@@ -2235,7 +2428,7 @@ bool ConstraintTeacherMaxDaysPerWeek::isRelatedToActivity(Activity* a)
 
 bool ConstraintTeacherMaxDaysPerWeek::isRelatedToTeacher(Teacher* t)
 {
-	if(this->teacher==t->name)
+	if(this->teacherName==t->name)
 		return true;
 	return false;
 }
@@ -2337,12 +2530,14 @@ int ConstraintTeachersNoGaps::fitness(TimeChromosome& c, Rules& r, QString* conf
 	//But I think for this I have to introduce double weights and fitnesses instead of int
 
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || subgroups_conflicts<0 || teachers_conflicts<0 || c.timeChangedForMatrixCalculation){
 		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
 		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
+		
+		c.timeChangedForMatrixCalculation=false;
 	}
 	
 	int tw;
@@ -2551,12 +2746,14 @@ bool ConstraintBreak::computeInternalStructure(Rules& r)
 int ConstraintBreak::fitness(TimeChromosome& c, Rules& r, QString* conflictsString)
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || subgroups_conflicts<0 || teachers_conflicts<0 || c.timeChangedForMatrixCalculation){
 		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
 		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
+		
+		c.timeChangedForMatrixCalculation=false;
 	}
 
 	//For the moment, this function sums the number of hours each teacher
@@ -2717,12 +2914,14 @@ int ConstraintStudentsNoGaps::fitness(TimeChromosome& c, Rules& r, QString* conf
 	//returns a number equal to the number of windows of the subgroups (in hours)
 
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || subgroups_conflicts<0 || teachers_conflicts<0 || c.timeChangedForMatrixCalculation){
 		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
 		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
+		
+		c.timeChangedForMatrixCalculation=false;
 	}
 
 	int windows;
@@ -2826,7 +3025,7 @@ int ConstraintStudentsNoGaps::fitness(TimeChromosome& c, Rules& r, QString* conf
 			}
 	}
 		
-	//windows: 2 represent a weely window, 1 represents a biweekly window
+	//windows: 2 represent a weely window, 1 represents a fortnightly window
 	return int (ceil(weight * windows));
 }
 
@@ -2904,7 +3103,8 @@ bool ConstraintStudentsSetNoGaps::computeInternalStructure(Rules& r){
 	}
 	else if(ss->type==STUDENTS_GROUP){
 		StudentsGroup* stg=(StudentsGroup*)ss;
-		for(StudentsSubgroup* sts=stg->subgroupsList.first(); sts; sts=stg->subgroupsList.next()){
+		for(int i=0; i<stg->subgroupsList.size(); i++){
+			StudentsSubgroup* sts=stg->subgroupsList[i];
 			int tmp;
 			for(tmp=0; tmp<=r.nInternalSubgroups; tmp++)
 				if(r.internalSubgroupsList[tmp]->name == sts->name)
@@ -2916,8 +3116,10 @@ bool ConstraintStudentsSetNoGaps::computeInternalStructure(Rules& r){
 	}
 	else if(ss->type==STUDENTS_YEAR){
 		StudentsYear* sty=(StudentsYear*)ss;
-		for(StudentsGroup* stg=sty->groupsList.first(); stg; stg=sty->groupsList.next()){
-			for(StudentsSubgroup* sts=stg->subgroupsList.first(); sts; sts=stg->subgroupsList.next()){
+		for(int i=0; i<sty->groupsList.size(); i++){
+			StudentsGroup* stg=sty->groupsList[i];
+			for(int j=0; j<stg->subgroupsList.size(); j++){
+				StudentsSubgroup* sts=stg->subgroupsList[j];
 				int tmp;
 				for(tmp=0; tmp<=r.nInternalSubgroups; tmp++)
 					if(r.internalSubgroupsList[tmp]->name == sts->name)
@@ -2981,12 +3183,14 @@ int ConstraintStudentsSetNoGaps::fitness(TimeChromosome& c, Rules& r, QString* c
 	//returns a number equal to the number of windows of the subgroups (in hours)
 
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || subgroups_conflicts<0 || teachers_conflicts<0 || c.timeChangedForMatrixCalculation){
 		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
 		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
+		
+		c.timeChangedForMatrixCalculation=false;
 	}
 	
 	int windows;
@@ -3093,7 +3297,7 @@ int ConstraintStudentsSetNoGaps::fitness(TimeChromosome& c, Rules& r, QString* c
 		}
 	}
 
-	//gaps: 2 represents a weekly gap, 1 represents a biweekly gap
+	//gaps: 2 represents a weekly gap, 1 represents a fortnightly gap
 	return int (ceil(weight * windows));
 }
 
@@ -3206,18 +3410,20 @@ int ConstraintStudentsEarly::fitness(TimeChromosome& c, Rules& r, QString* confl
 	//considers the condition that the hours of subgroups begin as early as possible
 
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || subgroups_conflicts<0 || teachers_conflicts<0 || c.timeChangedForMatrixCalculation){
 		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
 		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
+		
+		c.timeChangedForMatrixCalculation=false;
 	}
 	
 	int free;
 	int i;
 	
-	//treating biweekly activities as weekly ones
+	//treating fortnightly activities as weekly ones
 
 	if(conflictsString==NULL){ //without logging
 		free=0; //number of free hours before starting the courses
@@ -3388,12 +3594,14 @@ QString ConstraintStudentsNHoursDaily::getDetailedDescription(Rules& r)
 int ConstraintStudentsNHoursDaily::fitness(TimeChromosome& c, Rules& r, QString* conflictsString)
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || subgroups_conflicts<0 || teachers_conflicts<0 || c.timeChangedForMatrixCalculation){
 		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
 		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
+		
+		c.timeChangedForMatrixCalculation=false;
 	}
 
 	int tmp;
@@ -3604,7 +3812,8 @@ bool ConstraintStudentsSetNHoursDaily::computeInternalStructure(Rules &r)
 	}
 	else if(ss->type==STUDENTS_GROUP){
 		StudentsGroup* stg=(StudentsGroup*)ss;
-		for(StudentsSubgroup* sts=stg->subgroupsList.first(); sts; sts=stg->subgroupsList.next()){
+		for(int i=0; i<stg->subgroupsList.size(); i++){
+			StudentsSubgroup* sts=stg->subgroupsList[i];
 			int tmp;
 			for(tmp=0; tmp<=r.nInternalSubgroups; tmp++)
 				if(r.internalSubgroupsList[tmp]->name == sts->name)
@@ -3616,8 +3825,10 @@ bool ConstraintStudentsSetNHoursDaily::computeInternalStructure(Rules &r)
 	}
 	else if(ss->type==STUDENTS_YEAR){
 		StudentsYear* sty=(StudentsYear*)ss;
-		for(StudentsGroup* stg=sty->groupsList.first(); stg; stg=sty->groupsList.next()){
-			for(StudentsSubgroup* sts=stg->subgroupsList.first(); sts; sts=stg->subgroupsList.next()){
+		for(int i=0; i<sty->groupsList.size(); i++){
+			StudentsGroup* stg=sty->groupsList[i];
+			for(int j=0; j<stg->subgroupsList.size(); j++){
+				StudentsSubgroup* sts=stg->subgroupsList[j];
 				int tmp;
 				for(tmp=0; tmp<=r.nInternalSubgroups; tmp++)
 					if(r.internalSubgroupsList[tmp]->name == sts->name)
@@ -3638,12 +3849,14 @@ bool ConstraintStudentsSetNHoursDaily::computeInternalStructure(Rules &r)
 int ConstraintStudentsSetNHoursDaily::fitness(TimeChromosome& c, Rules& r, QString* conflictsString)
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || subgroups_conflicts<0 || teachers_conflicts<0 || c.timeChangedForMatrixCalculation){
 		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
 		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
+		
+		c.timeChangedForMatrixCalculation=false;
 	}
 
 	int tmp;
@@ -3799,7 +4012,8 @@ bool ConstraintStudentsSetIntervalMaxDaysPerWeek::computeInternalStructure(Rules
 	}
 	else if(ss->type==STUDENTS_GROUP){
 		StudentsGroup* stg=(StudentsGroup*)ss;
-		for(StudentsSubgroup* sts=stg->subgroupsList.first(); sts; sts=stg->subgroupsList.next()){
+		for(int i=0; i<stg->subgroupsList.size(); i++){
+			StudentsSubgroup* sts=stg->subgroupsList[i];
 			int tmp;
 			for(tmp=0; tmp<=r.nInternalSubgroups; tmp++)
 				if(r.internalSubgroupsList[tmp]->name == sts->name)
@@ -3811,8 +4025,10 @@ bool ConstraintStudentsSetIntervalMaxDaysPerWeek::computeInternalStructure(Rules
 	}
 	else if(ss->type==STUDENTS_YEAR){
 		StudentsYear* sty=(StudentsYear*)ss;
-		for(StudentsGroup* stg=sty->groupsList.first(); stg; stg=sty->groupsList.next()){
-			for(StudentsSubgroup* sts=stg->subgroupsList.first(); sts; sts=stg->subgroupsList.next()){
+		for(int i=0; i<sty->groupsList.size(); i++){
+			StudentsGroup* stg=sty->groupsList[i];
+			for(int j=0; j<stg->subgroupsList.size(); j++){
+				StudentsSubgroup* sts=stg->subgroupsList[j];
 				int tmp;
 				for(tmp=0; tmp<=r.nInternalSubgroups; tmp++)
 					if(r.internalSubgroupsList[tmp]->name == sts->name)
@@ -3874,12 +4090,14 @@ QString ConstraintStudentsSetIntervalMaxDaysPerWeek::getDetailedDescription(Rule
 int ConstraintStudentsSetIntervalMaxDaysPerWeek::fitness(TimeChromosome& c, Rules& r, QString *conflictsString)
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || subgroups_conflicts<0 || teachers_conflicts<0 || c.timeChangedForMatrixCalculation){
 		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
 		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
+		
+		c.timeChangedForMatrixCalculation=false;
 	}
 
 	int nbroken;
@@ -3953,7 +4171,7 @@ int ConstraintStudentsSetIntervalMaxDaysPerWeek::fitness(TimeChromosome& c, Rule
 			*conflictsString += QObject::tr("Time constraint students set interval max days per week broken for");
 			*conflictsString += " ";
 			*conflictsString += QObject::tr("subgroup: %1.")
-				.arg(r.internalSubgroupsList[m]->name);
+				.arg(r.internalSubgroupsList[s]->name);
 			*conflictsString += QObject::tr("This increases the conflicts total by %1")
 				.arg(nbroken_partial*weight);
 			*conflictsString += "\n";
@@ -4000,6 +4218,211 @@ bool ConstraintStudentsSetIntervalMaxDaysPerWeek::isRelatedToSubjectTag(SubjectT
 bool ConstraintStudentsSetIntervalMaxDaysPerWeek::isRelatedToStudentsSet(Rules& r, StudentsSet* s)
 {
 	return r.studentsSetsRelated(this->students, s->name);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+
+ConstraintTeacherIntervalMaxDaysPerWeek::ConstraintTeacherIntervalMaxDaysPerWeek()
+	: TimeConstraint()
+{
+	this->type=CONSTRAINT_TEACHER_INTERVAL_MAX_DAYS_PER_WEEK;
+}
+
+ConstraintTeacherIntervalMaxDaysPerWeek::ConstraintTeacherIntervalMaxDaysPerWeek(double w, bool c, const QString& tn, int start_hour, int end_hour, int n_intervals)
+	 : TimeConstraint(w, c)
+{
+	this->teacher = tn;
+	this->h1=start_hour;
+	this->h2=end_hour;
+	this->n=n_intervals;
+	this->type=CONSTRAINT_TEACHER_INTERVAL_MAX_DAYS_PER_WEEK;
+}
+
+bool ConstraintTeacherIntervalMaxDaysPerWeek::computeInternalStructure(Rules& r)
+{
+	int tmp;	
+	for(tmp=0; tmp<r.nInternalTeachers; tmp++)
+		if(r.internalTeachersList[tmp]->name==this->teacher){
+			this->teacherIndex=tmp;
+			break;
+		}
+	assert(tmp<r.nInternalTeachers);
+
+	return true;
+}
+
+QString ConstraintTeacherIntervalMaxDaysPerWeek::getXmlDescription(Rules& r)
+{
+	QString s="<ConstraintTeacherIntervalMaxDaysPerWeek>\n";
+	s+="	<Weight>"+QString::number(this->weight)+"</Weight>\n";
+	s+="	<Compulsory>";s+=yesNo(this->compulsory);s+="</Compulsory>\n";
+	s+="	<Teacher>"+protect(this->teacher)+"</Teacher>\n";
+	s+="	<Start_Hour>"+protect(r.hoursOfTheDay[this->h1])+"</Start_Hour>\n";
+	s+="	<End_Hour>"+protect(r.hoursOfTheDay[this->h2])+"</End_Hour>\n";
+	s+="	<Max_Intervals>"+QString::number(this->n)+"</Max_Intervals>\n";
+	s+="</ConstraintTeacherIntervalMaxDaysPerWeek>\n";
+	return s;
+}
+
+QString ConstraintTeacherIntervalMaxDaysPerWeek::getDescription(Rules& r)
+{
+	QString s;
+	s=QObject::tr("Teacher interval max days per week");s+=", ";
+	s+=(QObject::tr("W:%1").arg(this->weight));s+=", ";
+	s+=(QObject::tr("C:%1").arg(yesNoTranslated(this->compulsory)));s+=", ";
+	s+=(QObject::tr("T:%1").arg(this->teacher));s+=", ";
+	s+=(QObject::tr("SH:%1").arg(r.hoursOfTheDay[this->h1]));s+=", ";
+	s+=(QObject::tr("EH:%1").arg(r.hoursOfTheDay[this->h2]));s+=", ";
+	s+=(QObject::tr("MI:%1").arg(this->n));
+
+	return s;
+}
+
+QString ConstraintTeacherIntervalMaxDaysPerWeek::getDetailedDescription(Rules& r)
+{
+	QString s=QObject::tr("Time constraint");s+="\n";
+	s+=QObject::tr("Teacher interval max. days per week");s+="\n";
+	s+=(QObject::tr("Weight=%1").arg(this->weight));s+="\n";
+	s+=(QObject::tr("Compulsory=%1").arg(yesNoTranslated(this->compulsory)));s+="\n";
+	s+=(QObject::tr("Teacher=%1").arg(this->teacher));s+="\n";
+	s+=(QObject::tr("Start hour=%1").arg(r.hoursOfTheDay[this->h1]));s+="\n";
+	s+=(QObject::tr("End hour=%1").arg(r.hoursOfTheDay[this->h2]));s+="\n";
+	s+=(QObject::tr("Max. intervals=%1").arg(this->n));s+="\n";
+
+	return s;
+}
+
+//critical function here - must be optimized for speed
+int ConstraintTeacherIntervalMaxDaysPerWeek::fitness(TimeChromosome& c, Rules& r, QString *conflictsString)
+{
+	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
+	if(crt_chrom!=&c || crt_rules!=&r || subgroups_conflicts<0 || teachers_conflicts<0 || c.timeChangedForMatrixCalculation){
+		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
+		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
+
+		crt_chrom=&c;
+		crt_rules=&r;
+		
+		c.timeChangedForMatrixCalculation=false;
+	}
+
+	int nbroken;
+
+	//without logging
+	if(conflictsString==NULL){
+		nbroken=0;
+		//count sort
+		int t=this->teacherIndex;
+		int nd[MAX_HOURS_PER_DAY * 2 + 1];
+		for(int h=0; h<=2*r.nHoursPerDay; h++)
+			nd[h]=0;
+		int n_total_intervals=0;
+		for(int d=0; d<r.nDaysPerWeek; d++){
+			int nh=0;
+			for(int h=this->h1; h<this->h2; h++)
+				nh+=teachersMatrix[t][d][h]>=2 ? 2 : teachersMatrix[t][d][h];
+			nd[nh]++;
+			n_total_intervals++;
+		}
+		//return the minimum intervals which do not respect this constraint
+		int i = n_total_intervals - this->n;
+		for(int k=0; k<=2*r.nHoursPerDay; k++){
+			if(nd[k]>0){
+				if(i>nd[k]){
+					i-=nd[k];
+					nbroken+=nd[k]*k;
+				}
+				else{
+					nbroken+=i*k;
+					break;
+				}
+			}
+		}
+	}
+	//with logging
+	else{
+		nbroken=0;
+		//count sort
+		int t=this->teacherIndex;
+		int nd[MAX_HOURS_PER_DAY * 2 + 1];
+		for(int h=0; h<=2*r.nHoursPerDay; h++)
+			nd[h]=0;
+		int n_total_intervals=0;
+		for(int d=0; d<r.nDaysPerWeek; d++){
+			int nh=0;
+			for(int h=this->h1; h<this->h2; h++)
+				nh+=teachersMatrix[t][d][h]>=2 ? 2 : teachersMatrix[t][d][h];
+			nd[nh]++;
+			n_total_intervals++;
+		}
+		//return the minimum intervals which do not respect this constraint
+		int i = n_total_intervals - this->n;
+		for(int k=0; k<=2*r.nHoursPerDay; k++){
+			if(nd[k]>0){
+				if(i>nd[k]){
+					i-=nd[k];
+					nbroken+=nd[k]*k;
+				}
+				else{
+					nbroken+=i*k;
+					break;
+				}
+			}
+		}
+	
+		*conflictsString += QObject::tr("Time constraint teacher interval max days per week broken for");
+		*conflictsString += " ";
+		*conflictsString += QObject::tr("teacher: %1.")
+			.arg(r.internalTeachersList[t]->name);
+		*conflictsString += QObject::tr("This increases the conflicts total by %1")
+			.arg(nbroken*weight);
+		*conflictsString += "\n";
+	}
+
+	return int (ceil ( weight * nbroken ) );
+}
+
+bool ConstraintTeacherIntervalMaxDaysPerWeek::isRelatedToActivity(Activity* a)
+{
+	if(a)
+		;
+
+	return false;
+}
+
+bool ConstraintTeacherIntervalMaxDaysPerWeek::isRelatedToTeacher(Teacher* t)
+{
+	if(t->name == this->teacher)
+		return true;
+
+	return false;
+}
+
+bool ConstraintTeacherIntervalMaxDaysPerWeek::isRelatedToSubject(Subject* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintTeacherIntervalMaxDaysPerWeek::isRelatedToSubjectTag(SubjectTag* s)
+{
+	if(s)
+		;
+
+	return false;
+}
+
+bool ConstraintTeacherIntervalMaxDaysPerWeek::isRelatedToStudentsSet(Rules& r, StudentsSet* s)
+{
+	if(s)
+		;
+	if(&r)
+		;
+		
+	return false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -4076,7 +4499,44 @@ QString ConstraintActivityPreferredTime::getDescription(Rules& r)
 		;
 
 	QString s;
-	s+=(QObject::tr("Act. id:%1").arg(this->activityId));s+=", ";
+	s+=(QObject::tr("Act. id:%1").arg(this->activityId));
+	
+	//* write the teachers, subject and students sets
+	//added in version 4.1.4
+	int ai;
+	for(ai=0; ai<r.activitiesList.size(); ai++)
+		if(r.activitiesList[ai]->id==this->activityId)
+			break;
+	if(ai==r.activitiesList.size())
+		cout<<"this->activityId=="<<this->activityId<<endl;
+	assert(ai<r.activitiesList.size());
+	s+=" (";
+	
+	s+=QObject::tr("T:");
+	int k=0;
+	foreach(QString ss, r.activitiesList[ai]->teachersNames){
+		if(k>0)
+			s+=",";
+		s+=ss;
+		k++;
+	}
+	
+	s+=QObject::tr(",S:");
+	s+=r.activitiesList[ai]->subjectName;
+	
+	s+=QObject::tr(",St:");
+	k=0;
+	foreach(QString ss, r.activitiesList[ai]->studentsNames){
+		if(k>0)
+			s+=",";
+		s+=ss;
+		k++;
+	}
+	
+	s+=")";
+	//* end section
+	
+	s+=", ";
 	s+=QObject::tr("must be scheduled at: ");
 	if(this->day>=0){
 		s+=r.daysOfTheWeek[this->day];
@@ -4096,7 +4556,42 @@ QString ConstraintActivityPreferredTime::getDescription(Rules& r)
 QString ConstraintActivityPreferredTime::getDetailedDescription(Rules& r)
 {
 	QString s=QObject::tr("Time constraint");s+="\n";
-	s+=(QObject::tr("Activity with id=%1").arg(this->activityId));s+="\n";
+	s+=(QObject::tr("Activity with id=%1").arg(this->activityId));
+	
+	//* write the teachers, subject and students sets
+	//added in version 4.1.4
+	int ai;
+	for(ai=0; ai<r.activitiesList.size(); ai++)
+		if(r.activitiesList[ai]->id==this->activityId)
+			break;
+	assert(ai<r.activitiesList.size());
+	s+=" (";
+	
+	s+=QObject::tr("T:");
+	int k=0;
+	foreach(QString ss, r.activitiesList[ai]->teachersNames){
+		if(k>0)
+			s+=",";
+		s+=ss;
+		k++;
+	}
+	
+	s+=QObject::tr(",S:");
+	s+=r.activitiesList[ai]->subjectName;
+	
+	s+=QObject::tr(",St:");
+	k=0;
+	foreach(QString ss, r.activitiesList[ai]->studentsNames){
+		if(k>0)
+			s+=",";
+		s+=ss;
+		k++;
+	}
+	
+	s+=")";
+	//* end section
+
+	s+="\n";
 	s+=QObject::tr("must be scheduled at: ");
 	if(this->day>=0){
 		s+=r.daysOfTheWeek[this->day];
@@ -4117,12 +4612,14 @@ QString ConstraintActivityPreferredTime::getDetailedDescription(Rules& r)
 int ConstraintActivityPreferredTime::fitness(TimeChromosome& c, Rules& r, QString* conflictsString)
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || subgroups_conflicts<0 || teachers_conflicts<0 || c.timeChangedForMatrixCalculation){
 		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
 		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
+		
+		c.timeChangedForMatrixCalculation=false;
 	}
 
 	int nbroken;
@@ -4261,7 +4758,42 @@ QString ConstraintActivityPreferredTimes::getDescription(Rules& r)
 		;
 
 	QString s;
-	s+=(QObject::tr("Act. id:%1").arg(this->activityId));s+=", ";
+	s+=(QObject::tr("Act. id:%1").arg(this->activityId));
+	
+	//* write the teachers, subject and students sets
+	//added in version 4.1.4
+	int ai;
+	for(ai=0; ai<r.activitiesList.size(); ai++)
+		if(r.activitiesList[ai]->id==this->activityId)
+			break;
+	assert(ai<r.activitiesList.size());
+	s+=" (";
+	
+	s+=QObject::tr("T:");
+	int k=0;
+	foreach(QString ss, r.activitiesList[ai]->teachersNames){
+		if(k>0)
+			s+=",";
+		s+=ss;
+		k++;
+	}
+	
+	s+=QObject::tr(",S:");
+	s+=r.activitiesList[ai]->subjectName;
+	
+	s+=QObject::tr(",St:");
+	k=0;
+	foreach(QString ss, r.activitiesList[ai]->studentsNames){
+		if(k>0)
+			s+=",";
+		s+=ss;
+		k++;
+	}
+	
+	s+=")";
+	//* end section
+	
+	s+=", ";
 	s+=QObject::tr("must be scheduled at: ");
 	for(int i=0; i<this->nPreferredTimes; i++){
 		s+=QString::number(i+1);
@@ -4285,7 +4817,42 @@ QString ConstraintActivityPreferredTimes::getDescription(Rules& r)
 QString ConstraintActivityPreferredTimes::getDetailedDescription(Rules& r)
 {
 	QString s=QObject::tr("Time constraint");s+="\n";
-	s+=(QObject::tr("Activity with id=%1").arg(this->activityId));s+="\n";
+	s+=(QObject::tr("Activity with id=%1").arg(this->activityId));
+	
+	//* write the teachers, subject and students sets
+	//added in version 4.1.4
+	int ai;
+	for(ai=0; ai<r.activitiesList.size(); ai++)
+		if(r.activitiesList[ai]->id==this->activityId)
+			break;
+	assert(ai<r.activitiesList.size());
+	s+=" (";
+	
+	s+=QObject::tr("T:");
+	int k=0;
+	foreach(QString ss, r.activitiesList[ai]->teachersNames){
+		if(k>0)
+			s+=",";
+		s+=ss;
+		k++;
+	}
+	
+	s+=QObject::tr(",S:");
+	s+=r.activitiesList[ai]->subjectName;
+	
+	s+=QObject::tr(",St:");
+	k=0;
+	foreach(QString ss, r.activitiesList[ai]->studentsNames){
+		if(k>0)
+			s+=",";
+		s+=ss;
+		k++;
+	}
+	
+	s+=")";
+	//* end section
+	
+	s+="\n";
 	s+=QObject::tr("must be scheduled at:\n");
 	for(int i=0; i<this->nPreferredTimes; i++){
 		s+=QString::number(i+1);
@@ -4310,12 +4877,14 @@ QString ConstraintActivityPreferredTimes::getDetailedDescription(Rules& r)
 int ConstraintActivityPreferredTimes::fitness(TimeChromosome& c, Rules& r, QString* conflictsString)
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || subgroups_conflicts<0 || teachers_conflicts<0 || c.timeChangedForMatrixCalculation){
 		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
 		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
+		
+		c.timeChangedForMatrixCalculation=false;
 	}
 
 	int nbroken;
@@ -4478,12 +5047,14 @@ QString ConstraintActivityEndsDay::getDetailedDescription(Rules& r)
 int ConstraintActivityEndsDay::fitness(TimeChromosome& c, Rules& r, QString* conflictsString)
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || subgroups_conflicts<0 || teachers_conflicts<0 || c.timeChangedForMatrixCalculation){
 		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
 		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
+		
+		c.timeChangedForMatrixCalculation=false;
 	}
 
 	int nbroken;
@@ -4652,12 +5223,14 @@ QString Constraint2ActivitiesConsecutive::getDetailedDescription(Rules& r)
 int Constraint2ActivitiesConsecutive::fitness(TimeChromosome& c, Rules& r, QString* conflictsString)
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || subgroups_conflicts<0 || teachers_conflicts<0 || c.timeChangedForMatrixCalculation){
 		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
 		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
+		
+		c.timeChangedForMatrixCalculation=false;
 	}
 
 	int nbroken;
@@ -4826,12 +5399,14 @@ QString Constraint2ActivitiesOrdered::getDetailedDescription(Rules& r)
 int Constraint2ActivitiesOrdered::fitness(TimeChromosome& c, Rules& r, QString* conflictsString)
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || subgroups_conflicts<0 || teachers_conflicts<0 || c.timeChangedForMatrixCalculation){
 		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
 		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
+		
+		c.timeChangedForMatrixCalculation=false;
 	}
 
 	int nbroken;
@@ -5001,12 +5576,14 @@ QString Constraint2ActivitiesGrouped::getDetailedDescription(Rules& r)
 int Constraint2ActivitiesGrouped::fitness(TimeChromosome& c, Rules& r, QString* conflictsString)
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || subgroups_conflicts<0 || teachers_conflicts<0 || c.timeChangedForMatrixCalculation){
 		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
 		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
+		
+		c.timeChangedForMatrixCalculation=false;
 	}
 
 	int nbroken;
@@ -5286,12 +5863,14 @@ QString ConstraintActivitiesPreferredTimes::getDetailedDescription(Rules& r)
 int ConstraintActivitiesPreferredTimes::fitness(TimeChromosome& c, Rules& r, QString* conflictsString)
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || subgroups_conflicts<0 || teachers_conflicts<0 || c.timeChangedForMatrixCalculation){
 		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
 		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
+		
+		c.timeChangedForMatrixCalculation=false;
 	}
 
 	int nbroken;
@@ -5480,10 +6059,11 @@ void ConstraintActivitiesSameStartingHour::removeUseless(Rules& r)
 		this->_activities[j]=-1;
 
 	for(int i=0; i<this->n_activities; i++){
-		Activity* act;
-		for(act=r.activitiesList.first(); act; act=r.activitiesList.next())
+		for(int k=0; k<r.activitiesList.size(); k++){
+			Activity* act=r.activitiesList[k];
 			if(act->id==this->activitiesId[i])
 				this->_activities[i]=act->id;
+		}
 	}
 
 	int i, j;
@@ -5744,12 +6324,14 @@ QString ConstraintTeachersSubjectTagsMaxHoursContinuously::getDetailedDescriptio
 int ConstraintTeachersSubjectTagsMaxHoursContinuously::fitness(TimeChromosome& c, Rules& r, QString* conflictsString)
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || subgroups_conflicts<0 || teachers_conflicts<0 || c.timeChangedForMatrixCalculation){
 		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
 		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
+		
+		c.timeChangedForMatrixCalculation=false;
 	}
 
 	int nbroken;
@@ -5757,7 +6339,7 @@ int ConstraintTeachersSubjectTagsMaxHoursContinuously::fitness(TimeChromosome& c
 	//without logging
 	if(conflictsString==NULL){
 		nbroken=0;
-		for(uint st=0; st<r.subjectTagsList.count(); st++){
+		for(int st=0; st<r.subjectTagsList.size(); st++){
 			for(int d=0; d<r.nDaysPerWeek; d++)
 				for(int h=0; h<r.nHoursPerDay; h++)
 					for(int t=0; t<r.nInternalTeachers; t++)
@@ -5766,7 +6348,7 @@ int ConstraintTeachersSubjectTagsMaxHoursContinuously::fitness(TimeChromosome& c
 			for(int i=0; i<r.nInternalActivities; i++)
 				if(c.times[i]!=UNALLOCATED_TIME){
 					Activity* act=&r.internalActivitiesList[i];
-					if((uint)(act->subjectTagIndex)!=st)
+					if(act->subjectTagIndex!=st)
 						continue;
 					int hour=c.times[i]/r.nDaysPerWeek;
 					int day=c.times[i]%r.nDaysPerWeek;
@@ -5777,7 +6359,7 @@ int ConstraintTeachersSubjectTagsMaxHoursContinuously::fitness(TimeChromosome& c
 								teachersSubjectTags[tch][day][hour+dd]+=2;
 							}
 							else{
-								assert(act->parity==PARITY_BIWEEKLY);
+								assert(act->parity==PARITY_FORTNIGHTLY);
 								teachersSubjectTags[tch][day][hour+dd]++;
 							}
 						}
@@ -5785,7 +6367,7 @@ int ConstraintTeachersSubjectTagsMaxHoursContinuously::fitness(TimeChromosome& c
 				
 			for(int t=0; t<r.nInternalTeachers; t++){
 				for(int d=0; d<r.nDaysPerWeek; d++){
-					//Bi-weekly activities are treated here as weekly ones, for the sake of simplicity					
+					//Fortnightly activities are treated here as weekly ones, for the sake of simplicity					
 					int n_cont_hours=0;
 					for(int h=0; h<r.nHoursPerDay; h++){
 						if(teachersSubjectTags[t][d][h]>0){
@@ -5804,7 +6386,7 @@ int ConstraintTeachersSubjectTagsMaxHoursContinuously::fitness(TimeChromosome& c
 	//with logging
 	else{
 		nbroken=0;
-		for(uint st=0; st<r.subjectTagsList.count(); st++){
+		for(int st=0; st<r.subjectTagsList.size(); st++){
 			for(int d=0; d<r.nDaysPerWeek; d++)
 				for(int h=0; h<r.nHoursPerDay; h++)
 					for(int t=0; t<r.nInternalTeachers; t++)
@@ -5813,7 +6395,7 @@ int ConstraintTeachersSubjectTagsMaxHoursContinuously::fitness(TimeChromosome& c
 			for(int i=0; i<r.nInternalActivities; i++)
 				if(c.times[i]!=UNALLOCATED_TIME){
 					Activity* act=&r.internalActivitiesList[i];
-					if((uint)(act->subjectTagIndex)!=st)
+					if(act->subjectTagIndex!=st)
 						continue;
 					int hour=c.times[i]/r.nDaysPerWeek;
 					int day=c.times[i]%r.nDaysPerWeek;
@@ -5824,7 +6406,7 @@ int ConstraintTeachersSubjectTagsMaxHoursContinuously::fitness(TimeChromosome& c
 								teachersSubjectTags[tch][day][hour+dd]+=2;
 							}
 							else{
-								assert(act->parity==PARITY_BIWEEKLY);
+								assert(act->parity==PARITY_FORTNIGHTLY);
 								teachersSubjectTags[tch][day][hour+dd]++;
 							}
 						}
@@ -5832,7 +6414,7 @@ int ConstraintTeachersSubjectTagsMaxHoursContinuously::fitness(TimeChromosome& c
 				
 			for(int t=0; t<r.nInternalTeachers; t++){
 				for(int d=0; d<r.nDaysPerWeek; d++){
-					//Bi-weekly activities are treated here as weekly ones, for the sake of simplicity					
+					//Fortnightly activities are treated here as weekly ones, for the sake of simplicity					
 					int n_cont_hours=0;
 					for(int h=0; h<r.nHoursPerDay; h++){
 						if(teachersSubjectTags[t][d][h]>0){
@@ -5984,12 +6566,14 @@ QString ConstraintTeachersSubjectTagMaxHoursContinuously::getDetailedDescription
 int ConstraintTeachersSubjectTagMaxHoursContinuously::fitness(TimeChromosome& c, Rules& r, QString* conflictsString)
 {
 	//if the matrices subgroupsMatrix and teachersMatrix are already calculated, do not calculate them again!
-	if(crt_chrom!=&c || crt_rules!=&r){
+	if(crt_chrom!=&c || crt_rules!=&r || subgroups_conflicts<0 || teachers_conflicts<0 || c.timeChangedForMatrixCalculation){
 		subgroups_conflicts = c.getSubgroupsMatrix(r, subgroupsMatrix);
 		teachers_conflicts = c.getTeachersMatrix(r, teachersMatrix);
 
 		crt_chrom=&c;
 		crt_rules=&r;
+		
+		c.timeChangedForMatrixCalculation=false;
 	}
 
 	int nbroken;
@@ -6016,7 +6600,7 @@ int ConstraintTeachersSubjectTagMaxHoursContinuously::fitness(TimeChromosome& c,
 							teachersSubjectTags[tch][day][hour+dd]+=2;
 						}
 						else{
-							assert(act->parity==PARITY_BIWEEKLY);
+							assert(act->parity==PARITY_FORTNIGHTLY);
 							teachersSubjectTags[tch][day][hour+dd]++;
 						}
 					}
@@ -6024,7 +6608,7 @@ int ConstraintTeachersSubjectTagMaxHoursContinuously::fitness(TimeChromosome& c,
 				
 		for(int t=0; t<r.nInternalTeachers; t++){
 			for(int d=0; d<r.nDaysPerWeek; d++){
-				//Bi-weekly activities are treated here as weekly ones, for the sake of simplicity					
+				//Fortnightly activities are treated here as weekly ones, for the sake of simplicity					
 				int n_cont_hours=0;
 				for(int h=0; h<r.nHoursPerDay; h++){
 					if(teachersSubjectTags[t][d][h]>0){
@@ -6061,7 +6645,7 @@ int ConstraintTeachersSubjectTagMaxHoursContinuously::fitness(TimeChromosome& c,
 							teachersSubjectTags[tch][day][hour+dd]+=2;
 						}
 						else{
-							assert(act->parity==PARITY_BIWEEKLY);
+							assert(act->parity==PARITY_FORTNIGHTLY);
 							teachersSubjectTags[tch][day][hour+dd]++;
 						}
 					}
@@ -6069,7 +6653,7 @@ int ConstraintTeachersSubjectTagMaxHoursContinuously::fitness(TimeChromosome& c,
 				
 		for(int t=0; t<r.nInternalTeachers; t++){
 			for(int d=0; d<r.nDaysPerWeek; d++){
-				//Bi-weekly activities are treated here as weekly ones, for the sake of simplicity					
+				//Fortnightly activities are treated here as weekly ones, for the sake of simplicity					
 				int n_cont_hours=0;
 				for(int h=0; h<r.nHoursPerDay; h++){
 					if(teachersSubjectTags[t][d][h]>0){

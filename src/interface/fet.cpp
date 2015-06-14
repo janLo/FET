@@ -31,6 +31,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include <qstring.h>
 #include <qtranslator.h>
 
+#include <QDir>
+#include <QTranslator>
+
 #include <fstream>
 #include <iostream>
 using namespace std;
@@ -40,6 +43,8 @@ extern bool students_schedule_ready, teachers_schedule_ready;
 extern QMutex mutex;
 
 void writeDefaultSimulationParameters();
+
+QTranslator translator;
 
 /**
 The one and only instantiation of the main class.
@@ -117,14 +122,14 @@ static int fetch_line(ifstream& in, char *s){
 
 void readSimulationParameters(){
 	if(!QFile::exists(INI_FILENAME)){
-		cout<<"File "<<INI_FILENAME<<" not found...making a new one\n";
+		cout<<"File "<<(const char*)(INI_FILENAME)<<" not found...making a new one\n";
 		writeDefaultSimulationParameters();
 	}
 
 	ifstream in(INI_FILENAME);
 	char s[256];
 
-	cout<<"Initializing parameters...reading file "<<INI_FILENAME<<endl;
+	cout<<"Initializing parameters...reading file "<<(const char*)(INI_FILENAME)<<endl;
 
 	//read main parameters of the simulation
 	int tmp=fetch_line(in, s);
@@ -214,11 +219,13 @@ void readSimulationParameters(){
 		char ss[100];
 		sscanf(s, "%s", ss);
 		FET_LANGUAGE=ss;
-		cout<<"Read: language="<<FET_LANGUAGE<<endl;
+		cout<<"Read: language="<<(const char*)(FET_LANGUAGE)<<endl;
 		if(FET_LANGUAGE!="en_GB" && FET_LANGUAGE!="fr" 
 		 && FET_LANGUAGE!="ro" && FET_LANGUAGE!="ca" 
 		 && FET_LANGUAGE!="ms" && FET_LANGUAGE!="pl"
-		 && FET_LANGUAGE!="tr" && FET_LANGUAGE!="nl"){
+		 && FET_LANGUAGE!="tr" && FET_LANGUAGE!="nl"
+		 && FET_LANGUAGE!="de" && FET_LANGUAGE!="hu"
+		 && FET_LANGUAGE!="mk"){
 			cout<<"Invalid language - making it english"<<endl;
 			FET_LANGUAGE="en_GB";
 		}
@@ -232,7 +239,7 @@ void writeSimulationParameters(){
 		exit(1);
 	}
 
-	cout<<"Writing parameters to file "<<INI_FILENAME<<endl;
+	cout<<"Writing parameters to file "<<(const char*)(INI_FILENAME)<<endl;
 
 	//read main parameters of the simulation
 	out<<"# This is FET's configuration file (FET version="<<(const char*)(FET_VERSION)<<")"<<endl<<endl<<endl;
@@ -297,7 +304,7 @@ void writeDefaultSimulationParameters(){
 		exit(1);
 	}
 
-	cout<<"Writing parameters to file "<<INI_FILENAME<<endl;
+	cout<<"Writing parameters to file "<<(const char*)(INI_FILENAME)<<endl;
 
 	//read main parameters of the simulation
 	out<<"# This is FET's configuration file (FET version="<<(const char*)(FET_VERSION)<<")"<<endl<<endl<<endl;
@@ -317,7 +324,7 @@ void writeDefaultSimulationParameters(){
 	out<<"# (variable MAX_POPULATION_SIZE in file genetictimetable_defs.h)"<<endl;
 	out<<"# (non-technical description: increasing this variable slows down the program,"<<endl;
 	out<<"# but gives better results)."<<endl;
-	out<<8192<<endl<<endl<<endl;
+	out<<MAX_POPULATION_SIZE<<endl<<endl<<endl;
 
 	out<<"# The evolution method:"<<endl;
 	out<<"# 1. Evolution1 - double the population, then select the best n/2 individuals (experimental)"<<endl;
@@ -356,20 +363,31 @@ void writeDefaultSimulationParameters(){
 FET starts here
 */
 int main(int argc, char **argv){
+
 	srand(unsigned(time(NULL)));
 
 	QDir dir;
+	
+	bool t=true;
 
 	//make sure that the input directory exists - only for GNU/Linux
 	//For Windows, I make a "fet.ini" in the current working directory
 #ifndef WIN32
 	if(!dir.exists(QDir::homeDirPath()+"/.fet"))
-		dir.mkdir(QDir::homeDirPath()+"/.fet");
+		t=dir.mkdir(QDir::homeDirPath()+"/.fet");
+	if(!t){
+		assert(0);
+		exit(1);
+	}
 #endif
 
 	//make sure that the output directory exists
 	if(!dir.exists(OUTPUT_DIR))
-		dir.mkdir(OUTPUT_DIR);
+		t=dir.mkdir(OUTPUT_DIR);
+	if(!t){
+		assert(0);
+		exit(1);
+	}
 
 	readSimulationParameters();
 
@@ -378,12 +396,85 @@ int main(int argc, char **argv){
 
 	QApplication qapplication(argc, argv);
 	
+	QObject::connect(&qapplication, SIGNAL(lastWindowClosed()), &qapplication, SLOT(quit()));
+	
+	//translator stuff
+	QDir d("/usr/share/fet/translations");
+	
+	if(FET_LANGUAGE=="ro"){
+		if(d.exists())
+			translator.load("fet_ro", "/usr/share/fet/translations");
+		else
+			translator.load("fet_ro", "translations");
+	}
+	else if(FET_LANGUAGE=="fr"){
+		if(d.exists())
+			translator.load("fet_fr", "/usr/share/fet/translations");
+		else
+			translator.load("fet_fr", "translations");
+	}
+	else if(FET_LANGUAGE=="ca"){
+		if(d.exists())
+			translator.load("fet_ca", "/usr/share/fet/translations");
+		else
+			translator.load("fet_ca", "translations");
+	}
+	else if(FET_LANGUAGE=="ms"){
+		if(d.exists())
+			translator.load("fet_ms", "/usr/share/fet/translations");
+		else
+			translator.load("fet_ms", "translations");
+	}
+	else if(FET_LANGUAGE=="pl"){
+		if(d.exists())
+			translator.load("fet_pl", "/usr/share/fet/translations");
+		else
+			translator.load("fet_pl", "translations");
+	}
+	else if(FET_LANGUAGE=="tr"){
+		if(d.exists())
+			translator.load("fet_tr", "/usr/share/fet/translations");
+		else
+			translator.load("fet_tr", "translations");
+	}
+	else if(FET_LANGUAGE=="nl"){
+		if(d.exists())
+			translator.load("fet_nl", "/usr/share/fet/translations");
+		else
+			translator.load("fet_nl", "translations");
+	}
+	else if(FET_LANGUAGE=="de"){
+		if(d.exists())
+			translator.load("fet_de", "/usr/share/fet/translations");
+		else
+			translator.load("fet_de", "translations");
+	}
+	else if(FET_LANGUAGE=="hu"){
+		if(d.exists())
+			translator.load("fet_hu", "/usr/share/fet/translations");
+		else
+			translator.load("fet_hu", "translations");
+	}
+	else if(FET_LANGUAGE=="mk"){
+		if(d.exists())
+			translator.load("fet_mk", "/usr/share/fet/translations");
+		else
+			translator.load("fet_mk", "translations");
+	}
+	else{
+		assert(FET_LANGUAGE=="en_GB");
+	}
+		
+	qapplication.installTranslator(&translator);	
+	//end translator stuff
+	
 	pqapplication=&qapplication;
 	FetMainForm fetMainForm;
-	qapplication.setMainWidget(&fetMainForm);
+	//qapplication.setMainWidget(&fetMainForm);
 	fetMainForm.show();
 
 	int tmp2=qapplication.exec();
+	
 	writeSimulationParameters();
 	return tmp2;
 }

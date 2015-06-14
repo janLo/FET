@@ -18,15 +18,26 @@
 #include "addequipmentform.h"
 #include "modifyequipmentform.h"
 
-#include <qlistbox.h>
+#include <q3listbox.h>
 #include <qinputdialog.h>
+
+#include <QDesktopWidget>
 
 EquipmentsForm::EquipmentsForm()
  : EquipmentsForm_template()
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	equipmentsListBox->clear();
-	for(Equipment* eq=gt.rules.equipmentsList.first(); eq; eq=gt.rules.equipmentsList.next())
+	for(int i=0; i<gt.rules.equipmentsList.size(); i++){
+		Equipment* eq=gt.rules.equipmentsList[i];
 		equipmentsListBox->insertItem(eq->name);
+	}
 }
 
 
@@ -36,12 +47,14 @@ EquipmentsForm::~EquipmentsForm()
 
 void EquipmentsForm::addEquipment()
 {
-	AddEquipmentForm* addEquipmentForm=new AddEquipmentForm();
-	addEquipmentForm->exec();
+	AddEquipmentForm* form=new AddEquipmentForm();
+	form->exec();
 
 	equipmentsListBox->clear();
-	for(Equipment* eq=gt.rules.equipmentsList.first(); eq; eq=gt.rules.equipmentsList.next())
+	for(int i=0; i<gt.rules.equipmentsList.size(); i++){
+		Equipment* eq=gt.rules.equipmentsList[i];
 		equipmentsListBox->insertItem(eq->name);
+	}
 		
 	equipmentsListBox->setCurrentItem(equipmentsListBox->count()-1);
 }
@@ -93,12 +106,14 @@ void EquipmentsForm::modifyEquipment()
 		return;
 	}
 
-	ModifyEquipmentForm* modifyEquipmentForm=new ModifyEquipmentForm(text);
-	modifyEquipmentForm->exec();
+	ModifyEquipmentForm* form=new ModifyEquipmentForm(text);
+	form->exec();
 
 	equipmentsListBox->clear();
-	for(Equipment* eq=gt.rules.equipmentsList.first(); eq; eq=gt.rules.equipmentsList.next())
+	for(int i=0; i<gt.rules.equipmentsList.size(); i++){
+		Equipment* eq=gt.rules.equipmentsList[i];
 		equipmentsListBox->insertItem(eq->name);
+	}
 
 	equipmentsListBox->setCurrentItem(t);
 }
@@ -108,8 +123,10 @@ void EquipmentsForm::sortEquipments()
 	gt.rules.sortEquipmentsAlphabetically();
 
 	equipmentsListBox->clear();
-	for(Equipment* eq=gt.rules.equipmentsList.first(); eq; eq=gt.rules.equipmentsList.next())
+	for(int i=0; i<gt.rules.equipmentsList.size(); i++){
+		Equipment* eq=gt.rules.equipmentsList[i];
 		equipmentsListBox->insertItem(eq->name);
+	}
 }
 
 void EquipmentsForm::equipmentChanged(int index)

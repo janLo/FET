@@ -19,8 +19,17 @@
 #include "addconstraintactivitiessamestartingtimeform.h"
 #include "modifyconstraintactivitiessamestartingtimeform.h"
 
+#include <QDesktopWidget>
+
 ConstraintActivitiesSameStartingTimeForm::ConstraintActivitiesSameStartingTimeForm()
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	this->refreshConstraintsListBox();
 }
 
@@ -30,16 +39,17 @@ ConstraintActivitiesSameStartingTimeForm::~ConstraintActivitiesSameStartingTimeF
 
 void ConstraintActivitiesSameStartingTimeForm::refreshConstraintsListBox()
 {
-	this->visibleConstraintsList.setAutoDelete(false);
 	this->visibleConstraintsList.clear();
 	constraintsListBox->clear();
-	for(TimeConstraint* ctr=gt.rules.timeConstraintsList.first(); ctr; ctr=gt.rules.timeConstraintsList.next())
+	for(int i=0; i<gt.rules.timeConstraintsList.size(); i++){
+		TimeConstraint* ctr=gt.rules.timeConstraintsList[i];
 		if(filterOk(ctr)){
 			QString s;
 			s=ctr->getDescription(gt.rules);
 			visibleConstraintsList.append(ctr);
 			constraintsListBox->insertItem(s);
 		}
+	}
 
 	constraintsListBox->setCurrentItem(0);
 	this->constraintChanged(constraintsListBox->currentItem());
@@ -58,7 +68,7 @@ void ConstraintActivitiesSameStartingTimeForm::constraintChanged(int index)
 	if(index<0)
 		return;
 	QString s;
-	assert((uint)(index)<this->visibleConstraintsList.count());
+	assert(index<this->visibleConstraintsList.size());
 	TimeConstraint* ctr=this->visibleConstraintsList.at(index);
 	assert(ctr!=NULL);
 	s=ctr->getDetailedDescription(gt.rules);
@@ -67,8 +77,8 @@ void ConstraintActivitiesSameStartingTimeForm::constraintChanged(int index)
 
 void ConstraintActivitiesSameStartingTimeForm::addConstraint()
 {
-	AddConstraintActivitiesSameStartingTimeForm *addConstraintActivitiesSameStartingTimeForm=new AddConstraintActivitiesSameStartingTimeForm();
-	addConstraintActivitiesSameStartingTimeForm->exec();
+	AddConstraintActivitiesSameStartingTimeForm *form=new AddConstraintActivitiesSameStartingTimeForm();
+	form->exec();
 
 	this->refreshConstraintsListBox();
 }
@@ -82,8 +92,8 @@ void ConstraintActivitiesSameStartingTimeForm::modifyConstraint()
 	}
 	TimeConstraint* ctr=this->visibleConstraintsList.at(i);
 
-	ModifyConstraintActivitiesSameStartingTimeForm *modifyConstraintActivitiesSameStartingTimeForm=new ModifyConstraintActivitiesSameStartingTimeForm((ConstraintActivitiesSameStartingTime*)ctr);
-	modifyConstraintActivitiesSameStartingTimeForm->exec();
+	ModifyConstraintActivitiesSameStartingTimeForm *form=new ModifyConstraintActivitiesSameStartingTimeForm((ConstraintActivitiesSameStartingTime*)ctr);
+	form->exec();
 
 	this->refreshConstraintsListBox();
 	

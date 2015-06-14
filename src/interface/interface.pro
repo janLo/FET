@@ -182,6 +182,9 @@ SOURCES += fet.cpp \
 		   constraintteachersmaxhoursdailyform.cpp \
 		   addconstraintteachersmaxhoursdailyform.cpp \
 		   modifyconstraintteachersmaxhoursdailyform.cpp \
+		   constraintteachersminhoursdailyform.cpp \
+		   addconstraintteachersminhoursdailyform.cpp \
+		   modifyconstraintteachersminhoursdailyform.cpp \
 		   constraintteacherssubgroupsmaxhoursdailyform.cpp \
 		   addconstraintteacherssubgroupsmaxhoursdailyform.cpp \
 		   modifyconstraintteacherssubgroupsmaxhoursdailyform.cpp \
@@ -203,6 +206,9 @@ SOURCES += fet.cpp \
 		   constraintstudentssetintervalmaxdaysperweekform.cpp \
 		   addconstraintstudentssetintervalmaxdaysperweekform.cpp \
 		   modifyconstraintstudentssetintervalmaxdaysperweekform.cpp \
+		   constraintteacherintervalmaxdaysperweekform.cpp \
+		   addconstraintteacherintervalmaxdaysperweekform.cpp \
+		   modifyconstraintteacherintervalmaxdaysperweekform.cpp \
 		   constraintstudentssetnhoursdailyform.cpp \
 		   addconstraintstudentssetnhoursdailyform.cpp \
 		   modifyconstraintstudentssetnhoursdailyform.cpp \
@@ -223,7 +229,10 @@ SOURCES += fet.cpp \
 		   modifyconstraintactivitiessamestartinghourform.cpp \
 		   modifyconstraintactivitiessameroomform.cpp \
 		   institutionnameform.cpp \
-		   commentsform.cpp
+		   commentsform.cpp \
+		   teachersstatisticsform.cpp \
+		   subjectsstatisticsform.cpp \
+		   studentsstatisticsform.cpp
 HEADERS += fet.h \
            helpaboutform.h \
            helpfaqform.h \
@@ -402,6 +411,9 @@ HEADERS += fet.h \
 		   constraintteachersmaxhoursdailyform.h \
 		   addconstraintteachersmaxhoursdailyform.h \
 		   modifyconstraintteachersmaxhoursdailyform.h \
+		   constraintteachersminhoursdailyform.h \
+		   addconstraintteachersminhoursdailyform.h \
+		   modifyconstraintteachersminhoursdailyform.h \
 		   constraintteacherssubgroupsmaxhoursdailyform.h \
 		   addconstraintteacherssubgroupsmaxhoursdailyform.h \
 		   modifyconstraintteacherssubgroupsmaxhoursdailyform.h \
@@ -423,6 +435,9 @@ HEADERS += fet.h \
 		   constraintstudentssetintervalmaxdaysperweekform.h \
 		   addconstraintstudentssetintervalmaxdaysperweekform.h \
 		   modifyconstraintstudentssetintervalmaxdaysperweekform.h \
+		   constraintteacherintervalmaxdaysperweekform.h \
+		   addconstraintteacherintervalmaxdaysperweekform.h \
+		   modifyconstraintteacherintervalmaxdaysperweekform.h \
 		   constraintstudentssetnhoursdailyform.h \
 		   addconstraintstudentssetnhoursdailyform.h \
 		   modifyconstraintstudentssetnhoursdailyform.h \
@@ -444,16 +459,27 @@ HEADERS += fet.h \
 		   modifyconstraintactivitiessamestartinghourform.h \
 		   modifyconstraintactivitiessameroomform.h \
 		   institutionnameform.h \
-		   commentsform.h
+		   commentsform.h \
+		   teachersstatisticsform.h \
+		   subjectsstatisticsform.h \
+		   studentsstatisticsform.h		   
 TRANSLATIONS += ../../translations/fet_ro.ts \
 				../../translations/fet_ca.ts \
                 ../../translations/fet_fr.ts \
                 ../../translations/fet_ms.ts \
                 ../../translations/fet_pl.ts \
                 ../../translations/fet_tr.ts \
-                ../../translations/fet_nl.ts
-FORMS += helpaboutform_template.ui \
-         helpfaqform_template.ui \
+                ../../translations/fet_nl.ts \
+                ../../translations/fet_de.ts \
+                ../../translations/fet_hu.ts \
+                ../../translations/fet_mk.ts
+FORMS+=  fetmainform_template.ui \
+	helpaboutform_template.ui \
+	teachersstatisticsform_template.ui \
+	subjectsstatisticsform_template.ui \
+	studentsstatisticsform_template.ui
+#The following line was changed from FORMS to FORMS3 by qt3to4
+FORMS3 += helpfaqform_template.ui \
          helptimeconstraintsform_template.ui \
          helptimeconstraintssubtagsform_template.ui \
          activitiesform_template.ui \
@@ -532,7 +558,6 @@ FORMS += helpaboutform_template.ui \
          timetableallocatehoursform_template.ui \
          timetableallocateroomsform_template.ui \
          timetableallocatehoursroomsform_template.ui \
-         fetmainform_template.ui \
          timetableviewstudentsform_template.ui \
          timetableviewstudentswithroomsform_template.ui \
          timetableviewstudentswithrooms2form_template.ui \
@@ -610,6 +635,9 @@ FORMS += helpaboutform_template.ui \
 		   constraintteachersmaxhoursdailyform_template.ui \
 		   addconstraintteachersmaxhoursdailyform_template.ui \
 		   modifyconstraintteachersmaxhoursdailyform_template.ui \
+		   constraintteachersminhoursdailyform_template.ui \
+		   addconstraintteachersminhoursdailyform_template.ui \
+		   modifyconstraintteachersminhoursdailyform_template.ui \
 		   constraintteacherssubgroupsmaxhoursdailyform_template.ui \
 		   addconstraintteacherssubgroupsmaxhoursdailyform_template.ui \
 		   modifyconstraintteacherssubgroupsmaxhoursdailyform_template.ui \
@@ -631,6 +659,9 @@ FORMS += helpaboutform_template.ui \
 		   constraintstudentssetintervalmaxdaysperweekform_template.ui \
 		   addconstraintstudentssetintervalmaxdaysperweekform_template.ui \
 		   modifyconstraintstudentssetintervalmaxdaysperweekform_template.ui \
+		   constraintteacherintervalmaxdaysperweekform_template.ui \
+		   addconstraintteacherintervalmaxdaysperweekform_template.ui \
+		   modifyconstraintteacherintervalmaxdaysperweekform_template.ui \
 		   constraintstudentssetnhoursdailyform_template.ui \
 		   addconstraintstudentssetnhoursdailyform_template.ui \
 		   modifyconstraintstudentssetnhoursdailyform_template.ui \
@@ -665,3 +696,8 @@ OBJECTS_DIR = ../../tmp
 UI_DIR = ../../tmp 
 MOC_DIR = ../../tmp 
 INCLUDEPATH = ../engine 
+#The following line was inserted by qt3to4
+QT += xml qt3support 
+#The following line was inserted by qt3to4
+CONFIG += uic3
+

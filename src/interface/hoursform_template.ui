@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.2" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
 <class>HoursForm_template</class>
 <widget class="QDialog">
     <property name="name">
@@ -9,7 +9,7 @@
             <x>0</x>
             <y>0</y>
             <width>541</width>
-            <height>626</height>
+            <height>532</height>
         </rect>
     </property>
     <property name="caption">
@@ -444,7 +444,8 @@
             </property>
             <property name="text">
                 <string>Number of start hours (periods) per day
-(please specify also the name of the last hour of the day)</string>
+(please specify also the name of the last hour of the day)
+Please be careful, you will have to input n+1 names</string>
             </property>
         </widget>
         <widget class="QSpinBox" row="0" column="4">

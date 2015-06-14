@@ -3,15 +3,16 @@
     <name>ActivitiesForm_template</name>
     <message>
         <source>FET - the activities (lectures, courses, seminars, etc.)</source>
-        <translation>FET-aktiviteler(dersler,seminerler)</translation>
+        <translation>FET - Dersler (Etkinlikler, vb.)</translation>
     </message>
     <message>
         <source>Activities</source>
-        <translation>Etkinlikler</translation>
+        <translation>Dersler</translation>
     </message>
     <message>
         <source>Current activity&apos;s description</source>
-        <translation>Geçerli etkinlik tanımlama</translation>
+        <translation>Ders Tanımı
+</translation>
     </message>
     <message>
         <source>Add</source>
@@ -31,19 +32,19 @@
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni Nesne</translation>
+        <translation>Yeni</translation>
     </message>
     <message>
         <source>Filter</source>
-        <translation>Filtre</translation>
+        <translation>Filtre Uygula</translation>
     </message>
     <message>
         <source>Students set</source>
-        <translation>Öğrenci Hazırlamak</translation>
+        <translation>Öğrenci Grubu</translation>
     </message>
     <message>
         <source>Subject</source>
-        <translation>Konu</translation>
+        <translation>Ders Konusu</translation>
     </message>
     <message>
         <source>Teacher</source>
@@ -51,18 +52,19 @@
     </message>
     <message>
         <source>Subject tag</source>
-        <translation>Konu etiketi</translation>
+        <translation>Ders Konu Başlığı</translation>
     </message>
 </context>
 <context>
     <name>AddActivityForm_template</name>
     <message>
         <source>FET - add new activity dialog</source>
-        <translation>FET-Yeni etkinlik diyalog ekle</translation>
+        <translation>FET - Ders Ekleme
+</translation>
     </message>
     <message>
         <source>Show years</source>
-        <translation>Yılları Göster</translation>
+        <translation>Ders Yıllarını Göster</translation>
     </message>
     <message>
         <source>Show groups</source>
@@ -70,11 +72,12 @@
     </message>
     <message>
         <source>Show subgroups</source>
-        <translation>Sub grubları göster</translation>
+        <translation>Alt-Grupları Göster
+</translation>
     </message>
     <message>
         <source>Current activity</source>
-        <translation>Bügünkü  etkinlik</translation>
+        <translation>Ders</translation>
     </message>
     <message>
         <source>Close</source>
@@ -82,11 +85,13 @@
     </message>
     <message>
         <source>Add current activity</source>
-        <translation>Geçerli hareketi ekle</translation>
+        <translation>Ders Ekle
+</translation>
     </message>
     <message>
         <source>All teachers</source>
-        <translation>Bütün Öğretmenler</translation>
+        <translation>Tüm Öğretmenler
+</translation>
     </message>
     <message>
         <source>Add</source>
@@ -106,16 +111,19 @@
     </message>
     <message>
         <source>Selected teachers</source>
-        <translation>Seçilen Öğretmenler</translation>
+        <translation>Seçilen Öğretmenler
+</translation>
     </message>
     <message>
         <source>Split this activity into ... lessons per week.</source>
-        <translation>Bu etkinliği dersler içine böl...</translation>
+        <translation>Bu Dersi Haftalık … Derse Böl.
+</translation>
     </message>
     <message>
         <source>The minimum required distance in 
 days between each pair of subactivities</source>
-        <translation>Gün içinde her bir etkilik arasındaki gerekli olan minimum zaman</translation>
+        <translation>Alt-Etkinlik çiftleri arası 
+Gereken Minumum Gün Süresi</translation>
     </message>
     <message>
         <source>1</source>
@@ -127,11 +135,13 @@ days between each pair of subactivities</source>
     </message>
     <message>
         <source>Preferred day</source>
-        <translation>Tercih edilen gün</translation>
+        <translation>Tercih Edilen Gün
+</translation>
     </message>
     <message>
         <source>Preferred hour</source>
-        <translation>Tercih edilen saat</translation>
+        <translation>Tercih Edilen Ders Saati
+</translation>
     </message>
     <message>
         <source>Parity</source>
@@ -139,11 +149,12 @@ days between each pair of subactivities</source>
     </message>
     <message>
         <source>Bi-weekly (once at two weeks)</source>
-        <translation>Haftalık(İki hafta bir kez)</translation>
+        <translation type="obsolete">Haftalık(İki hafta bir kez)</translation>
     </message>
     <message>
         <source>Active</source>
-        <translation>Aktif</translation>
+        <translation>Etkin
+</translation>
     </message>
     <message>
         <source>2</source>
@@ -151,7 +162,7 @@ days between each pair of subactivities</source>
     </message>
     <message>
         <source>Bi-weekly</source>
-        <translation>Haftalık</translation>
+        <translation type="obsolete">Haftalık</translation>
     </message>
     <message>
         <source>3</source>
@@ -183,22 +194,41 @@ days between each pair of subactivities</source>
     </message>
     <message>
         <source>Subject tag</source>
-        <translation>Konu etiketi</translation>
+        <translation>Ders Konu Başlığı
+</translation>
     </message>
     <message>
         <source>All students</source>
-        <translation>Bütün öğrenciler</translation>
+        <translation>Tüm Öğrenciler
+</translation>
     </message>
     <message>
         <source>Selected students</source>
-        <translation>Seçilen öğrenciler</translation>
+        <translation>Seçilen Öğrenciler
+</translation>
+    </message>
+    <message>
+        <source>Fortnightly (once at two weeks)</source>
+        <translation>İki Haftada Bir
+</translation>
+    </message>
+    <message>
+        <source>Fortnightly</source>
+        <translation>İki Haftada Bir
+</translation>
+    </message>
+    <message>
+        <source>Number of students (-1 for automatic computing)</source>
+        <translation>Öğrenci Sayısı (Girilmeyecekse -1)
+</translation>
     </message>
 </context>
 <context>
     <name>AddBuildingForm_template</name>
     <message>
         <source>Add Building Dialog</source>
-        <translation>Yapı diyalog ekle</translation>
+        <translation>Okul Binası Ekle
+</translation>
     </message>
     <message>
         <source>Name</source>
@@ -206,7 +236,8 @@ days between each pair of subactivities</source>
     </message>
     <message>
         <source>Add building</source>
-        <translation>Yapı ekle</translation>
+        <translation>Okul Binası Ekle
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -217,15 +248,17 @@ days between each pair of subactivities</source>
     <name>AddConstraint2ActivitiesConsecutiveForm_template</name>
     <message>
         <source>FET - Add new Constraint2ActivitiesConsecutive dialog</source>
-        <translation>FET- Ardışık kısıtlama etkinlikleri ekle</translation>
+        <translation>FET - Kısıt Ekle - Dersleri Ardışıklama (Sıra Önemli)
+</translation>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Geçerli kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -233,40 +266,46 @@ days between each pair of subactivities</source>
     </message>
     <message>
         <source>Add current constraint</source>
-        <translation>Geçerli kısıtlama ekle</translation>
+        <translation>Kısıt Ekle
+</translation>
     </message>
     <message>
         <source>Please input here the id&apos;s of the 2 activities,
 in order, separated by commas.</source>
-        <translation>Lütfen buraya iki etkinliği virgülle ayırarak giriniz</translation>
+        <translation>Lütfen Buraya, Virgül ile Ayrılmış 
+İki Adet Ders Numarasını, Sıralı Olarak Giriniz.
+</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>
-Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>1.0</source>
-        <translation>1,0</translation>
+        <translation>1.0</translation>
     </message>
 </context>
 <context>
     <name>AddConstraint2ActivitiesGroupedForm_template</name>
     <message>
         <source>FET - Add new Constraint2ActivitiesGrouped dialog</source>
-        <translation>FET- Yeni bir kısıtlama etkinlikleri dialog kutusu ekle</translation>
+        <translation>FET - Kısıt Ekle - Dersleri Gruplama (Sıra Önemsiz)
+</translation>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt
+</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Add current constraint</source>
-        <translation>Genel kısıtlama ekle</translation>
+        <translation>Ders Ekle
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -274,7 +313,7 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -283,22 +322,24 @@ in order, separated by commas.</source>
     <message>
         <source>Please input here the id&apos;s of the 2 activities,
 in any order, separated by commas.</source>
-        <translation>Lütfen buraya iki etkinliği virgülle ayırarak giriniz.</translation>
+        <translation>Lütfen Buraya, Virgül ile Ayrılmış 
+İki Adet Ders Numarasını, Sırasız Olarak Giriniz.</translation>
     </message>
 </context>
 <context>
     <name>AddConstraint2ActivitiesOrderedForm_template</name>
     <message>
         <source>FET - Add new Constraint2ActivitiesOrdered dialog</source>
-        <translation>FET- Yeni bir kısıtlama etkinlikleri dialog kutusu ekle</translation>
+        <translation>FET - Kısıt Ekle - Dersleri Sıralama (Aralıklı)
+</translation>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Geçerli kısıtlama</translation>
+        <translation>Kısıt</translation>
     </message>
     <message>
         <source>Close</source>
@@ -306,31 +347,33 @@ in any order, separated by commas.</source>
     </message>
     <message>
         <source>Add current constraint</source>
-        <translation>Genel kısıtlama ekle</translation>
+        <translation>Kısıt Ekle</translation>
     </message>
     <message>
         <source>Please input here the id&apos;s of the 2 activities,
 in order, separated by commas.</source>
-        <translation>Lütfen buraya iki etkinliği virgülle ayırarak giriniz</translation>
+        <translation>Lütfen Buraya, Virgül ile Ayrılmış 
+İki Adet Ders Numarasını, Sıralı Olarak Giriniz.</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>1.0</source>
-        <translation></translation>
+        <translation>1.0</translation>
     </message>
 </context>
 <context>
     <name>AddConstraintActivitiesNotOverlappingForm_template</name>
     <message>
         <source>FET - Add new constraint activities not overlapping</source>
-        <translation>Ardışık olmayan etkinlikler ekle</translation>
+        <translation>FET - Kısıt Ekle - Dersleri Ardışıklamama
+</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -342,7 +385,7 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Add constraint</source>
-        <translation>Kısıtlama ekle</translation>
+        <translation>Kısıt Ekle</translation>
     </message>
     <message>
         <source>Close</source>
@@ -350,7 +393,8 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>All activities</source>
-        <translation>Bütün etkinlikler</translation>
+        <translation>Tüm Dersler
+</translation>
     </message>
     <message>
         <source>New Item</source>
@@ -366,18 +410,20 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Not overlapping activities</source>
-        <translation>Ardısıkolmayan etkinlikler</translation>
+        <translation>Dersleri Ardışıklamama
+</translation>
     </message>
 </context>
 <context>
     <name>AddConstraintActivitiesPreferredTimesForm_template</name>
     <message>
         <source>FET - Adding a new constraint activities preferred times</source>
-        <translation>FET-Tercih edilen zamanda yeni bir zor etkinlik ekle</translation>
+        <translation>FET - Kısıt Ekle - Dersleri Tercih Edilen Gün Ve Saate Yerleştirme
+</translation>
     </message>
     <message>
         <source>Add constraint</source>
-        <translation>Kısıtlama ekle</translation>
+        <translation>Kısıt Ekle</translation>
     </message>
     <message>
         <source>Close</source>
@@ -389,7 +435,7 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -397,11 +443,13 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Subject tag</source>
-        <translation>Konu etiketi</translation>
+        <translation>Ders Konu Başlığı
+</translation>
     </message>
     <message>
         <source>Students set</source>
-        <translation>Öğrenci takımı</translation>
+        <translation>Öğrenci Grupları
+</translation>
     </message>
     <message>
         <source>Subject</source>
@@ -416,11 +464,13 @@ in order, separated by commas.</source>
     <name>AddConstraintActivitiesSameRoomForm_template</name>
     <message>
         <source>FET - Add new constraint activities same room</source>
-        <translation>FET- Yeni bir etkinlik ekle </translation>
+        <translation>FET - Kısıt Ekle - Dersleri Aynı Sınıfa Yerleştirme
+</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>FET- Yeni aktiviteler ekle</translation>
+        <translation>Önem (Önerilen:1.0)
+</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -432,7 +482,7 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Add constraint</source>
-        <translation>Kısıtlama ekle</translation>
+        <translation>Kısıt Ekle</translation>
     </message>
     <message>
         <source>Close</source>
@@ -440,7 +490,7 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>All activities</source>
-        <translation>Bütün etkinlikler</translation>
+        <translation>Tüm Dersler</translation>
     </message>
     <message>
         <source>New Item</source>
@@ -456,18 +506,20 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Selected activities</source>
-        <translation>Seçilen etkinlikler</translation>
+        <translation>Seçilen Dersler
+</translation>
     </message>
 </context>
 <context>
     <name>AddConstraintActivitiesSameStartingHourForm_template</name>
     <message>
         <source>FET - Add new constraint activities same starting hour</source>
-        <translation>FET- Yeni etkinlikler ekle</translation>
+        <translation>FET - Kısıt Ekle - Dersleri Aynı Saate Yerleştirme
+</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -479,7 +531,7 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Add constraint</source>
-        <translation>Kısıtlama ekle</translation>
+        <translation>Kısıt Ekle</translation>
     </message>
     <message>
         <source>Close</source>
@@ -487,7 +539,7 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>All activities</source>
-        <translation>Bütün etkinlikler</translation>
+        <translation>Tüm Dersler</translation>
     </message>
     <message>
         <source>New Item</source>
@@ -503,18 +555,19 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Selected activities</source>
-        <translation>Seçilen etkinlikler</translation>
+        <translation>Seçilen Dersler</translation>
     </message>
 </context>
 <context>
     <name>AddConstraintActivitiesSameStartingTimeForm_template</name>
     <message>
         <source>FET - Add new constraint activities same starting time</source>
-        <translation>FET-Etkinlik ekle başlangıç zamanı ile aynı</translation>
+        <translation>FET - Kısıt Ekle - Dersleri Aynı Gün Ve Saate Yerleştirme
+</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -526,7 +579,7 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Add constraint</source>
-        <translation>Kısıtlama ekle</translation>
+        <translation>Kısıt Ekle</translation>
     </message>
     <message>
         <source>Close</source>
@@ -537,11 +590,11 @@ in order, separated by commas.</source>
 representatives of sub-activities. There will be added more
 ConstraintActivitiesSameStartingTime-s, one for each corresponding
 tuple)</source>
-        <translation>Blok(Lütfen buraya tıklayınız eger alt etkinlikleri temsil eden. bir etkinlik girmek istiyorsanız.Yeni bir tane eklenir.) </translation>
+        <translation>Engelle (Alt-Etkinliklerin Benzerlerini Girecekseniz, Seçiniz)</translation>
     </message>
     <message>
         <source>All activities</source>
-        <translation>Bütün etkinlikler</translation>
+        <translation>Tüm Dersler</translation>
     </message>
     <message>
         <source>New Item</source>
@@ -549,15 +602,16 @@ tuple)</source>
     </message>
     <message>
         <source>Simultaneous activities</source>
-        <translation>Aynı zamanda yapılan etkinlikler </translation>
+        <translation>Eş Zamanlı Dersler
+</translation>
     </message>
     <message>
         <source>Subject tag</source>
-        <translation>Konu etiketi</translation>
+        <translation>Ders Konu Başlığı</translation>
     </message>
     <message>
         <source>Students set</source>
-        <translation>Öğrenci takımları</translation>
+        <translation>Öğrenci Grupları</translation>
     </message>
     <message>
         <source>Subject</source>
@@ -584,11 +638,12 @@ tuple)</source>
     <name>AddConstraintActivityEndsDayForm_template</name>
     <message>
         <source>FET - Add new constraint activity ends day dialog</source>
-        <translation>FET-Zorunlu etkinlik bitiş günü diyalog ekle</translation>
+        <translation>FET - Kısıt Ekle - Dersi Gün Sonuna Yerleştirme
+</translation>
     </message>
     <message>
         <source>Add current constraint</source>
-        <translation>Genel kısıtlama ekle</translation>
+        <translation>Kısıt Ekle</translation>
     </message>
     <message>
         <source>Close</source>
@@ -596,11 +651,11 @@ tuple)</source>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -608,18 +663,19 @@ tuple)</source>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Activity</source>
-        <translation>Etkinlik</translation>
+        <translation>Ders</translation>
     </message>
 </context>
 <context>
     <name>AddConstraintActivityPreferredRoomForm_template</name>
     <message>
         <source>FET - Add new constraint activity preferred room</source>
-        <translation>FET-Tercih edilenyerde yeni bir zor etkinlik ekle</translation>
+        <translation>FET - Kısıt Ekle - Dersi Tercih Edilen Sınıfa Yerleştirme
+</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -627,11 +683,11 @@ tuple)</source>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Add constraint</source>
-        <translation>Kısıtlama ekle</translation>
+        <translation>Kısıt Ekle</translation>
     </message>
     <message>
         <source>Close</source>
@@ -643,22 +699,23 @@ tuple)</source>
     </message>
     <message>
         <source>Room</source>
-        <translation>Yer</translation>
+        <translation>Sınıf</translation>
     </message>
     <message>
         <source>Activity</source>
-        <translation>Etkinlik</translation>
+        <translation>Ders</translation>
     </message>
 </context>
 <context>
     <name>AddConstraintActivityPreferredRoomsForm_template</name>
     <message>
         <source>FET - Add new constraint activity preferred rooms</source>
-        <translation>Tercih edilenyerde yeni bir zor etkinlik ekle</translation>
+        <translation>FET - Kısıt Ekle - Dersi Tercih Edilen Sınıflara Yerleştirme
+</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -670,7 +727,7 @@ tuple)</source>
     </message>
     <message>
         <source>Add constraint</source>
-        <translation>Kısıtlama ekle</translation>
+        <translation>Kısıt Ekle</translation>
     </message>
     <message>
         <source>Close</source>
@@ -686,7 +743,7 @@ tuple)</source>
     </message>
     <message>
         <source>All rooms</source>
-        <translation>Bütün odalar</translation>
+        <translation>Tüm Sınıflar</translation>
     </message>
     <message>
         <source>New Item</source>
@@ -695,22 +752,23 @@ tuple)</source>
     <message>
         <source>Selected rooms</source>
         <translation>
-Seçilen odalar</translation>
+Seçilen Sınıflar</translation>
     </message>
     <message>
         <source>Activity</source>
-        <translation>Etkinlik</translation>
+        <translation>Ders</translation>
     </message>
 </context>
 <context>
     <name>AddConstraintActivityPreferredTimeForm_template</name>
     <message>
         <source>FET - Add new constraint activity preferred time dialog</source>
-        <translation>FET- Tercih edilen zamanda  yeni bir zor etkinlik ekle</translation>
+        <translation>FET - Kısıt Ekle - Dersi Tercih Edilen Gün Ve Saate Yerleştirme
+</translation>
     </message>
     <message>
         <source>Add current constraint</source>
-        <translation>Genel kısıtlama ekle</translation>
+        <translation>Kısıt Ekle</translation>
     </message>
     <message>
         <source>Close</source>
@@ -718,11 +776,11 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt</translation>
     </message>
     <message>
         <source>Period</source>
@@ -734,7 +792,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Start hour</source>
-        <translation>Başlangıç saati</translation>
+        <translation>Ders Başlama Saati
+</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -742,26 +801,47 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Activity</source>
-        <translation>Etkinlik</translation>
+        <translation>Ders</translation>
+    </message>
+    <message>
+        <source>Filter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Students set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teacher</source>
+        <translation type="unfinished">Öğretmen</translation>
+    </message>
+    <message>
+        <source>Subject</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subject tag</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>AddConstraintActivityPreferredTimesForm_template</name>
     <message>
         <source>FET - Adding a new constraint activity preferred times</source>
-        <translation>FET- Tercih edilen zamanlarda  yeni bir zor etkinlik ekle</translation>
+        <translation>FET - Kısıt Ekle - Dersi Tercih Edilen Günlere Ve Saatlere Yerleştirme
+</translation>
     </message>
     <message>
         <source>Activity</source>
-        <translation>Etkinlik</translation>
+        <translation>Ders</translation>
     </message>
     <message>
         <source>Add constraint</source>
-        <translation>Kısıtlama ekle</translation>
+        <translation>Kısıt Ekle</translation>
     </message>
     <message>
         <source>Close</source>
@@ -769,7 +849,7 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -779,16 +859,37 @@ Seçilen odalar</translation>
         <source>Compulsory</source>
         <translation>Zorunlu</translation>
     </message>
+    <message>
+        <source>Filter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Students set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teacher</source>
+        <translation type="unfinished">Öğretmen</translation>
+    </message>
+    <message>
+        <source>Subject tag</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subject</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AddConstraintBasicCompulsorySpaceForm_template</name>
     <message>
         <source>FET - Add new constraint basic compulsory space dialog</source>
-        <translation>FET-Yeni kısıtlama ekle: temel zorunlu yer diyaloğu</translation>
+        <translation>FET - Kısıt Ekle - Zorunlu Yer 
+</translation>
     </message>
     <message>
         <source>Add current constraint</source>
-        <translation>Genel kısıtlama ekle</translation>
+        <translation>Kısıt Ekle</translation>
     </message>
     <message>
         <source>Close</source>
@@ -796,11 +897,11 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -808,18 +909,19 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
 </context>
 <context>
     <name>AddConstraintBasicCompulsoryTimeForm_template</name>
     <message>
         <source>FET - Add new constraint basic compulsory time dialog</source>
-        <translation>FET-Yeni kısıtlama ekle: temel zorunlu zaman diyaloğu</translation>
+        <translation>FET - Kısıt Ekle - Zorunlu Zaman 
+</translation>
     </message>
     <message>
         <source>Add current constraint</source>
-        <translation>Genel kısıtlama ekle</translation>
+        <translation>Kısıt Ekle</translation>
     </message>
     <message>
         <source>Close</source>
@@ -827,11 +929,11 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -839,18 +941,20 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>FET-zorunlu bir konusma zamanı ekle</translation>
+        <translation>Önem (Önerilen:1.0)
+</translation>
     </message>
 </context>
 <context>
     <name>AddConstraintBreakForm_template</name>
     <message>
         <source>FET - Add new constraint break dialog</source>
-        <translation>FET- Zorunlu bir ara ekle</translation>
+        <translation>FET - Kısıt Ekle - Ders Arası
+</translation>
     </message>
     <message>
         <source>Add current constraint</source>
-        <translation>Genel kısıtlama ekle</translation>
+        <translation>Kısıt Ekle</translation>
     </message>
     <message>
         <source>Close</source>
@@ -858,11 +962,11 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt</translation>
     </message>
     <message>
         <source>Period</source>
@@ -874,11 +978,13 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Start hour</source>
-        <translation>Başlangıç saati</translation>
+        <translation>Ders Başlama Saati
+</translation>
     </message>
     <message>
         <source>End hour</source>
-        <translation>Bitiş saati</translation>
+        <translation>Bitiş Saati
+</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -886,18 +992,19 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
 </context>
 <context>
     <name>AddConstraintMaxBuildingChangesPerDayForStudentsForm_template</name>
     <message>
         <source>FET - Add new constraint max building changes per day for students dialog</source>
-        <translation>FET-Yeni kısıtlama ekle: her günkü öğrenci diyalogları için en fazla inşa etme değişikliği</translation>
+        <translation>FET - Kısıt Ekle - Öğrenciler - Günlük Maksimum Okul Binası Değiştirme
+</translation>
     </message>
     <message>
         <source>Add current constraint</source>
-        <translation>Genel kısıtlama ekle</translation>
+        <translation>Kısıt Ekle</translation>
     </message>
     <message>
         <source>Close</source>
@@ -905,7 +1012,7 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -913,7 +1020,7 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Compulsory</source>
@@ -921,18 +1028,20 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Max building changes</source>
-        <translation>FET-Yeni kısıtlama ekle: her günkü öğrenci diyalogları için en fazla inşa etme değişikliği</translation>
+        <translation>Maksimum Okul Binası Değiştirme
+</translation>
     </message>
 </context>
 <context>
     <name>AddConstraintMaxBuildingChangesPerDayForTeachersForm_template</name>
     <message>
         <source>FET - Add new constraint max building changes per day for teachers dialog</source>
-        <translation>FET-Yeni kısıtlama ekle: her günkü öğretmen diyalogları için en fazla inşa etme değişikliği</translation>
+        <translation>FET - Kısıt Ekle - Öğretmenler - Günlük Maksimum Okul Binası Değiştirme
+</translation>
     </message>
     <message>
         <source>Add current constraint</source>
-        <translation>Genel kısıtlama ekle</translation>
+        <translation>Kısıt Ekle</translation>
     </message>
     <message>
         <source>Close</source>
@@ -940,7 +1049,7 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -948,7 +1057,7 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Compulsory</source>
@@ -956,18 +1065,20 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Max building changes</source>
-        <translation>Maksimum değişiklikler</translation>
+        <translation>Maksimum Okul Binası Değiştirme
+</translation>
     </message>
 </context>
 <context>
     <name>AddConstraintMaxRoomChangesPerDayForStudentsForm_template</name>
     <message>
         <source>FET - Add new constraint max room changes per day for students dialog</source>
-        <translation>FET-Yeni kısıtlama ekle: her günkü öğrenci diyalogları için en fazla oda değişikliği</translation>
+        <translation>FET - Kısıt Ekle - Öğrenciler - Günlük Maksimum Sınıf Değiştirme
+</translation>
     </message>
     <message>
         <source>Add current constraint</source>
-        <translation>Genel kısıtlama ekle</translation>
+        <translation>Kısıt Ekle</translation>
     </message>
     <message>
         <source>Close</source>
@@ -975,7 +1086,7 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -983,7 +1094,7 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Compulsory</source>
@@ -991,18 +1102,20 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Max room changes</source>
-        <translation>Masimum oda değisir</translation>
+        <translation>Maksimum Sınıf Değiştirme
+</translation>
     </message>
 </context>
 <context>
     <name>AddConstraintMaxRoomChangesPerDayForTeachersForm_template</name>
     <message>
         <source>FET - Add new constraint max room changes per day for teachers dialog</source>
-        <translation>FET-Yeni kısıtlama ekle: her günkü öğretmen diyalogları için en fazla oda değişikliği</translation>
+        <translation>FET - Kısıt Ekle - Öğretmenler - Günlük Maksimum Sınıf Değiştirme
+</translation>
     </message>
     <message>
         <source>Add current constraint</source>
-        <translation>Genel kısıtlama ekle</translation>
+        <translation>Kısıt Ekle</translation>
     </message>
     <message>
         <source>Close</source>
@@ -1010,7 +1123,7 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -1018,7 +1131,7 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Compulsory</source>
@@ -1026,18 +1139,20 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Max room changes</source>
-        <translation>maksimum oda değişir</translation>
+        <translation>Maksimum Sınıf Değiştirme
+</translation>
     </message>
 </context>
 <context>
     <name>AddConstraintMinNDaysBetweenActivitiesForm_template</name>
     <message>
         <source>FET - Add new constraint min n days between activities</source>
-        <translation>FET -Yeni kısıtlamalar ekle gün içinde etkimlikler arasında</translation>
+        <translation>FET - Kısıt Ekle - Dersler Arası Minumum N Gün
+</translation>
     </message>
     <message>
         <source>All activities</source>
-        <translation>Bütün etkinlikler</translation>
+        <translation>Tüm Dersler</translation>
     </message>
     <message>
         <source>New Item</source>
@@ -1053,7 +1168,7 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Selected activities</source>
-        <translation>Seçilen etkinlikler</translation>
+        <translation>Seçilen Dersler</translation>
     </message>
     <message>
         <source>Compulsory</source>
@@ -1061,7 +1176,7 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Add constraint</source>
-        <translation>Kısıtlama ekle</translation>
+        <translation>Kısıt Ekle</translation>
     </message>
     <message>
         <source>Close</source>
@@ -1069,7 +1184,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Minumum günler</translation>
+        <translation>Önem (Önerilen:1.0)
+</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -1077,18 +1193,20 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Min days</source>
-        <translation>Minumum günler</translation>
+        <translation>Minumum Gün Sayısı
+</translation>
     </message>
 </context>
 <context>
     <name>AddConstraintMinimizeNumberOfRoomsForStudentsForm_template</name>
     <message>
         <source>FET - Add new constraint minimize number of rooms for students</source>
-        <translation>FET-Öğrenciler için odaların numaraları en az olan kısıtlama ekle</translation>
+        <translation>FET - Kısıt Ekle - Öğrenciler - Sınıf Sayısını Minimize Et
+</translation>
     </message>
     <message>
         <source>Add constraint</source>
-        <translation>Kısıtlama ekle</translation>
+        <translation>Kısıt Ekle</translation>
     </message>
     <message>
         <source>Close</source>
@@ -1096,11 +1214,11 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Compulsory (recommended: no)</source>
-        <translation>Zorunlu(önerilen :hayır)</translation>
+        <translation>Zorunlu (Önerilen:Hayır)</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -1111,11 +1229,12 @@ Seçilen odalar</translation>
     <name>AddConstraintMinimizeNumberOfRoomsForTeachersForm_template</name>
     <message>
         <source>FET - Add new constraint minimize number of rooms for teachers</source>
-        <translation></translation>
+        <translation>FET - Kısıt Ekle - Öğretmenler - Sınıf Sayısını Minimize Et
+</translation>
     </message>
     <message>
         <source>Add constraint</source>
-        <translation>Kısıtlama ekle</translation>
+        <translation>Kısıt Ekle</translation>
     </message>
     <message>
         <source>Close</source>
@@ -1123,26 +1242,27 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Compulsory (recommended: no)</source>
-        <translation>Zorunlu</translation>
+        <translation>Zorunlu (Önerilen:Hayır)</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>1.0</source>
-        <translation>FET-Öğretmenler için odaların numaraları en az olan kısıtlama ekle</translation>
+        <translation>1.0</translation>
     </message>
 </context>
 <context>
     <name>AddConstraintRoomNotAvailableForm_template</name>
     <message>
         <source>FET - Adding a new constraint room not available</source>
-        <translation>FET-Bir kısıtlam ekle mesgul olan oda</translation>
+        <translation>FET - Kısıt Ekle - Sınıf - Müsait Olmayan Sınıf 
+</translation>
     </message>
     <message>
         <source>Add constraint</source>
-        <translation>Kısıtlama ekle</translation>
+        <translation>Kısıt Ekle</translation>
     </message>
     <message>
         <source>Close</source>
@@ -1150,7 +1270,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation></translation>
+        <translation>Önem (Önerilen:1.0)
+</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -1162,7 +1283,7 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Room</source>
-        <translation>Odalar</translation>
+        <translation>Sınıf</translation>
     </message>
     <message>
         <source>Period</source>
@@ -1171,22 +1292,24 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>End hour</source>
-        <translation>Bitiş saati</translation>
+        <translation>Bitiş Saati</translation>
     </message>
     <message>
         <source>Day</source>
-        <translation>Günler</translation>
+        <translation>Gün</translation>
     </message>
     <message>
         <source>Start hour</source>
-        <translation>Başlangıç saati</translation>
+        <translation>Ders Başlama Saati
+</translation>
     </message>
 </context>
 <context>
     <name>AddConstraintRoomTypeNotAllowedSubjectsForm_template</name>
     <message>
         <source>FET - Add new constraint room type not allowed subjects</source>
-        <translation>FET-Yeni kısıtlama ekle öğrencilerin günlük saat diyaloğu
+        <translation>FET - Kısıt Ekle - Sınıf Türü - İzin Verilmeyen Ders Konuları
+
 </translation>
     </message>
     <message>
@@ -1203,11 +1326,11 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Add constraint</source>
-        <translation>Kısıtlama ekle</translation>
+        <translation>Kısıt Ekle</translation>
     </message>
     <message>
         <source>Close</source>
@@ -1219,11 +1342,13 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>All subjects</source>
-        <translation>Bütün dersler</translation>
+        <translation>Tüm Ders Konuları
+</translation>
     </message>
     <message>
         <source>Not-accepted subjects</source>
-        <translation>Kabul edilmeyen dersler</translation>
+        <translation>Ders Konusu - Kabul Edilmeyen
+</translation>
     </message>
     <message>
         <source>New Item</source>
@@ -1231,19 +1356,20 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Room type</source>
-        <translation>Oda türü</translation>
+        <translation>Sınıf Türü</translation>
     </message>
 </context>
 <context>
     <name>AddConstraintStudentsEarlyForm_template</name>
     <message>
         <source>FET - Add new constraint students early dialog</source>
-        <translation>FET-Yeni kısıtlama ekle öğrencilerin erken diyaloğu
+        <translation>FET - Kısıt Ekle - Derslerin Erkenden Başlaması
+
 </translation>
     </message>
     <message>
         <source>Add current constraint</source>
-        <translation>Genel kısıtlama ekle</translation>
+        <translation>Kısıt Ekle</translation>
     </message>
     <message>
         <source>Close</source>
@@ -1251,11 +1377,11 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -1263,18 +1389,19 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
 </context>
 <context>
     <name>AddConstraintStudentsNHoursDailyForm_template</name>
     <message>
         <source>FET - Add new constraint students n hours daily dialog</source>
-        <translation></translation>
+        <translation>FET - Kısıt Ekle - Öğrenciler - Günlük Ders Saati
+</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -1282,11 +1409,11 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Add current constraint</source>
-        <translation>Genel kısıtlama ekle</translation>
+        <translation>Kısıt Ekle</translation>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt</translation>
     </message>
     <message>
         <source>Close</source>
@@ -1294,26 +1421,29 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Min hours (-1 for none)</source>
-        <translation>Minumum saat</translation>
+        <translation>Minumum Ders Saati (Girilmeyecekse, -1)
+</translation>
     </message>
     <message>
         <source>Max hours (-1 for none)</source>
-        <translation>Maksimum saat</translation>
+        <translation>Maksimum Ders Saati (Girilmeyecekse -1)
+</translation>
     </message>
 </context>
 <context>
     <name>AddConstraintStudentsNoGapsForm_template</name>
     <message>
         <source>FET - Add new constraint students no gaps dialog</source>
-        <translation>FET-Yeni kısıtlama ekle öğrenciler aralıksız diyaloğu</translation>
+        <translation>FET - Kısıt Ekle - Öğrenciler - Aralıksız Derse Girme
+</translation>
     </message>
     <message>
         <source>Add current constraint</source>
-        <translation>Genel kısıtlama ekle</translation>
+        <translation>Kısıt Ekle</translation>
     </message>
     <message>
         <source>Close</source>
@@ -1321,11 +1451,11 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -1333,18 +1463,19 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
 </context>
 <context>
     <name>AddConstraintStudentsSetIntervalMaxDaysPerWeekForm_template</name>
     <message>
         <source>FET - Add new constraint students set interval max days per week dialog</source>
-        <translation>FET-Öğrenciler herbir hafta için enfazla gün aralığı belirle</translation>
+        <translation>FET - Kısıt Ekle - Öğrenciler - Haftalık Maksimum Dinlenme Süresi
+</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama </translation>
+        <translation>Kısıt</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -1352,11 +1483,12 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Students set</source>
-        <translation>Öğrenci takımları</translation>
+        <translation>Öğrenci Grupları
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -1364,11 +1496,11 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Add current constraint</source>
-        <translation>Genel kısıtlama ekle</translation>
+        <translation>Kısıt Ekle</translation>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt</translation>
     </message>
     <message>
         <source>Period</source>
@@ -1376,27 +1508,32 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Start hour</source>
-        <translation>Başlangıç saati</translation>
+        <translation>Ders Başlama Saati
+</translation>
     </message>
     <message>
         <source>End hour</source>
-        <translation>Bitiş saati</translation>
+        <translation>Bitiş Saati
+</translation>
     </message>
     <message>
         <source>Max days per week</source>
-        <translation>Haftada maksimum günler</translation>
+        <translation>Haftalık Maksimum Gün Sayısı
+</translation>
     </message>
 </context>
 <context>
     <name>AddConstraintStudentsSetNHoursDailyForm_template</name>
     <message>
         <source>FET - Add new constraint students set n hours daily dialog</source>
-        <translation>FET-Yeni kısıtlama ekle: öğrenciler saatler günlük diyalogunu kur
+        <translation>FET - Kısıt Ekle - Öğrenciler - Günlük Ders Saati 
+
 </translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -1404,15 +1541,17 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Students set</source>
-        <translation>Öğrenci takımları</translation>
+        <translation>Öğrenci Grupları
+</translation>
     </message>
     <message>
         <source>Add current constraint</source>
-        <translation>Genel kısıtlama ekle</translation>
+        <translation>Kısıt Ekle
+</translation>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt</translation>
     </message>
     <message>
         <source>Close</source>
@@ -1420,26 +1559,30 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Min hours (-1 for none)</source>
-        <translation>Minumum saat</translation>
+        <translation>Minumum Ders Saati (Girilmeyecekse, -1)
+</translation>
     </message>
     <message>
         <source>Max hours (-1 for none)</source>
-        <translation>FET- Yeni kısıtlama ekle: öğrenciler saatler günlük diyalogunu kur</translation>
+        <translation>Maksimum Ders Saati (Girilmeyecekse -1)
+</translation>
     </message>
 </context>
 <context>
     <name>AddConstraintStudentsSetNoGapsForm_template</name>
     <message>
         <source>FET - Add new constraint students set no gaps dialog</source>
-        <translation>FET-Yeni kısıtlama ekle: öğrenciler ara kapatmayı kur </translation>
+        <translation>FET - Kısıt Ekle - Öğrenciler - Aralıksız Derse Girme
+ </translation>
     </message>
     <message>
         <source>Add current constraint</source>
-        <translation>Genel kısıtlama ekle</translation>
+        <translation>Kısıt Ekle
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -1447,11 +1590,12 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -1459,22 +1603,25 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Students set</source>
-        <translation>Öğrenci takımlaır</translation>
+        <translation>Öğrenci Grupları
+</translation>
     </message>
 </context>
 <context>
     <name>AddConstraintStudentsSetNotAvailableForm_template</name>
     <message>
         <source>FET - Add new constraint students set not available dialog</source>
-        <translation></translation>
+        <translation>FET - Kısıt Ekle - Öğrenciler - Müsait Olmayan Öğrenciler
+</translation>
     </message>
     <message>
         <source>Add current constraint</source>
-        <translation>Genel kısıtlama ekle</translation>
+        <translation>Kısıt Ekle
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -1482,11 +1629,12 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Period</source>
@@ -1498,11 +1646,13 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Start hour</source>
-        <translation>Başlangıç saati</translation>
+        <translation>Ders Başlama Saati
+</translation>
     </message>
     <message>
         <source>End hour</source>
-        <translation>Bitiş saati</translation>
+        <translation>Bitiş Saati
+</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -1510,18 +1660,20 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Students set</source>
-        <translation>Ögrenci takımları</translation>
+        <translation>Öğrenci Grupları
+</translation>
     </message>
 </context>
 <context>
     <name>AddConstraintSubjectPreferredRoomForm_template</name>
     <message>
         <source>FET - Add new constraint subject preferred room</source>
-        <translation>FET-Tercih edilen odalara yeni bir zorunlu ders ekle</translation>
+        <translation>FET - Kısıt Ekle - Ders Konusu - Tercih Edilen Sınıf
+</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -1529,11 +1681,11 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Add constraint</source>
-        <translation>Kısıtlama ekle</translation>
+        <translation>Kısıt Ekle</translation>
     </message>
     <message>
         <source>Close</source>
@@ -1545,7 +1697,7 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Room</source>
-        <translation>Oda</translation>
+        <translation>Sınıf</translation>
     </message>
     <message>
         <source>Subject</source>
@@ -1556,11 +1708,12 @@ Seçilen odalar</translation>
     <name>AddConstraintSubjectPreferredRoomsForm_template</name>
     <message>
         <source>FET - Add new constraint subject preferred rooms</source>
-        <translation>FET-Tercih edilen odalara yeni bir zorunlu ders ekle</translation>
+        <translation>FET - Kısıt Ekle - Ders Konusu - Tercih Edilen Sınıflar
+</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Bütün odalar</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -1572,7 +1725,7 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Add constraint</source>
-        <translation>Kısıtlama ekle</translation>
+        <translation>Kısıt Ekle</translation>
     </message>
     <message>
         <source>Close</source>
@@ -1588,7 +1741,7 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>All rooms</source>
-        <translation>Bütün odalar</translation>
+        <translation>Tüm Sınıflar</translation>
     </message>
     <message>
         <source>New Item</source>
@@ -1596,7 +1749,7 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Selected rooms</source>
-        <translation>Seçilen odalar</translation>
+        <translation>Seçilen Sınıflar</translation>
     </message>
     <message>
         <source>Subject</source>
@@ -1607,11 +1760,12 @@ Seçilen odalar</translation>
     <name>AddConstraintSubjectRequiresEquipmentsForm_template</name>
     <message>
         <source>FET - Add new constraint subject requires equipments</source>
-        <translation>FEt-Yeni bir ders hangi donanımları istiyor(ekle)</translation>
+        <translation>FET - Kısıt Ekle - Ders Konusu - Gerekli Araç-Gereç
+</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Close</source>
@@ -1623,7 +1777,7 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>All equipments</source>
-        <translation>Bütün donanımlar</translation>
+        <translation>Tüm Araç-Gereç</translation>
     </message>
     <message>
         <source>New Item</source>
@@ -1631,7 +1785,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Required equipments</source>
-        <translation>Gerekli donanımlar</translation>
+        <translation>Gerekli Araç-Gereç
+</translation>
     </message>
     <message>
         <source>Add</source>
@@ -1647,7 +1802,7 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Add constraint</source>
-        <translation>Kısıtlama ekle</translation>
+        <translation>Kısıt Ekle</translation>
     </message>
     <message>
         <source>Subject</source>
@@ -1658,7 +1813,8 @@ Seçilen odalar</translation>
     <name>AddConstraintSubjectSubjectTagPreferredRoomForm_template</name>
     <message>
         <source>FET - Add new constraint subject subject tag preferred room</source>
-        <translation>FET-Yeni kısıtlama konusu ekle: konu fişi tercih edilen oda</translation>
+        <translation>FET - Kısıt Ekle - Ders Konu Başlığı - Tercih Edilen Sınıf
+</translation>
     </message>
     <message>
         <source>Subject</source>
@@ -1666,11 +1822,11 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Room</source>
-        <translation>Oda</translation>
+        <translation>Sınıf</translation>
     </message>
     <message>
         <source>Add constraint</source>
-        <translation> Kısıtlama ekle</translation>
+        <translation>Kısıt Ekle</translation>
     </message>
     <message>
         <source>Close</source>
@@ -1682,7 +1838,7 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation></translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Compulsory</source>
@@ -1690,14 +1846,14 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Subject tag</source>
-        <translation>Konu etiketi</translation>
+        <translation>Ders Konu Başlığı</translation>
     </message>
 </context>
 <context>
     <name>AddConstraintSubjectSubjectTagPreferredRoomsForm_template</name>
     <message>
         <source>FET - Add new constraint subject subject tag preferred rooms</source>
-        <translation>FET-Yeni kısıtlama konusu ekle: konu fişi tercih edilen odalar</translation>
+        <translation>FET - Kısıt Ekle - Ders Konu Başlığı - Tercih Edilen Sınıflar</translation>
     </message>
     <message>
         <source>Subject</source>
@@ -1713,7 +1869,7 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -1721,7 +1877,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Selected rooms</source>
-        <translation>Seçilen odalar</translation>
+        <translation>
+Seçilen Sınıflar</translation>
     </message>
     <message>
         <source>New Item</source>
@@ -1729,7 +1886,7 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Add constraint</source>
-        <translation>Kısıtlama ekle</translation>
+        <translation>Kısıt Ekle</translation>
     </message>
     <message>
         <source>Close</source>
@@ -1737,7 +1894,7 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>All rooms</source>
-        <translation>Bütün odalar</translation>
+        <translation>Tüm Sınıflar</translation>
     </message>
     <message>
         <source>Compulsory</source>
@@ -1745,14 +1902,15 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Subject tag</source>
-        <translation>Konu etiketi</translation>
+        <translation>Ders Konu Başlığı</translation>
     </message>
 </context>
 <context>
     <name>AddConstraintSubjectSubjectTagRequireEquipmentsForm_template</name>
     <message>
         <source>FET - Add new constraint subject subject tag require equipments</source>
-        <translation>FET-Yeni kısıtlama konusu ekle: konu etiketi gerekli ekipmanlar</translation>
+        <translation>FET - Kısıt Ekle - Ders Konu Başlığı - Gerekli Araç-Gereç
+</translation>
     </message>
     <message>
         <source>Subject</source>
@@ -1772,11 +1930,12 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Required equipments</source>
-        <translation>Gerekli donanımlar</translation>
+        <translation>Gerekli Araç-Gereç
+</translation>
     </message>
     <message>
         <source>Compulsory</source>
@@ -1784,7 +1943,7 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Add constraint</source>
-        <translation>Kısıtlama ekle</translation>
+        <translation>Kısıt Ekle</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -1796,22 +1955,79 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>All equipments</source>
-        <translation>Bütün donanımlar</translation>
+        <translation>Tüm Araç-Gereç</translation>
     </message>
     <message>
         <source>Subject tag</source>
-        <translation>Konu etiketi</translation>
+        <translation>Ders Konu Başlığı</translation>
+    </message>
+</context>
+<context>
+    <name>AddConstraintTeacherIntervalMaxDaysPerWeekForm_template</name>
+    <message>
+        <source>FET - Add new constraint teacher interval max days per week dialog</source>
+        <translation>FET - Kısıt Ekle - Öğretmen - Haftalık Maksimum Dinlenme Süresi
+</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation>Kısıt</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation>1.0</translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation>Önem (Önerilen :1.0)</translation>
+    </message>
+    <message>
+        <source>Teacher</source>
+        <translation>Öğretmen</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation>Kapat</translation>
+    </message>
+    <message>
+        <source>Add current constraint</source>
+        <translation>Kısıt Ekle
+</translation>
+    </message>
+    <message>
+        <source>Compulsory constraint</source>
+        <translation>Zorunlu Kısıt</translation>
+    </message>
+    <message>
+        <source>Period</source>
+        <translation>Dönem</translation>
+    </message>
+    <message>
+        <source>Start hour</source>
+        <translation>Ders Başlama Saati
+</translation>
+    </message>
+    <message>
+        <source>End hour</source>
+        <translation>Bitiş Saati</translation>
+    </message>
+    <message>
+        <source>Max days per week</source>
+        <translation>Haftalık Maksimum Gün Sayısı
+</translation>
     </message>
 </context>
 <context>
     <name>AddConstraintTeacherMaxDaysPerWeekForm_template</name>
     <message>
         <source>FET - Add new constraint teacher max days per week dialog</source>
-        <translation>FET- Yeni kısıtlama ekle öğretmenlerin haftada içindeki maksimm günleri</translation>
+        <translation>FET - Kısıt Ekle - Öğretmen - Haftalık Maksimum Gün Sayısı 
+</translation>
     </message>
     <message>
         <source>Add current constraint</source>
-        <translation>Genel kısıtlama ekle</translation>
+        <translation>Kısıt Ekle
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -1819,7 +2035,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -1831,26 +2048,30 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation></translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Max days per week</source>
-        <translation>Haftada maksimum günler</translation>
+        <translation>Haftalık Maksimum Gün Sayısı
+</translation>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>FET</translation>
+        <translation>Zorunlu Kısıt
+</translation>
     </message>
 </context>
 <context>
     <name>AddConstraintTeacherNotAvailableForm_template</name>
     <message>
         <source>FET - Add new constraint teacher not available dialog</source>
-        <translation>FET-Yeni &quot;Öğretmen yok&quot; diyaloğu ekle</translation>
+        <translation>FET - Kısıt Ekle - Öğretmen - Müsait Olmayan Öğretmen
+</translation>
     </message>
     <message>
         <source>Add current constraint</source>
-        <translation>Genel kısıtlama ekle</translation>
+        <translation>Kısıt Ekle
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -1858,11 +2079,12 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Period</source>
@@ -1874,11 +2096,13 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Start hour</source>
-        <translation>Başlangıç saati</translation>
+        <translation>Ders Başlama Saati
+</translation>
     </message>
     <message>
         <source>End hour</source>
-        <translation>Bitiş saati</translation>
+        <translation>Bitiş Saati
+</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -1886,7 +2110,7 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Teacher</source>
@@ -1897,7 +2121,8 @@ Seçilen odalar</translation>
     <name>AddConstraintTeacherRequiresRoomForm_template</name>
     <message>
         <source>FET - Add new constraint teacher requires room</source>
-        <translation>FET-Öğretmen derslik isteğinde bulundu </translation>
+        <translation>FET - Kısıt Ekle - Öğretmen - Öğretmen İçin Gerekli Sınıf
+</translation>
     </message>
     <message>
         <source>Teacher</source>
@@ -1909,11 +2134,11 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Add constraint</source>
-        <translation>Kısıtlama ekle</translation>
+        <translation>Kısıt Ekle</translation>
     </message>
     <message>
         <source>Close</source>
@@ -1925,14 +2150,15 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Room</source>
-        <translation>Oda</translation>
+        <translation>Sınıf</translation>
     </message>
 </context>
 <context>
     <name>AddConstraintTeacherSubjectRequireRoomForm_template</name>
     <message>
         <source>FET - Add new constraint teacher subject require room</source>
-        <translation>FET-Yeni bir kısıtlama ekle öğretmen konu oda ister</translation>
+        <translation>FET - Kısıt Ekle - Öğretmen - Ders Konusu İçin Gerekli Sınıf 
+</translation>
     </message>
     <message>
         <source>Teacher</source>
@@ -1940,11 +2166,11 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Add constraint</source>
-        <translation>Kısıtlama ekle</translation>
+        <translation>Kısıt Ekle</translation>
     </message>
     <message>
         <source>Close</source>
@@ -1960,7 +2186,7 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Room</source>
-        <translation>Oda</translation>
+        <translation>Sınıf</translation>
     </message>
     <message>
         <source>Subject</source>
@@ -1975,7 +2201,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Add current constraint</source>
-        <translation>Genel kısıtlama ekle</translation>
+        <translation>Kısıt Ekle
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -1983,7 +2210,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -1992,26 +2220,30 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Max hours continuously</source>
-        <translation>Maksimum devamlı saatler</translation>
+        <translation>Aralıksız Maksimum Ders Saati
+</translation>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>FET - Kısıt Ekle - Öğretmenler - Aralıksız Maksimum Ders Saati 
+</translation>
     </message>
 </context>
 <context>
     <name>AddConstraintTeachersMaxHoursDailyForm_template</name>
     <message>
         <source>FET - Add new constraint teachers max hours daily dialog</source>
-        <translation>FET-Yeni bir kısıtlama ekle öğretmeneler maksimum saat günlük diyaloğu</translation>
+        <translation>FET - Kısıt Ekle - Öğretmenler - Günlük Maksimum Ders Saati
+</translation>
     </message>
     <message>
         <source>Add current constraint</source>
-        <translation>Genel kısıtlama ekle</translation>
+        <translation>Kısıt Ekle
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -2019,7 +2251,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -2027,26 +2260,68 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation></translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Max hours daily</source>
-        <translation>Günlük maksimum saat</translation>
+        <translation>Günlük Maksimum Ders Saati
+</translation>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt</translation>
+    </message>
+</context>
+<context>
+    <name>AddConstraintTeachersMinHoursDailyForm_template</name>
+    <message>
+        <source>FET - Add new constraint teachers min hours daily dialog</source>
+        <translation>FET - Kısıt Ekle - Öğretmenler - Günlük Minumum Ders Saati
+</translation>
+    </message>
+    <message>
+        <source>Add current constraint</source>
+        <translation>Kısıt Ekle
+</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation>Kapat</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation>Kısıt
+</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation>1.0</translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation>Önem (Önerilen :1.0)</translation>
+    </message>
+    <message>
+        <source>Min hours daily</source>
+        <translation>Günlük Minumum Ders Saati
+</translation>
+    </message>
+    <message>
+        <source>Compulsory constraint</source>
+        <translation>Zorunlu Kısıt</translation>
     </message>
 </context>
 <context>
     <name>AddConstraintTeachersNoGapsForm_template</name>
     <message>
         <source>FET - Add new constraint teachers no gaps dialog</source>
-        <translation>FET-Yeni bir kısıtlama ekle öğretmenler arasız diyaloğu</translation>
+        <translation>FET - Kısıt Ekle - Öğretmenler - Aralıksız Derse Girme
+</translation>
     </message>
     <message>
         <source>Add current constraint</source>
-        <translation>Genel kısıtlama ekle</translation>
+        <translation>Kısıt Ekle
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -2054,11 +2329,12 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -2066,18 +2342,21 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)
+</translation>
     </message>
 </context>
 <context>
     <name>AddConstraintTeachersSubgroupsMaxHoursDailyForm_template</name>
     <message>
         <source>FET - Add new constraint teachers-subgroups max hours daily dialog</source>
-        <translation>FET-Yeni  bir kısıtlama ekle öğretmenler ve altgrublar maksimum saatler günlük diyaloğu</translation>
+        <translation>FET - Kısıt Ekle - Öğretmenler - Alt-Gruplar Günlük Maksimum Ders Saati 
+</translation>
     </message>
     <message>
         <source>Add current constraint</source>
-        <translation>Genel kısıtlama ekle</translation>
+        <translation>Kısıt Ekle
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -2085,7 +2364,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -2093,26 +2373,29 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Max hours daily</source>
-        <translation>Günlük maksimum saat</translation>
+        <translation>Günlük Maksimum Ders Saati
+</translation>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt</translation>
     </message>
 </context>
 <context>
     <name>AddConstraintTeachersSubjectTagMaxHoursContinuouslyForm_template</name>
     <message>
         <source>FET - Add new constraint teachers subject tag max hours continuously dialog</source>
-        <translation>FET-Yeni kısıtlama ekle öğretmenler konu başlığıı maksimum saat sürekli diyalog </translation>
+        <translation>FET - Kısıt Ekle - Öğretmenler - Ders Konu Başlığı Aralıksız Maksimum Ders Saati
+</translation>
     </message>
     <message>
         <source>Add current constraint</source>
-        <translation>Genel kısıtlama ekle</translation>
+        <translation>Kısıt Ekle
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -2120,7 +2403,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -2128,30 +2412,33 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Max hours continuously</source>
-        <translation>Devamlı maksimum saat</translation>
+        <translation>Aralıksız Maksimum Ders Saati
+</translation>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt</translation>
     </message>
     <message>
         <source>Subject tag</source>
-        <translation>Konu etiketi</translation>
+        <translation>Ders Konu Başlığı</translation>
     </message>
 </context>
 <context>
     <name>AddConstraintTeachersSubjectTagsMaxHoursContinuouslyForm_template</name>
     <message>
         <source>FET - Add new constraint teachers subject tags max hours continuously dialog</source>
-        <translation>FET-Yeni kısıtlama ekle öğretmenler konu başlıkları maksimum saat sürekli diyalog </translation>
+        <translation>FET - Kısıt Ekle - Öğretmenler - Ders Konu Başlıkları Aralıksız Maksimum Ders Saati
+</translation>
     </message>
     <message>
         <source>Add current constraint</source>
-        <translation>Genel kısıtlama ekle</translation>
+        <translation>Kısıt Ekle
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -2159,7 +2446,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -2167,22 +2455,24 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Max hours continuously</source>
-        <translation>Sürekli maksimum saat</translation>
+        <translation>Aralıksız Maksimum Ders Saati
+</translation>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>FET-Yeni kısıtlama ekle öğretmenler konu başlıkalr için sürekli bir diyalog</translation>
+        <translation>Zorunlu Kısıt</translation>
     </message>
 </context>
 <context>
     <name>AddEquipmentForm_template</name>
     <message>
         <source>Add Equipment Dialog</source>
-        <translation>Donanım diyalog ekle</translation>
+        <translation>Araç-Gereç Ekle
+</translation>
     </message>
     <message>
         <source>Name</source>
@@ -2190,7 +2480,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Add equipment</source>
-        <translation>Yeni donanım ekle</translation>
+        <translation>Araç-Gereç Ekle
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -2201,7 +2492,7 @@ Seçilen odalar</translation>
     <name>AddRoomForm_template</name>
     <message>
         <source>Add Room Dialog</source>
-        <translation>Ekle oda diyalog</translation>
+        <translation>Sınıf Ekle</translation>
     </message>
     <message>
         <source>Name</source>
@@ -2217,7 +2508,7 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Add room</source>
-        <translation>Oda ekle</translation>
+        <translation>Sınıf Ekle</translation>
     </message>
     <message>
         <source>Capacity</source>
@@ -2225,14 +2516,15 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Building</source>
-        <translation>Yapı</translation>
+        <translation>Okul Binası</translation>
     </message>
 </context>
 <context>
     <name>AddStudentsGroupForm_template</name>
     <message>
         <source>Add Students Group Dialog</source>
-        <translation>Öğrenci grup konuşması ekle</translation>
+        <translation>Grup Ekle
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -2248,22 +2540,25 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Number of students</source>
-        <translation>Öğrencinin numarası</translation>
+        <translation>Öğrenci Sayısı
+</translation>
     </message>
     <message>
         <source>Year</source>
-        <translation>Yıl</translation>
+        <translation>Ders Yılı
+</translation>
     </message>
 </context>
 <context>
     <name>AddStudentsSubgroupForm_template</name>
     <message>
         <source>Add Students Subgroup Dialog</source>
-        <translation>Alt grupları ekle</translation>
+        <translation>Alt-Grup Ekle
+</translation>
     </message>
     <message>
         <source>Year</source>
-        <translation>Yıl</translation>
+        <translation>Ders Yılı</translation>
     </message>
     <message>
         <source>Close</source>
@@ -2275,7 +2570,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Number of students</source>
-        <translation>Öğrencinin Numarası</translation>
+        <translation>Öğrenci Sayısı
+</translation>
     </message>
     <message>
         <source>Name</source>
@@ -2290,7 +2586,8 @@ Seçilen odalar</translation>
     <name>AddStudentsYearForm_template</name>
     <message>
         <source>Add Students Year Dialog</source>
-        <translation>Yıl dialog ekle</translation>
+        <translation>Ders Yılı Ekle
+</translation>
     </message>
     <message>
         <source>Name</source>
@@ -2298,7 +2595,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Number of students</source>
-        <translation>Öğrencinin numarası</translation>
+        <translation>Öğrenci Sayısı
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -2313,19 +2611,21 @@ Seçilen odalar</translation>
     <name>AllSpaceConstraintsForm_template</name>
     <message>
         <source>FET - All space constraints</source>
-        <translation>FET -Bütün zaman kısıtlamaları</translation>
+        <translation>FET - Tüm Yer Kısıtları
+</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Close</source>
@@ -2337,26 +2637,28 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>FET -Bütün alan kısıtlamaları</translation>
+        <translation>Değiştir</translation>
     </message>
 </context>
 <context>
     <name>AllTimeConstraintsForm_template</name>
     <message>
         <source>FET - All time constraints</source>
-        <translation>FET-Bütün zaman kısıtlamaları</translation>
+        <translation>FET - Tüm Zaman Kısıtları
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -2368,14 +2670,14 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
 </context>
 <context>
     <name>BuildingsForm_template</name>
     <message>
         <source>Buildings</source>
-        <translation>Yapılar</translation>
+        <translation>Okul Binaları</translation>
     </message>
     <message>
         <source>Close</source>
@@ -2383,15 +2685,16 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Add building</source>
-        <translation>Yapı ekle</translation>
+        <translation>Okul Binası Ekle
+</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -2414,14 +2717,18 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Ok</source>
-        <translation>Tamam</translation>
+        <translation>Tamam
+
+
+</translation>
     </message>
 </context>
 <context>
     <name>Constraint2ActivitiesConsecutiveForm_template</name>
     <message>
         <source>FET - Constraint2ActivitiesConsecutive</source>
-        <translation>FET*Ardarda gelen kısıtlı etkinlikler</translation>
+        <translation>FET - Kısıt - Dersleri Ardışıklama (Sıra Önemli)
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -2437,26 +2744,28 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
 </context>
 <context>
     <name>Constraint2ActivitiesGroupedForm_template</name>
     <message>
         <source>FET - Constraint2ActivitiesGrouped</source>
-        <translation>FET-Kısıtlı  grup etkinlikleri</translation>
+        <translation>FET - Kısıt - Dersleri Gruplama (Sıra Önemsiz)
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -2468,15 +2777,16 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Add</source>
@@ -2484,14 +2794,15 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
 </context>
 <context>
     <name>Constraint2ActivitiesOrderedForm_template</name>
     <message>
         <source>FET - Constraint2ActivitiesOrdered</source>
-        <translation>FET-Kısıtlama2Önerilenn etkinlikler</translation>
+        <translation>FET - Kısıt - Dersleri Sıralama (Aralıklı)
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -2507,34 +2818,36 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
 </context>
 <context>
     <name>ConstraintActivitiesNotOverlappingForm_template</name>
     <message>
         <source>FET - Time constraints activities not overlapping</source>
-        <translation>FET-Zaman ksıtlamaları ardarda olmayan etkinlikler</translation>
+        <translation>FET - Zaman Kısıtı - Dersleri Ardışıklamama
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Close</source>
@@ -2546,7 +2859,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -2554,14 +2868,16 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>FET - Kısıt - Öğretmenler - Aralıksız Maksimum Ders Saati 
+</translation>
     </message>
 </context>
 <context>
     <name>ConstraintActivitiesPreferredTimesForm_template</name>
     <message>
         <source>FET - ConstraintActivitiesPreferredTimes</source>
-        <translation>FET -Kısıtlamalr önerilen zamanlarda</translation>
+        <translation>FET - Kısıt - Dersleri Tercih Edilen Gün Ve Saatlere Yerleştirme
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -2574,15 +2890,16 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Add</source>
@@ -2590,14 +2907,15 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
 </context>
 <context>
     <name>ConstraintActivitiesSameRoomForm_template</name>
     <message>
         <source>FET - ConstraintActivitiesSameRoom</source>
-        <translation>FET-Kısıtlama etkinlikler benzer odalarda</translation>
+        <translation>FET - Kısıt - Dersleri Aynı Sınıfa Yerleştirme
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -2609,15 +2927,16 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -2625,14 +2944,15 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
 </context>
 <context>
     <name>ConstraintActivitiesSameStartingHourForm_template</name>
     <message>
         <source>FET - ConstraintActivitiesSameStartingHour</source>
-        <translation>FET-Kısıtlamalr aynı saatte başlayan etkinlikler</translation>
+        <translation>FET - Kısıt - Dersleri Aynı Saate Yerleştirme
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -2644,15 +2964,16 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -2660,14 +2981,16 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir
+</translation>
     </message>
 </context>
 <context>
     <name>ConstraintActivitiesSameStartingTimeForm_template</name>
     <message>
         <source>FET - ConstraintActivitiesSameStartingTime</source>
-        <translation>FET-Kısıtlamalr aynı zamanda başlayan etkinlikler</translation>
+        <translation>FET - Kısıt - Dersleri Aynı Gün Ve Saate Yerleştirme
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -2679,15 +3002,16 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -2695,22 +3019,23 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
 </context>
 <context>
     <name>ConstraintActivityEndsDayForm_template</name>
     <message>
         <source>FET - Time constraints activity ends day</source>
-        <translation>FET-Zaman kısıtlamaları etkinlikler bitş günü</translation>
+        <translation>FET - Kısıt - Dersi Gün Sonuna Yerleştirme
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Close</source>
@@ -2722,7 +3047,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -2730,22 +3056,23 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
 </context>
 <context>
     <name>ConstraintActivityPreferredRoomForm_template</name>
     <message>
         <source>FET - Space constraints activity preferred room</source>
-        <translation>FET Alan ksıtlamaları etkinlikleri önerilen odalarda</translation>
+        <translation>FET - Yer Kısıtı - Dersi Tercih Edilen Sınıfa Yerleştirme
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Close</source>
@@ -2757,7 +3084,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -2765,18 +3093,19 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
     <message>
         <source>Filter</source>
-        <translation>Filtre</translation>
+        <translation>Filtre Uygula</translation>
     </message>
 </context>
 <context>
     <name>ConstraintActivityPreferredRoomsForm_template</name>
     <message>
         <source>FET - ConstraintActivityPreferredRooms</source>
-        <translation>FET-Kısıtlama etkinlikler önerilen odalar</translation>
+        <translation>FET - Kısıt - Dersi Tercih Edilen Sınıflara Yerleştirme
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -2788,15 +3117,16 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne
+        <translation>Yeni Nesne
 </translation>
     </message>
     <message>
@@ -2805,22 +3135,23 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
 </context>
 <context>
     <name>ConstraintActivityPreferredTimeForm_template</name>
     <message>
         <source>FET - Time constraints activity preferred time</source>
-        <translation>FET -Zaman kısıtlamaları etkinlikler önerilen zamanda</translation>
+        <translation>FET - Zaman Kısıtı - Dersi Tercih Edilen Gün Ve Saate Yerleştirme
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Close</source>
@@ -2832,7 +3163,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -2840,22 +3172,23 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
 </context>
 <context>
     <name>ConstraintActivityPreferredTimesForm_template</name>
     <message>
         <source>FET - Time constraints activity preferred times</source>
-        <translation>FET -Zaman kısıtlamaları etkinlikler önerilen zamanlarda</translation>
+        <translation>FET - Zaaman Kısıtı - Dersi Tercih Edilen Günlere Ve Saatlere Yerleştirme
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Close</source>
@@ -2867,7 +3200,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -2875,22 +3209,23 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
 </context>
 <context>
     <name>ConstraintBasicCompulsorySpaceForm_template</name>
     <message>
         <source>FET - Basic compulsory space constraints</source>
-        <translation>FET Basit zorunlu alan kısıtlamaları</translation>
+        <translation>FET - Zorunlu Yer Kısıtları
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Close</source>
@@ -2902,7 +3237,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -2910,22 +3246,23 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
 </context>
 <context>
     <name>ConstraintBasicCompulsoryTimeForm_template</name>
     <message>
         <source>FET - Basic compulsory time constraints</source>
-        <translation>FET Basit zorunlu zaman kısıtlamaları</translation>
+        <translation>FET - Zorunlu Zaman Kısıtları
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Close</source>
@@ -2937,7 +3274,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -2945,22 +3283,23 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
 </context>
 <context>
     <name>ConstraintBreakForm_template</name>
     <message>
         <source>FET - Time constraints break</source>
-        <translation>FET-Zaman arası</translation>
+        <translation>FET - Zaman Kısıtı - Ders Arası
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Close</source>
@@ -2972,7 +3311,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation> Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -2980,22 +3320,23 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
 </context>
 <context>
     <name>ConstraintMaxBuildingChangesPerDayForStudentsForm_template</name>
     <message>
         <source>FET - Max building changes per day for students constraints</source>
-        <translation>FET-Günde öğrenciler için maksimum bina değişikliği</translation>
+        <translation>FET - Kısıt - Öğrenciler - Günlük Maksimum Okul Binası Değiştirme
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Close</source>
@@ -3007,7 +3348,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -3015,22 +3357,23 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
 </context>
 <context>
     <name>ConstraintMaxBuildingChangesPerDayForTeachersForm_template</name>
     <message>
         <source>FET - Max building changes per day for teachers constraints</source>
-        <translation>FET-Günde öğretmenler için maksimum bina değişikliği</translation>
+        <translation>FET - Kısıt - Öğretmenler - Günlük Maksimum Okul Binası Değiştirme 
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Close</source>
@@ -3042,7 +3385,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -3050,22 +3394,23 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
 </context>
 <context>
     <name>ConstraintMaxRoomChangesPerDayForStudentsForm_template</name>
     <message>
         <source>FET - Max room changes per day for students constraints</source>
-        <translation>FET-Günde öğretmenler için maksimum oda değişikliği</translation>
+        <translation>FET - Kısıt - Öğrenciler - Günlük Maksimum Sınıf Değiştirme 
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Close</source>
@@ -3077,7 +3422,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -3085,22 +3431,23 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>FET-Günde öğretmenler çin maksimum oda değişikliği</translation>
+        <translation>Değiştir</translation>
     </message>
 </context>
 <context>
     <name>ConstraintMaxRoomChangesPerDayForTeachersForm_template</name>
     <message>
         <source>FET - Max room changes per day for teachers constraints</source>
-        <translation>FET-Günde öğretmenler için maksimum bina değişikliği</translation>
+        <translation>FET - Kısıt - Öğretmenler - Günlük Maksimum Sınıf Değiştirme
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Close</source>
@@ -3112,7 +3459,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -3120,22 +3468,23 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>FET-Günde öğretmenler çin maksimumoda değişikliği</translation>
+        <translation>Değiştir</translation>
     </message>
 </context>
 <context>
     <name>ConstraintMinNDaysBetweenActivitiesForm_template</name>
     <message>
         <source>FET - Time constraints min n days between activities</source>
-        <translation>FET-Gün içinde minumum etkinlikler arasındaki zaman kısıtlaması</translation>
+        <translation>FET - Zaman Kısıtı - Dersler Arası Minumum N Gün Zaman
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Close</source>
@@ -3147,7 +3496,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -3155,22 +3505,23 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
 </context>
 <context>
     <name>ConstraintMinimizeNumberOfRoomsForStudentsForm_template</name>
     <message>
         <source>FET - Minimize number of rooms for students constraints</source>
-        <translation>FET-Öğrenci kısıtlamarı için oda sayıları minimum</translation>
+        <translation>FET - Kısıt - Öğrenciler - Sınıf Sayısını Minimize Et 
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Close</source>
@@ -3182,7 +3533,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -3190,22 +3542,23 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
 </context>
 <context>
     <name>ConstraintMinimizeNumberOfRoomsForTeachersForm_template</name>
     <message>
         <source>FET - Minimize number of rooms for teachers constraints</source>
-        <translation>FET-Öğretmen kısıtlamaları için oda sayıları minimum</translation>
+        <translation>FET - Kısıt - Öğretmenler - Sınıf Sayısını Minimize Et
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Close</source>
@@ -3217,7 +3570,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -3225,22 +3579,23 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
 </context>
 <context>
     <name>ConstraintRoomNotAvailableForm_template</name>
     <message>
         <source>FET - Space constraints room not available</source>
-        <translation>FET-Alan kısıtlamalar müsait olmayan oda</translation>
+        <translation>FET - Yer Kısıtı - Sınıf - Müsait Olmayan Sınıf 
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Close</source>
@@ -3252,7 +3607,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -3260,26 +3616,27 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
     <message>
         <source>Filter</source>
-        <translation>Filtre</translation>
+        <translation>Filtre Uygula</translation>
     </message>
 </context>
 <context>
     <name>ConstraintRoomTypeNotAllowedSubjectsForm_template</name>
     <message>
         <source>FET - Room type not allowed subjects constraints</source>
-        <translation>FET-Oda tipine izin verilmeyen konu kısıtllamalar</translation>
+        <translation>FET - Kısıt - Sınıf Türü - İzin Verilmeyen Ders Konuları
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Close</source>
@@ -3291,7 +3648,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -3299,22 +3657,23 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
 </context>
 <context>
     <name>ConstraintStudentsEarlyForm_template</name>
     <message>
         <source>FET - Time constraints students early</source>
-        <translation>FET-Zaman kısıtlamar öğrenciler erkenden</translation>
+        <translation>FET - Zaman Kısıtı - Derslerin Erkenden Başlaması
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Close</source>
@@ -3326,7 +3685,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -3334,22 +3694,23 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
 </context>
 <context>
     <name>ConstraintStudentsNHoursDailyForm_template</name>
     <message>
         <source>FET - Time constraints students n hours daily</source>
-        <translation>FET-Zaman kısıtlamaları öğrenciler saat içinde günlük</translation>
+        <translation>FET - Zaman Kısıtı - Öğrenciler - Günlük Ders Saati 
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Close</source>
@@ -3361,7 +3722,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -3369,22 +3731,22 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
 </context>
 <context>
     <name>ConstraintStudentsNoGapsForm_template</name>
     <message>
         <source>FET - Time constraints students no gaps</source>
-        <translation>FET-Zaman kısıtlamaları öğrenciler ara yok</translation>
+        <translation>FET - Zaman Kısıtı - Öğrenciler - Aralıksız Derse Girme</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Close</source>
@@ -3396,7 +3758,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -3404,22 +3767,23 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
 </context>
 <context>
     <name>ConstraintStudentsSetIntervalMaxDaysPerWeekForm_template</name>
     <message>
         <source>FET - Time constraints students set interval max days per week</source>
-        <translation>FET-Haftada maksimum günler de ara zaman kısıtlamalar</translation>
+        <translation>FET - Zaman Kısıtı - Öğrenciler - Haftalık Maksimum Dinlenme Süresi 
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Close</source>
@@ -3432,7 +3796,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -3440,26 +3805,27 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
     <message>
         <source>Filter</source>
-        <translation>Filtre</translation>
+        <translation>Filtre Uygula</translation>
     </message>
 </context>
 <context>
     <name>ConstraintStudentsSetNHoursDailyForm_template</name>
     <message>
         <source>FET - Time constraints students set n hours daily</source>
-        <translation>FET-Zaman kısıtlamaları öğrenciler saat içinde günlük</translation>
+        <translation>FET - Zaman Kısıtı - Öğrenciler - Günlük Ders Saati 
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation></translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Close</source>
@@ -3471,7 +3837,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -3479,26 +3846,27 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
     <message>
         <source>Filter</source>
-        <translation>Filtre</translation>
+        <translation>Filtre Uygula</translation>
     </message>
 </context>
 <context>
     <name>ConstraintStudentsSetNoGapsForm_template</name>
     <message>
         <source>FET - Time constraints students set no gaps</source>
-        <translation>FET Zaman kısıtlamalar öğrenciler ara yok</translation>
+        <translation>FET - Zaman Kısıtı - Öğrenciler - Aralıksız Derse Girme
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Close</source>
@@ -3510,7 +3878,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -3518,26 +3887,27 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
     <message>
         <source>Filter</source>
-        <translation>Filtre</translation>
+        <translation>Filtre Uygula</translation>
     </message>
 </context>
 <context>
     <name>ConstraintStudentsSetNotAvailableForm_template</name>
     <message>
         <source>FET - Time constraints students set not available</source>
-        <translation>FET -Zaman kısıtlamalar ögrenciler grupları müsait değil</translation>
+        <translation>FET - Zaman Kısıtı - Öğrenciler - Müsait Olmayan Öğrenciler
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Close</source>
@@ -3549,7 +3919,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -3557,26 +3928,27 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
     <message>
         <source>Filter</source>
-        <translation>Filtre</translation>
+        <translation>Filtre Uygula</translation>
     </message>
 </context>
 <context>
     <name>ConstraintSubjectPreferredRoomForm_template</name>
     <message>
         <source>FET - Space constraints subject preferred room</source>
-        <translation>FET-Alan kısıtlamalar konular önerilen odalar</translation>
+        <translation>FET - Yer Kısıtı - Ders Konusu - Tercih Edilen Sınıf 
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Close</source>
@@ -3588,7 +3960,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -3596,18 +3969,19 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
     <message>
         <source>Filter</source>
-        <translation>Filtre</translation>
+        <translation>Filtre Uygula</translation>
     </message>
 </context>
 <context>
     <name>ConstraintSubjectPreferredRoomsForm_template</name>
     <message>
         <source>FET - ConstraintSubjectPreferredRooms</source>
-        <translation>FET-Kısıtlamalar konular önerilen odalar</translation>
+        <translation>FET - Yer Kısıtı - Ders Konusu - Tercih Edilen Sınıfllar 
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -3619,15 +3993,16 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -3635,26 +4010,27 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
     <message>
         <source>Filter</source>
-        <translation>Filtre</translation>
+        <translation>Filtre Uygula</translation>
     </message>
 </context>
 <context>
     <name>ConstraintSubjectRequiresEquipmentsForm_template</name>
     <message>
         <source>FET - Space constraints subject requires equipments</source>
-        <translation>FET-Alan kısıtlamalar konu gerekli donanımlar</translation>
+        <translation>FET - Yer Kısıtı - Ders Konusu - Gerekli Araç-Gereç 
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Close</source>
@@ -3666,7 +4042,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -3674,26 +4051,27 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
     <message>
         <source>Filter</source>
-        <translation>Filtre</translation>
+        <translation>Filtre Uygula</translation>
     </message>
 </context>
 <context>
     <name>ConstraintSubjectSubjectTagPreferredRoomForm_template</name>
     <message>
         <source>FET - Space constraints subject subject tag preferred room</source>
-        <translation>FET- Alan kısıtlamalar konu başlıkları önerilen odalar</translation>
+        <translation>FET - Yer Kısıtı - Ders Konu Başlığı - Tercih Edilen Sınıf 
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Close</source>
@@ -3705,7 +4083,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -3713,18 +4092,19 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
     <message>
         <source>Filter</source>
-        <translation>Filtre</translation>
+        <translation>Filtre Uygula</translation>
     </message>
 </context>
 <context>
     <name>ConstraintSubjectSubjectTagPreferredRoomsForm_template</name>
     <message>
         <source>FET - ConstraintSubjectSubjectTagPreferredRooms</source>
-        <translation>FET- Kısıtlamalarkonubaşlıklarıönerilenodala</translation>
+        <translation>FET - Yer Kısıtı - Ders Konu Başlığı - Tercih Edilen Sınıflar
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -3736,15 +4116,16 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -3752,26 +4133,27 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
     <message>
         <source>Filter</source>
-        <translation>Filtre</translation>
+        <translation>Filtre Uygula</translation>
     </message>
 </context>
 <context>
     <name>ConstraintSubjectSubjectTagRequireEquipmentsForm_template</name>
     <message>
         <source>FET - Space constraints subject subject tag require equipments</source>
-        <translation>FET-Alan kısıtlamalar konular konu başlıkları önerilen donanımlar</translation>
+        <translation>FET - Yer Kısıtı - Ders Konu Başlığı - Gerekli Araç-Gereç
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Close</source>
@@ -3783,7 +4165,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -3791,26 +4174,68 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
     <message>
         <source>Filter</source>
-        <translation>Filtre</translation>
+        <translation>Filtre Uygula</translation>
+    </message>
+</context>
+<context>
+    <name>ConstraintTeacherIntervalMaxDaysPerWeekForm_template</name>
+    <message>
+        <source>FET - Time constraints teacher interval max days per week</source>
+        <translation>FET - Zaman Kısıtı - Öğretmen - Haftalık Maksimum Dinlenme Süresi 
+</translation>
+    </message>
+    <message>
+        <source>New Item</source>
+        <translation>Yeni Nesne</translation>
+    </message>
+    <message>
+        <source>Constraints</source>
+        <translation>Kısıtlar</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation>Kapat</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation>Ekle</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation>Kısıt
+</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation>Kaldır</translation>
+    </message>
+    <message>
+        <source>Modify</source>
+        <translation>Değiştir</translation>
+    </message>
+    <message>
+        <source>Filter</source>
+        <translation>UygulaFiltre</translation>
     </message>
 </context>
 <context>
     <name>ConstraintTeacherMaxDaysPerWeekForm_template</name>
     <message>
         <source>FET - Time constraints teacher max days per week</source>
-        <translation>FET--Haftada maksimıum günlerde öğretmenler zaman kısıtlamaları</translation>
+        <translation>FET - Zaman Kısıtı - Öğretmen - Haftalık Maksimum Gün Sayısı 
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Close</source>
@@ -3822,7 +4247,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -3830,26 +4256,27 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
     <message>
         <source>Filter</source>
-        <translation>Filtre</translation>
+        <translation>Filtre Uygula</translation>
     </message>
 </context>
 <context>
     <name>ConstraintTeacherNotAvailableForm_template</name>
     <message>
         <source>FET - Time constraints teacher not available</source>
-        <translation>FET- Zaman kısıtlamaları öğretmenler müsait değil</translation>
+        <translation>FET - Zaman Kısıtı - Öğretmen - Müsait Olmayan Öğretmen 
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Close</source>
@@ -3861,7 +4288,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -3869,26 +4297,27 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
     <message>
         <source>Filter</source>
-        <translation>Filtre</translation>
+        <translation>Filtre Uygula</translation>
     </message>
 </context>
 <context>
     <name>ConstraintTeacherRequiresRoomForm_template</name>
     <message>
         <source>FET - Space constraints teacher requires room</source>
-        <translation>FET-Alan kısıtlamalar öğretmen önerir odayı</translation>
+        <translation>FET - Yer Kısıtı - Öğretmen - Öğretmen İçin Gerekli Sınıf 
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Close</source>
@@ -3900,7 +4329,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -3908,26 +4338,27 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
     <message>
         <source>Filter</source>
-        <translation>Filtre</translation>
+        <translation>Filtre Uygula</translation>
     </message>
 </context>
 <context>
     <name>ConstraintTeacherSubjectRequireRoomForm_template</name>
     <message>
         <source>FET - Space constraints teacher subject require room</source>
-        <translation>FET- Zaman kısıtlamaları öğretmenler konu gerekli oda</translation>
+        <translation>FET - Yer Kısıtı - Öğretmen - Ders Konusu İçin Gerekli Sınıf 
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Close</source>
@@ -3939,7 +4370,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -3947,22 +4379,23 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
     <message>
         <source>Filter</source>
-        <translation>Filtre</translation>
+        <translation>Filtre Uygula</translation>
     </message>
 </context>
 <context>
     <name>ConstraintTeachersMaxHoursContinuouslyForm_template</name>
     <message>
         <source>FET - Time constraints teachers max hours continuously</source>
-        <translation>FET-Zaman kısıtlamarı öğretmenler maksimum saatler sürekli olarak</translation>
+        <translation>FET - Zaman Kısıtı - Öğretmenler - Aralıksız Maksimum Ders Saati 
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Close</source>
@@ -3974,7 +4407,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -3982,22 +4416,23 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
 </context>
 <context>
     <name>ConstraintTeachersMaxHoursDailyForm_template</name>
     <message>
         <source>FET - Time constraints teachers max hours daily</source>
-        <translation>FET-Zaman kısıtlamaları öğretmenler maksimum saat günlük olarak</translation>
+        <translation>FET - Zaman Kısıtı - Öğretmenler - Günlük Maksimum Ders Saati 
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Close</source>
@@ -4010,7 +4445,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -4018,26 +4454,64 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
+    </message>
+</context>
+<context>
+    <name>ConstraintTeachersMinHoursDailyForm_template</name>
+    <message>
+        <source>FET - Time constraints teachers min hours daily</source>
+        <translation>FET - Zaman Kısıtı - Öğretmenler - Günlük Minimum Ders Saati 
+</translation>
+    </message>
+    <message>
+        <source>New Item</source>
+        <translation>Yeni Nesne</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation>Kapat</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation>Ekle</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation>Kısıt
+</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation>Kaldır</translation>
+    </message>
+    <message>
+        <source>Modify</source>
+        <translation>Değiştir</translation>
+    </message>
+    <message>
+        <source>Constraints</source>
+        <translation>Kısıtlar</translation>
     </message>
 </context>
 <context>
     <name>ConstraintTeachersNoGapsForm_template</name>
     <message>
         <source>FET - Time constraints teachers no gaps</source>
-        <translation>FET-Zaman kısıtlamarı öğretmenler arayok</translation>
+        <translation>FET - Zaman Kısıtı - Öğretmenler - Aralıksız Derse Girme 
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Close</source>
@@ -4049,7 +4523,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -4057,18 +4532,19 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
 </context>
 <context>
     <name>ConstraintTeachersSubgroupsMaxHoursDailyForm_template</name>
     <message>
         <source>FET - Time constraints teachers-subgroups max hours daily</source>
-        <translation>FET-Zaman kısıtlamaları öğretmenler ve alt gruplar maksimum saat günlük</translation>
+        <translation>FET - Zaman Kısıtı - Öğretmenler - Alt-Gruplar Günlük Maksimum Ders Saati 
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Close</source>
@@ -4080,7 +4556,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -4088,22 +4565,23 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
 </context>
 <context>
     <name>ConstraintTeachersSubjectTagMaxHoursContinuouslyForm_template</name>
     <message>
         <source>FET - Time constraints teachers subject tag max hours continuously</source>
-        <translation>FET-Zaman kısıtlamalar öğretmenler konu başlıkları maksimum saat sürekli olarak</translation>
+        <translation>FET - Zaman Kısıtı - Öğretmenler - Ders Konu Başlığı Aralıksız Maksimum Ders Saati 
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Close</source>
@@ -4115,7 +4593,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -4123,22 +4602,23 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
     <message>
         <source>Filter</source>
-        <translation>Filtre</translation>
+        <translation>Filtre Uygula</translation>
     </message>
 </context>
 <context>
     <name>ConstraintTeachersSubjectTagsMaxHoursContinuouslyForm_template</name>
     <message>
         <source>FET - Time constraints teachers subject tags max hours continuously</source>
-        <translation>FET-Zaman kısıtlamalar öğretmenler konu başlığı maksimum saat sürekli olarak</translation>
+        <translation>FET - Zaman Kısıtı - Öğretmenler - Ders Konu Başlıkları Aralıksız Maksimum Ders Saati
+</translation>
     </message>
     <message>
         <source>New Item</source>
@@ -4154,7 +4634,8 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -4162,18 +4643,19 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
     <message>
         <source>Constraints</source>
-        <translation>Kısıtlamalar</translation>
+        <translation>Kısıtlar</translation>
     </message>
 </context>
 <context>
     <name>DaysForm_template</name>
     <message>
         <source>FET - timetable data - the days of the week</source>
-        <translation>FET-Ders programı bilgisi-Haftanın günleri</translation>
+        <translation>FET - Ders Programı - Haftanın Günleri
+</translation>
     </message>
     <message>
         <source>Day 10</source>
@@ -4241,14 +4723,16 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Number of working days per week</source>
-        <translation>Haftada çalışma günlerinin sayısı</translation>
+        <translation>Haftalık İş Günü Sayısı
+</translation>
     </message>
 </context>
 <context>
     <name>EquipmentsForm_template</name>
     <message>
         <source>Equipments</source>
-        <translation>Donanımlar</translation>
+        <translation>Araç-Gereçler
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -4256,15 +4740,16 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Add equipment</source>
-        <translation>Donanım ekle</translation>
+        <translation>Araç-Gereç Ekle
+</translation>
     </message>
     <message>
         <source>Modify</source>
-        <translation>Değiştirmek</translation>
+        <translation>Değiştir</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -4279,7 +4764,8 @@ Seçilen odalar</translation>
     <name>FetMainForm_template</name>
     <message>
         <source>FET - a free evolutionary timetabling program</source>
-        <translation>FET-Açık ders programı geliştirme programı</translation>
+        <translation>FET - Açık Geliştirilebilir Ders Programı Yazılımı
+</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -4287,31 +4773,36 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>&amp;Data</source>
-        <translation>&amp;Bilgi</translation>
+        <translation>&amp;Veri</translation>
     </message>
     <message>
         <source>Time constraints (misc)</source>
-        <translation>Zaman kısıtlamaları(misc)</translation>
+        <translation>Zaman Kısıtları (Diğer)
+</translation>
     </message>
     <message>
         <source>Time constraints (teachers)</source>
-        <translation>Zaman kısıtlamaları(öğretmenler)</translation>
+        <translation>Zaman Kısıtları (Öğretmenler)
+</translation>
     </message>
     <message>
         <source>Time constraints (students)</source>
-        <translation>Zaman kısıtlamaları(öğrenciler)</translation>
+        <translation>Zaman Kısıtları (Öğrenciler)
+</translation>
     </message>
     <message>
         <source>Time constraints (activities)</source>
-        <translation>Zaman kısıtlamaları(etkinlikler)</translation>
+        <translation>Zaman Kısıtları (Dersler)
+</translation>
     </message>
     <message>
         <source>Space constraints (misc)</source>
-        <translation>Alan kısıtlamaları(misc)</translation>
+        <translation>Yer Kısıtları (Diğer)
+</translation>
     </message>
     <message>
         <source>Space constraints (rooms)</source>
-        <translation>Alan kısıtlamaları(odalar)</translation>
+        <translation>Yer Kısıtları (Sınıflar)</translation>
     </message>
     <message>
         <source>&amp;Parameters</source>
@@ -4319,7 +4810,7 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>&amp;Timetable</source>
-        <translation>&amp;Ders programı</translation>
+        <translation>&amp;Ders Programı</translation>
     </message>
     <message>
         <source>&amp;Language</source>
@@ -4339,7 +4830,7 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Ctrl+N</source>
-        <translation>CTRL+N</translation>
+        <translation>Ctrl+N</translation>
     </message>
     <message>
         <source>Open</source>
@@ -4347,11 +4838,11 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>&amp;Open...</source>
-        <translation>&amp;Aç</translation>
+        <translation>&amp;Aç...</translation>
     </message>
     <message>
         <source>Ctrl+O</source>
-        <translation>CTRL+O</translation>
+        <translation>Ctrl+O</translation>
     </message>
     <message>
         <source>Save</source>
@@ -4371,7 +4862,7 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Save &amp;As...</source>
-        <translation>Farklı&amp; kaydet</translation>
+        <translation>Farklı &amp;Kaydet...</translation>
     </message>
     <message>
         <source>Exit</source>
@@ -4383,11 +4874,11 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Frequently asked questions</source>
-        <translation>Sıkça sorulan sorular</translation>
+        <translation>Sıkça Sorulan Sorular</translation>
     </message>
     <message>
         <source>&amp;Frequently asked questions</source>
-        <translation>&amp;Sıkça sorulan sorular</translation>
+        <translation>&amp;Sıkça Sorulan Sorular</translation>
     </message>
     <message>
         <source>About</source>
@@ -4395,7 +4886,7 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>&amp;About...</source>
-        <translation>&amp;Hakkında</translation>
+        <translation>&amp;Hakkında...</translation>
     </message>
     <message>
         <source>Teachers</source>
@@ -4407,19 +4898,19 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Subjects</source>
-        <translation>Konu</translation>
+        <translation>Konular</translation>
     </message>
     <message>
         <source>&amp;Subjects</source>
-        <translation>&amp;Konu</translation>
+        <translation>&amp;Konular</translation>
     </message>
     <message>
         <source>Years</source>
-        <translation>Yıllar</translation>
+        <translation>Ders Yılları</translation>
     </message>
     <message>
         <source>&amp;Years</source>
-        <translation>&amp;Yıllar</translation>
+        <translation>&amp;Ders Yılları</translation>
     </message>
     <message>
         <source>Groups</source>
@@ -4427,47 +4918,53 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>&amp;Groups</source>
-        <translation>&amp;Grup</translation>
+        <translation>&amp;Gruplar</translation>
     </message>
     <message>
         <source>Subgroups</source>
-        <translation>Altgrup</translation>
+        <translation>Alt-Gruplar</translation>
     </message>
     <message>
         <source>S&amp;ubgroups</source>
-        <translation>&amp;Altgrup</translation>
+        <translation>&amp;Alt-Gruplar</translation>
     </message>
     <message>
         <source>Activities</source>
-        <translation>Etkinlikler</translation>
+        <translation>Dersler</translation>
     </message>
     <message>
         <source>&amp;Activities</source>
-        <translation>&amp;Etkinlikler</translation>
+        <translation>&amp;Dersler</translation>
     </message>
     <message>
         <source>Allocate hours</source>
-        <translation>Ayır saatleri</translation>
+        <translation>Ders Saatlerinin Dağılımını Yap
+</translation>
     </message>
     <message>
         <source>Allocate &amp;hours</source>
-        <translation>Ayır &amp;saatleri</translation>
+        <translation>&amp;Ders Saatlerinin Dağılımını Yap
+</translation>
     </message>
     <message>
         <source>View (students)</source>
-        <translation>Görünüm(öğrenciler)</translation>
+        <translation>Görünüm (Öğrenciler)
+</translation>
     </message>
     <message>
         <source>View (&amp;students)</source>
-        <translation>Görünüm(&amp;öğrenciler)</translation>
+        <translation>Görünüm (&amp;Öğrenciler)
+</translation>
     </message>
     <message>
         <source>View (teachers)</source>
-        <translation>Görünüm(öğretmenler)</translation>
+        <translation>Görünüm (Öğretmenler)
+</translation>
     </message>
     <message>
         <source>View (&amp;teachers)</source>
-        <translation>Görünüm(&amp;öğretmenler)</translation>
+        <translation>Görünüm (&amp;Öğretmenler)
+</translation>
     </message>
     <message>
         <source>Export</source>
@@ -4479,31 +4976,35 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Show conflicts (time)</source>
-        <translation>Zıtlıkları göster(zaman)</translation>
+        <translation>Çelişkileri Göster (Zaman)
+</translation>
     </message>
     <message>
         <source>Show conflicts (t&amp;ime)</source>
-        <translation>Zıtlıkları göster(z&amp;aman)</translation>
+        <translation>Çelişkileri Göster (&amp;Zaman)
+</translation>
     </message>
     <message>
         <source>Days per week</source>
-        <translation>Haftada günler</translation>
+        <translation>Haftalık Gün Sayısı</translation>
     </message>
     <message>
         <source>&amp;Days per week</source>
-        <translation>&amp;Haftada günler</translation>
+        <translation>&amp;Haftalık Gün Sayısı</translation>
     </message>
     <message>
         <source>Hours per day</source>
-        <translation>Günde saatler</translation>
+        <translation>Ders Saatleri
+</translation>
     </message>
     <message>
         <source>&amp;Hours per day</source>
-        <translation>&amp;Günde saatler</translation>
+        <translation>&amp;Ders Saatleri
+</translation>
     </message>
     <message>
         <source>Rooms</source>
-        <translation>Odalar</translation>
+        <translation>Sınıflar</translation>
     </message>
     <message>
         <source>&amp;Rooms</source>
@@ -4511,27 +5012,33 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Allocate rooms</source>
-        <translation>Ayrılan sınıflar</translation>
+        <translation>Sınıfların Dağılımını Yap
+</translation>
     </message>
     <message>
         <source>Allocate &amp;rooms</source>
-        <translation>Ayrılan &amp;sınıflar</translation>
+        <translation>&amp;Sınıfların Dağılımını Yap
+</translation>
     </message>
     <message>
         <source>View (rooms)</source>
-        <translation>Görünüm(sınıflar)</translation>
+        <translation>Görünüm (Sınıflar)
+</translation>
     </message>
     <message>
         <source>View (r&amp;ooms)</source>
-        <translation>Görünüm(&amp;sınıflar)</translation>
+        <translation>Görünüm (&amp;Sınıflar)
+</translation>
     </message>
     <message>
         <source>Show conflicts (space)</source>
-        <translation>Zıtlıkları göster(alan)</translation>
+        <translation>Çelişkileri Göster (Yer)
+</translation>
     </message>
     <message>
         <source>Show conflicts (s&amp;pace)</source>
-        <translation>Zıtlıkları göster(a&amp;lan)</translation>
+        <translation>Çelişkileri Göster (&amp;Yer)
+</translation>
     </message>
     <message>
         <source>EN</source>
@@ -4551,44 +5058,52 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Population number</source>
-        <translation>Nüfüs numarası</translation>
+        <translation>Popülasyon
+</translation>
     </message>
     <message>
         <source>Population &amp;number</source>
-        <translation>Nüfüs &amp;sayısı</translation>
+        <translation>&amp;Popülasyon
+</translation>
     </message>
     <message>
         <source>Probabilities - TODO</source>
-        <translation>İhtimaller-TODO</translation>
+        <translation>Olasılıklar - TODO
+</translation>
     </message>
     <message>
         <source>Equipments</source>
-        <translation> Donanımlar</translation>
+        <translation>Araç-Gereçler
+</translation>
     </message>
     <message>
         <source>&amp;Equipments</source>
-        <translation>&amp;Donanımlar
+        <translation>&amp;Araç-Gereçler
+
 </translation>
     </message>
     <message>
         <source>Time constraints</source>
-        <translation>Zaman kısıtlamaları</translation>
+        <translation>Zaman Kısıtları</translation>
     </message>
     <message>
         <source>T&amp;ime constraints</source>
-        <translation>Z&amp;aman kısıtlamaları</translation>
+        <translation>&amp;Zaman Kısıtları</translation>
     </message>
     <message>
         <source>2 activities consecutive</source>
-        <translation>2 Etkinlik ardard gelen</translation>
+        <translation>Dersleri Ardışıklama (Sıra Önemli)
+</translation>
     </message>
     <message>
         <source>2 activities grouped</source>
-        <translation>Gruplanan iki etkinlik</translation>
+        <translation>Dersleri Gruplama (Sıra Önemsiz)
+</translation>
     </message>
     <message>
         <source>Activities preferred times</source>
-        <translation>Önerilen zamanlarda etkinlikler</translation>
+        <translation>Dersleri Tercih Edilen Gün Ve Saate Yerleştirme
+</translation>
     </message>
     <message>
         <source>FR</source>
@@ -4600,183 +5115,223 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Activities same starting time</source>
-        <translation>Aynı saatte başalyan etkinlikler</translation>
+        <translation>Dersleri Aynı Gün Ve Saate Yerleştirme
+</translation>
     </message>
     <message>
         <source>View (teachers-with rooms)</source>
-        <translation>Görünüm(öğretmenler-sınıflar ile)</translation>
+        <translation>Görünüm (Öğretmenlere Göre Sınıflar)
+</translation>
     </message>
     <message>
         <source>View (t&amp;eachers-with rooms)</source>
-        <translation>Görünüm(ö&amp;ğretmenler-sınıflar ile)</translation>
+        <translation>Görünüm (&amp;Öğretmenlere Göre Sınıflar)
+</translation>
     </message>
     <message>
         <source>View (students-with rooms)</source>
-        <translation>Görünüm(öğrenciler-sınıflar ile)</translation>
+        <translation>Görünüm (Öğrencilere Göre Sınıflar)
+</translation>
     </message>
     <message>
         <source>View (st&amp;udents-with rooms)</source>
-        <translation>Görünüm(ö&amp;ğrenciler-sınıflar ile)</translation>
+        <translation>Görünüm (&amp;Öğrencilere Göre Sınıflar)
+</translation>
     </message>
     <message>
         <source>All time constraints</source>
-        <translation>Bütün zaman kısıtlamaları</translation>
+        <translation>Tüm Zaman Kısıtları
+</translation>
     </message>
     <message>
         <source>All t&amp;ime constraints</source>
-        <translation>Bütün z&amp;aman kısıtlamaları</translation>
+        <translation>&amp;Tüm Zaman Kısıtları
+</translation>
     </message>
     <message>
         <source>Teacher not available</source>
-        <translation>Meşgul öğretmenler</translation>
+        <translation>Öğretmen - Müsait Olmayan Öğretmen
+</translation>
     </message>
     <message>
         <source>Basic compulsory time constraints</source>
-        <translation>Esas sürekli zaman kısıtlamaları</translation>
+        <translation>Zorunlu Zaman Kısıtları
+</translation>
     </message>
     <message>
         <source>Students set not available</source>
-        <translation>Müsait olmayan öğrenci grupları</translation>
+        <translation>Öğrenciler - Müsait Olmayan Öğrenciler
+</translation>
     </message>
     <message>
         <source>Break</source>
-        <translation>Ara</translation>
+        <translation>Ders Arası
+</translation>
     </message>
     <message>
         <source>Teacher max days per week</source>
-        <translation>Öğretmnler haftada maksimum günler</translation>
+        <translation>Öğretmen - Haftalık Maksimum Gün Sayısı
+</translation>
     </message>
     <message>
         <source>Teachers max hours continuously</source>
-        <translation>Öğretmnler  maksimum saatler sürekli olarak</translation>
+        <translation>Öğretmenler - Aralıksız Maksimum Ders Saati
+</translation>
     </message>
     <message>
         <source>Teachers max hours daily</source>
-        <translation>Öğretmenler  maksimum saat günlük</translation>
+        <translation>Öğretmenler - Günlük Maksimum Ders Saati
+</translation>
     </message>
     <message>
         <source>Teachers-subgroups max hours daily</source>
-        <translation>Öğretmenler ve alt gruplar  maksimum saat günlük</translation>
+        <translation>Öğretmenler - Alt-Gruplar Günlük Maksimum Ders Saati
+</translation>
     </message>
     <message>
         <source>Activity preferred time</source>
-        <translation>Önerilen zaman etkinliği</translation>
+        <translation>Dersi Tercih Edilen Gün Ve Saate Yerleştirme
+</translation>
     </message>
     <message>
         <source>Students set no gaps</source>
-        <translation>Öğrenci takımı aralıksız</translation>
+        <translation>Öğrenciler - Aralıksız Derse Girme
+</translation>
     </message>
     <message>
         <source>Students no gaps</source>
-        <translation>Öğrenciler aralıksız</translation>
+        <translation>Öğrenciler - Aralıksız Derse Girme
+</translation>
     </message>
     <message>
         <source>Teachers no gaps</source>
-        <translation>Öğretmenler aralıksız</translation>
+        <translation>Öğretmenler - Aralıksız Derse Girme
+</translation>
     </message>
     <message>
         <source>Students early</source>
-        <translation>Öğrenciler erkenden </translation>
+        <translation>Derslerin Erkenden Başlaması
+</translation>
     </message>
     <message>
         <source>Students set interval max days per week</source>
-        <translation></translation>
+        <translation>Öğrenciler - Haftalık Maksimum Dinlenme Süresi
+</translation>
     </message>
     <message>
         <source>Students set n hours daily</source>
-        <translation>Öğrenci grupları saatleri günlük</translation>
+        <translation>Öğrenciler - Günlük Ders Saati
+</translation>
     </message>
     <message>
         <source>Students n hours daily</source>
-        <translation>Öğrenci saatleri günlük</translation>
+        <translation>Öğrenciler - Günlük Ders Saati
+</translation>
     </message>
     <message>
         <source>Activity ends day</source>
-        <translation>Etkinlik bitiş günü</translation>
+        <translation>Dersi Gün Sonuna Yerleştirme
+</translation>
     </message>
     <message>
         <source>Activities not overlapping</source>
-        <translation>Ardarda gelmeyen etkinlikler</translation>
+        <translation>Dersleri Ardışıklamama
+</translation>
     </message>
     <message>
         <source>Min n days between activities</source>
-        <translation>Etkinliklerarasında minumum günler</translation>
+        <translation>Dersler Arası Minumum N Gün
+</translation>
     </message>
     <message>
         <source>Activity preferred times</source>
-        <translation>Önerilen zamanlarda etkinlikler</translation>
+        <translation>Dersi Tercih Edilen Günlere Ve Saatlere Yerleştirme
+</translation>
     </message>
     <message>
         <source>All space constraints</source>
-        <translation>Bütün alan kısıtlamaları</translation>
+        <translation>Tüm Yer Kısıtları
+</translation>
     </message>
     <message>
         <source>All s&amp;pace constraints</source>
-        <translation>Bütün a&amp;lan kısıtlamaları</translation>
+        <translation>&amp;Tüm Yer Kısıtları
+</translation>
     </message>
     <message>
         <source>Space constraints</source>
-        <translation>Alan kısıtlamaları</translation>
+        <translation>Yer Kısıtları</translation>
     </message>
     <message>
         <source>Basic compulsory space</source>
-        <translation>Esas sürekli alan</translation>
+        <translation>Zorunlu Yer
+</translation>
     </message>
     <message>
         <source>Teacher requires room</source>
-        <translation>Öğretmenin istediği sınıf</translation>
+        <translation>Öğretmen - Öğretmen İçin Gerekli Sınıf
+</translation>
     </message>
     <message>
         <source>Room not available</source>
-        <translation>Sınıf müsait değil</translation>
+        <translation>Sınıf - Müsait Olmayan Sınıf
+</translation>
     </message>
     <message>
         <source>Activity preferred room</source>
-        <translation>Önerilen sınıf hareketi</translation>
+        <translation>Ders Konusu - Tercih Edilen Sınıf
+</translation>
     </message>
     <message>
         <source>Minimize number of rooms for students</source>
-        <translation>Öğrenciler için sınıfların sayılarını minimize et</translation>
+        <translation>Öğrenciler - Sınıf Sayısını Minimize Et
+</translation>
     </message>
     <message>
         <source>Room type not allowed subjects</source>
-        <translation>Konu ile uygun olmayan oda türü</translation>
+        <translation>Sınıf Türü - İzin Verilmeyen Ders Konuları
+</translation>
     </message>
     <message>
         <source>Subject requires equipments</source>
-        <translation>Derste donanım gerekiyor</translation>
+        <translation>Ders Konusu - Gerekli Araç-Gereç
+</translation>
     </message>
     <message>
         <source>Allocate hours and rooms simultaneously</source>
-        <translation>Saatleri ve sınıfları ayır aynı anda</translation>
+        <translation>Ders Saatlerinin Ve Sınıfların Dağılımını Birlikte Yap
+</translation>
     </message>
     <message>
         <source>Show conflicts (time and space)</source>
-        <translation>Zıtlıkları göster(zaman ve alan)</translation>
+        <translation>Çelişkileri Göster (Yer Ve Zaman)
+</translation>
     </message>
     <message>
         <source>Activities same starting hour</source>
-        <translation>Aynı saatte baslayan etkinlikler</translation>
+        <translation>Dersleri Aynı Saate Yerleştirme
+</translation>
     </message>
     <message>
         <source>Subject tags</source>
-        <translation>Konu etiketleri</translation>
+        <translation>Ders Konu Başlığı</translation>
     </message>
     <message>
         <source>Su&amp;bject tags</source>
-        <translation>Ko&amp;nu etiketleri</translation>
+        <translation>&amp;Ders Konu Başlığı</translation>
     </message>
     <message>
         <source>Subject subject tag require equipments</source>
-        <translation>Ders başlıklarının donanımlar ister</translation>
+        <translation>Ders Konu Başlığı - Gerekli Araç-Gereç
+</translation>
     </message>
     <message>
         <source>Institution name</source>
-        <translation>Kurum ismi</translation>
+        <translation>Kurum İsmi</translation>
     </message>
     <message>
         <source>I&amp;nstitution name</source>
-        <translation>K&amp;urum ismi</translation>
+        <translation>&amp;Kurum İsmi</translation>
     </message>
     <message>
         <source>Comments</source>
@@ -4788,11 +5343,13 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Activities same room</source>
-        <translation>Aynı sınıf etkinlikleri</translation>
+        <translation>Dersleri Aynı Sınıfa Yerleştirme
+</translation>
     </message>
     <message>
         <source>Activity preferred rooms</source>
-        <translation>Önerilen odalar etkinlikleri</translation>
+        <translation>Dersi Tercih Edilen Günlere Ve Saatlere Yerleştirme
+</translation>
     </message>
     <message>
         <source>CA</source>
@@ -4812,27 +5369,33 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Subject preferred room</source>
-        <translation>Önerilen sınıf dersleri</translation>
+        <translation>Ders Konusu - Tercih Edilen Sınıf
+</translation>
     </message>
     <message>
         <source>Subject subject tag preferred room</source>
-        <translation>Konu konu başlığı önerilen sınıf</translation>
+        <translation>Ders Konu Başlığı - Tercih Edilen Sınıf
+</translation>
     </message>
     <message>
         <source>Subject preferred rooms</source>
-        <translation>Önerilen sınıf dersleri</translation>
+        <translation>Ders Konusu - Tercih Edilen Sınıflar
+</translation>
     </message>
     <message>
         <source>Subject subject tag preferred rooms</source>
-        <translation>Konu konu başlığı önerilen sınıflar</translation>
+        <translation>Ders Konu Başlığı - Tercih Edilen Sınıflar
+</translation>
     </message>
     <message>
         <source>Teachers-subject tags max hours continuously</source>
-        <translation>Öğretmenler-konu başlıkları maksimum saatler sürekli olarak</translation>
+        <translation>Öğretmenler - Ders Konu Başlıkları Aralıksız Maksimum Ders Saati
+</translation>
     </message>
     <message>
         <source>Teachers-subject tag max hours continuously</source>
-        <translation>Öğretmen-konu başlıkları maksimum saatler sürekli olarak</translation>
+        <translation>Öğretmenler - Ders Konu Başlığı Aralıksız Maksimum Ders Saati
+</translation>
     </message>
     <message>
         <source>PL</source>
@@ -4844,140 +5407,189 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Teacher subject require room</source>
-        <translation>Öğretmen konu isteme odası
+        <translation>Öğretmen - Ders Konusu İçin Gerekli Sınıf
+
 </translation>
     </message>
     <message>
         <source>Time constraints subtags</source>
-        <translation></translation>
+        <translation>Ders Konu Başlıkları Zaman Kısıtı
+</translation>
     </message>
     <message>
         <source>2 activities ordered</source>
-        <translation></translation>
+        <translation>Dersleri Sıralama (Aralıklı)
+</translation>
     </message>
     <message>
         <source>Buildings</source>
-        <translation>Yapılar</translation>
+        <translation>Okul Binaları</translation>
     </message>
     <message>
         <source>Max building changes per day for teachers</source>
-        <translation>Öğretmenler için günde maksimum bina değişir</translation>
+        <translation>Öğretmenler - Günlük Maksimum Okul Binası Değiştirme
+</translation>
     </message>
     <message>
         <source>Max building changes per day for students</source>
-        <translation>Öğrenciler için günde maksimum bina değişir</translation>
+        <translation>Öğrenciler - Günlük Maksimum Okul Binası Değiştirme
+</translation>
     </message>
     <message>
         <source>Minimize number of rooms for teachers</source>
-        <translation>Öğretmenler için sınıfların sayılarını minimize et
+        <translation>Öğretmenler - Sınıf Sayısını Minimize Et
 </translation>
     </message>
     <message>
         <source>Max room changes per day for teachers</source>
-        <translation>Öğretmenler için günde maksimum sınıf değişir.</translation>
+        <translation>Öğretmenler - Günlük Maksimum Sınıf Değiştirme
+</translation>
     </message>
     <message>
         <source>Max room changes per day for students</source>
-        <translation>Öğrenciler için günde maksimum sınıf değişir.</translation>
+        <translation>Öğrenciler - Günlük Maksimum Sınıf Değiştirme
+</translation>
     </message>
     <message>
         <source>Export to xml and html</source>
-        <translation type="unfinished"></translation>
+        <translation>Xml ve Html Olarak Veri Gönder
+</translation>
     </message>
     <message>
         <source>Export to &amp;xml and html</source>
-        <translation type="unfinished"></translation>
+        <translation>Xml Ve Html Olarak &amp;Veri Gönder
+</translation>
     </message>
     <message>
         <source>Students</source>
-        <translation type="unfinished">Öğrenciler</translation>
+        <translation>Öğrenciler</translation>
     </message>
     <message>
         <source>Teachers with rooms (1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Öğretmenlere Göre Sınıflar (1)
+</translation>
     </message>
     <message>
         <source>Students with rooms (1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Öğrencilere Göre Sınıflar (1)
+</translation>
     </message>
     <message>
         <source>Teachers with rooms (2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Öğretmenlere Göre Sınıflar (2)
+</translation>
     </message>
     <message>
         <source>Students with rooms (2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Öğrencilere Göre Sınıflar (2)
+</translation>
     </message>
     <message>
         <source>Export to i&amp;Calendar</source>
-        <translation type="unfinished"></translation>
+        <translation>İCalender&apos;a &amp;Veri Gönder
+</translation>
     </message>
     <message>
         <source>Export to iCalendar</source>
-        <translation type="unfinished"></translation>
+        <translation>İCalender&apos;a Veri Gönder</translation>
     </message>
     <message>
         <source>en_GB (British English)</source>
-        <translation type="unfinished"></translation>
+        <translation>en_GB (İngilizce)
+</translation>
     </message>
     <message>
         <source>&amp;en_GB (British English)</source>
-        <translation type="unfinished"></translation>
+        <translation>en_GB (&amp;İngilizce)</translation>
     </message>
     <message>
         <source>ro (Romanian)</source>
-        <translation type="unfinished"></translation>
+        <translation>ro (Romence)</translation>
     </message>
     <message>
         <source>&amp;ro (Romanian)</source>
-        <translation type="unfinished"></translation>
+        <translation>ro (&amp;Romence)</translation>
     </message>
     <message>
         <source>fr (French)</source>
-        <translation type="unfinished"></translation>
+        <translation>fr (Fransızca)</translation>
     </message>
     <message>
         <source>&amp;fr (French)</source>
-        <translation type="unfinished"></translation>
+        <translation>fr (&amp;Fransızca)</translation>
     </message>
     <message>
         <source>ca (Catalan)</source>
-        <translation type="unfinished"></translation>
+        <translation>ca (Katalanca)</translation>
     </message>
     <message>
         <source>&amp;ca (Catalan)</source>
-        <translation type="unfinished"></translation>
+        <translation>ca (&amp;Katalanca)</translation>
     </message>
     <message>
         <source>ms (Malay)</source>
-        <translation type="unfinished"></translation>
+        <translation>ms (Malay)</translation>
     </message>
     <message>
         <source>&amp;ms (Malay)</source>
-        <translation type="unfinished"></translation>
+        <translation>ms (&amp;Malay)</translation>
     </message>
     <message>
         <source>pl (Polish)</source>
-        <translation type="unfinished"></translation>
+        <translation>pl (Lehçe)</translation>
     </message>
     <message>
         <source>&amp;pl (Polish)</source>
-        <translation type="unfinished"></translation>
+        <translation>pl (&amp;Lehçe)</translation>
     </message>
     <message>
         <source>tr (Turkish)</source>
-        <translation type="unfinished"></translation>
+        <translation>tr (Türkçe)</translation>
     </message>
     <message>
         <source>&amp;tr (Turkish)</source>
-        <translation type="unfinished"></translation>
+        <translation>tr (&amp;Türkçe)</translation>
     </message>
     <message>
         <source>nl (Dutch)</source>
-        <translation type="unfinished"></translation>
+        <translation>nl (Flemenkçe)</translation>
     </message>
     <message>
         <source>&amp;nl (Dutch)</source>
+        <translation>nl (&amp;Flemenkçe)</translation>
+    </message>
+    <message>
+        <source>&amp;de (German)</source>
+        <translation>de (&amp;Almanca)</translation>
+    </message>
+    <message>
+        <source>Teachers statistics</source>
+        <translation>Öğretmen İstatistikleri</translation>
+    </message>
+    <message>
+        <source>Students statistics</source>
+        <translation>Öğrenci İstatistikleri</translation>
+    </message>
+    <message>
+        <source>Statistics</source>
+        <translation>İstatistikler</translation>
+    </message>
+    <message>
+        <source>Subjects statistics</source>
+        <translation>Konu İstatistikleri</translation>
+    </message>
+    <message>
+        <source>Teacher interval max days per week</source>
+        <translation>Öğretmen - Haftalık Maksimum Dinlenme Süresi
+</translation>
+    </message>
+    <message>
+        <source>Teachers min hours daily</source>
+        <translation>Öğretmenler - Günlük Minumum Ders Saati
+</translation>
+    </message>
+    <message>
+        <source>&amp;hu (Hungarian)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4985,15 +5597,16 @@ Seçilen odalar</translation>
     <name>GroupsForm_template</name>
     <message>
         <source>FET - groups of students</source>
-        <translation>FET-Öğrencilerin grupları</translation>
+        <translation>FET - Öğrenci Grupları</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Year</source>
-        <translation>Yıl</translation>
+        <translation>Ders Yılı
+</translation>
     </message>
     <message>
         <source>Group</source>
@@ -5001,7 +5614,7 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Add group</source>
-        <translation>Grup ekle</translation>
+        <translation>Grup Ekle</translation>
     </message>
     <message>
         <source>Remove current</source>
@@ -5009,11 +5622,12 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Modify current</source>
-        <translation>Geçerli olanı değiştir.</translation>
+        <translation>Değiştir</translation>
     </message>
     <message>
         <source>Sort current groups alphabetically</source>
-        <translation>Geçerli olan grubu alfabetik olarak sırala</translation>
+        <translation>Grupları Alfabetik Olarak Sırala
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -5021,11 +5635,13 @@ Seçilen odalar</translation>
     </message>
     <message>
         <source>Activate all activities for selected students group</source>
-        <translation>Etkinlikler seçilen öğrenci grupları için aktif</translation>
+        <translation>Seçilen Öğrenci Grupları İçin Tüm Dersleri Etkinleştir
+</translation>
     </message>
     <message>
         <source>De-activate all activities for selected students group</source>
-        <translation>Etkinlikler seçilen öğrenci grupları için aktif değil</translation>
+        <translation>Seçilen Öğrenci Grubunda, Tüm Ders Etkinleştirmelerini Durdur
+</translation>
     </message>
     <message>
         <source>Details</source>
@@ -5036,305 +5652,67 @@ Seçilen odalar</translation>
     <name>HelpAboutForm_template</name>
     <message>
         <source>About FET - a free evolutionary timetabling program</source>
-        <translation>Hakkında FET-Açık ders programı geliştirme programı</translation>
+        <translation type="obsolete">Hakkında FET-Açık ders programı geliştirme programı</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation>Kapat</translation>
+        <translation type="obsolete">Kapat</translation>
     </message>
     <message>
         <source>Author</source>
-        <translation>Yazar</translation>
+        <translation>Programcı</translation>
     </message>
     <message>
         <source>Translators</source>
-        <translation>Tercümanlar</translation>
+        <translation>Çevirmenler</translation>
     </message>
     <message>
         <source>References</source>
         <translation>Referanslar</translation>
     </message>
     <message>
-        <source>[1] H.S.C.Lee, Timetabling Highly Constrained Systems via Genetic Algorithms, Masters Thesis, University of Philippines, Diliman, Quezon City, 2000 (free, on the internet).
-
-[2] A.Schaerf, A Survey of Automated Timetabling, Artificial Intelligence Review 13(2), 87-127, 1999 (free, on the internet).
-
-[3] S.Tongchim, Coarse-Grained Parallel Genetic Algorithm for Solving the Timetable Problem, Proc. of the 3rd Annual Nat.Symp.on Computational Science and Engineering. Bangkok, Thailand, 1999 (free, on the internet).
-
-[4] Z.Michalewicz, Genetic Algorithms + Data Structures = Evolution Programs (2nd ed.), Springer-Verlag, 1994</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Thanks to</source>
-        <translation>Teşekkurler</translation>
+        <translation>Teşekkürler</translation>
     </message>
     <message>
         <source>Sponsors</source>
-        <translation>Sponsorlar</translation>
+        <translation type="obsolete">Sponsorlar</translation>
     </message>
     <message>
         <source>Guestbook</source>
-        <translation>Ziyaretçi defteri</translation>
+        <translation>Ziyaretçi Defteri</translation>
     </message>
     <message>
-        <source>In chronological order:
-
-Sebastian Canagaratna, Department of Chemistry, Ohio Northern University
-
-Raita Mihail Doru
-
-Tom Hosty</source>
+        <source>About FET - a free timetabling program</source>
+        <translation>Fet Hakkında - Açık Ders Programı Yazılımı
+</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:Sans Serif; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;[1] H.S.C.Lee, Timetabling Highly Constrained Systems via Genetic Algorithms, Masters Thesis, University of Philippines, Diliman, Quezon City, 2000 (free, on the internet).&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;[2] A.Schaerf, A Survey of Automated Timetabling, Artificial Intelligence Review 13(2), 87-127, 1999 (free, on the internet).&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;[3] S.Tongchim, Coarse-Grained Parallel Genetic Algorithm for Solving the Timetable Problem, Proc. of the 3rd Annual Nat.Symp.on Computational Science and Engineering. Bangkok, Thailand, 1999 (free, on the internet).&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;[4] Z.Michalewicz, Genetic Algorithms + Data Structures = Evolution Programs (2nd ed.), Springer-Verlag, 1994&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Contributors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>French translation - by Jerome Durand 
-<byte value="x9"/>(fetfr@free.fr, http://fetfr.free.fr/ )
-
-Catalan translation - by Miguel Gea Milvaques 
-<byte value="x9"/>(debian@miguelgea.com)
-
-Romanian translation - by Liviu Lalescu 
-<byte value="x9"/>(Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address))
-
-Malay translation - by Abdul Hadi Kamel
-<byte value="x9"/>(hadikamel@perlis.uitm.edu.my)
-
-Polish translation - by Radoslaw Pasiok
-<byte value="x9"/>(zapala@konto.pl)
-
-Turkish translation - by Mehmet Gezmisoglu
-<byte value="x9"/>(m_gezmisoglu@hotmail.com)
-
-Dutch translation - by Niels Fikse
-<byte value="x9"/>(k.fikse AT student.utwente.nl)</source>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:Sans Serif; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Code contributors:&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Volker Dirr (Volker at dirr-computer dot de) - implemented and tested two-point and uniform crossover. Currently, FET uses only two-point crossover. This is clearly an improvement over the 1-point crossover, originally implemented in FET.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>FET is free software for automatically scheduling the timetable of a school, high-school or faculty.
-
-Version: 3.18.2 (January 2006)
-
-Licensed under GNU/GPL.
-
-Author: Liviu Lalescu, Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)
-
-FET web page: http://lalescu.ro/liviu/fet/
-
-This project is open source. You are invited to contribute to this software and your feed-back would be greatly appreciated.
-
-Please support this project by making a donation. You can contact the author or a translator for that.</source>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:Sans Serif; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;FET is free software for automatically scheduling the timetable of a school, high-school or faculty.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Version: 4.2.8 (February 2007)&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Licensed under GNU/GPL.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Author: Liviu Lalescu, Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Please see also Contributors and Translators tabs&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;FET web page: http://lalescu.ro/liviu/fet/&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;This project is open source. You are invited to contribute to this software and your feed-back would be greatly appreciated.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Please support this project by making a donation. You can contact the author, a contributor or a translator for that.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>(chronologically)
---------------------
-
-Costin Badica<byte value="x9"/>- my teacher. He actually made me begin this project and provided me with documentation and advices.
-
-Carsten Niehaus - suggestions.
-
-Imre Nagy <byte value="x9"/>- e-mail list (does not work anymore), suggestions.
-
-Sajith V. K. <byte value="x9"/>- suggestions
-
-Michael Towers<byte value="x9"/>- lots of bugs reported, sample files, suggestions, front/back-end.
-
-Antti Leppik<byte value="x9"/>- sample file, suggestions.
-
-Ian Fantom<byte value="x9"/>- sample file, suggestions.
-
-Simon Ghetti<byte value="x9"/>- sample files, suggestions.
-
-Gibbon Tamba - sample file, bug reported.
-
-Jerome Durand - bug reported, French translation (fetfr@free.fr, please also see http://fetfr.free.fr/).
-
-Marek Jaszuk - bugs reported, suggestions, sample file.
-
-Ramanathan Srinivasan - suggestions.
-
-Vimal Joseph - suggestions, a script to convert the .xml results into .tex.
-
-Cristian Gherman - bug reported, suggestions.
-<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>
-Nicholas Robinson - suggestions.
-
-Radu Spineanu <byte value="x9"/>- Debian package.
-
-Morten Piil<byte value="x9"/>- bug reported, sample file.
-
-Sebastian Canagaratna - lots of suggestions, bugs reported, sample files.
-
-Abdul Hadi Kamel - sample file, bugs reported, Malay translation.
-
-Miguel Gea Milvaques - Catalan translation.
-
-Frank de Bruijn - bug reported.
-
-Radoslaw Pasiok - Polish translation.
-
-Daan Huntjens - bug reported, sample file, suggestions, partial Dutch translation.
-
-Yush Yuen - sample file.
-
-Scott Sweeting - sample file, suggestions, icon for FET.
-
-Dragos Petrascu - suggestions.
-
-Daniel S. - suggestions, help files for the constraints.
-
-Gianluca Salvo - suggested Constraint2ActivitiesOrdered.
-
-Sebastian O&apos;Halloran - suggestions.
-
-Mehmet Gezmisoglu - Turkish translation.
-
-Tom Hosty (tomhosty@hotmail.com) - sample file, bugs reported, user&apos;s guide.
-
-Niels Fikse - Dutch translation.
-
-Simon Bohlin - suggestions.</source>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:Sans Serif; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;French translation &lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>Jerome Durand (fetfr AT free.fr, http://fetfr.free.fr/).&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>updated by Patrick Fox (patrick.fox AT laposte.net)&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Catalan translation&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>Miguel Gea Milvaques (debian AT miguelgea.com)&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Romanian translation&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>Liviu Lalescu (Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu,&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>in particular you can find here the e-mail address).&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Malay translation&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>Abdul Hadi Kamel (hadikamel AT perlis.uitm.edu.my)&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Polish translation&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>Radoslaw Pasiok (zapala AT konto.pl)&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Turkish translation&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>initial translator - Mehmet Gezmisoglu (m_gezmisoglu AT hotmail.com)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>updates and many improvements - Mahir Nacar (mahirnacar AT email.com)&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Dutch translation&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>Niels Fikse (k.fikse AT student.utwente.nl)&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;German translation&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>Volker Dirr (Volker AT dirr-computer.de)&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Hungarian translation&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>Ferenczi Viktor (cx AT cx.hu)&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>sathia silan (thrilosyen81@yahoo.com)   (2006-01-09 10:45:34+02) (Rating: 5 stars out of 5)
-<byte value="x9"/>
-its good piece of G/A software...help me in studying G/A more..
-
----------------------------------------------------------------------
-
-Tom Hosty (tomhosty@hotmail.com)   (2005-11-20 23:29:05+02) (Rating: 5 stars out of 5)
-<byte value="x9"/>
-I am a teacher with 30+ years experience. This is an excellent program, written by a young man who is obviously a genius. He welcomes your ideas and responds immediately. And it&apos;s free! (I tried a couple of commercial programs first - an English one costing 675 English pounds and a Finnish one costing over 300 English pounds).
-
----------------------------------------------------------------------
-
-Nakul Dhotre (mail_me@rock.com)   (2005-10-29 22:45:08+03) (Rating: 4 stars out of 5)
-<byte value="x9"/>
-This is a great piece of software and a very good example of the huge potential genetic algorithms have.
-
-I never thaught making timetables might be such a difficult task when i was a kid .. but with this thing even a kid can make timetable for the whole school.
-
----------------------------------------------------------------------
-
-drew (DrDrew@Gmail.com)   (2005-10-10 14:42:38+03)
-<byte value="x9"/>
-Do you know konosys ?
-That&apos;s the best timetable generator. Fet seems to be arranged !!
-
----------------------------------------------------------------------
-
-Raita Mihail (mircea8844@yahoo.com)   (2005-09-14 21:50:20+03) (Rating: 5 stars out of 5)
-<byte value="x9"/>
-Este super!
-
----------------------------------------------------------------------
-
-Rica (aurelian.pavel@email.ro)   (2005-09-11 12:46:05+03) (Rating: 5 stars out of 5)
-<byte value="x9"/>
-Este un program superb. L-am recomandat calduros tuturor. Multumim!
-
-Aurelian Pavel,
-Gr. Sc. de Ind. Usoara, Sighisoara
-
----------------------------------------------------------------------
-
-radu (sunt@acasa.ro)   (2005-08-03 23:40:27+03)
-<byte value="x9"/>
-programul e foarte bun. si e gratis... asta e deja pasiune.
-
-multa bafta mai departe.
-
-R. Nemeth, CT &quot;C. Brancusi&quot;, Oradea.
-
----------------------------------------------------------------------
-
-j. weimenglee (weimenglee@gmail.com)   (2005-06-22 18:34:13+03) (Rating: 1 star out of 5)
-<byte value="x9"/>
-too bad
-
----------------------------------------------------------------------
-
-Sema (skweli@yahoo.fr)   (2005-06-21 11:43:06+03) (Rating: 1 star out of 5)
-<byte value="x9"/>
-it&apos;s not for universities. it doesnt look professional.
-
----------------------------------------------------------------------
-
-Adrian Hernandez Santisteban (filosofo@gmail.com)   (2005-06-13 02:32:55+03) (Rating: 5 stars out of 5)
-<byte value="x9"/>
-I am a member of a literacy campaign in MEXICO. We are a non-profit organization that work to improve the quality of life of those ones who did not recieved a proper education. We like to thank you very much for this program, it is excellent. It helped us resolve all our logistic problems.
-
----------------------------------------------------------------------
-
-ely mustapha (mustapha.ahmedly@esct.rnu.tn)   (2005-05-18 12:55:57+03) (Rating: 5 stars out of 5)
-<byte value="x9"/>
-Excellent programme. De telles solutions manquent sur le net. Merci encore.
-
----------------------------------------------------------------------
-
-rezgui (rezguiwahid@yahoo.fr)   (2005-04-21 18:46:34+03)
-<byte value="x9"/>
-an excellent program for timetabling,but i want to complie it on windows architecture
-
----------------------------------------------------------------------
-
-Erik Happaerts (erik.happaerts@ehb.be)   (2005-03-26 11:59:25+02)
-<byte value="x9"/>
-The software looks very good. It&apos;s a pity that there isn&apos;t a multi-user interface. At our university multiple people are in charge of planning. It would be great if the program could use a central database.
-
----------------------------------------------------------------------
-
-Abdul Hadi Kamel (hadikamel@perlis.uitm.edu.my)   (2005-02-07 04:39:22+02)
-<byte value="x9"/>
-I have tested your software using our University&apos;s time-tabling data.
-Any advice in developing a good front-end web-based for your fet program?
-
-The comments are :
-
-a) Generally it&apos;s an excellent program for time tabling although it takes a long time to run before we can get the results.
-
-b) You should upgrade the interface to allow users to update/modify the data that have been keyed in.
-
-c) It&apos;s good to consider having options to keep the input and output data in MySQL database, besides xml.
-
-d)I hope the fet will continue to be an Open-source program in the future.
-
-by
-Hadi Kamel
-UiTM Arau, Perlis Malaysia.
-
----------------------------------------------------------------------
-
-Hallaj (Hallajs@Gmail.Com)   (2005-01-19 22:42:45+02) (Rating: 5 stars out of 5)
-<byte value="x9"/>
-Very very nice software. I love the idea of it being build with QT. It somewhat enables the X usage on *nix machines. Thumbs up for the developer!
-
----------------------------------------------------------------------
-
-Morten Piil (fet@piilinfo.dk)   (2004-12-29 22:49:42+02)
-<byte value="x9"/>
-Execellent program and you can&apos;t beat the price. It sometimes hangs though
-
----------------------------------------------------------------------
-
-Nelson Hereveri (nhereveri@gmail.com)   (2004-12-07 17:58:45+02) (Rating: 4 stars out of 5)
-<byte value="x9"/>
-Muy buen software, yo lo he utilizado en conjunto con PHP4, DOM, XSLT, CSS y Sablotron.
-El nico problema es que demora un poco, pero quizs sea mi PC.
-Buen Trabajo, Felicidades.
-
-----------------------------------------------------------------------
-
-Cristian Gherman (c-gherman@home.ro)   (2004-11-28 12:14:39+02) (Rating: 4 stars out of 5)
-<byte value="x9"/>
-Un program extraordinar.
-
------------------------------------------------------------------------
-
-Eraldo Paulesu (eraldo.paulesu@unimib.it)   (2004-11-15 03:19:34+02)
-<byte value="x9"/>
-It looks an excellent software for schools of all grades but not for universities</source>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:Sans Serif; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;(chronologically)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;--------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Costin Badica<byte value="x9"/>- my teacher. He actually made me begin this project and provided me with documentation and advices.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Carsten Niehaus - suggestions.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Imre Nagy <byte value="x9"/>- e-mail list (does not work anymore), suggestions.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Sajith V. K. <byte value="x9"/>- suggestions&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Michael Towers<byte value="x9"/>- lots of bugs reported, sample files, suggestions, front/back-end.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Antti Leppik<byte value="x9"/>- sample file, suggestions.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Ian Fantom<byte value="x9"/>- sample file, suggestions.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Simon Ghetti<byte value="x9"/>- sample files, suggestions.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Gibbon Tamba - sample file, bug reported.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Jerome Durand - bug reported, French translation (fetfr@free.fr, please also see http://fetfr.free.fr/).&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Marek Jaszuk - bugs reported, suggestions, sample file.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Ramanathan Srinivasan - suggestions.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Vimal Joseph - suggestions, a script to convert the .xml results into .tex.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Cristian Gherman - bug reported, suggestions.&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Nicholas Robinson - suggestions.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Radu Spineanu <byte value="x9"/>- Debian package.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Morten Piil<byte value="x9"/>- bug reported, sample file.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Sebastian Canagaratna - lots of suggestions, bugs reported, sample files.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Abdul Hadi Kamel - sample file, bugs reported, Malay translation.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Miguel Gea Milvaques - Catalan translation.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Frank de Bruijn - bug reported.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Radoslaw Pasiok - Polish translation.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Daan Huntjens - bug reported, sample file, suggestions, partial Dutch translation.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Yush Yuen - sample file.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Scott Sweeting - sample file, suggestions, icon for FET.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Dragos Petrascu - suggestions.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Daniel S. - suggestions, help files for the constraints.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Gianluca Salvo - suggested Constraint2ActivitiesOrdered.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Sebastian O&apos;Halloran - suggestions.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Mehmet Gezmisoglu - Turkish translation.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Tom Hosty (tomhosty@hotmail.com) - sample file, bugs reported, user&apos;s guide.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Niels Fikse - Dutch translation.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Simon Bohlin - suggestions.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Volker Dirr - German translation, bug reports, suggestions, 2-point and uniform crossover implementation and testing.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Les Richardson - update of the FAQ.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Gabi Danon - instructions on how to compile/run FET on Mac OS X.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Manolo Par - suggested ConstraintTeachersMinHoursDaily&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Viktor Ferenczi - bug report.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Paul Legere - Windows compilation.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Patrick Fox - improved French translation.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Andres Chandia - icons.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Ferenczi Viktor - Hungarian translation.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Zoran Zdravkovski - bug reports.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message encoding="UTF-8">
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:Sans Serif; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Igen June&lt;/span&gt; (&lt;a href=&quot;mailto:igen_june%40yahoo.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;igen_june@yahoo.com&lt;/span&gt;&lt;/a&gt;)   &lt;span style=&quot; color:#808080;&quot;&gt;&lt;font size=&quot;2&quot;&gt;(2007-01-15 10:03:05+02) &lt;/font&gt;&lt;/span&gt;(Rating: 4 stars out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Thanks. I try to learn this sofware. I think very usefull and comfortable for my daily task in my school (Saint Mary College Indonesia; Bengawan 6 Bandung).&lt;/p&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Jaime Hyland&lt;/span&gt; (&lt;a href=&quot;mailto:jaime%40ireland.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;jaime@ireland.com&lt;/span&gt;&lt;/a&gt;)   &lt;span style=&quot; color:#808080;&quot;&gt;&lt;font size=&quot;2&quot;&gt;(2006-11-17 09:29:07+02) &lt;/font&gt;&lt;/span&gt;(Rating: 5 stars out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;An excellent program, well documented and thoroughly explained.&lt;br /&gt;&lt;br /&gt;Very impressive.&lt;/p&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;oktay&lt;/span&gt; (&lt;a href=&quot;mailto:okt_ay%40hotmail.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;okt_ay@hotmail.com&lt;/span&gt;&lt;/a&gt;)   &lt;span style=&quot; color:#808080;&quot;&gt;&lt;font size=&quot;2&quot;&gt;(2006-11-09 04:32:41+02) &lt;/font&gt;&lt;/span&gt;(Rating: 5 stars out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;thax for such an excellent job&lt;/p&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Ioan Cioca&lt;/span&gt; (&lt;a href=&quot;mailto:iciocaus%40yahoo.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;iciocaus@yahoo.com&lt;/span&gt;&lt;/a&gt;)   &lt;span style=&quot; color:#808080;&quot;&gt;&lt;font size=&quot;2&quot;&gt;(2006-10-20 15:17:36+03) &lt;/font&gt;&lt;/span&gt;(Rating: 5 stars out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Dincolo de aprecierile elogioase pe care as fi si eu tentat sa le fac...orarul ogindeste mai cu seama munca si perseverenta autorului&lt;/p&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Shie Benaderet&lt;/span&gt; (&lt;a href=&quot;mailto:shierone%40gmail.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;shierone@gmail.com&lt;/span&gt;&lt;/a&gt;)   &lt;span style=&quot; color:#808080;&quot;&gt;&lt;font size=&quot;2&quot;&gt;(2006-09-05 09:08:48+03) &lt;/font&gt;&lt;/span&gt;(Rating: 4 stars out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Foarte Bine. Nu... Minunat!&lt;/p&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Mahir Nacar&lt;/span&gt; (&lt;a href=&quot;mailto:mahirnacar%40email.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;mahirnacar@email.com&lt;/span&gt;&lt;/a&gt;)   &lt;span style=&quot; color:#808080;&quot;&gt;&lt;font size=&quot;2&quot;&gt;(2006-08-24 16:03:25+03)&lt;/font&gt;&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;This software is the most flexible timetabling software, i have ever seen. Generally, these kinds of software about timetabling have their own constants. You can not rule the software, but the software dictates you its own limited frame. &lt;br /&gt;However, with FET, you can add-remove any constarints at your timetable, because it has very generic and modular commands. The use of these commands is like an usual computer programming activity.&lt;br /&gt;&lt;br /&gt;The only problem at my FET experience is that, the software could not solve the conflicts in a meaningful time, whenever the number of activities and constraints added, exceeded hundreds. The algoritm must be continuesly improved in order to get the software to operate like the practical style of human judgement.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;farrouj redouane (farrouj@hotmail.fr)   (2006-06-24 15:51:28+03) (Rating: 5 stars out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;FET C&apos;est le meilleur generateur d&apos;horaire&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Pranjal Daterao (only_pranjal@yahoo.com)   (2006-03-13 11:42:27+02)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Very Nice Algorithm. But Sometimes it hangs.. Excellent program.. Keep it up.. :-)&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Patrick Fox (patrick.fox@laposte.net)   (2006-03-11 11:50:01+02) (Rating: 4 stars out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Good work, it will soon be a piece of software know in each french school !&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Still can be improved.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Nizar TLILI (nizar.tlili@gmail.com)   (2006-01-27 13:23:38+02) (Rating: 3 stars out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Congratulations for your efforts.&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;I think I am interested in developing an extension for FET.&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Really, FET is very efficient!!!&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Juma (jlungo@yahoo.com)   (2006-01-15 18:09:29+02)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;it sounds good. congratulations&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;sathia silan (thrilosyen81@yahoo.com)   (2006-01-09 10:45:34+02) (Rating: 5 stars out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;its good piece of G/A software...help me in studying G/A more..&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Tom Hosty (tomhosty@hotmail.com)   (2005-11-20 23:29:05+02) (Rating: 5 stars out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;I am a teacher with 30+ years experience. This is an excellent program, written by a young man who is obviously a genius. He welcomes your ideas and responds immediately. And it&apos;s free! (I tried a couple of commercial programs first - an English one costing 675 English pounds and a Finnish one costing over 300 English pounds).&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Nakul Dhotre (mail_me@rock.com)   (2005-10-29 22:45:08+03) (Rating: 4 stars out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;This is a great piece of software and a very good example of the huge potential genetic algorithms have.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;I never thaught making timetables might be such a difficult task when i was a kid .. but with this thing even a kid can make timetable for the whole school.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;drew (DrDrew@Gmail.com)   (2005-10-10 14:42:38+03)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Do you know konosys ?&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;That&apos;s the best timetable generator. Fet seems to be arranged !!&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Raita Mihail (mircea8844@yahoo.com)   (2005-09-14 21:50:20+03) (Rating: 5 stars out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Este super!&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Rica (aurelian.pavel@email.ro)   (2005-09-11 12:46:05+03) (Rating: 5 stars out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Este un program superb. L-am recomandat calduros tuturor. Multumim!&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Aurelian Pavel,&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Gr. Sc. de Ind. Usoara, Sighisoara&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;radu (sunt@acasa.ro)   (2005-08-03 23:40:27+03)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;programul e foarte bun. si e gratis... asta e deja pasiune.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;multa bafta mai departe.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;R. Nemeth, CT &quot;C. Brancusi&quot;, Oradea.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;j. weimenglee (weimenglee@gmail.com)   (2005-06-22 18:34:13+03) (Rating: 1 star out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;too bad&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Sema (skweli@yahoo.fr)   (2005-06-21 11:43:06+03) (Rating: 1 star out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;it&apos;s not for universities. it doesnt look professional.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Adrian Hernandez Santisteban (filosofo@gmail.com)   (2005-06-13 02:32:55+03) (Rating: 5 stars out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;I am a member of a literacy campaign in MEXICO. We are a non-profit organization that work to improve the quality of life of those ones who did not recieved a proper education. We like to thank you very much for this program, it is excellent. It helped us resolve all our logistic problems.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;ely mustapha (mustapha.ahmedly@esct.rnu.tn)   (2005-05-18 12:55:57+03) (Rating: 5 stars out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Excellent programme. De telles solutions manquent sur le net. Merci encore.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;rezgui (rezguiwahid@yahoo.fr)   (2005-04-21 18:46:34+03)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;an excellent program for timetabling,but i want to complie it on windows architecture&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Erik Happaerts (erik.happaerts@ehb.be)   (2005-03-26 11:59:25+02)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The software looks very good. It&apos;s a pity that there isn&apos;t a multi-user interface. At our university multiple people are in charge of planning. It would be great if the program could use a central database.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Abdul Hadi Kamel (hadikamel@perlis.uitm.edu.my)   (2005-02-07 04:39:22+02)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;I have tested your software using our University&apos;s time-tabling data.&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Any advice in developing a good front-end web-based for your fet program?&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The comments are :&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;a) Generally it&apos;s an excellent program for time tabling although it takes a long time to run before we can get the results.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;b) You should upgrade the interface to allow users to update/modify the data that have been keyed in.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;c) It&apos;s good to consider having options to keep the input and output data in MySQL database, besides xml.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;d)I hope the fet will continue to be an Open-source program in the future.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;by&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Hadi Kamel&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;UiTM Arau, Perlis Malaysia.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Hallaj (Hallajs@Gmail.Com)   (2005-01-19 22:42:45+02) (Rating: 5 stars out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Very very nice software. I love the idea of it being build with QT. It somewhat enables the X usage on *nix machines. Thumbs up for the developer!&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Morten Piil (fet@piilinfo.dk)   (2004-12-29 22:49:42+02)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Execellent program and you can&apos;t beat the price. It sometimes hangs though&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;---------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Nelson Hereveri (nhereveri@gmail.com)   (2004-12-07 17:58:45+02) (Rating: 4 stars out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Muy buen software, yo lo he utilizado en conjunto con PHP4, DOM, XSLT, CSS y Sablotron.&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;El nico problema es que demora un poco, pero quizs sea mi PC.&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Buen Trabajo, Felicidades.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;----------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Cristian Gherman (c-gherman@home.ro)   (2004-11-28 12:14:39+02) (Rating: 4 stars out of 5)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Un program extraordinar.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;-----------------------------------------------------------------------&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Eraldo Paulesu (eraldo.paulesu@unimib.it)   (2004-11-15 03:19:34+02)&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;<byte value="x9"/>&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;It looks an excellent software for schools of all grades but not for universities&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5342,296 +5720,521 @@ It looks an excellent software for schools of all grades but not for universitie
     <name>HelpFaqForm_template</name>
     <message>
         <source>FET - Frequently asked questions</source>
-        <translation>FET-Sıkça sorulan sorular</translation>
+        <translation>FET - Sıkça sorulan sorular</translation>
     </message>
     <message>
         <source>Close</source>
         <translation>Kapat</translation>
     </message>
-    <message>
+    <message encoding="UTF-8">
         <source>FET FAQ:
+
 --------
 
+
+
 Q: What is the organization of FET input data?
-A: <byte value="x9"/>- Students - organized into sets (years, containing groups, containing subgroups).
-<byte value="x9"/>- Teachers.
-<byte value="x9"/>- Subjects (the names of the possible courses, eg. Maths, Physics, etc.).
-<byte value="x9"/>- Rooms (classrooms).
-<byte value="x9"/>- Activities: a coupling of one or more teachers, a subject and one or more students set. This is usually named a course, a lecture, a laboratory and so on.
-<byte value="x9"/>- Constraints. They can be: time constraints (referring to the allocated day and hour) or space constraints (referring to rooms allocation). They can also be compulsory or non-compulsory. ConstraintBasicCompulsoryTime and ConstraintBasicCompulsorySpace are two implicit constraints of any timetable. They are added automatically. Also automatically added are ConstraintActivityPreferredTime, added by FET when a new activity is inserted. Each constraint has a weight. The implicit constraints have the weight 1.0. You can choose the weight of the other constraints and you are encouraged to play with that. How to calculate the conflict factor of a constraint? Basically, the number of conflicts, multiplied with 1 for biweekly activities and with 2 for weekly activities, and then multiplied with the weight. 
+
+A: - Students - organized into sets (years, containing groups, containing subgroups).
+
+- Teachers.
+
+- Subjects (the names of the possible courses, eg. Maths, Physics, etc.).
+
+- Rooms (classrooms).
+
+- Activities: a coupling of one or more teachers, a subject and one or more students set. This is usually named a course, a lecture, a laboratory and so on.
+
+- Constraints. They can be: time constraints (referring to the allocated day and hour) or space constraints (referring to rooms allocation). They can also be compulsory or non-compulsory. ConstraintBasicCompulsoryTime and ConstraintBasicCompulsorySpace are two implicit constraints of any timetable. They are added automatically. Also automatically added are ConstraintActivityPreferredTime, added by FET when a new activity is inserted. Each constraint has a weight. The implicit constraints have the weight 1.0. You can choose the weight of the other constraints and you are encouraged to play with that. How to calculate the conflict factor of a constraint? Basically, the number of conflicts, multiplied with 1 for biweekly activities and with 2 for weekly activities, and then multiplied with the weight.
+
+
 
 PS: Please try to work with integer weights, for now (between 1 and 100).
 
+
+
 New adding: the FET data set also may contain a list of equipments and a list of subject tags.
 
+
+
 -------------------------------------------------------------------------------
+
+
 
 Q: How does FET work?
+
 A: A really simple genetic algorithm. You can read my papers (available on my web site - http://lalescu.ro/liviu/fet/) about it.
+
 The essence (hour allocation only): each possible timetable is represented by an array, say times[i], where i goes from 0 to the number of activities - 1. The location times[i] represents the allocated time for activity i. This is the representation.
+
 Now, it applies a genetic algorithm (using notions like selection, crossover, mutation, etc.) to obtain a close to optimal solution (hopefully).
+
+
 
 -------------------------------------------------------------------------------
 
+
+
 Q: How can I obtain a good timetable and why do I get different results each time?
+
 A: The generation of the timetable is a random process; please restart and try again if you are dissatisfied with the results. Also, you can increase the population number. For the moment, the population number is limited to 8192 but, if you have plenty of RAM, you can make it as big as you want (8192 means about 160 megabytes of memory). This variable is stored in the file src/engine/genetictimetable_defs.h and is named MAX_POPULATION_NUMBER.
+
+
 
 NEW ADDING - 18 Oct. 2004: you can decrease the variable MAX_ACTIVITIES to the number of activities you have in your school, then increase MAX_POPULATION_NUMBER. I have achieved results with MAX_ACTIVITIES set to 400 and MAX_POPULATION_NUMBER set to 65536. These variables can be found in the file src/engine/genetictimetable_defs.h. Please run a &quot;make clean&quot; before running &quot;make&quot; (there is a bug in gcc, I think).
 
+
+
 NEW ADDING - 14 Feb. 2005: The variable MAX_ACTIVITIES is now set by default to 1250, and MAX_POPULATION_NUMBER to 8192.
 
+
+
 -------------------------------------------------------------------------------
+
+
 
 Q: What is the structure of the students FET can handle?
+
 A: FET was designed to allow any school structure:
-<byte value="x9"/>- independent subgroups (non-overlapping);
-<byte value="x9"/>- overlapping groups (several subgroups) and years (several groups).
-<byte value="x9"/>
--------------------------------------------------------------------------------
-<byte value="x9"/>
-Q: How can one work with overlapping structures of students?
-A: If you have overlapping groups, then you must define the smallest independent subgroup, which does not overlap with any other subgroup. Example: you have 1 group, subject sport (which must be taught to boys and girls separately) and subject physics, which is an optional subject and only some students would like to have this course (yes, FET can manage optional subjects). Then, you must define the subgroups: boys who want physics, boys who do not want physics, girls who want physics, girls who do not want physics. Now, it is very easy. Just define 
-group girls=subgroup girls who want physics + girls who do not want physics, 
-group boys=subgroup boys who want physics + boys who do not physics
-group physics=boys who want physics + girls who want physics. 
-Then, you can add as many activities as you want to the corresponding groups:
-Activity1: teacher A, group girls, subject sport;
-Activity2: teacher B, group boys, subject sport;
-Activity3: teacher C, group physics, subject optional physics.
+
+- independent subgroups (non-overlapping);
+
+- overlapping groups (several subgroups) and years (several groups).
 
 -------------------------------------------------------------------------------
-<byte value="x9"/>
+
+Q: How can one work with overlapping structures of students?
+
+A: If you have overlapping groups, then you must define the smallest independent subgroup, which does not overlap with any other subgroup. Example: you have 1 group, subject sport (which must be taught to boys and girls separately) and subject physics, which is an optional subject and only some students would like to have this course (yes, FET can manage optional subjects). Then, you must define the subgroups: boys who want physics, boys who do not want physics, girls who want physics, girls who do not want physics. Now, it is very easy. Just define
+
+group girls=subgroup girls who want physics + girls who do not want physics,
+
+group boys=subgroup boys who want physics + boys who do not physics
+
+group physics=boys who want physics + girls who want physics.
+
+Then, you can add as many activities as you want to the corresponding groups:
+
+Activity1: teacher A, group girls, subject sport;
+
+Activity2: teacher B, group boys, subject sport;
+
+Activity3: teacher C, group physics, subject optional physics.
+
+
+
+-------------------------------------------------------------------------------
+
 Q: Can you add more students sets or teachers to a single activity?
+
 A: Yes, you can add several students sets (subgroups, groups or years) and several teachers per activity.
+
+
 
 NEW ADDING - 18 Oct. 2004: The interface permits only 3 teachers and 4 students sets per activity. But you can edit by hand the input file and add there as more as 6 teachers per activity. Nobody asked me for more than 6 teachers and 4 students sets.
 
+
+
 -------------------------------------------------------------------------------
+
+
 
 Q: What represents the weight of the constraints?
+
 A: The importance of the respective constraint, relative to other constraints. For the moment, please try to use integer weights (between 1 and 100). I never had to use different values than 1, but you might need that.
 
+
+
 -------------------------------------------------------------------------------
+
+
 
 Q: How can I increase the power of search?
+
 A: You will have to increase the population number.
 
--------------------------------------------------------------------------------
 
-Q: What means bi-weekly activity?
-A: An activity which takes place once at two weeks (maybe this concept is not usual, but I considered it from the beginning because my faculty needed that).
 
 -------------------------------------------------------------------------------
+
+
+
+Q: What does a bi-weekly activity mean?
+
+A: An activity which takes place once every two weeks (maybe this concept is not usual, but I considered it from the beginning because my faculty needed that).
+
+
+
+-------------------------------------------------------------------------------
+
+
 
 Q: Why are all the conflicts reported with double importance?
+
 A: Because they are conflicts referring to weekly activities. For biweekly ones, they will appear with single importance.
 
+
+
 -------------------------------------------------------------------------------
+
+
 
 Q: How can I contribute to/support FET?
+
 A: Please see the TODO file. Also, you can send any comment/suggestion to the author.
+
 FET is free software and any donation would be great. Please contact the author for that.
+
+
 
 -------------------------------------------------------------------------------
 
+
+
 Q: What is the algorithm behind FET?
+
 A: A simple genetic algorithm applied on a simple data representation.
-<byte value="x9"/>In the future, I hope I will put here some real description of the algorithm. Until then,here are different tricks needed to understand the program:
+
+In the future, I hope I will put here some real description of the algorithm. Until then,here are different tricks needed to understand the program:
+
 - The genetic algorithm and representation behind the program looks very simple to me now and I think it can be explained in at most 2 hours. The engine is also not so hard to understand. The nightmare is the graphical user interface, data representation and loading/saving part.
+
 - Time (hours) and space (rooms) allocations are 2 similar phases. You must read my paper to see the reasons why you can firstly allocate the hours and then the rooms.
-- I use for the teachers, subjects, students (years, groups, subgroups), activities and constraints a QPtrList. Before starting the simulation, all this information is copied into some arrays, to speed up the computation. Now, the simulation works by considering each teacher, subject and activity an index in these new arrays (the timetables are represented as matrices, indexed by the the teacher (students, rooms), day and hour, and have integer values, which represent activity indices (indices in this second copied arrays).
+
+- I used for the teachers, subjects, students (years, groups, subgroups), activities and constraints a QPtrList. Before starting the simulation, all this information is copied into some arrays, to speed up the computation. Now, the simulation works by considering each teacher, subject and activity as an index in these new arrays (the timetables are represented as matrices, indexed by the the teacher (students, rooms), day and hour, and have integer values, which represent activity indices (indices in this second copied arrays).
+
 - I used int16 sometimes just because of the memory consumption
+
 - With 8192 maximum population and 2500 maximum activities, class GeneticTimetable has the size of about 160 megabytes (I hope I remember well). In fact, it contains an array of 2500*8192*2*2 of 16 bit integers, which is ~160Mb of memory.
+
+
 
 Modification (21 Feb. 2005) - with 8192 population size and 1250 activities the class Rules has size of ~160Mb.
 
+
+
 -------------------------------------------------------------------------------
+
+
 
 Q: Could you please detail the use of weights in constraints?
-A: The weight of any constraint can be a real number (double). BUT: I preferred that any return value of a constraint to be an integer, which is this real value rounded up to the nearest integer (reasons of speed). For the moment, please try to work with integer weights (between 1 and 100).
-<byte value="x9"/>
+
+A: The weight of any constraint can be a real number (double). BUT: I preferred that any return value of a constraint be an integer, which is this real value rounded up to the nearest integer (reasons of speed). For the moment, please try to work with integer weights (between 1 and 100).
+
 -------------------------------------------------------------------------------
+
+
 
 Q: Could you please explain why FET works in two phases, first the time, then the space?
+
 A: For reasons of speed. But in the two phase allocation the first phase might find solutions that are not compatible with the second phase (for example, working with the sample number 12, from Marek Jaszuk, will not yield perfect solutions for the second phase, although there exists a perfect solution, found manually.
 
-There are two solutions: 1) FET to work in a single phase (but the time will be a bit longer) or 2) add some time constraints so as the solution to the first phase will always respect all the space constraints (very complicated: all the constraints might be compulsory or non-compulsory and the execution time is very long).
+
+
+There are two solutions: 1) Get FET to work in a single phase (but the time will be a bit longer) or 2) add some time constraints so as the solution to the first phase will always respect all the space constraints (very complicated: all the constraints might be compulsory or non-compulsory and the execution time is very long).
+
+
 
 This is a research problem.
-<byte value="x9"/>
--------------------------------------------------------------------------------
-<byte value="x9"/>
-Q: How does ConstraintActivitiesSameStartingTime work?
-A: <byte value="x9"/>- for compulsory constraints, the solution candidate is repaired before evaluation (so all solutions will respect these constraints and there will be no conflicts reported). This is faster, as an input file from user Ian Fantom proved.
-<byte value="x9"/>- for non-compulsory constraints, the method is conflict reporting (slower, worse than the above method).
 
 -------------------------------------------------------------------------------
-<byte value="x9"/>
-Q: How does ConstraintActivityPreferredTime work?
-A: <byte value="x9"/>- for compulsory constraints, the solution candidate is repaired before evaluation (so all solutions will respect these constraints and there will be no conflicts reported). This is faster (proved practically, not theoretically).
-<byte value="x9"/>- for non-compulsory constraints, the method is conflict reporting. The procedure reports a conflicts factor that is increasing with the distance to the desired period. This might generate worse solutions, if you are only interested in the exact placement. In this case, please use ConstraintActivityPreferredTimes with only one preferred time.
-<byte value="x9"/><byte value="x9"/>Example: 5 days per week
-<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>5 activities daily exclusive
-<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>activity 1 - preferred on monday
-<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>activity 2 - preferred on monday
-<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>activity 3 - preferred on tuesday
-<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>activity 4 - preferred on thursday
-<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>activity 5 - anytime
-<byte value="x9"/><byte value="x9"/>The best solution will contain 2 conflicts, and a possible solution would be:
-<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>act 1 - mon
-<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>act 2 - tue
-<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>act 3 - wed
-<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>act 4 - thu
-<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>act 5 - fri
-<byte value="x9"/><byte value="x9"/>If you use ConstraintActivityPreferredTimes, you will get only one conflict:
-<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>act 1 - mon
-<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>act 2 - wed
-<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>act 3 - tue
-<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>act 4 - thu
-<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>act 5 - fri
-<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>
+
+Q: How does ConstraintActivitiesSameStartingTime work?
+
+A: - for compulsory constraints, the solution candidate is repaired before evaluation (so all solutions will respect these constraints and there will be no conflicts reported). This is faster, as an input file from user Ian Fantom proved.
+
+- for non-compulsory constraints, the method is conflict reporting (slower, worse than the above method).
+
+
+
 -------------------------------------------------------------------------------
+
+Q: How does ConstraintActivityPreferredTime work?
+
+A: - for compulsory constraints, the solution candidate is repaired before evaluation (so all solutions will respect these constraints and there will be no conflicts reported). This is faster (proved practically, not theoretically).
+
+- for non-compulsory constraints, the method is conflict reporting. The procedure reports a conflicts factor that is increasing with the distance to the desired period. This might generate worse solutions, if you are only interested in the exact placement. In this case, please use ConstraintActivityPreferredTimes with only one preferred time.
+
+Example: 5 days per week
+
+5 activities daily exclusive
+
+activity 1 - preferred on Monday
+
+activity 2 - preferred on Monday
+
+activity 3 - preferred on Tuesday
+
+activity 4 - preferred on Thursday
+
+activity 5 - anytime
+
+The best solution will contain 2 conflicts, and a possible solution would be:
+
+act 1 - Mon
+
+act 2 - Tue
+
+act 3 - Wed
+
+act 4 - Thu
+
+act 5 - Fri
+
+If you use ConstraintActivityPreferredTimes, you will get only one conflict:
+
+act 1 - Mon
+
+act 2 - Wed
+
+act 3 - Tue
+
+act 4 - Thu
+
+act 5 – Fri
+
+-------------------------------------------------------------------------------
+
+
 
 Q: What advantages has FET over other applications?
-A: <byte value="x9"/>- It is free software
-<byte value="x9"/>- Supports weekly and biweekly activities (my university of Craiova, Romania, needed that);
-<byte value="x9"/>- Independent subgroups, overlapping or independent groups, overlapping or independent years (flexible enough to permit any kind of students structure). FET can even be used to manage every individual student, if you really need that;
-<byte value="x9"/>- Possibility of optional activities;
-<byte value="x9"/>- Many kinds of constraints, possibility to add many more (please suggest!).
+
+A: - It is free software and...
+
+- Supports weekly and biweekly activities (my university of Craiova, Romania, needed that);
+
+- Independent subgroups, overlapping or independent groups, overlapping or independent years (flexible enough to permit any kind of students structure). FET can even be used to manage every individual student, if you really need that;
+
+- Possibility of optional activities;
+
+- Many kinds of constraints, possibility to add many more (please suggest!).
+
+
 
 -------------------------------------------------------------------------------
+
+
 
 Q: What are the disadvantages of FET, compared to other applications?
-A:<byte value="x9"/>- Very unfriendly (no help, primitive graphical user interface);
-<byte value="x9"/>- Potentially buggy. I do not have enough sample files for testing FET (and I hate testing :-)
-<byte value="x9"/>
+
+A: - Very unfriendly (no help, primitive graphical user interface);
+
+- Potentially buggy. I do not have enough sample files for testing FET (and I hate testing :-)
+
 -------------------------------------------------------------------------------
+
+
 
 Q: Does FET compile on other operating systems than GNU/Linux?
+
 A: FET can be compiled easily in operating systems which are similar to GNU/Linux. I will provide help to compile this program on any operating system. In particular, FET can be compiled on Microsoft Windows, if you install Qt from trolltech.com.
+
+
 
 -------------------------------------------------------------------------------
 
+
+
 Q: Does FET claim to be the best timetabling software in the world, like all the other timetabling applications?
+
 A: I cannot pretend that, because I could not compare FET with other applications (if you could help me, that would be great). All I can say right now is that I did not see any application with as many kinds of constraints and such flexibility as FET, and besides being free software.
 
-Is FET the first free timetabling software (GNU/GPL)? Hmmm... the first one was Tablix, as I found out after finishing FET. You can see links to this software if you look in the LINKS file or if you search it on the internet.
+
+
+Is FET the first free timetabling software (GNU/GPL)? Hmmm... the first one was Tablix, as I found out after finishing FET. You can see links to this software if you look in the LINKS file or if you search it on the Internet.
+
+
 
 -------------------------------------------------------------------------------
 
 Q: What is the difference between unallocated and random initialization? Which one is better?
+
 A: This means the method of initializing the population of solution candidates. It seems (practical results) that unallocated initialization is better. I have not read about unallocated initialization anywhere, but it seems to me more natural and I have an empirical explanation somewhere on my thesis.
 
 -------------------------------------------------------------------------------
 
 Q: Help on ConstraintMinNDaysBetweenActivities.
+
 A: It refers to a set of activities and involves a constant, N. For every pair of activities in the set, it does not allow the distance(in days) between them to be less than N. If you specify N=1, then this constraint means that no two activities can be scheduled in the same day. N=2 means that each two subactivities must be separated by at least one day
+
 Example: 3 activities and N=2. Then, one can place them on Monday, Wednesday and Friday (5 days week).
-Example2: 2 activities, N=3. Then, one can place them on Monday and Thursday, on Monday and Friday, then on Tuesday andFriday (5 days week).
+
+Example2: 2 activities, N=3. Then, one can place them on Monday and Thursday, on Monday and Friday, then on Tuesday and Friday (5 days week).
+
+
 
 -------------------------------------------------------------------------------
 
 Q: Is it easy to add new constraints to FET?
+
 A: It is very easy. I can say that I am able to implement a new constraint in a matter of hours. You can find a description of this procedure in file /.../fet-x.x.x/doc/how-to-implement-new-constraints
 
 -------------------------------------------------------------------------------
 
 Q: Help on ConstraintStudentsEarly.
-A: It is a constraint that imposes the condition that all the students must begin their courses as early as possible. You have to be careful with this constraint: if any set of students<byte value="x9"/>begins the classes later than the first hour in a certain day, you
-will get a conflict.
 
--------------------------------------------------------------------------------
+A: It is a constraint that imposes the condition that all the students must begin their courses as early as possible. You have to be careful with this constraint: if any set of students begins the classes later than the first hour in a certain day, you will get a conflict.
+
+------------------------------------------------------------------------------
+
+
 
 Q: FET fails to solve my timetable.
+
 A: Please try to use a greater population size. Then, try more simulations. If that does not solve your problem, please try to relax the conditions on the timetable. You can accomplish that by deleting compulsory constraints or by making them non-compulsory
+
+
 
 -------------------------------------------------------------------------------
 
 Q: Do the weights have any importance? What is the best way to choose them?
-<byte value="x9"/>---The comment below was written when FET used only mutation which randomized an activity&apos;s starting time.
-A: Yes, the weights are important, but unfortunately I cannot answer to the second question.
-<byte value="x9"/>I can justify the first affirmation by an example: the considered file is named (for the moment) sample4. As it is right now, it is a good example of a very constraint timetable, difficult to schedule by FET. The weights are chosen such that the basic constraints have a smaller weight than the constraint avoiding the gaps for the students. I think that after about 4 tries, FET manages to find a clash-free timetable (I am only referring to compulsory constraints). There was no trial in which FET failed with more than 3 compulsory constraints conflicts (usually 1).
-I wanted to impose the more important basic constraints, so I raised their importance (weight) and lowered the weight of the gaps constraints. The results came as a very unpleasant surprise for me: I never obtained less than 3 conflicts, with an average of 6. What conclusions can be derived: I am currently thinking and analysing this issue. Until someone will come up with a plausible explanation, I think that: the weights of the constraints are influencing the conflicts function. The function can have more or less local minima (which are a headache for genetic algorithms designers). You are encouraged to play with different weights.
 
-New comment: FET-s algorithm favorises the one-mutation transitions, that is, from a candidate solution you obtain a new candidate solution with a single activity rescheduled. The old candidate solution and the new one must have a good fitness, to be preferred in the evolutionary process. Basic constraints are more likely to be respected by this mutation, whereas gaps constraints require more mutations and the intermediary candidate solutions are not so fit and therefore the chances are lower of finding the good solution.
+---The comment below was written when FET used only mutation which randomized an activity&apos;s starting time.
 
-<byte value="x9"/>---The comment below was written after I chosed to introduce also the second kind of mutation, a swapping of two random activities. This swapping was very benefical, and now the results are the same, regardless of the weights (I am only referring to the above example). The reason is that this random swap helps FET transform a candidate solution which does break gaps constraints into a candidate solution which does not.
+A: Yes, the weights are important, but unfortunately I cannot answer the second question.
+
+I can justify the first affirmation by an example: the considered file is named (for the moment) sample4. As it is right now, it is a good example of a very constraint timetable, difficult to schedule by FET. The weights are chosen such that the basic constraints have a smaller weight than the constraint avoiding the gaps for the students. I think that after about 4 tries, FET manages to find a clash-free timetable (I am only referring to compulsory constraints). There was no trial in which FET failed with more than 3 compulsory constraints conflicts (usually 1).
+
+I wanted to impose the more important basic constraints, so I raised their importance (weight) and lowered the weight of the gaps constraints. The results came as a very unpleasant surprise for me: I never obtained less than 3 conflicts, with an average of 6. What conclusions can be derived: I am currently thinking and analyzing this issue. Until someone will come up with a plausible explanation, I think that: the weights of the constraints are influencing the conflicts function. The function can have more or less local minima (which are a headache for genetic algorithms designers). You are encouraged to play with different weights.
+
+
+
+New comment: FET-s algorithm favors the one-mutation transitions, that is, from a candidate solution you obtain a new candidate solution with a single activity rescheduled. The old candidate solution and the new one must have a good fitness, to be preferred in the evolutionary process. Basic constraints are more likely to be respected by this mutation, whereas gaps constraints require more mutations and the intermediary candidate solutions are not so fit and therefore the chances are lower of finding the good solution.
+
+
+
+---The comment below was written after I chose to introduce also the second kind of mutation, a swapping of two random activities. This swapping was very beneficial, and now the results are the same, regardless of the weights (I am only referring to the above example). The reason is that this random swap helps FET transform a candidate solution which does break gaps constraints into a candidate solution which does not.
+
+
 
 -------------------------------------------------------------------------------
 
 Q: Can I use FET to do interactive timetabling?
+
 A: Yes, but this is not easy. All the part regarding data representation and gradually construction of the solution is working, only the interface has to be updated.
-<byte value="x9"/>Anyway, when you add a compulsory ConstraintActivityPreferredTime, it means that you fixed that activity. You can use this feature for a semi-automatic or even manual timetabling, but it is not so convenient.
+
+Anyway, when you add a compulsory ConstraintActivityPreferredTime, it means that you fixed that activity. You can use this feature for a semi-automatic or even manual timetabling, but it is not so convenient.
+
+
 
 -------------------------------------------------------------------------------
 
+
+
 Q: Help on ConstraintActivityPreferredTimes.
+
 A: You can specify a set of time slots when this activity can be scheduled (a kind of OR of more ConstraintActivityPreferredTime).
+
+
 
 Important: For only one non-compulsory preferred time, ConstraintActivityPreferredTimes might behave better than ConstraintActivityPreferredTime, depending on whether you are interested in minimizing the distance to this preferred time or only in reaching the exact preferred time. Please see the detailed observation in the explanation of ConstraintActivityPreferredTime
 
+
+
 -------------------------------------------------------------------------------
 
+
+
 Q: Help on ConstraintStudentsSetIntervalMaxDaysPerWeek.
+
 A: Quite a difficult and long name. A user needed a constraint to disallow more than 2 afternoons per week for a students set. This constraint is more general. You can specify an interval (by the start and end hour), a students set and the maximum number of days in a week when it is permitted to have activities in this time interval.
+
+
 
 -------------------------------------------------------------------------------
 
 Q: Help on Constraint2ActivitiesConsecutive.
+
 A: A user needed a timetable to respect the requirement that 2 activities follow one after the other (order is important). For compulsory and non-compulsory, normal error reporting is done. The conflicts are a difference in days + a difference in hours. The number of conflicts is multiplied with 2 if the first activity is weekly (not bi-weekly) and again multiplied with 2 if the second activity is weekly.
-<byte value="x9"/>
-<byte value="x9"/>-&gt;added - 15 May 2004.
-<byte value="x9"/>-&gt;modified - 20 February 2005.
+
+-&gt;added - 15 May 2004.
+
+-&gt;modified - 20 February 2005.
 
 -------------------------------------------------------------------------------
+
+
 
 Q: Help on Constraint2ActivitiesGrouped.
-A: A user needed a timetable to respect the requirement that 2 activities follow one after the other (order is not important).For compulsory and non-compulsory, normal error reporting is done. The conflicts reported are: the difference in days+:<byte value="x9"/><byte value="x9"/>- the difference in hours if the activities are too far from each other
-<byte value="x9"/>- a constant number if the activities overlap
-<byte value="x9"/>- 0 if the hours are OK.
+
+A: A user needed a timetable to respect the requirement that 2 activities follow one after the other (order is not important).For compulsory and non-compulsory, normal error reporting is done. The conflicts reported are: the difference in days+: - the difference in hours if the activities are too far from each other
+
+- a constant number if the activities overlap
+
+- 0 if the hours are OK.
+
 The number of conflicts is multiplied with 2 if the first activity is weekly (not bi-weekly) and again multiplied with 2 if the second activity is weekly.
 
-<byte value="x9"/>-&gt;added - 15 May 2004.
+
+
+-&gt;added - 15 May 2004.
+
+
 
 -------------------------------------------------------------------------------
+
+
 
 Q: Help on ConstraintActivitiesPreferredTimes.
+
 A: A user suggested that ConstraintActivityPreferredTimes should be more general. Now, you can specify a teacher, the students and a subject as a filter to a set of activities that must be scheduled in certain intervals.
 
-<byte value="x9"/>-&gt;added - 15 May 2004.
+
+
+-&gt;added - 15 May 2004.
+
+
 
 -------------------------------------------------------------------------------
+
+
 
 Q: After finding the timetable of our school, suppose that a single teacher needs to modify his timetable and the rest would like to keep their timetable unchanged. Thus, it is needed to fix all the activities of the rest of the teachers and re-allocate the hours. Can FET deal with such a situation?
-A: Yes, FET can deal with that. Just add many compulsory ConstraintActivityPreferredTime-s, one for each activity that you would like to be fixed (the preferred time will be the one from the previous allocation). This will not slow down the allocation,
-because compulsory constraints of this type are dealt with in a special way (repairing of the chromosomes, to be more specific).
 
-<byte value="x9"/>-&gt;added - 17 November 2004.
+A: Yes, FET can deal with that. Just add many compulsory ConstraintActivityPreferredTime-s, one for each activity that you would like to be fixed (the preferred time will be the one from the previous allocation). This will not slow down the allocation, because compulsory constraints of this type are dealt with in a special way (repairing of the chromosomes, to be more specific).
+
+
+
+-&gt;added - 17 November 2004.
+
+
 
 -------------------------------------------------------------------------------
+
+
 
 Q: What about introducing duplicate constraints in the timetable data?
+
 A: It will slow down the automatic allocation, so please don&apos;t.
 
-<byte value="x9"/>-&gt; added - 12 February 2005.
+
+
+-&gt; added - 12 February 2005.
+
+
 
 -------------------------------------------------------------------------------
 
+
+
 Q: What about the one phase and 2 phases automatic allocation?
+
 A: If FET fails to solve your timetable in 2 phases (it has many broken space constraints), try a single phase allocation
-<byte value="x9"/>
-<byte value="x9"/>-&gt; added - 14 February 2005.
+
+-&gt; added - 14 February 2005.
+
 
 
 this documentation by Liviu Lalescu</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
     <name>HelpTimeConstraintsForm_template</name>
     <message>
         <source>FET - Help on time constraints</source>
-        <translation type="unfinished">FET- Kısıtlamalr üzerinde </translation>
+        <translation>FET - Kısıtlar Hakkında Yardım
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -5924,14 +6527,15 @@ Description: A constraint aimed at obtaining timetables which do not allow for a
 
 
 this documentation by Daniel S.</source>
-        <translation type="unfinished">Bitiş saati</translation>
+        <translation>Bitiş saati</translation>
     </message>
 </context>
 <context>
     <name>HelpTimeConstraintsSubtagsForm_template</name>
     <message>
         <source>FET - Help on time constraints subtags</source>
-        <translation type="unfinished"></translation>
+        <translation>FET - Ders Konu Başlıkları İle İlgili Zaman Kısıtları Hakkında Yardım
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -6240,14 +6844,15 @@ Description: Indicates how important the constraint is compared to other constra
 
 
 this documentation by Daniel S.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
     <name>HoursForm_template</name>
     <message>
         <source>FET - timetable data - the hours of the day</source>
-        <translation>FET-Ders programı-Günün saatleri</translation>
+        <translation>FET - Ders Programı - Ders Saatleri
+</translation>
     </message>
     <message>
         <source>Hour 22</source>
@@ -6384,14 +6989,24 @@ this documentation by Daniel S.</source>
     <message>
         <source>Number of start hours (periods) per day
 (please specify also the name of the last hour of the day)</source>
-        <translation>Gün içindeki ders başlanğıç saati numaraları</translation>
+        <translation type="obsolete">Gün içindeki ders başlanğıç saati numaraları</translation>
+    </message>
+    <message>
+        <source>Number of start hours (periods) per day
+(please specify also the name of the last hour of the day)
+Please be careful, you will have to input n+1 names</source>
+        <translation>Günlük Derse Başlama Dönemleri 
+(Lütfen, Günün Son Ders Saatini de giriniz) 
+Litfen Dikkat: n+1 olarak girmelisiniz.
+</translation>
     </message>
 </context>
 <context>
     <name>InstitutionNameForm_template</name>
     <message>
         <source>FET - timetable data - institution name</source>
-        <translation>FET-Ders programı-Kurum ismi</translation>
+        <translation>FET - Ders Programı - Kurum İsmi
+</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -6406,23 +7021,26 @@ this documentation by Daniel S.</source>
     <name>ModifyActivityForm_template</name>
     <message>
         <source>FET - modify activity dialog</source>
-        <translation>FET -Değiştir etkinlik diyaloğu</translation>
+        <translation>FET - Değiştir - Ders
+</translation>
     </message>
     <message>
         <source>Current activity</source>
-        <translation>Geçerli olan etkinlik</translation>
+        <translation>Ders</translation>
     </message>
     <message>
         <source>Selected teachers</source>
-        <translation>Seçilen öğretmenler</translation>
+        <translation>Seçilen Öğretmenler
+</translation>
     </message>
     <message>
         <source>All teachers</source>
-        <translation>Öğretmenler</translation>
+        <translation>Tüm Öğretmenler
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Add</source>
@@ -6442,15 +7060,17 @@ this documentation by Daniel S.</source>
     </message>
     <message>
         <source>Subject tag</source>
-        <translation>Konu etiketi</translation>
+        <translation>Ders Konu Başlığı</translation>
     </message>
     <message>
         <source>All students</source>
-        <translation>Bütün öğrenciler</translation>
+        <translation>Tüm Öğrenciler
+</translation>
     </message>
     <message>
         <source>Selected students</source>
-        <translation>Seçilen öğrenciler</translation>
+        <translation>Seçilen Öğrenciler
+</translation>
     </message>
     <message>
         <source>1</source>
@@ -6466,11 +7086,11 @@ this documentation by Daniel S.</source>
     </message>
     <message>
         <source>Bi-weekly (once at two weeks)</source>
-        <translation>Haftalık(iki haftad bir kez)</translation>
+        <translation type="obsolete">Haftalık(iki haftad bir kez)</translation>
     </message>
     <message>
         <source>Active</source>
-        <translation>Aktive</translation>
+        <translation>Etkinleştir</translation>
     </message>
     <message>
         <source>2</source>
@@ -6478,7 +7098,7 @@ this documentation by Daniel S.</source>
     </message>
     <message>
         <source>Bi-weekly</source>
-        <translation>Haftalık</translation>
+        <translation type="obsolete">Haftalık</translation>
     </message>
     <message>
         <source>3</source>
@@ -6514,14 +7134,40 @@ this documentation by Daniel S.</source>
     </message>
     <message>
         <source>This activity is split into ... lessons per week.</source>
-        <translation>Bu etkinlik dersler içine bölünmüştür</translation>
+        <translation>Bu Ders, Haftalık ... Derse Bölünmüştür.
+</translation>
+    </message>
+    <message>
+        <source>Fortnightly (once at two weeks)</source>
+        <translation>İki Haftada Bir
+</translation>
+    </message>
+    <message>
+        <source>Fortnightly</source>
+        <translation>İki Haftada Bir
+</translation>
+    </message>
+    <message>
+        <source>This value cannot be changed. If you need to 
+modify it, please remove the corresponding 
+(sub-)activities and add a new split activity</source>
+        <translation>Bu Değer Değiştirilemez. 
+Değiştirmek İstiyorsanız, İlgili Alt-Etkinlikleri kaldırınız 
+ve Yeni Bir Bölünmüş Ders Ekleyiniz
+</translation>
+    </message>
+    <message>
+        <source>Number of students (-1 for automatic computing)</source>
+        <translation>Öğrenci Sayısı (Girilmeyecekse -1)
+</translation>
     </message>
 </context>
 <context>
     <name>ModifyBuildingForm_template</name>
     <message>
         <source>Modify Building Dialog</source>
-        <translation>Değiştir dialog yapısını</translation>
+        <translation>FET - Değiştir - Okul Binası
+</translation>
     </message>
     <message>
         <source>Name</source>
@@ -6540,15 +7186,17 @@ this documentation by Daniel S.</source>
     <name>ModifyConstraint2ActivitiesConsecutiveForm_template</name>
     <message>
         <source>FET - Modify Constraint2ActivitiesConsecutive dialog</source>
-        <translation>FET-Değiştir kısıtlamlar ardarda gelen etkinlikler diyaloğu</translation>
+        <translation>FET - Kısıt Değiştir - Dersleri Ardışıklama (Sıra Önemli)
+</translation>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -6561,11 +7209,13 @@ this documentation by Daniel S.</source>
     <message>
         <source>Please input here the id&apos;s of the 2 activities,
 in order, separated by commas.</source>
-        <translation>Lütfen buraya etkinliğin iki tane Id sini yazın virgülle birbirinden ayırınız.</translation>
+        <translation>Lütfen Buraya, Virgülle Ayırarak, 
+İki Adet Ders (Sıralı) Giriniz.
+</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -6576,15 +7226,17 @@ in order, separated by commas.</source>
     <name>ModifyConstraint2ActivitiesGroupedForm_template</name>
     <message>
         <source>FET - Modify Constraint2ActivitiesGrouped dialog</source>
-        <translation>FET-Değiştir kısıtlamalar2grupetkinlikleri diyaloğu</translation>
+        <translation>FET - Kısıt Değiştir - Dersleri Gruplama (Sıra Önemsiz)
+</translation>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -6596,7 +7248,7 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -6605,22 +7257,26 @@ in order, separated by commas.</source>
     <message>
         <source>Please input here the id&apos;s of the 2 activities,
 in any order, separated by commas.</source>
-        <translation>Lütfen buraya etkinliğin iki tane Id sini yazın virgülle birbirinden ayırınız.</translation>
+        <translation>Lütfen Buraya, Virgülle Ayırarak, 
+İki Adet Ders (Sıraları Önemsiz) Giriniz.
+</translation>
     </message>
 </context>
 <context>
     <name>ModifyConstraint2ActivitiesOrderedForm_template</name>
     <message>
         <source>FET - Modify Constraint2ActivitiesOrdered dialog</source>
-        <translation>FET-Değiştir kısıtlamalar2önerilen etkinlikleri diyaloğu</translation>
+        <translation>FET - Kısıt Değiştir - Dersleri Sıralama (Aralıklı)
+</translation>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -6633,11 +7289,13 @@ in any order, separated by commas.</source>
     <message>
         <source>Please input here the id&apos;s of the 2 activities,
 in order, separated by commas.</source>
-        <translation>Lütfen buraya etkinliğin iki tane Id sini yazın virgülle birbirinden ayırınız.</translation>
+        <translation>Lütfen Buraya, Virgülle Ayırarak, 
+İki Adet Ders (Sıralı) Giriniz.
+</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -6648,11 +7306,12 @@ in order, separated by commas.</source>
     <name>ModifyConstraintActivitiesNotOverlappingForm_template</name>
     <message>
         <source>FET - Modify constraint activities not overlapping</source>
-        <translation>FET Değiştir kısıtlama etkinlikleri ardarada olmayan</translation>
+        <translation>FET - Kısıt Değiştir - Dersleri Ardışıklamama
+</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -6672,11 +7331,12 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>All activities</source>
-        <translation>Bütün etkinlikler</translation>
+        <translation>Tüm Dersler
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Add</source>
@@ -6688,14 +7348,16 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Not overlapping activities</source>
-        <translation>Ardarda gelmeyen etkinlikler</translation>
+        <translation>Dersleri Ardışıklamama
+</translation>
     </message>
 </context>
 <context>
     <name>ModifyConstraintActivitiesPreferredTimesForm_template</name>
     <message>
         <source>FET - Modify constraint activities preferred times</source>
-        <translation>FET- Değiştir kısıtlama etkinlikleri önerilen zamanlarda</translation>
+        <translation>FET - Kısıt Değiştir - Dersleri Tercih Edilen Gün Ve Saate Yerleştirme
+</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -6711,7 +7373,7 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -6720,7 +7382,7 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Subject tag</source>
-        <translation>Konu etiketi</translation>
+        <translation>Ders Konu Başlığı</translation>
     </message>
     <message>
         <source>Teacher</source>
@@ -6728,7 +7390,8 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Students set</source>
-        <translation>Öğrenci takımları</translation>
+        <translation>Öğrenci Grupları
+</translation>
     </message>
     <message>
         <source>Subject</source>
@@ -6739,11 +7402,12 @@ in order, separated by commas.</source>
     <name>ModifyConstraintActivitiesSameRoomForm_template</name>
     <message>
         <source>FET - Modify constraint activities same room</source>
-        <translation>FET- Değiştir kısıtlama etkinlikleri önerilen zamanlarda</translation>
+        <translation>FET - Kısıt Değiştir - Dersleri Aynı Sınıfa Yerleştirme
+</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -6755,11 +7419,12 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>All activities</source>
-        <translation>Bütün etkinlikler</translation>
+        <translation>Tüm Dersler
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Add</source>
@@ -6771,7 +7436,8 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Selected activities</source>
-        <translation>Seçilen etkinlikler</translation>
+        <translation>Seçilen Dersler
+</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -6786,11 +7452,12 @@ in order, separated by commas.</source>
     <name>ModifyConstraintActivitiesSameStartingHourForm_template</name>
     <message>
         <source>FET - Modify constraint activities same starting hour</source>
-        <translation>FET- Değiştir kısıtlama etkinlikleri aynı saatte başlayanlar</translation>
+        <translation>FET - Kısıt Değiştir - Dersleri Aynı Saate Yerleştirme
+</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -6802,11 +7469,12 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>All activities</source>
-        <translation>Bütün etkinlikler</translation>
+        <translation>Tüm Dersler
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Add</source>
@@ -6818,7 +7486,8 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Selected activities</source>
-        <translation>Seçilen etkinlikler</translation>
+        <translation>Seçilen Dersler
+</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -6826,18 +7495,19 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>FET- Değiştir kısıtlama etkinlikleri aynı saatte başlayanlar</translation>
+        <translation>İptal</translation>
     </message>
 </context>
 <context>
     <name>ModifyConstraintActivitiesSameStartingTimeForm_template</name>
     <message>
         <source>FET - Modify constraint activities same starting time</source>
-        <translation>FET- Değiştir kısıtlama etkinlikleri aynı zamanda başlayanlar</translation>
+        <translation>FET - Kısıt Değiştir - Dersleri Aynı Gün Ve Saate Yerleştirme
+</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -6849,11 +7519,12 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>All activities</source>
-        <translation>Bütün etkinlikler</translation>
+        <translation>Tüm Dersler
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Add</source>
@@ -6865,7 +7536,8 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Selected activities</source>
-        <translation>Seçilen etkinlikler</translation>
+        <translation>Seçilen Dersler
+</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -6880,7 +7552,8 @@ in order, separated by commas.</source>
     <name>ModifyConstraintActivityEndsDayForm_template</name>
     <message>
         <source>FET - Modify constraint activity ends day dialog</source>
-        <translation>FET- Değiştir kısıtlama etkinliği bitiş günü diyaloğu</translation>
+        <translation>FET - Kısıt Değiştir - Dersi Gün Sonuna Yerleştirme
+</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -6892,11 +7565,12 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -6904,18 +7578,19 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation></translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Activity</source>
-        <translation>Etkinlik</translation>
+        <translation>Ders</translation>
     </message>
 </context>
 <context>
     <name>ModifyConstraintActivityPreferredRoomForm_template</name>
     <message>
         <source>FET - Modify constraint activity preferred room</source>
-        <translation>FET- Değiştir kısıtlama etkinliği önerilen oda</translation>
+        <translation>FET - Kısıt Değiştir - Dersi Tercih Edilen Sınıfa Yerleştirme
+</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -6923,7 +7598,7 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -6939,22 +7614,23 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Room</source>
-        <translation>Oda</translation>
+        <translation>Sınıf</translation>
     </message>
     <message>
         <source>Activity</source>
-        <translation>FET- Değiştir kısıtlama etkinliği önerilen odada</translation>
+        <translation>Ders</translation>
     </message>
 </context>
 <context>
     <name>ModifyConstraintActivityPreferredRoomsForm_template</name>
     <message>
         <source>FET - Modify constraint activity preferred rooms</source>
-        <translation>FET- Değiştir kısıtlama etkinliği önerilen odalarda</translation>
+        <translation>FET - Kısıt Değiştir - Dersi Tercih Edilen Sınıflara Yerleştirme
+</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation></translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -6982,26 +7658,28 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>All rooms</source>
-        <translation>Bütün odalar</translation>
+        <translation>Tüm Sınıflar</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Selected rooms</source>
-        <translation>Seçilen odalar</translation>
+        <translation>
+Seçilen Sınıflar</translation>
     </message>
     <message>
         <source>Activity</source>
-        <translation>Etkinlik</translation>
+        <translation>Ders</translation>
     </message>
 </context>
 <context>
     <name>ModifyConstraintActivityPreferredTimeForm_template</name>
     <message>
         <source>FET - Modify constraint activity preferred time dialog</source>
-        <translation>FET- Değiştir kısıtlama etkinliği önerilen saatte diyaloğu</translation>
+        <translation>FET - Kısıt Değiştir - Dersi Tercih Edilen Gün Ve Saate Yerleştirme
+</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -7013,11 +7691,12 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Period</source>
@@ -7029,7 +7708,8 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Start hour</source>
-        <translation>Başlangıç saati</translation>
+        <translation>Ders Başlama Saati
+</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -7037,22 +7717,43 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Activity</source>
-        <translation>Etkinlik</translation>
+        <translation>Ders</translation>
+    </message>
+    <message>
+        <source>Filter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Students set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teacher</source>
+        <translation type="unfinished">Öğretmen</translation>
+    </message>
+    <message>
+        <source>Subject</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subject tag</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ModifyConstraintActivityPreferredTimesForm_template</name>
     <message>
         <source>FET - Modify constraint activity preferred times</source>
-        <translation>FET- Değiştir kısıtlama etkinliği önerilen zamandalarda</translation>
+        <translation>FET - Kısıt Değiştir - Dersi Tercih Edilen Günlere Ve Saatlere Yerleştirme
+</translation>
     </message>
     <message>
         <source>Activity</source>
-        <translation>Etkinlik</translation>
+        <translation>Ders</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -7064,7 +7765,7 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -7074,12 +7775,33 @@ in order, separated by commas.</source>
         <source>Compulsory</source>
         <translation>Zorunlu</translation>
     </message>
+    <message>
+        <source>Filter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Students set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teacher</source>
+        <translation type="unfinished">Öğretmen</translation>
+    </message>
+    <message>
+        <source>Subject</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subject tag</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ModifyConstraintBasicCompulsorySpaceForm_template</name>
     <message>
         <source>FET - Modify constraint basic compulsory space dialog</source>
-        <translation>FET- Değiştir kısıtlama basit sürekli alan diyaloğunu</translation>
+        <translation>FET - Kısıt Değiştir - Zorunlu Yer 
+</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -7091,11 +7813,12 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt
+</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -7103,14 +7826,14 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
 </context>
 <context>
     <name>ModifyConstraintBasicCompulsoryTimeForm_template</name>
     <message>
         <source>FET - Modify constraint basic compulsory time dialog</source>
-        <translation>FET- Değiştir kısıtlama basit sürekli zaman diyaloğunu</translation>
+        <translation>FET - Kısıt Değiştir - Zorunlu Zaman </translation>
     </message>
     <message>
         <source>Ok</source>
@@ -7122,11 +7845,12 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt
+</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -7134,14 +7858,15 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
 </context>
 <context>
     <name>ModifyConstraintBreakForm_template</name>
     <message>
         <source>FET - Modify constraint break dialog</source>
-        <translation>FET- Değiştir kısıtlama ara diyaloğu</translation>
+        <translation>FET - Kısıt Değiştir - Ders Arası
+</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -7153,11 +7878,11 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt</translation>
     </message>
     <message>
         <source>Period</source>
@@ -7169,11 +7894,13 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Start hour</source>
-        <translation>Başlangıç saati</translation>
+        <translation>Ders Başlama Saati
+</translation>
     </message>
     <message>
         <source>End hour</source>
-        <translation>Bitiş saati</translation>
+        <translation>Bitiş Saati
+</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -7181,14 +7908,15 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
 </context>
 <context>
     <name>ModifyConstraintMaxBuildingChangesPerDayForStudentsForm_template</name>
     <message>
         <source>FET - Modify constraint max building changes per day for students dialog</source>
-        <translation>FET-Günde çğrenciler için maksimum bina değişikliğini değiştir</translation>
+        <translation>FET - Kısıt Değiştir - Öğrenciler - Günlük Maksimum Okul Binası 
+</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -7200,11 +7928,12 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -7212,7 +7941,8 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Max building changes</source>
-        <translation>Maksimum yapı değişiklikleri</translation>
+        <translation>Maksimum Okul Binası Değiştirme
+</translation>
     </message>
     <message>
         <source>Compulsory</source>
@@ -7223,7 +7953,8 @@ in order, separated by commas.</source>
     <name>ModifyConstraintMaxBuildingChangesPerDayForTeachersForm_template</name>
     <message>
         <source>FET - Modify constraint max building changes per day for teachers dialog</source>
-        <translation>FET-Günde öğretmenler için maksimum bina değişikliğini değiştir</translation>
+        <translation>FET - Kısıt Değiştir - Öğretmenler - Günlük Maksimum Okul Binası 
+</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -7235,11 +7966,12 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -7247,7 +7979,8 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Max building changes</source>
-        <translation>Maksimum yapı değişiklikleri</translation>
+        <translation>Maksimum Okul Binası Değiştirme
+</translation>
     </message>
     <message>
         <source>Compulsory</source>
@@ -7258,7 +7991,8 @@ in order, separated by commas.</source>
     <name>ModifyConstraintMaxRoomChangesPerDayForStudentsForm_template</name>
     <message>
         <source>FET - Modify constraint max room changes per day for students dialog</source>
-        <translation>FET-Günde öğrenciler için maksimum oda değişikliğini değiştir</translation>
+        <translation>FET - Kısıt Değiştir - Öğrenciler - Günlük Maksimum Sınıf 
+</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -7270,11 +8004,11 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem (önerilen:1.0)</translation>
+        <translation>Önem (Önerilen:1.0)</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -7282,7 +8016,8 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Max room changes</source>
-        <translation>Maksimum oda değişikliği</translation>
+        <translation>Maksimum Sınıf Değiştirme
+</translation>
     </message>
     <message>
         <source>Compulsory</source>
@@ -7293,7 +8028,8 @@ in order, separated by commas.</source>
     <name>ModifyConstraintMaxRoomChangesPerDayForTeachersForm_template</name>
     <message>
         <source>FET - Modify constraint max room changes per day for teachers dialog</source>
-        <translation>FET-Günde öğretmenler için maksimum oda değişikliğini değiştir</translation>
+        <translation>FET - Kısıt Değiştir - Öğretmenler - Günlük Maksimum Sınıf 
+</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -7305,11 +8041,11 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -7317,22 +8053,24 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Max room changes</source>
-        <translation>Maksimum oda değişiklikleri</translation>
+        <translation>Maksimum Sınıf Değiştirme
+</translation>
     </message>
     <message>
         <source>Compulsory</source>
-        <translation>Önem(önerilen 1.0)</translation>
+        <translation>Önem (önerilen 1.0)</translation>
     </message>
 </context>
 <context>
     <name>ModifyConstraintMinNDaysBetweenActivitiesForm_template</name>
     <message>
         <source>FET - Modify constraint min n days between activities</source>
-        <translation>FET-Etkinlikler arasındaki kısıtlamaları gün içinde değiştir</translation>
+        <translation>FET - Kısıt Değiştir - Dersler Arası Minumum N Gün
+</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -7344,11 +8082,12 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>All activities</source>
-        <translation>Bütün etkinlikler</translation>
+        <translation>Tüm Dersler</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne
+</translation>
     </message>
     <message>
         <source>Add</source>
@@ -7360,7 +8099,7 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Selected activities</source>
-        <translation>Seçilen etkinlikler</translation>
+        <translation>Seçilen Dersler</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -7372,14 +8111,16 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Min days</source>
-        <translation>Minumum günler</translation>
+        <translation>Minumum Gün Sayısı
+</translation>
     </message>
 </context>
 <context>
     <name>ModifyConstraintMinimizeNumberOfRoomsForStudentsForm_template</name>
     <message>
         <source>FET - Modify constraint minimize number of rooms for students</source>
-        <translation>FET-Değiştir kısıtlama öğrenciler için oda numaraları minumum</translation>
+        <translation>FET - Kısıt Değiştir - Öğrenciler - Sınıf Sayısını Minimize Et
+</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -7391,11 +8132,11 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Compulsory (recommended: no)</source>
-        <translation>Zorunlu(önerilen :hayır)</translation>
+        <translation>Zorunlu (Önerilen: Hayır)</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -7406,7 +8147,8 @@ in order, separated by commas.</source>
     <name>ModifyConstraintMinimizeNumberOfRoomsForTeachersForm_template</name>
     <message>
         <source>FET - Modify constraint minimize number of rooms for teachers</source>
-        <translation>FET-Değiştir kısıtlamaöğretmenler için oda numaraları minumum</translation>
+        <translation>FET - Kısıt Değiştir - Öğretmenler - Sınıf Sayısını Minimize Et
+</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -7418,11 +8160,11 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Compulsory (recommended: no)</source>
-        <translation>Zorunlu (önerilen :hayır)</translation>
+        <translation>Zorunlu (Önerilen: Hayır)</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -7433,7 +8175,8 @@ in order, separated by commas.</source>
     <name>ModifyConstraintRoomNotAvailableForm_template</name>
     <message>
         <source>FET - Modifying constraint room not available</source>
-        <translation>FET-Değiştir kısıtlama uygun olmayan oda</translation>
+        <translation>FET - Kısıt Değiştir - Sınıf - Müsait Olmayan Sınıf
+</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -7445,7 +8188,7 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -7457,7 +8200,7 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Room</source>
-        <translation>Oda</translation>
+        <translation>Sınıf</translation>
     </message>
     <message>
         <source>Period</source>
@@ -7473,14 +8216,16 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Start hour</source>
-        <translation>Başlangıç saati</translation>
+        <translation>Bitiş Saati
+</translation>
     </message>
 </context>
 <context>
     <name>ModifyConstraintRoomTypeNotAllowedSubjectsForm_template</name>
     <message>
         <source>FET - Modify constraint room type not allowed subjects</source>
-        <translation>FET-Değiştir kısıtlama Oda tipi Konu ile bırakılmadı</translation>
+        <translation>FET - Kısıt Değiştir - Sınıf Türü - İzin Verilmeyen Ders Konuları
+</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -7496,7 +8241,7 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -7504,19 +8249,22 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>All subjects</source>
-        <translation>Bütün konular</translation>
+        <translation>Tüm Ders Konuları
+</translation>
     </message>
     <message>
         <source>Not-accepted subjects</source>
-        <translation>Kabul edilmeyen konular</translation>
+        <translation>Ders Konusu - Kabul Edilmeyen
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne
+</translation>
     </message>
     <message>
         <source>Room type</source>
-        <translation>Oda türü</translation>
+        <translation>Sınıf Türü</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -7531,7 +8279,8 @@ in order, separated by commas.</source>
     <name>ModifyConstraintStudentsEarlyForm_template</name>
     <message>
         <source>FET - Modify constraint students early dialog</source>
-        <translation>FET-DEğiştir kısıtlama öğrenciler erkenden diyaloğu</translation>
+        <translation>FET - Kısıt Değiştir - Derslerin Erkenden Başlaması
+</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -7543,11 +8292,12 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt
+</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -7555,18 +8305,19 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
 </context>
 <context>
     <name>ModifyConstraintStudentsNHoursDailyForm_template</name>
     <message>
         <source>FET - Modify constraint students n hours daily dialog</source>
-        <translation>FET-DEğiştir kısıtlama öğrencilerin günlük diyaloğu</translation>
+        <translation>FET - Kısıt Değiştir - Öğrenciler - Günlük Ders Saati
+</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -7574,15 +8325,17 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Max hours (-1 for none)</source>
-        <translation>Maksimum saat</translation>
+        <translation>Maksimum Ders Saati (Girilmeyecekse -1)
+</translation>
     </message>
     <message>
         <source>Min hours (-1 for none)</source>
-        <translation>Minumum saat</translation>
+        <translation>Minumum Ders Saati (Girilmeyecekse, -1)
+</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -7594,14 +8347,16 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt
+</translation>
     </message>
 </context>
 <context>
     <name>ModifyConstraintStudentsNoGapsForm_template</name>
     <message>
         <source>FET - Modify constraint students no gaps dialog</source>
-        <translation>DEğiştir kısıtlama öğrencilerin günlük diyaloğu</translation>
+        <translation>FET - Kısıt Değiştir - Öğrenciler - Aralıksız Derse Girme
+</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -7617,7 +8372,7 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -7625,18 +8380,19 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>FET-DEğiştir kısıtlama öğrencilerin günlük diyaloğu</translation>
+        <translation>Önem (Önerilen:1.0)
+</translation>
     </message>
 </context>
 <context>
     <name>ModifyConstraintStudentsSetIntervalMaxDaysPerWeekForm_template</name>
     <message>
         <source>FET - Modify constraint students set not available dialog</source>
-        <translation>DEğiştir kısıtlama öğrencilerin günlük diyaloğu</translation>
+        <translation>FET - Kısıt Değiştir - Öğrenciler - Haftalık Maksimum Dinlenme Süresi </translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt</translation>
     </message>
     <message>
         <source>Period</source>
@@ -7644,11 +8400,12 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Start hour</source>
-        <translation>Başlangıç saati</translation>
+        <translation>Ders Başlama Saati
+</translation>
     </message>
     <message>
         <source>End hour</source>
-        <translation>Bitiş saati</translation>
+        <translation>Bitiş Saati</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -7656,7 +8413,7 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Students</source>
@@ -7664,7 +8421,7 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -7676,18 +8433,21 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Max days per week</source>
-        <translation>Haftada max.günler</translation>
+        <translation>Haftalık Maksimum Gün Sayısı
+
+</translation>
     </message>
 </context>
 <context>
     <name>ModifyConstraintStudentsSetNHoursDailyForm_template</name>
     <message>
         <source>FET - Modify constraint students set n hours daily dialog</source>
-        <translation></translation>
+        <translation>FET - Kısıt Değiştir - Öğrenciler - Günlük Ders Saati
+</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -7695,7 +8455,7 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Students</source>
@@ -7703,11 +8463,13 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Max hours (-1 for none)</source>
-        <translation>Maksimum saat</translation>
+        <translation>Maksimum Ders Saati (Girilmeyecekse -1)
+</translation>
     </message>
     <message>
         <source>Min hours (-1 for none)</source>
-        <translation>Minumum saat</translation>
+        <translation>Minumum Ders Saati (Girilmeyecekse, -1)
+</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -7719,14 +8481,15 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>FEt-DEğiştir kısıtlama öğrencilerin günlük diyaloğu</translation>
+        <translation>Zorunlu Kısıt</translation>
     </message>
 </context>
 <context>
     <name>ModifyConstraintStudentsSetNoGapsForm_template</name>
     <message>
         <source>FET - Modify constraint students set no gaps dialog</source>
-        <translation>FET-DEğiştir kısıtlamalar öğrenciler arasız diyoloğu</translation>
+        <translation>FET - Kısıt Değiştir - Öğrenciler - Aralıksız Derse Girme
+</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -7738,11 +8501,12 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt
+</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -7750,7 +8514,7 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Students</source>
@@ -7761,7 +8525,8 @@ in order, separated by commas.</source>
     <name>ModifyConstraintStudentsSetNotAvailableForm_template</name>
     <message>
         <source>FET - Modify constraint students set not available dialog</source>
-        <translation>FET-Değiştir kısıtlama öğrenciler müsait değil diyaloğu</translation>
+        <translation>FET - Kısıt Değiştir - Öğrenciler - Müsait Olmayan Öğrenciler
+</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -7774,11 +8539,12 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt
+</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt</translation>
     </message>
     <message>
         <source>Period</source>
@@ -7790,11 +8556,12 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Start hour</source>
-        <translation>Başlangıç saati</translation>
+        <translation>Ders Başlama Saati
+</translation>
     </message>
     <message>
         <source>End hour</source>
-        <translation>Bitiş saati</translation>
+        <translation>Bitiş Saati</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -7802,7 +8569,7 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Students</source>
@@ -7813,7 +8580,8 @@ in order, separated by commas.</source>
     <name>ModifyConstraintSubjectPreferredRoomForm_template</name>
     <message>
         <source>FET - Modify constraint subject preferred room</source>
-        <translation>FET-Değiştir kısıtlama konu önerilen oda</translation>
+        <translation>FET - Kısıt Değiştir - Ders Konusu - Tercih Edilen Sınıf
+</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -7821,7 +8589,7 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -7837,7 +8605,7 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Room</source>
-        <translation>Oda</translation>
+        <translation>Sınıf</translation>
     </message>
     <message>
         <source>Subject</source>
@@ -7848,11 +8616,12 @@ in order, separated by commas.</source>
     <name>ModifyConstraintSubjectPreferredRoomsForm_template</name>
     <message>
         <source>FET - Modify constraint subject preferred rooms</source>
-        <translation>FET-Değiştir kısıtlama konu önerilen odalar</translation>
+        <translation>FET - Kısıt Değiştir - Ders Konusu - Tercih Edilen Sınıflar
+</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -7880,15 +8649,16 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>All rooms</source>
-        <translation>Bütün odalar</translation>
+        <translation>Tüm Sınıflar</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne
+</translation>
     </message>
     <message>
         <source>Selected rooms</source>
-        <translation>Seçilen odalar</translation>
+        <translation>Seçilen Sınıflar</translation>
     </message>
     <message>
         <source>Subject</source>
@@ -7899,11 +8669,12 @@ in order, separated by commas.</source>
     <name>ModifyConstraintSubjectRequiresEquipmentsForm_template</name>
     <message>
         <source>FET - Modify constraint subject requires equipments</source>
-        <translation>FET-Değiştir kısıtlama konu için gerekli donanımlar</translation>
+        <translation>FET - Kısıt Değiştir - Ders Konusu - Gerekli Araç-Gereç
+</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -7911,15 +8682,17 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>All equipments</source>
-        <translation>Bütün donanımlar</translation>
+        <translation>Tüm Araç-Gereç</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne
+</translation>
     </message>
     <message>
         <source>Required equipments</source>
-        <translation>Required equipments</translation>
+        <translation>Gerekli Araç-Gereç
+</translation>
     </message>
     <message>
         <source>Add</source>
@@ -7950,7 +8723,8 @@ in order, separated by commas.</source>
     <name>ModifyConstraintSubjectSubjectTagPreferredRoomForm_template</name>
     <message>
         <source>FET - Modify constraint subject subject tag preferred room</source>
-        <translation>FET-Değiştir kısıtlama konu konu başlığı önerilen oda</translation>
+        <translation>FET - Kısıt Değiştir - Ders Konu Başlığı - Tercih Edilen Sınıf
+</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -7958,7 +8732,7 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Room</source>
-        <translation>Oda</translation>
+        <translation>Sınıf</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -7966,7 +8740,7 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Compulsory</source>
@@ -7982,18 +8756,19 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Subject tag</source>
-        <translation>Konu etiketi</translation>
+        <translation>Ders Konu Başlığı</translation>
     </message>
 </context>
 <context>
     <name>ModifyConstraintSubjectSubjectTagPreferredRoomsForm_template</name>
     <message>
         <source>FET - Modify constraint subject subject tag preferred rooms</source>
-        <translation>FET-Değiştir kısıtlama konu konu başlığı önerilen odalar</translation>
+        <translation>FET - Kısıt Değiştir - Ders Konu Başlığı - Tercih Edilen Sınıflar
+</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -8017,11 +8792,11 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>All rooms</source>
-        <translation>Bütün odalar</translation>
+        <translation>Tüm Sınıflar</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Add</source>
@@ -8033,18 +8808,19 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Selected rooms</source>
-        <translation>Seçilen odalar</translation>
+        <translation>Seçilen Sınıflar</translation>
     </message>
     <message>
         <source>Subject tag</source>
-        <translation>Konu etiketi</translation>
+        <translation>Ders Konu Başlığı</translation>
     </message>
 </context>
 <context>
     <name>ModifyConstraintSubjectSubjectTagRequireEquipmentsForm_template</name>
     <message>
         <source>FET - Modify constraint subject subject tag require equipments</source>
-        <translation>FET-Değiştir kısıtlama konu konu başlığı gerekli donanımlar</translation>
+        <translation>FET - Kısıt Değiştir - Ders Konu Başlığı - Gerekli Araç-Gereç
+</translation>
     </message>
     <message>
         <source>Subject</source>
@@ -8056,15 +8832,16 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Required equipments</source>
-        <translation>Gerekli donanımlar</translation>
+        <translation>Gerekli Araç-Gereç
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Add</source>
@@ -8085,7 +8862,7 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>All equipments</source>
-        <translation>Bütün donanımlar</translation>
+        <translation>Tüm Araç-Gereç</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -8093,14 +8870,77 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Subject tag</source>
-        <translation>Konu etiketi</translation>
+        <translation>Ders Konu Başlığı
+</translation>
+    </message>
+</context>
+<context>
+    <name>ModifyConstraintTeacherIntervalMaxDaysPerWeekForm_template</name>
+    <message>
+        <source>FET - Modify constraint teacher not available dialog</source>
+        <translation type="obsolete">FET-Değiştir kısıtlama öğretmen müsait değil diyaloğu</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation>Kısıt
+</translation>
+    </message>
+    <message>
+        <source>Period</source>
+        <translation>Dönem</translation>
+    </message>
+    <message>
+        <source>Start hour</source>
+        <translation>Ders Başlama Saati
+</translation>
+    </message>
+    <message>
+        <source>End hour</source>
+        <translation>Bitiş Saati</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation>1.0</translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation>Önem (Önerilen:1.0)
+</translation>
+    </message>
+    <message>
+        <source>Teacher</source>
+        <translation>Öğretmen</translation>
+    </message>
+    <message>
+        <source>Compulsory constraint</source>
+        <translation>Zorunlu Kısıt
+</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Max days per week</source>
+        <translation>Haftalık Maksimum Gün Sayısı
+</translation>
+    </message>
+    <message>
+        <source>FET - Modify constraint teacher interval max days per week dialog</source>
+        <translation>FET - Kısıt Değiştir - Öğretmen - Haftalık Maksimum Dinlenme Süresi
+</translation>
     </message>
 </context>
 <context>
     <name>ModifyConstraintTeacherMaxDaysPerWeekForm_template</name>
     <message>
         <source>FET - Modify constraint teacher max days per week dialog</source>
-        <translation>FET-Değiştir kısıtlama-Haftada maksimum günler diyaloğu öğretmenler için</translation>
+        <translation>FET - Kısıt Değiştir - Öğretmen - Haftalık Maksimum Gün Sayısı 
+</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -8112,11 +8952,11 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -8128,18 +8968,21 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Max days per week</source>
-        <translation>Haftada maksimum gün</translation>
+        <translation>Haftalık Maksimum Gün Sayısı
+
+</translation>
     </message>
 </context>
 <context>
     <name>ModifyConstraintTeacherNotAvailableForm_template</name>
     <message>
         <source>FET - Modify constraint teacher not available dialog</source>
-        <translation>FET-Değiştir kısıtlama öğretmen müsait değil diyaloğu</translation>
+        <translation>FET - Kısıt Değiştir - Öğretmen - Müsait Olmayan Öğretmen 
+</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -8151,11 +8994,12 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt
+</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt</translation>
     </message>
     <message>
         <source>Period</source>
@@ -8167,11 +9011,13 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Start hour</source>
-        <translation>Başlangıç saati</translation>
+        <translation>Ders Başlama Saati
+</translation>
     </message>
     <message>
         <source>End hour</source>
-        <translation>Bitiş saati</translation>
+        <translation>Bitiş Saati
+</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -8179,7 +9025,7 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Teacher</source>
@@ -8190,7 +9036,8 @@ in order, separated by commas.</source>
     <name>ModifyConstraintTeacherRequiresRoomForm_template</name>
     <message>
         <source>FET - Modify constraint teacher requires room</source>
-        <translation>FET-Değiştir kısıtlama öğretmen önerir odayı</translation>
+        <translation>FET - Kısıt Değiştir - Öğretmen - Öğretmen İçin Gerekli Sınıf
+</translation>
     </message>
     <message>
         <source>Teacher</source>
@@ -8202,7 +9049,7 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -8218,14 +9065,15 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Room</source>
-        <translation>Oda</translation>
+        <translation>Sınıf</translation>
     </message>
 </context>
 <context>
     <name>ModifyConstraintTeacherSubjectRequireRoomForm_template</name>
     <message>
         <source>FET - Modify constraint teacher subject require room</source>
-        <translation>FET-Değiştir kısıtlama  öğretmen konu istenilen oda</translation>
+        <translation>FET - Kısıt Değiştir - Öğretmen - Ders Konusu İçin Gerekli Sınıf
+</translation>
     </message>
     <message>
         <source>Teacher</source>
@@ -8237,11 +9085,11 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Room</source>
-        <translation>Oda</translation>
+        <translation>Sınıf</translation>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Compulsory</source>
@@ -8264,7 +9112,8 @@ in order, separated by commas.</source>
     <name>ModifyConstraintTeachersMaxHoursContinuouslyForm_template</name>
     <message>
         <source>FET - Modify constraint teachers max hours continuously dialog</source>
-        <translation></translation>
+        <translation>FET - Kısıt Değiştir - Öğretmenler - Aralıksız Maksimum Ders Saati 
+</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -8276,11 +9125,12 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt
+</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -8288,18 +9138,19 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Max hours continuously</source>
-        <translation>Maksimum devamlı saat</translation>
+        <translation>Aralıksız Maksimum Ders Saati</translation>
     </message>
 </context>
 <context>
     <name>ModifyConstraintTeachersMaxHoursDailyForm_template</name>
     <message>
         <source>FET - Modify constraint teachers max hours daily dialog</source>
-        <translation>FET-Değiştir kısıtlama öğretmenin günlük maksimum saati diyaloğu</translation>
+        <translation>FET - Kısıt Değiştir - Öğretmenler - Günlük Maksimum Ders Saati
+</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -8311,11 +9162,12 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt
+</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -8323,18 +9175,59 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Max hours daily</source>
-        <translation>Maksimum saat günde</translation>
+        <translation>Günlük Maksimum Ders Saati
+</translation>
+    </message>
+</context>
+<context>
+    <name>ModifyConstraintTeachersMinHoursDailyForm_template</name>
+    <message>
+        <source>FET - Modify constraint teachers min hours daily dialog</source>
+        <translation>FET - Kısıt Değiştir - Öğretmenler - Günlük Minumum Ders Saati
+</translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation>Tamam</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation> İptal</translation>
+    </message>
+    <message>
+        <source>Compulsory constraint</source>
+        <translation>Zorunlu Kısıt
+</translation>
+    </message>
+    <message>
+        <source>Current constraint</source>
+        <translation>Kısıt</translation>
+    </message>
+    <message>
+        <source>1.0</source>
+        <translation>1.0</translation>
+    </message>
+    <message>
+        <source>Weight (recommended: 1.0)</source>
+        <translation>Önem (Önerilen:1.0)
+</translation>
+    </message>
+    <message>
+        <source>Min hours daily</source>
+        <translation>Günlük Maksimum Ders Saati
+</translation>
     </message>
 </context>
 <context>
     <name>ModifyConstraintTeachersNoGapsForm_template</name>
     <message>
         <source>FET - Modify constraint teachers no gaps dialog</source>
-        <translation>FET-Değiştir kısıtlama öğretmen ara yok diyaloğu</translation>
+        <translation>FET - Kısıt Değiştir - Öğretmenler - Aralıksız Derse Girme
+</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -8346,11 +9239,12 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt
+</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -8358,14 +9252,15 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
 </context>
 <context>
     <name>ModifyConstraintTeachersSubgroupsMaxHoursDailyForm_template</name>
     <message>
         <source>FET - Modify constraint teachers-subgroups max hours daily dialog</source>
-        <translation>FET-Değiştir kısıtlama öğretmenler ve altgruplar günlük maksimum saat diyaloğu</translation>
+        <translation>FET - Kısıt Değiştir - Öğretmenler - Alt-Gruplar Günlük Maksimum Ders Saati 
+</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -8377,11 +9272,11 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -8389,18 +9284,20 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Max hours daily</source>
-        <translation>Maksimum saat günde</translation>
+        <translation>Günlük Maksimum Ders Saati
+</translation>
     </message>
 </context>
 <context>
     <name>ModifyConstraintTeachersSubjectTagMaxHoursContinuouslyForm_template</name>
     <message>
         <source>FET - Modify constraint teachers subject tag max hours continuously dialog</source>
-        <translation>FET-Değiştir kısıtlama öğretmenler </translation>
+        <translation>FET - Kısıt Değiştir - Öğretmenler - Ders Konu Başlığı Aralıksız Maksimum Ders Saati 
+</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -8412,11 +9309,12 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt
+</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -8424,22 +9322,24 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Max hours continuously</source>
-        <translation>Sürekli maksimum saat</translation>
+        <translation>Aralıksız Maksimum Ders Saati</translation>
     </message>
     <message>
         <source>Subject tag</source>
-        <translation>FET-Değiştir kısıtlama öğretmenler  konu başlıkları maksimum saat sürekli olarak diyalog</translation>
+        <translation>Ders Konu Başlığı
+</translation>
     </message>
 </context>
 <context>
     <name>ModifyConstraintTeachersSubjectTagsMaxHoursContinuouslyForm_template</name>
     <message>
         <source>FET - Modify constraint teachers subject tags max hours continuously dialog</source>
-        <translation>FET-Değiştir kısıtlama öğretmenler  için konu başlıığı maksimum saat sürekli olarak diyalog</translation>
+        <translation>FET - Kısıt Değiştir - Öğretmenler - Ders Konu Başlıkları Aralıksız Maksimum Ders Saati 
+</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -8451,11 +9351,12 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Compulsory constraint</source>
-        <translation>Zorunlu kısıtlama</translation>
+        <translation>Zorunlu Kısıt
+</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt</translation>
     </message>
     <message>
         <source>1.0</source>
@@ -8463,18 +9364,19 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Weight (recommended: 1.0)</source>
-        <translation>Önem(Önerilen :1.0)</translation>
+        <translation>Önem (Önerilen :1.0)</translation>
     </message>
     <message>
         <source>Max hours continuously</source>
-        <translation>Sürekli maksimum saat</translation>
+        <translation>Aralıksız Maksimum Ders Saati</translation>
     </message>
 </context>
 <context>
     <name>ModifyEquipmentForm_template</name>
     <message>
         <source>Modify Equipment Dialog</source>
-        <translation>Donanım dialoglarını değiştir</translation>
+        <translation>FET - Değiştir - Araç-Gereç
+</translation>
     </message>
     <message>
         <source>Name</source>
@@ -8493,7 +9395,8 @@ in order, separated by commas.</source>
     <name>ModifyRoomForm_template</name>
     <message>
         <source>Modify Room Dialog</source>
-        <translation>Oda Dialogunu değiştir</translation>
+        <translation>FET - Değiştir - Sınıf 
+</translation>
     </message>
     <message>
         <source>Name</source>
@@ -8501,8 +9404,7 @@ in order, separated by commas.</source>
     </message>
     <message>
         <source>Type</source>
-        <translation>
-Tür</translation>
+        <translation>Tür</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -8518,14 +9420,15 @@ Tür</translation>
     </message>
     <message>
         <source>Building</source>
-        <translation>Yapılar</translation>
+        <translation>Okul Binası</translation>
     </message>
 </context>
 <context>
     <name>ModifyStudentsGroupForm_template</name>
     <message>
         <source>Modify Students Group Dialog</source>
-        <translation>Öğrencilein gruplarını değiştirmek</translation>
+        <translation>FET - Değiştir - Öğrenci Grupları 
+</translation>
     </message>
     <message>
         <source>Name</source>
@@ -8533,7 +9436,8 @@ Tür</translation>
     </message>
     <message>
         <source>Year</source>
-        <translation>Yıl</translation>
+        <translation>Ders Yılı
+</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -8541,7 +9445,8 @@ Tür</translation>
     </message>
     <message>
         <source>Number of students</source>
-        <translation>Öğrencilerin numarası</translation>
+        <translation>Öğrenci Sayısı
+</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -8552,15 +9457,17 @@ Tür</translation>
     <name>ModifyStudentsSubgroupForm_template</name>
     <message>
         <source>Modify Students Subgroup Dialog</source>
-        <translation>Öğrencilerin alt gruplarını değiştirmek</translation>
+        <translation>FET - Değiştir - Öğrenci Alt-Grupları
+</translation>
     </message>
     <message>
         <source>Year</source>
-        <translation>Yıl</translation>
+        <translation>Ders Yılı</translation>
     </message>
     <message>
         <source>Number of students</source>
-        <translation>Öğrencilerin numarası</translation>
+        <translation>Öğrenci Sayısı
+</translation>
     </message>
     <message>
         <source>Name</source>
@@ -8583,11 +9490,13 @@ Tür</translation>
     <name>ModifyStudentsYearForm_template</name>
     <message>
         <source>Modify Students Year Dialog</source>
-        <translation>Öğrencilerin yıl diyaloglarını değiştir</translation>
+        <translation>FET - Değiştir - Ders Yılı 
+</translation>
     </message>
     <message>
         <source>Number of students</source>
-        <translation>Öğrencilerin numarası</translation>
+        <translation>Öğrenci Sayısı
+</translation>
     </message>
     <message>
         <source>Name</source>
@@ -8606,19 +9515,21 @@ Tür</translation>
     <name>PopulationNumberForm_template</name>
     <message>
         <source>FET - population number</source>
-        <translation>FET-Nüfüs numarası</translation>
+        <translation>FET - Popülasyon
+</translation>
     </message>
     <message>
         <source>Faster</source>
-        <translation>Daha hızlı</translation>
+        <translation>Daha Hızlı</translation>
     </message>
     <message>
         <source>Better</source>
-        <translation>Daha iyi</translation>
+        <translation>Daha İyi</translation>
     </message>
     <message>
         <source>Population number</source>
-        <translation>Nüfüs sayısı</translation>
+        <translation>Popülasyon
+</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -8633,28 +9544,36 @@ Tür</translation>
     <name>QObject</name>
     <message>
         <source>FET information</source>
-        <translation> FET Bilgi</translation>
+        <translation> FET Bilgi
+</translation>
     </message>
     <message>
         <source>Invalid selected activity</source>
-        <translation>Geçersiz seçilen etkinlik</translation>
+        <translation>Seçilen Ders Geçersiz
+
+</translation>
     </message>
     <message>
         <source>Removing activity:</source>
-        <translation>Kaldırılan etkinlik</translation>
+        <translation>Ders Kaldırılıyor
+</translation>
     </message>
     <message>
         <source>Removing sub-activity:</source>
-        <translation>Kaldırılıan atl etkinlikler</translation>
+        <translation>Alt-Etkinlik Kaldırılıyor
+</translation>
     </message>
     <message>
         <source>There will also be removed all the
 sub-activities from the same split activity</source>
-        <translation>Bütün alt grup etkinlikleri kaldırılabilinir</translation>
+        <translation>Aynı Alt-Etkinlikler 
+Aynı Bölünmüş Dersten de kaldırılacak
+</translation>
     </message>
     <message>
         <source>FET warning</source>
-        <translation>FET uyarı</translation>
+        <translation>FET Uyarı
+</translation>
     </message>
     <message>
         <source>OK</source>
@@ -8668,11 +9587,14 @@ sub-activities from the same split activity</source>
         <source>Cannot modify this activity, because it contains more than 8 subactivities.
 If you really need that, please talk to the author
 </source>
-        <translation>Bu etkinlik değiştirilemez,çünkü 8 den fazla alt etkinlik içermektedir.Eğer değiştirmek istiyorsanız yazarla konusunuz.</translation>
+        <translation>Bu Derste;  8 Den Fazla Alt-Etkinlik İçerildiğinden 
+Değişiklik Yapılamaz
+</translation>
     </message>
     <message>
         <source>Invalid activity</source>
-        <translation>Geçersiz etkinlik</translation>
+        <translation>Ders Geçersiz
+</translation>
     </message>
     <message>
         <source>Any</source>
@@ -8680,80 +9602,96 @@ If you really need that, please talk to the author
     </message>
     <message>
         <source>Current activity:</source>
-        <translation>Geçerli etkinlik</translation>
+        <translation>Ders:</translation>
     </message>
     <message>
         <source>Bi-weekly activity</source>
-        <translation>Haftalık etkinlik</translation>
+        <translation type="obsolete">Haftalık etkinlik</translation>
     </message>
     <message>
         <source>Preferred day=%1</source>
-        <translation>Önerilen gün=%1</translation>
+        <translation>Tercih Edilen Gün=%1</translation>
     </message>
     <message>
         <source>Preferred hour=%1</source>
-        <translation>Önerilen saat=%1</translation>
+        <translation>Tercih Edilen Ders Saati=%1
+</translation>
     </message>
     <message>
         <source>Active activity</source>
-        <translation>Aktif etkinlik</translation>
+        <translation>Etkin Ders
+</translation>
     </message>
     <message>
         <source>Non-active activity</source>
-        <translation>Aktif olmayan etkinlik</translation>
+        <translation>Etkin Olmayan Ders
+</translation>
     </message>
     <message>
         <source>This activity will be split into %1 lessons per week</source>
-        <translation>Bu etkinlik haftada %1derslere bölünebilinir</translation>
+        <translation>Bu Ders, Haftalık %1 Derse Bölünecektir
+</translation>
     </message>
     <message>
         <source>The distance between any pair of subactivities must be at least %1 days</source>
-        <translation>Alt etkinliklerle arasında en az bir günün bulunması gerekmektedir</translation>
+        <translation>İki Alt-Etkinlik Arası En Az Gün Sayısı %1
+</translation>
     </message>
     <message>
         <source>Componenent %1:</source>
-        <translation>Bileşen %1</translation>
+        <translation>Bileşen %1:</translation>
     </message>
     <message>
         <source>Invalid teacher(s)</source>
-        <translation>Hasta öğretmenler</translation>
+        <translation>Öğretmenler Geçersiz
+</translation>
     </message>
     <message>
         <source>Too many teachers for an activity. The current maximum is %1.
 If you really need more teachers per activity, please talk to the author</source>
-        <translation>Bir etkinlik için bir çok öğretmen,gecerli olan %1,eğer ihtiyacınız varsa yazar ile konusun</translation>
+        <translation>Ders İçin Öğretmen Sayısı Fazla. 
+Maksimum %1.
+</translation>
     </message>
     <message>
         <source>Invalid subject</source>
-        <translation>Geçersiz konu</translation>
+        <translation>Ders Konusu Geçersiz
+</translation>
     </message>
     <message>
         <source>Invalid subject tag</source>
-        <translation>Geçersiz konu başlığı</translation>
+        <translation>Ders Konu Başlığı Geçersiz
+</translation>
     </message>
     <message>
         <source>Invalid students set(s)</source>
-        <translation>Geçersiz çğrenci grubu</translation>
+        <translation>Öğrenci Grupları Geçersiz
+</translation>
     </message>
     <message>
         <source>Invalid duration</source>
-        <translation>Geçersiz süre</translation>
+        <translation>Süre Geçersiz
+</translation>
     </message>
     <message>
         <source>Invalid preferred day</source>
-        <translation>Geçersiz önerilen gün</translation>
+        <translation>Tercih Edilen Gün Geçersiz
+</translation>
     </message>
     <message>
         <source>Invalid preferred hour</source>
-        <translation>Geçersiz önerilen saat</translation>
+        <translation>Tercih Edilen Ders Saati Geçersiz
+</translation>
     </message>
     <message>
         <source>FET question</source>
-        <translation>FET Soru</translation>
+        <translation>FET Soru
+</translation>
     </message>
     <message>
         <source>This activity already exists. Insert it again?</source>
-        <translation>Bu etkinlik zaten var.Tekrar koyalım mı?</translation>
+        <translation>Bu Ders Mevcut. Tekrar Eklensin Mi?
+</translation>
     </message>
     <message>
         <source>Yes</source>
@@ -8765,59 +9703,73 @@ If you really need more teachers per activity, please talk to the author</source
     </message>
     <message>
         <source>Activity added</source>
-        <translation>Etkinlik eklendi</translation>
+        <translation>Ders Eklendi
+</translation>
     </message>
     <message>
         <source>Activity NOT added - please report error</source>
-        <translation>Etkinlik eklenemedi.</translation>
+        <translation>Ders Eklenmedi - Lütfen Hatayı İletiniz
+</translation>
     </message>
     <message>
         <source>Split activity added</source>
-        <translation>Eklenen etkinlik bölünür.</translation>
+        <translation>Bölünebilen Ders Eklendi
+</translation>
     </message>
     <message>
         <source>Split activity NOT added - error???</source>
-        <translation>Bö lünen etkinlik eklenemedi-hata???</translation>
+        <translation>Bölünebilen Ders Eklenemedi - Hata???
+</translation>
     </message>
     <message>
         <source>Incorrect name</source>
-        <translation>Yanlış isim</translation>
+        <translation>İsim Tanımsız
+</translation>
     </message>
     <message>
         <source>Incorrect type</source>
-        <translation>Tanımlanmamış tür</translation>
+        <translation>Tür Tanımsız
+</translation>
     </message>
     <message>
         <source>Incorrect building</source>
-        <translation>Tanımlanmamış yapı</translation>
+        <translation>Okul Binası Tanımsız
+</translation>
     </message>
     <message>
         <source>Room insertion dialog</source>
-        <translation>Oda eklentisi diyaloğu</translation>
+        <translation>Sınıf Ekleme
+</translation>
     </message>
     <message>
         <source>Could not insert item. Must be a duplicate</source>
-        <translation>Nesene eklenemedi.Aynı olmalı</translation>
+        <translation>Ekleme Yapılamadı. Aynı İsim Mevcut
+</translation>
     </message>
     <message>
         <source>Room added</source>
-        <translation>Oda eklendi</translation>
+        <translation>Sınıf Eklendi
+</translation>
     </message>
     <message>
         <source>Name existing - please choose another</source>
-        <translation>Bu isim var faklı bir isim seçin</translation>
+        <translation>İsim Mevcut - Lütfen Başka Bir İsim Seçiniz
+</translation>
     </message>
     <message>
         <source>Equipment insertion dialog</source>
-        <translation>Donanım ekleme diyaloğu</translation>
+        <translation>Araç-Gereç Ekleme 
+</translation>
     </message>
     <message>
         <source>Equipment added</source>
-        <translation>Eklenen donanım</translation>
+        <translation>Araç-Gereç Eklendi
+</translation>
     </message>
     <message>
         <source>Invalid selected building</source>
-        <translation>Geçersiz seçilen bina</translation>
+        <translation>Seçilen Okul Binası Geçersiz
+</translation>
     </message>
     <message>
         <source>FET</source>
@@ -8826,43 +9778,53 @@ If you really need more teachers per activity, please talk to the author</source
     <message>
         <source>Are you sure you want to delete this building and all related constraints?
 </source>
-        <translation>Bu yapıyı silmek istediğinizden eminmisiniz?</translation>
+        <translation>Bu Okul Binasını ve İlgili Tüm Kısıtlarını Silmek İstediğinizden Emin misiniz?
+
+</translation>
     </message>
     <message>
         <source>Invalid building</source>
-        <translation>Geçersiz bina</translation>
+        <translation>Okul Binası Geçersiz
+</translation>
     </message>
     <message>
         <source>Building insertion dialog</source>
-        <translation>Bina ilan diyaloğu</translation>
+        <translation>Okul Binası Ekleme
+</translation>
     </message>
     <message>
         <source>Building added</source>
-        <translation>Eklenen bina</translation>
+        <translation>Okul Binası Eklendi
+</translation>
     </message>
     <message>
         <source>Year insertion dialog</source>
-        <translation>Yıl ilan diyaloğu</translation>
+        <translation>Ders Yılı Ekleme
+</translation>
     </message>
     <message>
         <source>Year added</source>
-        <translation>Eklenen yıl</translation>
+        <translation>Ders Yılı Eklendi</translation>
     </message>
     <message>
         <source>Group insertion dialog</source>
-        <translation>Grup ilan diyaloğu</translation>
+        <translation>Grup Ekleme
+</translation>
     </message>
     <message>
         <source>Could not insert item. Duplicate</source>
-        <translation>Nesene eklenemedi.</translation>
+        <translation>Ekleme Yapılamadı. İsim Mevcut
+</translation>
     </message>
     <message>
         <source>This name is taken for a year - please consider another name</source>
-        <translation>Bu isim başka bir yıl için  başka bir isim düşünün</translation>
+        <translation>Bu İsim, Bir Ders Yılına Verilmiş - Lütfen Yeni Bir İsim Deneyin
+</translation>
     </message>
     <message>
         <source>This name is taken for a subgroup - please consider another name</source>
-        <translation>Bu isim başka bir altgrup için  başka bir isim düşünün</translation>
+        <translation>Bu İsim, Bir Alt-Gruba Verilmiş - Lütfen Yeni Bir İsim Deneyin
+</translation>
     </message>
     <message>
         <source>This group already exists, but in another year
@@ -8871,7 +9833,10 @@ means that some years share the same group (overlap)
 If you want to make a new group, independent,
 please abort now and give it another name
 </source>
-        <translation>Bu grup zaten mevcut başka bir isim veriniz.</translation>
+        <translation>Bir Başka Ders Yılında 
+Bu Grup Mevcut. 
+Lütfen Yeni Bir İsim Deneyiniz
+</translation>
     </message>
     <message>
         <source>Add</source>
@@ -8879,19 +9844,23 @@ please abort now and give it another name
     </message>
     <message>
         <source>Abort</source>
-        <translation></translation>
+        <translation>İptal
+</translation>
     </message>
     <message>
         <source>Group added</source>
-        <translation>Eklenen grp</translation>
+        <translation>Grup Eklendi
+</translation>
     </message>
     <message>
         <source>Subgroup insertion dialog</source>
-        <translation>Altgrup ilan diyaloğu</translation>
+        <translation>Alt-Grup Ekleme
+</translation>
     </message>
     <message>
         <source>This name is taken for a group - please consider another name</source>
-        <translation>Bu isim başka bir grup için  başka bir isim düşünün</translation>
+        <translation>Bu İsim, Bir Gruba Verilmiş - Lütfen Yeni Bir İsim Deneyin
+</translation>
     </message>
     <message>
         <source>This subgroup already exists, but in another group
@@ -8900,353 +9869,434 @@ means that some groups share the same subgroup (overlap)
 If you want to make a new subgroup, independent,
 please abort now and give it another name
 </source>
-        <translation>Bu altgrup zaten mevcut başka bir isim veriniz.</translation>
+        <translation>Bu Alt Grup 
+Bir Başka Grupta 
+Zaten Mevcut
+</translation>
     </message>
     <message>
         <source>Subgroup added</source>
-        <translation>Eklenen alt grup</translation>
+        <translation>Alt-Grup Eklendi
+</translation>
     </message>
     <message>
         <source>Invalid weight</source>
-        <translation>geçersiz önem</translation>
+        <translation>Önem Derecesi Geçersiz
+</translation>
     </message>
     <message>
         <source>Not enough slots (too many &quot;Yes&quot; values).</source>
-        <translation>Yeterli olmayan program(evet değeri fazla)</translation>
+        <translation>Yeterli Aralık Yok (Fazla Sayıda Evet Değeri).
+</translation>
     </message>
     <message>
         <source>Please increase the variable MAX_N_CONSTRAINT_ACTIVITY_PREFERRED_TIMES</source>
-        <translation>Lütfen Önerilen etkinliklerin değerini arttırın.</translation>
+        <translation>Lütfen, Tercih Edilen Ders Zamanları İçin Maksimum N Kısıt Değişkenini Arttırın
+</translation>
     </message>
     <message>
         <source>Currently, it is %1</source>
-        <translation>Genel.bu %1 dir</translation>
+        <translation>Şu An %1
+</translation>
     </message>
     <message>
         <source>Constraint added:</source>
-        <translation>Kısıtlama eklendi</translation>
+        <translation>Kısıt Eklendi:
+</translation>
     </message>
     <message>
         <source>Constraint NOT added - duplicate?</source>
-        <translation>Kısıtlama eklenmedi </translation>
+        <translation>Kısıt Eklenemedi - Aynı Kısıt Mevcut mu?
+</translation>
     </message>
     <message>
         <source>Invalid room</source>
-        <translation>Gecersiz sınıf</translation>
+        <translation>Sınıf Geçersiz
+</translation>
     </message>
     <message>
         <source>Invalid day</source>
-        <translation>Gecersiz gün</translation>
+        <translation>Gün Geçersiz
+</translation>
     </message>
     <message>
         <source>Invalid start hour</source>
-        <translation>Gecersiz sbaşangıç saati</translation>
+        <translation>Ders Başlama Saati Geçersiz
+</translation>
     </message>
     <message>
         <source>Invalid end hour</source>
-        <translation>Gecersiz bitiş saati</translation>
+        <translation>Bitiş Saati Geçersiz
+</translation>
     </message>
     <message>
         <source>End hour &lt;= start hour - impossible</source>
-        <translation>Bitiş saati&lt;=başlanğıç saati -mümkün değil</translation>
+        <translation>Bitiş Saati &lt;= Ders Başlama Saati - İmkansız
+</translation>
     </message>
     <message>
         <source>Invalid selected constraint</source>
-        <translation>Gecersiz etkinlik</translation>
+        <translation>Seçilen Kısıt Geçersiz
+</translation>
     </message>
     <message>
         <source>Removing constraint:
 </source>
-        <translation>Etkinlik kaldırılısın</translation>
+        <translation>Kısıt Kaldırılıyor:
+</translation>
     </message>
     <message>
         <source>
 Are you sure?</source>
-        <translation>Emin misin?</translation>
+        <translation>Emin misiniz?</translation>
     </message>
     <message>
         <source>Invalid type</source>
-        <translation>Geçersiz  tür</translation>
+        <translation>Tür Geçersiz
+</translation>
     </message>
     <message>
         <source>Empty list of not-allowed subjects</source>
-        <translation>İzin verilen derslerin listesini boşalt</translation>
+        <translation>İzin Verilmeyen Ders Konuları Listesini Temizle
+</translation>
     </message>
     <message>
         <source>Constraint NOT added - duplicate type?</source>
-        <translation>Etkinlik eklenemedi.</translation>
+        <translation>Kısıt Eklenemedi - Aynı Kısıt Mevcut mu?
+</translation>
     </message>
     <message>
         <source>Empty list of required equipments</source>
-        <translation>Gerekli donanımlar listesin boşalt</translation>
+        <translation>Gerekli Araç-Gereç Listesini Temizle
+</translation>
     </message>
     <message>
         <source>Constraint NOT added - error ?</source>
-        <translation>Etkinlik eklenemedi-Hata?</translation>
+        <translation>Kısıt Eklenemedi - Hata ?
+</translation>
     </message>
     <message>
         <source>Invalid teacher</source>
-        <translation>Geçersiz öğretmenler</translation>
+        <translation>Öğretmen Geçersiz
+</translation>
     </message>
     <message>
         <source>Empty list of selected rooms</source>
-        <translation>
-Seçilen sınıfların listesin boşalt</translation>
+        <translation>Seçilen Sınıflar Listesini Temizle
+
+</translation>
     </message>
     <message>
         <source>Only one selected activity</source>
-        <translation>Sadece bir etkinlik seçili</translation>
+        <translation>Sadece Bir Ders Seçili
+</translation>
     </message>
     <message>
         <source>Please report error to the author
 MAX_CONSTRAINT_SUBJECT_PREFERRED_ROOMS must be increased (you have too many selected rooms)</source>
-        <translation>lütfen hatayı yazara bildiriniz</translation>
+        <translation>Lütfen, Hatayı Programcıya İletiniz
+</translation>
     </message>
     <message>
         <source>Invalid selected subject</source>
-        <translation>Geçersiz seçilen ders</translation>
+        <translation>Seçilen Ders Geçersiz
+</translation>
     </message>
     <message>
         <source>Constraint NOT added - please report error</source>
-        <translation>Etkinlik eklenemedi-Lütfen hata raporu verin</translation>
+        <translation>Kısıt Eklenemedi - Lütfen Hatayı İletiniz
+</translation>
     </message>
     <message>
         <source>Only one selected room</source>
-        <translation>Sadece bir oda seçili</translation>
+        <translation>Sadece Bir Sınıf Seçili
+</translation>
     </message>
     <message>
         <source>Please report error to the author
 MAX_CONSTRAINT_SUBJECT_PREFERRED_ROOM must be increased (you have too many selected rooms)</source>
-        <translation>Lütfen hatayı yazara bildiriniz.önerrilen sınıflar arttı :Çok sınıf seçtiniz.</translation>
+        <translation>Lütfen, Hatayı Programcıya İletiniz
+</translation>
     </message>
     <message>
         <source>Please report error to the author
 MAX_CONSTRAINT_SUBJECT_SUBJECT_TAG_PREFERRED_ROOMS must be increased (you have too many selected rooms)</source>
-        <translation>Lütfen hatayı yazara bildiriniz</translation>
+        <translation>Lütfen, Hatayı Programcıya İletiniz
+</translation>
     </message>
     <message>
         <source>Invalid selected subject tag</source>
-        <translation>Geçersiz seçilen ders başlığı</translation>
+        <translation>Seçilen Ders Konu Başlığı Geçersiz
+</translation>
     </message>
     <message>
         <source>Please report error to the author
 MAX_CONSTRAINT_ACTIVITY_PREFERRED_ROOMS must be increased (you have too many selected rooms)</source>
-        <translation>Lütfen hatayı yazara bildiriniz.önerilen etkinlik sınıfları arttırılıdı.</translation>
+        <translation>Lütfen, Hatayı Programcıya İletiniz
+</translation>
     </message>
     <message>
         <source>Please report error to the author
 MAX_CONSTRAINT_ACTIVITY_PREFERRED_ROOM must be increased (you have too many selected rooms)</source>
-        <translation>lütfen hatayı yazara bildiriniz</translation>
+        <translation>Lütfen, Hatayı Programcıya İletiniz
+</translation>
     </message>
     <message>
         <source>Invalid selected year</source>
-        <translation>Geçersiz seçilen yıl</translation>
+        <translation>Seçilen Ders Yılı Geçersiz
+</translation>
     </message>
     <message>
         <source>Invalid selected group</source>
-        <translation>Geçersiz seçilen grup</translation>
+        <translation>Seçilen Grup Geçersiz
+</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this group and all related subgroup, activities and constraints?
 </source>
-        <translation>Bu grubu silmek istediğinizden emnimisiniz?Etkinlikler ve kısıtlamalar</translation>
+        <translation>Bu Grubu ve İlgili Tüm Alt-Gruplarını
+Derslerini ve Kısıtlarını Silmek İstediğinizden Emin misiniz?
+</translation>
     </message>
     <message>
         <source>This group still exists into another year
 The related subgroups, activities and constraints were not removed</source>
-        <translation>Bu grup başka yıl içinde mevcut.İlgili gruplar etkinlikler çıkarılamadı</translation>
+        <translation>Bir Başka Ders Yılında, Bu Grup Mevcut 
+İlişkili Alt-Gruplar, Dersler ve Kısıtlar Kaldırılmadı
+</translation>
     </message>
     <message>
         <source>Activated a number of %1 activities</source>
-        <translation>Etkinliklerin %1 numarası aktif</translation>
+        <translation>%1 Sayıda Ders Etkinleştirildi
+</translation>
     </message>
     <message>
         <source>De-activated a number of %1 activities</source>
-        <translation>Etkinliklerin %1 numarası aktif değil</translation>
+        <translation>%1 Sayıda Dersin Etkinliği Kaldırıldı
+</translation>
     </message>
     <message>
         <source>Invalid selected subgroup</source>
-        <translation>Geçersiz seçilen altgrup</translation>
+        <translation>Seçilen Alt-Grup Geçersiz
+</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this subgroup and all related activities and constraints?
 </source>
-        <translation>Bu alt grubu silmek istediğinizden eminmisiniz.</translation>
+        <translation>Bu Alt-Grubu, İlgili Tüm Dersleri ve Kısıtları ile Birlikte Silmek İstediğinizden Emin misiniz?
+
+</translation>
     </message>
     <message>
         <source>User input</source>
-        <translation>Kullanıcı girişi</translation>
+        <translation>Veri Girişi
+</translation>
     </message>
     <message>
         <source>Please enter subject&apos;s name</source>
-        <translation>Dersin ismini giriniz</translation>
+        <translation>Lütfen, Ders İsmini Giriniz
+</translation>
     </message>
     <message>
         <source>Subject insertion dialog</source>
-        <translation>Ders ilan diyaloğu</translation>
+        <translation>Ders Ekleme
+</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this subject and all related activities and constraints?
 </source>
-        <translation>Bu dersi ve ilişkili olan etkinlikleri silmek istediğinizden eminmisiniz?</translation>
+        <translation>Bu Ders Konusunu, İlişkili Tüm Dersler ve Kısıtlar ile Birlikte Silmek İstediğinizden Emin misiniz?
+
+</translation>
     </message>
     <message>
         <source>Please enter new subject&apos;s name</source>
-        <translation>Lütfen yeni bir ders ismi giriniz</translation>
+        <translation>Lütfen, Yeni Konu İsmini Giriniz
+</translation>
     </message>
     <message>
         <source>Could not modify item. New name must be a duplicate</source>
-        <translation>Değiştirilemedi nesne.Yeni isim ile aynı olmalı</translation>
+        <translation>Yeni İsim, Mevcut Olduğundan, Değişiklik Yapılamadı
+</translation>
     </message>
     <message>
         <source>Please enter subject tag&apos;s name</source>
-        <translation>Dersin  başlığının ismini giriniz</translation>
+        <translation>Lütfen, Ders Konu Başlığını Giriniz
+</translation>
     </message>
     <message>
         <source>Subject tag insertion dialog</source>
-        <translation>Ders balığı  ilan diyaloğu</translation>
+        <translation>Ders Konu Başlığı Ekleme 
+</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this subject tag?
 </source>
-        <translation>Bu ders başlığını silmek istediğinizden eminmisiniz?</translation>
+        <translation>Bu Ders Konu Başlığını Silmek İstediğinizden Emin Misiniz?
+</translation>
     </message>
     <message>
         <source>Please enter new subject tag&apos;s name</source>
-        <translation>Lütfen yeni bir dersbaşlığı ismi giriniz</translation>
+        <translation>Lütfen, Yeni Ders Konu Başlığını Giriniz
+</translation>
     </message>
     <message>
         <source>Please enter teacher&apos;s name</source>
-        <translation>Lütfen öğretmen ismini giriniz</translation>
+        <translation>Lütfen, Öğretmen İsmini Giriniz
+</translation>
     </message>
     <message>
         <source>Teacher insertion dialog</source>
-        <translation>Öğretmen ilan diyaloğu</translation>
+        <translation>Öğretmen Ekleme
+</translation>
     </message>
     <message>
         <source>Invalid selected teacher</source>
-        <translation>Geçersiz seçilen öğretmenler</translation>
+        <translation>Seçilen Öğretmen Geçersiz
+</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this teacher and all related activities and constraints?
 </source>
-        <translation>Bu öğretmeni ve ilişkili olan etkinlikleri silmek istediğinizden eminmisiniz?</translation>
+        <translation>Bu Öğretmeni, İlişkili Tüm Dersleri ve Kısıtları ile Birlikte Silmek İstediğinizden Emin misiniz?
+
+</translation>
     </message>
     <message>
         <source>Please enter new teacher&apos;s name</source>
-        <translation>Lütfen yeni bir öğretmen  ismi giriniz</translation>
+        <translation>Lütfen, Yeni Öğretmen İsmini Giriniz
+</translation>
     </message>
     <message>
         <source>Population number:</source>
-        <translation>Nüfüs numarası</translation>
+        <translation>Popülasyon:
+</translation>
     </message>
     <message>
         <source>Generation:</source>
-        <translation>Nesil</translation>
+        <translation>Generasyon:</translation>
     </message>
     <message>
         <source>Compulsory constraints conflicts:</source>
-        <translation>Zorunlu kısıtlama anlaşmazlıkları</translation>
+        <translation>Zorunlu Kısıtlar Arası Çelişkiler:
+</translation>
     </message>
     <message>
         <source>Non-compulsory constraints conflicts:</source>
-        <translation>Zorunlu olmayan kısıtlama anlaşmazlıkları</translation>
+        <translation>Zorunlu Olmayan Kısıtlar Arası Çelişkileri:</translation>
     </message>
     <message>
         <source>Entering simulation...</source>
-        <translation>Giriş simulatina</translation>
+        <translation>Simülasyon Başlıyor...
+</translation>
     </message>
     <message>
         <source>Simulation paused.
 Press button to continue.</source>
-        <translation>Simulation durdu devam etmek için butona basın</translation>
+        <translation type="obsolete">Simulation durdu devam etmek için butona basın</translation>
     </message>
     <message>
         <source>Simulation position saved to hard disk.
 Press button to continue.</source>
-        <translation>Simulation durumu kaydedildi.devam etmek için butona basın</translation>
+        <translation>Simülasyonda Gelinen Aşama, Bilgisayara Kaydedildi. 
+Simülasyona Devam Edebilirsiniz.
+</translation>
     </message>
     <message>
         <source>COMPULSORY CONSTRAINTS CONFLICTS (more important):
 </source>
-        <translation>Zorunlu kısıtlama anlaşmazlıkları (daha önemli)</translation>
+        <translation>Zorunlu Kısıtlar Arası Çelişkiler (Daha Önemli):
+
+</translation>
     </message>
     <message>
         <source>NON-COMPULSORY CONSTRAINTS CONFLICTS (less important):
 </source>
-        <translation>Zorunlu olmayan kısıtlama anlaşmazlıkları(Daha az önemli)</translation>
+        <translation>Zorunlu Olmayan Kısıtlar Arası Çelişkiler (Daha Az Önemli):
+
+</translation>
     </message>
     <message>
         <source>Timetable generated with FET %1 on %2</source>
-        <translation>Ders programı Fet%1 ile oluşturuldu </translation>
+        <translation>Ders Programı, %2 de Fet %1 Tarafından Üretilmiştir
+</translation>
     </message>
     <message>
         <source>You have entered simulation with uninitialized rules or 0 activities...aborting</source>
-        <translation></translation>
+        <translation>Ders Girişi Yapılmadığı Veya Ayarlar Başlangıç Durumuna Alınmadığı İçin Simülasyon Yapılamaz...İptal Ediliyor
+</translation>
     </message>
     <message>
         <source>You didn&apos;t initialize or load the initial state</source>
-        <translation>İlk durumu başlatamadın</translation>
+        <translation>Başlangıç Durumu Yüklenmedi veya Ayarlar Başlangıç Durumuna Getirilmedi</translation>
     </message>
     <message>
         <source>Simulation completed successfully</source>
-        <translation>Simulation başarılya tamamlandı</translation>
+        <translation>Simülasyon Başarıyla Tamamlandı
+</translation>
     </message>
     <message>
         <source>Simulation results should be successfully written. You may check now Timetable/View</source>
-        <translation>Simulation sonuçları başarı ile yazıldı.Görünüm derprogramından kontrol edebilirsin</translation>
+        <translation>Simülasyon Sonuçları Başarıyla Kaydedilmiştir. Artık, Ders Programını İnceleyebilirsiniz
+</translation>
     </message>
     <message>
         <source>You did not save any internal state yet - aborting operation</source>
-        <translation>Daha kayıt etmedin </translation>
+        <translation>Simülasyonda Gelinen Aşamayı Kaydetmediniz - İşlem İptal Ediliyor
+</translation>
     </message>
     <message>
         <source>Simulation position restored from hard disk. You may now continue the simulation</source>
-        <translation>Benzeme durumu harddiskten düzeltildi.</translation>
+        <translation>Simülasyonda Gelinen Aşama, Bilgisayara Kaydedildi. Simülasyona Devam Edebilirsiniz
+</translation>
     </message>
     <message>
         <source>You have entered simulation with uninitialized rules...aborting</source>
-        <translation></translation>
+        <translation>Ayarlar Başlangıç Durumuna Alınmadığı İçin Simülasyon Yapılamaz...İptal Ediliyor
+</translation>
     </message>
     <message>
         <source>You have entered simulation with 0 activities...aborting</source>
-        <translation></translation>
+        <translation>Ders Girişi Yapılmadığı İçin Simülasyon Yapılamaz...İptal Ediliyor
+</translation>
     </message>
     <message>
         <source>Initialized with unallocated data - now you can start simulation</source>
-        <translation>Ayrılmayan bilgi başlangıç durumuna getirildi.</translation>
+        <translation>Dağılımı Yapılmamış Veri Başlangıç Durumuna Getirildi - Simülasyonu Başlatabilirsiniz
+</translation>
     </message>
     <message>
         <source>Initialized with random data - now you can start simulation</source>
-        <translation>Rastgele bilgi başlangıç durumuna getirildi.Şimdi başlayabilrisin</translation>
+        <translation>Raslantısal Veri Başlangıç Durumuna Getirildi - Simülasyonu Başlatabilirsiniz
+</translation>
     </message>
     <message>
         <source>error in timetableallocateroomsform.cpp (1)</source>
-        <translation>Ders programında hata ayrılan odalar.cpp</translation>
+        <translation type="obsolete">Ders programında hata ayrılan odalar.cpp</translation>
     </message>
     <message>
         <source>You didn&apos;t allocate the hours prior to allocating the rooms</source>
-        <translation>Saatleri önceki ayrılan sınıflara ayırmadın</translation>
-    </message>
-    <message>
-        <source>error in timetableallocatehoursroomsform.cpp (1)</source>
-        <translation></translation>
+        <translation>Sınıf Dağılımını Yapmadan, Ders Saatlerinin Dağılımını Yapamazsınız
+</translation>
     </message>
     <message>
         <source>You have entered simulation with 0 rooms...aborting</source>
-        <translation></translation>
+        <translation>Sınıf Girişi Yapılmadığı İçin Simülasyon Yapılamaz...İptal Ediliyor
+</translation>
     </message>
     <message>
         <source>FET - exiting</source>
-        <translation>FET-Çıkış</translation>
+        <translation>FET - Çıkış
+</translation>
     </message>
     <message>
         <source>File not saved - do you want to save it?</source>
-        <translation>Dosya kaydedilmedi-Kaydetmek istermisinz?</translation>
+        <translation>Dosya Kaydedilmedi - Dosyayı Kaydetmek İster misiniz?
+</translation>
     </message>
     <message>
         <source>&amp;Yes</source>
-        <translation>&amp;yes</translation>
+        <translation>&amp;Evet</translation>
     </message>
     <message>
         <source>&amp;No</source>
@@ -9255,7 +10305,7 @@ Press button to continue.</source>
     <message>
         <source>Allocation in course.
 Please stop simulation before this.</source>
-        <translation>Ders içine bölüştüme.Lüften beneşmeyi durdurunuz önce</translation>
+        <translation>Öncelikle, Simülasyonu Durdurun.</translation>
     </message>
     <message>
         <source>FET application</source>
@@ -9263,75 +10313,92 @@ Please stop simulation before this.</source>
     </message>
     <message>
         <source>Are you sure you want to load new data (rules) ?</source>
-        <translation>Yeni bilgiyi yüklemek istediğinizden eminmisiniz?</translation>
+        <translation>Yeni Veriyi Yüklemek İstediğinizden Eminmisiniz?
+</translation>
     </message>
     <message>
         <source>FET xml files (*.fet);;Old FET xml files (*.xml);;All files (*)</source>
-        <translation>FET xml files (*.fet);;Old FET xml files (*.xml);;All files (*)</translation>
+        <translation>FET Xml Dosyalar (*.FET);; Önceki FET Xml Dosyaları (*.Xml);;Tüm Dosyalar (*)
+</translation>
     </message>
     <message>
         <source>open file dialog</source>
-        <translation>Dosya dialog aç</translation>
+        <translation>Dosya Açma 
+</translation>
     </message>
     <message>
         <source>Choose a file</source>
-        <translation>Dosya seç</translation>
+        <translation>Bir Dosya Seçin
+</translation>
     </message>
     <message>
         <source>FET info</source>
-        <translation>FET Bligi</translation>
+        <translation>FET Bilgi
+</translation>
     </message>
     <message>
         <source>Invalid file</source>
-        <translation>Geçersiz dosya</translation>
+        <translation>Dosya Geçersiz
+</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>Tamam</translation>
+        <translation>&amp;Tamam</translation>
     </message>
     <message>
         <source>FET xml files (*.fet);;All files (*)</source>
-        <translation>FET xml files (*.fet);;All files (*)</translation>
+        <translation>FET Xml Dosyalar (*.FET);;Tüm Dosyalar (*)
+</translation>
     </message>
     <message>
         <source>Save file dialog</source>
-        <translation>Dosya diyaloğu kaydet</translation>
+        <translation>Dosya Kaydet 
+</translation>
     </message>
     <message>
         <source>Choose a filename to save under</source>
-        <translation>Kaydetmek için bir dosyaismi seçiniz</translation>
+        <translation>Kaydetmek İçin Bir Dosya Seçiniz
+</translation>
     </message>
     <message>
         <source>File exists - are you sure you want to overwrite existing file?</source>
-        <translation>Dosya mevcut üzerine yazmak istiyormusunz?</translation>
+        <translation>Mevcut Dosya Üzerine Kaydetmek İstiyor musunuz?
+</translation>
     </message>
     <message>
         <source>Please input at least two active activities before allocating hours</source>
-        <translation>En az iki etkinlikj giriniz saatleri bölüştürmeden önce</translation>
+        <translation>Lütfen, Ders Saati Dağılımı Yapmadan Önce En Az İki Etkin Ders Giriniz
+</translation>
     </message>
     <message>
         <source>Please allocate the hours, firstly</source>
-        <translation>Lütfen saatleri bölüştürün ilk önce</translation>
+        <translation>Lütfen, Öncelikle Ders Saati Dağılımını Yapınız 
+</translation>
     </message>
     <message>
         <source>Please allocate the rooms, firstly</source>
-        <translation>Lütfen sınıfları bölüştürün ilk önce</translation>
+        <translation>Lütfen, Öncelikle Sınıf Dağılımını Yapınız 
+</translation>
     </message>
     <message>
         <source>Please allocate the hours and the rooms, firstly</source>
-        <translation>Lütfen saatleri  ve sınıfları bölüştürün ilk önce</translation>
+        <translation>Lütfen, Öncelikle Ders Saati Ve Sınıf Dağılımını Yapınız 
+</translation>
     </message>
     <message>
         <source>Please allocate the hours prior to allocating the rooms</source>
-        <translation>Lütfen saatleri daha önceden bölüştürülen sınıflara paylaştırın</translation>
+        <translation>Lütfen, Ders Saati Dağılımını,Sınıf Dağılımından Önce Yapınız 
+</translation>
     </message>
     <message>
         <source>Please input at least one room before allocating the rooms</source>
-        <translation>Lütfen sınıflara bölüştürmeden ilk önce bir sınıf giriniz</translation>
+        <translation>Lütfen, Sınıf Dağılımı Yapmadan Önce En Az Bir Sınıf Giriniz
+</translation>
     </message>
     <message>
         <source>Please input at least two active activities and a room before allocating hours and rooms</source>
-        <translation>Lütfen sınıfları ve saatleri  bölüştürmeden ilk önce iki etkinlik  ve bir sınıf giriniz</translation>
+        <translation>Lütfen, Ders Saati Ve Sınıf Dağılımı Yapmadan Önce En Az İki Etkin Ders Ve Bir Sınıf Giriniz
+</translation>
     </message>
     <message>
         <source>Please enter the directory &quot;%1&quot;
@@ -9348,61 +10415,75 @@ using the files &quot;fetxml2latex.py&quot; or &quot;students.xsl&quot;,
     <message>
         <source>Constraint
 %1 NOT added - duplicate</source>
-        <translation>Kısıtlama %1 eklenemedi.Kopya et</translation>
+        <translation type="unfinished">Kısıt &amp;1 Eklenemedi 
+Aynı Kısıt Mevcut
+</translation>
     </message>
     <message>
         <source>Room=%1</source>
-        <translation>Sınıf=1%</translation>
+        <translation>Sınıf=%1</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this year and all related groups, subgroups, activities and constraints?
 </source>
-        <translation>Bu yılıve ilişkili olan etkinlikleri,altgrupları silmek istediğinizden eminmisiniz?</translation>
+        <translation>Bu Ders Yılını, İlişkili Tüm Grupları, Alt-Grupları, Dersleri ve Kısıtları ile Birlikte Silmek İstediğinizden Emin misiniz?
+
+</translation>
     </message>
     <message>
         <source>The teacher&apos;s timetable cannot be printed,
 because the teacher is invalid</source>
-        <translation>Öğretmen ders programı yazdırılamadı.Çünkü öğretmen hasta</translation>
+        <translation>Öğretmen Ders Programı Yazdırılamadı, 
+Öğretmen Geçersiz
+</translation>
     </message>
     <message>
         <source>The teacher is invalid</source>
-        <translation>Öğretmen hasta</translation>
+        <translation>Öğretmen Geçersiz</translation>
     </message>
     <message>
         <source>Empty names not allowed
 </source>
-        <translation></translation>
+        <translation>İzin Verilmeyen İsimleri Temizle
+
+</translation>
     </message>
     <message>
         <source>Duplicates not allowed
 </source>
-        <translation></translation>
+        <translation>Çiftleme Yapılamaz
+</translation>
     </message>
     <message>
         <source>Please note that FET will NOT take care
 of old constraints using erased hours
 (only renamed hours will be handled correctly)
 </source>
-        <translation>Lütfen not edin FET silinen saatlere dikkat edemez</translation>
+        <translation>Lütfen Dikkat 
+FET, Silinmiş Ders Saatleriyle İlgili Eski Kısıtları 
+Dikkate Almayacaktır (Değiştirilmiş Ders Saatleri Hariç)
+</translation>
     </message>
     <message>
         <source>Please note that FET will NOT take care
 of old constraints using erased days
 (only renamed days will be handled correctly)
 </source>
-        <translation>Lütfen not edin FET silinen günlere dikkat edemez</translation>
+        <translation>Lütfen Dikkat 
+FET, Silinmiş Günlerle İlgili Eski Kısıtları 
+Dikkate Almayacaktır (Değiştirilmiş Günler Hariç)</translation>
     </message>
     <message>
         <source>&amp;Ok</source>
-        <translation>Tamam</translation>
+        <translation>&amp;Tamam</translation>
     </message>
     <message>
         <source>Activity: </source>
-        <translation>Etkinlik:</translation>
+        <translation>Ders:</translation>
     </message>
     <message>
         <source>Sub-activity: </source>
-        <translation>Alt etkinlik</translation>
+        <translation>Alt-Etkinlik:</translation>
     </message>
     <message>
         <source>T:</source>
@@ -9426,7 +10507,7 @@ of old constraints using erased days
     </message>
     <message>
         <source>AGId:</source>
-        <translation>AGıD:</translation>
+        <translation>AGId:</translation>
     </message>
     <message>
         <source>D:</source>
@@ -9438,7 +10519,7 @@ of old constraints using erased days
     </message>
     <message>
         <source>Bi-weekly, </source>
-        <translation>Haftalık</translation>
+        <translation type="obsolete">Haftalık</translation>
     </message>
     <message>
         <source>A: yes</source>
@@ -9451,12 +10532,12 @@ of old constraints using erased days
     <message>
         <source>Activity:
 </source>
-        <translation>Etkinlik</translation>
+        <translation>Ders:</translation>
     </message>
     <message>
         <source>Sub-activity:
 </source>
-        <translation>Alt etkinlik</translation>
+        <translation>Alt-Etkinlik:</translation>
     </message>
     <message>
         <source>Teacher=</source>
@@ -9468,7 +10549,7 @@ of old constraints using erased days
     </message>
     <message>
         <source>Subject tag=</source>
-        <translation>Konu etiketi=</translation>
+        <translation>Ders Konu Başlığı</translation>
     </message>
     <message>
         <source>Students=</source>
@@ -9480,47 +10561,51 @@ of old constraints using erased days
     </message>
     <message>
         <source>Activity group id=</source>
-        <translation>Etkin grup ıd:</translation>
+        <translation>Ders Grubu id=</translation>
     </message>
     <message>
         <source>Duration=</source>
-        <translation>Süre</translation>
+        <translation>Süre=</translation>
     </message>
     <message>
         <source>Total duration=</source>
-        <translation>Toplam süre</translation>
+        <translation>Toplam Süre=</translation>
     </message>
     <message>
         <source>Bi-weekly activity
 </source>
-        <translation>Haftalık etkinlik</translation>
+        <translation type="obsolete">Haftalık etkinlik</translation>
     </message>
     <message>
         <source>Weekly activity
 </source>
-        <translation>Haftalık etkinlik</translation>
+        <translation>Haftalık Ders</translation>
     </message>
     <message>
         <source>Active: yes
 </source>
-        <translation>Aktif:Evet</translation>
+        <translation>Etkin: Evet</translation>
     </message>
     <message>
         <source>Active: no
 </source>
-        <translation>Aktif:Hayır</translation>
+        <translation>Etkin: Hayır</translation>
     </message>
     <message>
         <source>Total number of students=%1</source>
-        <translation>Öğrencilerin toplam numarası=%1</translation>
+        <translation>Toplam Öğrenci Sayısı=%1
+</translation>
     </message>
     <message>
         <source>Time constraints directly related to this activity:</source>
-        <translation>Zaman kısıtlaması bu etkinlikle ilişkili</translation>
+        <translation>Bu Ders Yılı İle Doğrudan İlişkili Zaman Kısıtları:
+
+</translation>
     </message>
     <message>
         <source>Space constraints directly related to this activity:</source>
-        <translation>Alan kısıtlaması bu etkinlikle ilişkili</translation>
+        <translation>Bu Dersle Doğrudan İlişkili Yer Kısıtları:
+</translation>
     </message>
     <message>
         <source>Monday</source>
@@ -9544,144 +10629,158 @@ of old constraints using erased days
     </message>
     <message>
         <source>Default institution</source>
-        <translation>Varsayılan kurum</translation>
+        <translation>Kurum</translation>
     </message>
     <message>
         <source>Default comments</source>
-        <translation>Varsayılanyorum</translation>
+        <translation>Açıklamalar</translation>
     </message>
     <message>
         <source>You have too many teachers.
 Please talk to the author or increase variable MAX_TEACHERS</source>
-        <translation>Çok öğretmenin var.Lütfen yazarla konusunuz.Veya maksimum öğretmen değerini arttırın</translation>
+        <translation>Çok Fazla Öğretmen Mevcut.
+</translation>
     </message>
     <message>
         <source>You have too many subjects.
 Please talk to the author or increase variable MAX_SUBJECTS</source>
-        <translation>Çok dersin var.Lütfen yazarla konusunuz veya maksimum ders değerini arttırın</translation>
+        <translation>Çok Fazla Ders Mevcut.
+</translation>
     </message>
     <message>
         <source>You have too many years.
 Please talk to the author or increase variable MAX_YEARS</source>
-        <translation>Çok yılın var.Lütfen yazarla konusunuz veya maksimum yılı değerini arttırın</translation>
+        <translation>Çok Fazla Ders Yılı Mevcut.
+</translation>
     </message>
     <message>
         <source>You have too many groups per year.
 Please talk to the author or increase variable MAX_GROUPS_PER_YEAR</source>
-        <translation> Yıl içinde çok grubun var.Lütfen yazarla konusunuz veya maksimum  değerini arttırın</translation>
+        <translation>Çok Fazla Grup Mevcut.
+</translation>
     </message>
     <message>
         <source>You have too many subgroups per group.
 Please talk to the author or increase variable MAX_SUBGROUPS_PER_GROUP</source>
-        <translation>Grup içinde çok altgrubun var.Lütfen yazarla konusunuz veya maksimum  değerini arttırın</translation>
+        <translation>Çok Fazla Alt-Grup Mevcut.
+</translation>
     </message>
     <message>
         <source>You have too many total subgroups.
 Please talk to the author or increase variable MAX_TOTAL_SUBGROUPS</source>
-        <translation>Altgrup toplamın çok.Lütfen yazarla konusunuz veya maksimum  değerini arttırın</translation>
+        <translation>Çok Fazla Alt-Grup Mevcut.
+</translation>
     </message>
     <message>
         <source>You have too many active activities.
 Please talk to the author or increase variable MAX_ACTIVITIES</source>
-        <translation> Aktif etkinliğin çok fazla .Lütfen yazarla konusunuz veya maksimum aktivite  değerini arttırın</translation>
+        <translation>Çok Fazla Etkin Ders Mevcut.
+</translation>
     </message>
     <message>
         <source>You have too many equipments.
 Please talk to the author or increase variable MAX_EQUIPMENTS</source>
-        <translation>Çok donanımın var.Lütfen yazarla konusunuz veya maksimum donanım değerini arttırın</translation>
+        <translation>Çok Fazla Araç-Gereç Mevcut.
+</translation>
     </message>
     <message>
         <source>You have too many rooms.
 Please talk to the author or increase variable MAX_ROOMS</source>
-        <translation> Çok sınıfın  var.Lütfen yazarla konusunuz veya maksimum sınıf değerini arttırın</translation>
+        <translation>Çok Fazla Sınıf Mevcut.
+</translation>
     </message>
     <message>
         <source>You have too many buildings.
 Please talk to the author or increase variable MAX_BUILDINGS</source>
-        <translation>Çok binan  var.Lütfen yazarla konusunuz veya maksimum bina değerini arttırın</translation>
+        <translation>Çok Fazla Okul Binası Mevcut.
+</translation>
     </message>
     <message>
         <source>Activity with id=%1 has fixed day on %2 and %3 - impossible
 Please fix that</source>
-        <translation>Activity with id=%1 has fixed day on %2 and %3 - imkansız
-lütfen belirleyin </translation>
+        <translation>Ders No=%1 %2 Ve %3 İle Aynı Güne Alınmış - İmkansız
+</translation>
     </message>
     <message>
         <source>Activity with id=%1 has fixed hour on %2 and %3 - impossible
 Please fix that</source>
-        <translation>Activity with id=%1 has fixed hour on %2 and %3 - imkansız
-lütfen belirleyin </translation>
+        <translation>Ders No=%1 %2 Ve %3 İle Aynı Saate Alınmış - İmkansız
+</translation>
     </message>
     <message>
         <source>Activity with id=%1 has fixed day on %2 and must be scheduled on the same
  day with act. with id=%3, which is impossible. Please check your constraints</source>
-        <translation>Activity with id=%1 has fixed day on %2 and must be scheduled on the same(new line)
-day with act. with id=%3, which is impossible. lütfen kısıtlamayı kontrol ediniz</translation>
+        <translation>Ders No=%1 Ders No:%3 ile %2 Gününe Yerleştirilemez. 
+Kısıtlarınızı kontrol edin 
+</translation>
     </message>
     <message>
         <source>Activity with id=%1 has fixed hour on %2 and must be scheduled on the same
  hour with act. with id=%3, which is impossible. Please check your constraints</source>
-        <translation>Activity with id=%1 has fixed hour on %2 and must be scheduled on the same(new line)
-hour with act. with id=%3, which is impossible. lütfen kısıtlamayı kontrol ediniz</translation>
+        <translation>Ders No=%1 Ders No:%3 ile %2 Saatine Yerleştirilemez. 
+Kısıtlarınızı kontrol edin </translation>
     </message>
     <message>
         <source>ConstraintTeacherRequiresRoom: Teacher=%1,
 Activity with id=%2 has fixed room on %3 and %4 - impossible
 Please fix that</source>
-        <translation>ConstraintTeacherRequiresRoom: Teacher=%1,(new line)
-Activity with id=%2 has fixed room on %3 and %4 - impossible(new line)
-Lütfen bunu düzenleyin.</translation>
+        <translation>Öğretmen=%1 Ders No:%2 ile aynı anda %3 ve %4 Sınıflarına Yerleştirilemez 
+Kısıtlarınızı kontrol edin </translation>
     </message>
     <message>
         <source>ConstraintTeacherSubjectRequireRoom: Teacher=%1, Subject=%2
 Activity with id=%3 has fixed room on %4 and %5 - impossible
 Please fix that</source>
-        <translation>ConstraintTeacherSubjectRequireRoom: Teacher=%1, Subject=%2(new line)
-Activity with id=%3 has fixed room on %4 and %5 - impossibleLütfen bunu düzenleyin.</translation>
+        <translation>Öğretmen=%1 ve Konu=%2 Ders No:%3 ile aynı anda 
+%4 ve %5 Sınıflarına Yerleştirilemez 
+Kısıtlarınızı kontrol edin </translation>
     </message>
     <message>
         <source>Activity with id=%1 has fixed room on %2 and %3 - impossible
 Please fix that</source>
-        <translation>Activity with id=%1 has fixed room on %2 and %3 - impossibleLütfen bunu düzenleyin</translation>
+        <translation>Ders No=%1 %2 Ve %3 İle Aynı Sınıfa Alınmış - İmkansız</translation>
     </message>
     <message>
         <source>Because of space constraint
 %1
 Activity with id=%2 has fixed room on %3 and %4 - impossible
 Please fix that</source>
-        <translation>Because of space constraint(new line)
-%1(new line)
-Activity with id=%2 has fixed room on %3 and %4 - impossible(new line)Lütfen bunu düzenleyin</translation>
+        <translation>Kısıt=%1 nedeniyle; Ders No=%2 %3 Ve %4 İle Aynı Sınıfa Alınmış - İmkansız</translation>
     </message>
     <message>
         <source>Activity with id=%1 has fixed room in %2 and must be scheduled in the same
  room with act. with id=%3, which is impossible. Please check your constraints</source>
-        <translation>Activity with id=%1 has fixed room in %2 and must be scheduled in the same(new line)
-room with act. with id=%3, which is impossible.Lütfen kısıtlamalarınızı kontrol ediniz.</translation>
+        <translation>Ders No=%1 aynı anda %3 ile %4 Sınıflarına Yerleştirilemez 
+Kısıtlarınızı kontrol edin </translation>
     </message>
     <message>
         <source>The constraint
 %1 will be modified into constraint
 %2 because there is only one room left in the constraint</source>
-        <translation type="unfinished">l</translation>
+        <translation>Sacece 1 Sınıf bulunduğundan
+Kısıt=%1 Kısıt=%2 olarak değiştirilecek</translation>
     </message>
     <message>
         <source>Trying to open a newer file - please update your FET software to the latest version</source>
-        <translation>Açılmayan dosya lütfen sürümünü güncelleyiniz.</translation>
+        <translation>Açmaya Çalıştığınız Dosya İçin - Lütfen En Güncel FET Sürümünü Kullanınız.
+</translation>
     </message>
     <message>
         <source>Activity with id=%1 contains invalid data - skipping</source>
-        <translation type="unfinished"></translation>
+        <translation>Ders No=%1, Geçersiz Veri İçeriyor - Dikkate Alınmayacak
+</translation>
     </message>
     <message>
         <source>Constraint
 %1
 not added - must be a duplicate</source>
-        <translation type="unfinished"></translation>
+        <translation>Kısıt Eklenemedi 
+Aynı Kısıt Mevcut
+</translation>
     </message>
     <message>
         <source>no</source>
-        <translation>No</translation>
+        <translation>Hayır</translation>
     </message>
     <message>
         <source>yes</source>
@@ -9689,11 +10788,12 @@ not added - must be a duplicate</source>
     </message>
     <message>
         <source>Basic compulsory constraints (time)</source>
-        <translation>Basit sürekli kısıtlamalar(zaman)</translation>
+        <translation>Zorunlu Zaman Kısıtları
+</translation>
     </message>
     <message>
         <source>W:%1</source>
-        <translation>W%1</translation>
+        <translation>W:%1</translation>
     </message>
     <message>
         <source>C:%1</source>
@@ -9703,7 +10803,9 @@ not added - must be a duplicate</source>
         <source>These are the basic compulsory constraints
 (referring to time allocation) for any timetable
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Her Ders Programı İçin Zorunlu Kısıtlar 
+(Zaman Dağılımı Açısından)
+</translation>
     </message>
     <message>
         <source>Weight=%1</source>
@@ -9716,47 +10818,56 @@ not added - must be a duplicate</source>
     <message>
         <source>The basic time constraints try to avoid:
 </source>
-        <translation>Basit zaman kısıtlamaları önlemeye çalısıyo:</translation>
+        <translation>Zaman Kısıtlarının Önlemeye Çalıştığı:
+
+</translation>
     </message>
     <message>
         <source>- unallocated activities
 </source>
-        <translation>Ayrılmayan etkinlikler</translation>
+        <translation>- Yerleştirlmemiş Dersler
+</translation>
     </message>
     <message>
         <source>- activities scheduled too late
 </source>
-        <translation>Etkinlik programı çok geç</translation>
+        <translation>- Geç Saate Yerleştirilmiş Dersler
+</translation>
     </message>
     <message>
         <source>- teachers assigned to more than one activity simultaneously
 </source>
-        <translation>Öğretmenler bir veya daha fazla etkinlik ayırdı.</translation>
+        <translation>- Eş Zamanlı Olarak, Birden Fazla Derse Veren Öğretmenler
+</translation>
     </message>
     <message>
         <source>- students assigned to more than one activity simultaneously
 </source>
-        <translation>Öğrenciler bir veya daha fazla etkinlik ayırdı.</translation>
+        <translation>- Eş Zamanlı Olarak, Birden Fazla Ders Alan Öğrenciler
+</translation>
     </message>
     <message>
         <source>Time constraint basic compulsory</source>
-        <translation>Zaman kısıtlamaları sürekli</translation>
+        <translation>Zorunlu Zaman Kısıtları
+</translation>
     </message>
     <message>
         <source>activity with id=%1 is late.</source>
-        <translation>Etkinlik %1 ile geç</translation>
+        <translation>Ders No=%1 Geç Başlıyor.
+</translation>
     </message>
     <message>
         <source>teacher with name %1 has more than one allocated activity on day %2, hour %3</source>
-        <translation></translation>
+        <translation>Öğretmen=%1 %2 günü saat %3 te Birden Fazla Derse Verilmiş</translation>
     </message>
     <message>
         <source>subgroup %1 has more than one allocated activity on day %2, hour %3</source>
-        <translation></translation>
+        <translation>Alt-Grup=%1 %2 günü saat %3 te Birden Fazla Derse Verilmiş</translation>
     </message>
     <message>
         <source>Teacher not available</source>
-        <translation>Öğretmen müsait değil</translation>
+        <translation>Öğretmen - Müsait Olmayan Öğretmen
+</translation>
     </message>
     <message>
         <source>T:%1</source>
@@ -9776,7 +10887,7 @@ not added - must be a duplicate</source>
     </message>
     <message>
         <source>Time constraint</source>
-        <translation>Zaman kısıtlama</translation>
+        <translation>Zaman Kısıtı</translation>
     </message>
     <message>
         <source>Teacher=%1</source>
@@ -9788,19 +10899,22 @@ not added - must be a duplicate</source>
     </message>
     <message>
         <source>Start hour=%1</source>
-        <translation>Başlangıç saati=%1</translation>
+        <translation>Ders Başlama Saati=%1
+</translation>
     </message>
     <message>
         <source>End hour=%1</source>
-        <translation>Bitiş saati=%1</translation>
+        <translation>Bitiş Saati=%1</translation>
     </message>
     <message>
         <source>Time constraint teacher not available broken for teacher %1 on day %2, hour %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Öğretmen %1 İçin, %2 Günü, Saat %3 Te Öğretmen - Müsait Olmayan Öğretmen Zaman Kısıtına Uyulamıyor
+</translation>
     </message>
     <message>
         <source>Students set not available</source>
-        <translation>Öğrenci grupları mevcut değil</translation>
+        <translation>Öğrenciler - Müsait Olmayan Öğrenciler
+</translation>
     </message>
     <message>
         <source>S:%1</source>
@@ -9812,15 +10926,18 @@ not added - must be a duplicate</source>
     </message>
     <message>
         <source>Time constraint students not available</source>
-        <translation>Zaman kısıtlaması öğrenciler müsait değil</translation>
+        <translation>Zaman Kısıtı - Öğrenciler - Müsait Olmayan Öğrenciler
+</translation>
     </message>
     <message>
         <source>broken for subgroup: %1 on day %2, hour %3</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 Gününde, %3 Saatte, %1 Alt-Grubu İçin Uyulamıyor
+</translation>
     </message>
     <message>
         <source>Activities same starting time</source>
-        <translation>Aynı zamanda başlayan etkinlikler</translation>
+        <translation>Dersleri Aynı Saate Yerleştirme
+</translation>
     </message>
     <message>
         <source>NA:%1</source>
@@ -9832,47 +10949,55 @@ not added - must be a duplicate</source>
     </message>
     <message>
         <source>Activities must have the same starting time</source>
-        <translation>Etkinlikler aynı  zamanda başlamalı</translation>
+        <translation>Dersler Aynı Gün Ve Saatte Başlamalı
+</translation>
     </message>
     <message>
         <source>Number of activities=%1</source>
-        <translation>Etkinlik numarası=%1</translation>
+        <translation>Ders Sayısı=%1</translation>
     </message>
     <message>
         <source>Activity with id=%1</source>
-        <translation>Etkinlik ıd=%1</translation>
+        <translation>Ders id=%1</translation>
     </message>
     <message>
         <source>Time constraint activities same time broken, because activity with id=%1 is not at the same time with activity with id=%2</source>
-        <translation type="unfinished"></translation>
+        <translation>Ders İd=%1 İle Ders İd=%2 Farklı Zamanlara Konulduğundan, Dersleri Aynı Gün Ve Saate Yerleştirme Zaman Kısıtına Uyulamıyor
+</translation>
     </message>
     <message>
         <source>conflicts factor increase=%1</source>
-        <translation>Anlaşmazlık faktoru=%1</translation>
+        <translation>Çelişki Faktörü =%1 Oranında Artıyor
+</translation>
     </message>
     <message>
         <source>Activities not overlapping</source>
-        <translation>Ardarda olmayan etkinlikler</translation>
+        <translation>Dersleri Ardışıklamama
+</translation>
     </message>
     <message>
         <source>Activities must not overlap</source>
-        <translation>Etkinlikler bitmemeli</translation>
+        <translation>Dersler Ardışık Olmamalı
+</translation>
     </message>
     <message>
         <source>Time constraint activities not overlapping</source>
-        <translation>Zaman kısıtlaması etkinlikleri ardarda olmayan </translation>
+        <translation>Zaman Kısıtı - Dersleri Ardışıklamama
+</translation>
     </message>
     <message>
         <source>broken:</source>
-        <translation>Bölünmüş</translation>
+        <translation>Uyulamama:</translation>
     </message>
     <message>
         <source>activity with id=%1 overlaps with activity with id=%2 on a number of %3 periods</source>
-        <translation></translation>
+        <translation>Ders No=%1 %3 Dönem Ders No=%2 İle Ardışık
+</translation>
     </message>
     <message>
         <source>Min N days between activities</source>
-        <translation>Minumum N günleri etkinlikler arasında</translation>
+        <translation>Dersler Arası Minumum N Gün
+</translation>
     </message>
     <message>
         <source>N:%1</source>
@@ -9880,31 +11005,38 @@ not added - must be a duplicate</source>
     </message>
     <message>
         <source>Minimum N days between activities</source>
-        <translation>Minumum N günleri etkinlikler arasında</translation>
+        <translation>Dersler Arası Minumum N Gün
+</translation>
     </message>
     <message>
         <source>Minimum number of days=%1</source>
-        <translation>Günlerin minumu numarsı=%1</translation>
+        <translation>Minumum Gün Sayısı=%1
+</translation>
     </message>
     <message>
         <source>Time constraint min n days between activities</source>
-        <translation>Gün içinde minumum etkinlikler arasındaki zaman kısıtlaması</translation>
+        <translation>Zaman Kısıtı - Dersler Arası Minumum N Gün Zaman
+</translation>
     </message>
     <message>
         <source>activity with id=%1 conflicts with activity with id=%2 on %3 hours</source>
-        <translation type="unfinished"></translation>
+        <translation>Ders No=%1, %3 Saatte, Ders No=%2 İle Çelişiyor
+</translation>
     </message>
     <message>
         <source>Teachers max %1 hours continuously</source>
-        <translation type="unfinished"></translation>
+        <translation>Öğretmenler - Aralıksız Maksimum %1 Ders Saati
+</translation>
     </message>
     <message>
         <source>Teachers must not have more than %1 hours continuously</source>
-        <translation type="unfinished"></translation>
+        <translation>Öğretmenler %1 Saatten Fazla Aralıksız Derse Girmemeli
+</translation>
     </message>
     <message>
         <source>Time constraint teacher no more than %1 hours continuously broken for teacher %2, on day %3, hour %4</source>
-        <translation type="unfinished"></translation>
+        <translation>Öğretmen %2 İçin, %3 Günü, Saat %4 Te Öğretmen - Aralıksız Maksimum %1 Ders Saati Zaman Kısıtına Uyulamıyor
+</translation>
     </message>
     <message>
         <source>. This increases the conflicts factor with %1</source>
@@ -9912,35 +11044,43 @@ not added - must be a duplicate</source>
     </message>
     <message>
         <source>Teachers max %1 hours daily</source>
-        <translation>Öğretmenler  maksimum saat günlük</translation>
+        <translation>Öğretmenler - Günlük Maksimum %1 Ders Saati
+</translation>
     </message>
     <message>
         <source>Teachers must not have more than %1 hours daily</source>
-        <translation>Öğretmenler %1 saatten fazla sahip olmamalıdırlar</translation>
+        <translation>Öğretmenler Günlük %1 Saatten Fazla Derse Girmemeli
+</translation>
     </message>
     <message>
         <source>Time constraint teacher max %1 hours daily broken for teacher %2, on day %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>Öğretmen %1 için, %3 günü, Öğretmenler - Günlük Maksimum % 1 Ders Saati Zaman Kısıtına Uyulamıyor.
+</translation>
     </message>
     <message>
         <source>Teachers-subgroups max %1 hours in a day</source>
-        <translation>Öğretmenler ve altgruplar gün içinde maksimum %1 saat</translation>
+        <translation>Öğretmenler - Alt-Gruplar Günlük Maksimum %1 Ders Saati
+</translation>
     </message>
     <message>
         <source>Warning: this constraint dramatically slows down the execution of the program</source>
-        <translation>Uyarı:Etkinlik programın uygulamasını yavaşlatmaktadır</translation>
+        <translation>Uyarı:  Bu Kısıt, Yazılımın Çalışmasını Önemli Ölçüde Yavaşlatmaktadır
+</translation>
     </message>
     <message>
         <source>Teachers must not teach to any subgroup more than %1 hours in a day</source>
-        <translation>Öğretmenler gün içinde %1 saatten fazla öğretmemelilerdir.</translation>
+        <translation>Öğretmenler, Günlük %1 Saatten Fazla Dersi Bulunan Alt-Gruplara Ders Vermemeli
+</translation>
     </message>
     <message>
         <source>Please be very careful: this restriction dramatically slows down the automatic generation of the timetable</source>
-        <translation>Lütfen dikkatli olun:Bu sınırlama desprogramını yavaşlatmaktadır</translation>
+        <translation>Lütfen Çok Dikkat: Bu Sınırlama, Ders Programı Oluşturulmasını Çok Yavaşlatacak
+</translation>
     </message>
     <message>
         <source>Time constraint teachers subgroups max hours daily broken </source>
-        <translation>Zaman kısıtlamaları günlük olarak maksimum saatler</translation>
+        <translation>Öğretmenler - Günlük Maksimum Ders Saati Zaman Kısıtına Uyulamıyor
+</translation>
     </message>
     <message>
         <source>This increases the conflicts factor with</source>
@@ -9948,7 +11088,8 @@ not added - must be a duplicate</source>
     </message>
     <message>
         <source>Teacher max days per week</source>
-        <translation>Haftada öğretmenin  maksimum günleri</translation>
+        <translation>Öğretmen - Haftalık Maksimum Gün Sayısı
+</translation>
     </message>
     <message>
         <source>MD:%1</source>
@@ -9956,15 +11097,18 @@ not added - must be a duplicate</source>
     </message>
     <message>
         <source>Teacher max. days per week</source>
-        <translation>Haftada öğretmenin  maksimum günleri</translation>
+        <translation>Öğretmen - Haftalık Maksimum Gün Sayısı
+</translation>
     </message>
     <message>
         <source>Max. days per week=%1</source>
-        <translation>Haftada maksimum günler=%1</translation>
+        <translation>Haftalık Maksimum Gün Sayısı=%1
+</translation>
     </message>
     <message>
         <source>Time constraint teacher max days per week broken for</source>
-        <translation type="unfinished"></translation>
+        <translation>Öğretmen - Haftalık Maksimum Gün Sayısı Zaman Kısıtına Uyulamıyor
+</translation>
     </message>
     <message>
         <source>teacher: %1.</source>
@@ -9972,51 +11116,66 @@ not added - must be a duplicate</source>
     </message>
     <message>
         <source>Teachers no gaps</source>
-        <translation>Aralıksız öğretmen</translation>
+        <translation>Öğretmenler - Aralıksız Derse Girme
+</translation>
     </message>
     <message>
         <source>Teachers must not have gaps</source>
-        <translation>Öğretmenler aralığa sahip olmamalı</translation>
+        <translation>Öğretmenler Aralıksız Derse Girmeli
+</translation>
     </message>
     <message>
         <source>Time constraint teachers no gaps broken: teacher: %1, week 1, day: %2, before hour: %3, lenght=%4
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Öğretmen %1 İçin, Hafta 1 De, %2 Günü, Saat %3 Ten Önce, %4 Kadar 
+Öğretmenler - Aralıksız Derse Girme Zaman Kısıtına Uyulamıyor
+</translation>
     </message>
     <message>
         <source>Time constraint teachers no gaps broken: teacher: %1, week 2, day: %2, before hour: %3, lenght=%4
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Öğretmen: %1 İçin, Hafta 2 De, %2 Günü, Saat %3 Ten Önce, %4 Kadar 
+Öğretmenler - Aralıksız Derse Girme Zaman Kısıtına Uyulamıyor
+</translation>
     </message>
     <message>
         <source>Break</source>
-        <translation>Ara</translation>
+        <translation>Ders Arası
+</translation>
     </message>
     <message>
         <source>Time constraint break not respected for teacher %1, on day %2, hour %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Öğretmen %1 İçin, %2 Günü Saat %3 Te Ders Arası Zaman Kısıtına Uyulamıyor
+</translation>
     </message>
     <message>
         <source>Students no gaps</source>
-        <translation>Aralıksız öğrenci</translation>
+        <translation>Öğrenciler - Aralıksız Derse Girme
+</translation>
     </message>
     <message>
         <source>Students must not have gaps</source>
-        <translation>Öğrenciler aralığa sahip olmamalı</translation>
+        <translation>Öğrenciler Aralıksız Derse Girmeli
+</translation>
     </message>
     <message>
         <source>Time constraint students no gaps broken for subgroup: %1, on week 1, day: %2, before hour: %3, lenght=%4
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Alt-Grup: %1 İçin, Hafta 1 De, %2 Günü Saat %3 Ten Önce, %4 Kadar 
+Öğrenciler - Aralıksız Derse Girme Zaman Kısıtına Uyulamıyor
+</translation>
     </message>
     <message>
         <source>Time constraint students no gaps broken for subgroup: %1, on week 2, day: %2, before hour: %3, lenght=%4
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Alt-Grup: %1 İçin, Hafta 2 De, %2 Günü Saat %3 Ten Önce, %4 Kadar 
+Öğrenciler - Aralıksız Derse Girme Zaman Kısıtına Uyulamıyor
+</translation>
     </message>
     <message>
         <source>Students set no gaps</source>
-        <translation>Aralıksız öğrenci</translation>
+        <translation>Öğrenciler - Aralıksız Derse Girme
+</translation>
     </message>
     <message>
         <source>St:%1</source>
@@ -10024,24 +11183,30 @@ not added - must be a duplicate</source>
     </message>
     <message>
         <source>Students set must not have gaps</source>
-        <translation>Öğrenciler aralığa sahip olmamalı</translation>
+        <translation>Öğrenciler - Aralıksız Derse Girme
+</translation>
     </message>
     <message>
         <source>Time constraint students set no gaps broken for subgroup: %1, on week 1, day: %2, before hour: %3, lenght=%4
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Alt-Grup: %1 İçin, Hafta 1 De, %2 Günü, Saat %3 Ten Önce, %4 Kadar 
+Öğrenciler - Aralıksız Derse Girme Zaman Kısıtına Uyulamıyor
+</translation>
     </message>
     <message>
         <source>Students early</source>
-        <translation>Öğrenciler erkenden </translation>
+        <translation>Derslerin Erkenden Başlaması
+</translation>
     </message>
     <message>
         <source>Students must begin as early as possible their courses</source>
-        <translation>Öğrenciler derslerine erkenden başlamalılar</translation>
+        <translation>Öğrenciler Derslerine Olabildiğince Erken Başlamalılar
+</translation>
     </message>
     <message>
         <source>Students n hours daily</source>
-        <translation>Öğrenci saatleri günlük</translation>
+        <translation>Öğrenciler - Günlük Ders Saati
+</translation>
     </message>
     <message>
         <source>MH:%1</source>
@@ -10053,41 +11218,51 @@ not added - must be a duplicate</source>
     </message>
     <message>
         <source>All students sets must have the recommended number of hours daily</source>
-        <translation>Bütün öğrenci grupları önerilen günlük saat sayılarına sahip olmalı.</translation>
+        <translation>Tüm Öğrenci Grupları, Tavsiye Edilen Günlük Ders Saati Kadar Ders Almalı 
+</translation>
     </message>
     <message>
         <source>Maximum recommended hours daily=%1</source>
-        <translation>Günlük önerilen maksimum saat=%1</translation>
+        <translation>Tavsiye Edilen Günlük Maksimum Ders Saati=%1
+</translation>
     </message>
     <message>
         <source>Minimum recommended hours daily=%1</source>
-        <translation>Günlük önerilen minumum  saat=%1</translation>
+        <translation>Tavsiye Edilen Günlük Minumum Ders Saati=%1
+</translation>
     </message>
     <message>
         <source>Time constraint students n hours daily broken for subgroup: %1, day: %2, 2*lenght=%3
 </source>
-        <translation>Öğrenciler günlük saatlerine uymalıdırlar </translation>
+        <translation>Alt-Grup: %1 İçin, %2 Günü Saat %3 Te
+Öğrenciler - Günlük Ders Saati Zaman Kısıtına Uyulamıyor
+</translation>
     </message>
     <message>
         <source>Students set n hours daily</source>
-        <translation></translation>
+        <translation>Öğrenciler - Günlük Ders Saati
+</translation>
     </message>
     <message>
         <source>Students set must respect the number of hours daily</source>
-        <translation></translation>
+        <translation>Öğrenciler - Günlük Ders Saatlerini Aşmama
+</translation>
     </message>
     <message>
         <source>Students set=%1</source>
-        <translation>Öğrenci takımları=%1</translation>
+        <translation>Öğrenci Grubu=%1</translation>
     </message>
     <message>
         <source>Time constraint students set n hours daily broken for subgroup: %1, day: %2, 2*lenght=%3
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Alt-Grup: %1 İçin, %2 Günü, %3 Kadar 
+Öğrenciler - Günlük Ders Saati Zaman Kısıtına Uyulamıyor
+</translation>
     </message>
     <message>
         <source>Students set interval max days per week</source>
-        <translation></translation>
+        <translation>Öğrenciler - Haftalık Maksimum Dinlenme Süresi
+</translation>
     </message>
     <message>
         <source>MI:%1</source>
@@ -10095,64 +11270,74 @@ not added - must be a duplicate</source>
     </message>
     <message>
         <source>Students set interval max. days per week</source>
-        <translation>Haftada maksimum öğrenci araları</translation>
+        <translation>Öğrenciler - Haftalık Maksimum Dinlenme Süresi
+</translation>
     </message>
     <message>
         <source>Max. intervals=%1</source>
-        <translation>Mak.Ara=%1</translation>
+        <translation>Haftalık Maksimum Dinlenme Süresi=%1</translation>
     </message>
     <message>
         <source>Time constraint students set interval max days per week broken for</source>
-        <translation type="unfinished"></translation>
+        <translation>Öğrenciler - Haftalık Maksimum Dinlenme Süresi Zaman Kısıtına Uyulamıyor
+</translation>
     </message>
     <message>
         <source>subgroup: %1.</source>
-        <translation>Altgrup:%1.</translation>
+        <translation>Alt-Grup:%1.</translation>
     </message>
     <message>
         <source>Act. id:%1</source>
-        <translation>Act. id:%1</translation>
+        <translation>Ders id:%1</translation>
     </message>
     <message>
         <source>must be scheduled at: </source>
-        <translation>Program olmalı:</translation>
+        <translation>Ders Programına Yazılmalı:
+</translation>
     </message>
     <message>
         <source>must be scheduled at:
 </source>
-        <translation>Program olmalı:</translation>
+        <translation>Ders Programına Yazılmalı:
+</translation>
     </message>
     <message>
         <source>must end the day</source>
-        <translation>Gün bitmeli</translation>
+        <translation>Gün Sonu Dersi Olmalı
+</translation>
     </message>
     <message>
         <source>must be the last in a certain day</source>
-        <translation>Gün içinde kesin son olmalı</translation>
+        <translation>Belirli Bir Günün Son Dersi Olmalı
+</translation>
     </message>
     <message>
         <source>act. id 1:%1</source>
-        <translation>act. id 1:%1</translation>
+        <translation>Ders id 1:%1</translation>
     </message>
     <message>
         <source>act. id 2:%1</source>
-        <translation>act. id 2:%1</translation>
+        <translation>Ders id 2:%1</translation>
     </message>
     <message>
         <source>must be followed (immediately) by activity with id=%1</source>
-        <translation>id=%1 ile etkinlik takip edilmelidir(hemen)</translation>
+        <translation>Dersi, Ders No=%1 Takip Etmelidir (Aralıksız)
+</translation>
     </message>
     <message>
         <source>must be followed (at arbitrary distance) by activity with id=%1</source>
-        <translation>id=%1 ile etkinlik takip edilmelidir(isteğe bağlı arada)</translation>
+        <translation>Dersi, Ders No=%1 Takip Etmelidir (İsteğe Göre Aralık Verilerek)
+</translation>
     </message>
     <message>
         <source>must be followed by/follow activity with id=%1</source>
-        <translation>id=%1 ile etkinlik takip edilmelidir</translation>
+        <translation>Dersi, Ders No=%1 Takip Etmelidir
+</translation>
     </message>
     <message>
         <source>Activities with </source>
-        <translation>Etkinlikler ile</translation>
+        <translation>İle Dersler
+</translation>
     </message>
     <message>
         <source>teacher=%1, </source>
@@ -10160,7 +11345,8 @@ not added - must be a duplicate</source>
     </message>
     <message>
         <source>all teachers, </source>
-        <translation>Bütün öğretmenler</translation>
+        <translation>Tüm Öğretmenler
+</translation>
     </message>
     <message>
         <source>students=%1, </source>
@@ -10168,7 +11354,8 @@ not added - must be a duplicate</source>
     </message>
     <message>
         <source>all students, </source>
-        <translation>Bütün öğrenciler</translation>
+        <translation>Tüm Öğrenciler
+</translation>
     </message>
     <message>
         <source>subject=%1, </source>
@@ -10176,7 +11363,8 @@ not added - must be a duplicate</source>
     </message>
     <message>
         <source>all subjects, </source>
-        <translation>Bütün dersler</translation>
+        <translation>Tüm Ders Konuları
+</translation>
     </message>
     <message>
         <source>subject tag=%1, </source>
@@ -10184,11 +11372,12 @@ not added - must be a duplicate</source>
     </message>
     <message>
         <source>all subject tags, </source>
-        <translation>Bütün ders başlıkları</translation>
+        <translation>Tüm Ders Konu Başlıkları
+</translation>
     </message>
     <message>
         <source>Activities with:</source>
-        <translation>Etkinlikler ile:</translation>
+        <translation>Dersler İle:</translation>
     </message>
     <message>
         <source>Teacher=%1
@@ -10198,94 +11387,112 @@ not added - must be a duplicate</source>
     <message>
         <source>All teachers
 </source>
-        <translation>Bütün öğretmenler</translation>
+        <translation>Tüm Öğretmenler
+</translation>
     </message>
     <message>
         <source>Students=%1
 </source>
-        <translation></translation>
+        <translation>Öğrenciler=%1</translation>
     </message>
     <message>
         <source>All students
 </source>
-        <translation>Bütün öğrenciler=</translation>
+        <translation>Tüm Öğrenciler
+</translation>
     </message>
     <message>
         <source>Subject=%1
 </source>
-        <translation>Ders=%1</translation>
+        <translation>Konu=%1</translation>
     </message>
     <message>
         <source>All subjects
 </source>
-        <translation>Bütün dersler</translation>
+        <translation>Tüm Ders Konuları
+</translation>
     </message>
     <message>
         <source>Subject tag=%1
 </source>
-        <translation>Konu etiketi=%1</translation>
+        <translation>Ders Konu Başlığı=%1</translation>
     </message>
     <message>
         <source>All subject tags
 </source>
-        <translation>Bütün konu başlıkları</translation>
+        <translation>Tüm Ders Konu Başlıkları
+</translation>
     </message>
     <message>
         <source>Activities same starting hour</source>
-        <translation>Aynı saatte baslayan etkinlikler</translation>
+        <translation>Dersleri Aynı Saate Yerleştirme
+</translation>
     </message>
     <message>
         <source>Activities must have the same starting hour</source>
-        <translation>Etkinlikler aynı saatte baslamalı</translation>
+        <translation>Dersler Aynı Saatte Başlamalı
+</translation>
     </message>
     <message>
         <source>Time constraint activities same hour broken, because activity with id=%1 is not at the same hour with activity with id=%2</source>
-        <translation type="unfinished"></translation>
+        <translation>Ders İd=%1 İle Ders İd=%2 Farklı Saatlere Konulduğundan, Dersleri Aynı Saate Yerleştirme Zaman Kısıtına Uyulamıyor
+</translation>
     </message>
     <message>
         <source>Teachers subject tags max %1 hours in a row</source>
-        <translation type="unfinished"></translation>
+        <translation>Öğretmenler İçin, Bir Gün İçinde, Ders Konu Başlığı, Maksimum %1 Saat
+</translation>
     </message>
     <message>
         <source>Time constraint teachers subject tags max %1 hours in a row broken for subject tag %2, teacher %3, on day %4, hour %5</source>
-        <translation type="unfinished"></translation>
+        <translation>Ders Konu Başlığı %2 İçin, Öğretmen %3, %4 Günü Saat %5 Te, Ööğretmenler - Ders Konu Başlıkları Günlük Maksimum Ders Saati %1 (Aynı Sırada) Zaman Kısıtına Uyulamıyor
+</translation>
     </message>
     <message>
         <source>Teachers subject tag %1 max %2 hours in a row</source>
-        <translation type="unfinished"></translation>
+        <translation>Öğretmenler - Ders Konu Başlığı %1 Günlük Maksimum Ders Saati %2 (Aynı Sırada)
+</translation>
     </message>
     <message>
         <source>Time constraint teachers subject tag max %1 hours in a row broken for subject tag %2, teacher %3, on day %4, hour %5</source>
-        <translation type="unfinished"></translation>
+        <translation>Ders Konu Başlığı %2 İçin, Öğretmen %3, %4 Günü Saat %5 Te, Öğretmenler - Ders Konu Başlıkları Günlük Maksimum Ders Saati %1 (Aynı Sırada) Zaman Kısıtına Uyulamıyor
+</translation>
     </message>
     <message>
         <source>Basic compulsory constraints (space), W:%1</source>
-        <translation>Basit sürekli kısıtlamalar(zaman),W%1</translation>
+        <translation>Zorunlu Kısıtlar (Yer), W:%1
+</translation>
     </message>
     <message>
         <source>These are the basic compulsory constraints 
 (referring to space allocation) for any timetable
 </source>
-        <translation>Her ders programı için esas sürekli kısıtlamalardır bunlar</translation>
+        <translation>Her Ders Programı İçin Zorunlu Kısıtlar 
+(Yer Dağılımı Açısından)</translation>
     </message>
     <message>
         <source>The basic space constraints try to avoid:
 </source>
-        <translation>Basit alan kısıtlamaları önlemeye çalısıyo:</translation>
+        <translation>Yer Kısıtlarının Önlemeye Çalıştığı:
+
+</translation>
     </message>
     <message>
         <source>- activities with more students than the capacity of the room
 </source>
-        <translation>-sınıfların kapasitesi birden çok öğrenci etkinliklerinden fazla</translation>
+        <translation>- Sınıf Kapasitesinin Aşıldığı Dersler
+</translation>
     </message>
     <message>
         <source>- rooms assigned to more than one activity simultaneously
 </source>
-        <translation>Odalar birden çok etkinlik yapmaya belirlendi sürekli olarak</translation>
+        <translation>- Derslerin Çakıştığı Sınıflar
+</translation>
     </message>
     <message>
         <source>Space constraint basic compulsory: unallocated activity with id=%1</source>
-        <translation>Alan kısıtlamaları esas zorunlu:bölüştürülmemiş etkinlik id=%1 ile</translation>
+        <translation>Zorunlu Yer Kısıtı: Ders No=%1 Yerleştirilmedi
+</translation>
     </message>
     <message>
         <source> - this increases the conflicts factor with %1</source>
@@ -10293,15 +11500,18 @@ not added - must be a duplicate</source>
     </message>
     <message>
         <source>Space constraint basic compulsory: room %1 has allocated activity with id %2 and the capacity of the room is overloaded</source>
-        <translation type="unfinished"></translation>
+        <translation>Zorunlu Yer Kısıtı: Ders No=%2 Sınıf %1 De Yapıldığından, Sınıfın Kapasitesi Aşılıyor
+</translation>
     </message>
     <message>
         <source>Space constraint basic compulsory: room with name %1 has more than one allocated activity on day %2, hour %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zorunlu Yer Kısıtı: Sınıf %1 de  %2 günü Saat %3 te Birden Fazla Ders Var.
+</translation>
     </message>
     <message>
         <source>Room not available</source>
-        <translation>Sınıf uygun değil</translation>
+        <translation>Sınıf - Müsait Olmayan Sınıf
+</translation>
     </message>
     <message>
         <source>R:%1</source>
@@ -10309,11 +11519,12 @@ not added - must be a duplicate</source>
     </message>
     <message>
         <source>Space constraint</source>
-        <translation>alan kısıtlamalrı</translation>
+        <translation>Yer Kısıtı</translation>
     </message>
     <message>
         <source>Space constraint room not available broken for room %1 on day %2, hour %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Sınıf %1 İçin, %3 Günü Saat %3 Te Sınıf - Müsait Olmayan Sınıf Yer Kısıtına Uyulamıyor
+</translation>
     </message>
     <message>
         <source>RT:%1</source>
@@ -10321,11 +11532,12 @@ not added - must be a duplicate</source>
     </message>
     <message>
         <source>Room type not allowed subjects</source>
-        <translation>Oda türü izin verilmemiş konular</translation>
+        <translation>Sınıf Türü - İzin Verilmeyen Ders Konuları
+</translation>
     </message>
     <message>
         <source>Room Type=%1</source>
-        <translation>Sınıf türü=%1</translation>
+        <translation>Sınıf Türü=%1</translation>
     </message>
     <message>
         <source>Subject=%1</source>
@@ -10333,7 +11545,8 @@ not added - must be a duplicate</source>
     </message>
     <message>
         <source>Space constraint room type not allowed subjects broken for room %1, activity with id %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Sınıf %1 De, Ders No %2 Yapıldığından, Sınıf Türü - İzin Verilmeyen Ders Konuları Yer Kısıtına Uyulamıyor
+</translation>
     </message>
     <message>
         <source>E:%1</source>
@@ -10341,15 +11554,18 @@ not added - must be a duplicate</source>
     </message>
     <message>
         <source>Subject requires equipments</source>
-        <translation>Derste gerekli donanımlar</translation>
+        <translation>Ders Konusu - Gerekli Araç-Gereç
+</translation>
     </message>
     <message>
         <source>Equipment=%1</source>
-        <translation>Donanımlar=%1</translation>
+        <translation>Araç-Gereç=%1
+</translation>
     </message>
     <message>
         <source>Space constraint subject requires equipments broken for room %1, activity with id %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Sınıf %1 De, Ders No %2 Yapıldığından, Ders Konusu - Gerekli Araç-Gereç Yer Kısıtına Uyulamıyor
+</translation>
     </message>
     <message>
         <source>ST:%1</source>
@@ -10357,56 +11573,69 @@ not added - must be a duplicate</source>
     </message>
     <message>
         <source>Subject subject tag require equipments</source>
-        <translation>Ders başlıklarının donanımlar ister</translation>
+        <translation>Ders Konu Başlığı - Gerekli Araç-Gereç
+</translation>
     </message>
     <message>
         <source>Subject tag=%1</source>
-        <translation>Konu etiketi=%1</translation>
+        <translation>Ders Konu Başlığı=%1</translation>
     </message>
     <message>
         <source>Space constraint subject subject tag require equipments broken for room %1, activity with id %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Sınıf %1 De, Ders No %2 Yapıldığından, Ders Konu Başlığı - Gerekli Araç-Gereç Yer Kısıtına Uyulamıyor
+</translation>
     </message>
     <message>
         <source>Teacher requires room</source>
-        <translation>Öğretmenler sınıf ister</translation>
+        <translation>Öğretmen - Öğretmen İçin Gerekli Sınıf
+</translation>
     </message>
     <message>
         <source>Space constraint teacher requires room broken for teacher %1, room %2, activity with id=%3</source>
-        <translation type="unfinished"></translation>
+        <translation>Öğretmen %1, Sınıf %2 De Ders No %3 E Gireceğinden, Öğretmen - Öğretmen İçin Gerekli Sınıf Yer Kısıtına Uyulamıyor
+</translation>
     </message>
     <message>
         <source>Teacher subject requires room</source>
-        <translation>Öğretmen konu isteme odası
+        <translation>Öğretmen - Ders Konusu İçin Gerekli Sınıf
+
+
 </translation>
     </message>
     <message>
         <source>Space constraint teacher subject requires room broken for teacher %1, subject %2, room %3, activity with id=%4</source>
-        <translation type="unfinished"></translation>
+        <translation>Öğretmen %1, Ders Konusu %2 İle Sınıf %3 De Ders No %4 E Gireceğinden, Öğretmen - Ders Konusu İçin Gerekli Sınıf Yer Kısıtına Uyulamıyor
+</translation>
     </message>
     <message>
         <source>Minimize number of rooms for students</source>
-        <translation>öğrenciler için sınıfların sayısını minumuma indirmek</translation>
+        <translation>Öğrenciler - Sınıf Sayısını Minimize Et
+</translation>
     </message>
     <message>
         <source>Minimize number of rooms for each students set</source>
-        <translation>Her öğrenci grubu için sınıfların sayısını minumuma indirmek</translation>
+        <translation>Öğrenciler - Sınıf Sayısını Minimize Et
+</translation>
     </message>
     <message>
         <source>Space constraint minimize number of rooms for students broken for subgroup %1, number of rooms=%2</source>
-        <translation type="unfinished"></translation>
+        <translation>Alt-Grup %1 İçin Sınıf Sayısı %2 Olduğundan, Öğrenciler - Sınıf Sayısını Minimize Et Yer Kısıtına Uyulamıyor
+</translation>
     </message>
     <message>
         <source>Minimize number of rooms for teachers</source>
-        <translation>öğretmenler için sınıfların sayısını minumuma indirmek</translation>
+        <translation>Öğretmenler - Sınıf Sayısını Minimize Et
+</translation>
     </message>
     <message>
         <source>Minimize number of rooms for each teacher</source>
-        <translation>Her öğretmenler için sınıfların sayısını minumuma indirmek</translation>
+        <translation>Öğretmenler - Sınıf Sayısını Minimize Et
+</translation>
     </message>
     <message>
         <source>Space constraint minimize number of rooms for teachers broken for teacher %1, number of rooms=%2</source>
-        <translation type="unfinished"></translation>
+        <translation>Öğretmen %1 İçin Sınıf Sayısı %2 Olduğundan, Öğretmenler - Sınıf Sayısını Minimize Et Yer Kısıtına Uyulamıyor
+</translation>
     </message>
     <message>
         <source>A:%1</source>
@@ -10414,67 +11643,81 @@ not added - must be a duplicate</source>
     </message>
     <message>
         <source>Activity preferred room</source>
-        <translation>Önerilen etkinlik sınıfı</translation>
+        <translation>Ders Konusu - Tercih Edilen Sınıf
+</translation>
     </message>
     <message>
         <source>Activity id=%1</source>
-        <translation>Etkinlik ıd=%1</translation>
+        <translation>Ders id=%1</translation>
     </message>
     <message>
         <source>Space constraint activity preferred room broken for activity with id=%1, room=%2</source>
-        <translation type="unfinished"></translation>
+        <translation>Ders No=%1, Sınıf=%2 İle İlgili Olarak, Dersi Tercih Edilen Sınıfa Yerleştirme Yer Kısıtına Uyulamıyor
+</translation>
     </message>
     <message>
         <source>Activity preferred rooms</source>
-        <translation>Önerilen sınıf aktif</translation>
+        <translation>Ders Konusu - Tercih Edilen Sınıflar
+</translation>
     </message>
     <message>
         <source>Space constraint activity preferred rooms broken for activity with id=%1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ders No=%1 İçin, Dersi Tercih Edilen Sınıflara Yerleştirme Kısıtına Uyulamıyor
+</translation>
     </message>
     <message>
         <source>Activities same room</source>
-        <translation>Aynı sınıf etkinlikleri</translation>
+        <translation>Dersleri Aynı Sınıfa Yerleştirme
+</translation>
     </message>
     <message>
         <source>Activities must have the same room</source>
-        <translation>Etkinlikler aynı sınıfta olmalı</translation>
+        <translation>Dersler Aynı Sınıfa Yerleştir
+</translation>
     </message>
     <message>
         <source>Space constraint activities same room broken, because activity with id=%1 is not in the same room with activity with id=%2</source>
-        <translation type="unfinished"></translation>
+        <translation>Ders No%1 İle Ders No:%2 Aynı Sınıfta Yer Almadığından, Dersleri Aynı Sınıfa Yerleştirme Yer Kısıtına Uyulamıyor
+</translation>
     </message>
     <message>
         <source>Subject subject tag preferred room</source>
-        <translation>Ders ders başlığı önerilen sınıflar</translation>
+        <translation>Ders Konu Başlığı - Tercih Edilen Sınıf
+</translation>
     </message>
     <message>
         <source>Room name=%1</source>
-        <translation>Sınıf ismi=%1</translation>
+        <translation>Sınıf İsmi=%1</translation>
     </message>
     <message>
         <source>Space constraint subject subject tag preferred room broken for activity with id %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ders No %1 De, Ders Konu Başlığı - Tercih Edilen Sınıf Yer Kısıtına Uyulamıyor
+</translation>
     </message>
     <message>
         <source>Subject subject tag preferred rooms</source>
-        <translation>Konu konu başlığı önerilen sınıflar</translation>
+        <translation>Ders Konu Başlığı - Tercih Edilen Sınıflar
+</translation>
     </message>
     <message>
         <source>Subject preferred room</source>
-        <translation>Önerilen sınıf dersleri</translation>
+        <translation>Ders Konusu - Tercih Edilen Sınıf
+</translation>
     </message>
     <message>
         <source>Space constraint subject preferred room broken for activity with id %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ders No %1 De, Ders Konusu - Tercih Edilen Sınıf Yer Kısıtına Uyulamıyor
+</translation>
     </message>
     <message>
         <source>Subject preferred rooms</source>
-        <translation>Önerilen sınıf dersleri</translation>
+        <translation>Ders Konusu - Tercih Edilen Sınıflar
+</translation>
     </message>
     <message>
         <source>Max building changes per day for teachers, W:%1</source>
-        <translation>Öğretmenler için günde maksimum bina değişir,W:%1</translation>
+        <translation>Öğretmenler - Günlük Maksimum Okul Binası Değiştirme, W:%1
+</translation>
     </message>
     <message>
         <source>MBC:%1</source>
@@ -10484,33 +11727,40 @@ not added - must be a duplicate</source>
         <source>Constraint to specify maximum the number of building
 changes for teachers, in each day
 </source>
-        <translation>Gün içinde,öğretmenler için bina değişiklik sayını belirt</translation>
+        <translation>Kısıt - Öğretmenler - Günlük Maksimum Okul Binası Değiştir
+</translation>
     </message>
     <message>
         <source>Max building changes=%1</source>
-        <translation>Maksimum bina değişiklikleri=%1</translation>
+        <translation>Maksimum Okul Binası Değiştirme=%1
+</translation>
     </message>
     <message>
         <source>Space constraint max building changes per day for teachers broken for teacher %1 on day %2, max changes=%3, actual changes=%4</source>
-        <translation type="unfinished"></translation>
+        <translation>Öğretmen %1 İçin %2 Günü Okul Binası, %3 Yerine %4 Kez Değiştiğinden, Öğretmenler - Günlük Maksimum Okul Binası Değiştirme Yer Kısıtına Uyulamıyor
+</translation>
     </message>
     <message>
         <source>Max building changes per day for students, W:%1</source>
-        <translation>Günde öğrencilerr için maksimum bina değişikliği,W:%1</translation>
+        <translation>Öğrenciler - Günlük Maksimum Okul Binası Değiştirme, W:%1
+</translation>
     </message>
     <message>
         <source>Constraint to specify maximum the number of building
 changes for students, in each day
 </source>
-        <translation>Gün içinde,öğretmenler için bina değişiklik sayını belirt</translation>
+        <translation>Kısıt - Öğrenciler - Günlük Maksimum Okul Binası Değiştir
+</translation>
     </message>
     <message>
         <source>Space constraint max building changes per day for students broken for subgroup %1 on day %2, max changes=%3, actual changes=%4</source>
-        <translation></translation>
+        <translation>Alt-Grup %1 İçin %2 Günü Okul Binası, %3 Yerine %4 Kez Değiştiğinden, Öğrenciler - Günlük Maksimum Okul Binası Değiştirme Yer Kısıtına Uyulamıyor
+</translation>
     </message>
     <message>
         <source>Max room changes per day for teachers, W:%1</source>
-        <translation>Öğretmenler için maksimum oda değişir,W:%1</translation>
+        <translation>Öğretmenler - Günlük Maksimum Sınıf Değiştirme, W:%1
+</translation>
     </message>
     <message>
         <source>MRC:%1</source>
@@ -10520,29 +11770,35 @@ changes for students, in each day
         <source>Constraint to specify maximum the number of room
 changes for teachers, in each day
 </source>
-        <translation>Gün içinde,öğretmenler için oda değişiklik sayını belirt.</translation>
+        <translation>Kısıt - Öğretmenler - Günlük Maksimum Sınıf Değiştir
+</translation>
     </message>
     <message>
         <source>Max room changes=%1</source>
-        <translation>Maksimum oda değişir=%1</translation>
+        <translation>Maksimum Sınıf Değiştirme=%1
+</translation>
     </message>
     <message>
         <source>Space constraint max room changes per day for teachers broken for teacher %1 on day %2, max changes=%3, actual changes=%4</source>
-        <translation type="unfinished"></translation>
+        <translation>Öğretmen %1 İçin %2 Günü Sınıflar, %3 Yerine %4 Kez Değiştiğinden, Öğretmenler - Günlük Maksimum Sınıf Değiştirme Yer Kısıtına Uyulamıyor
+</translation>
     </message>
     <message>
         <source>Max room changes per day for students, W:%1</source>
-        <translation>Öğrenciler için maksimum oda değişir,W:%1</translation>
+        <translation>Öğrenciler - Günlük Maksimum Sınıf Değiştirme, W:%1
+</translation>
     </message>
     <message>
         <source>Constraint to specify maximum the number of room
 changes for students, in each day
 </source>
-        <translation>Gün içinde,öğrenciler için oda değişiklik sayını belirt.</translation>
+        <translation>Kısıt - Öğrenciler - Günlük Maksimum Sınıf Değiştir
+</translation>
     </message>
     <message>
         <source>Space constraint max room changes per day for students broken for subgroup %1 on day %2, max changes=%3, actual changes=%4</source>
-        <translation type="unfinished"></translation>
+        <translation>Alt-Grup %1 İçin %2 Günü Sınıflar, %3 Yerine %4 Kez Değiştiğinden, Öğrenciler - Günlük Maksimum Sınıf Değiştirme Yer Kısıtına Uyulamıyor
+</translation>
     </message>
     <message>
         <source>Yn:</source>
@@ -10554,23 +11810,26 @@ changes for students, in each day
     </message>
     <message>
         <source>Students set - year</source>
-        <translation>Öğrenci setleri-yıl</translation>
+        <translation>Ders Yılı</translation>
     </message>
     <message>
         <source>Year name=</source>
-        <translation>Yıl ismi</translation>
+        <translation>Ders Yılı</translation>
     </message>
     <message>
         <source>Number of students=</source>
-        <translation>Öğrencilerin numarası=</translation>
+        <translation>Öğrenci Sayısı=
+</translation>
     </message>
     <message>
         <source>Time constraints directly related to this students year:</source>
-        <translation>Zaman kısıtlamaları bu öğrenci yılı ile doğrudan ilişkili</translation>
+        <translation>Bu Ders Yılı İle Doğrudan İlişkili Zaman Kısıtları:
+</translation>
     </message>
     <message>
         <source>Space constraints directly related to this students year:</source>
-        <translation>Alan kısıtlamaları bu öğrenci yılı ile doğrudan ilişkili</translation>
+        <translation>Bu Ders Yılıyla Doğrudan İlişkili Yer Kısıtları:
+</translation>
     </message>
     <message>
         <source>Gn:</source>
@@ -10578,19 +11837,21 @@ changes for students, in each day
     </message>
     <message>
         <source>Students set - group</source>
-        <translation>Öğrenci takımı-grup</translation>
+        <translation>Öğrenci Grupları</translation>
     </message>
     <message>
         <source>Group name=</source>
-        <translation>Grup ismi=</translation>
+        <translation>Grup İsmi=</translation>
     </message>
     <message>
         <source>Time constraints directly related to this students group:</source>
-        <translation>Zaman kısıtlamaları bu öğrenci grupları ile doğrudan ilişkili</translation>
+        <translation>Bu Öğrenci Grubu İle Doğrudan İlişkili Zaman Kısıtları:
+</translation>
     </message>
     <message>
         <source>Space constraints directly related to this students group:</source>
-        <translation>Alan  kısıtlamaları bu öğrenci grupları ile doğrudan ilişkili</translation>
+        <translation>Bu Öğrenci Grubuyla Doğrudan İlişkili Yer Kısıtları:
+</translation>
     </message>
     <message>
         <source>Sgn:</source>
@@ -10598,19 +11859,21 @@ changes for students, in each day
     </message>
     <message>
         <source>Students set - subgroup</source>
-        <translation>Öğrenci grupları</translation>
+        <translation>Öğrenciler - Alt-Gruplar</translation>
     </message>
     <message>
         <source>Subgroup name=</source>
-        <translation>Subgrup ismi=</translation>
+        <translation>Alt-Grup İsmi=</translation>
     </message>
     <message>
         <source>Time constraints directly related to this students subgroup:</source>
-        <translation>Zaman  kısıtlamaları bu öğrenci grupları ile doğrudan ilişkili</translation>
+        <translation>Bu Öğrenci Alt-Grubu İle Doğrudan İlişkili Zaman Kısıtları:
+</translation>
     </message>
     <message>
         <source>Space constraints directly related to this students subgroup:</source>
-        <translation>Alan  kısıtlamaları bu öğrenci grupları ile doğrudan ilişkili</translation>
+        <translation>Bu Öğrenci Alt-Grubuyla Doğrudan İlişkili Yer Kısıtları:
+</translation>
     </message>
     <message>
         <source>Teacher</source>
@@ -10622,11 +11885,13 @@ changes for students, in each day
     </message>
     <message>
         <source>Time constraints directly related to this teacher:</source>
-        <translation>Zaman   kısıtlamaları bu öğretmen ile doğrudan ilişkili</translation>
+        <translation>Zaman Kısıtı Bu Öğretmen İle Doğrudan İlişkili:
+</translation>
     </message>
     <message>
         <source>Space constraints directly related to this teacher:</source>
-        <translation>Alan  kısıtlamaları bu öğretmen ile doğrudan ilişkili</translation>
+        <translation>Bu Öğretmenle Doğrudan İlişkili Yer Kısıtları:
+</translation>
     </message>
     <message>
         <source>Subject</source>
@@ -10634,23 +11899,27 @@ changes for students, in each day
     </message>
     <message>
         <source>Time constraints directly related to this subject:</source>
-        <translation>Zaman   kısıtlamaları bu ders  ile doğrudan ilişkili</translation>
+        <translation>Zaman Kısıtı Bu Ders Konusu İle Doğrudan İlişkili:
+</translation>
     </message>
     <message>
         <source>Space constraints directly related to this subject:</source>
-        <translation>Alan   kısıtlamaları bu ders  ile doğrudan ilişkili</translation>
+        <translation>Bu Ders Konuyla Doğrudan İlişkili Yer Kısıtları:
+</translation>
     </message>
     <message>
         <source>Subject tag</source>
-        <translation>Konu etiketi</translation>
+        <translation>Ders Konu Başlığı</translation>
     </message>
     <message>
         <source>Time constraints directly related to this subject tag:</source>
-        <translation>Zaman   kısıtlamaları bu ders başlığı  ile doğrudan ilişkili</translation>
+        <translation>Bu Ders Konu Başlığı İle Doğrudan İlişkili Zaman Kısıtları:
+</translation>
     </message>
     <message>
         <source>Space constraints directly related to this subject tag:</source>
-        <translation>Alan kısıtlamaları bu ders başlığı  ile doğrudan ilişkili</translation>
+        <translation>Bu Ders Konu Başlığıyla Doğrudan İlişkili Yer Kısıtları:
+</translation>
     </message>
     <message>
         <source>N:</source>
@@ -10670,7 +11939,7 @@ changes for students, in each day
     </message>
     <message>
         <source>Building=</source>
-        <translation>Yapılar=</translation>
+        <translation>Okul Binası=</translation>
     </message>
     <message>
         <source>Type=</source>
@@ -10682,125 +11951,160 @@ changes for students, in each day
     </message>
     <message>
         <source>Space constraints directly related to this room:</source>
-        <translation>Alan kısıtlamaları bu sınıf ile doğrudan ilişkili</translation>
+        <translation>Bu Sınıfla Doğrudan İlişkili Yer Kısıtları:
+</translation>
     </message>
     <message>
         <source>Space constraints directly related to this equipment:</source>
-        <translation>Alan kısıtlamaları budonanımlar ile doğrudan ilişkili</translation>
+        <translation>Bu Araç-Gereçle Doğrudan İlişkili Yer Kısıtları:
+</translation>
     </message>
     <message>
         <source>Space constraints directly related to this building:</source>
-        <translation>Alan kısıtlamaları bu bina ile doğrudan ilişkili</translation>
+        <translation>Bu Okul Binasıyla Doğrudan İlişkili Yer Kısıtları:
+</translation>
     </message>
     <message>
         <source>Invalid selected room</source>
-        <translation>Geçersiz seçilen sınıf</translation>
+        <translation>Seçilen Sınıf Geçersiz
+</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this room and all related constraints?
 </source>
-        <translation>Bu sınıfı ve ilişkili olan tüm kısıtlamalrı silmek istediğinizden eminmisiniz?</translation>
+        <translation>Bu Sınıfı Ve İlgili Tüm Kısıtlarını Silmek İstediğinizden Emin misiniz?
+
+</translation>
     </message>
     <message>
         <source>Invalid selected equipment</source>
-        <translation>geçersiz seçilen donanım</translation>
+        <translation>Seçilen Araç-Gereç Geçersiz
+</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this equipment and all related constraints?
 </source>
-        <translation>Bu donanımıve ilişkili olan tüm kısıtlamalrı silmek istediğinizden eminmisiniz?</translation>
+        <translation>Bu Araç-Gereci Ve İlgili Tüm Kısıtlarını Silmek İstediğinizden Emin misiniz?
+</translation>
     </message>
     <message>
         <source>Invalid equipment</source>
-        <translation>geçersiz donanım </translation>
+        <translation>Araç-Gereç Geçersiz
+</translation>
     </message>
     <message>
         <source>Population number (power of search)</source>
-        <translation>Nüfüs numarsı</translation>
+        <translation>Popülasyon (Arama Yeteneği)
+</translation>
     </message>
     <message>
         <source>Current constraint</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt
+</translation>
     </message>
     <message>
         <source>The activities with id&apos;s: %1 must be scheduled consecutively (order is important)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ders No:%1 Ardışık Olmalı (Sıralı)
+</translation>
     </message>
     <message>
         <source>Please input 2 activities (in order) separated by commas</source>
-        <translation>İki tane etkinlik yazınız virgülle ayıtınız lütfen</translation>
+        <translation>Lütfen, Virgülle Ayırarak, İki Adet Ders (Sıralı) Giriniz
+</translation>
     </message>
     <message>
         <source>Constraint added</source>
-        <translation>kısıtlama eklendi</translation>
+        <translation>Kısıt Eklendi</translation>
     </message>
     <message>
         <source>The activities with id&apos;s: %1 must be scheduled in order</source>
-        <translation type="unfinished"></translation>
+        <translation>Ders No:%1 Sıralanmalı
+</translation>
     </message>
     <message>
         <source>The activities with id&apos;s: %1 must be scheduled grouped (order is not important)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ders No:%1 Gruplanmalı (Sırasız)
+</translation>
     </message>
     <message>
         <source>Please input 2 activities (in any order) separated by commas</source>
-        <translation>İki tane etkinlik yazınız virgülle ayıtınız lütfen</translation>
+        <translation>Lütfen, Virgülle Ayırarak, İki Adet Ders (Sıraları Önemsiz) Giriniz
+</translation>
     </message>
     <message>
         <source>Please be careful - you are considering all the activities
 (no teacher, students, subject or subject tag specified)</source>
-        <translation>Lütfen dikkatli olun bütün etkinliklere göre
-(yok öğretmen,öğrenci)</translation>
+        <translation>Lütfen Dikkat 
+Tüm Dersler Etkilenecek
+</translation>
     </message>
     <message>
         <source>Please increase the variable MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_TIMES</source>
-        <translation>Lütfen Önerilen zamanların değerini arttırın.</translation>
+        <translation>Lütfen, Tercih Edilen Ders Zamanları İçin Maksimum N Kısıt Değişkenini Arttırın
+</translation>
     </message>
     <message>
         <source>Empty list of simultaneous activities</source>
-        <translation>Eş zamanlı etkinliklerin listesin boşalt</translation>
+        <translation>Eş Zamanlı Dersler Listesini Temizle
+</translation>
     </message>
     <message>
         <source>Only one selected activity - impossible</source>
-        <translation>Sadece bir etkinlik seçili-imkansız</translation>
+        <translation>Sadece Bir Ders Seçili - İmkansız
+</translation>
     </message>
     <message>
         <source>Too many activities - please report error
 (CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME too little)</source>
-        <translation>Bir çok etkinlik Hata raporu alın </translation>
+        <translation>Ders Sayısı Fazla - Litfen Hatayı İletiniz
+</translation>
     </message>
     <message>
         <source>Sub-activities do not correspond. Mistake:
 </source>
-        <translation>Alt etkinlikler uymuyo-Hata</translation>
+        <translation>Alt-Etkinlikler Uyuşmuyor. Hata:
+
+</translation>
     </message>
     <message>
         <source>1. First (sub)activity has id=%1 and represents %2 sub-activities
 </source>
-        <translation>1.İlk etkinliğin id si=%1 ve belirtir %2 altetkinlikler</translation>
+        <translation>1. İlk Ders Numarası=%1 Ve %2 Alt-Etkinliği İçeriyor
+
+
+</translation>
     </message>
     <message>
         <source>2. Current (sub)activity has id=%1 and represents %2 sub-activities
 </source>
-        <translation>1.Geçerli etkinliğin id si=%1 vebelirtir %2 altetkinlikler</translation>
+        <translation>2. Ders %1, %2 Alt-Etkinlik İçeriyor
+
+</translation>
     </message>
     <message>
         <source>Empty list of selected activities</source>
-        <translation>Seçilen etkinlikleri boşalt</translation>
+        <translation>Lütfen, Hatayı Programcıya İletiniz
+
+</translation>
     </message>
     <message>
         <source>Please report error to the author
 MAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_HOUR must be increased (you have too many activities)</source>
-        <translation>Lütfen yazara rapor veriniz.Maksimum etkinlik aynı başalngıç saati yükseldi(Bir çok etkinliğe sahipsin)</translation>
+        <translation>Lütfen, Hatayı Programcıya İletiniz
+
+</translation>
     </message>
     <message>
         <source>Please report error to the author
 MAX_CONSTRAINT_ACTIVITIES_SAME_ROOM must be increased (you have too many activities)</source>
-        <translation>Lütfen yazara rapor veriniz.Maksimum etkinlik aynı odalar yükseldi(Bir çok etkinliğe sahipsin)</translation>
+        <translation>Lütfen, Hatayı Programcıya İletiniz
+
+</translation>
     </message>
     <message>
         <source>Current constraint:</source>
-        <translation>Genel kısıtlama</translation>
+        <translation>Kısıt:
+</translation>
     </message>
     <message>
         <source>Day:%1</source>
@@ -10808,242 +12112,310 @@ MAX_CONSTRAINT_ACTIVITIES_SAME_ROOM must be increased (you have too many activit
     </message>
     <message>
         <source>Start hour:%1</source>
-        <translation>Başlangıç saati%1</translation>
+        <translation>Ders Başlama Saati=%1
+</translation>
     </message>
     <message>
         <source>End hour:%1</source>
-        <translation>Bitiş saati:%1</translation>
+        <translation>Bitiş Saati=%1</translation>
     </message>
     <message>
         <source>Basic compulsory time</source>
-        <translation>Esas süreklü zaman</translation>
+        <translation>Zorunlu Zaman</translation>
     </message>
     <message>
         <source>Max building changes per day for teachers</source>
-        <translation>Günde öğretmenler için maksimum bina değişikliği</translation>
+        <translation>Öğretmenler - Günlük Maksimum Okul Binası Değiştirme
+</translation>
     </message>
     <message>
         <source>Max building changes per day for students</source>
-        <translation>Günde öğrencilerr için maksimum bina değişikliği</translation>
+        <translation>Öğrenciler - Günlük Maksimum Okul Binası Değiştirme
+</translation>
     </message>
     <message>
         <source>Max room changes per day for teachers</source>
-        <translation>Günde öğretmenler için maksimum sınıf değişikliği</translation>
+        <translation>Öğretmenler - Günlük Maksimum Sınıf Değiştirme
+</translation>
     </message>
     <message>
         <source>Max room changes per day for students</source>
-        <translation>Günde öğrencileriçin maksimum sınıfdeğişikliği</translation>
+        <translation>Öğrenciler - Günlük Maksimum Sınıf Değiştirme
+</translation>
     </message>
     <message>
         <source>Basic compulsory space</source>
-        <translation>Esas alan kısıtlamalrı</translation>
+        <translation>Zorunlu Yer
+</translation>
     </message>
     <message>
         <source>Invalid students set</source>
-        <translation>Gecersiz öğrenci grubu</translation>
+        <translation>Öğrenci Grubu Geçersiz
+</translation>
     </message>
     <message>
         <source>Max days per week=%1</source>
-        <translation>Haftada maksımum günler=%1</translation>
+        <translation>Haftalık Maksimum Gün Sayısı=%1
+</translation>
     </message>
     <message>
         <source>Teachers no more than max hours continuously</source>
-        <translation>Öğretmenler </translation>
+        <translation>Öğretmenler - Aralıksız Maksimum Ders Saatini Aşmama
+</translation>
     </message>
     <message>
         <source>Max hours continuously=%1</source>
-        <translation>Sürekli maksimum saat=%1</translation>
+        <translation>Aralıksız Maksimum Ders Saati=%1</translation>
     </message>
     <message>
         <source>Teachers no more than X hours continuously </source>
-        <translation>Öğretmenler  X saatten daha fazla değil sürekli olarak</translation>
+        <translation>Öğretmenler - Aralıksız X Ders Saatini Aşmama
+</translation>
     </message>
     <message>
         <source>Teachers subject tags max hours continuously</source>
-        <translation>Öğretmenler  ders başlıkları maksimum saat sürekli olarak</translation>
+        <translation>Öğretmenler - Ders Konu Başlıkları Aralıksız Maksimum Ders Saati
+</translation>
     </message>
     <message>
         <source>Teachers subject tags max hours continuously </source>
-        <translation>Öğretmenler  ders başlıkları maksimum saat sürekli olarak</translation>
+        <translation>Öğretmenler - Ders Konu Başlıkları Aralıksız Maksimum Ders Saati
+</translation>
     </message>
     <message>
         <source>Teachers subject tag max hours continuously</source>
-        <translation>Öğretmenler  ders başlığı maksimum saat sürekli olarak</translation>
+        <translation>Öğretmenler - Ders Konu Başlıkları Aralıksız Maksimum Ders Saati
+</translation>
     </message>
     <message>
         <source>Teachers subject tag max hours continuously </source>
-        <translation>Öğretmenler  ders başlığı maksimum saat sürekli olarak</translation>
+        <translation>Öğretmenler - Ders Konu Başlıkları Aralıksız Maksimum Ders Saati
+</translation>
     </message>
     <message>
         <source>Teachers no more than max hours daily</source>
-        <translation>Öğretmenler günlük maksimum saatten daha fazla değil</translation>
+        <translation>Öğretmenler - Günlük Maksimum Ders Saatini Aşmama
+</translation>
     </message>
     <message>
         <source>Max hours daily=%1</source>
-        <translation>Mak.saat günlük=%1</translation>
+        <translation>Günlük Maksimum Ders Saati=%1
+</translation>
     </message>
     <message>
         <source>Teachers no more than X hours daily </source>
-        <translation></translation>
+        <translation>Öğretmenler - Günlük Maksimum X Ders Saatini Aşmama</translation>
     </message>
     <message>
         <source>Teachers-subgroups no more than max hours daily</source>
-        <translation>Günlük mak.saatler öğretmen ve altgrublardan daha fazla</translation>
+        <translation>Öğretmenler - Alt-Gruplar - Günlük Maksimum Ders Saatini Aşmama
+</translation>
     </message>
     <message>
         <source>Activity preferred time</source>
-        <translation>Önerilen zaman etkinlikleri</translation>
+        <translation>Dersi Tercih Edilen Gün Ve Saate Yerleştirme
+</translation>
     </message>
     <message>
         <source>Please specify at least a day or an hour</source>
-        <translation>Lütfen en az bir gün veya saat belirtin</translation>
+        <translation>Lütfen, En Az Bir Gün Veya Bir Ders Saati Belirtin
+</translation>
     </message>
     <message>
         <source>Max days=%1</source>
-        <translation>Mak.günler=%1</translation>
+        <translation>Maksimum Gün Sayısı=%1
+</translation>
     </message>
     <message>
         <source>Min. hours:%1</source>
-        <translation>Min. saatler:%1</translation>
+        <translation>Minumum Gün Sayısı=%1</translation>
     </message>
     <message>
         <source>Max. hours:%1</source>
-        <translation>Mak. saatler:%1</translation>
+        <translation>Maksimum Ders Saati=%1</translation>
     </message>
     <message>
         <source>Please specify at least min or max hours</source>
-        <translation>Lütfen belirtin en az min. veya mak. saatler</translation>
+        <translation>Lütfen, En Az Bir Minumum Veya Bir Maksimum Ders Saati Sayısı Belirtin
+</translation>
     </message>
     <message>
         <source>Students set recommended n hours daily</source>
-        <translation>Önerilen saatler</translation>
+        <translation>Öğrenciler - Tavsiye Edilen Günlük Ders Saati
+</translation>
     </message>
     <message>
         <source>Min hours:%1</source>
-        <translation>Min saat:%1</translation>
+        <translation>Minumum Gün Sayısı=%1</translation>
     </message>
     <message>
         <source>Max hours:%1</source>
-        <translation>Max saat:%1</translation>
+        <translation>Maksimum Ders Saati=%1</translation>
     </message>
     <message>
         <source>Please specify at least a min or max value</source>
-        <translation>Lütfen mak. veya min .bir değer belirleyin.</translation>
+        <translation>Lütfen, En Az Bir Minumum Veya Bir Maksimum Değer Belirtin
+</translation>
     </message>
     <message>
         <source>Students recommended n hours daily</source>
-        <translation>Önerilen saatler</translation>
+        <translation>Öğrenciler - Tavsiye Edilen Günlük Ders Saati
+</translation>
     </message>
     <message>
         <source>Activity ends day</source>
-        <translation>Bitiş günleri aktif</translation>
+        <translation>Dersi Gün Sonuna Yerleştirme
+</translation>
     </message>
     <message>
         <source>Empty list of not overlapping activities</source>
-        <translation>Ardarda olmayan etkinlikler listesini boşalt</translation>
+        <translation>Ardışık Olmayan Dersler Listesini Temizle
+</translation>
     </message>
     <message>
         <source>Please report error to the author
 MAX_CONSTRAINT_ACTIVITIES_NOT_OVERLAPPING must be increased (you have too many activities)</source>
-        <translation>Lütfen yazara rapor veriniz.maksimum etkinlikler ardarda olmayanlar  arttı(Birçok etkinliğe sahipsiniz)</translation>
+        <translation>Lütfen, Hatayı Programcıya İletiniz
+
+</translation>
     </message>
     <message>
         <source>Please report error to the author
 MAX_CONSTRAINT_MIN_N_DAYS_BETWEEN_ACTIVITIES must be increased (you have too many activities)</source>
-        <translation>Lütfen yazara rapor veriniz.maksimum etkinlik gün içinde etkinlikler arasında arttı(Birçok etkinliğe sahipsiniz)</translation>
+        <translation>Lütfen, Hatayı Programcıya İletiniz
+
+</translation>
     </message>
     <message>
         <source>Please report error to the author
 MAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME must be increased (you have too many activities)</source>
-        <translation>Lütfen yazara rapor veriniz.maksimum aynı saat yükseldi(Birçok etkinliğe sahipsiniz)</translation>
+        <translation>Lütfen, Hatayı Programcıya İletiniz
+
+</translation>
     </message>
     <message>
         <source>This increases the conflicts total by %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Bu, Çelişkiler Toplamını %1 Oranında Artırıyor
+</translation>
     </message>
     <message>
         <source>. This increases the conflicts total by %1</source>
-        <translation type="unfinished"></translation>
+        <translation>. Bu, Çelişkiler Toplamını %1 Oranında Artırıyor
+</translation>
     </message>
     <message>
         <source>This increases the conflicts total by</source>
-        <translation type="unfinished"></translation>
+        <translation>Bu, Çelişkiler Toplamını ... Oranında Artırıyor
+</translation>
     </message>
     <message>
         <source>Time constraint activity preferred time broken for activity with id=%1, increases conflicts total by %2
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Ders İd=%1 İçin Dersi Tercih Edilen Gün Ve Saate Yerleştirme Zaman Kısıtına Uyulamaması 
+Çelişkiler Toplamını %2 Oranında Artırıyor
+
+</translation>
     </message>
     <message>
         <source>Time constraint activity preferred times broken for activity with id=%1, increases conflicts total by %2
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Ders İd=%1 İçin Dersi Tercih Edilen Günlere Ve Saatlere Yerleştirme Zaman Kısıtına Uyulamaması 
+Çelişkiler Toplamını %2 Oranında Artırıyor
+
+</translation>
     </message>
     <message>
         <source>Time constraint activity ends day broken for activity with id=%1, increases conflicts total by %2
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Ders İd=%1 İçin Dersi Gün Sonuna Yerleştirme Zaman Kısıtına Uyulamaması 
+Çelişkiler Toplamını %2 Oranında Artırıyor
+
+</translation>
     </message>
     <message>
         <source>Time constraint 2 activities consecutive broken for activities with id=%1 and id=%2, increases conflicts total by %3
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Ders İd=%1 İle Ders İd=%2 İçin Dersleri Ardışıklama (Sıra Önemli) Zaman Kısıtına Uyulamaması 
+Çelişkiler Toplamını %3 Oranında Artırıyor
+
+</translation>
     </message>
     <message>
         <source>Time constraint 2 activities ordered broken for activities with id=%1 and id=%2, increases conflicts total by %3
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Ders İd=%1 İle Ders İd=%2 İçin Dersleri Sıralama (Aralıklı) Zaman Kısıtına Uyulamaması 
+Çelişkiler Toplamını %3 Oranında Artırıyor
+
+</translation>
     </message>
     <message>
         <source>Time constraint 2 activities grouped broken for activities with id=%1 and id=%2, increases conflicts total by %3
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Ders İd=%1 İle Ders İd=%2 İçin Dersleri Gruplama (Sıra Önemsiz) Zaman Kısıtına Uyulamaması 
+Çelişkiler Toplamını %3 Oranında Artırıyor
+
+</translation>
     </message>
     <message>
         <source>Time constraint activities preferred times broken for activity with id=%1,  increases conflicts total by %2
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Ders İd=%1 İçin Dersleri Tercih Edilen Gün Ve Saate Yerleştirme Zaman Kısıtına Uyulamaması 
+Çelişkiler Toplamını %2 Oranında Artırıyor
+
+</translation>
     </message>
     <message>
         <source> - this increases the conflicts total by %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Bu, Çelişkiler Toplamını %1 Oranında Artırıyor
+</translation>
     </message>
     <message>
         <source>unallocated activity with id=%1</source>
-        <translation type="unfinished">İd ile ayrılmamış etkinlik =%1</translation>
+        <translation>Yerleştirilmemiş Ders No=%1
+</translation>
     </message>
     <message>
         <source>Invalid start hour.
 Please modify it.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ders Başlama Saati Geçersiz. Lütfen Değiştirin.
+</translation>
     </message>
     <message>
         <source>Invalid lesson length.
 Please modify it.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ders Süresi Geçersiz. 
+Lütfen Değiştirin.
+</translation>
     </message>
     <message>
         <source>Invalid break length.
 Please modify it.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ders Arası Geçersiz. 
+Lütfen Değiştirin.
+</translation>
     </message>
     <message>
         <source>Lessons for a specific day do not fit in a single day - impossible</source>
-        <translation type="unfinished"></translation>
+        <translation>Belirli Bir Güne Konulacak Ders Sayısı Çok Fazla - İmkansız
+</translation>
     </message>
     <message>
         <source>Invalid start date.
 Please modify it.</source>
-        <translation type="unfinished"></translation>
+        <translation>Başlama Tarihi Geçersiz. 
+Lütfen Değiştirin.
+</translation>
     </message>
     <message>
         <source>teacher</source>
-        <translation type="unfinished"></translation>
+        <translation>Öğretmen</translation>
     </message>
     <message>
         <source>iCal (*.ics) files written (one for each teacher).
 Please check the %1 directory</source>
-        <translation type="unfinished"></translation>
+        <translation>İcal (*.İcs) Dosyaları Yazıldı (Her Öğretmen İçin Ayrı Ayrı). 
+Lütfen %1 dizinine bakın
+</translation>
     </message>
     <message>
         <source>Results are exported to xml and html
@@ -11053,15 +12425,181 @@ and you will find the exported .xml and .html files.
 You can translate the .xml files into .tex or .html
 using the files &quot;fetxml2latex.py&quot; or &quot;students.xsl&quot;, 
  &quot;teachers.xsl&quot; and &quot;rooms.xsl&quot; </source>
-        <translation type="unfinished"></translation>
+        <translation>Sonuçlar Xml Ve Html Olarak Kaydedildi. 
+Lütfen %1 dizinine bakın. 
+
+</translation>
     </message>
     <message>
         <source>subgroup</source>
-        <translation type="unfinished"></translation>
+        <translation>Alt-Grup</translation>
     </message>
     <message>
         <source>iCal (*.ics) files written (one for each subgroup).
 Please check the %1 directory</source>
+        <translation>İcal (*.İcs) Dosyaları Yazıldı (Her Alt-Grup İçin Ayrı Ayrı). 
+Lütfen %1 dizinine bakın</translation>
+    </message>
+    <message>
+        <source>Fortnightly activity</source>
+        <translation>Ders - İki Haftada Bir
+</translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation>&amp;İptal</translation>
+    </message>
+    <message>
+        <source>Please exit and restart FET to activate language change</source>
+        <translation>Dil Değişimini Etkinleştirmek İçin, Lütfen Programdan Çıkın ve FET&apos;i Yeniden Başlatın
+</translation>
+    </message>
+    <message>
+        <source>Fortnightly, </source>
+        <translation>İki Haftada Bir
+</translation>
+    </message>
+    <message>
+        <source>Fortnightly activity
+</source>
+        <translation>Ders - İki Haftada Bir
+
+</translation>
+    </message>
+    <message>
+        <source>Cannot update institution name during simulation
+Please stop simulation before this</source>
+        <translation>Kurum İsmi Simülasyon Devam Ederken 
+Güncellenemez
+</translation>
+    </message>
+    <message>
+        <source>Cannot update comments during simulation
+Please stop simulation before this</source>
+        <translation>Açıklamalar Simülasyon Devam Ederken 
+Güncellenemez
+</translation>
+    </message>
+    <message>
+        <source>Added the following constraint:
+%1</source>
+        <translation>Kısıt=%1 Eklendi:
+</translation>
+    </message>
+    <message>
+        <source>FET - a free evolutionary timetabling program</source>
+        <translation>FET - Açık Geliştirilebilir Ders Programı Yazılımı
+</translation>
+    </message>
+    <message>
+        <source>FET - %1</source>
+        <translation>FET - %1</translation>
+    </message>
+    <message>
+        <source>No. of sub-activities</source>
+        <translation>Alt-Etkinlikler</translation>
+    </message>
+    <message>
+        <source>No. of hours</source>
+        <translation>Ders Saatleri
+</translation>
+    </message>
+    <message>
+        <source>Students set</source>
+        <translation>Öğrenci Grubu</translation>
+    </message>
+    <message>
+        <source>Teacher interval max days per week</source>
+        <translation>Öğretmen - Haftalık Maksimum Dinlenme Süresi
+</translation>
+    </message>
+    <message>
+        <source>Teacher interval max. days per week</source>
+        <translation>Öğretmen - Haftalık Maksimum Dinlenme Süresi
+</translation>
+    </message>
+    <message>
+        <source>Time constraint teacher interval max days per week broken for</source>
+        <translation>Öğretmen - Haftalık Maksimum Dinlenme Süresi Zaman Kısıtına Uyulamıyor
+</translation>
+    </message>
+    <message>
+        <source>,S:</source>
+        <translation>,S:</translation>
+    </message>
+    <message>
+        <source>,St:</source>
+        <translation>,St:</translation>
+    </message>
+    <message>
+        <source>Number of students=%1</source>
+        <translation>Öğrenci Sayısı=%1
+</translation>
+    </message>
+    <message>
+        <source>Number of students: automatically computed from component students sets</source>
+        <translation>Hesaplanan Öğrenci Sayısı
+</translation>
+    </message>
+    <message>
+        <source>Number of students: computed from corresponding students sets</source>
+        <translation>Hesaplanan Öğrenci Sayısı
+</translation>
+    </message>
+    <message>
+        <source>NSt:</source>
+        <translation>NSt:</translation>
+    </message>
+    <message>
+        <source>Constraint NOT added - duplicate</source>
+        <translation>Kısıt Eklenemedi - Aynı Kısıt Mevcut
+</translation>
+    </message>
+    <message>
+        <source>Teachers min %1 hours daily</source>
+        <translation>Öğretmenler - Günlük Minumum %1 Ders Saati
+</translation>
+    </message>
+    <message>
+        <source>Teachers must not have less than %1 hours daily</source>
+        <translation>Öğretmenler Günlük %1 Saatten Fazla Derse Girmemeli
+</translation>
+    </message>
+    <message>
+        <source>Time constraint teacher min %1 hours daily broken for teacher %2, on day %3.</source>
+        <translation>Öğretmen %2 İçin, %3 Günü, Öğretmen - Günlük Minumum %1 Ders Saati Zaman Kısıtına Uyulamıyor.
+
+</translation>
+    </message>
+    <message>
+        <source>Teachers no less than min hours daily</source>
+        <translation>Öğretmenler - Günlük Minumum Ders Saatinin Altına Düşmeme
+</translation>
+    </message>
+    <message>
+        <source>Min hours daily=%1</source>
+        <translation>Günlük Minumum Ders Saati=%1
+</translation>
+    </message>
+    <message>
+        <source>Teachers no less than min hours daily </source>
+        <translation>Öğretmenler - Günlük Minumum Ders Saatinin Altına Düşmeme
+</translation>
+    </message>
+    <message>
+        <source>This activity id has other constraint of this type attached
+Please remove the other constraints of type activity preferred time
+referring to this activity before proceeding</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This activity id has other constraint of this type attached
+Please remove the other constraints of type activity preferred times
+referring to this activity before proceeding</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duration=%1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -11080,15 +12618,16 @@ Please check the %1 directory</source>
     <name>RoomsEquipmentsForm_template</name>
     <message>
         <source>FET - Rooms&apos; Equipments</source>
-        <translation>FET Odanın donanımları</translation>
+        <translation>FET - Sınıf Araç-Gereçleri
+</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>All equipments</source>
-        <translation>Bütün donanımlar</translation>
+        <translation>Tüm Araç-Gereç</translation>
     </message>
     <message>
         <source>Close</source>
@@ -11096,11 +12635,11 @@ Please check the %1 directory</source>
     </message>
     <message>
         <source>Room</source>
-        <translation>Oda</translation>
+        <translation>Sınıf</translation>
     </message>
     <message>
         <source>Current room equipments</source>
-        <translation>Bügünkü oda donanımları</translation>
+        <translation>Sınıf Araç-Gereçleri</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -11115,15 +12654,15 @@ Please check the %1 directory</source>
     <name>RoomsForm_template</name>
     <message>
         <source>Rooms</source>
-        <translation>Odalar</translation>
+        <translation>Sınıflar</translation>
     </message>
     <message>
         <source>Add room</source>
-        <translation>Oda ekle</translation>
+        <translation>Sınıf Ekle</translation>
     </message>
     <message>
         <source>Remove current</source>
-        <translation>Geçerli olanı kaldır</translation>
+        <translation>Kaldır</translation>
     </message>
     <message>
         <source>Close</source>
@@ -11131,23 +12670,23 @@ Please check the %1 directory</source>
     </message>
     <message>
         <source>Rooms&apos; equipments</source>
-        <translation>Oda donanımları</translation>
+        <translation>Sınıf Araç-Gereçleri</translation>
     </message>
     <message>
         <source>Sort by name</source>
-        <translation>İsme göre sırala</translation>
+        <translation>İsme Göre Sırala</translation>
     </message>
     <message>
         <source>Modify current</source>
-        <translation>Geçerli olanı değiştir</translation>
+        <translation>Değiştir</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Filter</source>
-        <translation>Filtre</translation>
+        <translation>Filtre Uygula</translation>
     </message>
     <message>
         <source>Type</source>
@@ -11155,18 +12694,48 @@ Please check the %1 directory</source>
     </message>
     <message>
         <source>Building</source>
-        <translation>Yapılar</translation>
+        <translation>Okul Binası</translation>
+    </message>
+</context>
+<context>
+    <name>StudentsStatisticsForm_template</name>
+    <message>
+        <source>FET - Students statistics</source>
+        <translation>FET - Öğrenci İstatistikleri
+</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation>Kapat</translation>
+    </message>
+    <message>
+        <source>GroupBox</source>
+        <translation>Grup</translation>
+    </message>
+    <message>
+        <source>Show subgroups</source>
+        <translation>Alt-Grupları Göster
+</translation>
+    </message>
+    <message>
+        <source>Show groups</source>
+        <translation>Grupları Göster</translation>
+    </message>
+    <message>
+        <source>Show Years</source>
+        <translation>Ders Yıllarını Göster</translation>
     </message>
 </context>
 <context>
     <name>SubgroupsForm_template</name>
     <message>
         <source>FET - subgroups of students</source>
-        <translation>FET-Öğrencilerin altgrubları</translation>
+        <translation>FET- Öğrenci Alt-Grupları</translation>
     </message>
     <message>
         <source>Year</source>
-        <translation>Yıl</translation>
+        <translation>Ders Yılı
+</translation>
     </message>
     <message>
         <source>Group</source>
@@ -11174,23 +12743,24 @@ Please check the %1 directory</source>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Add subgroup</source>
-        <translation>Alt grup ekle</translation>
+        <translation>Alt-Grup Ekle
+</translation>
     </message>
     <message>
         <source>Modify current</source>
-        <translation>Değiştir geçerli olanı</translation>
+        <translation>Değiştir</translation>
     </message>
     <message>
         <source>Remove current</source>
-        <translation>Gecerli olanı kaldır</translation>
+        <translation>Kaldır</translation>
     </message>
     <message>
         <source>Subgroup</source>
-        <translation>Alt gruplar</translation>
+        <translation>Alt-Grup</translation>
     </message>
     <message>
         <source>Details</source>
@@ -11198,15 +12768,18 @@ Please check the %1 directory</source>
     </message>
     <message>
         <source>Activate all activities for selected students subgroup</source>
-        <translation>Seçilen öğrenci altgrupları için etkinlikler aktif</translation>
+        <translation>Seçilen Öğrenci Alt-Grupları İçin Tüm Dersleri Etkinleştir
+</translation>
     </message>
     <message>
         <source>De-activate all activities for selected students subgroup</source>
-        <translation>Seçilen öğrenci altgrupları için etkinlikler aktif değil</translation>
+        <translation>Seçilen Öğrenci Alt-Grubu İçin, Tüm Ders Etkinleştirmelerini Durdur
+</translation>
     </message>
     <message>
         <source>Sort current subgroups</source>
-        <translation>Alt gruplara gore sırala</translation>
+        <translation>Alt-Grupları Sırala
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -11217,7 +12790,7 @@ Please check the %1 directory</source>
     <name>SubjectTagsForm_template</name>
     <message>
         <source>FET - subject tags</source>
-        <translation>FET-konu etiketleri</translation>
+        <translation>FET- Ders Konu Başlıkları</translation>
     </message>
     <message>
         <source>Close</source>
@@ -11225,60 +12798,64 @@ Please check the %1 directory</source>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne
+        <translation>Yeni Nesne
 </translation>
     </message>
     <message>
         <source>Remove current</source>
-        <translation>Geçerli olanı kaldır</translation>
+        <translation>Kaldır</translation>
     </message>
     <message>
         <source>Add subject tag</source>
-        <translation>Konu etiketi ekle</translation>
+        <translation>Ders Konu Başlığı Ekle
+</translation>
     </message>
     <message>
         <source>Sort alphabetically</source>
-        <translation>Alfabetik olarak sırala</translation>
+        <translation>Alfabetik Olarak Sırala</translation>
     </message>
     <message>
         <source>Rename current</source>
-        <translation>Geçerli olanın ismini değiştir</translation>
+        <translation>Yeni İsim</translation>
     </message>
     <message>
         <source>Activate all activities for selected subject tag</source>
-        <translation>Seçilen konu başlıkları için etkinlikler aktif</translation>
+        <translation>Seçilen Konu Başlıkları İçin Tüm Dersleri Etkinleştir
+</translation>
     </message>
     <message>
         <source>De-activate all activities for selected subject tag</source>
-        <translation>Seçilen konu başlıkları için etkinlikler aktif değil</translation>
+        <translation>Seçilen Ders Konu Başlığı İçin, Tüm Ders Etkinleştirmelerini Durdur
+</translation>
     </message>
 </context>
 <context>
     <name>SubjectsForm_template</name>
     <message>
         <source>FET - subjects</source>
-        <translation>FET-Konular</translation>
+        <translation>FET - Ders Konuları</translation>
     </message>
     <message>
         <source>Remove current</source>
-        <translation>Geçerli olanı kaldır</translation>
+        <translation>Kaldır</translation>
     </message>
     <message>
         <source>Add subject</source>
-        <translation>Konu ekle</translation>
+        <translation>Konu Ekle</translation>
     </message>
     <message>
         <source>Rename current</source>
-        <translation>Geçerli olanı tekrar isimlendir
+        <translation>Kaldır
 </translation>
     </message>
     <message>
         <source>Sort alphabetically</source>
-        <translation>Alfabetik olarak sırala</translation>
+        <translation>Alfabetik Olarak Sırala</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -11286,34 +12863,49 @@ Please check the %1 directory</source>
     </message>
     <message>
         <source>Activate all activities for selected subject</source>
-        <translation>Seçilen konu  için etkinlikler aktif</translation>
+        <translation>Seçilen Konu İçin Tüm Dersleri Etkinleştirme
+</translation>
     </message>
     <message>
         <source>De-activate all activities for selected subject</source>
-        <translation>Seçilen konu  için etkinlikler aktif değil</translation>
+        <translation>Seçilen Ders Konusu İçin, Tüm Ders Etkinleştirmelerini Durdur
+</translation>
+    </message>
+</context>
+<context>
+    <name>SubjectsStatisticsForm_template</name>
+    <message>
+        <source>FET - Subjects statistics</source>
+        <translation>FET - Ders Konusu İstatistikleri
+</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation>Kapat</translation>
     </message>
 </context>
 <context>
     <name>TeachersForm_template</name>
     <message>
         <source>Teachers</source>
-        <translation>Öğretmen</translation>
+        <translation>Öğretmenler</translation>
     </message>
     <message>
         <source>Add teacher</source>
-        <translation>Öğretmen ekle</translation>
+        <translation>Öğretmen Ekle</translation>
     </message>
     <message>
         <source>Remove current</source>
-        <translation>Geçerli olanı kaldır</translation>
+        <translation>Kaldır</translation>
     </message>
     <message>
         <source>Sort alphabetically</source>
-        <translation>Alfabetik sırala</translation>
+        <translation>Alfabetik Olarak Sırala</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -11321,38 +12913,60 @@ Please check the %1 directory</source>
     </message>
     <message>
         <source>Rename current</source>
-        <translation>Geçerli olanın ismini değiş</translation>
+        <translation>Kaldır</translation>
     </message>
     <message>
         <source>Activate all activities for selected teacher</source>
-        <translation>Seçilen öğretmen  için etkinlikler aktif</translation>
+        <translation>Seçilen Öğretmen İçin Tüm Dersleri Etkinleştir
+</translation>
     </message>
     <message>
         <source>De-activate all activities for selected teacher</source>
-        <translation>Seçilen öğretmen  için etkinlikler aktif değil</translation>
+        <translation>Seçilen Öğretmen İçin, Tüm Ders Etkinleştirmelerini Durdur
+</translation>
+    </message>
+</context>
+<context>
+    <name>TeachersStatisticsForm_template</name>
+    <message>
+        <source>FET - Teachers statistics</source>
+        <translation>FET - Öğretmen İstatistikleri
+</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation>Kapat</translation>
     </message>
 </context>
 <context>
     <name>TimetableAllocateHoursForm_template</name>
     <message>
         <source>Automatically allocate the hours</source>
-        <translation>Saatleri otamatik olarak ayır</translation>
+        <translation>Ders Saatlerinin Dağılımını Yap
+</translation>
     </message>
     <message>
         <source>Write (save, update) the results, without stopping the 
 simulation. You can use timetable/view  in the same 
 time with the automatic generation</source>
-        <translation>Sonuçları yaz.Benzeşmeyi durdurmadan.Aynı zamanda görünüm dersprogramını da kullanabilrsin</translation>
+        <translation>Simülasyon Sonuçları Kaydet (Simülasyonunu Durdurmadan). 
+Simülasyon Devam Ederken, 
+Kaydedilen Ders Programını İnceleyebilirsiniz
+</translation>
     </message>
     <message>
         <source>Save all current data to hard disk (later, you can 
 continue the automatic generation from this position)</source>
-        <translation>Geçerli bilgilerin tümünü kaydet harddiske</translation>
+        <translation>Simülasyonda Gelinen Aşamayı Bilgisayara Kaydet 
+(Sonradan, Simülasyona Kalınan Yerden Devam Edebilirsiniz)
+
+</translation>
     </message>
     <message>
         <source>Load saved data from hard disk (you can continue 
 the automatic generation from the saved position)</source>
-        <translation>Harddiskten kayıtlı olanı oku.(otamatik kaydedilene devam edebilirsin)</translation>
+        <translation>Kaydedilmiş Simülasyon Aşamasını Yükle 
+(Simülasyona Kaydedilmiş Aşamadan Devam Edebilirsiniz)</translation>
     </message>
     <message>
         <source>Close</source>
@@ -11360,50 +12974,60 @@ the automatic generation from the saved position)</source>
     </message>
     <message>
         <source>Current stage:</source>
-        <translation>Geçerli aşama</translation>
+        <translation>Aşama:
+</translation>
     </message>
     <message>
         <source>Start/Continue</source>
-        <translation>Başla/Devam et</translation>
+        <translation>Başla/Devam
+</translation>
     </message>
     <message>
         <source>Pause</source>
-        <translation>Duraklamak</translation>
+        <translation type="obsolete">Duraklamak</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation>Durmak</translation>
+        <translation>Dur</translation>
     </message>
     <message>
         <source>Initialize (UNALLOCATED)</source>
-        <translation>Başlangıç durumuna getirmek(Ayrılmamış)</translation>
+        <translation>Başlangıç Durumuna Getir (Dağılım Yapmadan)
+</translation>
     </message>
     <message>
         <source>Initialize (randomly)</source>
-        <translation>Başlangıç durumuna getirmek(rastgele)</translation>
+        <translation>Başlangıç Durumuna Getir (Rastlantısal)
+</translation>
     </message>
 </context>
 <context>
     <name>TimetableAllocateHoursRoomsForm_template</name>
     <message>
         <source>Automatically allocate the hours and the rooms simultaneously</source>
-        <translation>Otamatik olarak saatleri ve odaları ayır</translation>
+        <translation>Ders Saatlerinin Ve Sınıfların Dağılımını Birlikte Yap
+</translation>
     </message>
     <message>
         <source>Write (save, update) the results, without stopping the 
 simulation. You can use timetable/view  in the same 
 time with the automatic generation</source>
-        <translation>Sonuçları yaz.Benzeşmeyi durdurmadan.Aynı zamanda görünüm dersprogramını da kullanabilrsin</translation>
+        <translation>Simülasyon Sonuçları Kaydet (Simülasyonunu Durdurmadan) 
+Simülasyon Devam Ederken, 
+Kaydedilen Ders Programını İnceleyebilirsiniz
+</translation>
     </message>
     <message>
         <source>Save all current data to hard disk (later, you can 
 continue the automatic generation from this position)</source>
-        <translation>Geçerli bilgilerin tümünü kaydet harddiske</translation>
+        <translation>Simülasyonda Gelinen Aşamayı Bilgisayara Kaydet 
+(Sonradan, Simülasyona Kalınan Yerden Devam Edebilirsiniz)</translation>
     </message>
     <message>
         <source>Load saved data from hard disk (you can continue 
 the automatic generation from the saved position)</source>
-        <translation>Harddiskten kayıtlı olanı oku.(otamatik kaydedilene devam edebilirsin)</translation>
+        <translation>Kaydedilmiş Simülasyon Aşamasını Yükle 
+(Simülasyona Kaydedilmiş Aşamadan Devam Edebilirsiniz)</translation>
     </message>
     <message>
         <source>Close</source>
@@ -11411,50 +13035,55 @@ the automatic generation from the saved position)</source>
     </message>
     <message>
         <source>Current stage:</source>
-        <translation>Geçerli aşama</translation>
+        <translation>Aşama:</translation>
     </message>
     <message>
         <source>Start/Continue</source>
-        <translation>Başla/Devam et</translation>
+        <translation>Başla/Devam</translation>
     </message>
     <message>
         <source>Pause</source>
-        <translation>Duraklamak</translation>
+        <translation type="obsolete">Duraklamak</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation>Durmak</translation>
+        <translation>Dur</translation>
     </message>
     <message>
         <source>Initialize (UNALLOCATED)</source>
-        <translation>Başlangıç durumuna getirmek(Ayrılmamış)</translation>
+        <translation>Başlangıç Durumuna Getir (Dağılım Yapmadan)</translation>
     </message>
     <message>
         <source>Initialize (randomly)</source>
-        <translation>Sıfırlamak(rastgele)</translation>
+        <translation>Başlangıç Durumuna Getir (Rastlantısal)</translation>
     </message>
 </context>
 <context>
     <name>TimetableAllocateRoomsForm_template</name>
     <message>
         <source>Automatically allocate the rooms</source>
-        <translation>Odaları otamatik ayır</translation>
+        <translation>Sınıfların Dağılımını Yap
+</translation>
     </message>
     <message>
         <source>Write (save, update) the results, without stopping the 
 simulation. You can use timetable/view  in the same 
 time with the automatic generation</source>
-        <translation>Sonuçları yaz.Benzeşmeyi durdurmadan.Aynı zamanda görünüm dersprogramını da kullanabilrsin</translation>
+        <translation>Simülasyon Sonuçları Kaydet (Simülasyonunu Durdurmadan). 
+Simülasyon Devam Ederken, 
+Kaydedilen Ders Programını İnceleyebilirsiniz</translation>
     </message>
     <message>
         <source>Save all current data to hard disk (later, you can 
 continue the automatic generation from this position)</source>
-        <translation>Geçerli bilgilerin tümünü kaydet harddiske</translation>
+        <translation>Simülasyonda Gelinen Aşamayı Bilgisayara Kaydet 
+(Sonradan, Simülasyona Kalınan Yerden Devam Edebilirsiniz)</translation>
     </message>
     <message>
         <source>Load saved data from hard disk (you can continue 
 the automatic generation from the saved position)</source>
-        <translation>Harddiskten kayıtlı olanı oku.(otamatik kaydedilene devam edebilirsin)</translation>
+        <translation>Kaydedilmiş Simülasyon Aşamasını Yükle 
+(Simülasyona Kaydedilmiş Aşamadan Devam Edebilirsiniz)</translation>
     </message>
     <message>
         <source>Close</source>
@@ -11462,255 +13091,287 @@ the automatic generation from the saved position)</source>
     </message>
     <message>
         <source>Current stage:</source>
-        <translation>Geçerli aşama</translation>
+        <translation>Aşama:</translation>
     </message>
     <message>
         <source>Start/Continue</source>
-        <translation>Başla/Devam et</translation>
+        <translation>Başla/Devam</translation>
     </message>
     <message>
         <source>Pause</source>
-        <translation>Duraklamak</translation>
+        <translation type="obsolete">Duraklamak</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation>Durmak</translation>
+        <translation>Dur</translation>
     </message>
     <message>
         <source>Initialize (UNALLOCATED)</source>
-        <translation>Başlangıç durumuna getirmek(Ayrılmamış)</translation>
+        <translation>Başlangıç Durumuna Getir (Dağılım Yapmadan)</translation>
     </message>
     <message>
         <source>Initialize (randomly)</source>
-        <translation>Başlangıç durumuna getirmek(rastgele)</translation>
+        <translation>Başlangıç Durumuna Getir (Rastlantısal)</translation>
     </message>
 </context>
 <context>
     <name>TimetableExportiCalStudentsForm_template</name>
     <message>
         <source>FET - timetable export iCal students form</source>
-        <translation type="unfinished"></translation>
+        <translation>FET -Ders Programı - İcal Veri Gönderimi - Öğrenciler
+</translation>
     </message>
     <message>
         <source>Please enter the start hour of each day,
 in the form hhmm (4 digits)</source>
-        <translation type="unfinished"></translation>
+        <translation>Lütfen, Her Gün İçin 
+Ders Başlama Saatini Girin (4 karakter; ggaa)</translation>
     </message>
     <message>
         <source>Please enter the length of each lesson,
 in the form hhmm (4 digits)</source>
-        <translation type="unfinished"></translation>
+        <translation>Lütfen, Her Ders İçin 
+Ders Süresini Girin (4 karakter; ggaa)</translation>
     </message>
     <message>
         <source>Please enter the length of each break,
 in the form hhmm (4 digits)</source>
-        <translation type="unfinished"></translation>
+        <translation>Lütfen, Her Ders Arası İçin 
+Süre Girin (4 karakter; ggaa)</translation>
     </message>
     <message>
         <source>Please enter the starting day,
 in the form yyyymmdd (8 digits)</source>
-        <translation type="unfinished"></translation>
+        <translation>Lütfen, Başlama Gününü 
+Girin (8 karakter; yyyyaagg)</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation> İptal</translation>
     </message>
     <message>
         <source>Export to iCal files</source>
-        <translation type="unfinished"></translation>
+        <translation>iCal&apos;a Veri Gönder</translation>
     </message>
 </context>
 <context>
     <name>TimetableExportiCalStudentsWithRooms1Form_template</name>
     <message>
         <source>FET - timetable export iCal students with rooms 1 form</source>
-        <translation type="unfinished"></translation>
+        <translation>FET -Ders Programı - İcal Veri Gönderimi - Öğrencilere Göre Sınıflar (1)
+</translation>
     </message>
     <message>
         <source>Please enter the start hour of each day,
 in the form hhmm (4 digits)</source>
-        <translation type="unfinished"></translation>
+        <translation>Lütfen, Her Gün İçin 
+Ders Başlama Saatini Girin (4 karakter; ggaa)</translation>
     </message>
     <message>
         <source>Please enter the length of each lesson,
 in the form hhmm (4 digits)</source>
-        <translation type="unfinished"></translation>
+        <translation>Lütfen, Her Ders İçin 
+Ders Süresini Girin (4 karakter; ggaa)</translation>
     </message>
     <message>
         <source>Please enter the length of each break,
 in the form hhmm (4 digits)</source>
-        <translation type="unfinished"></translation>
+        <translation>Lütfen, Her Ders Arası İçin 
+Süre Girin (4 karakter; ggaa)</translation>
     </message>
     <message>
         <source>Please enter the starting day,
 in the form yyyymmdd (8 digits)</source>
-        <translation type="unfinished"></translation>
+        <translation>Lütfen, Başlama Gününü Girin 
+(8 karakter; yyyyaagg)</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>İptal</translation>
     </message>
     <message>
         <source>Export to iCal files</source>
-        <translation type="unfinished"></translation>
+        <translation>iCal&apos;a Veri Gönder</translation>
     </message>
 </context>
 <context>
     <name>TimetableExportiCalStudentsWithRooms2Form_template</name>
     <message>
         <source>FET - timetable export iCal students with rooms 2 form</source>
-        <translation type="unfinished"></translation>
+        <translation>FET -Ders Programı - İcal Veri Gönderimi - Öğrencilere Göre Sınıflar (2)</translation>
     </message>
     <message>
         <source>Please enter the start hour of each day,
 in the form hhmm (4 digits)</source>
-        <translation type="unfinished"></translation>
+        <translation>Lütfen, Her Gün İçin 
+Ders Başlama Saatini Girin (4 karakter; ggaa)</translation>
     </message>
     <message>
         <source>Please enter the length of each lesson,
 in the form hhmm (4 digits)</source>
-        <translation type="unfinished"></translation>
+        <translation>Lütfen, Her Ders İçin 
+Ders Süresini Girin (4 karakter; ggaa)</translation>
     </message>
     <message>
         <source>Please enter the length of each break,
 in the form hhmm (4 digits)</source>
-        <translation type="unfinished"></translation>
+        <translation>Lütfen, Her Ders Arası İçin 
+Süre Girin (4 karakter; ggaa)</translation>
     </message>
     <message>
         <source>Please enter the starting day,
 in the form yyyymmdd (8 digits)</source>
-        <translation type="unfinished"></translation>
+        <translation>Lütfen, Başlama Gününü Girin 
+(8 karakter; yyyyaagg)</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>İptal</translation>
     </message>
     <message>
         <source>Export to iCal files</source>
-        <translation type="unfinished"></translation>
+        <translation>iCal&apos;a Veri Gönder</translation>
     </message>
 </context>
 <context>
     <name>TimetableExportiCalTeachersForm_template</name>
     <message>
         <source>FET - timetable export iCal teachers form</source>
-        <translation type="unfinished"></translation>
+        <translation>FET -Ders Programı - İcal Veri Gönderimi - Öğretmenler
+</translation>
     </message>
     <message>
         <source>Please enter the start hour of each day,
 in the form hhmm (4 digits)</source>
-        <translation type="unfinished"></translation>
+        <translation>Lütfen, Her Gün İçin 
+Ders Başlama Saatini Girin (4 karakter; ggaa)</translation>
     </message>
     <message>
         <source>Please enter the length of each lesson,
 in the form hhmm (4 digits)</source>
-        <translation type="unfinished"></translation>
+        <translation>Lütfen, Her Ders İçin 
+Ders Süresini Girin (4 karakter; ggaa)</translation>
     </message>
     <message>
         <source>Please enter the length of each break,
 in the form hhmm (4 digits)</source>
-        <translation type="unfinished"></translation>
+        <translation>Lütfen, Her Ders Arası İçin 
+Süre Girin (4 karakter; ggaa)</translation>
     </message>
     <message>
         <source>Please enter the starting day,
 in the form yyyymmdd (8 digits)</source>
-        <translation type="unfinished"></translation>
+        <translation>Lütfen, Başlama Gününü Girin 
+(8 karakter; yyyyaagg)</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>İptal</translation>
     </message>
     <message>
         <source>Export to iCal files</source>
-        <translation type="unfinished"></translation>
+        <translation>iCal&apos;a Veri Gönder</translation>
     </message>
 </context>
 <context>
     <name>TimetableExportiCalTeachersWithRooms1Form_template</name>
     <message>
         <source>FET - timetable export iCal teachers with rooms 1 form</source>
-        <translation type="unfinished"></translation>
+        <translation>FET -Ders Programı - İcal Veri Gönderimi - Öğretmenlere Göre Sınıflar (1)
+</translation>
     </message>
     <message>
         <source>Please enter the start hour of each day,
 in the form hhmm (4 digits)</source>
-        <translation type="unfinished"></translation>
+        <translation>Lütfen, Her Gün İçin 
+Ders Başlama Saatini Girin (4 karakter; ggaa)</translation>
     </message>
     <message>
         <source>Please enter the length of each lesson,
 in the form hhmm (4 digits)</source>
-        <translation type="unfinished"></translation>
+        <translation>Lütfen, Her Ders İçin 
+Ders Süresini Girin (4 karakter; ggaa)</translation>
     </message>
     <message>
         <source>Please enter the length of each break,
 in the form hhmm (4 digits)</source>
-        <translation type="unfinished"></translation>
+        <translation>Lütfen, Her Ders Arası İçin 
+Süre Girin (4 karakter; ggaa)</translation>
     </message>
     <message>
         <source>Please enter the starting day,
 in the form yyyymmdd (8 digits)</source>
-        <translation type="unfinished"></translation>
+        <translation>Lütfen, Başlama Gününü Girin 
+(8 karakter; yyyyaagg)</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>İptal</translation>
     </message>
     <message>
         <source>Export to iCal files</source>
-        <translation type="unfinished"></translation>
+        <translation>iCal&apos;a Veri Gönder</translation>
     </message>
 </context>
 <context>
     <name>TimetableExportiCalTeachersWithRooms2Form_template</name>
     <message>
         <source>FET - timetable export iCal teachers with rooms 2 form</source>
-        <translation type="unfinished"></translation>
+        <translation>FET -Ders Programı - İcal Veri Gönderimi - Öğretmenlere Göre Sınıflar (2)
+</translation>
     </message>
     <message>
         <source>Please enter the start hour of each day,
 in the form hhmm (4 digits)</source>
-        <translation type="unfinished"></translation>
+        <translation>Lütfen, Her Gün İçin 
+Ders Başlama Saatini Girin (4 karakter; ggaa)</translation>
     </message>
     <message>
         <source>Please enter the length of each lesson,
 in the form hhmm (4 digits)</source>
-        <translation type="unfinished"></translation>
+        <translation>Lütfen, Her Ders İçin 
+Ders Süresini Girin (4 karakter; ggaa)</translation>
     </message>
     <message>
         <source>Please enter the length of each break,
 in the form hhmm (4 digits)</source>
-        <translation type="unfinished"></translation>
+        <translation>Lütfen, Her Ders Arası İçin 
+Süre Girin (4 karakter; ggaa)</translation>
     </message>
     <message>
         <source>Please enter the starting day,
 in the form yyyymmdd (8 digits)</source>
-        <translation type="unfinished"></translation>
+        <translation>Lütfen, Başlama Gününü Girin 
+(8 karakter; yyyyaagg)</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>İptal</translation>
     </message>
     <message>
         <source>Export to iCal files</source>
-        <translation type="unfinished"></translation>
+        <translation>iCal&apos;a Veri Gönder</translation>
     </message>
 </context>
 <context>
     <name>TimetableShowConflictsSpaceForm_template</name>
     <message>
         <source>FET - showing the timetable conflicts (space)</source>
-        <translation>FET-Ders programındak çelişkilerin gösterimi(alan)</translation>
+        <translation>FET - Ders Programının Yer Çelişkilerini Göster
+</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation>Kapat</translation>
+        <translation>Kapat
+</translation>
     </message>
 </context>
 <context>
     <name>TimetableShowConflictsTimeForm_template</name>
     <message>
         <source>FET - showing the timetable conflicts (time)</source>
-        <translation>FET- Ders programındaki çelişkilerin gösterimi(zaman)</translation>
+        <translation>FET - Ders Programının Zaman Çelişkilerini Göster
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -11721,7 +13382,8 @@ in the form yyyymmdd (8 digits)</source>
     <name>TimetableShowConflictsTimeSpaceForm_template</name>
     <message>
         <source>FET - showing the timetable conflicts (time &amp; space)</source>
-        <translation>FET- Ders programındaki çelişkilerin gösterimi(zaman&amp;alan)</translation>
+        <translation>FET - Ders Programının Yer &amp; Zaman Çelişkilerini Göster
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -11732,15 +13394,16 @@ in the form yyyymmdd (8 digits)</source>
     <name>TimetableViewRooms2Form_template</name>
     <message>
         <source>Viewing the timetable for the rooms</source>
-        <translation>Odalar için ders programının görünümü</translation>
+        <translation>Sınıflara Göre Ders Programı
+</translation>
     </message>
     <message>
         <source>Room</source>
-        <translation>Oda</translation>
+        <translation>Sınıf</translation>
     </message>
     <message>
         <source>Room&apos;s name</source>
-        <translation>Odanın ismi</translation>
+        <translation>Sınıf İsmi</translation>
     </message>
     <message>
         <source>Details</source>
@@ -11748,19 +13411,23 @@ in the form yyyymmdd (8 digits)</source>
     </message>
     <message>
         <source>Please click on the table for details for a specific activity.</source>
-        <translation>Özel etkinliklerın detayları için tablo üzerine tıklayınız.</translation>
+        <translation>Ders Ayrıntıları İçin Tablo Üzerine Tıklayınız.
+</translation>
     </message>
     <message>
         <source>Lock selected activities (time only)</source>
-        <translation>Seçilen etkinlikleri kilitle (sadece zaman)</translation>
+        <translation>Seçilen Dersleri Kilitle (Sadece Zaman)
+</translation>
     </message>
     <message>
         <source>Lock selected activities (space only)</source>
-        <translation>Seçilen etkinlikleri kilitle (sadece alan)</translation>
+        <translation>Seçilen Dersleri Kilitle (Sadece Yer)
+</translation>
     </message>
     <message>
         <source>Lock selected activities</source>
-        <translation>Seçilen etkinlikleri kilitle</translation>
+        <translation>Seçilen Dersleri Kilitle
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -11768,7 +13435,7 @@ in the form yyyymmdd (8 digits)</source>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
 </context>
 <context>
@@ -11819,11 +13486,13 @@ in the form yyyymmdd (8 digits)</source>
     <message>
         <source>Viewing the timetable for the students</source>
         <translation>
-Öğrenciler için ders programının görünümü</translation>
+Öğrencilere Göre Ders Programı
+</translation>
     </message>
     <message>
         <source>Year</source>
-        <translation>Yıl</translation>
+        <translation>Ders Yılı
+</translation>
     </message>
     <message>
         <source>Group</source>
@@ -11831,15 +13500,15 @@ in the form yyyymmdd (8 digits)</source>
     </message>
     <message>
         <source>Subgroup</source>
-        <translation>Altgrup</translation>
+        <translation>Alt-Grup</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Class name</source>
-        <translation>Sınıf ismi</translation>
+        <translation>Sınıf İsmi</translation>
     </message>
     <message>
         <source>Details</source>
@@ -11847,7 +13516,8 @@ in the form yyyymmdd (8 digits)</source>
     </message>
     <message>
         <source>Please click on the table for details for a specific activity.</source>
-        <translation>Özel etkinliklerın detayları için tablo üzerine tıklayınız.</translation>
+        <translation>Ders Ayrıntıları İçin Tablo Üzerine Tıklayınız.
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -11855,18 +13525,22 @@ in the form yyyymmdd (8 digits)</source>
     </message>
     <message>
         <source>Lock selected activities</source>
-        <translation>Seçilen etkinlikler kilitle</translation>
+        <translation>Seçilen Dersleri Kilitle
+</translation>
     </message>
 </context>
 <context>
     <name>TimetableViewStudentsWithRooms2Form_template</name>
     <message>
         <source>Viewing the timetable for the students (with rooms)</source>
-        <translation>Öğrenciler için ders programınıngörünümü(odalar ile)</translation>
+        <translation>Öğrencilere Göre Ders Programı (Sınıflara Göre)
+
+</translation>
     </message>
     <message>
         <source>Year</source>
-        <translation>Yıl</translation>
+        <translation>Ders Yılı
+</translation>
     </message>
     <message>
         <source>Group</source>
@@ -11874,19 +13548,20 @@ in the form yyyymmdd (8 digits)</source>
     </message>
     <message>
         <source>Subgroup</source>
-        <translation>Altgrup</translation>
+        <translation>Alt-Grup</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Class name</source>
-        <translation>Sınıf ismi</translation>
+        <translation>Sınıf İsmi</translation>
     </message>
     <message>
         <source>Please click on the table for details for a specific activity.</source>
-        <translation>Özel etkinliklerın detayları için tablo üzerine tıklayınız.</translation>
+        <translation>Ders Ayrıntıları İçin Tablo Üzerine Tıklayınız.
+</translation>
     </message>
     <message>
         <source>Details</source>
@@ -11898,26 +13573,33 @@ in the form yyyymmdd (8 digits)</source>
     </message>
     <message>
         <source>Lock selected activities</source>
-        <translation>Seçilen etkinlikleri kilitle</translation>
+        <translation>Seçilen Dersleri Kilitle
+
+
+</translation>
     </message>
     <message>
         <source>Lock (time only)</source>
-        <translation>Kilit(zaman sadece)</translation>
+        <translation>Kilitle (Sadece Zaman)
+</translation>
     </message>
     <message>
         <source>Lock (space only)</source>
-        <translation>Kilit(sadece alan)</translation>
+        <translation>Kilitle (Sadece Yer)
+</translation>
     </message>
 </context>
 <context>
     <name>TimetableViewStudentsWithRoomsForm_template</name>
     <message>
         <source>Viewing the timetable for the students (with rooms)</source>
-        <translation>Öğrenciler için ders programını görünümü(odalar ile)</translation>
+        <translation>Öğrencilere Göre Ders Programı (Sınıflara Göre)
+</translation>
     </message>
     <message>
         <source>Year</source>
-        <translation>Yıl</translation>
+        <translation>Ders Yılı
+</translation>
     </message>
     <message>
         <source>Group</source>
@@ -11925,19 +13607,20 @@ in the form yyyymmdd (8 digits)</source>
     </message>
     <message>
         <source>Subgroup</source>
-        <translation>Altgrup</translation>
+        <translation>Alt-Grup</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Class name</source>
-        <translation>Sınıf ismi</translation>
+        <translation>Sınıf İsmi</translation>
     </message>
     <message>
         <source>Please click on the table for details for a specific activity.</source>
-        <translation>Özel etkinliklerın detayları için tablo üzerine tıklayınız.</translation>
+        <translation>Ders Ayrıntıları İçin Tablo Üzerine Tıklayınız.
+</translation>
     </message>
     <message>
         <source>Details</source>
@@ -11949,22 +13632,26 @@ in the form yyyymmdd (8 digits)</source>
     </message>
     <message>
         <source>Lock selected activities</source>
-        <translation>Seçilen etkinlikleri kilitle</translation>
+        <translation>Seçilen Dersleri Kilitle
+</translation>
     </message>
     <message>
         <source>Lock (space)</source>
-        <translation>Kilit(alan)</translation>
+        <translation>Kilitle (Yer)
+</translation>
     </message>
     <message>
         <source>Lock (time)</source>
-        <translation>Kilit(zaman)</translation>
+        <translation>Kilitle (Zaman)
+</translation>
     </message>
 </context>
 <context>
     <name>TimetableViewTeachersForm_template</name>
     <message>
         <source>Viewing the timetable for the teachers</source>
-        <translation>Öğretmenler için ders programı görünümü</translation>
+        <translation>Öğretmenlere Göre Ders Programı
+</translation>
     </message>
     <message>
         <source>Teacher</source>
@@ -11972,11 +13659,11 @@ in the form yyyymmdd (8 digits)</source>
     </message>
     <message>
         <source>Teacher&apos;s name</source>
-        <translation>Öğretmenin  ismi</translation>
+        <translation>Öğretmen İsmi</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Details</source>
@@ -11984,7 +13671,7 @@ in the form yyyymmdd (8 digits)</source>
     </message>
     <message>
         <source>Please click on the table for details for a specific activity.</source>
-        <translation>Özel etkinliklerın detayları için tablo üzerine tıklayınız</translation>
+        <translation>Ders Ayrıntıları İçin Tablo Üzerine Tıklayınız.</translation>
     </message>
     <message>
         <source>Close</source>
@@ -11992,14 +13679,15 @@ in the form yyyymmdd (8 digits)</source>
     </message>
     <message>
         <source>Lock selected activities</source>
-        <translation>Seçilen etkinlikleri kilitle</translation>
+        <translation>Seçilen Dersleri Kilitle</translation>
     </message>
 </context>
 <context>
     <name>TimetableViewTeachersWithRooms2Form_template</name>
     <message>
         <source>Viewing the timetable for the teachers (with rooms)</source>
-        <translation>Öğretmenler için ders programı görünümü(odalar ile)</translation>
+        <translation>Öğretmenlere Göre Ders Programı (Sınıflara Göre)
+</translation>
     </message>
     <message>
         <source>Teacher</source>
@@ -12007,11 +13695,11 @@ in the form yyyymmdd (8 digits)</source>
     </message>
     <message>
         <source>Teacher&apos;s name</source>
-        <translation>Öğretmenin ismi</translation>
+        <translation>Öğretmen İsmi</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Details</source>
@@ -12019,11 +13707,11 @@ in the form yyyymmdd (8 digits)</source>
     </message>
     <message>
         <source>Please click on the table for details for a specific activity.</source>
-        <translation>Özel etkinliklerın detayları için tablo üzerine tıklayınız</translation>
+        <translation>Ders Ayrıntıları İçin Tablo Üzerine Tıklayınız.</translation>
     </message>
     <message>
         <source>Lock selected activities</source>
-        <translation>Seçilen etkinlikleri kilitle</translation>
+        <translation>Seçilen Dersleri Kilitle</translation>
     </message>
     <message>
         <source>Close</source>
@@ -12031,18 +13719,21 @@ in the form yyyymmdd (8 digits)</source>
     </message>
     <message>
         <source>Lock selected activities (space)</source>
-        <translation>Seçilen etkinlikleri kilitle(boşluk)</translation>
+        <translation>Seçilen Dersleri Kilitle (Yer)
+</translation>
     </message>
     <message>
         <source>Lock selected activities (time)</source>
-        <translation>Seçilen etkinlikleri kilitle(zaman)</translation>
+        <translation>Seçilen Dersleri Kilitle (Zaman)
+</translation>
     </message>
 </context>
 <context>
     <name>TimetableViewTeachersWithRoomsForm_template</name>
     <message>
         <source>Viewing the timetable for the teachers (with rooms)</source>
-        <translation>Öğretmenler için ders programı görünümü(odalar ile)</translation>
+        <translation>Öğretmenlere Göre Ders Programı (Sınıflara Göre)
+</translation>
     </message>
     <message>
         <source>Teacher</source>
@@ -12050,11 +13741,11 @@ in the form yyyymmdd (8 digits)</source>
     </message>
     <message>
         <source>Teacher&apos;s name</source>
-        <translation>Öğretmenin ismi</translation>
+        <translation>Öğretmen İsmi</translation>
     </message>
     <message>
         <source>New Item</source>
-        <translation>Yeni nesne</translation>
+        <translation>Yeni Nesne</translation>
     </message>
     <message>
         <source>Details</source>
@@ -12062,7 +13753,8 @@ in the form yyyymmdd (8 digits)</source>
     </message>
     <message>
         <source>Please click on the table for details for a specific activity.</source>
-        <translation>Özel etkinliklerın detayları için tablo üzerine tıklayınız.</translation>
+        <translation>Ders Ayrıntıları İçin Tablo Üzerine Tıklayınız.
+</translation>
     </message>
     <message>
         <source>Close</source>
@@ -12070,22 +13762,23 @@ in the form yyyymmdd (8 digits)</source>
     </message>
     <message>
         <source>Lock selected activities</source>
-        <translation>Seçilen etkinlikleri kilitle</translation>
+        <translation>Seçilen Dersleri Kilitle</translation>
     </message>
     <message>
         <source>Lock selected activities (space)</source>
-        <translation>Seçilen etkinlikleri kiltle(boşluk)</translation>
+        <translation>Seçilen Dersleri Kilitle (Yer)</translation>
     </message>
     <message>
         <source>Lock selected activities (time)</source>
-        <translation>Seçilen etkinlikleri kiltle(zaman)</translation>
+        <translation>Seçilen Dersleri Kilitle (Zaman)</translation>
     </message>
 </context>
 <context>
     <name>YearsForm_template</name>
     <message>
         <source>Years of students</source>
-        <translation>Öğrencilerin yılı</translation>
+        <translation>Öğrencilerin Ders Yılı
+</translation>
     </message>
     <message>
         <source>New Item</source>
@@ -12093,19 +13786,19 @@ in the form yyyymmdd (8 digits)</source>
     </message>
     <message>
         <source>Remove current</source>
-        <translation>Geçerli olanı kaldır</translation>
+        <translation>Kaldır</translation>
     </message>
     <message>
         <source>Add year</source>
-        <translation>Yıl ekle</translation>
+        <translation>Ders Yılı Ekle</translation>
     </message>
     <message>
         <source>Modify current</source>
-        <translation>Geçerli olanı değiştir</translation>
+        <translation>Değiştir</translation>
     </message>
     <message>
         <source>Sort alphabetically</source>
-        <translation>Alfabetik olarak sırala</translation>
+        <translation>Alfabetik Olarak Sırala</translation>
     </message>
     <message>
         <source>Close</source>
@@ -12113,11 +13806,14 @@ in the form yyyymmdd (8 digits)</source>
     </message>
     <message>
         <source>Activate all activities for selected students year</source>
-        <translation>Seçilen öğrenci yılları için bütün aktiviteleri harekete geçir</translation>
+        <translation>Seçilen Ders Yılları İçin Tüm Dersleri Etkinleştir
+
+</translation>
     </message>
     <message>
         <source>De-activate all activities for selected students year</source>
-        <translation>Seçilen öğrenci yılları için bütün aktiviteleri durdur</translation>
+        <translation>Seçilen Ders Yılında, Tüm Ders Etkinleştirmelerini Durdur
+</translation>
     </message>
 </context>
 </TS>

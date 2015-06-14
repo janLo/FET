@@ -15,17 +15,14 @@
 
 #include "genetictimetable_defs.h"
 
-#include <qstring.h>
-#include <qptrlist.h>
-#include <qstringlist.h>
+#include <QString>
+#include <QList>
+#include <QStringList>
 
 class Equipment;
 class Rules;
 
-class EquipmentsList: public QPtrList<Equipment>
-{
-	int compareItems(QPtrCollection::Item, QPtrCollection::Item);
-};
+typedef QList<Equipment*> EquipmentsList;
 
 /**
 This class represents an equipment
@@ -43,5 +40,7 @@ public:
 	QString getDetailedDescription();
 	QString getDetailedDescriptionWithConstraints(Rules& r);
 };
+
+int equipmentsAscending(const Equipment* e1, const Equipment* e2);
 
 #endif

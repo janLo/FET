@@ -19,8 +19,17 @@
 #include "addconstraint2activitiesorderedform.h"
 #include "modifyconstraint2activitiesorderedform.h"
 
+#include <QDesktopWidget>
+
 Constraint2ActivitiesOrderedForm::Constraint2ActivitiesOrderedForm()
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	this->refreshConstraintsListBox();
 }
 
@@ -30,16 +39,17 @@ Constraint2ActivitiesOrderedForm::~Constraint2ActivitiesOrderedForm()
 
 void Constraint2ActivitiesOrderedForm::refreshConstraintsListBox()
 {
-	this->visibleConstraintsList.setAutoDelete(false);
 	this->visibleConstraintsList.clear();
 	constraintsListBox->clear();
-	for(TimeConstraint* ctr=gt.rules.timeConstraintsList.first(); ctr; ctr=gt.rules.timeConstraintsList.next())
+	for(int i=0; i<gt.rules.timeConstraintsList.size(); i++){
+		TimeConstraint* ctr=gt.rules.timeConstraintsList[i];
 		if(filterOk(ctr)){
 			QString s;
 			s=ctr->getDescription(gt.rules);
 			visibleConstraintsList.append(ctr);
 			constraintsListBox->insertItem(s);
 		}
+	}
 
 	constraintsListBox->setCurrentItem(0);
 	this->constraintChanged(constraintsListBox->currentItem());
@@ -58,7 +68,7 @@ void Constraint2ActivitiesOrderedForm::constraintChanged(int index)
 	if(index<0)
 		return;
 	QString s;
-	assert((uint)(index)<this->visibleConstraintsList.count());
+	assert(index<this->visibleConstraintsList.size());
 	TimeConstraint* ctr=this->visibleConstraintsList.at(index);
 	assert(ctr!=NULL);
 	s=ctr->getDetailedDescription(gt.rules);
@@ -67,8 +77,8 @@ void Constraint2ActivitiesOrderedForm::constraintChanged(int index)
 
 void Constraint2ActivitiesOrderedForm::addConstraint()
 {
-	AddConstraint2ActivitiesOrderedForm *addConstraint2ActivitiesOrderedForm=new AddConstraint2ActivitiesOrderedForm();
-	addConstraint2ActivitiesOrderedForm->exec();
+	AddConstraint2ActivitiesOrderedForm *form=new AddConstraint2ActivitiesOrderedForm();
+	form->exec();
 
 	this->refreshConstraintsListBox();
 }
@@ -110,9 +120,9 @@ void Constraint2ActivitiesOrderedForm::modifyConstraint()
 	}
 	TimeConstraint* ctr=this->visibleConstraintsList.at(i);
 
-	ModifyConstraint2ActivitiesOrderedForm *modifyConstraint2ActivitiesOrderedForm=
+	ModifyConstraint2ActivitiesOrderedForm *form=
 	 new ModifyConstraint2ActivitiesOrderedForm((Constraint2ActivitiesOrdered*)ctr);
-	modifyConstraint2ActivitiesOrderedForm->exec();
+	form->exec();
 
 	this->refreshConstraintsListBox();
 	

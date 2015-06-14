@@ -18,10 +18,12 @@
 
 #include "genetictimetable_defs.h"
 
+#include <QByteArray>
+
 /**
 FET version
 */
-const QString FET_VERSION="3.18.2";
+const QString FET_VERSION="4.2.8";
 
 /**
 FET language
@@ -95,6 +97,7 @@ QString protect3(const QString& str) //used for iCal
 	p.replace("\\", "_");
 	p.replace(":", "_");
 	p.replace("'", "_");
+	p.replace("*", "_");
 	p.replace("\"", "_");
 	return p;
 }
@@ -114,8 +117,10 @@ bool isLeapYear(int year)
 	return leap;
 }
 
-bool isCorrectDay(const QString day)
+bool isCorrectDay(const QString sday)
 {
+	QByteArray day=sday.toAscii();
+
 	if(day.length()!=8)
 		return false;
 
@@ -135,8 +140,10 @@ bool isCorrectDay(const QString day)
 	return true;
 }
 
-bool isCorrectHour(const QString hour)
+bool isCorrectHour(const QString shour)
 {
+	QByteArray hour=shour.toAscii();
+
 	if(hour.length()!=4)
 		return false;
 	int h=(hour[0]-'0')*10+(hour[1]-'0');
@@ -149,8 +156,10 @@ bool isCorrectHour(const QString hour)
 	return true;
 }
 
-QString nextDay(const QString day)
+QString nextDay(const QString sday)
 {
+	QByteArray day=sday.toAscii();
+
 	int nDays[13]={0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 	int y=(day[0]-'0')*1000+(day[1]-'0')*100+(day[2]-'0')*10+(day[3]-'0');
 	if(isLeapYear(y))
@@ -199,8 +208,11 @@ QString nextDay(const QString day)
 	return nday;
 }
 
-bool sumHours(const QString hour1, const QString hour2, QString& result)
+bool sumHours(const QString shour1, const QString shour2, QString& result)
 {
+	QByteArray hour1=shour1.toAscii();
+	QByteArray hour2=shour2.toAscii();
+
 	//Sums the hour1 with hour2 and outputs the sum in "result".
 	//Returns true if the result is the next day
 	assert(isCorrectHour(hour1));
@@ -246,7 +258,7 @@ QString iCalFolding(const QString s)
 	//makes the (long) string conform tu iCalendar standard
 	//by adding after each 75 characters a CRLF + SPACE
 	QString t;
-	for(uint i=0; i<s.length(); i++){
+	for(int i=0; i<s.length(); i++){
 		if(i!=0 && i%75==0){
 #ifdef WIN32
 			t.append(char(13));

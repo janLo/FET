@@ -19,9 +19,17 @@
 #include "addconstraintactivitiesnotoverlappingform.h"
 #include "modifyconstraintactivitiesnotoverlappingform.h"
 
+#include <QDesktopWidget>
+
 ConstraintActivitiesNotOverlappingForm::ConstraintActivitiesNotOverlappingForm()
 {
-	this->visibleConstraintsList.setAutoDelete(false);
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	this->filterChanged();
 }
 
@@ -41,18 +49,20 @@ void ConstraintActivitiesNotOverlappingForm::filterChanged()
 {
 	this->visibleConstraintsList.clear();
 	constraintsListBox->clear();
-	for(TimeConstraint* ctr=gt.rules.timeConstraintsList.first(); ctr; ctr=gt.rules.timeConstraintsList.next())
+	for(int i=0; i<gt.rules.timeConstraintsList.size(); i++){
+		TimeConstraint* ctr=gt.rules.timeConstraintsList[i];
 		if(filterOk(ctr)){
 			visibleConstraintsList.append(ctr);
 			constraintsListBox->insertItem(ctr->getDescription(gt.rules));
 		}
+	}
 }
 
 void ConstraintActivitiesNotOverlappingForm::constraintChanged(int index)
 {
 	if(index<0)
 		return;
-	assert((uint)(index)<this->visibleConstraintsList.count());
+	assert(index<this->visibleConstraintsList.size());
 	TimeConstraint* ctr=this->visibleConstraintsList.at(index);
 	assert(ctr!=NULL);
 	currentConstraintTextEdit->setText(ctr->getDetailedDescription(gt.rules));
@@ -60,8 +70,8 @@ void ConstraintActivitiesNotOverlappingForm::constraintChanged(int index)
 
 void ConstraintActivitiesNotOverlappingForm::addConstraint()
 {
-	AddConstraintActivitiesNotOverlappingForm *addConstraintActivitiesNotOverlappingForm=new AddConstraintActivitiesNotOverlappingForm();
-	addConstraintActivitiesNotOverlappingForm->exec();
+	AddConstraintActivitiesNotOverlappingForm *form=new AddConstraintActivitiesNotOverlappingForm();
+	form->exec();
 
 	filterChanged();
 	
@@ -77,9 +87,9 @@ void ConstraintActivitiesNotOverlappingForm::modifyConstraint()
 	}
 	TimeConstraint* ctr=this->visibleConstraintsList.at(i);
 
-	ModifyConstraintActivitiesNotOverlappingForm *modifyConstraintActivitiesNotOverlappingForm
+	ModifyConstraintActivitiesNotOverlappingForm *form
 	 = new ModifyConstraintActivitiesNotOverlappingForm((ConstraintActivitiesNotOverlapping*)ctr);
-	modifyConstraintActivitiesNotOverlappingForm->exec();
+	form->exec();
 
 	filterChanged();
 	constraintsListBox->setCurrentItem(i);

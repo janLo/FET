@@ -21,10 +21,19 @@
 #include <qradiobutton.h>
 #include <qlabel.h>
 #include <qlineedit.h>
-#include <qtable.h>
+#include <q3table.h>
+
+#include <QDesktopWidget>
 
 AddConstraintTeacherRequiresRoomForm::AddConstraintTeacherRequiresRoomForm()
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	updateTeachersComboBox();
 	updateRoomsComboBox();
 }
@@ -36,15 +45,19 @@ AddConstraintTeacherRequiresRoomForm::~AddConstraintTeacherRequiresRoomForm()
 void AddConstraintTeacherRequiresRoomForm::updateTeachersComboBox()
 {
 	teachersComboBox->clear();
-	for(Teacher* tc=gt.rules.teachersList.first(); tc; tc=gt.rules.teachersList.next())
+	for(int i=0; i<gt.rules.teachersList.size(); i++){
+		Teacher* tc=gt.rules.teachersList[i];
 		teachersComboBox->insertItem(tc->name);
+	}
 }
 
 void AddConstraintTeacherRequiresRoomForm::updateRoomsComboBox()
 {
 	roomsComboBox->clear();
-	for(Room* rm=gt.rules.roomsList.first(); rm; rm=gt.rules.roomsList.next())
+	for(int i=0; i<gt.rules.roomsList.size(); i++){
+		Room* rm=gt.rules.roomsList[i];
 		roomsComboBox->insertItem(rm->name);
+	}
 }
 
 void AddConstraintTeacherRequiresRoomForm::addConstraint()

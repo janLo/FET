@@ -19,8 +19,17 @@
 #include "addconstraint2activitiesconsecutiveform.h"
 #include "modifyconstraint2activitiesconsecutiveform.h"
 
+#include <QDesktopWidget>
+
 Constraint2ActivitiesConsecutiveForm::Constraint2ActivitiesConsecutiveForm()
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	this->refreshConstraintsListBox();
 }
 
@@ -30,16 +39,17 @@ Constraint2ActivitiesConsecutiveForm::~Constraint2ActivitiesConsecutiveForm()
 
 void Constraint2ActivitiesConsecutiveForm::refreshConstraintsListBox()
 {
-	this->visibleConstraintsList.setAutoDelete(false);
 	this->visibleConstraintsList.clear();
 	constraintsListBox->clear();
-	for(TimeConstraint* ctr=gt.rules.timeConstraintsList.first(); ctr; ctr=gt.rules.timeConstraintsList.next())
+	for(int i=0; i<gt.rules.timeConstraintsList.size(); i++){
+		TimeConstraint* ctr=gt.rules.timeConstraintsList[i];
 		if(filterOk(ctr)){
 			QString s;
 			s=ctr->getDescription(gt.rules);
-			visibleConstraintsList.append(ctr);
+			visibleConstraintsList << ctr; //append
 			constraintsListBox->insertItem(s);
 		}
+	}
 
 	constraintsListBox->setCurrentItem(0);
 	this->constraintChanged(constraintsListBox->currentItem());
@@ -58,7 +68,7 @@ void Constraint2ActivitiesConsecutiveForm::constraintChanged(int index)
 	if(index<0)
 		return;
 	QString s;
-	assert((uint)(index)<this->visibleConstraintsList.count());
+	assert(index<this->visibleConstraintsList.size());
 	TimeConstraint* ctr=this->visibleConstraintsList.at(index);
 	assert(ctr!=NULL);
 	s=ctr->getDetailedDescription(gt.rules);
@@ -67,8 +77,8 @@ void Constraint2ActivitiesConsecutiveForm::constraintChanged(int index)
 
 void Constraint2ActivitiesConsecutiveForm::addConstraint()
 {
-	AddConstraint2ActivitiesConsecutiveForm *addConstraint2ActivitiesConsecutiveForm=new AddConstraint2ActivitiesConsecutiveForm();
-	addConstraint2ActivitiesConsecutiveForm->exec();
+	AddConstraint2ActivitiesConsecutiveForm *form=new AddConstraint2ActivitiesConsecutiveForm();
+	form->exec();
 
 	this->refreshConstraintsListBox();
 }
@@ -110,9 +120,9 @@ void Constraint2ActivitiesConsecutiveForm::modifyConstraint()
 	}
 	TimeConstraint* ctr=this->visibleConstraintsList.at(i);
 
-	ModifyConstraint2ActivitiesConsecutiveForm *modifyConstraint2ActivitiesConsecutiveForm=
+	ModifyConstraint2ActivitiesConsecutiveForm *form=
 	 new ModifyConstraint2ActivitiesConsecutiveForm((Constraint2ActivitiesConsecutive*)ctr);
-	modifyConstraint2ActivitiesConsecutiveForm->exec();
+	form->exec();
 
 	this->refreshConstraintsListBox();
 	

@@ -19,8 +19,17 @@
 
 #include <qlineedit.h>
 
+#include <QDesktopWidget>
+
 ModifyStudentsSubgroupForm::ModifyStudentsSubgroupForm(const QString& yearName, const QString& groupName, const QString& initialSubgroupName, int initialNumberOfStudents)
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	this->_yearName=yearName;
 	this->_groupName=groupName;
 	this->_initialSubgroupName=initialSubgroupName;

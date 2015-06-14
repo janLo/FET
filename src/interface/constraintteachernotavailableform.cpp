@@ -19,13 +19,23 @@
 #include "addconstraintteachernotavailableform.h"
 #include "modifyconstraintteachernotavailableform.h"
 
+#include <QDesktopWidget>
+
 ConstraintTeacherNotAvailableForm::ConstraintTeacherNotAvailableForm()
 {
-	teachersComboBox->insertItem("");
-	for(Teacher* tch=gt.rules.teachersList.first(); tch; tch=gt.rules.teachersList.next())
-		teachersComboBox->insertItem(tch->name);
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
 
-	this->visibleConstraintsList.setAutoDelete(false);
+	teachersComboBox->insertItem("");
+	for(int i=0; i<gt.rules.teachersList.size(); i++){
+		Teacher* tch=gt.rules.teachersList[i];
+		teachersComboBox->insertItem(tch->name);
+	}
+
 	this->filterChanged();
 }
 
@@ -47,18 +57,20 @@ void ConstraintTeacherNotAvailableForm::filterChanged()
 {
 	this->visibleConstraintsList.clear();
 	constraintsListBox->clear();
-	for(TimeConstraint* ctr=gt.rules.timeConstraintsList.first(); ctr; ctr=gt.rules.timeConstraintsList.next())
+	for(int i=0; i<gt.rules.timeConstraintsList.size(); i++){
+		TimeConstraint* ctr=gt.rules.timeConstraintsList[i];
 		if(filterOk(ctr)){
 			visibleConstraintsList.append(ctr);
 			constraintsListBox->insertItem(ctr->getDescription(gt.rules));
 		}
+	}
 }
 
 void ConstraintTeacherNotAvailableForm::constraintChanged(int index)
 {
 	if(index<0)
 		return;
-	assert((uint)(index)<this->visibleConstraintsList.count());
+	assert(index<this->visibleConstraintsList.size());
 	TimeConstraint* ctr=this->visibleConstraintsList.at(index);
 	assert(ctr!=NULL);
 	currentConstraintTextEdit->setText(ctr->getDetailedDescription(gt.rules));
@@ -66,8 +78,8 @@ void ConstraintTeacherNotAvailableForm::constraintChanged(int index)
 
 void ConstraintTeacherNotAvailableForm::addConstraint()
 {
-	AddConstraintTeacherNotAvailableForm *addConstraintTeacherNotAvailableForm=new AddConstraintTeacherNotAvailableForm();
-	addConstraintTeacherNotAvailableForm->exec();
+	AddConstraintTeacherNotAvailableForm *form=new AddConstraintTeacherNotAvailableForm();
+	form->exec();
 
 	filterChanged();
 	
@@ -83,9 +95,9 @@ void ConstraintTeacherNotAvailableForm::modifyConstraint()
 	}
 	TimeConstraint* ctr=this->visibleConstraintsList.at(i);
 
-	ModifyConstraintTeacherNotAvailableForm *modifyConstraintTeacherNotAvailableForm
+	ModifyConstraintTeacherNotAvailableForm *form
 	 = new ModifyConstraintTeacherNotAvailableForm((ConstraintTeacherNotAvailable*)ctr);
-	modifyConstraintTeacherNotAvailableForm->exec();
+	form->exec();
 
 	filterChanged();
 	constraintsListBox->setCurrentItem(i);

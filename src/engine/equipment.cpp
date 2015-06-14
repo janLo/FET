@@ -53,7 +53,8 @@ QString Equipment::getDetailedDescriptionWithConstraints(Rules& r)
 	s+="--------------------------------------------------\n";
 	s+=QObject::tr("Space constraints directly related to this equipment:");
 	s+="\n";
-	for(SpaceConstraint* c=r.spaceConstraintsList.first(); c; c=r.spaceConstraintsList.next()){
+	for(int i=0; i<r.spaceConstraintsList.size(); i++){
+		SpaceConstraint* c=r.spaceConstraintsList[i];
 		if(c->isRelatedToEquipment(this)){
 			s+="\n";
 			s+=c->getDetailedDescription(r);
@@ -64,12 +65,7 @@ QString Equipment::getDetailedDescriptionWithConstraints(Rules& r)
 	return s;
 }
 
-int EquipmentsList::compareItems(QPtrCollection::Item item1, QPtrCollection::Item item2)
+int equipmentsAscending(const Equipment* e1, const Equipment* e2)
 {
-	if(((Equipment*)item1)->name > ((Equipment*)item2)->name)
-		return 1;
-	else if(((Equipment*)item1)->name < ((Equipment*)item2)->name)
-		return -1;
-	else
-		return 0;
+	return e1->name < e2->name;	
 }

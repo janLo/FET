@@ -21,20 +21,22 @@
 #include "fetmainform.h"
 #include "fet.h"
 
-#include <qcombobox.h>
+#include <q3combobox.h>
 #include <qmessagebox.h>
-#include <qgroupbox.h>
+#include <q3groupbox.h>
 #include <qspinbox.h>
 #include <qcheckbox.h>
 #include <qpushbutton.h>
 #include <qlineedit.h>
-#include <qtable.h>
+#include <q3table.h>
 #include <qapplication.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qstring.h>
-#include <qlistbox.h>
+#include <q3listbox.h>
 #include <qlabel.h>
-#include <qtable.h>
+#include <q3table.h>
+
+#include <QDesktopWidget>
 
 extern bool students_schedule_ready;
 extern bool teachers_schedule_ready;
@@ -45,6 +47,13 @@ extern bool simulation_running;
 
 TimetableViewTeachersForm::TimetableViewTeachersForm()
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	teachersListBox->clear();
 	for(int i=0; i<gt.rules.nInternalTeachers; i++)
 		teachersListBox->insertItem(gt.rules.internalTeachersList[i]->name);
@@ -57,7 +66,7 @@ TimetableViewTeachersForm::~TimetableViewTeachersForm()
 
 void TimetableViewTeachersForm::teacherChanged(const QString &teacherName)
 {
-	if(teacherName==NULL)
+	if(teacherName==QString::null)
 		return;
 
 	int teacherId=gt.rules.searchTeacher(teacherName);
@@ -73,7 +82,7 @@ void TimetableViewTeachersForm::updateTeachersTimetableTable(){
 	QString s;
 	QString teachername;
 
-	if(teachersListBox->currentText()==NULL)
+	if(teachersListBox->currentText()==QString::null)
 		return;
 
 	teachername = teachersListBox->currentText();
@@ -82,12 +91,14 @@ void TimetableViewTeachersForm::updateTeachersTimetableTable(){
 	teacherNameTextLabel->setText(s);
 
 	assert(gt.rules.initialized);
-	teachersTimetableTable->setNumRows(gt.rules.nHoursPerDay+1);
-	teachersTimetableTable->setNumCols(gt.rules.nDaysPerWeek+1);
+	teachersTimetableTable->setNumRows(gt.rules.nHoursPerDay);
+	teachersTimetableTable->setNumCols(gt.rules.nDaysPerWeek);
 	for(int j=0; j<gt.rules.nDaysPerWeek; j++)
-		teachersTimetableTable->setText(0, j+1, gt.rules.daysOfTheWeek[j]);
+		//teachersTimetableTable->setText(0, j+1, gt.rules.daysOfTheWeek[j]);
+		teachersTimetableTable->horizontalHeader()->setLabel(j, gt.rules.daysOfTheWeek[j]);
 	for(int i=0; i<gt.rules.nHoursPerDay; i++)
-		teachersTimetableTable->setText(i+1, 0, gt.rules.hoursOfTheDay[i]);
+		//teachersTimetableTable->setText(i+1, 0, gt.rules.hoursOfTheDay[i]);
+		teachersTimetableTable->verticalHeader()->setLabel(i, gt.rules.hoursOfTheDay[i]);
 
 	int teacher=gt.rules.searchTeacher(teachername);
 	if(teacher<0){
@@ -120,11 +131,11 @@ void TimetableViewTeachersForm::updateTeachersTimetableTable(){
 					for(QStringList::Iterator it=act->studentsNames.begin(); it!=act->studentsNames.end(); it++)
 						s += (*it) + " ";
 				}
-				teachersTimetableTable->setText(j+1, k+1, s);
+				teachersTimetableTable->setText(j, k, s);
 			}
-		for(int i=0; i<=gt.rules.nHoursPerDay; i++) //added in version 3_9_16, on 16 Oct. 2004
-			teachersTimetableTable->adjustRow(i);
 		}
+		for(int i=0; i<gt.rules.nHoursPerDay; i++) //added in version 3_9_16, on 16 Oct. 2004
+			teachersTimetableTable->adjustRow(i);
 	}
 }
 
@@ -134,7 +145,7 @@ void TimetableViewTeachersForm::detailActivity(int row, int col){
 	QString s;
 	QString teachername;
 
-	if(teachersListBox->currentText()==NULL)
+	if(teachersListBox->currentText()==QString::null)
 		return;
 
 	teachername = teachersListBox->currentText();
@@ -149,8 +160,8 @@ void TimetableViewTeachersForm::detailActivity(int row, int col){
 			QObject::tr("The teacher is invalid"));
 	}
 	else{
-		int j=row-1;
-		int k=col-1;
+		int j=row;
+		int k=col;
 		s = "";
 		if(j>=0 && k>=0){
 			int ai=teachers_timetable_week1[teacher][k][j]; //activity index
@@ -184,7 +195,7 @@ void TimetableViewTeachersForm::lock()
 	//find teacher index
 	QString teachername;
 
-	if(teachersListBox->currentText()==NULL)
+	if(teachersListBox->currentText()==QString::null)
 		return;
 
 	teachername = teachersListBox->currentText();
@@ -195,7 +206,7 @@ void TimetableViewTeachersForm::lock()
 	//lock selected activities
 	for(int j=0; j<gt.rules.nHoursPerDay; j++){
 		for(int k=0; k<gt.rules.nDaysPerWeek; k++){
-			if(teachersTimetableTable->isSelected(j+1, k+1)){
+			if(teachersTimetableTable->isSelected(j, k)){
 				int ai=teachers_timetable_week1[i][k][j];
 				if(ai!=UNALLOCATED_ACTIVITY){
 					int time=tc->times[ai];
@@ -207,7 +218,7 @@ void TimetableViewTeachersForm::lock()
 					bool t=gt.rules.addTimeConstraint(ctr);
 					if(t)
 						QMessageBox::information(this, QObject::tr("FET information"), 
-						 QObject::tr("Added the following constraint:\n"+ctr->getDetailedDescription(gt.rules)));
+						 QObject::tr("Added the following constraint:\n%1").arg(ctr->getDetailedDescription(gt.rules)));
 					else{
 						QMessageBox::warning(this, QObject::tr("FET information"), 
 						 QObject::tr("Constraint\n%1 NOT added - duplicate").arg(ctr->getDetailedDescription(gt.rules)));
@@ -226,7 +237,7 @@ void TimetableViewTeachersForm::lock()
 					bool t=gt.rules.addTimeConstraint(ctr);
 					if(t)
 						QMessageBox::information(this, QObject::tr("FET information"), 
-						 QObject::tr("Added the following constraint:\n"+ctr->getDetailedDescription(gt.rules)));
+						 QObject::tr("Added the following constraint:\n%1").arg(ctr->getDetailedDescription(gt.rules)));
 					else{
 						QMessageBox::warning(this, QObject::tr("FET information"), 
 						 QObject::tr("Constraint\n%1 NOT added - duplicate").arg(ctr->getDetailedDescription(gt.rules)));

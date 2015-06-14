@@ -12,6 +12,9 @@
 //
 #include "studentsset.h"
 #include "rules.h"
+#include "genetictimetable.h"
+
+extern GeneticTimetable gt;
 
 StudentsSet::StudentsSet()
 {
@@ -27,13 +30,26 @@ StudentsYear::StudentsYear()
 	: StudentsSet()
 {
 	this->type=STUDENTS_YEAR;
-	this->groupsList.setAutoDelete(true);
 }
 
 StudentsYear::~StudentsYear()
 {
-	assert(this->groupsList.autoDelete()==true);
-	this->groupsList.clear();
+	//it is possible that the removed group to be in another year
+
+	while(!groupsList.isEmpty()){
+		StudentsGroup* g=groupsList[0];
+		
+		foreach(StudentsYear* year, gt.rules.yearsList)
+			if(year!=this)
+				for(int i=0; i<year->groupsList.size(); i++)
+					if(year->groupsList[i]==g)
+						year->groupsList[i]=NULL;
+	
+		if(g!=NULL)
+			delete groupsList.takeFirst();
+		else
+			groupsList.removeFirst();
+	}
 }
 
 QString StudentsYear::getXmlDescription()
@@ -42,8 +58,10 @@ QString StudentsYear::getXmlDescription()
 	s+="<Year>\n";
 	s+="<Name>"+protect(this->name)+"</Name>\n";
 	s+="<Number_of_Students>"+QString::number(this->numberOfStudents)+"</Number_of_Students>\n";
-	for(StudentsGroup* stg=this->groupsList.first(); stg; stg=this->groupsList.next())
+	for(int i=0; i<this->groupsList.size(); i++){
+		StudentsGroup* stg=this->groupsList[i];
 		s+=stg->getXmlDescription();
+	}
 	s+="</Year>\n";
 
 	return s;
@@ -83,7 +101,8 @@ QString StudentsYear::getDetailedDescriptionWithConstraints(Rules& r)
 	s+="--------------------------------------------------\n";
 	s+=QObject::tr("Time constraints directly related to this students year:");
 	s+="\n";
-	for(TimeConstraint* c=r.timeConstraintsList.first(); c; c=r.timeConstraintsList.next()){
+	for(int i=0; i<r.timeConstraintsList.size(); i++){
+		TimeConstraint* c=r.timeConstraintsList[i];
 		if(c->isRelatedToStudentsSet(r, this)){
 			s+="\n";
 			s+=c->getDetailedDescription(r);
@@ -93,7 +112,8 @@ QString StudentsYear::getDetailedDescriptionWithConstraints(Rules& r)
 	s+="--------------------------------------------------\n";
 	s+=QObject::tr("Space constraints directly related to this students year:");
 	s+="\n";
-	for(SpaceConstraint* c=r.spaceConstraintsList.first(); c; c=r.spaceConstraintsList.next()){
+	for(int i=0; i<r.spaceConstraintsList.size(); i++){
+		SpaceConstraint* c=r.spaceConstraintsList[i];
 		if(c->isRelatedToStudentsSet(r, this)){
 			s+="\n";
 			s+=c->getDetailedDescription(r);
@@ -109,13 +129,25 @@ StudentsGroup::StudentsGroup()
 	: StudentsSet()
 {
 	this->type=STUDENTS_GROUP;
-	this->subgroupsList.setAutoDelete(true);
 }
 
 StudentsGroup::~StudentsGroup()
 {
-	assert(this->subgroupsList.autoDelete()==true);
-	this->subgroupsList.clear();
+	while(!subgroupsList.isEmpty()){
+		StudentsSubgroup* s=subgroupsList[0];
+		
+		foreach(StudentsYear* year, gt.rules.yearsList)
+			foreach(StudentsGroup* group, year->groupsList)
+				if(group!=this)
+					for(int i=0; i<group->subgroupsList.size(); i++)
+						if(group->subgroupsList[i]==s)
+							group->subgroupsList[i]=NULL;
+	
+		if(s!=NULL)
+			delete subgroupsList.takeFirst();
+		else
+			subgroupsList.removeFirst();
+	}
 }
 
 QString StudentsGroup::getXmlDescription()
@@ -124,8 +156,10 @@ QString StudentsGroup::getXmlDescription()
 	s+="	<Group>\n";
 	s+="	<Name>"+protect(this->name)+"</Name>\n";
 	s+="	<Number_of_Students>"+QString::number(this->numberOfStudents)+"</Number_of_Students>\n";
-	for(StudentsSubgroup* sts=this->subgroupsList.first(); sts; sts=this->subgroupsList.next())
+	for(int i=0; i<this->subgroupsList.size(); i++){
+		StudentsSubgroup* sts=this->subgroupsList[i];
 		s+=sts->getXmlDescription();
+	}
 	s+="	</Group>\n";
 
 	return s;
@@ -165,7 +199,8 @@ QString StudentsGroup::getDetailedDescriptionWithConstraints(Rules& r)
 	s+="--------------------------------------------------\n";
 	s+=QObject::tr("Time constraints directly related to this students group:");
 	s+="\n";
-	for(TimeConstraint* c=r.timeConstraintsList.first(); c; c=r.timeConstraintsList.next()){
+	for(int i=0; i<r.timeConstraintsList.size(); i++){
+		TimeConstraint* c=r.timeConstraintsList[i];
 		if(c->isRelatedToStudentsSet(r, this)){
 			s+="\n";
 			s+=c->getDetailedDescription(r);
@@ -175,7 +210,8 @@ QString StudentsGroup::getDetailedDescriptionWithConstraints(Rules& r)
 	s+="--------------------------------------------------\n";
 	s+=QObject::tr("Space constraints directly related to this students group:");
 	s+="\n";
-	for(SpaceConstraint* c=r.spaceConstraintsList.first(); c; c=r.spaceConstraintsList.next()){
+	for(int i=0; i<r.spaceConstraintsList.size(); i++){
+		SpaceConstraint* c=r.spaceConstraintsList[i];
 		if(c->isRelatedToStudentsSet(r, this)){
 			s+="\n";
 			s+=c->getDetailedDescription(r);
@@ -242,7 +278,8 @@ QString StudentsSubgroup::getDetailedDescriptionWithConstraints(Rules& r)
 	s+="--------------------------------------------------\n";
 	s+=QObject::tr("Time constraints directly related to this students subgroup:");
 	s+="\n";
-	for(TimeConstraint* c=r.timeConstraintsList.first(); c; c=r.timeConstraintsList.next()){
+	for(int i=0; i<r.timeConstraintsList.size(); i++){
+		TimeConstraint* c=r.timeConstraintsList[i];
 		if(c->isRelatedToStudentsSet(r, this)){
 			s+="\n";
 			s+=c->getDetailedDescription(r);
@@ -252,7 +289,8 @@ QString StudentsSubgroup::getDetailedDescriptionWithConstraints(Rules& r)
 	s+="--------------------------------------------------\n";
 	s+=QObject::tr("Space constraints directly related to this students subgroup:");
 	s+="\n";
-	for(SpaceConstraint* c=r.spaceConstraintsList.first(); c; c=r.spaceConstraintsList.next()){
+	for(int i=0; i<r.spaceConstraintsList.size(); i++){
+		SpaceConstraint* c=r.spaceConstraintsList[i];
 		if(c->isRelatedToStudentsSet(r, this)){
 			s+="\n";
 			s+=c->getDetailedDescription(r);
@@ -263,32 +301,17 @@ QString StudentsSubgroup::getDetailedDescriptionWithConstraints(Rules& r)
 	return s;
 }
 
-int StudentsYearsList::compareItems(QPtrCollection::Item item1, QPtrCollection::Item item2)
+int yearsAscending(const StudentsYear* y1, const StudentsYear* y2)
 {
-	if(((StudentsYear*)item1)->name > ((StudentsYear*)item2)->name)
-		return 1;
-	else if(((StudentsYear*)item1)->name < ((StudentsYear*)item2)->name)
-		return -1;
-	else
-		return 0;
+	return y1->name < y2->name;
 }
 
-int StudentsGroupsList::compareItems(QPtrCollection::Item item1, QPtrCollection::Item item2)
+int groupsAscending(const StudentsGroup* g1, const StudentsGroup* g2)
 {
-	if(((StudentsGroup*)item1)->name > ((StudentsGroup*)item2)->name)
-		return 1;
-	else if(((StudentsGroup*)item1)->name < ((StudentsGroup*)item2)->name)
-		return -1;
-	else
-		return 0;
+	return g1->name < g2->name;
 }
 
-int StudentsSubgroupsList::compareItems(QPtrCollection::Item item1, QPtrCollection::Item item2)
+int subgroupsAscending(const StudentsSubgroup* s1, const StudentsSubgroup* s2)
 {
-	if(((StudentsSubgroup*)item1)->name > ((StudentsSubgroup*)item2)->name)
-		return 1;
-	else if(((StudentsSubgroup*)item1)->name < ((StudentsSubgroup*)item2)->name)
-		return -1;
-	else
-		return 0;
+	return s1->name < s2->name;
 }

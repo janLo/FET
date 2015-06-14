@@ -23,32 +23,32 @@
 #include "genetictimetable.h"
 #include "fet.h"
 
-#include <qcombobox.h>
+#include <q3combobox.h>
 #include <qmessagebox.h>
-#include <qgroupbox.h>
+#include <q3groupbox.h>
 #include <qspinbox.h>
 #include <qcheckbox.h>
 #include <qpushbutton.h>
 #include <qlineedit.h>
-#include <qtable.h>
+#include <q3table.h>
 #include <qapplication.h>
 #include <qstring.h>
 #include <qthread.h>
 #include <qmutex.h>
 
-class TimetableAllocateHoursForm;
-
 class TimeSolvingThread: public QThread{
+	Q_OBJECT
+
 public:
-
-	TimetableAllocateHoursForm* callingForm;
-
-	TimeSolvingThread();
-
 	void run();
+	
+signals: 
+	void generationComputed(int generation);
 };
 
 class TimetableAllocateHoursForm : public TimetableAllocateHoursForm_template  {
+	Q_OBJECT
+
 public:
 
 	TimetableAllocateHoursForm();
@@ -59,13 +59,19 @@ public:
 
 	void stop();
 
-	void pause();
-
 	void write();
 
-	void generationLogging(int generation);
+	void savePosition();
 
-	void simulationRunning();
+	void loadPosition();
+
+	void initializeUnallocated();
+
+	void initializeRandomly();
+
+	void closePressed();
+	
+	void generationLogging(int generation);
 
 	void writeSimulationResults(TimeChromosome& c);
 
@@ -120,15 +126,8 @@ public:
 
 	void getTeachersTimetable(TimeChromosome& c);
 
-	void savePosition();
-
-	void loadPosition();
-
-	void initializeUnallocated();
-
-	void initializeRandomly();
-
-	void closePressed();
+private slots:
+	void updateGeneration(int generation);
 };
 
 #endif

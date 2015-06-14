@@ -17,16 +17,27 @@
 #include "fetmainform.h"
 #include "teacher.h"
 
-#include <qlistbox.h>
+#include <q3listbox.h>
 #include <qinputdialog.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
+
+#include <QDesktopWidget>
 
 TeachersForm::TeachersForm()
  : TeachersForm_template()
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	teachersListBox->clear();
-	for(Teacher* tch=gt.rules.teachersList.first(); tch; tch=gt.rules.teachersList.next())
+	for(int i=0; i<gt.rules.teachersList.size(); i++){
+		Teacher* tch=gt.rules.teachersList[i];
 		teachersListBox->insertItem(tch->name);
+	}
 		
 	if(teachersListBox->count()>0){
 		teachersListBox->setCurrentItem(0);
@@ -131,8 +142,10 @@ void TeachersForm::sortTeachers()
 	gt.rules.sortTeachersAlphabetically();
 
 	teachersListBox->clear();
-	for(Teacher* tch=gt.rules.teachersList.first(); tch; tch=gt.rules.teachersList.next())
+	for(int i=0; i<gt.rules.teachersList.size(); i++){
+		Teacher* tch=gt.rules.teachersList[i];
 		teachersListBox->insertItem(tch->name);
+	}
 }
 
 void TeachersForm::teacherChanged(int index)

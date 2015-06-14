@@ -22,7 +22,13 @@ along with FET; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+/*
+2-point and uniform crossover code by Volker Dirr, Volker at dirr-computer dot de
+*/
+
 #include <iostream>
+//Added by qt3to4:
+#include <QTextStream>
 using namespace std;
 
 #include "genetictimetable_defs.h"
@@ -54,6 +60,8 @@ void TimeChromosome::copy(Rules& r, TimeChromosome& c){
 	for(int i=0; i<r.nInternalActivities; i++)
 		this->times[i] = c.times[i];
 	//memcpy(times, c.times, r.nActivities * sizeof(times[0]));
+	
+	this->timeChangedForMatrixCalculation=c.timeChangedForMatrixCalculation;
 }
 
 void TimeChromosome::init(Rules& r){
@@ -63,13 +71,15 @@ void TimeChromosome::init(Rules& r){
 			this->times[i]=UNALLOCATED_TIME;
 
 	this->_hardFitness=this->_softFitness=-1;
+	
+	this->timeChangedForMatrixCalculation=true;
 }
 
 bool TimeChromosome::read(Rules& r, const QString& filename){
 	assert(r.initialized);
 
 	QFile file(filename);
-	if(!file.open(IO_ReadOnly))
+	if(!file.open(QIODevice::ReadOnly))
 		assert(0);
 	QTextStream tis(&file);
 	this->read(r, tis);
@@ -84,7 +94,7 @@ bool TimeChromosome::read(Rules &r, QTextStream &tis){
 
 	for(int i=0; i<r.nInternalActivities; i++){
 		tis>>this->times[i];
-		if(tis.eof()){
+		if(tis.atEnd()){
 			//The rules and the solution do not match (1)
 			return false;
 		}
@@ -96,6 +106,8 @@ bool TimeChromosome::read(Rules &r, QTextStream &tis){
 	}
 	
 	this->_hardFitness=this->_softFitness=-1;
+	
+	this->timeChangedForMatrixCalculation=true;
 
 	return true;
 }
@@ -104,7 +116,7 @@ void TimeChromosome::write(Rules& r, const QString &filename){
 	assert(r.initialized);
 
 	QFile file(filename);
-	if(!file.open(IO_WriteOnly))
+	if(!file.open(QIODevice::WriteOnly))
 		assert(0);
 	QTextStream tos(&file);
 	this->write(r, tos);
@@ -128,6 +140,8 @@ void TimeChromosome::makeTimesUnallocated(Rules& r){
 			this->times[i]=UNALLOCATED_TIME;
 
 	this->_hardFitness=this->_softFitness=-1;
+
+	this->timeChangedForMatrixCalculation=true;
 }
 
 void TimeChromosome::makeTimesRandom(Rules& r){
@@ -138,6 +152,8 @@ void TimeChromosome::makeTimesRandom(Rules& r){
 			this->times[i] = rand()%r.nHoursPerWeek;
 
 	this->_hardFitness = this->_softFitness = -1;
+
+	this->timeChangedForMatrixCalculation=true;
 }
 
 
@@ -145,6 +161,14 @@ int TimeChromosome::hardFitness(Rules& r, QString* conflictsString){
 	assert(r.initialized);
 	assert(r.internalStructureComputed);
 
+	/*if(this->timeChangedForMatrixCalculation && this->_hardFitness>=0){
+		cout<<"this->_hardFitness=="<<this->_hardFitness<<endl;
+		cout<<"this->timeChangedForMatrixCalculation=="<<this->timeChangedForMatrixCalculation<<endl;		
+	}*/
+	
+	if(this->_hardFitness>=0)
+		assert(this->timeChangedForMatrixCalculation==false);
+		
 	if(this->_hardFitness>=0 && conflictsString==NULL)
 	//If you want to see the log, you have to recompute the fitness, even if it is
 	//already computed
@@ -200,6 +224,8 @@ int TimeChromosome::hardFitness(Rules& r, QString* conflictsString){
 		}
 	}
 	
+	this->timeChangedForMatrixCalculation=true;
+	
 	this->_hardFitness=0;
 	//here we must not have compulsory activity preferred time nor 
 	//compulsory activities same time and/or hour
@@ -212,7 +238,7 @@ int TimeChromosome::hardFitness(Rules& r, QString* conflictsString){
 		else
 			//not logged here
 			this->_softFitness += r.internalTimeConstraintsList[i]->fitness(*this, r, NULL);
-
+			
 	return this->_hardFitness;
 }
 
@@ -238,7 +264,14 @@ int TimeChromosome::softFitness(Rules& r, QString* conflictsString){
 }
 
 //critical function here - must be optimized for speed
-void TimeChromosome::crossover(Rules& r, TimeChromosome& c1, TimeChromosome& c2){
+void TimeChromosome::crossover(Rules& r, TimeChromosome& c1, TimeChromosome& c2)
+{
+	this->twoPointCrossover(r, c1, c2);
+}
+
+//critical function here - must be optimized for speed
+void TimeChromosome::onePointCrossover(Rules& r, TimeChromosome& c1, TimeChromosome& c2)
+{
 	assert(r.internalStructureComputed);
 
 	int q=rand()%(r.nInternalActivities+1);
@@ -251,10 +284,79 @@ void TimeChromosome::crossover(Rules& r, TimeChromosome& c1, TimeChromosome& c2)
 	//memcpy(times+q, c2.times+q, (r.nActivities-q)*sizeof(times[0]));
 
 	this->_hardFitness = this->_softFitness = -1;
+
+	this->timeChangedForMatrixCalculation=true;
 }
 
 //critical function here - must be optimized for speed
-void TimeChromosome::mutate1(Rules& r){
+//code contributed by Volker Dirr
+void TimeChromosome::twoPointCrossover(Rules& r, TimeChromosome& c1, TimeChromosome& c2)
+{
+	assert(r.internalStructureComputed);
+	
+	int p=rand()%(r.nInternalActivities);
+	int q;
+	
+	do{
+		q=rand()%(r.nInternalActivities);
+	}while(p==q);
+	 
+	if(p>q){
+		int w=q;
+		q=p;
+		p=w;
+	}
+	int z=rand()%2;
+	int i;
+	
+	if(z==0){
+		for(i=0; i<p; i++)
+			this->times[i]=c1.times[i];
+		for(; i<q; i++)
+			this->times[i]=c2.times[i];
+		for(; i<r.nInternalActivities; i++)
+			this->times[i]=c1.times[i];
+	}
+	else{
+		for(i=0; i<p; i++)
+			this->times[i]=c2.times[i];
+		for(; i<q; i++)
+			this->times[i]=c1.times[i];
+		for(; i<r.nInternalActivities; i++)
+			this->times[i]=c2.times[i];
+	}
+	 
+	this->_hardFitness = this->_softFitness = -1;
+	this->timeChangedForMatrixCalculation=true;
+}
+
+//critical function here - must be optimized for speed
+//code contributed by Volker Dirr
+void TimeChromosome::uniformCrossover(Rules& r, TimeChromosome& c1, TimeChromosome& c2)
+{
+	assert(r.internalStructureComputed);
+	
+	int z;
+	int dom=(rand()%40)+30;
+	for(int i=0; i<r.nInternalActivities; i++){
+		if(c1.times[i]==c2.times[i])
+			this->times[i]=c1.times[i];
+		else{
+			z=rand()%100;
+			if(z<dom)
+				this->times[i]=c1.times[i];
+			else
+				this->times[i]=c2.times[i];
+		}
+	}
+	
+	this->_hardFitness = this->_softFitness = -1;
+	this->timeChangedForMatrixCalculation=true;
+}
+
+//critical function here - must be optimized for speed
+void TimeChromosome::mutate1(Rules& r)
+{
 	int p,q,k;
 	
 	assert(r.internalStructureComputed);
@@ -272,6 +374,8 @@ void TimeChromosome::mutate1(Rules& r){
 	this->times[q]=k; //exchange the values
 
 	this->_hardFitness = this->_softFitness = -1;
+
+	this->timeChangedForMatrixCalculation=true;
 }
 
 //critical function here - must be optimized for speed
@@ -284,6 +388,8 @@ void TimeChromosome::mutate2(Rules& r){
 	this->times[p]=k;
 
 	this->_hardFitness = this->_softFitness = -1;
+
+	this->timeChangedForMatrixCalculation=true;
 }
 
 //critical function here - must be optimized for speed
@@ -313,12 +419,14 @@ int TimeChromosome::getTeachersMatrix(Rules& r, int16 a[MAX_TEACHERS][MAX_DAYS_P
 						a[tch][day][hour+dd]+=2;
 					}
 					else{
-						assert(act->parity==PARITY_BIWEEKLY);
+						assert(act->parity==PARITY_FORTNIGHTLY);
 						conflicts += tmp<2 ? 0 : 1;
 						a[tch][day][hour+dd]++;
 					}
 				}
 		}
+
+	this->timeChangedForMatrixCalculation=false;
 		
 	return conflicts;
 }
@@ -350,12 +458,14 @@ int TimeChromosome::getSubgroupsMatrix(Rules& r, int16 a[MAX_TOTAL_SUBGROUPS][MA
 						a[sg][day][hour+dd]+=2;
 					}
 					else{
-						assert(act->parity == PARITY_BIWEEKLY);
+						assert(act->parity == PARITY_FORTNIGHTLY);
 						conflicts += tmp<2 ? 0 : 1;
 						a[sg][day][hour+dd]++;
 					}
 				}
 		}
+		
+	this->timeChangedForMatrixCalculation=false;
 		
 	return conflicts;
 }

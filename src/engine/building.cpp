@@ -54,7 +54,8 @@ QString Building::getDetailedDescriptionWithConstraints(Rules& r)
 	s+="--------------------------------------------------\n";
 	s+=QObject::tr("Space constraints directly related to this building:");
 	s+="\n";
-	for(SpaceConstraint* c=r.spaceConstraintsList.first(); c; c=r.spaceConstraintsList.next()){
+	for(int i=0; i<r.spaceConstraintsList.size(); i++){
+		SpaceConstraint* c=r.spaceConstraintsList[i];
 		if(c->isRelatedToBuilding(this)){
 			s+="\n";
 			s+=c->getDetailedDescription(r);
@@ -65,12 +66,7 @@ QString Building::getDetailedDescriptionWithConstraints(Rules& r)
 	return s;
 }
 
-int BuildingsList::compareItems(QPtrCollection::Item item1, QPtrCollection::Item item2)
+int buildingsAscending (const Building* b1, const Building* b2)
 {
-	if(((Room*)item1)->name > ((Room*)item2)->name)
-		return 1;
-	else if(((Room*)item1)->name < ((Room*)item2)->name)
-		return -1;
-	else
-		return 0;
+	return b1->name < b2->name;
 }

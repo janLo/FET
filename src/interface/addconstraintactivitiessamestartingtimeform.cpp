@@ -21,32 +21,51 @@
 #include <qradiobutton.h>
 #include <qlabel.h>
 #include <qlineedit.h>
-#include <qtable.h>
+#include <q3table.h>
+
+#include <QDesktopWidget>
 
 AddConstraintActivitiesSameStartingTimeForm::AddConstraintActivitiesSameStartingTimeForm()
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+						
 	teachersComboBox->insertItem("");
-	for(Teacher* tch=gt.rules.teachersList.first(); tch; tch=gt.rules.teachersList.next())
+	for(int i=0; i<gt.rules.teachersList.size(); i++){
+		Teacher* tch=gt.rules.teachersList[i];
 		teachersComboBox->insertItem(tch->name);
+	}
 	teachersComboBox->setCurrentItem(0);
 
 	subjectsComboBox->insertItem("");
-	for(Subject* sb=gt.rules.subjectsList.first(); sb; sb=gt.rules.subjectsList.next())
+	for(int i=0; i<gt.rules.subjectsList.size(); i++){
+		Subject* sb=gt.rules.subjectsList[i];
 		subjectsComboBox->insertItem(sb->name);
+	}
 	subjectsComboBox->setCurrentItem(0);
 
 	subjectTagsComboBox->insertItem("");
-	for(SubjectTag* st=gt.rules.subjectTagsList.first(); st; st=gt.rules.subjectTagsList.next())
+	for(int i=0; i<gt.rules.subjectTagsList.size(); i++){
+		SubjectTag* st=gt.rules.subjectTagsList[i];
 		subjectTagsComboBox->insertItem(st->name);
+	}
 	subjectTagsComboBox->setCurrentItem(0);
 
 	studentsComboBox->insertItem("");
-	for(StudentsYear* sty=gt.rules.yearsList.first(); sty; sty=gt.rules.yearsList.next()){
+	for(int i=0; i<gt.rules.yearsList.size(); i++){
+		StudentsYear* sty=gt.rules.yearsList[i];
 		studentsComboBox->insertItem(sty->name);
-		for(StudentsGroup* stg=sty->groupsList.first(); stg; stg=sty->groupsList.next()){
+		for(int j=0; j<sty->groupsList.size(); j++){
+			StudentsGroup* stg=sty->groupsList[j];
 			studentsComboBox->insertItem(stg->name);
-			for(StudentsSubgroup* sts=stg->subgroupsList.first(); sts; sts=stg->subgroupsList.next())
+			for(int k=0; k<stg->subgroupsList.size(); k++){
+				StudentsSubgroup* sts=stg->subgroupsList[k];
 				studentsComboBox->insertItem(sts->name);
+			}
 		}
 	}
 	studentsComboBox->setCurrentItem(0);
@@ -116,7 +135,8 @@ void AddConstraintActivitiesSameStartingTimeForm::updateActivitiesListBox()
 
 	if(blockCheckBox->isChecked())
 		//show only non-split activities and split activities which are the representatives
-		for(Activity* ac=gt.rules.activitiesList.first(); ac; ac=gt.rules.activitiesList.next()){
+		for(int i=0; i<gt.rules.activitiesList.size(); i++){
+			Activity* ac=gt.rules.activitiesList[i];
 			if(filterOk(ac)){
 				if(ac->activityGroupId==0){
 					activitiesListBox->insertItem(ac->getDescription(gt.rules));
@@ -129,11 +149,13 @@ void AddConstraintActivitiesSameStartingTimeForm::updateActivitiesListBox()
 			}
 		}
 	else
-		for(Activity* ac=gt.rules.activitiesList.first(); ac; ac=gt.rules.activitiesList.next())
+		for(int i=0; i<gt.rules.activitiesList.size(); i++){
+			Activity* ac=gt.rules.activitiesList[i];
 			if(filterOk(ac)){
 				activitiesListBox->insertItem(ac->getDescription(gt.rules));
 				this->activitiesList.append(ac->id);
 			}
+		}
 }
 
 void AddConstraintActivitiesSameStartingTimeForm::blockChanged()
@@ -168,7 +190,7 @@ void AddConstraintActivitiesSameStartingTimeForm::addConstraint()
 			QObject::tr("Only one selected activity - impossible"));
 		return;
 	}
-	if(this->simultaneousActivitiesList.count()>=(uint)(MAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME)){
+	if(this->simultaneousActivitiesList.size()>=MAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME){
 		QMessageBox::warning(this, QObject::tr("FET information"),
 			QObject::tr("Too many activities - please report error\n(CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME too little)"));
 		return;
@@ -177,12 +199,13 @@ void AddConstraintActivitiesSameStartingTimeForm::addConstraint()
 if(blockCheckBox->isChecked()){ //block constraints
 	///////////phase 1 - how many constraints will be added?
 	int nConstraints=0;
-	QValueList<int>::iterator it;
+	QList<int>::iterator it;
 	for(it=this->simultaneousActivitiesList.begin(); it!=this->simultaneousActivitiesList.end(); it++){
 		int _id=(*it);
 		int tmp=0; //tmp represents the number of sub-activities represented by the current (sub)activity
 
-		for(Activity* act=gt.rules.activitiesList.first(); act; act=gt.rules.activitiesList.next()){
+		for(int i=0; i<gt.rules.activitiesList.size(); i++){
+			Activity* act=gt.rules.activitiesList[i];
 			if(act->activityGroupId==0){
 				if(act->id==_id){
 					assert(tmp==0);
@@ -207,7 +230,7 @@ if(blockCheckBox->isChecked()){ //block constraints
 			if(tmp!=nConstraints){
 				QString s=QObject::tr("Sub-activities do not correspond. Mistake:\n");
 				s+=QObject::tr("1. First (sub)activity has id=%1 and represents %2 sub-activities\n")
-					.arg(*(this->simultaneousActivitiesList.at(0)))
+					.arg(this->simultaneousActivitiesList.at(0))
 					.arg(nConstraints);
 				s+=QObject::tr("2. Current (sub)activity has id=%1 and represents %2 sub-activities\n")
 					.arg(_id)
@@ -219,17 +242,18 @@ if(blockCheckBox->isChecked()){ //block constraints
 	}
 	
 	/////////////phase 2 - compute the indices of all the (sub)activities
-#ifdef WIN32
-	int ids[10][MAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME];
-#else
+//#ifdef WIN32
+//	int ids[10][MAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME];
+//#else
 	int ids[nConstraints][this->simultaneousActivitiesList.count()];
-#endif
+//#endif
 	int k;
 	for(k=0, it=this->simultaneousActivitiesList.begin(); it!=this->simultaneousActivitiesList.end(); k++, it++){
 		int _id=(*it);
 		int tmp=0; //tmp represents the number of sub-activities represented by the current (sub)activity
 
-		for(Activity* act=gt.rules.activitiesList.first(); act; act=gt.rules.activitiesList.next()){
+		for(int i=0; i<gt.rules.activitiesList.size(); i++){
+			Activity* act=gt.rules.activitiesList[i];
 			if(act->activityGroupId==0){
 				if(act->id==_id){
 					assert(tmp==0);
@@ -272,7 +296,7 @@ if(blockCheckBox->isChecked()){ //block constraints
 }
 else{
 	int ids[MAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME];
-	QValueList<int>::iterator it;
+	QList<int>::iterator it;
 	int i;
 	for(i=0, it=this->simultaneousActivitiesList.begin(); it!=this->simultaneousActivitiesList.end(); i++,it++){
 		assert(i<MAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME);
@@ -301,7 +325,7 @@ void AddConstraintActivitiesSameStartingTimeForm::addActivity()
 	if(activitiesListBox->currentItem()<0)
 		return;
 	int tmp=activitiesListBox->currentItem();
-	int _id=*(this->activitiesList.at(tmp));
+	int _id=this->activitiesList.at(tmp);
 	
 	QString actName=activitiesListBox->currentText();
 	assert(actName!="");
@@ -322,11 +346,9 @@ void AddConstraintActivitiesSameStartingTimeForm::removeActivity()
 	if(simultaneousActivitiesListBox->currentItem()<0 || simultaneousActivitiesListBox->count()<=0)
 		return;		
 	int tmp=simultaneousActivitiesListBox->currentItem();
-	int _id=*(this->simultaneousActivitiesList.at(tmp));
 	
-	simultaneousActivitiesListBox->removeItem(simultaneousActivitiesListBox->currentItem());
-	int tmp2=this->simultaneousActivitiesList.remove(_id);
-	assert(tmp2==1);
+	simultaneousActivitiesListBox->removeItem(tmp);
+	this->simultaneousActivitiesList.removeAt(tmp);
 }
 
 void AddConstraintActivitiesSameStartingTimeForm::clear()

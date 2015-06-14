@@ -15,16 +15,13 @@
 
 #include "genetictimetable_defs.h"
 
-#include <qstring.h>
-#include <qptrlist.h>
+#include <QList>
+#include <QString>
 
 class Subject;
 class Rules;
 
-class SubjectsList: public QPtrList<Subject>
-{
-	int compareItems(QPtrCollection::Item, QPtrCollection::Item);
-};
+typedef QList<Subject*> SubjectsList;
 
 /**
 This class represents a subject
@@ -42,5 +39,7 @@ public:
 	QString getDetailedDescription();
 	QString getDetailedDescriptionWithConstraints(Rules& r);
 };
+
+int subjectsAscending(const Subject* s1, const Subject* s2);
 
 #endif

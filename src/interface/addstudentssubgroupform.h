@@ -28,7 +28,7 @@
 
 #include <qspinbox.h>
 #include <qlineedit.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 
 
 class AddStudentsSubgroupForm : public AddStudentsSubgroupForm_template {

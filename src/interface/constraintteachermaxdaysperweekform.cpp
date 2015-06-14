@@ -19,13 +19,23 @@
 #include "addconstraintteachermaxdaysperweekform.h"
 #include "modifyconstraintteachermaxdaysperweekform.h"
 
+#include <QDesktopWidget>
+
 ConstraintTeacherMaxDaysPerWeekForm::ConstraintTeacherMaxDaysPerWeekForm()
 {
-	teachersComboBox->insertItem("");
-	for(Teacher* tch=gt.rules.teachersList.first(); tch; tch=gt.rules.teachersList.next())
-		teachersComboBox->insertItem(tch->name);
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
 
-	this->visibleConstraintsList.setAutoDelete(false);
+	teachersComboBox->insertItem("");
+	for(int i=0; i<gt.rules.teachersList.size(); i++){
+		Teacher* tch=gt.rules.teachersList[i];
+		teachersComboBox->insertItem(tch->name);
+	}
+
 	this->filterChanged();
 }
 
@@ -37,7 +47,7 @@ bool ConstraintTeacherMaxDaysPerWeekForm::filterOk(TimeConstraint* ctr)
 {
 	if(ctr->type==CONSTRAINT_TEACHER_MAX_DAYS_PER_WEEK){
 		ConstraintTeacherMaxDaysPerWeek* c=(ConstraintTeacherMaxDaysPerWeek*) ctr;
-		return c->teacher==teachersComboBox->currentText() || teachersComboBox->currentText()=="";
+		return c->teacherName==teachersComboBox->currentText() || teachersComboBox->currentText()=="";
 	}
 	else
 		return false;
@@ -47,18 +57,20 @@ void ConstraintTeacherMaxDaysPerWeekForm::filterChanged()
 {
 	this->visibleConstraintsList.clear();
 	constraintsListBox->clear();
-	for(TimeConstraint* ctr=gt.rules.timeConstraintsList.first(); ctr; ctr=gt.rules.timeConstraintsList.next())
+	for(int i=0; i<gt.rules.timeConstraintsList.size(); i++){
+		TimeConstraint* ctr=gt.rules.timeConstraintsList[i];
 		if(filterOk(ctr)){
 			visibleConstraintsList.append(ctr);
 			constraintsListBox->insertItem(ctr->getDescription(gt.rules));
 		}
+	}
 }
 
 void ConstraintTeacherMaxDaysPerWeekForm::constraintChanged(int index)
 {
 	if(index<0)
 		return;
-	assert((uint)(index)<this->visibleConstraintsList.count());
+	assert(index<this->visibleConstraintsList.size());
 	TimeConstraint* ctr=this->visibleConstraintsList.at(index);
 	assert(ctr!=NULL);
 	currentConstraintTextEdit->setText(ctr->getDetailedDescription(gt.rules));
@@ -66,8 +78,8 @@ void ConstraintTeacherMaxDaysPerWeekForm::constraintChanged(int index)
 
 void ConstraintTeacherMaxDaysPerWeekForm::addConstraint()
 {
-	AddConstraintTeacherMaxDaysPerWeekForm *addConstraintTeacherMaxDaysPerWeekForm=new AddConstraintTeacherMaxDaysPerWeekForm();
-	addConstraintTeacherMaxDaysPerWeekForm->exec();
+	AddConstraintTeacherMaxDaysPerWeekForm *form=new AddConstraintTeacherMaxDaysPerWeekForm();
+	form->exec();
 
 	filterChanged();
 	
@@ -83,9 +95,9 @@ void ConstraintTeacherMaxDaysPerWeekForm::modifyConstraint()
 	}
 	TimeConstraint* ctr=this->visibleConstraintsList.at(i);
 
-	ModifyConstraintTeacherMaxDaysPerWeekForm *modifyConstraintTeacherMaxDaysPerWeekForm
+	ModifyConstraintTeacherMaxDaysPerWeekForm *form
 	 = new ModifyConstraintTeacherMaxDaysPerWeekForm((ConstraintTeacherMaxDaysPerWeek*)ctr);
-	modifyConstraintTeacherMaxDaysPerWeekForm->exec();
+	form->exec();
 
 	filterChanged();
 	constraintsListBox->setCurrentItem(i);

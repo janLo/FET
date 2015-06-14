@@ -18,15 +18,24 @@
 #include "addbuildingform.h"
 #include "modifybuildingform.h"
 
-#include <qlistbox.h>
+#include <q3listbox.h>
 #include <qinputdialog.h>
+
+#include <QDesktopWidget>
 
 BuildingsForm::BuildingsForm()
  : BuildingsForm_template()
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	buildingsListBox->clear();
-	for(Building* bu=gt.rules.buildingsList.first(); bu; bu=gt.rules.buildingsList.next())
-		buildingsListBox->insertItem(bu->name);
+	for(int i=0; i<gt.rules.buildingsList.size(); i++)
+		buildingsListBox->insertItem(gt.rules.buildingsList.at(i)->name);
 }
 
 BuildingsForm::~BuildingsForm()
@@ -39,8 +48,8 @@ void BuildingsForm::addBuilding()
 	addBuildingForm->exec();
 
 	buildingsListBox->clear();
-	for(Building* bu=gt.rules.buildingsList.first(); bu; bu=gt.rules.buildingsList.next())
-		buildingsListBox->insertItem(bu->name);
+	for(int i=0; i<gt.rules.buildingsList.size(); i++)
+		buildingsListBox->insertItem(gt.rules.buildingsList.at(i)->name);
 		
 	buildingsListBox->setCurrentItem(buildingsListBox->count()-1);
 }
@@ -96,8 +105,8 @@ void BuildingsForm::modifyBuilding()
 	modifyBuildingForm->exec();
 
 	buildingsListBox->clear();
-	for(Building* bu=gt.rules.buildingsList.first(); bu; bu=gt.rules.buildingsList.next())
-		buildingsListBox->insertItem(bu->name);
+	for(int i=0; i<gt.rules.buildingsList.size(); i++)
+		buildingsListBox->insertItem(gt.rules.buildingsList.at(i)->name);
 
 	buildingsListBox->setCurrentItem(t);
 }
@@ -107,8 +116,8 @@ void BuildingsForm::sortBuildings()
 	gt.rules.sortBuildingsAlphabetically();
 
 	buildingsListBox->clear();
-	for(Building* bu=gt.rules.buildingsList.first(); bu; bu=gt.rules.buildingsList.next())
-		buildingsListBox->insertItem(bu->name);
+	for(int i=0; i<gt.rules.buildingsList.size(); i++)
+		buildingsListBox->insertItem(gt.rules.buildingsList.at(i)->name);
 }
 
 void BuildingsForm::buildingChanged(int index)

@@ -21,10 +21,19 @@
 #include <qradiobutton.h>
 #include <qlabel.h>
 #include <qlineedit.h>
-#include <qtable.h>
+#include <q3table.h>
+
+#include <QDesktopWidget>
 
 AddConstraintRoomNotAvailableForm::AddConstraintRoomNotAvailableForm()
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	updateRoomsComboBox();
 
 	startHourComboBox->clear();
@@ -47,8 +56,10 @@ AddConstraintRoomNotAvailableForm::~AddConstraintRoomNotAvailableForm()
 void AddConstraintRoomNotAvailableForm::updateRoomsComboBox()
 {
 	roomsComboBox->clear();
-	for(Room* room=gt.rules.roomsList.first(); room; room=gt.rules.roomsList.next())
+	for(int i=0; i<gt.rules.roomsList.size(); i++){
+		Room* room=gt.rules.roomsList[i];
 		roomsComboBox->insertItem(room->getDescription());
+	}
 }
 
 void AddConstraintRoomNotAvailableForm::addConstraint()

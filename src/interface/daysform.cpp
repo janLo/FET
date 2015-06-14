@@ -20,6 +20,8 @@
 #include <qlineedit.h>
 #include <qmessagebox.h>
 
+#include <QDesktopWidget>
+
 extern GeneticTimetable gt;
 
 QLineEdit* daysNames[14];
@@ -28,6 +30,13 @@ int nDays;
 DaysForm::DaysForm()
  : DaysForm_template()
 {
+	//setWindowFlags(Qt::Window);
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+	QDesktopWidget* desktop=QApplication::desktop();
+	int xx=desktop->width()/2 - frameGeometry().width()/2;
+	int yy=desktop->height()/2 - frameGeometry().height()/2;
+	move(xx, yy);
+
 	nDays=gt.rules.nDaysPerWeek;
 	daysNames[0]=day1LineEdit;
 	daysNames[1]=day2LineEdit;
