@@ -19,6 +19,7 @@ SOURCES += \
 	engine/generate.cpp \
 	engine/statisticsexport.cpp \
 	engine/lockunlock.cpp \
+	engine/messageboxes.cpp \
 	\
 	interface/fet.cpp \
 	interface/helpaboutform.cpp \
@@ -218,6 +219,14 @@ SOURCES += \
 	interface/addconstraintstudentsintervalmaxdaysperweekform.cpp \
 	interface/modifyconstraintstudentsintervalmaxdaysperweekform.cpp \
 	\
+	interface/constraintstudentssetmaxdaysperweekform.cpp \
+	interface/addconstraintstudentssetmaxdaysperweekform.cpp \
+	interface/modifyconstraintstudentssetmaxdaysperweekform.cpp \
+	\
+	interface/constraintstudentsmaxdaysperweekform.cpp \
+	interface/addconstraintstudentsmaxdaysperweekform.cpp \
+	interface/modifyconstraintstudentsmaxdaysperweekform.cpp \
+	\
 	interface/constraintteachersintervalmaxdaysperweekform.cpp \
 	interface/addconstraintteachersintervalmaxdaysperweekform.cpp \
 	interface/modifyconstraintteachersintervalmaxdaysperweekform.cpp \
@@ -350,6 +359,10 @@ SOURCES += \
 	interface/addconstraintactivitiesoccupymaxdifferentroomsform.cpp \
 	interface/modifyconstraintactivitiesoccupymaxdifferentroomsform.cpp \
 	\
+	interface/constraintactivitiessameroomifconsecutiveform.cpp \
+	interface/addconstraintactivitiessameroomifconsecutiveform.cpp \
+	interface/modifyconstraintactivitiessameroomifconsecutiveform.cpp \
+	\
 	interface/constrainttwoactivitiesconsecutiveform.cpp \
 	interface/addconstrainttwoactivitiesconsecutiveform.cpp \
 	interface/modifyconstrainttwoactivitiesconsecutiveform.cpp \
@@ -411,7 +424,8 @@ SOURCES += \
 	interface/sparsetableview.cpp \
 	interface/sparseitemmodel.cpp \
 	\
-	interface/timetableprintform.cpp
+	interface/timetableprintform.cpp \
+	interface/statisticsprintform.cpp
 
 HEADERS += \
 	engine/timetableexport.h \
@@ -435,6 +449,7 @@ HEADERS += \
 	engine/statisticsexport.h \
 	engine/lockunlock.h \
 	engine/matrix.h \
+	engine/messageboxes.h \
 	\
 	interface/fet.h \
 	interface/helpaboutform.h \
@@ -633,6 +648,14 @@ HEADERS += \
 	interface/addconstraintstudentsintervalmaxdaysperweekform.h \
 	interface/modifyconstraintstudentsintervalmaxdaysperweekform.h \
 	\
+	interface/constraintstudentssetmaxdaysperweekform.h \
+	interface/addconstraintstudentssetmaxdaysperweekform.h \
+	interface/modifyconstraintstudentssetmaxdaysperweekform.h \
+	\
+	interface/constraintstudentsmaxdaysperweekform.h \
+	interface/addconstraintstudentsmaxdaysperweekform.h \
+	interface/modifyconstraintstudentsmaxdaysperweekform.h \
+	\
 	interface/constraintteachersintervalmaxdaysperweekform.h \
 	interface/addconstraintteachersintervalmaxdaysperweekform.h \
 	interface/modifyconstraintteachersintervalmaxdaysperweekform.h \
@@ -765,6 +788,10 @@ HEADERS += \
 	interface/addconstraintactivitiesoccupymaxdifferentroomsform.h \
 	interface/modifyconstraintactivitiesoccupymaxdifferentroomsform.h \
 	\
+	interface/constraintactivitiessameroomifconsecutiveform.h \
+	interface/addconstraintactivitiessameroomifconsecutiveform.h \
+	interface/modifyconstraintactivitiessameroomifconsecutiveform.h \
+	\
 	interface/constrainttwoactivitiesconsecutiveform.h \
 	interface/addconstrainttwoactivitiesconsecutiveform.h \
 	interface/modifyconstrainttwoactivitiesconsecutiveform.h \
@@ -828,7 +855,8 @@ HEADERS += \
 	interface/sparsetableview.h \
 	interface/sparseitemmodel.h \
 	\
-	interface/timetableprintform.h
+	interface/timetableprintform.h \
+	interface/statisticsprintform.h
 
 FORMS += \
 	interface/fetmainform_template.ui \
@@ -1039,6 +1067,14 @@ FORMS += \
 	interface/addconstraintstudentsintervalmaxdaysperweekform_template.ui \
 	interface/modifyconstraintstudentsintervalmaxdaysperweekform_template.ui \
 	\
+	interface/constraintstudentssetmaxdaysperweekform_template.ui \
+	interface/addconstraintstudentssetmaxdaysperweekform_template.ui \
+	interface/modifyconstraintstudentssetmaxdaysperweekform_template.ui \
+	\
+	interface/constraintstudentsmaxdaysperweekform_template.ui \
+	interface/addconstraintstudentsmaxdaysperweekform_template.ui \
+	interface/modifyconstraintstudentsmaxdaysperweekform_template.ui \
+	\
 	interface/constraintteachersintervalmaxdaysperweekform_template.ui \
 	interface/addconstraintteachersintervalmaxdaysperweekform_template.ui \
 	interface/modifyconstraintteachersintervalmaxdaysperweekform_template.ui \
@@ -1171,6 +1207,10 @@ FORMS += \
 	interface/addconstraintactivitiesoccupymaxdifferentroomsform_template.ui \
 	interface/modifyconstraintactivitiesoccupymaxdifferentroomsform_template.ui \
 	\
+	interface/constraintactivitiessameroomifconsecutiveform_template.ui \
+	interface/addconstraintactivitiessameroomifconsecutiveform_template.ui \
+	interface/modifyconstraintactivitiessameroomifconsecutiveform_template.ui \
+	\
 	interface/constrainttwoactivitiesconsecutiveform_template.ui \
 	interface/addconstrainttwoactivitiesconsecutiveform_template.ui \
 	interface/modifyconstrainttwoactivitiesconsecutiveform_template.ui \
@@ -1235,6 +1275,7 @@ TRANSLATIONS += \
 	../translations/fet_ru.ts \
 	../translations/fet_si.ts \
 	../translations/fet_sk.ts \
+	../translations/fet_sq.ts \
 	../translations/fet_sr.ts \
 	../translations/fet_tr.ts \
 	../translations/fet_uk.ts \
@@ -1247,13 +1288,18 @@ TEMPLATE = app
 CONFIG += release warn_on thread
 QT += xml network
 
+greaterThan(QT_MAJOR_VERSION, 4){
+	QT += widgets
+	!isEmpty(QT.printsupport.name): QT += printsupport
+}
+
 DESTDIR = ..
 TARGET = fet
 
-OBJECTS_DIR = ../tmp
-UI_DIR = ../tmp
-MOC_DIR = ../tmp
-RCC_DIR = ../tmp
+OBJECTS_DIR = ../tmp/gui
+UI_DIR = ../tmp/gui
+MOC_DIR = ../tmp/gui
+RCC_DIR = ../tmp/gui
 
 INCLUDEPATH += engine interface
 DEPENDPATH += engine interface

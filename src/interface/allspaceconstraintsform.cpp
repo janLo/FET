@@ -53,6 +53,7 @@
 #include "modifyconstraintactivitytagpreferredroomsform.h"
 
 #include "modifyconstraintactivitiesoccupymaxdifferentroomsform.h"
+#include "modifyconstraintactivitiessameroomifconsecutiveform.h"
 
 #include "lockunlock.h"
 
@@ -452,10 +453,16 @@ void AllSpaceConstraintsForm::modifyConstraint()
 		setParentAndOtherThings(&form, this);
 		form.exec();
 	}
+	//28
+	else if(ctr->type==CONSTRAINT_ACTIVITIES_SAME_ROOM_IF_CONSECUTIVE){
+		ModifyConstraintActivitiesSameRoomIfConsecutiveForm form(this, (ConstraintActivitiesSameRoomIfConsecutive*)ctr);
+		setParentAndOtherThings(&form, this);
+		form.exec();
+	}
 	else{
 		QMessageBox::critical(this, tr("FET critical"), tr("You have found a bug in FET. Please report it. This kind of constraint"
 		 " is not correctly recognized in all space constraints dialog. FET will skip this error, so that you can continue work."
-		 ". Probably the constraint can be modified from the specific constraint dialog."));
+		 " Probably the constraint can be modified from the specific constraint dialog."));
 //		assert(0);
 //		exit(1);
 	}

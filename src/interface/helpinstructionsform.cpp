@@ -120,7 +120,7 @@ void HelpInstructionsForm::setText()
 	s+=tr("6) Rooms: You might firstly try to generate a timetable without rooms, to see if it is possible, then add rooms and rooms related constraints.");
 	s+="\n\n";
 	s+=tr("7) It is possible to work with institutions in which the students work in shifts (for instance, lowest forms in the morning and "
-		"highest forms in the afternoon). Please see the Help/Frequently Asked Questions the solution to how to do that "
+		"highest forms in the afternoon). Please see in the Help/Frequently Asked Questions the solution to how to do that "
 		"(the essence is to add corresponding constraints students set not available).");
 	s+="\n\n";
 	s+=tr("8) The new algorithm (after version 5.0.0) does not accept fortnightly activities. But you might apply a trick."
@@ -132,7 +132,7 @@ void HelpInstructionsForm::setText()
 		"obtain better timetables this way.");
 	s+="\n\n";
 	s+=tr("10) If a constraint is allowed values under 100%, you can use any weight, even fractional numbers like 99.75%. "
-		"It might help in constraints like min days, preferred rooms or max hours daily.");
+		"It might help in constraints like min days between activities, preferred rooms or max hours daily.");
 	s+="\n\n";
 	s+=tr("11) Each room can host a single activity at the same time. If you have a large room which can host more "
 		"activities at the same time, you need to use a small trick. You can add more rooms representing this large room "
@@ -145,19 +145,20 @@ void HelpInstructionsForm::setText()
 	s+=tr("13) If you have for instance 7 hours of Maths on a 5 days week (more lessons than days), "
 		"please respect the correct way to add these as a split activity. See question Q-1-27-March-2008 from FAQ. It is important!");
 	s+="\n\n";
-	s+=tr("14) It is recommended to remove redundant min days constraints after adding constraints same starting day or time (read Help/Important tips).");
+	s+=tr("14) It is recommended to remove redundant min days between activities constraints after adding constraints same starting day or time "
+		"(read Help/Important tips).");
 	s+="\n\n";
 	s+=tr("15) If you want for instance teachers (or students) not to have more than 2 times per week "
-		"activities in the last hours, you have to use new constraint teacher(s) or students (set) hourly interval "
+		"activities in the last hours, you have to use the constraint teacher(s) or students (set) hourly interval "
 		"max days per week. Please read FAQ for more details.");
 	s+="\n\n";
 	s+=tr("16) If you have activities which you want to put in the last slots of a day (like say "
-		"the meetings with the class master), please use the new constraint a set of activities end students day (or singular activity ends students day).");
+		"the meetings with the class master), please use the constraint a set of activities end students day (or singular activity ends students day).");
 	s+="\n\n";
 	s+=tr("17) If you have activities split into 3 activities per week and need them to be not "
 		"in 3 consecutive days, there is an entry in the FAQ explaining how to specify this (question Q1-5-September-2008).");
 	s+="\n\n";
-	s+=tr("18) If you use the not perfect constraints activity tag max hours daily or students max gaps per week (there are 4+2"
+	s+=tr("18) If you use the not perfect constraints activity tag max hours daily or students max gaps per day (there are 4+2"
 		" types of constraints in this category), use them with caution not to obtain an impossible timetable. If the timetable is impossible, it may be because of them."
 		" You are advised to add such constraints only in the end, after you are sure that the other constraints are good and the timetable is possible.");
 		

@@ -28,6 +28,10 @@
 #include <QSpinBox>
 #include <QDialog>
 
+#ifndef QT_NO_PRINTER
+#include <QPrinter>
+#endif
+
 class QTableWidget;
 class QRadioButton;
 class QCheckBox;
@@ -96,6 +100,8 @@ private:
 	QCheckBox* printDetailedTables;
 	QCheckBox* printActivityTags;	//TODO: to this with combo box: "always", "never", "if available".
 									//maybe TODO: do it similar with students, teachers, rooms, ...
+	QCheckBox* repeatNames;
+	
 	QPushButton* pbPrintPreviewSmall;
 	QPushButton* pbPrintPreviewFull;
 	QPushButton* pbPrint;

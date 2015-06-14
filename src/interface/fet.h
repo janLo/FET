@@ -30,12 +30,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #include "matrix.h"
 
-#include <fstream>
-using namespace std;
-
 #include <QTextStream>
 
+#ifndef FET_COMMAND_LINE
 #include <QApplication>
+#endif
 
 class QWidget;
 
@@ -49,11 +48,6 @@ The one and only instantiation of the main class.
 extern Timetable gt;
 
 /**
-Log file
-*/
-extern ofstream logg;
-
-/**
 The name of the file from where the rules are read.
 */
 extern QString INPUT_FILENAME_XML;
@@ -62,27 +56,29 @@ extern QString INPUT_FILENAME_XML;
 The timetable for the teachers
 */
 //extern qint16 teachers_timetable_weekly[MAX_TEACHERS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
-extern Matrix3D<qint16> teachers_timetable_weekly;
+extern Matrix3D<int> teachers_timetable_weekly;
 
 /**
 The timetable for the students
 */
 //extern qint16 students_timetable_weekly[MAX_TOTAL_SUBGROUPS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
-extern Matrix3D<qint16> students_timetable_weekly;
+extern Matrix3D<int> students_timetable_weekly;
 
 /**
 The timetable for the rooms
 */
 //extern qint16 rooms_timetable_weekly[MAX_ROOMS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
-extern Matrix3D<qint16> rooms_timetable_weekly;
+extern Matrix3D<int> rooms_timetable_weekly;
 
 void readSimulationParameters();
 void writeSimulationParameters();
 //void writeDefaultSimulationParameters();
 
-void usage(QTextStream& out);
-
+#ifndef FET_COMMAND_LINE
 void setLanguage(QApplication& qapplication, QWidget* parent);
+#else
+void setLanguage(QCoreApplication& qapplication, QWidget* parent);
+#endif
 
 /**
 The main function.

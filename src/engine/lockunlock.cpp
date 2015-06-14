@@ -25,9 +25,6 @@ File lockunlock.cpp
 
 //extern QSpinBox* pcommunicationSpinBox;
 
-#include <iostream>
-using namespace std;
-
 #include "lockunlock.h"
 #include "timetable_defs.h"
 #include "timetable.h"
@@ -158,4 +155,3 @@ void LockUnlock::increaseCommunicationSpinBox()
 	
 	communicationSpinBox.increaseValue();
 }
-

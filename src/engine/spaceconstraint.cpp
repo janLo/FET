@@ -39,7 +39,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #include <QString>
 
-#include <QMessageBox>
+#include "messageboxes.h"
 
 static QString trueFalse(bool x)
 {
@@ -58,7 +58,7 @@ static QString yesNoTranslated(bool x)
 }
 
 //static qint8 roomsMatrix[MAX_ROOMS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
-static Matrix3D<qint8> roomsMatrix;
+static Matrix3D<int> roomsMatrix;
 
 static int rooms_conflicts=-1;
 
@@ -153,7 +153,7 @@ QString ConstraintBasicCompulsorySpace::getDescription(Rules& r)
 
 	QString s = tr("Basic compulsory constraints (space)");
 	s+=", ";
-	s+=tr("WP:%1\%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));
+	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));
 	
 	return begin+s+end;
 }
@@ -163,7 +163,7 @@ QString ConstraintBasicCompulsorySpace::getDetailedDescription(Rules& r)
 	Q_UNUSED(r);
 
 	QString s=tr("These are the basic compulsory constraints (referring to rooms allocation) for any timetable");s+="\n";
-	s+=tr("Weight (percentage)=%1\%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
+	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
 
 	s+=tr("The basic space constraints try to avoid:");s+="\n";
 	s+=QString("- "); s+=tr("rooms assigned to more than one activity simultaneously"); s+="\n";
@@ -208,7 +208,7 @@ double ConstraintBasicCompulsorySpace::fitness(
 
 	int i;
 
-	int unallocated; //unallocated activities
+	qint64 unallocated; //unallocated activities
 	int nre; //number of room exhaustions
 	int nor; //number of overwhelmed rooms
 
@@ -366,7 +366,7 @@ double ConstraintBasicCompulsorySpace::fitness(
 		assert(nor==0);
 	}
 
-	return weightPercentage/100 * (unallocated + nre + nor); //fitness factor
+	return weightPercentage/100 * (unallocated + qint64(nre) + qint64(nor)); //fitness factor
 }
 
 bool ConstraintBasicCompulsorySpace::isRelatedToActivity(Activity* a)
@@ -491,7 +491,7 @@ QString ConstraintRoomNotAvailableTimes::getDescription(Rules& r){
 		end=", "+tr("C: %1", "Comments").arg(comments);
 
 	QString s=tr("Room not available");s+=", ";
-	s+=tr("WP:%1\%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
+	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
 	s+=tr("R:%1", "Room").arg(this->room);s+=", ";
 
 	s+=tr("NA at:", "Not available at");
@@ -515,10 +515,10 @@ QString ConstraintRoomNotAvailableTimes::getDescription(Rules& r){
 QString ConstraintRoomNotAvailableTimes::getDetailedDescription(Rules& r){
 	QString s=tr("Space constraint");s+="\n";
 	s+=tr("Room not available");s+="\n";
-	s+=tr("Weight (percentage)=%1\%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
+	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
 	s+=tr("Room=%1").arg(this->room);s+="\n";
 
-	s+=tr("Not available at:");
+	s+=tr("Not available at:", "It refers to a room");
 	s+="\n";
 	assert(days.count()==hours.count());
 	for(int i=0; i<days.count(); i++){
@@ -547,10 +547,11 @@ QString ConstraintRoomNotAvailableTimes::getDetailedDescription(Rules& r){
 }
 
 bool ConstraintRoomNotAvailableTimes::computeInternalStructure(QWidget* parent, Rules& r){
-	this->room_ID=r.searchRoom(this->room);
+	//this->room_ID=r.searchRoom(this->room);
+	room_ID=r.roomsHash.value(room, -1);
 	
 	if(this->room_ID<0){
-		QMessageBox::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
 		 tr("Constraint room not available times is wrong because it refers to inexistent room."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		 
@@ -560,14 +561,14 @@ bool ConstraintRoomNotAvailableTimes::computeInternalStructure(QWidget* parent, 
 	assert(days.count()==hours.count());
 	for(int k=0; k<days.count(); k++){
 		if(this->days.at(k) >= r.nDaysPerWeek){
-			QMessageBox::warning(parent, tr("FET information"),
+			SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET information"),
 			 tr("Constraint room not available times is wrong because it refers to removed day. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		 
 			return false;
 		}		
 		if(this->hours.at(k) >= r.nHoursPerDay){
-			QMessageBox::warning(parent, tr("FET information"),
+			SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET information"),
 			 tr("Constraint room not available times is wrong because an hour is too late (after the last acceptable slot). Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		 
@@ -759,24 +760,28 @@ bool ConstraintActivityPreferredRoom::operator==(ConstraintActivityPreferredRoom
 bool ConstraintActivityPreferredRoom::computeInternalStructure(QWidget* parent, Rules& r)
 {
 	this->_activity=-1;
-	int ac;
-	for(ac=0; ac<r.nInternalActivities; ac++)
+	int ac=r.activitiesHash.value(activityId, -1);
+	assert(ac>=0);
+	_activity=ac;
+	/*for(ac=0; ac<r.nInternalActivities; ac++)
 		if(r.internalActivitiesList[ac].id==this->activityId){
 			assert(this->_activity==-1);
 			this->_activity=ac;
 			break;
 		}
 	if(ac==r.nInternalActivities){
-		QMessageBox::warning(parent, tr("FET error in data"), 
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"), 
 			tr("Following constraint is wrong:\n%1").arg(this->getDetailedDescription(r)));
 
 		return false;
-	}
+	}*/
 		
-	this->_room = r.searchRoom(this->roomName);
+	//this->_room = r.searchRoom(this->roomName);
+	_room=r.roomsHash.value(roomName, -1);
+	assert(_room>=0);
 
 	if(this->_room<0){
-		QMessageBox::warning(parent, tr("FET error in data"), 
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"), 
 			tr("Following constraint is wrong:\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -823,7 +828,7 @@ QString ConstraintActivityPreferredRoom::getDescription(Rules& r){
 		end=", "+tr("C: %1", "Comments").arg(comments);
 
 	QString s=tr("Activity preferred room"); s+=", ";
-	s+=tr("WP:%1\%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
+	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
 	s+=tr("Id:%1 (%2)", "%1 is activity id, %2 is detailed description of activity")
 		.arg(this->activityId)
 		.arg(getActivityDetailedDescription(r, this->activityId));
@@ -840,7 +845,7 @@ QString ConstraintActivityPreferredRoom::getDescription(Rules& r){
 QString ConstraintActivityPreferredRoom::getDetailedDescription(Rules& r){
 	QString s=tr("Space constraint"); s+="\n";
 	s+=tr("Activity preferred room"); s+="\n";
-	s+=tr("Weight (percentage)=%1\%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
+	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
 	
 	s+=tr("Activity id=%1 (%2)", "%1 is activity id, %2 is detailed description of activity")
 		.arg(this->activityId)
@@ -1005,17 +1010,20 @@ ConstraintActivityPreferredRooms::ConstraintActivityPreferredRooms(double wp, in
 
 bool ConstraintActivityPreferredRooms::computeInternalStructure(QWidget* parent, Rules& r)
 {
-	this->_activity=-1;
+	_activity=r.activitiesHash.value(activityId, r.nInternalActivities);
+	int ac=_activity;
+
+	/*this->_activity=-1;
 	int ac;
 	for(ac=0; ac<r.nInternalActivities; ac++)
 		if(r.internalActivitiesList[ac].id==this->activityId){
 			assert(this->_activity==-1);
 			this->_activity=ac;
 			break;
-		}
+		}*/
 		
 	if(ac==r.nInternalActivities){
-		QMessageBox::warning(parent, tr("FET error in data"), 
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"), 
 			tr("Following constraint is wrong:\n%1").arg(this->getDetailedDescription(r)));
 
 		return false;
@@ -1023,10 +1031,11 @@ bool ConstraintActivityPreferredRooms::computeInternalStructure(QWidget* parent,
 	
 	this->_rooms.clear();
 	foreach(QString rm, this->roomsNames){
-		int t=r.searchRoom(rm);
+		//int t=r.searchRoom(rm);
+		int t=r.roomsHash.value(rm, -1);
 
 		if(t<0){
-			QMessageBox::warning(parent, tr("FET error in data"), 
+			SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"), 
 				tr("Following constraint is wrong:\n%1").arg(this->getDetailedDescription(r)));
 
 			return false;
@@ -1074,7 +1083,7 @@ QString ConstraintActivityPreferredRooms::getDescription(Rules& r){
 		end=", "+tr("C: %1", "Comments").arg(comments);
 
 	QString s=tr("Activity preferred rooms"); s+=", ";
-	s+=tr("WP:%1\%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
+	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
 	s+=tr("Id:%1 (%2)", "%1 is activity id, %2 is detailed description of activity")
 		.arg(this->activityId)
 		.arg(getActivityDetailedDescription(r, this->activityId));
@@ -1090,7 +1099,7 @@ QString ConstraintActivityPreferredRooms::getDescription(Rules& r){
 QString ConstraintActivityPreferredRooms::getDetailedDescription(Rules& r){
 	QString s=tr("Space constraint"); s+="\n";
 	s+=tr("Activity preferred rooms"); s+="\n";
-	s+=tr("Weight (percentage)=%1\%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
+	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
 	
 	s+=tr("Activity id=%1 (%2)", "%1 is activity id, %2 is detailed description of activity")
 		.arg(this->activityId)
@@ -1259,11 +1268,21 @@ bool ConstraintStudentsSetHomeRoom::computeInternalStructure(QWidget* parent, Ru
 	//This procedure computes the internal list of all the activities
 	//which correspond to the subject of the constraint.
 	
-	QStringList::iterator it;
+	//QStringList::iterator it;
 	Activity* act;
 
 	this->_activities.clear();
-
+	
+	/*QSet<int> set=r.activitiesForStudentsSetHash.value(studentsName, QSet<int>());
+	foreach(int i, set){
+		const Activity& act=r.internalActivitiesList[i];
+		if(act.studentsNames.count()==1){
+			assert(act.studentsNames.at(0)==studentsName);
+			_activities.append(i);
+		}
+	}
+	qSort(_activities);*/
+	
 	for(int ac=0; ac<r.nInternalActivities; ac++){
 		act=&r.internalActivitiesList[ac];
 
@@ -1279,7 +1298,8 @@ bool ConstraintStudentsSetHomeRoom::computeInternalStructure(QWidget* parent, Ru
 		this->_activities.append(ac);
 	}
 
-	this->_room = r.searchRoom(this->roomName);
+	//this->_room = r.searchRoom(this->roomName);
+	_room=r.roomsHash.value(roomName, -1);
 	assert(this->_room>=0);
 	
 	return true;
@@ -1321,7 +1341,7 @@ QString ConstraintStudentsSetHomeRoom::getDescription(Rules& r)
 
 	QString s=tr("Students set home room"); s+=", ";
 
-	s+=tr("WP:%1\%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
+	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
 	
 	s+=tr("St:%1", "St means students").arg(this->studentsName);s+=", ";
 
@@ -1336,7 +1356,7 @@ QString ConstraintStudentsSetHomeRoom::getDetailedDescription(Rules& r)
 
 	QString s=tr("Space constraint"); s+="\n";
 	s+=tr("Students set home room"); s+="\n";
-	s+=tr("Weight (percentage)=%1\%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
+	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
 
 	s+=tr("Students=%1").arg(this->studentsName);s+="\n";
 
@@ -1516,7 +1536,17 @@ bool ConstraintStudentsSetHomeRooms::computeInternalStructure(QWidget* parent, R
 	
 	this->_activities.clear();
 
-	QStringList::iterator it;
+	/*QSet<int> set=r.activitiesForStudentsSetHash.value(studentsName, QSet<int>());
+	foreach(int i, set){
+		const Activity& act=r.internalActivitiesList[i];
+		if(act.studentsNames.count()==1){
+			assert(act.studentsNames.at(0)==studentsName);
+			_activities.append(i);
+		}
+	}
+	qSort(_activities);*/
+
+	//QStringList::iterator it;
 	Activity* act;
 
 	for(int ac=0; ac<r.nInternalActivities; ac++){
@@ -1537,9 +1567,10 @@ bool ConstraintStudentsSetHomeRooms::computeInternalStructure(QWidget* parent, R
 	this->_rooms.clear();
 
 	foreach(QString rm, this->roomsNames){
-		int t=r.searchRoom(rm);
+		//int t=r.searchRoom(rm);
+		int t=r.roomsHash.value(rm, -1);
 		if(t<0){
-			QMessageBox::warning(parent, tr("FET error in data"), 
+			SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"), 
 				tr("Following constraint is wrong:\n%1").arg(this->getDetailedDescription(r)));
 
 			return false;
@@ -1589,7 +1620,7 @@ QString ConstraintStudentsSetHomeRooms::getDescription(Rules& r){
 		end=", "+tr("C: %1", "Comments").arg(comments);
 
 	QString s=tr("Students set home rooms"); s+=", ";
-	s+=tr("WP:%1\%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
+	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
 
 	s+=tr("St:%1", "St means students").arg(this->studentsName);
 
@@ -1606,7 +1637,7 @@ QString ConstraintStudentsSetHomeRooms::getDetailedDescription(Rules& r){
 
 	QString s=tr("Space constraint"); s+="\n";
 	s+=tr("Students set home rooms"); s+="\n";
-	s+=tr("Weight (percentage)=%1\%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
+	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
 
 	s+=tr("Students=%1").arg(this->studentsName);s+="\n";
 
@@ -1789,10 +1820,20 @@ bool ConstraintTeacherHomeRoom::computeInternalStructure(QWidget* parent, Rules&
 	//This procedure computes the internal list of all the activities
 	//which correspond to the subject of the constraint.
 	
-	QStringList::iterator it;
+	//QStringList::iterator it;
 	Activity* act;
 
 	this->_activities.clear();
+
+	/*QSet<int> set=r.activitiesForTeacherHash.value(teacherName, QSet<int>());
+	foreach(int i, set){
+		const Activity& act=r.internalActivitiesList[i];
+		if(act.teachersNames.count()==1){
+			assert(act.teachersNames.at(0)==teacherName);
+			_activities.append(i);
+		}
+	}
+	qSort(_activities);*/
 
 	for(int ac=0; ac<r.nInternalActivities; ac++){
 		act=&r.internalActivitiesList[ac];
@@ -1809,7 +1850,8 @@ bool ConstraintTeacherHomeRoom::computeInternalStructure(QWidget* parent, Rules&
 		this->_activities.append(ac);
 	}
 
-	this->_room = r.searchRoom(this->roomName);
+	//this->_room = r.searchRoom(this->roomName);
+	_room=r.roomsHash.value(roomName, -1);
 	assert(this->_room>=0);
 	
 	return true;
@@ -1851,7 +1893,7 @@ QString ConstraintTeacherHomeRoom::getDescription(Rules& r)
 
 	QString s=tr("Teacher home room"); s+=", ";
 
-	s+=tr("WP:%1\%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
+	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
 	
 	s+=tr("T:%1", "T means teacher").arg(this->teacherName);s+=", ";
 
@@ -1866,7 +1908,7 @@ QString ConstraintTeacherHomeRoom::getDetailedDescription(Rules& r)
 
 	QString s=tr("Space constraint"); s+="\n";
 	s+=tr("Teacher home room"); s+="\n";
-	s+=tr("Weight (percentage)=%1\%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
+	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
 
 	s+=tr("Teacher=%1").arg(this->teacherName);s+="\n";
 
@@ -2044,7 +2086,17 @@ bool ConstraintTeacherHomeRooms::computeInternalStructure(QWidget* parent, Rules
 	
 	this->_activities.clear();
 
-	QStringList::iterator it;
+	/*QSet<int> set=r.activitiesForTeacherHash.value(teacherName, QSet<int>());
+	foreach(int i, set){
+		const Activity& act=r.internalActivitiesList[i];
+		if(act.teachersNames.count()==1){
+			assert(act.teachersNames.at(0)==teacherName);
+			_activities.append(i);
+		}
+	}
+	qSort(_activities);*/
+
+	//QStringList::iterator it;
 	Activity* act;
 
 	for(int ac=0; ac<r.nInternalActivities; ac++){
@@ -2065,9 +2117,10 @@ bool ConstraintTeacherHomeRooms::computeInternalStructure(QWidget* parent, Rules
 	this->_rooms.clear();
 
 	foreach(QString rm, this->roomsNames){
-		int t=r.searchRoom(rm);
+		//int t=r.searchRoom(rm);
+		int t=r.roomsHash.value(rm, -1);
 		if(t<0){
-			QMessageBox::warning(parent, tr("FET error in data"), 
+			SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"), 
 				tr("Following constraint is wrong:\n%1").arg(this->getDetailedDescription(r)));
 
 			return false;
@@ -2117,7 +2170,7 @@ QString ConstraintTeacherHomeRooms::getDescription(Rules& r){
 		end=", "+tr("C: %1", "Comments").arg(comments);
 
 	QString s=tr("Teacher home rooms"); s+=", ";
-	s+=tr("WP:%1\%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
+	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
 
 	s+=tr("T:%1", "T means teacher").arg(this->teacherName);
 
@@ -2134,7 +2187,7 @@ QString ConstraintTeacherHomeRooms::getDetailedDescription(Rules& r){
 
 	QString s=tr("Space constraint"); s+="\n";
 	s+=tr("Teacher home rooms"); s+="\n";
-	s+=tr("Weight (percentage)=%1\%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
+	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
 
 	s+=tr("Teacher=%1").arg(this->teacherName);s+="\n";
 
@@ -2314,14 +2367,24 @@ bool ConstraintSubjectPreferredRoom::computeInternalStructure(QWidget* parent, R
 	//which correspond to the subject of the constraint.
 	
 	this->_activities.clear();
+
+	/*QSet<int> set=r.activitiesForSubjectHash.value(subjectName, QSet<int>());
+	foreach(int i, set){
+		const Activity& act=r.internalActivitiesList[i];
+		assert(act.subjectName==subjectName);
+		_activities.append(i);
+	}
+	qSort(_activities);*/
+
 	for(int ac=0; ac<r.nInternalActivities; ac++)
 		if(r.internalActivitiesList[ac].subjectName == this->subjectName){
 			this->_activities.append(ac);
 		}
 	
-	this->_room = r.searchRoom(this->roomName);
+	//this->_room = r.searchRoom(this->roomName);
+	_room=r.roomsHash.value(roomName, -1);
 	if(this->_room<0){
-		QMessageBox::warning(parent, tr("FET error in data"), 
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"), 
 			tr("Following constraint is wrong:\n%1").arg(this->getDetailedDescription(r)));
 
 		return false;
@@ -2365,7 +2428,7 @@ QString ConstraintSubjectPreferredRoom::getDescription(Rules& r){
 		end=", "+tr("C: %1", "Comments").arg(comments);
 
 	QString s=tr("Subject preferred room"); s+=", ";
-	s+=tr("WP:%1\%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
+	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
 	s+=tr("S:%1", "Subject").arg(this->subjectName);s+=", ";
 	s+=tr("R:%1", "Room").arg(this->roomName);
 
@@ -2377,7 +2440,7 @@ QString ConstraintSubjectPreferredRoom::getDetailedDescription(Rules& r){
 
 	QString s=tr("Space constraint"); s+="\n";
 	s+=tr("Subject preferred room"); s+="\n";
-	s+=tr("Weight (percentage)=%1\%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
+	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
 	s+=tr("Subject=%1").arg(this->subjectName);s+="\n";
 	s+=tr("Room=%1").arg(this->roomName);s+="\n";
 
@@ -2540,6 +2603,15 @@ bool ConstraintSubjectPreferredRooms::computeInternalStructure(QWidget* parent, 
 	//which correspond to the subject of the constraint.
 	
 	this->_activities.clear();
+
+	/*QSet<int> set=r.activitiesForSubjectHash.value(subjectName, QSet<int>());
+	foreach(int i, set){
+		const Activity& act=r.internalActivitiesList[i];
+		assert(act.subjectName==subjectName);
+		_activities.append(i);
+	}
+	qSort(_activities);*/
+
 	for(int ac=0; ac<r.nInternalActivities; ac++)
 		if(r.internalActivitiesList[ac].subjectName == this->subjectName){
 			this->_activities.append(ac);
@@ -2547,9 +2619,10 @@ bool ConstraintSubjectPreferredRooms::computeInternalStructure(QWidget* parent, 
 	
 	this->_rooms.clear();
 	foreach(QString rm, this->roomsNames){
-		int t=r.searchRoom(rm);
+		//int t=r.searchRoom(rm);
+		int t=r.roomsHash.value(rm, -1);
 		if(t<0){
-			QMessageBox::warning(parent, tr("FET error in data"), 
+			SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"), 
 				tr("Following constraint is wrong:\n%1").arg(this->getDetailedDescription(r)));
 
 			return false;
@@ -2597,7 +2670,7 @@ QString ConstraintSubjectPreferredRooms::getDescription(Rules& r){
 		end=", "+tr("C: %1", "Comments").arg(comments);
 
 	QString s=tr("Subject preferred rooms"); s+=", ";
-	s+=tr("WP:%1\%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
+	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
 	s+=tr("S:%1", "Subject").arg(this->subjectName);
 	for(QStringList::Iterator it=this->roomsNames.begin(); it!=this->roomsNames.end(); it++){
 		s+=", ";
@@ -2612,7 +2685,7 @@ QString ConstraintSubjectPreferredRooms::getDetailedDescription(Rules& r){
 
 	QString s=tr("Space constraint"); s+="\n";
 	s+=tr("Subject preferred rooms"); s+="\n";
-	s+=tr("Weight (percentage)=%1\%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
+	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
 	s+=tr("Subject=%1").arg(this->subjectName);s+="\n";
 	for(QStringList::Iterator it=this->roomsNames.begin(); it!=this->roomsNames.end(); it++){
 		s+=tr("Room=%1").arg(*it);
@@ -2782,15 +2855,28 @@ bool ConstraintSubjectActivityTagPreferredRoom::computeInternalStructure(QWidget
 	//which correspond to the subject of the constraint.
 	
 	this->_activities.clear();
+	
+	/*QSet<int> set=r.activitiesForSubjectHash.value(subjectName, QSet<int>());
+	QSet<int> set2=r.activitiesForActivityTagHash.value(activityTagName, QSet<int>());
+	set.intersect(set2);
+	foreach(int i, set){
+		const Activity& act=r.internalActivitiesList[i];
+		assert(act.subjectName==subjectName);
+		assert(act.activityTagsNames.contains(activityTagName));
+		_activities.append(i);
+	}
+	qSort(_activities);*/
+	
 	for(int ac=0; ac<r.nInternalActivities; ac++)
 		if(r.internalActivitiesList[ac].subjectName == this->subjectName
 		 && r.internalActivitiesList[ac].activityTagsNames.contains(this->activityTagName)){
 		 	this->_activities.append(ac);
 		}
 		
-	this->_room = r.searchRoom(this->roomName);
+	//this->_room = r.searchRoom(this->roomName);
+	_room=r.roomsHash.value(roomName, -1);
 	if(this->_room<0){
-		QMessageBox::warning(parent, tr("FET error in data"), 
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"), 
 			tr("Following constraint is wrong:\n%1").arg(this->getDetailedDescription(r)));
 
 		return false;
@@ -2835,7 +2921,7 @@ QString ConstraintSubjectActivityTagPreferredRoom::getDescription(Rules& r){
 		end=", "+tr("C: %1", "Comments").arg(comments);
 
 	QString s=tr("Subject activity tag preferred room"); s+=", ";
-	s+=tr("WP:%1\%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
+	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
 	s+=tr("S:%1", "Subject").arg(this->subjectName);s+=", ";
 	s+=tr("AT:%1", "Activity tag").arg(this->activityTagName);s+=", ";
 	s+=tr("R:%1", "Room").arg(this->roomName);
@@ -2848,7 +2934,7 @@ QString ConstraintSubjectActivityTagPreferredRoom::getDetailedDescription(Rules&
 
 	QString s=tr("Space constraint"); s+="\n";
 	s+=tr("Subject activity tag preferred room"); s+="\n";
-	s+=tr("Weight (percentage)=%1\%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
+	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
 	s+=tr("Subject=%1").arg(this->subjectName);s+="\n";
 	s+=tr("Activity tag=%1").arg(this->activityTagName);s+="\n";
 	s+=tr("Room=%1").arg(this->roomName);s+="\n";
@@ -3014,6 +3100,18 @@ bool ConstraintSubjectActivityTagPreferredRooms::computeInternalStructure(QWidge
 	//which correspond to the subject of the constraint.
 	
 	this->_activities.clear();
+
+	/*QSet<int> set=r.activitiesForSubjectHash.value(subjectName, QSet<int>());
+	QSet<int> set2=r.activitiesForActivityTagHash.value(activityTagName, QSet<int>());
+	set.intersect(set2);
+	foreach(int i, set){
+		const Activity& act=r.internalActivitiesList[i];
+		assert(act.subjectName==subjectName);
+		assert(act.activityTagsNames.contains(activityTagName));
+		_activities.append(i);
+	}
+	qSort(_activities);*/
+
 	for(int ac=0; ac<r.nInternalActivities; ac++)
 		if(r.internalActivitiesList[ac].subjectName == this->subjectName
 		 && r.internalActivitiesList[ac].activityTagsNames.contains(this->activityTagName)){
@@ -3022,9 +3120,10 @@ bool ConstraintSubjectActivityTagPreferredRooms::computeInternalStructure(QWidge
 
 	this->_rooms.clear();
 	foreach(QString rm, roomsNames){
-		int t=r.searchRoom(rm);
+		//int t=r.searchRoom(rm);
+		int t=r.roomsHash.value(rm, -1);
 		if(t<0){
-			QMessageBox::warning(parent, tr("FET error in data"), 
+			SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"), 
 				tr("Following constraint is wrong:\n%1").arg(this->getDetailedDescription(r)));
 
 			return false;
@@ -3073,7 +3172,7 @@ QString ConstraintSubjectActivityTagPreferredRooms::getDescription(Rules& r){
 		end=", "+tr("C: %1", "Comments").arg(comments);
 
 	QString s=tr("Subject activity tag preferred rooms"); s+=", ";
-	s+=tr("WP:%1\%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
+	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
 	s+=tr("S:%1", "Subject").arg(this->subjectName);s+=", ";
 	s+=tr("AT:%1", "Activity tag").arg(this->activityTagName);
 	for(QStringList::Iterator it=this->roomsNames.begin(); it!=this->roomsNames.end(); it++){
@@ -3089,7 +3188,7 @@ QString ConstraintSubjectActivityTagPreferredRooms::getDetailedDescription(Rules
 
 	QString s=tr("Space constraint"); s+="\n";
 	s+=tr("Subject activity tag preferred rooms"); s+="\n";
-	s+=tr("Weight (percentage)=%1\%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
+	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
 	s+=tr("Subject=%1").arg(this->subjectName);s+="\n";
 	s+=tr("Activity tag=%1").arg(this->activityTagName);s+="\n";
 	for(QStringList::Iterator it=this->roomsNames.begin(); it!=this->roomsNames.end(); it++){
@@ -3260,14 +3359,24 @@ bool ConstraintActivityTagPreferredRoom::computeInternalStructure(QWidget* paren
 	//which correspond to the subject of the constraint.
 	
 	this->_activities.clear();
+
+	/*QSet<int> set=r.activitiesForActivityTagHash.value(activityTagName, QSet<int>());
+	foreach(int i, set){
+		const Activity& act=r.internalActivitiesList[i];
+		assert(act.activityTagsNames.contains(activityTagName));
+		_activities.append(i);
+	}
+	qSort(_activities);*/
+
 	for(int ac=0; ac<r.nInternalActivities; ac++)
 		if(r.internalActivitiesList[ac].activityTagsNames.contains(this->activityTagName)){
 		 	this->_activities.append(ac);
 		}
 		
-	this->_room = r.searchRoom(this->roomName);
+	//this->_room = r.searchRoom(this->roomName);
+	_room=r.roomsHash.value(roomName, -1);
 	if(this->_room<0){
-		QMessageBox::warning(parent, tr("FET error in data"), 
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"), 
 			tr("Following constraint is wrong:\n%1").arg(this->getDetailedDescription(r)));
 
 		return false;
@@ -3311,7 +3420,7 @@ QString ConstraintActivityTagPreferredRoom::getDescription(Rules& r){
 		end=", "+tr("C: %1", "Comments").arg(comments);
 
 	QString s=tr("Activity tag preferred room"); s+=", ";
-	s+=tr("WP:%1\%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
+	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
 	s+=tr("AT:%1", "Activity tag").arg(this->activityTagName);s+=", ";
 	s+=tr("R:%1", "Room").arg(this->roomName);
 
@@ -3323,7 +3432,7 @@ QString ConstraintActivityTagPreferredRoom::getDetailedDescription(Rules& r){
 
 	QString s=tr("Space constraint"); s+="\n";
 	s+=tr("Activity tag preferred room"); s+="\n";
-	s+=tr("Weight (percentage)=%1\%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
+	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
 	s+=tr("Activity tag=%1").arg(this->activityTagName);s+="\n";
 	s+=tr("Room=%1").arg(this->roomName);s+="\n";
 
@@ -3487,6 +3596,15 @@ bool ConstraintActivityTagPreferredRooms::computeInternalStructure(QWidget* pare
 	//which correspond to the subject of the constraint.
 	
 	this->_activities.clear();
+
+	/*QSet<int> set=r.activitiesForActivityTagHash.value(activityTagName, QSet<int>());
+	foreach(int i, set){
+		const Activity& act=r.internalActivitiesList[i];
+		assert(act.activityTagsNames.contains(activityTagName));
+		_activities.append(i);
+	}
+	qSort(_activities);*/
+
 	for(int ac=0; ac<r.nInternalActivities; ac++)
 		if(r.internalActivitiesList[ac].activityTagsNames.contains(this->activityTagName)){
 			this->_activities.append(ac);
@@ -3494,9 +3612,10 @@ bool ConstraintActivityTagPreferredRooms::computeInternalStructure(QWidget* pare
 
 	this->_rooms.clear();
 	foreach(QString rm, roomsNames){
-		int t=r.searchRoom(rm);
+		//int t=r.searchRoom(rm);
+		int t=r.roomsHash.value(rm, -1);
 		if(t<0){
-			QMessageBox::warning(parent, tr("FET error in data"), 
+			SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"), 
 				tr("Following constraint is wrong:\n%1").arg(this->getDetailedDescription(r)));
 
 			return false;
@@ -3544,7 +3663,7 @@ QString ConstraintActivityTagPreferredRooms::getDescription(Rules& r){
 		end=", "+tr("C: %1", "Comments").arg(comments);
 
 	QString s=tr("Activity tag preferred rooms"); s+=", ";
-	s+=tr("WP:%1\%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
+	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
 	s+=tr("AT:%1", "Activity tag").arg(this->activityTagName);
 	for(QStringList::Iterator it=this->roomsNames.begin(); it!=this->roomsNames.end(); it++){
 		s+=", ";
@@ -3559,7 +3678,7 @@ QString ConstraintActivityTagPreferredRooms::getDetailedDescription(Rules& r){
 
 	QString s=tr("Space constraint"); s+="\n";
 	s+=tr("Activity tag preferred rooms"); s+="\n";
-	s+=tr("Weight (percentage)=%1\%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
+	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
 	s+=tr("Activity tag=%1").arg(this->activityTagName);s+="\n";
 	for(QStringList::Iterator it=this->roomsNames.begin(); it!=this->roomsNames.end(); it++){
 		s+=tr("Room=%1").arg(*it);
@@ -3727,10 +3846,11 @@ bool ConstraintStudentsSetMaxBuildingChangesPerDay::computeInternalStructure(QWi
 {
 	this->iSubgroupsList.clear();
 	
-	StudentsSet* ss=r.searchAugmentedStudentsSet(this->studentsName);
+	//StudentsSet* ss=r.searchAugmentedStudentsSet(this->studentsName);
+	StudentsSet* ss=r.studentsHash.value(studentsName, NULL);
 			
 	if(ss==NULL){
-		QMessageBox::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
 		 tr("Constraint students set max building changes per day is wrong because it refers to inexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 									 		 
@@ -3812,7 +3932,7 @@ QString ConstraintStudentsSetMaxBuildingChangesPerDay::getDescription(Rules& r)
 
 	QString s=tr("Students set max building changes per day"); s+=", ";
 
-	s+=tr("WP:%1\%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
+	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
 	
 	s+=tr("St:%1", "St means students").arg(this->studentsName);s+=", ";
 
@@ -3829,7 +3949,7 @@ QString ConstraintStudentsSetMaxBuildingChangesPerDay::getDetailedDescription(Ru
 
 	s+=tr("Students set maximum building changes per day"); s+="\n";
 
-	s+=tr("Weight (percentage)=%1\%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
+	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
 
 	s+=tr("Students=%1").arg(this->studentsName);s+="\n";
 
@@ -4051,7 +4171,7 @@ QString ConstraintStudentsMaxBuildingChangesPerDay::getDescription(Rules& r)
 
 	QString s=tr("Students max building changes per day"); s+=", ";
 
-	s+=tr("WP:%1\%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
+	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
 	
 	s+=tr("MC:%1", "MC means max changes").arg(this->maxBuildingChangesPerDay);
 
@@ -4066,7 +4186,7 @@ QString ConstraintStudentsMaxBuildingChangesPerDay::getDetailedDescription(Rules
 
 	s+=tr("Students maximum building changes per day"); s+="\n";
 
-	s+=tr("Weight (percentage)=%1\%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
+	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
 
 	s+=tr("Maximum building changes per day=%1").arg(this->maxBuildingChangesPerDay);s+="\n";
 
@@ -4250,10 +4370,11 @@ bool ConstraintStudentsSetMaxBuildingChangesPerWeek::computeInternalStructure(QW
 {
 	this->iSubgroupsList.clear();
 	
-	StudentsSet* ss=r.searchAugmentedStudentsSet(this->studentsName);
+	//StudentsSet* ss=r.searchAugmentedStudentsSet(this->studentsName);
+	StudentsSet* ss=r.studentsHash.value(studentsName, NULL);
 			
 	if(ss==NULL){
-		QMessageBox::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
 		 tr("Constraint students set max building changes per week is wrong because it refers to inexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 									 		 
@@ -4335,7 +4456,7 @@ QString ConstraintStudentsSetMaxBuildingChangesPerWeek::getDescription(Rules& r)
 
 	QString s=tr("Students set max building changes per week"); s+=", ";
 
-	s+=tr("WP:%1\%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
+	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
 	
 	s+=tr("St:%1", "St means students").arg(this->studentsName);s+=", ";
 
@@ -4352,7 +4473,7 @@ QString ConstraintStudentsSetMaxBuildingChangesPerWeek::getDetailedDescription(R
 
 	s+=tr("Students set maximum building changes per week"); s+="\n";
 
-	s+=tr("Weight (percentage)=%1\%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
+	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
 
 	s+=tr("Students=%1").arg(this->studentsName);s+="\n";
 
@@ -4574,7 +4695,7 @@ QString ConstraintStudentsMaxBuildingChangesPerWeek::getDescription(Rules& r)
 
 	QString s=tr("Students max building changes per week"); s+=", ";
 
-	s+=tr("WP:%1\%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
+	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
 	
 	s+=tr("MC:%1", "MC means max changes").arg(this->maxBuildingChangesPerWeek);
 
@@ -4589,7 +4710,7 @@ QString ConstraintStudentsMaxBuildingChangesPerWeek::getDetailedDescription(Rule
 
 	s+=tr("Students maximum building changes per week"); s+="\n";
 
-	s+=tr("Weight (percentage)=%1\%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
+	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
 
 	s+=tr("Maximum building changes per week=%1").arg(this->maxBuildingChangesPerWeek);s+="\n";
 
@@ -4772,10 +4893,11 @@ bool ConstraintStudentsSetMinGapsBetweenBuildingChanges::computeInternalStructur
 {
 	this->iSubgroupsList.clear();
 	
-	StudentsSet* ss=r.searchAugmentedStudentsSet(this->studentsName);
+	//StudentsSet* ss=r.searchAugmentedStudentsSet(this->studentsName);
+	StudentsSet* ss=r.studentsHash.value(studentsName, NULL);
 			
 	if(ss==NULL){
-		QMessageBox::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
 		 tr("Constraint students set min gaps between building changes is wrong because it refers to inexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 									 		 
@@ -4857,7 +4979,7 @@ QString ConstraintStudentsSetMinGapsBetweenBuildingChanges::getDescription(Rules
 
 	QString s=tr("Students set min gaps between building changes"); s+=", ";
 
-	s+=tr("WP:%1\%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
+	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
 	
 	s+=tr("St:%1", "St means students").arg(this->studentsName);s+=", ";
 
@@ -4874,7 +4996,7 @@ QString ConstraintStudentsSetMinGapsBetweenBuildingChanges::getDetailedDescripti
 
 	s+=tr("Students set minimum gaps between building changes"); s+="\n";
 
-	s+=tr("Weight (percentage)=%1\%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
+	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
 
 	s+=tr("Students=%1").arg(this->studentsName);s+="\n";
 
@@ -5108,7 +5230,7 @@ QString ConstraintStudentsMinGapsBetweenBuildingChanges::getDescription(Rules& r
 
 	QString s=tr("Students min gaps between building changes"); s+=", ";
 
-	s+=tr("WP:%1\%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
+	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
 	
 	s+=tr("mG:%1", "mG means min gaps").arg(this->minGapsBetweenBuildingChanges);
 
@@ -5123,7 +5245,7 @@ QString ConstraintStudentsMinGapsBetweenBuildingChanges::getDetailedDescription(
 
 	s+=tr("Students minimum gaps between building changes"); s+="\n";
 
-	s+=tr("Weight (percentage)=%1\%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
+	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
 
 	s+=tr("Minimum gaps between building changes=%1").arg(this->minGapsBetweenBuildingChanges);s+="\n";
 
@@ -5317,10 +5439,11 @@ ConstraintTeacherMaxBuildingChangesPerDay::ConstraintTeacherMaxBuildingChangesPe
 
 bool ConstraintTeacherMaxBuildingChangesPerDay::computeInternalStructure(QWidget* parent, Rules& r)
 {
-	this->teacher_ID=r.searchTeacher(this->teacherName);
+	//this->teacher_ID=r.searchTeacher(this->teacherName);
+	teacher_ID=r.teachersHash.value(teacherName, -1);
 	
 	if(this->teacher_ID<0){
-		QMessageBox::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
 		 tr("Constraint teacher max building changes per day is wrong because it refers to inexistent teacher."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 							 		 
@@ -5367,7 +5490,7 @@ QString ConstraintTeacherMaxBuildingChangesPerDay::getDescription(Rules& r)
 
 	QString s=tr("Teacher max building changes per day"); s+=", ";
 
-	s+=tr("WP:%1\%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
+	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
 	
 	s+=tr("T:%1", "T means teacher").arg(this->teacherName);s+=", ";
 
@@ -5384,7 +5507,7 @@ QString ConstraintTeacherMaxBuildingChangesPerDay::getDetailedDescription(Rules&
 
 	s+=tr("Teacher maximum building changes per day"); s+="\n";
 
-	s+=tr("Weight (percentage)=%1\%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
+	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
 
 	s+=tr("Teacher=%1").arg(this->teacherName);s+="\n";
 
@@ -5607,7 +5730,7 @@ QString ConstraintTeachersMaxBuildingChangesPerDay::getDescription(Rules& r)
 
 	QString s=tr("Teachers max building changes per day"); s+=", ";
 
-	s+=tr("WP:%1\%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
+	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
 	
 	s+=tr("MC:%1", "MC means max changes").arg(this->maxBuildingChangesPerDay);
 
@@ -5622,7 +5745,7 @@ QString ConstraintTeachersMaxBuildingChangesPerDay::getDetailedDescription(Rules
 
 	s+=tr("Teachers maximum building changes per day"); s+="\n";
 
-	s+=tr("Weight (percentage)=%1\%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
+	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
 
 	s+=tr("Maximum building changes per day=%1").arg(this->maxBuildingChangesPerDay);s+="\n";
 
@@ -5804,10 +5927,11 @@ ConstraintTeacherMaxBuildingChangesPerWeek::ConstraintTeacherMaxBuildingChangesP
 
 bool ConstraintTeacherMaxBuildingChangesPerWeek::computeInternalStructure(QWidget* parent, Rules& r)
 {
-	this->teacher_ID=r.searchTeacher(this->teacherName);
+	//this->teacher_ID=r.searchTeacher(this->teacherName);
+	teacher_ID=r.teachersHash.value(teacherName, -1);
 	
 	if(this->teacher_ID<0){
-		QMessageBox::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
 		 tr("Constraint teacher max building changes per week is wrong because it refers to inexistent teacher."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 							 		 
@@ -5854,7 +5978,7 @@ QString ConstraintTeacherMaxBuildingChangesPerWeek::getDescription(Rules& r)
 
 	QString s=tr("Teacher max building changes per week"); s+=", ";
 
-	s+=tr("WP:%1\%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
+	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
 	
 	s+=tr("T:%1", "T means teacher").arg(this->teacherName);s+=", ";
 
@@ -5871,7 +5995,7 @@ QString ConstraintTeacherMaxBuildingChangesPerWeek::getDetailedDescription(Rules
 
 	s+=tr("Teacher maximum building changes per week"); s+="\n";
 
-	s+=tr("Weight (percentage)=%1\%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
+	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
 
 	s+=tr("Teacher=%1").arg(this->teacherName);s+="\n";
 
@@ -6094,7 +6218,7 @@ QString ConstraintTeachersMaxBuildingChangesPerWeek::getDescription(Rules& r)
 
 	QString s=tr("Teachers max building changes per week"); s+=", ";
 
-	s+=tr("WP:%1\%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
+	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
 	
 	s+=tr("MC:%1", "MC means max changes").arg(this->maxBuildingChangesPerWeek);
 
@@ -6109,7 +6233,7 @@ QString ConstraintTeachersMaxBuildingChangesPerWeek::getDetailedDescription(Rule
 
 	s+=tr("Teachers maximum building changes per week"); s+="\n";
 
-	s+=tr("Weight (percentage)=%1\%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
+	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
 
 	s+=tr("Maximum building changes per week=%1").arg(this->maxBuildingChangesPerWeek);s+="\n";
 
@@ -6291,10 +6415,11 @@ ConstraintTeacherMinGapsBetweenBuildingChanges::ConstraintTeacherMinGapsBetweenB
 
 bool ConstraintTeacherMinGapsBetweenBuildingChanges::computeInternalStructure(QWidget* parent, Rules& r)
 {
-	this->teacher_ID=r.searchTeacher(this->teacherName);
+	//this->teacher_ID=r.searchTeacher(this->teacherName);
+	teacher_ID=r.teachersHash.value(teacherName, -1);
 	
 	if(this->teacher_ID<0){
-		QMessageBox::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
 		 tr("Constraint teacher min gaps between building changes is wrong because it refers to inexistent teacher."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 							 		 
@@ -6341,7 +6466,7 @@ QString ConstraintTeacherMinGapsBetweenBuildingChanges::getDescription(Rules& r)
 
 	QString s=tr("Teacher min gaps between building changes"); s+=", ";
 
-	s+=tr("WP:%1\%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
+	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
 	
 	s+=tr("T:%1", "T means teacher").arg(this->teacherName);s+=", ";
 
@@ -6358,7 +6483,7 @@ QString ConstraintTeacherMinGapsBetweenBuildingChanges::getDetailedDescription(R
 
 	s+=tr("Teacher minimum gaps between building changes"); s+="\n";
 
-	s+=tr("Weight (percentage)=%1\%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
+	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
 
 	s+=tr("Teacher=%1").arg(this->teacherName);s+="\n";
 
@@ -6593,7 +6718,7 @@ QString ConstraintTeachersMinGapsBetweenBuildingChanges::getDescription(Rules& r
 
 	QString s=tr("Teachers min gaps between building changes"); s+=", ";
 
-	s+=tr("WP:%1\%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
+	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
 	
 	s+=tr("mG:%1", "mG means min gaps").arg(this->minGapsBetweenBuildingChanges);
 
@@ -6608,7 +6733,7 @@ QString ConstraintTeachersMinGapsBetweenBuildingChanges::getDetailedDescription(
 
 	s+=tr("Teachers minimum gaps between building changes"); s+="\n";
 
-	s+=tr("Weight (percentage)=%1\%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
+	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
 
 	s+=tr("Minimum gaps between building changes=%1").arg(this->minGapsBetweenBuildingChanges);s+="\n";
 
@@ -6806,19 +6931,26 @@ bool ConstraintActivitiesOccupyMaxDifferentRooms::computeInternalStructure(QWidg
 {
 	this->_activitiesIndices.clear();
 	
-	QSet<int> req=this->activitiesIds.toSet();
+/*	QSet<int> req=this->activitiesIds.toSet();
 	assert(req.count()==this->activitiesIds.count());
 	
 	//this cares about inactive activities, also, so do not assert this->_actIndices.count()==this->actIds.count()
 	int i;
 	for(i=0; i<r.nInternalActivities; i++)
 		if(req.contains(r.internalActivitiesList[i].id))
-			this->_activitiesIndices.append(i);
+			this->_activitiesIndices.append(i);*/
+			
+	foreach(int id, activitiesIds){
+		int index=r.activitiesHash.value(id, -1);
+		//assert(index>=0);
+		if(index>=0) //take care for inactive activities
+			_activitiesIndices.append(index);
+	}
 			
 	///////////////////////
 	
 	if(this->_activitiesIndices.count()<2){
-		QMessageBox::warning(parent, tr("FET error in data"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
 			tr("Following constraint is wrong (refers to less than two activities). Please correct it:\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -6971,16 +7103,19 @@ double ConstraintActivitiesOccupyMaxDifferentRooms::fitness(
 
 void ConstraintActivitiesOccupyMaxDifferentRooms::removeUseless(Rules& r)
 {
-	QSet<int> validActs;
+	/*QSet<int> validActs;
 	
 	foreach(Activity* act, r.activitiesList)
-		validActs.insert(act->id);
+		validActs.insert(act->id);*/
 		
 	QList<int> newActs;
 	
-	foreach(int aid, activitiesIds)
-		if(validActs.contains(aid))
+	foreach(int aid, activitiesIds){
+		Activity* act=r.activitiesPointerHash.value(aid, NULL);
+		if(act!=NULL)
+		//if(validActs.contains(aid))
 			newActs.append(aid);
+	}
 			
 	activitiesIds=newActs;
 }
@@ -7050,3 +7185,283 @@ bool ConstraintActivitiesOccupyMaxDifferentRooms::repairWrongDayOrHour(Rules& r)
 
 //////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////
+
+ConstraintActivitiesSameRoomIfConsecutive::ConstraintActivitiesSameRoomIfConsecutive()
+	: SpaceConstraint()
+{
+	this->type = CONSTRAINT_ACTIVITIES_SAME_ROOM_IF_CONSECUTIVE;
+}
+
+ConstraintActivitiesSameRoomIfConsecutive::ConstraintActivitiesSameRoomIfConsecutive(double wp,
+	QList<int> a_L)
+	: SpaceConstraint(wp)
+{
+	this->activitiesIds=a_L;
+	
+	this->type=CONSTRAINT_ACTIVITIES_SAME_ROOM_IF_CONSECUTIVE;
+}
+
+bool ConstraintActivitiesSameRoomIfConsecutive::computeInternalStructure(QWidget* parent, Rules& r)
+{
+	//this cares about inactive activities, also, so do not assert this->_actIndices.count()==this->actIds.count()
+	_activitiesIndices.clear();
+	foreach(int id, activitiesIds){
+		int i=r.activitiesHash.value(id, -1);
+		if(i>=0)
+			_activitiesIndices.append(i);
+	}
+
+	/*this->_activitiesIndices.clear();
+	
+	QSet<int> req=this->activitiesIds.toSet();
+	assert(req.count()==this->activitiesIds.count());
+	
+	//this cares about inactive activities, also, so do not assert this->_actIndices.count()==this->actIds.count()
+	int i;
+	for(i=0; i<r.nInternalActivities; i++)
+		if(req.contains(r.internalActivitiesList[i].id))
+			this->_activitiesIndices.append(i);*/
+			
+	///////////////////////
+	
+	if(this->_activitiesIndices.count()<2){
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+			tr("Following constraint is wrong (refers to less than two activities). Please correct it:\n%1").arg(this->getDetailedDescription(r)));
+		return false;
+	}
+	else{
+		assert(this->_activitiesIndices.count()>=2);
+		return true;
+	}
+}
+
+bool ConstraintActivitiesSameRoomIfConsecutive::hasInactiveActivities(Rules& r)
+{
+	//returns true if all or all but one activities are inactive
+	
+	int cnt=0;
+	foreach(int aid, this->activitiesIds)
+		if(r.inactiveActivities.contains(aid))
+			cnt++;
+			
+	if(this->activitiesIds.count()>=2 && (cnt==this->activitiesIds.count() || cnt==this->activitiesIds.count()-1) )
+		return true;
+	else
+		return false;
+}
+
+QString ConstraintActivitiesSameRoomIfConsecutive::getXmlDescription(Rules& r)
+{
+	Q_UNUSED(r);
+
+	QString s="<ConstraintActivitiesSameRoomIfConsecutive>\n";
+	
+	s+="	<Weight_Percentage>"+CustomFETString::number(this->weightPercentage)+"</Weight_Percentage>\n";
+	
+	s+="	<Number_of_Activities>"+CustomFETString::number(this->activitiesIds.count())+"</Number_of_Activities>\n";
+	foreach(int aid, this->activitiesIds)
+		s+="	<Activity_Id>"+CustomFETString::number(aid)+"</Activity_Id>\n";
+	
+	s+="	<Active>"+trueFalse(active)+"</Active>\n";
+	s+="	<Comments>"+protect(comments)+"</Comments>\n";
+	s+="</ConstraintActivitiesSameRoomIfConsecutive>\n";
+	return s;
+}
+
+QString ConstraintActivitiesSameRoomIfConsecutive::getDescription(Rules& r)
+{
+	Q_UNUSED(r);
+
+	QString begin=QString("");
+	if(!active)
+		begin="X - ";
+		
+	QString end=QString("");
+	if(!comments.isEmpty())
+		end=", "+tr("C: %1", "Comments").arg(comments);
+		
+	QString actids=QString("");
+	foreach(int aid, this->activitiesIds)
+		actids+=CustomFETString::number(aid)+QString(", ");
+	actids.chop(2);
+		
+	QString s=tr("Activities same room if consecutive, WP:%1, NA:%2, A: %3", "Constraint description. WP means weight percentage, "
+	 "NA means the number of activities, A means activities list")
+	 .arg(CustomFETString::number(this->weightPercentage))
+	 .arg(CustomFETString::number(this->activitiesIds.count()))
+	 .arg(actids);
+	
+	return begin+s+end;
+}
+
+QString ConstraintActivitiesSameRoomIfConsecutive::getDetailedDescription(Rules& r)
+{
+	QString actids=QString("");
+	foreach(int aid, this->activitiesIds)
+		actids+=CustomFETString::number(aid)+QString(", ");
+	actids.chop(2);
+		
+	QString s=tr("Space constraint"); s+="\n";
+	s+=tr("Activities same room if consecutive"); s+="\n";
+	s+=tr("Weight (percentage)=%1").arg(CustomFETString::number(this->weightPercentage)); s+="\n";
+	s+=tr("Number of activities=%1").arg(CustomFETString::number(this->activitiesIds.count())); s+="\n";
+	foreach(int id, this->activitiesIds){
+		s+=tr("Activity with id=%1 (%2)", "%1 is the id, %2 is the detailed description of the activity")
+		 .arg(id)
+		 .arg(getActivityDetailedDescription(r, id));
+		s+="\n";
+	}
+	if(!active){
+		s+=tr("Active=%1", "Refers to a constraint").arg(yesNoTranslated(active));
+		s+="\n";
+	}
+	if(!comments.isEmpty()){
+		s+=tr("Comments=%1").arg(comments);
+		s+="\n";
+	}
+	
+	return s;
+}
+
+double ConstraintActivitiesSameRoomIfConsecutive::fitness(
+	Solution& c,
+	Rules& r,
+	QList<double>& cl,
+	QList<QString>& dl,
+	QString* conflictsString)
+{
+	//if the matrix roomsMatrix is already calculated, do not calculate it again!
+	if(!c.roomsMatrixReady){
+		c.roomsMatrixReady=true;
+		rooms_conflicts = c.getRoomsMatrix(r, roomsMatrix);
+
+		c.changedForMatrixCalculation=false;
+	}
+
+	//Calculates the number of conflicts
+
+	int nbroken=0;
+	
+	for(int i=0; i<_activitiesIndices.count(); i++){
+		int ai=_activitiesIndices.at(i);
+		for(int j=i+1; j<_activitiesIndices.count(); j++){
+			int ai2=_activitiesIndices.at(j);
+			
+			if(c.times[ai]!=UNALLOCATED_TIME && c.times[ai2]!=UNALLOCATED_TIME){
+				int d=c.times[ai]%r.nDaysPerWeek;
+				int h=c.times[ai]/r.nDaysPerWeek;
+				int d2=c.times[ai2]%r.nDaysPerWeek;
+				int h2=c.times[ai2]/r.nDaysPerWeek;
+			
+				if( (d==d2) && (h+r.internalActivitiesList[ai].duration==h2 || h2+r.internalActivitiesList[ai2].duration==h) )
+					if(c.rooms[ai]!=UNALLOCATED_SPACE && c.rooms[ai]!=UNSPECIFIED_ROOM)
+						if(c.rooms[ai2]!=UNALLOCATED_SPACE && c.rooms[ai2]!=UNSPECIFIED_ROOM)
+							if(c.rooms[ai]!=c.rooms[ai2])
+								nbroken++;
+			}
+		}
+	}
+	
+	if(nbroken>0){
+		if(conflictsString!=NULL){
+			QString s=tr("Space constraint activities same rooms if consecutive broken");
+			s += QString(". ");
+			s += tr("This increases the conflicts total by %1").arg(CustomFETString::number(nbroken*weightPercentage/100));
+	
+			dl.append(s);
+			cl.append(nbroken*weightPercentage/100);
+		
+			*conflictsString += s+"\n";
+		}
+	}
+	
+	if(this->weightPercentage==100)
+		assert(nbroken==0);
+
+	return nbroken*weightPercentage/100;
+}
+
+void ConstraintActivitiesSameRoomIfConsecutive::removeUseless(Rules& r)
+{
+	/*QSet<int> validActs;
+	
+	foreach(Activity* act, r.activitiesList)
+		validActs.insert(act->id);*/
+		
+	QList<int> newActs;
+	
+	foreach(int aid, activitiesIds){
+		Activity* act=r.activitiesPointerHash.value(aid, NULL);
+		if(act!=NULL)
+		//if(validActs.contains(aid))
+			newActs.append(aid);
+	}
+			
+	activitiesIds=newActs;
+}
+
+bool ConstraintActivitiesSameRoomIfConsecutive::isRelatedToActivity(Activity* a)
+{
+	return this->activitiesIds.contains(a->id);
+}
+
+bool ConstraintActivitiesSameRoomIfConsecutive::isRelatedToTeacher(Teacher* t)
+{
+	Q_UNUSED(t);
+
+	return false;
+}
+
+bool ConstraintActivitiesSameRoomIfConsecutive::isRelatedToSubject(Subject* s)
+{
+	Q_UNUSED(s);
+
+	return false;
+}
+
+bool ConstraintActivitiesSameRoomIfConsecutive::isRelatedToActivityTag(ActivityTag* s)
+{
+	Q_UNUSED(s);
+
+	return false;
+}
+
+bool ConstraintActivitiesSameRoomIfConsecutive::isRelatedToStudentsSet(Rules& r, StudentsSet* s)
+{
+	Q_UNUSED(r);
+	Q_UNUSED(s);
+	
+	return false;
+}
+
+bool ConstraintActivitiesSameRoomIfConsecutive::isRelatedToRoom(Room* r)
+{
+	Q_UNUSED(r);
+	
+	return false;
+}
+
+bool ConstraintActivitiesSameRoomIfConsecutive::hasWrongDayOrHour(Rules& r)
+{
+	Q_UNUSED(r);
+	return false;
+}
+
+bool ConstraintActivitiesSameRoomIfConsecutive::canRepairWrongDayOrHour(Rules& r)
+{
+	Q_UNUSED(r);
+	assert(0);
+
+	return true;
+}
+
+bool ConstraintActivitiesSameRoomIfConsecutive::repairWrongDayOrHour(Rules& r)
+{
+	Q_UNUSED(r);
+	assert(0); //should check hasWrongDayOrHour, firstly
+
+	return true;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////

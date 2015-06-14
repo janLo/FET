@@ -46,7 +46,7 @@ void HelpFaqForm::setText()
 	
 	s+=tr("Frequently asked questions.");
 	s+="\n\n";
-	s+=tr("Last modified on %1.").arg(tr("30 April 2012"));
+	s+=tr("Last modified on %1.").arg(tr("28 September 2013"));
 	
 	s+="\n\n";
 	s+="--------------------";
@@ -62,6 +62,8 @@ void HelpFaqForm::setText()
 		"- Activity tags (you can use them or not, option is yours: the type of activity: lab, course, seminary, or any other information attached to an activity)."
 		"\n"
 		"- Rooms (classrooms)."
+		"\n"
+		"- Buildings."
 		"\n"
 		"- Activities: a coupling of one or more teachers, a subject and one or more students set. This is usually named a "
 		"course, a lecture, a laboratory and so on. An activity can have optionally an activity tag, to help you with some constraints."
@@ -89,7 +91,7 @@ void HelpFaqForm::setText()
 	s+="\n- ";
 	s+=tr("Maximum total number of sets of students: %1").arg(MAX_TOTAL_SUBGROUPS);
 	s+="\n- ";
-	s+=tr("Maximum total number of subjects: %1").arg(MAX_SUBJECTS);
+	s+=tr("Virtually unlimited number of subjects");
 	s+="\n- ";
 	s+=tr("Virtually unlimited number of activity tags");
 	s+="\n- ";
@@ -152,15 +154,16 @@ void HelpFaqForm::setText()
 	s+="\n\n";
 
 	s+=tr("Q: How to define the students into sections?\n\n"
-		"A: FET can automatically divide years by at most 3 categories of options. If you need to divide "
-		"a year into 4 categories, you can use a small trick (see below)."
+		"A: FET can automatically divide years by at most 4 categories of options. If you need to divide "
+		"a year into 5 categories, you can use a small trick (see below)."
 		"\n\n"
 		"Add years and the option 'Divide ...' in the years dialog is the easiest way. You can also add manually years, groups and subgroups."
 		"\n\n"
-		"If each year (for instance 9) is divided by at most 3 categories, you can add year 9 and divide it in 3 categories. "
-		"If a year is divided by 4 categories (for instance, year 9 is divided by: section (a, b, c, d), language (en, fr), "
-		"religion and boys/girls), you might consider years: 9a, 9b, 9c, 9d, each divided into 3 categories, and divide each year in "
-		"the dialog. For more than 4 categories, very unlikely case, you will need to manually adjust groups/subgroups.");
+		"If each year (for instance 9) is divided by at most 4 categories, you can add year 9 and divide it in 4 categories. "
+		"If a year is divided by 5 categories (for instance, year 9 is divided by: section (a, b, c, d), first language (en, fr), "
+		"religion, boys/girls and second language (de, it)), you might consider years: 9a, 9b, 9c, 9d, each divided "
+		"into 4 categories, and divide each year in the dialog. For more than 5 categories, very unlikely case, you will need to "
+		"manually adjust groups/subgroups.");
 	s+="\n\n";
 	s+=tr("Important: you must consider that each year contains groups which contain independent subgroups. Subgroups should have "
 		"all the activities of the year and group plus additional optional activities. Please check menu statistics/students for "
@@ -223,7 +226,7 @@ void HelpFaqForm::setText()
 
 	s+=tr("Q: Help on ConstraintMinDaysBetweenActivities.\n\n"
 		"A: It refers to a set of activities and involves a constant, N. For every pair of activities in the set, "
-		"it does not allow the distance(in days) between them to be less than N. If you specify N=1, then this "
+		"it does not allow the distance (in days) between them to be less than N. If you specify N=1, then this "
 		"constraint means that no two activities can be scheduled in the same day. N=2 means that each two activities "
 		"must be separated by at least one day\n\n"
 		"Example: 3 activities and N=2. Then, one can place them on Monday, Wednesday and Friday (5 days week).\n\n"
@@ -243,7 +246,7 @@ void HelpFaqForm::setText()
 		"(these are different constraints),\n"
 		"then the outcome of these 2 constraints will be a constraint:\n\n"
 		"Activities 1 and 2, min days 1, consecutive if same day=true, weight=100%-5%*5%=99.75%, very high. This is because of FET algorithm.\n\n"
-		"You may however add 2 constraints for the same activities if you want 100% with min 2 days and 95% with min 1 day. These are not duplicates.\n\n"
+		"You may however add 2 constraints for the same activities if you want 95% with min 2 days and 100% with min 1 day. These are not duplicates.\n\n"
 		"You might get an impossible timetable with duplicates, so beware.");
 	s+=tr("If you need to balance 3 activities in a 5 days week, you can add, in the new version 5.5.8 and higher, "
 		"directly from the add activity dialog, 2 constraints. You just have to input min days 2, and FET will ask if "
@@ -264,7 +267,7 @@ void HelpFaqForm::setText()
 	s+="--------------------";
 	s+="\n\n";
 
-	s+=tr("Q: Is it possible to make a timetable where the students learn in two shifts? (for instance, the lowest form in the morning and "
+	s+=tr("Q: Is it possible to make a timetable where the students learn in two shifts? (for instance, the lowest forms in the morning and "
 		"the highest forms in the afternoon)?\n\n"
 		"A: Yes, you have to add more constraint students set not available accordingly (for the lowest forms not available Mon, "
 		"Tue, Wed, Th, Fr each from middle hour to last hour and for highest forms from first hour to middle hour). "
@@ -366,13 +369,13 @@ void HelpFaqForm::setText()
 		"Volker Dirr tried to express how FET considers under 100% weights, but his words are not completely reflecting the fact:\n\n"
 		"Here is a comment from Volker Dirr:\n\n"
 		"weight = 50% means: In average FET retries two times to place an activity without a conflict. If it isn't able to place the "
-		"activity without a conflict after avarage 2 times it keeps the conflict and tries to place the next activity.\n"
+		"activity without a conflict after average 2 times it keeps the conflict and tries to place the next activity.\n"
 		"weight = 75% means: In average FET retries four times to place an activity without a conflict. If it isn't "
-		"able to place the activity without a conflict after avarage 4 times it keeps the conflict and tries to place the next activity.\n"
+		"able to place the activity without a conflict after average 4 times it keeps the conflict and tries to place the next activity.\n"
 		"weight = 99% means: In average FET retries 100 times to place an activity without a conflict. "
-		"If it isn't able to place the activity without a conflict after avarage 100 times it keeps the conflict and tries to place the next activity.\n"
+		"If it isn't able to place the activity without a conflict after average 100 times it keeps the conflict and tries to place the next activity.\n"
 		"weight = 99.99% means: In average FET retries 10000 times to place an activity without a conflict."
-		" If it isn't able to place the activity without a conflict after avarage 10000 times it keeps the conflict and tries to place the next activity.\n\n"
+		" If it isn't able to place the activity without a conflict after average 10000 times it keeps the conflict and tries to place the next activity.\n\n"
 		"This is not 100% correct. Activities might get unallocated, and cycle reopened.");
 
 	s+="\n\n";
@@ -381,7 +384,7 @@ void HelpFaqForm::setText()
 
 	s+=tr("Q: Help on constraint activities preferred starting or preferred time slots (a set of activities has a set of preferred starting or time slots)\n\n"
 		"A: You can specify a set of activities by selecting a teacher (if empty - all teachers), a students set "
-		"(if empty - all students), a subject (if empty - all subjects) and an activity tag (if empty, all activity tags) and a set of allowed days.\n\n"
+		"(if empty - all students), a subject (if empty - all subjects) and an activity tag (if empty, all activity tags) and a set of allowed time slots.\n\n"
 		"Starting means that an activity may only start at these periods.\n\n"
 		"Time slots means more restrictive, that activity may only start and end and take place in these intervals ("
 		"if activity has duration 2 and on Monday is allowed 8:00, 9:00 and 10:00, then activity can only start at 8:00 or 9:00).");
@@ -515,8 +518,8 @@ void HelpFaqForm::setText()
 		"two activities consecutive, A2 and A3 (A2 followed by A3). Add constraint activities not overlapping, A1 and A3.\n\n"
 		"There is only a small problem: A2 cannot be put in the last period. To correct that: increase the number of "
 		"hours with 1 and constraint all the real activities (without A3) to take place in the first periods. "
-		"You can do that by adding a subject tag to A1 and A2 named Early and a subject tag to A3 named Any, and constraint "
-		"activities preferred time slots for subject tag Early to be in the first n-1 slots of each day.");
+		"You can do that by adding an activity tag to A1 and A2 named Early and an activity tag to A3 named Any, and constraint "
+		"activities preferred time slots for activity tag Early to be in the first n-1 slots of each day.");
 
 	s+="\n\n";
 	s+="--------------------";
@@ -525,7 +528,7 @@ void HelpFaqForm::setText()
 	s+=tr("Q: What is the difference between preferred starting times and preferred time slots?\n\n"
 		"A: Time slots is more restrictive, means all hours of an activity must be in the allowed intervals.\n\n"
 		"Example: Preferred times Monday 8,9 and 10. If activity A has duration 2, then starting means that activity A "
-		"can start at 8, 9 or 10 on Monday, while overall means that activity A can start on Monday at 8 or 9 (10 is not "
+		"can start at 8, 9 or 10 on Monday, while time slots means that activity A can start on Monday at 8 or 9 (10 is not "
 		"allowed, because the last hour of activity is not allowed there).");
 
 	s+="\n\n";
@@ -556,7 +559,7 @@ void HelpFaqForm::setText()
 		"A: You select the component number of certain activities (say, if you have an activity split into 5 activities per week, you "
 		"have components 1, 2, 3, 4 or 5). Only the selected number of this split activity (the corresponding component activity) will be constrained.\n\n"
 		"You will also specify the set of subactivities by selecting a teacher (if empty - all teachers), a students set ("
-		"if empty - all students), a subject (if empty - all subjects) and an activity tag (if empty, all activity tags) and a set of allowed days.\n\n"
+		"if empty - all students), a subject (if empty - all subjects) and an activity tag (if empty, all activity tags) and a set of allowed time slots.\n\n"
 		"Starting times means that an activity may only start at these periods.\n\n"
 		"Time slots means more restrictive, that activity may only start and end and take place in these intervals (if activity has duration 2 "
 		"and on Monday is allowed 8:00, 9:00 and 10:00, then activity can only start at 8:00 or 9:00).\n\n"
@@ -590,7 +593,7 @@ void HelpFaqForm::setText()
 	s+="\n\n";
 	
 	s+=tr("Q: At our school there are a lot of teachers which work only a few hours a week. Of course it "
-		"is really nasty to drive for one our to the school. So we set the constraint, that every teacher "
+		"is really nasty to drive for one our to the school. So we set the constraint that every teacher "
 		"should work at least 2 hours a day. Unfortunately we have this year a teacher which only works 1h a "
 		"week. As a result of this FET doesn't start to create a timetable. Any suggestions how "
 		"to fix the problem without defining a constraint for every singular teacher?\n\n"
@@ -614,7 +617,7 @@ void HelpFaqForm::setText()
 		"Activity Math, duration 2, id say 100\n\n"
 		"Hour 10:00 Math (first hour of act. 100)\n"
 		"Hour 11:00 Break\n"
-		"Hour 12:00 Math (second hour of act. 100)\n\n"
+		"Hour 12:00 Math (second hour of act. 100)?\n\n"
 		"A: No, the activity must respect the break, so it is before or after the break with all the hours of it.");
 
 	s+="\n\n";
@@ -649,7 +652,7 @@ void HelpFaqForm::setText()
 
 	s+=tr("Q: (by Horatiu Halmajan) I met a situation: a teacher asks for maximum 2 working days, but these days "
 		"should not be consecutive. Is there a way to implement it in .fet?\n\n"
-		"The only (manual) way I could think of, is to set the teacher as unavailable on Tuesdays and Thursdays, thus "
+		"The only (manual) way I could think of is to set the teacher as unavailable on Tuesdays and Thursdays, thus "
 		"leaving him available on Monday, Wednesday and Friday (any two of these are unconsecutive).\n\n"
 		"Any other ideas...?\n\n"
 		"A: I have another idea: choose 2 activities of this teacher which clearly cannot be on the same day, "
@@ -729,14 +732,14 @@ void HelpFaqForm::setText()
 	s+=tr("3 hints from an anonymous Polish user, who uses FET for very large data:");
 	s+="\n\n";
 	s+=tr("The first hint for other users is to start with minimum number of constraints and if FET would generate "
-		"the plan than thinking about adding the next ones.");
+		"the plan then thinking about adding the next ones.");
 	s+="\n\n";
 	s+=tr("The second hint is not to change too many constraints in one simulation as it may lead to impossible timetable "
-		"and than it is difficult to say which particular constraint was too much.");
+		"and then it is difficult to say which particular constraint was too much.");
 	s+="\n\n";
 	s+=tr("For instance even when two consecutive activities are placed at one day "
-		"(the same group and the same teacher) sometimes there are placed at different rooms what would force them to needless "
-		"changing room. I guess that FET is focused on fulfilling constrains but not on optimizing timetable. Sometimes "
+		"(the same group and the same teacher) sometimes they are placed at different rooms what would force them to needless "
+		"changing room. I guess that FET is focused on fulfilling constraints but not on optimizing timetable. Sometimes "
 		"simple changing of two activities makes plan better both for students and teachers. I think that manually improving "
 		"generated plan is faster than creating many many more constraints and repeating simulations. And this is the third hint.");
 
@@ -803,14 +806,6 @@ void HelpFaqForm::setText()
 		" are placed in descending order of the sum of the number of teachers and subgroups) and a locked activity is never rescheduled. "
 		"So, FET puts A1 first, then A2, A3, A4 and A5. Since it retries more times separately for each activity, it is able to find a timetable easily.\n\n"
 		"Practical solution to case 2)? Reduce weights of constraints which have weight below 100% or lock (to a corresponding slot) the activity which corresponds to A1 in your data file.");
-	
-	s+="\n\n";
-	s+="--------------------";
-	s+="\n\n";
-
-	s+=tr("Q: I need constraint students (set) max days per week, similar to existing teacher(s) max days per week constraint.");
-	s+="\n\n";
-	s+=tr("A: Maybe it will be implemented in the future. Until then, please use constraint students (set) interval max days per week, interval = whole day.");
 	
 	s+="\n\n";
 	s+="--------------------";

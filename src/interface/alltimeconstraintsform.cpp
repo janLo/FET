@@ -101,6 +101,9 @@
 #include "modifyconstraintactivitiesoccupymaxtimeslotsfromselectionform.h"
 #include "modifyconstraintactivitiesmaxsimultaneousinselectedtimeslotsform.h"
 
+#include "modifyconstraintstudentssetmaxdaysperweekform.h"
+#include "modifyconstraintstudentsmaxdaysperweekform.h"
+
 #include "lockunlock.h"
 
 #include "advancedfilterform.h"
@@ -719,11 +722,23 @@ void AllTimeConstraintsForm::modifyConstraint()
 		setParentAndOtherThings(&form, this);
 		form.exec();
 	}
+	//65
+	else if(ctr->type==CONSTRAINT_STUDENTS_SET_MAX_DAYS_PER_WEEK){
+		ModifyConstraintStudentsSetMaxDaysPerWeekForm form(this, (ConstraintStudentsSetMaxDaysPerWeek*)ctr);
+		setParentAndOtherThings(&form, this);
+		form.exec();
+	}
+	//66
+	else if(ctr->type==CONSTRAINT_STUDENTS_MAX_DAYS_PER_WEEK){
+		ModifyConstraintStudentsMaxDaysPerWeekForm form(this, (ConstraintStudentsMaxDaysPerWeek*)ctr);
+		setParentAndOtherThings(&form, this);
+		form.exec();
+	}
 
 	else{
 		QMessageBox::critical(this, tr("FET critical"), tr("You have found a bug in FET. Please report it. This kind of constraint"
 		 " is not correctly recognized in all time constraints dialog. FET will skip this error, so that you can continue work."
-		 ". Probably the constraint can be modified from the specific constraint dialog."));
+		 " Probably the constraint can be modified from the specific constraint dialog."));
 		//assert(0);
 		//exit(1);
 	}

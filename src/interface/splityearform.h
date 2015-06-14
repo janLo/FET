@@ -37,6 +37,7 @@ private:
 	int _nDiv1;
 	int _nDiv2;
 	int _nDiv3;
+	int _nDiv4;
 	
 	QString _cat1div1;
 	QString _cat1div2;
@@ -50,6 +51,10 @@ private:
 	QString _cat1div10;
 	QString _cat1div11;
 	QString _cat1div12;
+	QString _cat1div13;
+	QString _cat1div14;
+	QString _cat1div15;
+	QString _cat1div16;
 
 	QString _cat2div1;
 	QString _cat2div2;
@@ -57,6 +62,12 @@ private:
 	QString _cat2div4;
 	QString _cat2div5;
 	QString _cat2div6;
+	QString _cat2div7;
+	QString _cat2div8;
+	QString _cat2div9;
+	QString _cat2div10;
+	QString _cat2div11;
+	QString _cat2div12;
 
 	QString _cat3div1;
 	QString _cat3div2;
@@ -65,10 +76,17 @@ private:
 	QString _cat3div5;
 	QString _cat3div6;
 	
+	QString _cat4div1;
+	QString _cat4div2;
+	QString _cat4div3;
+	QString _cat4div4;
+	QString _cat4div5;
+	QString _cat4div6;
+	
 public:
 	QString year;
 	
-	SplitYearForm(QWidget* parent, const QString year);
+	SplitYearForm(QWidget* parent, const QString& _year);
 	~SplitYearForm();
 	
 public slots:
@@ -77,6 +95,7 @@ public slots:
 	void category1Changed();
 	void category2Changed();
 	void category3Changed();
+	void category4Changed();
 	
 	void help();
 	void reset();

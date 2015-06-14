@@ -233,6 +233,8 @@ void SpreadMinDaysConstraintsFiveDaysForm::wasAccepted()
 			}
 			else{
 				QMessageBox::information(this, tr("FET information"), tr("Please select the isolated component"));
+				assert(c1!=NULL);
+				delete c1;
 				return;
 			}
 				
@@ -277,6 +279,7 @@ void SpreadMinDaysConstraintsFiveDaysForm::wasAccepted()
 			//acts[1]=cl.at(1);
 			acts.append(cl.at(1));
 			
+			assert(c2==NULL);
 			c2=new ConstraintMinDaysBetweenActivities(weight2, consecutiveIfSameDay, n_acts, acts, 2);
 		}
 	
@@ -363,7 +366,16 @@ void SpreadMinDaysConstraintsFiveDaysForm::wasAccepted()
 
 	assert(res==QDialog::Accepted);
 	
-	foreach(ConstraintMinDaysBetweenActivities* mdc, constraintsToBeRemoved){
+	//better
+	QList<TimeConstraint*> removedList;
+	foreach(ConstraintMinDaysBetweenActivities* mdc, constraintsToBeRemoved)
+		removedList.append((TimeConstraint*)mdc);
+	bool t=gt.rules.removeTimeConstraints(removedList);
+	assert(t);
+	removedList.clear();
+	constraintsToBeRemoved.clear();
+	
+	/*foreach(ConstraintMinDaysBetweenActivities* mdc, constraintsToBeRemoved){
 		int t=gt.rules.timeConstraintsList.removeAll(mdc);
 		assert(t==1);
 	}
@@ -373,7 +385,7 @@ void SpreadMinDaysConstraintsFiveDaysForm::wasAccepted()
 	foreach(ConstraintMinDaysBetweenActivities* mdc, constraintsToBeRemoved)
 		delete mdc;
 		
-	constraintsToBeRemoved.clear();
+	constraintsToBeRemoved.clear();*/
 		
 	foreach(ConstraintMinDaysBetweenActivities* tc, addedConstraints){
 		bool t=gt.rules.addTimeConstraint(tc);

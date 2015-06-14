@@ -190,11 +190,11 @@ TimetableGenerateMultipleForm::TimetableGenerateMultipleForm(QWidget* parent): Q
 	
 	simulation_running_multi=false;
 
-	startPushButton->setEnabled(TRUE);
-	stopPushButton->setDisabled(TRUE);
-	closePushButton->setEnabled(TRUE);
-	minutesGroupBox->setEnabled(TRUE);
-	timetablesGroupBox->setEnabled(TRUE);
+	startPushButton->setEnabled(true);
+	stopPushButton->setDisabled(true);
+	closePushButton->setEnabled(true);
+	minutesGroupBox->setEnabled(true);
+	timetablesGroupBox->setEnabled(true);
 
 	connect(&generateMultipleThread, SIGNAL(timetableGenerated(int, const QString&, bool)),
 		this, SLOT(timetableGenerated(int, const QString&, bool)));
@@ -296,11 +296,11 @@ void TimetableGenerateMultipleForm::start(){
 		return;
 	}
 
-	startPushButton->setDisabled(TRUE);
-	stopPushButton->setEnabled(TRUE);
-	minutesGroupBox->setDisabled(TRUE);
-	timetablesGroupBox->setDisabled(TRUE);
-	closePushButton->setDisabled(TRUE);
+	startPushButton->setDisabled(true);
+	stopPushButton->setEnabled(true);
+	minutesGroupBox->setDisabled(true);
+	timetablesGroupBox->setDisabled(true);
+	closePushButton->setDisabled(true);
 
 	simulation_running_multi=true;
 
@@ -324,8 +324,15 @@ void TimetableGenerateMultipleForm::timetableGenerated(int timetable, const QStr
 	TimetableExport::writeRandomSeed(this, timetable, false); //false represents 'before' state
 
 	QString s=QString("");
-	s+=tr("Timetable no: %1 => %2").arg(timetable).arg(description);
+	s+=tr("Timetable no: %1 => %2", "%1 is the number of this timetable when generating multiple timetables, %2 is its description").arg(timetable).arg(description);
 	currentResultsTextEdit->appendPlainText(s);
+	
+	bool begin;
+	if(timetable==1)
+		begin=true;
+	else
+		begin=false;
+	TimetableExport::writeReportForMultiple(this, s, begin);
 
 	if(ok){
 		//needed to get the conflicts string
@@ -388,13 +395,15 @@ void TimetableGenerateMultipleForm::stop()
 	s+="\n\n";
 	s+=tr("Total searching time: %1h %2m %3s").arg(h).arg(m).arg(sec);
 	
+	TimetableExport::writeReportForMultiple(this, QString("\n")+s, false);
+
 	QMessageBox::information(this, tr("FET information"), s);
 
-	startPushButton->setEnabled(TRUE);
-	stopPushButton->setDisabled(TRUE);
-	minutesGroupBox->setEnabled(TRUE);
-	timetablesGroupBox->setEnabled(TRUE);
-	closePushButton->setEnabled(TRUE);
+	startPushButton->setEnabled(true);
+	stopPushButton->setDisabled(true);
+	minutesGroupBox->setEnabled(true);
+	timetablesGroupBox->setEnabled(true);
+	closePushButton->setEnabled(true);
 }
 
 void TimetableGenerateMultipleForm::finished()
@@ -431,13 +440,16 @@ void TimetableGenerateMultipleForm::simulationFinished()
 	ms+=TimetableGenerateMultipleForm::tr("The results were saved in the directory %1").arg(QDir::toNativeSeparators(destDir));
 	ms+=QString("\n\n");
 	ms+=TimetableGenerateMultipleForm::tr("Total searching time was %1h %2m %3s").arg(h).arg(m).arg(s);
+	
+	TimetableExport::writeReportForMultiple(this, QString("\n")+ms, false);
+	
 	QMessageBox::information(this, TimetableGenerateMultipleForm::tr("FET information"), ms);
 	
-	startPushButton->setEnabled(TRUE);
-	stopPushButton->setDisabled(TRUE);
-	minutesGroupBox->setEnabled(TRUE);
-	timetablesGroupBox->setEnabled(TRUE);
-	closePushButton->setEnabled(TRUE);
+	startPushButton->setEnabled(true);
+	stopPushButton->setDisabled(true);
+	minutesGroupBox->setEnabled(true);
+	timetablesGroupBox->setEnabled(true);
+	closePushButton->setEnabled(true);
 }
 
 void TimetableGenerateMultipleForm::activityPlaced(int na)

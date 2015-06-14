@@ -1611,7 +1611,7 @@ Version 5.17.0
 	- Minor interface improvements and bug fixes.
 	- Added a new Greek sample file, by Petros Nouvakis.
 ---------------------------------------------------------------------------------
-Versions 5.18.0 - 5.18.v
+Versions 5.18.0 - 5.18.2
 - Version 5.18.0
 	- Very serious old bug fix. This was found trying to implement the new constraint (see below) in such a way to solve a more complicated file
 	by Yush Yuen. Since nobody complained, it seems that until now the bug was not critical (but might have slowed down some timetables which have
@@ -1622,3 +1622,81 @@ Versions 5.18.0 - 5.18.v
 	- Safe saving of .fet files (save with .fet.tmp name, then remove old .fet file, then rename .fet.tmp to .fet).
 	- Saving of the random seed after the end of the generation (in addition to saving it at the beginning).
 	- Added an Uzbek translation, by Orzubek Eraliyev.
+- Version 5.18.1
+	- Minor code improvement.
+	- Got rid of MAX_SUBJECTS limitation (now there is a virtually unlimited number of subjects) - suggested by Volker Dirr.
+	- Updated to Qt 4.8.2.
+	- Added a new sample file (by L. W. Johnstone, from Belize).
+- Version 5.18.2
+	- Minor interface improvements.
+	- Updated the French translation, by Regis Bouguin.
+	- Added a new sample file, by Daniel.
+---------------------------------------------------------------------------------
+Versions 5.19.0 - 5.19.4
+- Version 5.19.0
+	- Updated the sources to Qt 5.0.0 (but the precompiled Windows version still uses Qt 4.8.4, because of various problems).
+	- Made a separate command-line interface without using the X-screen (suggested by Danny Zitzman, Zsolt Udvari and maybe other users).
+	- Made generation identical on all computers, by modifying QSet handling in the parts where the generation depends on the order of
+	elements in a QSet (the elements are sorted and randomized, then). A minor bug was corrected with this occasion.
+	- Now you can split a year into 4 categories (suggested by Bobby Wise).
+	- When starting FET, the first shortcuts tab section (File) is selected (suggested by a user).
+	- Added three new sample files, by waleed and Bobby Wise.
+- Version 5.19.1
+	- Updated the sources to Qt 5.0.2 (but the precompiled Windows version still uses Qt 4.8.4, because of various problems).
+	- Corrected some minor string problems.
+	- Updated the Romanian translation (by Liviu Lalescu). Now it uses diacritics.
+	- Updated the Ukrainian translation (by Andriy Melnyk).
+	- Added a new sample file, by geaplanet.
+- Version 5.19.2
+	- Minor bugs corrected (formatting in the HTML timetables), by Volker Dirr.
+	- Corrected some minor string problems.
+	- Updated the Romanian translation (by Liviu Lalescu). It is now complete.
+- Version 5.19.3
+	- Corrected the Romanian translation (by Horatiu Halmajan, daviodan and Liviu Lalescu).
+- Version 5.19.4
+	- Updated the sources to Qt 5.1.1 (but the precompiled Windows version still uses Qt 4.8.5, because of various problems).
+	- Import bugs corrected (by Volker Dirr).
+	- Added two new sample files, from Belize, by donjon.
+	- Added two new sample files, from Algeria, by Laid Messaoudi.
+---------------------------------------------------------------------------------
+Versions 5.20.0 - 5.20.2
+- Version 5.20.0
+	- Added constraint activities same room if consecutive (suggested by agemagician).
+	- Added constraints students (set) max days per week (suggested by more users).
+	- Bug fix in constraint activities occupy max different rooms (not noticeable).
+	- Added a new sample file, by rapsy.
+- Version 5.20.1
+	- Minor improvements and bug fixes.
+- Version 5.20.2
+	- Added an option to disable printing of the activity tags in the HTML generated timetables (suggested by drew and other users).
+	- Memory consumption improvement when writing advanced statistics to the hard disk.
+	- Dropped the debug console messages (potential bug reported by MarioMic), because under some GNU/Linux distributions
+	these might fill the hard disk. However, the command line version can be made verbose by the option --verbose=true.
+	- The multiple generation outputs an overall report (suggested by MarioMic).
+	- Minor improvements and source cleanup.
+---------------------------------------------------------------------------------
+Versions 5.21.0 - 5.21.3
+- Version 5.21.0
+	- Updated the sources to Qt 5.2.0 (but the precompiled Windows version still uses Qt 4.8.5, because of various problems).
+	- Added print of advanced statistics directly from FET, suggested by Bobby Wise and implemented by Volker Dirr.
+	- Added an option to duplicate vertical names in the timetables, to the right of the tables (suggested by Pietro, implemented by Volker Dirr).
+	- Updated the Brazilian Portuguese translation, by Cloves das Neves.
+	- Added two example files from Brazil, by Werner Bruns.
+	- Added another sample file from Argentina, by pedrobordon.
+- Version 5.21.1
+	- Updated the sources to Qt 5.2.1 (but the precompiled Windows version still uses Qt 4.8.5, because of various problems).
+	- Added an Albanian translation, by Artur Lugu.
+	- Minor interface improvements.
+- Version 5.21.2
+	- Corrected a bug in two of the Brazil examples (the bug was introduced in the previous version).
+- Version 5.21.3
+	- Updated the Windows version to Qt 5.2.1.
+---------------------------------------------------------------------------------
+Versions 5.22.0 - 5.22.v
+- Version 5.22.0
+	- Updated to Qt 5.3.0.
+	- Many improvements on memory and speed in pre-generating and after-generating.
+	- Corrected a crash bug under Windows (for extremely large files).
+	- Now you can unlock all activities or activities of a single day without generating the timetable (suggested by Volker Dirr).
+	- Increased the maximum number of divisions in the first and second categories when dividing a year (suggested by Bobby Wise).
+	- Added a new Morocco example file, by Mohamed Bahaj.
