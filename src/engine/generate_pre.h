@@ -28,15 +28,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include "timetable_defs.h"
 #include "timetable.h"
 
+#include <QSet>
+
 extern int permutation[MAX_ACTIVITIES]; //the permutation matrix to obtain activities in
 //decreasing difficulty order
 
 bool processTimeConstraints();
-
-
-extern qint16 subgroupsTimetable[MAX_TOTAL_SUBGROUPS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
-extern qint16 teachersTimetable[MAX_TEACHERS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
-extern qint16 roomsTimetable[MAX_ROOMS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
 
 
 ////////BEGIN BASIC TIME CONSTRAINTS
@@ -64,34 +61,37 @@ void computeMinNDays();
 ////////BEGIN st. not available, tch not avail., break, activity preferred time,
 ////////activity preferred times, activities preferred times
 //percentage of allowed time, -1 if no restriction
-extern double allowedTimesPercentages[MAX_ACTIVITIES][MAX_HOURS_PER_WEEK];
+extern double notAllowedTimesPercentages[MAX_ACTIVITIES][MAX_HOURS_PER_WEEK];
 
 //break, which is not considered gap, false means no break, true means 100% break
 //break can only be 100% or none
-extern bool breakTime[MAX_HOURS_PER_WEEK];
 extern bool breakDayHour[MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
 
 //students set not available, which is not considered gap, false means available, true means 100% not available
 //students set not available can only be 100% or none
-extern bool subgroupNotAvailableTime[MAX_TOTAL_SUBGROUPS][MAX_HOURS_PER_WEEK];
+//extern bool subgroupNotAvailableTime[MAX_TOTAL_SUBGROUPS][MAX_HOURS_PER_WEEK];
 extern bool subgroupNotAvailableDayHour[MAX_TOTAL_SUBGROUPS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
+//#define subgroupNotAvailableTime(s,i)	(subgroupNotAvailableDayHour[(s)][((i)%gt.rules.nDaysPerWeek)][((i)/gt.rules.nDaysPerWeek)])
 
 //teacher not available, which is not considered gap, false means available, true means 100% not available
 //teacher not available can only be 100% or none
-extern bool teacherNotAvailableTime[MAX_TEACHERS][MAX_HOURS_PER_WEEK];
+//extern bool teacherNotAvailableTime[MAX_TEACHERS][MAX_HOURS_PER_WEEK];
 extern bool teacherNotAvailableDayHour[MAX_TEACHERS][MAX_DAYS_PER_WEEK][MAX_HOURS_PER_DAY];
+//#define teacherNotAvailableTime(t,i)	(teacherNotAvailableDayHour[(t)][((i)%gt.rules.nDaysPerWeek)][((i)/gt.rules.nDaysPerWeek)])
 
-bool computeAllowedTimesPercentages();
+bool computeNotAllowedTimesPercentages();
 ////////END   st. not available, tch not avail., break, activity preferred time,
 ////////activity preferred time, activities preferred times
 
 
 ////////BEGIN students no gaps and early
 bool computeNHoursPerSubgroup();
-bool computeSubgroupsEarlyAndNoGapsPercentages();
+bool computeSubgroupsEarlyAndMaxGapsPercentages();
 
-extern double subgroupsEarlyPercentage[MAX_TOTAL_SUBGROUPS];
-extern double subgroupsNoGapsPercentage[MAX_TOTAL_SUBGROUPS];
+extern double subgroupsEarlyMaxBeginningsAtSecondHourPercentage[MAX_TOTAL_SUBGROUPS];
+extern int subgroupsEarlyMaxBeginningsAtSecondHourMaxBeginnings[MAX_TOTAL_SUBGROUPS];
+extern double subgroupsMaxGapsPerWeekPercentage[MAX_TOTAL_SUBGROUPS];
+extern int subgroupsMaxGapsPerWeekMaxGaps[MAX_TOTAL_SUBGROUPS];
 
 extern int nHoursPerSubgroup[MAX_TOTAL_SUBGROUPS]; //used also for students min hours daily
 ////////END   students no gaps and early
@@ -101,22 +101,28 @@ extern int nHoursPerSubgroup[MAX_TOTAL_SUBGROUPS]; //used also for students min 
 //activities indices (in 0..gt.rules.nInternalActivities-1) for each teacher
 extern int teachersMaxDaysPerWeekMaxDays[MAX_TEACHERS]; //-1 for not existing
 extern double teachersMaxDaysPerWeekWeightPercentages[MAX_TEACHERS]; //-1 for not existing
+//it is practically better to use the variable below and to put it exactly like in generate.cpp,
+//the order of activities changes
 extern QList<int> teacherActivitiesOfTheDay[MAX_TEACHERS][MAX_DAYS_PER_WEEK];
-
 extern QList<int> teachersWithMaxDaysPerWeekForActivities[MAX_ACTIVITIES];
 
 bool computeMaxDaysPerWeekForTeachers();
 ////////END   teachers max days per week
 
 
-////////BEGIN teachers max gaps per week
-extern QList<int> activitiesForTeachers[MAX_TEACHERS];
-extern double teachersMaxGapsPercentage[MAX_TEACHERS];
-extern int teachersMaxGapsMaxGaps[MAX_TEACHERS];
+////////BEGIN teachers max gaps per week and per day
+//extern QList<int> activitiesForTeachers[MAX_TEACHERS];
+extern double teachersMaxGapsPerWeekPercentage[MAX_TEACHERS];
+extern int teachersMaxGapsPerWeekMaxGaps[MAX_TEACHERS];
+
+extern double teachersMaxGapsPerDayPercentage[MAX_TEACHERS];
+extern int teachersMaxGapsPerDayMaxGaps[MAX_TEACHERS];
+
 extern int nHoursPerTeacher[MAX_TEACHERS];
 bool computeNHoursPerTeacher();
-bool computeTeachersMaxGapsPercentage();
-////////END   teachers max gaps per week
+bool computeTeachersMaxGapsPerWeekPercentage();
+bool computeTeachersMaxGapsPerDayPercentage();
+////////END   teachers max gaps per week and per day
 
 
 ////////BEGIN activities same starting time
@@ -130,6 +136,13 @@ void computeActivitiesSameStartingTime();
 extern QList<int> activitiesSameStartingHourActivities[MAX_ACTIVITIES];
 extern QList<double> activitiesSameStartingHourPercentages[MAX_ACTIVITIES];
 void computeActivitiesSameStartingHour();
+////////END   activities same starting hour
+
+
+////////BEGIN activities same starting day
+extern QList<int> activitiesSameStartingDayActivities[MAX_ACTIVITIES];
+extern QList<double> activitiesSameStartingDayPercentages[MAX_ACTIVITIES];
+void computeActivitiesSameStartingDay();
 ////////END   activities same starting hour
 
 
@@ -156,6 +169,17 @@ bool computeTeachersMaxHoursDaily();
 ////////END   teacher(s) max hours daily
 
 
+////////BEGIN teacher(s) max hours continuously
+extern double teachersMaxHoursContinuouslyPercentages1[MAX_TEACHERS];
+extern int teachersMaxHoursContinuouslyMaxHours1[MAX_TEACHERS];
+
+extern double teachersMaxHoursContinuouslyPercentages2[MAX_TEACHERS];
+extern int teachersMaxHoursContinuouslyMaxHours2[MAX_TEACHERS];
+
+bool computeTeachersMaxHoursContinuously();
+////////END   teacher(s) max hours continuously
+
+
 ////////BEGIN teacher(s) min hours daily
 extern double teachersMinHoursDailyPercentages[MAX_TEACHERS];
 extern int teachersMinHoursDailyMinHours[MAX_TEACHERS];
@@ -173,6 +197,17 @@ extern int subgroupsMaxHoursDailyMaxHours2[MAX_TOTAL_SUBGROUPS];
 
 bool computeSubgroupsMaxHoursDaily();
 ////////END   students (set) max hours daily
+
+
+////////BEGIN students (set) max hours continuously
+extern double subgroupsMaxHoursContinuouslyPercentages1[MAX_TOTAL_SUBGROUPS];
+extern int subgroupsMaxHoursContinuouslyMaxHours1[MAX_TOTAL_SUBGROUPS];
+
+extern double subgroupsMaxHoursContinuouslyPercentages2[MAX_TOTAL_SUBGROUPS];
+extern int subgroupsMaxHoursContinuouslyMaxHours2[MAX_TOTAL_SUBGROUPS];
+
+bool computeStudentsMaxHoursContinuously();
+////////END   students (set) max hours continuously
 
 
 ////////BEGIN students (set) min hours daily
@@ -194,9 +229,22 @@ extern QList<int> inverseConstr2ActivitiesConsecutiveActivities[MAX_ACTIVITIES];
 //////////////END   2 activities consecutive
 
 
+//////////////BEGIN 2 activities ordered
+//index represents the first activity, value in array represents the second activity
+extern QList<double> constr2ActivitiesOrderedPercentages[MAX_ACTIVITIES];
+extern QList<int> constr2ActivitiesOrderedActivities[MAX_ACTIVITIES];
+void computeConstr2ActivitiesOrdered();
+
+//index represents the second activity, value in array represents the first activity
+extern QList<double> inverseConstr2ActivitiesOrderedPercentages[MAX_ACTIVITIES];
+extern QList<int> inverseConstr2ActivitiesOrderedActivities[MAX_ACTIVITIES];
+//////////////END   2 activities ordered
+
+
 ////////////BEGIN activity ends students day
 extern double activityEndsStudentsDayPercentages[MAX_ACTIVITIES]; //-1 for not existing
 bool computeActivityEndsStudentsDayPercentages();
+extern bool haveActivityEndsStudentsDay;
 ////////////END   activity ends students day
 
 
@@ -207,23 +255,64 @@ bool checkMinNDaysConsecutiveIfSameDay();
 ////////BEGIN rooms
 bool computeBasicSpace();
 
-extern double allowedRoomTimePercentages[MAX_ROOMS][MAX_HOURS_PER_WEEK]; //-1 for available
-bool computeAllowedRoomTimePercentages();
+extern double notAllowedRoomTimePercentages[MAX_ROOMS][MAX_HOURS_PER_WEEK]; //-1 for available
+bool computeNotAllowedRoomTimePercentages();
 
-extern QList<int> activitiesPreferredRoomsPreferredRooms[MAX_ACTIVITIES];
-extern double activitiesPreferredRoomsPercentage[MAX_ACTIVITIES];
-extern bool unspecifiedRoom[MAX_ACTIVITIES];
+class PreferredRoomsItem{
+public:
+	double percentage;
+	QSet<int> preferredRooms;
+};
+
+extern QList<PreferredRoomsItem> activitiesPreferredRoomsList[MAX_ACTIVITIES];
+extern bool unspecifiedPreferredRoom[MAX_ACTIVITIES];
+
+extern QList<int> activitiesHomeRoomsHomeRooms[MAX_ACTIVITIES];
+extern double activitiesHomeRoomsPercentage[MAX_ACTIVITIES];
+extern bool unspecifiedHomeRoom[MAX_ACTIVITIES];
+
 bool computeActivitiesRoomsPreferences();
 ////////END   rooms
 
 
-//QSet<int> sharedSubgroups[MAX_ACTIVITIES][MAX_ACTIVITIES];
+////////BEGIN buildings
+extern double maxBuildingChangesPerDayForStudentsPercentages[MAX_TOTAL_SUBGROUPS];
+extern int maxBuildingChangesPerDayForStudentsMaxChanges[MAX_TOTAL_SUBGROUPS];
+bool computeMaxBuildingChangesPerDayForStudents();
 
-//void computeSharedSubgroups();
+extern double minGapsBetweenBuildingChangesForStudentsPercentages[MAX_TOTAL_SUBGROUPS];
+extern int minGapsBetweenBuildingChangesForStudentsMinGaps[MAX_TOTAL_SUBGROUPS];
+bool computeMinGapsBetweenBuildingChangesForStudents();
 
-//void Rules::computeActivitiesSimilar();
-	
-//void Rules::computeActivitiesContained()
+extern double maxBuildingChangesPerDayForTeachersPercentages[MAX_TEACHERS];
+extern int maxBuildingChangesPerDayForTeachersMaxChanges[MAX_TEACHERS];
+bool computeMaxBuildingChangesPerDayForTeachers();
+
+extern double minGapsBetweenBuildingChangesForTeachersPercentages[MAX_TEACHERS];
+extern int minGapsBetweenBuildingChangesForTeachersMinGaps[MAX_TEACHERS];
+bool computeMinGapsBetweenBuildingChangesForTeachers();
+
+extern double maxBuildingChangesPerWeekForStudentsPercentages[MAX_TOTAL_SUBGROUPS];
+extern int maxBuildingChangesPerWeekForStudentsMaxChanges[MAX_TOTAL_SUBGROUPS];
+bool computeMaxBuildingChangesPerWeekForStudents();
+
+extern double maxBuildingChangesPerWeekForTeachersPercentages[MAX_TEACHERS];
+extern int maxBuildingChangesPerWeekForTeachersMaxChanges[MAX_TEACHERS];
+bool computeMaxBuildingChangesPerWeekForTeachers();
+////////END   buildings
+
+
+extern QList<int> mustComputeTimetableSubgroups[MAX_ACTIVITIES];
+extern QList<int> mustComputeTimetableTeachers[MAX_ACTIVITIES];
+extern bool mustComputeTimetableSubgroup[MAX_TOTAL_SUBGROUPS];
+extern bool mustComputeTimetableTeacher[MAX_TEACHERS];
+
+
+bool homeRoomsAreOk();
+
+
+extern bool fixedActivity[MAX_ACTIVITIES];
+bool computeFixedActivities();
 
 
 #endif

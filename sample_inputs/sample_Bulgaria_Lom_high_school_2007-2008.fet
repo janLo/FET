@@ -1,4 +1,6 @@
-﻿<!DOCTYPE FET><FET version="5.4.10">
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE FET><FET version="5.5.0-beta1">
 
 <Institution_Name>ПГ &quot;Найден Геров&quot; - Лом</Institution_Name>
 
@@ -13,7 +15,6 @@
 	<Name>10:55</Name>
 	<Name>11:45</Name>
 	<Name>12:30</Name>
-	<Name>13:30</Name>
 </Hours_List>
 
 <Days_List>
@@ -422,32 +423,32 @@
 </Subject>
 </Subjects_List>
 
-<Subject_Tags_List>
-<Subject_Tag>
+<Activity_Tags_List>
+<Activity_Tag>
 	<Name>Тежък1</Name>
-</Subject_Tag>
-<Subject_Tag>
+</Activity_Tag>
+<Activity_Tag>
 	<Name>Среден1</Name>
-</Subject_Tag>
-<Subject_Tag>
+</Activity_Tag>
+<Activity_Tag>
 	<Name>Лек1</Name>
-</Subject_Tag>
-<Subject_Tag>
+</Activity_Tag>
+<Activity_Tag>
 	<Name>Тежък2</Name>
-</Subject_Tag>
-<Subject_Tag>
+</Activity_Tag>
+<Activity_Tag>
 	<Name>Среден2</Name>
-</Subject_Tag>
-<Subject_Tag>
+</Activity_Tag>
+<Activity_Tag>
 	<Name>Лек2</Name>
-</Subject_Tag>
-</Subject_Tags_List>
+</Activity_Tag>
+</Activity_Tags_List>
 
 <Activities_List>
 <Activity>
 	<Teacher>Ст.Караиванова</Teacher>
 	<Subject>Английски</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>4</Duration>
 	<Total_Duration>16</Total_Duration>
 	<Id>1</Id>
@@ -458,7 +459,7 @@
 <Activity>
 	<Teacher>Ст.Караиванова</Teacher>
 	<Subject>Английски</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>4</Duration>
 	<Total_Duration>16</Total_Duration>
 	<Id>2</Id>
@@ -469,7 +470,7 @@
 <Activity>
 	<Teacher>Ст.Караиванова</Teacher>
 	<Subject>Английски</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>4</Duration>
 	<Total_Duration>16</Total_Duration>
 	<Id>3</Id>
@@ -480,7 +481,7 @@
 <Activity>
 	<Teacher>Ст.Караиванова</Teacher>
 	<Subject>Английски</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>4</Duration>
 	<Total_Duration>16</Total_Duration>
 	<Id>4</Id>
@@ -491,7 +492,7 @@
 <Activity>
 	<Teacher>Ст.Караиванова</Teacher>
 	<Subject>Английски</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>5</Id>
@@ -502,7 +503,7 @@
 <Activity>
 	<Teacher>Ст.Караиванова</Teacher>
 	<Subject>Английски</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>6</Id>
@@ -513,7 +514,7 @@
 <Activity>
 	<Teacher>Ст.Караиванова</Teacher>
 	<Subject>Английски</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>7</Id>
@@ -524,7 +525,7 @@
 <Activity>
 	<Teacher>Н.Гогошева</Teacher>
 	<Subject>Английски</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>8</Id>
@@ -535,7 +536,7 @@
 <Activity>
 	<Teacher>Н.Гогошева</Teacher>
 	<Subject>Английски</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>9</Id>
@@ -546,7 +547,7 @@
 <Activity>
 	<Teacher>Н.Гогошева</Teacher>
 	<Subject>Английски</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>10</Id>
@@ -557,7 +558,7 @@
 <Activity>
 	<Teacher>Найденова</Teacher>
 	<Subject>Английски</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>4</Duration>
 	<Total_Duration>16</Total_Duration>
 	<Id>11</Id>
@@ -568,7 +569,7 @@
 <Activity>
 	<Teacher>Найденова</Teacher>
 	<Subject>Английски</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>4</Duration>
 	<Total_Duration>16</Total_Duration>
 	<Id>12</Id>
@@ -579,7 +580,7 @@
 <Activity>
 	<Teacher>Найденова</Teacher>
 	<Subject>Английски</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>4</Duration>
 	<Total_Duration>16</Total_Duration>
 	<Id>13</Id>
@@ -590,7 +591,7 @@
 <Activity>
 	<Teacher>Найденова</Teacher>
 	<Subject>Английски</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>4</Duration>
 	<Total_Duration>16</Total_Duration>
 	<Id>14</Id>
@@ -601,7 +602,7 @@
 <Activity>
 	<Teacher>Н.Кирилова</Teacher>
 	<Subject>БЕЛ</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>4</Total_Duration>
 	<Id>18</Id>
@@ -612,7 +613,7 @@
 <Activity>
 	<Teacher>Н.Кирилова</Teacher>
 	<Subject>БЕЛ</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>4</Total_Duration>
 	<Id>19</Id>
@@ -623,7 +624,7 @@
 <Activity>
 	<Teacher>Н.Кирилова</Teacher>
 	<Subject>БЕЛ</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>4</Total_Duration>
 	<Id>20</Id>
@@ -634,7 +635,7 @@
 <Activity>
 	<Teacher>К.Апостолов</Teacher>
 	<Subject>ИИ</Subject>
-	<Subject_Tag>Лек1</Subject_Tag>
+	<Activity_Tag>Лек1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>1</Total_Duration>
 	<Id>21</Id>
@@ -645,7 +646,7 @@
 <Activity>
 	<Teacher>Б.Антова</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>22</Id>
@@ -656,7 +657,7 @@
 <Activity>
 	<Teacher>Б.Антова</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>23</Id>
@@ -667,7 +668,7 @@
 <Activity>
 	<Teacher>Б.Антова</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>24</Id>
@@ -678,7 +679,7 @@
 <Activity>
 	<Teacher>Дафинка</Teacher>
 	<Subject>Музика</Subject>
-	<Subject_Tag>Лек1</Subject_Tag>
+	<Activity_Tag>Лек1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>1</Total_Duration>
 	<Id>25</Id>
@@ -689,7 +690,7 @@
 <Activity>
 	<Teacher>Св.Георгиев</Teacher>
 	<Subject>Физкултура</Subject>
-	<Subject_Tag>Лек1</Subject_Tag>
+	<Activity_Tag>Лек1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>26</Id>
@@ -700,7 +701,7 @@
 <Activity>
 	<Teacher>Св.Георгиев</Teacher>
 	<Subject>Физкултура</Subject>
-	<Subject_Tag>Лек1</Subject_Tag>
+	<Activity_Tag>Лек1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>27</Id>
@@ -711,7 +712,7 @@
 <Activity>
 	<Teacher>Н.Кирилова</Teacher>
 	<Subject>БЕЛ</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>4</Total_Duration>
 	<Id>28</Id>
@@ -722,7 +723,7 @@
 <Activity>
 	<Teacher>Н.Кирилова</Teacher>
 	<Subject>БЕЛ</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>4</Total_Duration>
 	<Id>29</Id>
@@ -733,7 +734,7 @@
 <Activity>
 	<Teacher>Н.Кирилова</Teacher>
 	<Subject>БЕЛ</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>4</Total_Duration>
 	<Id>30</Id>
@@ -744,7 +745,7 @@
 <Activity>
 	<Teacher>К.Апостолов</Teacher>
 	<Subject>ИИ</Subject>
-	<Subject_Tag>Лек1</Subject_Tag>
+	<Activity_Tag>Лек1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>1</Total_Duration>
 	<Id>31</Id>
@@ -755,7 +756,7 @@
 <Activity>
 	<Teacher>Дафинка</Teacher>
 	<Subject>Музика</Subject>
-	<Subject_Tag>Лек1</Subject_Tag>
+	<Activity_Tag>Лек1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>1</Total_Duration>
 	<Id>32</Id>
@@ -766,7 +767,7 @@
 <Activity>
 	<Teacher>Св.Георгиев</Teacher>
 	<Subject>Физкултура</Subject>
-	<Subject_Tag>Лек1</Subject_Tag>
+	<Activity_Tag>Лек1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>33</Id>
@@ -777,7 +778,7 @@
 <Activity>
 	<Teacher>Св.Георгиев</Teacher>
 	<Subject>Физкултура</Subject>
-	<Subject_Tag>Лек1</Subject_Tag>
+	<Activity_Tag>Лек1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>34</Id>
@@ -788,7 +789,7 @@
 <Activity>
 	<Teacher>Б.Антова</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>35</Id>
@@ -799,7 +800,7 @@
 <Activity>
 	<Teacher>Б.Антова</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>36</Id>
@@ -810,7 +811,7 @@
 <Activity>
 	<Teacher>Б.Антова</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>37</Id>
@@ -824,7 +825,7 @@
 	<Teacher>Н.Гогошева</Teacher>
 	<Teacher>Ст.Петрова</Teacher>
 	<Subject>Първи чужд</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>40</Id>
@@ -838,7 +839,7 @@
 	<Teacher>Н.Гогошева</Teacher>
 	<Teacher>Ст.Петрова</Teacher>
 	<Subject>Първи чужд</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>41</Id>
@@ -852,7 +853,7 @@
 	<Teacher>Л.Хранова</Teacher>
 	<Teacher>Д.Димитрова</Teacher>
 	<Subject>Втори чужд</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>42</Id>
@@ -866,7 +867,7 @@
 	<Teacher>Л.Хранова</Teacher>
 	<Teacher>Д.Димитрова</Teacher>
 	<Subject>Втори чужд</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>43</Id>
@@ -877,7 +878,7 @@
 <Activity>
 	<Teacher>Найденова</Teacher>
 	<Subject>Английски</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>5</Total_Duration>
 	<Id>47</Id>
@@ -888,7 +889,7 @@
 <Activity>
 	<Teacher>Найденова</Teacher>
 	<Subject>Английски</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>5</Total_Duration>
 	<Id>48</Id>
@@ -899,7 +900,7 @@
 <Activity>
 	<Teacher>Найденова</Teacher>
 	<Subject>Английски</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>5</Total_Duration>
 	<Id>49</Id>
@@ -913,7 +914,7 @@
 	<Teacher>Д.Димитрова</Teacher>
 	<Teacher>Н.Гогошева</Teacher>
 	<Subject>Първи чужд</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>50</Id>
@@ -929,7 +930,7 @@
 	<Teacher>Д.Димитрова</Teacher>
 	<Teacher>Н.Гогошева</Teacher>
 	<Subject>Първи чужд</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>51</Id>
@@ -943,7 +944,7 @@
 	<Teacher>Н.Гогошева</Teacher>
 	<Teacher>Д.Димитрова</Teacher>
 	<Subject>Първи чужд</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>52</Id>
@@ -956,7 +957,7 @@
 	<Teacher>Н.Гогошева</Teacher>
 	<Teacher>Д.Димитрова</Teacher>
 	<Subject>Първи чужд</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>53</Id>
@@ -970,7 +971,7 @@
 	<Teacher>В.Илиева</Teacher>
 	<Teacher>Л.Хранова</Teacher>
 	<Subject>Втори чужд</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>54</Id>
@@ -984,7 +985,7 @@
 	<Teacher>В.Илиева</Teacher>
 	<Teacher>Л.Хранова</Teacher>
 	<Subject>Втори чужд</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>55</Id>
@@ -996,7 +997,7 @@
 <Activity>
 	<Teacher>Н.Гогошева</Teacher>
 	<Subject>Английски</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>5</Total_Duration>
 	<Id>56</Id>
@@ -1007,7 +1008,7 @@
 <Activity>
 	<Teacher>Н.Гогошева</Teacher>
 	<Subject>Английски</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>5</Total_Duration>
 	<Id>57</Id>
@@ -1018,7 +1019,7 @@
 <Activity>
 	<Teacher>Н.Гогошева</Teacher>
 	<Subject>Английски</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>5</Total_Duration>
 	<Id>58</Id>
@@ -1032,7 +1033,7 @@
 	<Teacher>Д.Димитрова</Teacher>
 	<Teacher>Ст.Петрова</Teacher>
 	<Subject>Първи чужд</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>59</Id>
@@ -1048,7 +1049,7 @@
 	<Teacher>Д.Димитрова</Teacher>
 	<Teacher>Ст.Петрова</Teacher>
 	<Subject>Първи чужд</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>60</Id>
@@ -1061,7 +1062,7 @@
 <Activity>
 	<Teacher>Н.Гогошева</Teacher>
 	<Subject>Английски</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>63</Id>
@@ -1072,7 +1073,7 @@
 <Activity>
 	<Teacher>Н.Гогошева</Teacher>
 	<Subject>Английски</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>64</Id>
@@ -1083,7 +1084,7 @@
 <Activity>
 	<Teacher>В.Илиева</Teacher>
 	<Subject>Немски</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>69</Id>
@@ -1094,7 +1095,7 @@
 <Activity>
 	<Teacher>В.Илиева</Teacher>
 	<Subject>Немски</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>70</Id>
@@ -1105,7 +1106,7 @@
 <Activity>
 	<Teacher>В.Илиева</Teacher>
 	<Subject>Немски</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>6</Total_Duration>
 	<Id>73</Id>
@@ -1116,7 +1117,7 @@
 <Activity>
 	<Teacher>В.Илиева</Teacher>
 	<Subject>Немски</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>6</Total_Duration>
 	<Id>74</Id>
@@ -1127,7 +1128,7 @@
 <Activity>
 	<Teacher>В.Илиева</Teacher>
 	<Subject>Немски</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>6</Total_Duration>
 	<Id>75</Id>
@@ -1138,7 +1139,7 @@
 <Activity>
 	<Teacher>В.Илиева</Teacher>
 	<Subject>Немски</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>5</Total_Duration>
 	<Id>82</Id>
@@ -1149,7 +1150,7 @@
 <Activity>
 	<Teacher>В.Илиева</Teacher>
 	<Subject>Немски</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>5</Total_Duration>
 	<Id>83</Id>
@@ -1160,7 +1161,7 @@
 <Activity>
 	<Teacher>В.Илиева</Teacher>
 	<Subject>Немски</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>5</Total_Duration>
 	<Id>84</Id>
@@ -1171,7 +1172,7 @@
 <Activity>
 	<Teacher>В.Илиева</Teacher>
 	<Subject>Немски</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>5</Total_Duration>
 	<Id>85</Id>
@@ -1182,7 +1183,7 @@
 <Activity>
 	<Teacher>Л.Хранова</Teacher>
 	<Subject>Немски</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>90</Id>
@@ -1193,7 +1194,7 @@
 <Activity>
 	<Teacher>Л.Хранова</Teacher>
 	<Subject>Немски</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>91</Id>
@@ -1204,7 +1205,7 @@
 <Activity>
 	<Teacher>М.Кадамяр</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>106</Id>
@@ -1215,7 +1216,7 @@
 <Activity>
 	<Teacher>М.Кадамяр</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>107</Id>
@@ -1226,7 +1227,7 @@
 <Activity>
 	<Teacher>М.Кадамяр</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>108</Id>
@@ -1237,7 +1238,7 @@
 <Activity>
 	<Teacher>Йончев</Teacher>
 	<Subject>ЗИП История</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>109</Id>
@@ -1248,7 +1249,7 @@
 <Activity>
 	<Teacher>Йончев</Teacher>
 	<Subject>ЗИП История</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>110</Id>
@@ -1260,7 +1261,7 @@
 <Activity>
 	<Teacher>В.Йорданова</Teacher>
 	<Subject>ЗИП Химия</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>111</Id>
@@ -1271,7 +1272,7 @@
 <Activity>
 	<Teacher>В.Йорданова</Teacher>
 	<Subject>ЗИП Химия</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>112</Id>
@@ -1282,7 +1283,7 @@
 <Activity>
 	<Teacher>В.Йорданова</Teacher>
 	<Subject>ЗИП Химия</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>113</Id>
@@ -1293,7 +1294,7 @@
 <Activity>
 	<Teacher>В.Йорданова</Teacher>
 	<Subject>ЗИП Химия</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>114</Id>
@@ -1304,7 +1305,7 @@
 <Activity>
 	<Teacher>В.Йорданова</Teacher>
 	<Subject>ЗИП Химия</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>115</Id>
@@ -1315,7 +1316,7 @@
 <Activity>
 	<Teacher>В.Йорданова</Teacher>
 	<Subject>ЗИП Химия</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>116</Id>
@@ -1326,7 +1327,7 @@
 <Activity>
 	<Teacher>В.Йорданова</Teacher>
 	<Subject>Химия</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>117</Id>
@@ -1337,7 +1338,7 @@
 <Activity>
 	<Teacher>В.Йорданова</Teacher>
 	<Subject>Химия</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>118</Id>
@@ -1348,7 +1349,7 @@
 <Activity>
 	<Teacher>Цв.Евтимова</Teacher>
 	<Subject>БЕЛ</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>119</Id>
@@ -1359,7 +1360,7 @@
 <Activity>
 	<Teacher>Цв.Евтимова</Teacher>
 	<Subject>БЕЛ</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>120</Id>
@@ -1370,7 +1371,7 @@
 <Activity>
 	<Teacher>Цв.Евтимова</Teacher>
 	<Subject>БЕЛ</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>121</Id>
@@ -1381,7 +1382,7 @@
 <Activity>
 	<Teacher>Цв.Евтимова</Teacher>
 	<Subject>БЕЛ</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>122</Id>
@@ -1392,7 +1393,7 @@
 <Activity>
 	<Teacher>Цв.Евтимова</Teacher>
 	<Subject>БЕЛ</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>123</Id>
@@ -1403,7 +1404,7 @@
 <Activity>
 	<Teacher>Цв.Евтимова</Teacher>
 	<Subject>БЕЛ</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>124</Id>
@@ -1414,7 +1415,7 @@
 <Activity>
 	<Teacher>Цв.Евтимова</Teacher>
 	<Subject>БЕЛ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>125</Id>
@@ -1425,7 +1426,7 @@
 <Activity>
 	<Teacher>Цв.Евтимова</Teacher>
 	<Subject>БЕЛ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>126</Id>
@@ -1436,7 +1437,7 @@
 <Activity>
 	<Teacher>Цв.Евтимова</Teacher>
 	<Subject>БЕЛ</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>127</Id>
@@ -1447,7 +1448,7 @@
 <Activity>
 	<Teacher>Цв.Евтимова</Teacher>
 	<Subject>БЕЛ</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>128</Id>
@@ -1458,7 +1459,7 @@
 <Activity>
 	<Teacher>Цв.Евтимова</Teacher>
 	<Subject>ЗИП БЕЛ</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>129</Id>
@@ -1469,7 +1470,7 @@
 <Activity>
 	<Teacher>Цв.Евтимова</Teacher>
 	<Subject>ЗИП БЕЛ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>131</Id>
@@ -1480,7 +1481,7 @@
 <Activity>
 	<Teacher>Цв.Евтимова</Teacher>
 	<Subject>ЗИП БЕЛ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>132</Id>
@@ -1491,7 +1492,7 @@
 <Activity>
 	<Teacher>Цв.Евтимова</Teacher>
 	<Subject>ЗИП БЕЛ</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>133</Id>
@@ -1503,7 +1504,7 @@
 <Activity>
 	<Teacher>Р.Димитрова</Teacher>
 	<Subject>БЕЛ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>6</Total_Duration>
 	<Id>134</Id>
@@ -1514,7 +1515,7 @@
 <Activity>
 	<Teacher>Р.Димитрова</Teacher>
 	<Subject>БЕЛ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>6</Total_Duration>
 	<Id>135</Id>
@@ -1525,7 +1526,7 @@
 <Activity>
 	<Teacher>Р.Димитрова</Teacher>
 	<Subject>БЕЛ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>6</Total_Duration>
 	<Id>136</Id>
@@ -1536,7 +1537,7 @@
 <Activity>
 	<Teacher>Р.Димитрова</Teacher>
 	<Subject>БЕЛ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>137</Id>
@@ -1547,7 +1548,7 @@
 <Activity>
 	<Teacher>Р.Димитрова</Teacher>
 	<Subject>БЕЛ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>138</Id>
@@ -1558,7 +1559,7 @@
 <Activity>
 	<Teacher>Р.Димитрова</Teacher>
 	<Subject>БЕЛ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>139</Id>
@@ -1569,7 +1570,7 @@
 <Activity>
 	<Teacher>Р.Димитрова</Teacher>
 	<Subject>БЕЛ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>140</Id>
@@ -1580,7 +1581,7 @@
 <Activity>
 	<Teacher>Р.Димитрова</Teacher>
 	<Subject>БЕЛ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>141</Id>
@@ -1591,7 +1592,7 @@
 <Activity>
 	<Teacher>Р.Димитрова</Teacher>
 	<Subject>БЕЛ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>142</Id>
@@ -1602,7 +1603,7 @@
 <Activity>
 	<Teacher>Р.Димитрова</Teacher>
 	<Subject>ЗИП БЕЛ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>143</Id>
@@ -1613,7 +1614,7 @@
 <Activity>
 	<Teacher>Р.Димитрова</Teacher>
 	<Subject>ЗИП БЕЛ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>144</Id>
@@ -1624,7 +1625,7 @@
 <Activity>
 	<Teacher>Р.Димитрова</Teacher>
 	<Subject>ЗИП БЕЛ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>145</Id>
@@ -1635,7 +1636,7 @@
 <Activity>
 	<Teacher>Р.Димитрова</Teacher>
 	<Subject>ЗИП БЕЛ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>146</Id>
@@ -1646,7 +1647,7 @@
 <Activity>
 	<Teacher>Ек.Николова</Teacher>
 	<Subject>БЕЛ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>147</Id>
@@ -1657,7 +1658,7 @@
 <Activity>
 	<Teacher>Ек.Николова</Teacher>
 	<Subject>БЕЛ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>148</Id>
@@ -1668,7 +1669,7 @@
 <Activity>
 	<Teacher>Ек.Николова</Teacher>
 	<Subject>БЕЛ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>149</Id>
@@ -1679,7 +1680,7 @@
 <Activity>
 	<Teacher>Ек.Николова</Teacher>
 	<Subject>БЕЛ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>150</Id>
@@ -1690,7 +1691,7 @@
 <Activity>
 	<Teacher>Ек.Николова</Teacher>
 	<Subject>БЕЛ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>151</Id>
@@ -1701,7 +1702,7 @@
 <Activity>
 	<Teacher>Ек.Николова</Teacher>
 	<Subject>БЕЛ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>152</Id>
@@ -1712,7 +1713,7 @@
 <Activity>
 	<Teacher>Ек.Николова</Teacher>
 	<Subject>ЗИП БЕЛ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>153</Id>
@@ -1723,7 +1724,7 @@
 <Activity>
 	<Teacher>Ек.Николова</Teacher>
 	<Subject>ЗИП БЕЛ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>154</Id>
@@ -1734,7 +1735,7 @@
 <Activity>
 	<Teacher>Ек.Николова</Teacher>
 	<Subject>ЗИП БЕЛ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>155</Id>
@@ -1745,7 +1746,7 @@
 <Activity>
 	<Teacher>Ек.Николова</Teacher>
 	<Subject>ЗИП БЕЛ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>156</Id>
@@ -1756,7 +1757,7 @@
 <Activity>
 	<Teacher>Ек.Николова</Teacher>
 	<Subject>ЗИП БЕЛ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>157</Id>
@@ -1767,7 +1768,7 @@
 <Activity>
 	<Teacher>Ек.Николова</Teacher>
 	<Subject>ЗИП БЕЛ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>158</Id>
@@ -1778,7 +1779,7 @@
 <Activity>
 	<Teacher>Н.Кирилова</Teacher>
 	<Subject>БЕЛ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>159</Id>
@@ -1789,7 +1790,7 @@
 <Activity>
 	<Teacher>Н.Кирилова</Teacher>
 	<Subject>БЕЛ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>160</Id>
@@ -1800,7 +1801,7 @@
 <Activity>
 	<Teacher>Н.Кирилова</Teacher>
 	<Subject>БЕЛ</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>161</Id>
@@ -1811,7 +1812,7 @@
 <Activity>
 	<Teacher>Н.Кирилова</Teacher>
 	<Subject>БЕЛ</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>162</Id>
@@ -1822,7 +1823,7 @@
 <Activity>
 	<Teacher>Н.Кирилова</Teacher>
 	<Subject>БЕЛ</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>163</Id>
@@ -1833,7 +1834,7 @@
 <Activity>
 	<Teacher>Н.Кирилова</Teacher>
 	<Subject>БЕЛ</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>164</Id>
@@ -1844,7 +1845,7 @@
 <Activity>
 	<Teacher>Н.Кирилова</Teacher>
 	<Subject>ЗИП БЕЛ</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>165</Id>
@@ -1855,7 +1856,7 @@
 <Activity>
 	<Teacher>Б.Антова</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>10</Total_Duration>
 	<Id>166</Id>
@@ -1866,7 +1867,7 @@
 <Activity>
 	<Teacher>Б.Антова</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>10</Total_Duration>
 	<Id>167</Id>
@@ -1877,7 +1878,7 @@
 <Activity>
 	<Teacher>Б.Антова</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>10</Total_Duration>
 	<Id>168</Id>
@@ -1888,7 +1889,7 @@
 <Activity>
 	<Teacher>Б.Антова</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>10</Total_Duration>
 	<Id>169</Id>
@@ -1899,7 +1900,7 @@
 <Activity>
 	<Teacher>Б.Антова</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>10</Total_Duration>
 	<Id>170</Id>
@@ -1910,7 +1911,7 @@
 <Activity>
 	<Teacher>М.Кадамяр</Teacher>
 	<Subject>ЗИП ИТ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>171</Id>
@@ -1922,7 +1923,7 @@
 <Activity>
 	<Teacher>М.Кадамяр</Teacher>
 	<Subject>ЗИП ИТ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>172</Id>
@@ -1934,7 +1935,7 @@
 <Activity>
 	<Teacher>М.Кадамяр</Teacher>
 	<Subject>ЗИП ИТ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>173</Id>
@@ -1946,7 +1947,7 @@
 <Activity>
 	<Teacher>М.Кадамяр</Teacher>
 	<Subject>ЗИП ИТ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>174</Id>
@@ -1957,7 +1958,7 @@
 <Activity>
 	<Teacher>М.Кадамяр</Teacher>
 	<Subject>ЗИП ИТ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>175</Id>
@@ -1968,7 +1969,7 @@
 <Activity>
 	<Teacher>М.Кадамяр</Teacher>
 	<Subject>ЗИП ИТ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>176</Id>
@@ -1979,7 +1980,7 @@
 <Activity>
 	<Teacher>М.Кадамяр</Teacher>
 	<Subject>ЗИП математика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>177</Id>
@@ -1990,7 +1991,7 @@
 <Activity>
 	<Teacher>М.Кадамяр</Teacher>
 	<Subject>ЗИП математика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>178</Id>
@@ -2001,7 +2002,7 @@
 <Activity>
 	<Teacher>М.Кадамяр</Teacher>
 	<Subject>ЗИП математика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>179</Id>
@@ -2012,7 +2013,7 @@
 <Activity>
 	<Teacher>М.Кадамяр</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>180</Id>
@@ -2023,7 +2024,7 @@
 <Activity>
 	<Teacher>М.Кадамяр</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>181</Id>
@@ -2034,7 +2035,7 @@
 <Activity>
 	<Teacher>М.Кадамяр</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>182</Id>
@@ -2045,7 +2046,7 @@
 <Activity>
 	<Teacher>М.Кадамяр</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>183</Id>
@@ -2056,7 +2057,7 @@
 <Activity>
 	<Teacher>М.Кадамяр</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>184</Id>
@@ -2067,7 +2068,7 @@
 <Activity>
 	<Teacher>М.Кадамяр</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>185</Id>
@@ -2078,7 +2079,7 @@
 <Activity>
 	<Teacher>М.Кадамяр</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>189</Id>
@@ -2089,7 +2090,7 @@
 <Activity>
 	<Teacher>М.Кадамяр</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>190</Id>
@@ -2100,7 +2101,7 @@
 <Activity>
 	<Teacher>М.Кадамяр</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>191</Id>
@@ -2111,7 +2112,7 @@
 <Activity>
 	<Teacher>А.Борисова</Teacher>
 	<Subject>ЗИП математика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>192</Id>
@@ -2122,7 +2123,7 @@
 <Activity>
 	<Teacher>А.Борисова</Teacher>
 	<Subject>ЗИП математика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>193</Id>
@@ -2133,7 +2134,7 @@
 <Activity>
 	<Teacher>А.Борисова</Teacher>
 	<Subject>ЗИП математика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>194</Id>
@@ -2144,7 +2145,7 @@
 <Activity>
 	<Teacher>А.Борисова</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>198</Id>
@@ -2155,7 +2156,7 @@
 <Activity>
 	<Teacher>А.Борисова</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>199</Id>
@@ -2166,7 +2167,7 @@
 <Activity>
 	<Teacher>А.Борисова</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>200</Id>
@@ -2177,7 +2178,7 @@
 <Activity>
 	<Teacher>А.Борисова</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>7</Total_Duration>
 	<Id>201</Id>
@@ -2188,7 +2189,7 @@
 <Activity>
 	<Teacher>А.Борисова</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>7</Total_Duration>
 	<Id>202</Id>
@@ -2199,7 +2200,7 @@
 <Activity>
 	<Teacher>А.Борисова</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>7</Total_Duration>
 	<Id>203</Id>
@@ -2210,7 +2211,7 @@
 <Activity>
 	<Teacher>А.Борисова</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>7</Total_Duration>
 	<Id>204</Id>
@@ -2221,7 +2222,7 @@
 <Activity>
 	<Teacher>А.Борисова</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>205</Id>
@@ -2232,7 +2233,7 @@
 <Activity>
 	<Teacher>А.Борисова</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>206</Id>
@@ -2243,7 +2244,7 @@
 <Activity>
 	<Teacher>А.Борисова</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>207</Id>
@@ -2254,7 +2255,7 @@
 <Activity>
 	<Teacher>А.Борисова</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>208</Id>
@@ -2265,7 +2266,7 @@
 <Activity>
 	<Teacher>А.Борисова</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>209</Id>
@@ -2276,7 +2277,7 @@
 <Activity>
 	<Teacher>А.Борисова</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>210</Id>
@@ -2287,7 +2288,7 @@
 <Activity>
 	<Teacher>Алб.Евгениева</Teacher>
 	<Subject>ЗИП ИТ</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>211</Id>
@@ -2298,7 +2299,7 @@
 <Activity>
 	<Teacher>Алб.Евгениева</Teacher>
 	<Subject>ЗИП ИТ</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>212</Id>
@@ -2309,7 +2310,7 @@
 <Activity>
 	<Teacher>Алб.Евгениева</Teacher>
 	<Subject>ЗИП ИТ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>213</Id>
@@ -2320,7 +2321,7 @@
 <Activity>
 	<Teacher>Алб.Евгениева</Teacher>
 	<Subject>ЗИП ИТ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>214</Id>
@@ -2331,7 +2332,7 @@
 <Activity>
 	<Teacher>Алб.Евгениева</Teacher>
 	<Subject>ЗИП ИТ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>215</Id>
@@ -2342,7 +2343,7 @@
 <Activity>
 	<Teacher>Алб.Евгениева</Teacher>
 	<Subject>ЗИП математика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>216</Id>
@@ -2353,7 +2354,7 @@
 <Activity>
 	<Teacher>Алб.Евгениева</Teacher>
 	<Subject>ЗИП математика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>217</Id>
@@ -2365,7 +2366,7 @@
 	<Teacher>Алб.Евгениева</Teacher>
 	<Teacher>Ст.Петрова</Teacher>
 	<Subject>ИТ</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>1</Total_Duration>
 	<Id>218</Id>
@@ -2376,7 +2377,7 @@
 <Activity>
 	<Teacher>Алб.Евгениева</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>219</Id>
@@ -2387,7 +2388,7 @@
 <Activity>
 	<Teacher>Алб.Евгениева</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>220</Id>
@@ -2398,7 +2399,7 @@
 <Activity>
 	<Teacher>Алб.Евгениева</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>221</Id>
@@ -2409,7 +2410,7 @@
 <Activity>
 	<Teacher>Алб.Евгениева</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>7</Total_Duration>
 	<Id>222</Id>
@@ -2420,7 +2421,7 @@
 <Activity>
 	<Teacher>Алб.Евгениева</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>7</Total_Duration>
 	<Id>223</Id>
@@ -2431,7 +2432,7 @@
 <Activity>
 	<Teacher>Алб.Евгениева</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>7</Total_Duration>
 	<Id>224</Id>
@@ -2442,7 +2443,7 @@
 <Activity>
 	<Teacher>Алб.Евгениева</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>7</Total_Duration>
 	<Id>225</Id>
@@ -2453,7 +2454,7 @@
 <Activity>
 	<Teacher>Алб.Евгениева</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>226</Id>
@@ -2464,7 +2465,7 @@
 <Activity>
 	<Teacher>Алб.Евгениева</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>227</Id>
@@ -2475,7 +2476,7 @@
 <Activity>
 	<Teacher>Д.Трайчев</Teacher>
 	<Subject>ЗИП Информатика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>228</Id>
@@ -2486,7 +2487,7 @@
 <Activity>
 	<Teacher>Д.Трайчев</Teacher>
 	<Subject>ЗИП Информатика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>229</Id>
@@ -2497,7 +2498,7 @@
 <Activity>
 	<Teacher>Д.Трайчев</Teacher>
 	<Subject>ЗИП Информатика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>230</Id>
@@ -2508,7 +2509,7 @@
 <Activity>
 	<Teacher>Д.Трайчев</Teacher>
 	<Subject>ЗИП Информатика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>231</Id>
@@ -2519,7 +2520,7 @@
 <Activity>
 	<Teacher>Д.Трайчев</Teacher>
 	<Subject>ЗИП Информатика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>232</Id>
@@ -2530,7 +2531,7 @@
 <Activity>
 	<Teacher>Д.Трайчев</Teacher>
 	<Subject>ЗИП Информатика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>233</Id>
@@ -2541,7 +2542,7 @@
 <Activity>
 	<Teacher>Д.Трайчев</Teacher>
 	<Subject>ЗИП Информатика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>234</Id>
@@ -2552,7 +2553,7 @@
 <Activity>
 	<Teacher>Д.Трайчев</Teacher>
 	<Subject>ЗИП Информатика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>235</Id>
@@ -2564,7 +2565,7 @@
 	<Teacher>Д.Трайчев</Teacher>
 	<Teacher>Ст.Петрова</Teacher>
 	<Subject>ИТ</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>1</Total_Duration>
 	<Id>236</Id>
@@ -2576,7 +2577,7 @@
 	<Teacher>Д.Трайчев</Teacher>
 	<Teacher>Ст.Петрова</Teacher>
 	<Subject>ИТ</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>1</Total_Duration>
 	<Id>237</Id>
@@ -2587,7 +2588,7 @@
 <Activity>
 	<Teacher>Д.Трайчев</Teacher>
 	<Subject>Информатика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>1</Total_Duration>
 	<Id>238</Id>
@@ -2598,7 +2599,7 @@
 <Activity>
 	<Teacher>Д.Трайчев</Teacher>
 	<Subject>Информатика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>4</Total_Duration>
 	<Id>239</Id>
@@ -2609,7 +2610,7 @@
 <Activity>
 	<Teacher>Д.Трайчев</Teacher>
 	<Subject>Информатика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>4</Total_Duration>
 	<Id>240</Id>
@@ -2620,7 +2621,7 @@
 <Activity>
 	<Teacher>Д.Трайчев</Teacher>
 	<Subject>Информатика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>241</Id>
@@ -2631,7 +2632,7 @@
 <Activity>
 	<Teacher>Д.Трайчев</Teacher>
 	<Subject>Информатика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>242</Id>
@@ -2642,7 +2643,7 @@
 <Activity>
 	<Teacher>Д.Трайчев</Teacher>
 	<Subject>Информатика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>243</Id>
@@ -2653,7 +2654,7 @@
 <Activity>
 	<Teacher>Д.Трайчев</Teacher>
 	<Subject>Информатика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>244</Id>
@@ -2664,7 +2665,7 @@
 <Activity>
 	<Teacher>Д.Трайчев</Teacher>
 	<Subject>Информатика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>4</Total_Duration>
 	<Id>245</Id>
@@ -2675,7 +2676,7 @@
 <Activity>
 	<Teacher>Д.Трайчев</Teacher>
 	<Subject>Информатика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>4</Total_Duration>
 	<Id>246</Id>
@@ -2686,7 +2687,7 @@
 <Activity>
 	<Teacher>Д.Трайчев</Teacher>
 	<Subject>Информатика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>4</Total_Duration>
 	<Id>247</Id>
@@ -2697,7 +2698,7 @@
 <Activity>
 	<Teacher>Д.Трайчев</Teacher>
 	<Subject>Информатика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>4</Total_Duration>
 	<Id>248</Id>
@@ -2708,7 +2709,7 @@
 <Activity>
 	<Teacher>Ст.Петрова</Teacher>
 	<Subject>Английски</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>8</Total_Duration>
 	<Id>251</Id>
@@ -2719,7 +2720,7 @@
 <Activity>
 	<Teacher>Ст.Петрова</Teacher>
 	<Subject>Английски</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>8</Total_Duration>
 	<Id>252</Id>
@@ -2730,7 +2731,7 @@
 <Activity>
 	<Teacher>Ст.Петрова</Teacher>
 	<Subject>Английски</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>8</Total_Duration>
 	<Id>253</Id>
@@ -2741,7 +2742,7 @@
 <Activity>
 	<Teacher>Ст.Петрова</Teacher>
 	<Subject>Английски</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>8</Total_Duration>
 	<Id>254</Id>
@@ -2752,7 +2753,7 @@
 <Activity>
 	<Teacher>Ст.Петрова</Teacher>
 	<Subject>ЗИП ИТ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>257</Id>
@@ -2763,7 +2764,7 @@
 <Activity>
 	<Teacher>Ст.Петрова</Teacher>
 	<Subject>ЗИП ИТ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>258</Id>
@@ -2774,7 +2775,7 @@
 <Activity>
 	<Teacher>Ст.Петрова</Teacher>
 	<Subject>ЗИП ИТ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>259</Id>
@@ -2785,7 +2786,7 @@
 <Activity>
 	<Teacher>Ст.Петрова</Teacher>
 	<Subject>ЗИП ИТ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>260</Id>
@@ -2796,7 +2797,7 @@
 <Activity>
 	<Teacher>Ст.Петрова</Teacher>
 	<Subject>ЗИП ИТ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>261</Id>
@@ -2807,7 +2808,7 @@
 <Activity>
 	<Teacher>Ст.Петрова</Teacher>
 	<Subject>ИТ</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>1</Total_Duration>
 	<Id>262</Id>
@@ -2818,7 +2819,7 @@
 <Activity>
 	<Teacher>Ст.Петрова</Teacher>
 	<Subject>ИТ</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>1</Total_Duration>
 	<Id>263</Id>
@@ -2829,7 +2830,7 @@
 <Activity>
 	<Teacher>Ст.Петрова</Teacher>
 	<Subject>ИТ</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>1</Total_Duration>
 	<Id>264</Id>
@@ -2840,7 +2841,7 @@
 <Activity>
 	<Teacher>В.Иванов</Teacher>
 	<Subject>ЗИП История</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>268</Id>
@@ -2851,7 +2852,7 @@
 <Activity>
 	<Teacher>В.Иванов</Teacher>
 	<Subject>История</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>269</Id>
@@ -2862,7 +2863,7 @@
 <Activity>
 	<Teacher>В.Иванов</Teacher>
 	<Subject>История</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>270</Id>
@@ -2873,7 +2874,7 @@
 <Activity>
 	<Teacher>В.Иванов</Teacher>
 	<Subject>История</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>271</Id>
@@ -2884,7 +2885,7 @@
 <Activity>
 	<Teacher>В.Иванов</Teacher>
 	<Subject>История</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>272</Id>
@@ -2895,7 +2896,7 @@
 <Activity>
 	<Teacher>В.Иванов</Teacher>
 	<Subject>История</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>273</Id>
@@ -2906,7 +2907,7 @@
 <Activity>
 	<Teacher>В.Иванов</Teacher>
 	<Subject>История</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>274</Id>
@@ -2917,7 +2918,7 @@
 <Activity>
 	<Teacher>В.Иванов</Teacher>
 	<Subject>История</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>275</Id>
@@ -2928,7 +2929,7 @@
 <Activity>
 	<Teacher>В.Иванов</Teacher>
 	<Subject>История</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>276</Id>
@@ -2939,7 +2940,7 @@
 <Activity>
 	<Teacher>В.Иванов</Teacher>
 	<Subject>История</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>277</Id>
@@ -2950,7 +2951,7 @@
 <Activity>
 	<Teacher>В.Иванов</Teacher>
 	<Subject>История</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>278</Id>
@@ -2961,7 +2962,7 @@
 <Activity>
 	<Teacher>В.Иванов</Teacher>
 	<Subject>История</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>279</Id>
@@ -2972,7 +2973,7 @@
 <Activity>
 	<Teacher>В.Иванов</Teacher>
 	<Subject>История</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>280</Id>
@@ -2983,7 +2984,7 @@
 <Activity>
 	<Teacher>В.Иванов</Teacher>
 	<Subject>История</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>281</Id>
@@ -2994,7 +2995,7 @@
 <Activity>
 	<Teacher>В.Иванов</Teacher>
 	<Subject>История</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>282</Id>
@@ -3005,7 +3006,7 @@
 <Activity>
 	<Teacher>В.Иванов</Teacher>
 	<Subject>Свят и личност</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>283</Id>
@@ -3016,7 +3017,7 @@
 <Activity>
 	<Teacher>В.Иванов</Teacher>
 	<Subject>Свят и личност</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>284</Id>
@@ -3027,7 +3028,7 @@
 <Activity>
 	<Teacher>В.Иванов</Teacher>
 	<Subject>История</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>4</Total_Duration>
 	<Id>285</Id>
@@ -3038,7 +3039,7 @@
 <Activity>
 	<Teacher>В.Иванов</Teacher>
 	<Subject>История</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>4</Total_Duration>
 	<Id>286</Id>
@@ -3049,7 +3050,7 @@
 <Activity>
 	<Teacher>Зоя Дичева</Teacher>
 	<Subject>ЗИП История</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>288</Id>
@@ -3060,7 +3061,7 @@
 <Activity>
 	<Teacher>Зоя Дичева</Teacher>
 	<Subject>ЗИП История</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>289</Id>
@@ -3071,7 +3072,7 @@
 <Activity>
 	<Teacher>Зоя Дичева</Teacher>
 	<Subject>ЗИП История</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>290</Id>
@@ -3082,7 +3083,7 @@
 <Activity>
 	<Teacher>Зоя Дичева</Teacher>
 	<Subject>ЗИП История</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>291</Id>
@@ -3093,7 +3094,7 @@
 <Activity>
 	<Teacher>Зоя Дичева</Teacher>
 	<Subject>ЗИП История</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>292</Id>
@@ -3104,7 +3105,7 @@
 <Activity>
 	<Teacher>Зоя Дичева</Teacher>
 	<Subject>ЗИП История</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>3</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>293</Id>
@@ -3115,7 +3116,7 @@
 <Activity>
 	<Teacher>Зоя Дичева</Teacher>
 	<Subject>История</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>294</Id>
@@ -3126,7 +3127,7 @@
 <Activity>
 	<Teacher>Зоя Дичева</Teacher>
 	<Subject>История</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>295</Id>
@@ -3137,7 +3138,7 @@
 <Activity>
 	<Teacher>Зоя Дичева</Teacher>
 	<Subject>История</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>296</Id>
@@ -3148,7 +3149,7 @@
 <Activity>
 	<Teacher>Зоя Дичева</Teacher>
 	<Subject>История</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>297</Id>
@@ -3159,7 +3160,7 @@
 <Activity>
 	<Teacher>Зоя Дичева</Teacher>
 	<Subject>История</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>298</Id>
@@ -3170,7 +3171,7 @@
 <Activity>
 	<Teacher>Зоя Дичева</Teacher>
 	<Subject>История</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>299</Id>
@@ -3181,7 +3182,7 @@
 <Activity>
 	<Teacher>Зоя Дичева</Teacher>
 	<Subject>История</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>300</Id>
@@ -3192,7 +3193,7 @@
 <Activity>
 	<Teacher>Зоя Дичева</Teacher>
 	<Subject>История</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>301</Id>
@@ -3203,7 +3204,7 @@
 <Activity>
 	<Teacher>Зоя Дичева</Teacher>
 	<Subject>Свят и личност</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>302</Id>
@@ -3214,7 +3215,7 @@
 <Activity>
 	<Teacher>Зоя Дичева</Teacher>
 	<Subject>Свят и личност</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>303</Id>
@@ -3225,7 +3226,7 @@
 <Activity>
 	<Teacher>В.Симеонова</Teacher>
 	<Subject>Етика и право</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>1</Total_Duration>
 	<Id>304</Id>
@@ -3236,7 +3237,7 @@
 <Activity>
 	<Teacher>В.Симеонова</Teacher>
 	<Subject>Етика и право</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>305</Id>
@@ -3247,7 +3248,7 @@
 <Activity>
 	<Teacher>В.Симеонова</Teacher>
 	<Subject>Етика и право</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>306</Id>
@@ -3258,7 +3259,7 @@
 <Activity>
 	<Teacher>В.Симеонова</Teacher>
 	<Subject>Етика и право</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>307</Id>
@@ -3269,7 +3270,7 @@
 <Activity>
 	<Teacher>В.Симеонова</Teacher>
 	<Subject>Етика и право</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>308</Id>
@@ -3280,7 +3281,7 @@
 <Activity>
 	<Teacher>В.Симеонова</Teacher>
 	<Subject>ЗИП Етика и право</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>309</Id>
@@ -3291,7 +3292,7 @@
 <Activity>
 	<Teacher>В.Симеонова</Teacher>
 	<Subject>ЗИП философия</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>311</Id>
@@ -3302,7 +3303,7 @@
 <Activity>
 	<Teacher>В.Симеонова</Teacher>
 	<Subject>ЗИП философия</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>312</Id>
@@ -3313,7 +3314,7 @@
 <Activity>
 	<Teacher>В.Симеонова</Teacher>
 	<Subject>ЗИП философия</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>313</Id>
@@ -3324,7 +3325,7 @@
 <Activity>
 	<Teacher>В.Симеонова</Teacher>
 	<Subject>ЗИП философия</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>314</Id>
@@ -3335,7 +3336,7 @@
 <Activity>
 	<Teacher>В.Симеонова</Teacher>
 	<Subject>ЗИП философия</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>315</Id>
@@ -3346,7 +3347,7 @@
 <Activity>
 	<Teacher>В.Симеонова</Teacher>
 	<Subject>Психология</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>316</Id>
@@ -3357,7 +3358,7 @@
 <Activity>
 	<Teacher>В.Симеонова</Teacher>
 	<Subject>Психология</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>317</Id>
@@ -3368,7 +3369,7 @@
 <Activity>
 	<Teacher>В.Симеонова</Teacher>
 	<Subject>Психология</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>1</Total_Duration>
 	<Id>318</Id>
@@ -3379,7 +3380,7 @@
 <Activity>
 	<Teacher>В.Симеонова</Teacher>
 	<Subject>Психология</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>1</Total_Duration>
 	<Id>319</Id>
@@ -3390,7 +3391,7 @@
 <Activity>
 	<Teacher>В.Симеонова</Teacher>
 	<Subject>Философия</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>320</Id>
@@ -3401,7 +3402,7 @@
 <Activity>
 	<Teacher>В.Симеонова</Teacher>
 	<Subject>Философия</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>321</Id>
@@ -3412,7 +3413,7 @@
 <Activity>
 	<Teacher>В.Симеонова</Teacher>
 	<Subject>Философия</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>322</Id>
@@ -3423,7 +3424,7 @@
 <Activity>
 	<Teacher>В.Симеонова</Teacher>
 	<Subject>Философия</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>323</Id>
@@ -3434,7 +3435,7 @@
 <Activity>
 	<Teacher>В.Симеонова</Teacher>
 	<Subject>Философия</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>1</Total_Duration>
 	<Id>324</Id>
@@ -3445,7 +3446,7 @@
 <Activity>
 	<Teacher>В.Симеонова</Teacher>
 	<Subject>Философия</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>1</Total_Duration>
 	<Id>325</Id>
@@ -3456,7 +3457,7 @@
 <Activity>
 	<Teacher>Ем.Христова</Teacher>
 	<Subject>География</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>1</Total_Duration>
 	<Id>327</Id>
@@ -3467,7 +3468,7 @@
 <Activity>
 	<Teacher>Ем.Христова</Teacher>
 	<Subject>География</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>1</Total_Duration>
 	<Id>328</Id>
@@ -3478,7 +3479,7 @@
 <Activity>
 	<Teacher>Ем.Христова</Teacher>
 	<Subject>География</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>1</Total_Duration>
 	<Id>329</Id>
@@ -3489,7 +3490,7 @@
 <Activity>
 	<Teacher>Ем.Христова</Teacher>
 	<Subject>География</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>1</Total_Duration>
 	<Id>330</Id>
@@ -3500,7 +3501,7 @@
 <Activity>
 	<Teacher>Ем.Христова</Teacher>
 	<Subject>География</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>331</Id>
@@ -3511,7 +3512,7 @@
 <Activity>
 	<Teacher>Ем.Христова</Teacher>
 	<Subject>География</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>332</Id>
@@ -3522,7 +3523,7 @@
 <Activity>
 	<Teacher>Ем.Христова</Teacher>
 	<Subject>География</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>1</Total_Duration>
 	<Id>333</Id>
@@ -3533,7 +3534,7 @@
 <Activity>
 	<Teacher>Ем.Христова</Teacher>
 	<Subject>География</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>1</Total_Duration>
 	<Id>334</Id>
@@ -3544,7 +3545,7 @@
 <Activity>
 	<Teacher>Ем.Христова</Teacher>
 	<Subject>ЗИП География</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>335</Id>
@@ -3555,7 +3556,7 @@
 <Activity>
 	<Teacher>Ем.Христова</Teacher>
 	<Subject>ЗИП География</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>336</Id>
@@ -3566,7 +3567,7 @@
 <Activity>
 	<Teacher>Ем.Христова</Teacher>
 	<Subject>ЗИП География</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>337</Id>
@@ -3577,7 +3578,7 @@
 <Activity>
 	<Teacher>Ем.Христова</Teacher>
 	<Subject>ЗИП География</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>338</Id>
@@ -3588,7 +3589,7 @@
 <Activity>
 	<Teacher>Ем.Христова</Teacher>
 	<Subject>ЗИП География</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>339</Id>
@@ -3599,7 +3600,7 @@
 <Activity>
 	<Teacher>Ем.Христова</Teacher>
 	<Subject>ЗИП География</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>340</Id>
@@ -3610,7 +3611,7 @@
 <Activity>
 	<Teacher>Ем.Христова</Teacher>
 	<Subject>ЗИП География</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>341</Id>
@@ -3621,7 +3622,7 @@
 <Activity>
 	<Teacher>Ем.Христова</Teacher>
 	<Subject>ЗИП География</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>342</Id>
@@ -3632,7 +3633,7 @@
 <Activity>
 	<Teacher>Ем.Христова</Teacher>
 	<Subject>Свят и личност</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>343</Id>
@@ -3643,7 +3644,7 @@
 <Activity>
 	<Teacher>Ем.Христова</Teacher>
 	<Subject>Свят и личност</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>344</Id>
@@ -3654,7 +3655,7 @@
 <Activity>
 	<Teacher>Ем.Христова</Teacher>
 	<Subject>Свят и личност</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>345</Id>
@@ -3665,7 +3666,7 @@
 <Activity>
 	<Teacher>Ем.Христова</Teacher>
 	<Subject>Свят и личност</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>346</Id>
@@ -3676,7 +3677,7 @@
 <Activity>
 	<Teacher>Ем.Христова</Teacher>
 	<Subject>Свят и личност</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>347</Id>
@@ -3687,7 +3688,7 @@
 <Activity>
 	<Teacher>Ем.Христова</Teacher>
 	<Subject>Свят и личност</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>348</Id>
@@ -3698,7 +3699,7 @@
 <Activity>
 	<Teacher>Ю.Асенова</Teacher>
 	<Subject>Биология</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>349</Id>
@@ -3709,7 +3710,7 @@
 <Activity>
 	<Teacher>Ю.Асенова</Teacher>
 	<Subject>Биология</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>350</Id>
@@ -3720,7 +3721,7 @@
 <Activity>
 	<Teacher>Ю.Асенова</Teacher>
 	<Subject>География</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>351</Id>
@@ -3731,7 +3732,7 @@
 <Activity>
 	<Teacher>Ю.Асенова</Teacher>
 	<Subject>География</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>352</Id>
@@ -3742,7 +3743,7 @@
 <Activity>
 	<Teacher>Ю.Асенова</Teacher>
 	<Subject>География</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>1</Total_Duration>
 	<Id>353</Id>
@@ -3753,7 +3754,7 @@
 <Activity>
 	<Teacher>Ю.Асенова</Teacher>
 	<Subject>География</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>1</Total_Duration>
 	<Id>354</Id>
@@ -3764,7 +3765,7 @@
 <Activity>
 	<Teacher>Ю.Асенова</Teacher>
 	<Subject>География</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>355</Id>
@@ -3775,7 +3776,7 @@
 <Activity>
 	<Teacher>Ю.Асенова</Teacher>
 	<Subject>География</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>356</Id>
@@ -3786,7 +3787,7 @@
 <Activity>
 	<Teacher>Ю.Асенова</Teacher>
 	<Subject>География</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>357</Id>
@@ -3797,7 +3798,7 @@
 <Activity>
 	<Teacher>Ю.Асенова</Teacher>
 	<Subject>География</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>358</Id>
@@ -3808,7 +3809,7 @@
 <Activity>
 	<Teacher>Ю.Асенова</Teacher>
 	<Subject>ЗИП Биология</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>359</Id>
@@ -3820,7 +3821,7 @@
 <Activity>
 	<Teacher>Ю.Асенова</Teacher>
 	<Subject>ЗИП Биология</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>360</Id>
@@ -3832,7 +3833,7 @@
 <Activity>
 	<Teacher>Ю.Асенова</Teacher>
 	<Subject>ЗИП Биология</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>361</Id>
@@ -3843,7 +3844,7 @@
 <Activity>
 	<Teacher>Ю.Асенова</Teacher>
 	<Subject>ЗИП Биология</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>362</Id>
@@ -3854,7 +3855,7 @@
 <Activity>
 	<Teacher>Ю.Асенова</Teacher>
 	<Subject>ЗИП Биология</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>363</Id>
@@ -3865,7 +3866,7 @@
 <Activity>
 	<Teacher>Ю.Асенова</Teacher>
 	<Subject>ЗИП География</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>364</Id>
@@ -3876,7 +3877,7 @@
 <Activity>
 	<Teacher>Ю.Асенова</Teacher>
 	<Subject>ЗИП География</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>365</Id>
@@ -3887,7 +3888,7 @@
 <Activity>
 	<Teacher>Ю.Асенова</Teacher>
 	<Subject>ЗИП География</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>366</Id>
@@ -3898,7 +3899,7 @@
 <Activity>
 	<Teacher>Ю.Асенова</Teacher>
 	<Subject>ЗИП География</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>367</Id>
@@ -3909,7 +3910,7 @@
 <Activity>
 	<Teacher>Ю.Асенова</Teacher>
 	<Subject>ЗИП География</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>368</Id>
@@ -3920,7 +3921,7 @@
 <Activity>
 	<Teacher>Ю.Асенова</Teacher>
 	<Subject>ЗИП География</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>369</Id>
@@ -3931,7 +3932,7 @@
 <Activity>
 	<Teacher>Р.Цветева</Teacher>
 	<Subject>Биология</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>370</Id>
@@ -3942,7 +3943,7 @@
 <Activity>
 	<Teacher>Р.Цветева</Teacher>
 	<Subject>Биология</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>371</Id>
@@ -3953,7 +3954,7 @@
 <Activity>
 	<Teacher>Р.Цветева</Teacher>
 	<Subject>Биология</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>372</Id>
@@ -3964,7 +3965,7 @@
 <Activity>
 	<Teacher>Р.Цветева</Teacher>
 	<Subject>Биология</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>373</Id>
@@ -3975,7 +3976,7 @@
 <Activity>
 	<Teacher>Р.Цветева</Teacher>
 	<Subject>Биология</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>374</Id>
@@ -3986,7 +3987,7 @@
 <Activity>
 	<Teacher>Р.Цветева</Teacher>
 	<Subject>Биология</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>375</Id>
@@ -3997,7 +3998,7 @@
 <Activity>
 	<Teacher>Р.Цветева</Teacher>
 	<Subject>Биология</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>376</Id>
@@ -4008,7 +4009,7 @@
 <Activity>
 	<Teacher>Р.Цветева</Teacher>
 	<Subject>Биология</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>377</Id>
@@ -4019,7 +4020,7 @@
 <Activity>
 	<Teacher>Р.Цветева</Teacher>
 	<Subject>Биология</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>378</Id>
@@ -4030,7 +4031,7 @@
 <Activity>
 	<Teacher>Р.Цветева</Teacher>
 	<Subject>Биология</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>379</Id>
@@ -4041,7 +4042,7 @@
 <Activity>
 	<Teacher>Р.Цветева</Teacher>
 	<Subject>Биология</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>380</Id>
@@ -4052,7 +4053,7 @@
 <Activity>
 	<Teacher>Р.Цветева</Teacher>
 	<Subject>Биология</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>381</Id>
@@ -4063,7 +4064,7 @@
 <Activity>
 	<Teacher>Р.Цветева</Teacher>
 	<Subject>ЗИП Биология</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>382</Id>
@@ -4074,7 +4075,7 @@
 <Activity>
 	<Teacher>Р.Цветева</Teacher>
 	<Subject>ЗИП Биология</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>383</Id>
@@ -4085,7 +4086,7 @@
 <Activity>
 	<Teacher>Р.Цветева</Teacher>
 	<Subject>ЗИП Биология</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>384</Id>
@@ -4096,7 +4097,7 @@
 <Activity>
 	<Teacher>Р.Цветева</Teacher>
 	<Subject>ЗИП Биология</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>385</Id>
@@ -4107,7 +4108,7 @@
 <Activity>
 	<Teacher>Р.Цветева</Teacher>
 	<Subject>ЗИП Биология</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>386</Id>
@@ -4118,7 +4119,7 @@
 <Activity>
 	<Teacher>Д.Борисова</Teacher>
 	<Subject>ЗИП Физика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>387</Id>
@@ -4129,7 +4130,7 @@
 <Activity>
 	<Teacher>Д.Борисова</Teacher>
 	<Subject>ЗИП Физика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>388</Id>
@@ -4140,7 +4141,7 @@
 <Activity>
 	<Teacher>Д.Борисова</Teacher>
 	<Subject>ЗИП Физика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>389</Id>
@@ -4151,7 +4152,7 @@
 <Activity>
 	<Teacher>Д.Борисова</Teacher>
 	<Subject>ЗИП Физика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>390</Id>
@@ -4162,7 +4163,7 @@
 <Activity>
 	<Teacher>Д.Борисова</Teacher>
 	<Subject>ЗИП Физика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>391</Id>
@@ -4173,7 +4174,7 @@
 <Activity>
 	<Teacher>Д.Борисова</Teacher>
 	<Subject>ЗИП Физика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>392</Id>
@@ -4184,7 +4185,7 @@
 <Activity>
 	<Teacher>Д.Борисова</Teacher>
 	<Subject>ЗИП Физика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>393</Id>
@@ -4195,7 +4196,7 @@
 <Activity>
 	<Teacher>Д.Борисова</Teacher>
 	<Subject>ЗИП Физика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>394</Id>
@@ -4206,7 +4207,7 @@
 <Activity>
 	<Teacher>Д.Борисова</Teacher>
 	<Subject>Физика</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>395</Id>
@@ -4217,7 +4218,7 @@
 <Activity>
 	<Teacher>Д.Борисова</Teacher>
 	<Subject>Физика</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>396</Id>
@@ -4228,7 +4229,7 @@
 <Activity>
 	<Teacher>Д.Борисова</Teacher>
 	<Subject>Физика</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>397</Id>
@@ -4239,7 +4240,7 @@
 <Activity>
 	<Teacher>Д.Борисова</Teacher>
 	<Subject>Физика</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>398</Id>
@@ -4250,7 +4251,7 @@
 <Activity>
 	<Teacher>Д.Борисова</Teacher>
 	<Subject>Физика</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>399</Id>
@@ -4261,7 +4262,7 @@
 <Activity>
 	<Teacher>Д.Борисова</Teacher>
 	<Subject>Физика</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>400</Id>
@@ -4272,7 +4273,7 @@
 <Activity>
 	<Teacher>Д.Борисова</Teacher>
 	<Subject>Физика</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>1</Total_Duration>
 	<Id>401</Id>
@@ -4283,7 +4284,7 @@
 <Activity>
 	<Teacher>Д.Борисова</Teacher>
 	<Subject>Физика</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>402</Id>
@@ -4294,7 +4295,7 @@
 <Activity>
 	<Teacher>Д.Борисова</Teacher>
 	<Subject>Физика</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>403</Id>
@@ -4305,7 +4306,7 @@
 <Activity>
 	<Teacher>Д.Борисова</Teacher>
 	<Subject>Физика</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>404</Id>
@@ -4316,7 +4317,7 @@
 <Activity>
 	<Teacher>Д.Борисова</Teacher>
 	<Subject>Физика</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>405</Id>
@@ -4327,7 +4328,7 @@
 <Activity>
 	<Teacher>Д.Василева</Teacher>
 	<Subject>ЗИП Физика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>406</Id>
@@ -4338,7 +4339,7 @@
 <Activity>
 	<Teacher>Д.Василева</Teacher>
 	<Subject>ЗИП Физика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>407</Id>
@@ -4349,7 +4350,7 @@
 <Activity>
 	<Teacher>Д.Василева</Teacher>
 	<Subject>ЗИП Физика</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>408</Id>
@@ -4360,7 +4361,7 @@
 <Activity>
 	<Teacher>Д.Василева</Teacher>
 	<Subject>Физика</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>1</Total_Duration>
 	<Id>409</Id>
@@ -4371,7 +4372,7 @@
 <Activity>
 	<Teacher>Д.Василева</Teacher>
 	<Subject>Физика</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>1</Total_Duration>
 	<Id>410</Id>
@@ -4382,7 +4383,7 @@
 <Activity>
 	<Teacher>Д.Василева</Teacher>
 	<Subject>Физика</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>4</Total_Duration>
 	<Id>411</Id>
@@ -4393,7 +4394,7 @@
 <Activity>
 	<Teacher>Д.Василева</Teacher>
 	<Subject>Физика</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>4</Total_Duration>
 	<Id>412</Id>
@@ -4404,7 +4405,7 @@
 <Activity>
 	<Teacher>Д.Василева</Teacher>
 	<Subject>Физика</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>4</Total_Duration>
 	<Id>413</Id>
@@ -4415,7 +4416,7 @@
 <Activity>
 	<Teacher>Д.Василева</Teacher>
 	<Subject>Физика</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>4</Total_Duration>
 	<Id>414</Id>
@@ -4426,7 +4427,7 @@
 <Activity>
 	<Teacher>Д.Василева</Teacher>
 	<Subject>Физика</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>1</Total_Duration>
 	<Id>415</Id>
@@ -4437,7 +4438,7 @@
 <Activity>
 	<Teacher>Д.Василева</Teacher>
 	<Subject>Физика</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>1</Total_Duration>
 	<Id>416</Id>
@@ -4448,7 +4449,7 @@
 <Activity>
 	<Teacher>Д.Василева</Teacher>
 	<Subject>Физика</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>4</Total_Duration>
 	<Id>417</Id>
@@ -4459,7 +4460,7 @@
 <Activity>
 	<Teacher>Д.Василева</Teacher>
 	<Subject>Физика</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>4</Total_Duration>
 	<Id>418</Id>
@@ -4470,7 +4471,7 @@
 <Activity>
 	<Teacher>Д.Василева</Teacher>
 	<Subject>Физика</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>4</Total_Duration>
 	<Id>419</Id>
@@ -4481,7 +4482,7 @@
 <Activity>
 	<Teacher>Д.Василева</Teacher>
 	<Subject>Физика</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>4</Total_Duration>
 	<Id>420</Id>
@@ -4492,7 +4493,7 @@
 <Activity>
 	<Teacher>Д.Василева</Teacher>
 	<Subject>Химия</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>421</Id>
@@ -4503,7 +4504,7 @@
 <Activity>
 	<Teacher>Д.Василева</Teacher>
 	<Subject>Химия</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>422</Id>
@@ -4514,7 +4515,7 @@
 <Activity>
 	<Teacher>Л.Асенова</Teacher>
 	<Subject>ЗИП Химия</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>423</Id>
@@ -4526,7 +4527,7 @@
 <Activity>
 	<Teacher>Л.Асенова</Teacher>
 	<Subject>ЗИП Химия</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>424</Id>
@@ -4538,7 +4539,7 @@
 <Activity>
 	<Teacher>Л.Асенова</Teacher>
 	<Subject>ЗИП Химия</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>425</Id>
@@ -4549,7 +4550,7 @@
 <Activity>
 	<Teacher>Л.Асенова</Teacher>
 	<Subject>ЗИП Химия</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>426</Id>
@@ -4560,7 +4561,7 @@
 <Activity>
 	<Teacher>Л.Асенова</Teacher>
 	<Subject>Химия</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>427</Id>
@@ -4571,7 +4572,7 @@
 <Activity>
 	<Teacher>Л.Асенова</Teacher>
 	<Subject>Химия</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>428</Id>
@@ -4582,7 +4583,7 @@
 <Activity>
 	<Teacher>Л.Асенова</Teacher>
 	<Subject>Химия</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>429</Id>
@@ -4593,7 +4594,7 @@
 <Activity>
 	<Teacher>Л.Асенова</Teacher>
 	<Subject>Химия</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>430</Id>
@@ -4604,7 +4605,7 @@
 <Activity>
 	<Teacher>Л.Асенова</Teacher>
 	<Subject>Химия</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>431</Id>
@@ -4615,7 +4616,7 @@
 <Activity>
 	<Teacher>Л.Асенова</Teacher>
 	<Subject>Химия</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>432</Id>
@@ -4626,7 +4627,7 @@
 <Activity>
 	<Teacher>Л.Асенова</Teacher>
 	<Subject>Химия</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>433</Id>
@@ -4637,7 +4638,7 @@
 <Activity>
 	<Teacher>Л.Асенова</Teacher>
 	<Subject>Химия</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>434</Id>
@@ -4648,7 +4649,7 @@
 <Activity>
 	<Teacher>Л.Асенова</Teacher>
 	<Subject>Химия</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>435</Id>
@@ -4659,7 +4660,7 @@
 <Activity>
 	<Teacher>Л.Асенова</Teacher>
 	<Subject>Химия</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>436</Id>
@@ -4670,7 +4671,7 @@
 <Activity>
 	<Teacher>К.Апостолов</Teacher>
 	<Subject>ЗИП ИИ</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>437</Id>
@@ -4682,7 +4683,7 @@
 <Activity>
 	<Teacher>К.Апостолов</Teacher>
 	<Subject>ЗИП ИИ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>438</Id>
@@ -4693,7 +4694,7 @@
 <Activity>
 	<Teacher>К.Апостолов</Teacher>
 	<Subject>ЗИП ИИ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>439</Id>
@@ -4704,7 +4705,7 @@
 <Activity>
 	<Teacher>К.Апостолов</Teacher>
 	<Subject>ЗИП ИИ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>440</Id>
@@ -4715,7 +4716,7 @@
 <Activity>
 	<Teacher>К.Апостолов</Teacher>
 	<Subject>ЗИП ИИ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>3</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>441</Id>
@@ -4726,7 +4727,7 @@
 <Activity>
 	<Teacher>К.Апостолов</Teacher>
 	<Subject>ЗИП ИИ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>442</Id>
@@ -4737,7 +4738,7 @@
 <Activity>
 	<Teacher>К.Апостолов</Teacher>
 	<Subject>ЗИП ИИ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>3</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>443</Id>
@@ -4748,7 +4749,7 @@
 <Activity>
 	<Teacher>К.Апостолов</Teacher>
 	<Subject>ЗИП ИИ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>3</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>444</Id>
@@ -4759,7 +4760,7 @@
 <Activity>
 	<Teacher>К.Апостолов</Teacher>
 	<Subject>ЗИП ИИ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>445</Id>
@@ -4770,7 +4771,7 @@
 <Activity>
 	<Teacher>К.Апостолов</Teacher>
 	<Subject>ЗИП ИИ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>446</Id>
@@ -4781,7 +4782,7 @@
 <Activity>
 	<Teacher>К.Апостолов</Teacher>
 	<Subject>ЗИП ИИ</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>447</Id>
@@ -4792,7 +4793,7 @@
 <Activity>
 	<Teacher>К.Апостолов</Teacher>
 	<Subject>ИИ</Subject>
-	<Subject_Tag>Лек1</Subject_Tag>
+	<Activity_Tag>Лек1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>1</Total_Duration>
 	<Id>448</Id>
@@ -4803,7 +4804,7 @@
 <Activity>
 	<Teacher>К.Апостолов</Teacher>
 	<Subject>ИИ</Subject>
-	<Subject_Tag>Лек1</Subject_Tag>
+	<Activity_Tag>Лек1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>1</Total_Duration>
 	<Id>449</Id>
@@ -4814,7 +4815,7 @@
 <Activity>
 	<Teacher>К.Апостолов</Teacher>
 	<Subject>ИИ</Subject>
-	<Subject_Tag>Лек1</Subject_Tag>
+	<Activity_Tag>Лек1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>1</Total_Duration>
 	<Id>450</Id>
@@ -4825,7 +4826,7 @@
 <Activity>
 	<Teacher>Дафинка</Teacher>
 	<Subject>ЗИП Музика</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>451</Id>
@@ -4837,7 +4838,7 @@
 <Activity>
 	<Teacher>Дафинка</Teacher>
 	<Subject>ЗИП Музика</Subject>
-	<Subject_Tag>Среден1</Subject_Tag>
+	<Activity_Tag>Среден1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>452</Id>
@@ -4849,7 +4850,7 @@
 <Activity>
 	<Teacher>Дафинка</Teacher>
 	<Subject>ЗИП Музика</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>453</Id>
@@ -4860,7 +4861,7 @@
 <Activity>
 	<Teacher>Дафинка</Teacher>
 	<Subject>ЗИП Музика</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>454</Id>
@@ -4871,7 +4872,7 @@
 <Activity>
 	<Teacher>Дафинка</Teacher>
 	<Subject>ЗИП Музика</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>455</Id>
@@ -4882,7 +4883,7 @@
 <Activity>
 	<Teacher>Дафинка</Teacher>
 	<Subject>ЗИП Музика</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>456</Id>
@@ -4893,7 +4894,7 @@
 <Activity>
 	<Teacher>Дафинка</Teacher>
 	<Subject>ЗИП Музика</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>457</Id>
@@ -4904,7 +4905,7 @@
 <Activity>
 	<Teacher>Дафинка</Teacher>
 	<Subject>ЗИП Музика</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>458</Id>
@@ -4915,7 +4916,7 @@
 <Activity>
 	<Teacher>Дафинка</Teacher>
 	<Subject>ЗИП Музика</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>459</Id>
@@ -4926,7 +4927,7 @@
 <Activity>
 	<Teacher>Дафинка</Teacher>
 	<Subject>ЗИП Музика</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>460</Id>
@@ -4937,7 +4938,7 @@
 <Activity>
 	<Teacher>Дафинка</Teacher>
 	<Subject>ЗИП Музика</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>461</Id>
@@ -4948,7 +4949,7 @@
 <Activity>
 	<Teacher>Дафинка</Teacher>
 	<Subject>Музика</Subject>
-	<Subject_Tag>Лек1</Subject_Tag>
+	<Activity_Tag>Лек1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>1</Total_Duration>
 	<Id>462</Id>
@@ -4959,7 +4960,7 @@
 <Activity>
 	<Teacher>Дафинка</Teacher>
 	<Subject>Музика</Subject>
-	<Subject_Tag>Лек1</Subject_Tag>
+	<Activity_Tag>Лек1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>1</Total_Duration>
 	<Id>463</Id>
@@ -4970,7 +4971,7 @@
 <Activity>
 	<Teacher>Дафинка</Teacher>
 	<Subject>Музика</Subject>
-	<Subject_Tag>Лек1</Subject_Tag>
+	<Activity_Tag>Лек1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>1</Total_Duration>
 	<Id>464</Id>
@@ -4981,7 +4982,7 @@
 <Activity>
 	<Teacher>Мл.Йорданов</Teacher>
 	<Subject>ЗИП Физкултура</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>465</Id>
@@ -4992,7 +4993,7 @@
 <Activity>
 	<Teacher>Мл.Йорданов</Teacher>
 	<Subject>ЗИП Физкултура</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>466</Id>
@@ -5003,7 +5004,7 @@
 <Activity>
 	<Teacher>Мл.Йорданов</Teacher>
 	<Subject>ЗИП Физкултура</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>467</Id>
@@ -5014,7 +5015,7 @@
 <Activity>
 	<Teacher>Мл.Йорданов</Teacher>
 	<Subject>ЗИП Физкултура</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>468</Id>
@@ -5026,7 +5027,7 @@
 <Activity>
 	<Teacher>Мл.Йорданов</Teacher>
 	<Subject>ЗИП Физкултура</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>469</Id>
@@ -5038,7 +5039,7 @@
 <Activity>
 	<Teacher>Мл.Йорданов</Teacher>
 	<Subject>ЗИП Физкултура</Subject>
-	<Subject_Tag>Среден2</Subject_Tag>
+	<Activity_Tag>Среден2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>470</Id>
@@ -5050,7 +5051,7 @@
 <Activity>
 	<Teacher>Мл.Йорданов</Teacher>
 	<Subject>Физкултура</Subject>
-	<Subject_Tag>Лек2</Subject_Tag>
+	<Activity_Tag>Лек2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>471</Id>
@@ -5061,7 +5062,7 @@
 <Activity>
 	<Teacher>Мл.Йорданов</Teacher>
 	<Subject>Физкултура</Subject>
-	<Subject_Tag>Лек2</Subject_Tag>
+	<Activity_Tag>Лек2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>472</Id>
@@ -5072,7 +5073,7 @@
 <Activity>
 	<Teacher>Мл.Йорданов</Teacher>
 	<Subject>Физкултура</Subject>
-	<Subject_Tag>Лек2</Subject_Tag>
+	<Activity_Tag>Лек2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>473</Id>
@@ -5083,7 +5084,7 @@
 <Activity>
 	<Teacher>Мл.Йорданов</Teacher>
 	<Subject>Физкултура</Subject>
-	<Subject_Tag>Лек2</Subject_Tag>
+	<Activity_Tag>Лек2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>474</Id>
@@ -5094,7 +5095,7 @@
 <Activity>
 	<Teacher>Мл.Йорданов</Teacher>
 	<Subject>Физкултура</Subject>
-	<Subject_Tag>Лек2</Subject_Tag>
+	<Activity_Tag>Лек2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>475</Id>
@@ -5105,7 +5106,7 @@
 <Activity>
 	<Teacher>Мл.Йорданов</Teacher>
 	<Subject>Физкултура</Subject>
-	<Subject_Tag>Лек2</Subject_Tag>
+	<Activity_Tag>Лек2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>476</Id>
@@ -5116,7 +5117,7 @@
 <Activity>
 	<Teacher>Мл.Йорданов</Teacher>
 	<Subject>Физкултура</Subject>
-	<Subject_Tag>Лек2</Subject_Tag>
+	<Activity_Tag>Лек2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>477</Id>
@@ -5127,7 +5128,7 @@
 <Activity>
 	<Teacher>Мл.Йорданов</Teacher>
 	<Subject>Физкултура</Subject>
-	<Subject_Tag>Лек2</Subject_Tag>
+	<Activity_Tag>Лек2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>478</Id>
@@ -5138,7 +5139,7 @@
 <Activity>
 	<Teacher>М.Замфирова</Teacher>
 	<Subject>Физкултура</Subject>
-	<Subject_Tag>Лек1</Subject_Tag>
+	<Activity_Tag>Лек1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>479</Id>
@@ -5149,7 +5150,7 @@
 <Activity>
 	<Teacher>М.Замфирова</Teacher>
 	<Subject>Физкултура</Subject>
-	<Subject_Tag>Лек1</Subject_Tag>
+	<Activity_Tag>Лек1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>480</Id>
@@ -5160,7 +5161,7 @@
 <Activity>
 	<Teacher>М.Замфирова</Teacher>
 	<Subject>Физкултура</Subject>
-	<Subject_Tag>Лек1</Subject_Tag>
+	<Activity_Tag>Лек1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>481</Id>
@@ -5171,7 +5172,7 @@
 <Activity>
 	<Teacher>М.Замфирова</Teacher>
 	<Subject>Физкултура</Subject>
-	<Subject_Tag>Лек1</Subject_Tag>
+	<Activity_Tag>Лек1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>482</Id>
@@ -5182,7 +5183,7 @@
 <Activity>
 	<Teacher>М.Замфирова</Teacher>
 	<Subject>Физкултура</Subject>
-	<Subject_Tag>Лек1</Subject_Tag>
+	<Activity_Tag>Лек1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>483</Id>
@@ -5193,7 +5194,7 @@
 <Activity>
 	<Teacher>М.Замфирова</Teacher>
 	<Subject>Физкултура</Subject>
-	<Subject_Tag>Лек1</Subject_Tag>
+	<Activity_Tag>Лек1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>484</Id>
@@ -5204,7 +5205,7 @@
 <Activity>
 	<Teacher>М.Замфирова</Teacher>
 	<Subject>Физкултура</Subject>
-	<Subject_Tag>Лек2</Subject_Tag>
+	<Activity_Tag>Лек2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>485</Id>
@@ -5215,7 +5216,7 @@
 <Activity>
 	<Teacher>М.Замфирова</Teacher>
 	<Subject>Физкултура</Subject>
-	<Subject_Tag>Лек2</Subject_Tag>
+	<Activity_Tag>Лек2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>486</Id>
@@ -5226,7 +5227,7 @@
 <Activity>
 	<Teacher>М.Замфирова</Teacher>
 	<Subject>Физкултура</Subject>
-	<Subject_Tag>Лек2</Subject_Tag>
+	<Activity_Tag>Лек2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>487</Id>
@@ -5237,7 +5238,7 @@
 <Activity>
 	<Teacher>М.Замфирова</Teacher>
 	<Subject>Физкултура</Subject>
-	<Subject_Tag>Лек2</Subject_Tag>
+	<Activity_Tag>Лек2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>488</Id>
@@ -5248,7 +5249,7 @@
 <Activity>
 	<Teacher>М.Замфирова</Teacher>
 	<Subject>Физкултура</Subject>
-	<Subject_Tag>Лек2</Subject_Tag>
+	<Activity_Tag>Лек2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>489</Id>
@@ -5259,7 +5260,7 @@
 <Activity>
 	<Teacher>М.Замфирова</Teacher>
 	<Subject>Физкултура</Subject>
-	<Subject_Tag>Лек2</Subject_Tag>
+	<Activity_Tag>Лек2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>490</Id>
@@ -5270,7 +5271,7 @@
 <Activity>
 	<Teacher>Св.Георгиев</Teacher>
 	<Subject>Физкултура</Subject>
-	<Subject_Tag>Лек2</Subject_Tag>
+	<Activity_Tag>Лек2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>491</Id>
@@ -5281,7 +5282,7 @@
 <Activity>
 	<Teacher>Св.Георгиев</Teacher>
 	<Subject>Физкултура</Subject>
-	<Subject_Tag>Лек2</Subject_Tag>
+	<Activity_Tag>Лек2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>492</Id>
@@ -5292,7 +5293,7 @@
 <Activity>
 	<Teacher>Св.Георгиев</Teacher>
 	<Subject>Физкултура</Subject>
-	<Subject_Tag>Лек2</Subject_Tag>
+	<Activity_Tag>Лек2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>493</Id>
@@ -5303,7 +5304,7 @@
 <Activity>
 	<Teacher>Св.Георгиев</Teacher>
 	<Subject>Физкултура</Subject>
-	<Subject_Tag>Лек2</Subject_Tag>
+	<Activity_Tag>Лек2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>494</Id>
@@ -5314,7 +5315,7 @@
 <Activity>
 	<Teacher>Св.Георгиев</Teacher>
 	<Subject>Физкултура</Subject>
-	<Subject_Tag>Лек1</Subject_Tag>
+	<Activity_Tag>Лек1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>495</Id>
@@ -5325,7 +5326,7 @@
 <Activity>
 	<Teacher>Св.Георгиев</Teacher>
 	<Subject>Физкултура</Subject>
-	<Subject_Tag>Лек1</Subject_Tag>
+	<Activity_Tag>Лек1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>496</Id>
@@ -5336,7 +5337,7 @@
 <Activity>
 	<Teacher>Св.Георгиев</Teacher>
 	<Subject>Физкултура</Subject>
-	<Subject_Tag>Лек1</Subject_Tag>
+	<Activity_Tag>Лек1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>497</Id>
@@ -5347,7 +5348,7 @@
 <Activity>
 	<Teacher>Св.Георгиев</Teacher>
 	<Subject>Физкултура</Subject>
-	<Subject_Tag>Лек1</Subject_Tag>
+	<Activity_Tag>Лек1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>498</Id>
@@ -5358,7 +5359,7 @@
 <Activity>
 	<Teacher>Св.Георгиев</Teacher>
 	<Subject>Физкултура</Subject>
-	<Subject_Tag>Лек1</Subject_Tag>
+	<Activity_Tag>Лек1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>499</Id>
@@ -5369,7 +5370,7 @@
 <Activity>
 	<Teacher>Св.Георгиев</Teacher>
 	<Subject>Физкултура</Subject>
-	<Subject_Tag>Лек1</Subject_Tag>
+	<Activity_Tag>Лек1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>2</Total_Duration>
 	<Id>500</Id>
@@ -5380,7 +5381,7 @@
 <Activity>
 	<Teacher>Зоя Дичева</Teacher>
 	<Subject>ЗИП История</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>2</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>502</Id>
@@ -5391,7 +5392,7 @@
 <Activity>
 	<Teacher>Зоя Дичева</Teacher>
 	<Subject>ЗИП История</Subject>
-	<Subject_Tag>Тежък2</Subject_Tag>
+	<Activity_Tag>Тежък2</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>503</Id>
@@ -5402,7 +5403,7 @@
 <Activity>
 	<Teacher>М.Кадамяр</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>504</Id>
@@ -5413,7 +5414,7 @@
 <Activity>
 	<Teacher>М.Кадамяр</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>505</Id>
@@ -5424,7 +5425,7 @@
 <Activity>
 	<Teacher>М.Кадамяр</Teacher>
 	<Subject>Математика</Subject>
-	<Subject_Tag>Тежък1</Subject_Tag>
+	<Activity_Tag>Тежък1</Activity_Tag>
 	<Duration>1</Duration>
 	<Total_Duration>3</Total_Duration>
 	<Id>506</Id>
@@ -5434,121 +5435,153 @@
 </Activity>
 </Activities_List>
 
+<Buildings_List>
+</Buildings_List>
+
 <Rooms_List>
 <Room>
 	<Name>101</Name>
+	<Building></Building>
 	<Capacity>40</Capacity>
 </Room>
 <Room>
 	<Name>106</Name>
+	<Building></Building>
 	<Capacity>40</Capacity>
 </Room>
 <Room>
 	<Name>109</Name>
+	<Building></Building>
 	<Capacity>40</Capacity>
 </Room>
 <Room>
 	<Name>110</Name>
+	<Building></Building>
 	<Capacity>40</Capacity>
 </Room>
 <Room>
 	<Name>111</Name>
+	<Building></Building>
 	<Capacity>40</Capacity>
 </Room>
 <Room>
 	<Name>112</Name>
+	<Building></Building>
 	<Capacity>40</Capacity>
 </Room>
 <Room>
 	<Name>201</Name>
+	<Building></Building>
 	<Capacity>40</Capacity>
 </Room>
 <Room>
 	<Name>202</Name>
+	<Building></Building>
 	<Capacity>40</Capacity>
 </Room>
 <Room>
 	<Name>205</Name>
+	<Building></Building>
 	<Capacity>40</Capacity>
 </Room>
 <Room>
 	<Name>206</Name>
+	<Building></Building>
 	<Capacity>40</Capacity>
 </Room>
 <Room>
 	<Name>207</Name>
+	<Building></Building>
 	<Capacity>40</Capacity>
 </Room>
 <Room>
 	<Name>209</Name>
+	<Building></Building>
 	<Capacity>40</Capacity>
 </Room>
 <Room>
 	<Name>211</Name>
+	<Building></Building>
 	<Capacity>40</Capacity>
 </Room>
 <Room>
 	<Name>212</Name>
+	<Building></Building>
 	<Capacity>40</Capacity>
 </Room>
 <Room>
 	<Name>301</Name>
+	<Building></Building>
 	<Capacity>40</Capacity>
 </Room>
 <Room>
 	<Name>302</Name>
+	<Building></Building>
 	<Capacity>20</Capacity>
 </Room>
 <Room>
 	<Name>303</Name>
+	<Building></Building>
 	<Capacity>40</Capacity>
 </Room>
 <Room>
 	<Name>304</Name>
+	<Building></Building>
 	<Capacity>40</Capacity>
 </Room>
 <Room>
 	<Name>305</Name>
+	<Building></Building>
 	<Capacity>40</Capacity>
 </Room>
 <Room>
 	<Name>306</Name>
+	<Building></Building>
 	<Capacity>40</Capacity>
 </Room>
 <Room>
 	<Name>307</Name>
+	<Building></Building>
 	<Capacity>40</Capacity>
 </Room>
 <Room>
 	<Name>308</Name>
+	<Building></Building>
 	<Capacity>40</Capacity>
 </Room>
 <Room>
 	<Name>309</Name>
+	<Building></Building>
 	<Capacity>40</Capacity>
 </Room>
 <Room>
 	<Name>310</Name>
+	<Building></Building>
 	<Capacity>40</Capacity>
 </Room>
 <Room>
 	<Name>311</Name>
+	<Building></Building>
 	<Capacity>40</Capacity>
 </Room>
 <Room>
 	<Name>001</Name>
+	<Building></Building>
 	<Capacity>40</Capacity>
 </Room>
 <Room>
 	<Name>002</Name>
+	<Building></Building>
 	<Capacity>40</Capacity>
 </Room>
 <Room>
 	<Name>108</Name>
+	<Building></Building>
 	<Capacity>80</Capacity>
 </Room>
 <Room>
 	<Name>игрище</Name>
+	<Building></Building>
 	<Capacity>100</Capacity>
 </Room>
 </Rooms_List>
@@ -5647,12 +5680,14 @@
 	<Activity_Id>37</Activity_Id>
 	<MinDays>1</MinDays>
 </ConstraintMinNDaysBetweenActivities>
-<ConstraintStudentsNoGaps>
+<ConstraintStudentsMaxGapsPerWeek>
 	<Weight_Percentage>100</Weight_Percentage>
-</ConstraintStudentsNoGaps>
-<ConstraintStudentsEarly>
+	<Max_Gaps>0</Max_Gaps>
+</ConstraintStudentsMaxGapsPerWeek>
+<ConstraintStudentsEarlyMaxBeginningsAtSecondHour>
 	<Weight_Percentage>100</Weight_Percentage>
-</ConstraintStudentsEarly>
+	<Max_Beginnings_At_Second_Hour>0</Max_Beginnings_At_Second_Hour>
+</ConstraintStudentsEarlyMaxBeginningsAtSecondHour>
 <ConstraintMinNDaysBetweenActivities>
 	<Weight_Percentage>95</Weight_Percentage>
 	<Consecutive_If_Same_Day>yes</Consecutive_If_Same_Day>
@@ -6962,150 +6997,272 @@
 	<Activity_Id>503</Activity_Id>
 	<MinDays>1</MinDays>
 </ConstraintMinNDaysBetweenActivities>
-<ConstraintTeacherNotAvailable>
+<ConstraintTeacherNotAvailableTimes>
 	<Weight_Percentage>100</Weight_Percentage>
-	<Teacher_Name>В.Илиева</Teacher_Name>
-	<Day>Петък</Day>
-	<Start_Hour>10:05</Start_Hour>
-	<End_Hour>13:30</End_Hour>
-</ConstraintTeacherNotAvailable>
-<ConstraintTeacherNotAvailable>
+	<Teacher>В.Илиева</Teacher>
+	<Number_of_Not_Available_Times>4</Number_of_Not_Available_Times>
+	<Not_Available_Time>
+		<Day>Петък</Day>
+		<Hour>10:05</Hour>
+	</Not_Available_Time>
+	<Not_Available_Time>
+		<Day>Петък</Day>
+		<Hour>10:55</Hour>
+	</Not_Available_Time>
+	<Not_Available_Time>
+		<Day>Петък</Day>
+		<Hour>11:45</Hour>
+	</Not_Available_Time>
+	<Not_Available_Time>
+		<Day>Петък</Day>
+		<Hour>12:30</Hour>
+	</Not_Available_Time>
+</ConstraintTeacherNotAvailableTimes>
+<ConstraintTeacherNotAvailableTimes>
 	<Weight_Percentage>100</Weight_Percentage>
-	<Teacher_Name>Найденова</Teacher_Name>
-	<Day>Петък</Day>
-	<Start_Hour>07:30</Start_Hour>
-	<End_Hour>13:30</End_Hour>
-</ConstraintTeacherNotAvailable>
-<ConstraintTeacherNotAvailable>
+	<Teacher>Найденова</Teacher>
+	<Number_of_Not_Available_Times>7</Number_of_Not_Available_Times>
+	<Not_Available_Time>
+		<Day>Петък</Day>
+		<Hour>07:30</Hour>
+	</Not_Available_Time>
+	<Not_Available_Time>
+		<Day>Петък</Day>
+		<Hour>08:15</Hour>
+	</Not_Available_Time>
+	<Not_Available_Time>
+		<Day>Петък</Day>
+		<Hour>09:05</Hour>
+	</Not_Available_Time>
+	<Not_Available_Time>
+		<Day>Петък</Day>
+		<Hour>10:05</Hour>
+	</Not_Available_Time>
+	<Not_Available_Time>
+		<Day>Петък</Day>
+		<Hour>10:55</Hour>
+	</Not_Available_Time>
+	<Not_Available_Time>
+		<Day>Петък</Day>
+		<Hour>11:45</Hour>
+	</Not_Available_Time>
+	<Not_Available_Time>
+		<Day>Петък</Day>
+		<Hour>12:30</Hour>
+	</Not_Available_Time>
+</ConstraintTeacherNotAvailableTimes>
+<ConstraintTeacherNotAvailableTimes>
 	<Weight_Percentage>100</Weight_Percentage>
-	<Teacher_Name>Йончев</Teacher_Name>
-	<Day>Вторник</Day>
-	<Start_Hour>11:45</Start_Hour>
-	<End_Hour>13:30</End_Hour>
-</ConstraintTeacherNotAvailable>
-<ConstraintTeacherNotAvailable>
+	<Teacher>Йончев</Teacher>
+	<Number_of_Not_Available_Times>4</Number_of_Not_Available_Times>
+	<Not_Available_Time>
+		<Day>Вторник</Day>
+		<Hour>11:45</Hour>
+	</Not_Available_Time>
+	<Not_Available_Time>
+		<Day>Вторник</Day>
+		<Hour>12:30</Hour>
+	</Not_Available_Time>
+	<Not_Available_Time>
+		<Day>Четвъртък</Day>
+		<Hour>11:45</Hour>
+	</Not_Available_Time>
+	<Not_Available_Time>
+		<Day>Четвъртък</Day>
+		<Hour>12:30</Hour>
+	</Not_Available_Time>
+</ConstraintTeacherNotAvailableTimes>
+<ConstraintTeacherNotAvailableTimes>
 	<Weight_Percentage>100</Weight_Percentage>
-	<Teacher_Name>Б.Антова</Teacher_Name>
-	<Day>Вторник</Day>
-	<Start_Hour>11:45</Start_Hour>
-	<End_Hour>13:30</End_Hour>
-</ConstraintTeacherNotAvailable>
-<ConstraintTeacherNotAvailable>
+	<Teacher>Б.Антова</Teacher>
+	<Number_of_Not_Available_Times>4</Number_of_Not_Available_Times>
+	<Not_Available_Time>
+		<Day>Вторник</Day>
+		<Hour>11:45</Hour>
+	</Not_Available_Time>
+	<Not_Available_Time>
+		<Day>Вторник</Day>
+		<Hour>12:30</Hour>
+	</Not_Available_Time>
+	<Not_Available_Time>
+		<Day>Четвъртък</Day>
+		<Hour>11:45</Hour>
+	</Not_Available_Time>
+	<Not_Available_Time>
+		<Day>Четвъртък</Day>
+		<Hour>12:30</Hour>
+	</Not_Available_Time>
+</ConstraintTeacherNotAvailableTimes>
+<ConstraintTeacherNotAvailableTimes>
 	<Weight_Percentage>100</Weight_Percentage>
-	<Teacher_Name>Р.Цветева</Teacher_Name>
-	<Day>Вторник</Day>
-	<Start_Hour>11:45</Start_Hour>
-	<End_Hour>13:30</End_Hour>
-</ConstraintTeacherNotAvailable>
-<ConstraintTeacherNotAvailable>
+	<Teacher>Р.Цветева</Teacher>
+	<Number_of_Not_Available_Times>4</Number_of_Not_Available_Times>
+	<Not_Available_Time>
+		<Day>Вторник</Day>
+		<Hour>11:45</Hour>
+	</Not_Available_Time>
+	<Not_Available_Time>
+		<Day>Вторник</Day>
+		<Hour>12:30</Hour>
+	</Not_Available_Time>
+	<Not_Available_Time>
+		<Day>Четвъртък</Day>
+		<Hour>11:45</Hour>
+	</Not_Available_Time>
+	<Not_Available_Time>
+		<Day>Четвъртък</Day>
+		<Hour>12:30</Hour>
+	</Not_Available_Time>
+</ConstraintTeacherNotAvailableTimes>
+<ConstraintTeacherNotAvailableTimes>
 	<Weight_Percentage>100</Weight_Percentage>
-	<Teacher_Name>Л.Асенова</Teacher_Name>
-	<Day>Вторник</Day>
-	<Start_Hour>11:45</Start_Hour>
-	<End_Hour>13:30</End_Hour>
-</ConstraintTeacherNotAvailable>
-<ConstraintTeacherNotAvailable>
+	<Teacher>Л.Асенова</Teacher>
+	<Number_of_Not_Available_Times>4</Number_of_Not_Available_Times>
+	<Not_Available_Time>
+		<Day>Вторник</Day>
+		<Hour>11:45</Hour>
+	</Not_Available_Time>
+	<Not_Available_Time>
+		<Day>Вторник</Day>
+		<Hour>12:30</Hour>
+	</Not_Available_Time>
+	<Not_Available_Time>
+		<Day>Четвъртък</Day>
+		<Hour>11:45</Hour>
+	</Not_Available_Time>
+	<Not_Available_Time>
+		<Day>Четвъртък</Day>
+		<Hour>12:30</Hour>
+	</Not_Available_Time>
+</ConstraintTeacherNotAvailableTimes>
+<ConstraintTeacherNotAvailableTimes>
 	<Weight_Percentage>100</Weight_Percentage>
-	<Teacher_Name>А.Борисова</Teacher_Name>
-	<Day>Вторник</Day>
-	<Start_Hour>11:45</Start_Hour>
-	<End_Hour>13:30</End_Hour>
-</ConstraintTeacherNotAvailable>
-<ConstraintTeacherNotAvailable>
+	<Teacher>А.Борисова</Teacher>
+	<Number_of_Not_Available_Times>2</Number_of_Not_Available_Times>
+	<Not_Available_Time>
+		<Day>Вторник</Day>
+		<Hour>11:45</Hour>
+	</Not_Available_Time>
+	<Not_Available_Time>
+		<Day>Вторник</Day>
+		<Hour>12:30</Hour>
+	</Not_Available_Time>
+</ConstraintTeacherNotAvailableTimes>
+<ConstraintTeacherNotAvailableTimes>
 	<Weight_Percentage>100</Weight_Percentage>
-	<Teacher_Name>Йончев</Teacher_Name>
-	<Day>Четвъртък</Day>
-	<Start_Hour>11:45</Start_Hour>
-	<End_Hour>13:30</End_Hour>
-</ConstraintTeacherNotAvailable>
-<ConstraintTeacherNotAvailable>
+	<Teacher>Алб.Евгениева</Teacher>
+	<Number_of_Not_Available_Times>2</Number_of_Not_Available_Times>
+	<Not_Available_Time>
+		<Day>Четвъртък</Day>
+		<Hour>11:45</Hour>
+	</Not_Available_Time>
+	<Not_Available_Time>
+		<Day>Четвъртък</Day>
+		<Hour>12:30</Hour>
+	</Not_Available_Time>
+</ConstraintTeacherNotAvailableTimes>
+<ConstraintTeacherNotAvailableTimes>
 	<Weight_Percentage>100</Weight_Percentage>
-	<Teacher_Name>Б.Антова</Teacher_Name>
-	<Day>Четвъртък</Day>
-	<Start_Hour>11:45</Start_Hour>
-	<End_Hour>13:30</End_Hour>
-</ConstraintTeacherNotAvailable>
-<ConstraintTeacherNotAvailable>
+	<Teacher>Д.Василева</Teacher>
+	<Number_of_Not_Available_Times>2</Number_of_Not_Available_Times>
+	<Not_Available_Time>
+		<Day>Четвъртък</Day>
+		<Hour>11:45</Hour>
+	</Not_Available_Time>
+	<Not_Available_Time>
+		<Day>Четвъртък</Day>
+		<Hour>12:30</Hour>
+	</Not_Available_Time>
+</ConstraintTeacherNotAvailableTimes>
+<ConstraintTeacherNotAvailableTimes>
 	<Weight_Percentage>100</Weight_Percentage>
-	<Teacher_Name>Р.Цветева</Teacher_Name>
-	<Day>Четвъртък</Day>
-	<Start_Hour>11:45</Start_Hour>
-	<End_Hour>13:30</End_Hour>
-</ConstraintTeacherNotAvailable>
-<ConstraintTeacherNotAvailable>
-	<Weight_Percentage>100</Weight_Percentage>
-	<Teacher_Name>Л.Асенова</Teacher_Name>
-	<Day>Четвъртък</Day>
-	<Start_Hour>11:45</Start_Hour>
-	<End_Hour>13:30</End_Hour>
-</ConstraintTeacherNotAvailable>
-<ConstraintTeacherNotAvailable>
-	<Weight_Percentage>100</Weight_Percentage>
-	<Teacher_Name>Алб.Евгениева</Teacher_Name>
-	<Day>Четвъртък</Day>
-	<Start_Hour>11:45</Start_Hour>
-	<End_Hour>13:30</End_Hour>
-</ConstraintTeacherNotAvailable>
-<ConstraintTeacherNotAvailable>
-	<Weight_Percentage>100</Weight_Percentage>
-	<Teacher_Name>Д.Василева</Teacher_Name>
-	<Day>Четвъртък</Day>
-	<Start_Hour>11:45</Start_Hour>
-	<End_Hour>13:30</End_Hour>
-</ConstraintTeacherNotAvailable>
-<ConstraintTeacherNotAvailable>
-	<Weight_Percentage>100</Weight_Percentage>
-	<Teacher_Name>В.Симеонова</Teacher_Name>
-	<Day>Четвъртък</Day>
-	<Start_Hour>11:45</Start_Hour>
-	<End_Hour>13:30</End_Hour>
-</ConstraintTeacherNotAvailable>
+	<Teacher>В.Симеонова</Teacher>
+	<Number_of_Not_Available_Times>2</Number_of_Not_Available_Times>
+	<Not_Available_Time>
+		<Day>Четвъртък</Day>
+		<Hour>11:45</Hour>
+	</Not_Available_Time>
+	<Not_Available_Time>
+		<Day>Четвъртък</Day>
+		<Hour>12:30</Hour>
+	</Not_Available_Time>
+</ConstraintTeacherNotAvailableTimes>
 <ConstraintTeacherMaxDaysPerWeek>
 	<Weight_Percentage>100</Weight_Percentage>
 	<Teacher_Name>Д.Димитрова</Teacher_Name>
 	<Max_Days_Per_Week>4</Max_Days_Per_Week>
 </ConstraintTeacherMaxDaysPerWeek>
-<ConstraintStudentsSetNotAvailable>
+<ConstraintStudentsSetNotAvailableTimes>
 	<Weight_Percentage>100</Weight_Percentage>
 	<Students>8</Students>
-	<Day>Вторник</Day>
-	<Start_Hour>11:45</Start_Hour>
-	<End_Hour>13:30</End_Hour>
-</ConstraintStudentsSetNotAvailable>
-<ConstraintStudentsSetNotAvailable>
+	<Number_of_Not_Available_Times>2</Number_of_Not_Available_Times>
+	<Not_Available_Time>
+		<Day>Вторник</Day>
+		<Hour>11:45</Hour>
+	</Not_Available_Time>
+	<Not_Available_Time>
+		<Day>Вторник</Day>
+		<Hour>12:30</Hour>
+	</Not_Available_Time>
+</ConstraintStudentsSetNotAvailableTimes>
+<ConstraintStudentsSetNotAvailableTimes>
 	<Weight_Percentage>100</Weight_Percentage>
 	<Students>9</Students>
-	<Day>Вторник</Day>
-	<Start_Hour>11:45</Start_Hour>
-	<End_Hour>13:30</End_Hour>
-</ConstraintStudentsSetNotAvailable>
-<ConstraintStudentsSetNotAvailable>
+	<Number_of_Not_Available_Times>2</Number_of_Not_Available_Times>
+	<Not_Available_Time>
+		<Day>Вторник</Day>
+		<Hour>11:45</Hour>
+	</Not_Available_Time>
+	<Not_Available_Time>
+		<Day>Вторник</Day>
+		<Hour>12:30</Hour>
+	</Not_Available_Time>
+</ConstraintStudentsSetNotAvailableTimes>
+<ConstraintStudentsSetNotAvailableTimes>
 	<Weight_Percentage>100</Weight_Percentage>
 	<Students>10</Students>
-	<Day>Вторник</Day>
-	<Start_Hour>11:45</Start_Hour>
-	<End_Hour>13:30</End_Hour>
-</ConstraintStudentsSetNotAvailable>
-<ConstraintStudentsSetNotAvailable>
+	<Number_of_Not_Available_Times>2</Number_of_Not_Available_Times>
+	<Not_Available_Time>
+		<Day>Вторник</Day>
+		<Hour>11:45</Hour>
+	</Not_Available_Time>
+	<Not_Available_Time>
+		<Day>Вторник</Day>
+		<Hour>12:30</Hour>
+	</Not_Available_Time>
+</ConstraintStudentsSetNotAvailableTimes>
+<ConstraintStudentsSetNotAvailableTimes>
 	<Weight_Percentage>100</Weight_Percentage>
 	<Students>11</Students>
-	<Day>Четвъртък</Day>
-	<Start_Hour>11:45</Start_Hour>
-	<End_Hour>13:30</End_Hour>
-</ConstraintStudentsSetNotAvailable>
-<ConstraintStudentsSetNotAvailable>
+	<Number_of_Not_Available_Times>2</Number_of_Not_Available_Times>
+	<Not_Available_Time>
+		<Day>Четвъртък</Day>
+		<Hour>11:45</Hour>
+	</Not_Available_Time>
+	<Not_Available_Time>
+		<Day>Четвъртък</Day>
+		<Hour>12:30</Hour>
+	</Not_Available_Time>
+</ConstraintStudentsSetNotAvailableTimes>
+<ConstraintStudentsSetNotAvailableTimes>
 	<Weight_Percentage>100</Weight_Percentage>
 	<Students>12</Students>
-	<Day>Четвъртък</Day>
-	<Start_Hour>11:45</Start_Hour>
-	<End_Hour>13:30</End_Hour>
-</ConstraintStudentsSetNotAvailable>
+	<Number_of_Not_Available_Times>2</Number_of_Not_Available_Times>
+	<Not_Available_Time>
+		<Day>Четвъртък</Day>
+		<Hour>11:45</Hour>
+	</Not_Available_Time>
+	<Not_Available_Time>
+		<Day>Четвъртък</Day>
+		<Hour>12:30</Hour>
+	</Not_Available_Time>
+</ConstraintStudentsSetNotAvailableTimes>
 <ConstraintActivitiesPreferredTimes>
 	<Weight_Percentage>99.75</Weight_Percentage>
 	<Teacher_Name>Л.Хранова</Teacher_Name>
 	<Students_Name></Students_Name>
 	<Subject_Name>Немски</Subject_Name>
-	<Subject_Tag_Name></Subject_Tag_Name>
+	<Activity_Tag_Name></Activity_Tag_Name>
 	<Number_of_Preferred_Times>4</Number_of_Preferred_Times>
 	<Preferred_Time>
 		<Preferred_Day>Понеделник</Preferred_Day>
@@ -7129,7 +7286,7 @@
 	<Teacher_Name>Йончев</Teacher_Name>
 	<Students_Name></Students_Name>
 	<Subject_Name></Subject_Name>
-	<Subject_Tag_Name></Subject_Tag_Name>
+	<Activity_Tag_Name></Activity_Tag_Name>
 	<Number_of_Preferred_Times>25</Number_of_Preferred_Times>
 	<Preferred_Time>
 		<Preferred_Day>Понеделник</Preferred_Day>
@@ -7237,7 +7394,7 @@
 	<Teacher_Name>Ст.Караиванова</Teacher_Name>
 	<Students_Name></Students_Name>
 	<Subject_Name></Subject_Name>
-	<Subject_Tag_Name></Subject_Tag_Name>
+	<Activity_Tag_Name></Activity_Tag_Name>
 	<Number_of_Preferred_Times>25</Number_of_Preferred_Times>
 	<Preferred_Time>
 		<Preferred_Day>Понеделник</Preferred_Day>
@@ -7345,7 +7502,7 @@
 	<Teacher_Name>Ст.Петрова</Teacher_Name>
 	<Students_Name></Students_Name>
 	<Subject_Name></Subject_Name>
-	<Subject_Tag_Name></Subject_Tag_Name>
+	<Activity_Tag_Name></Activity_Tag_Name>
 	<Number_of_Preferred_Times>25</Number_of_Preferred_Times>
 	<Preferred_Time>
 		<Preferred_Day>Понеделник</Preferred_Day>
@@ -7497,7 +7654,7 @@
 	<Teacher_Name></Teacher_Name>
 	<Students_Name></Students_Name>
 	<Subject_Name></Subject_Name>
-	<Subject_Tag_Name>Тежък1</Subject_Tag_Name>
+	<Activity_Tag_Name>Тежък1</Activity_Tag_Name>
 	<Number_of_Preferred_Times>22</Number_of_Preferred_Times>
 	<Preferred_Time>
 		<Preferred_Day>Понеделник</Preferred_Day>
@@ -7593,7 +7750,7 @@
 	<Teacher_Name></Teacher_Name>
 	<Students_Name></Students_Name>
 	<Subject_Name></Subject_Name>
-	<Subject_Tag_Name>Тежък2</Subject_Tag_Name>
+	<Activity_Tag_Name>Тежък2</Activity_Tag_Name>
 	<Number_of_Preferred_Times>22</Number_of_Preferred_Times>
 	<Preferred_Time>
 		<Preferred_Day>Понеделник</Preferred_Day>
@@ -7689,7 +7846,7 @@
 	<Teacher_Name></Teacher_Name>
 	<Students_Name></Students_Name>
 	<Subject_Name></Subject_Name>
-	<Subject_Tag_Name>Среден1</Subject_Tag_Name>
+	<Activity_Tag_Name>Среден1</Activity_Tag_Name>
 	<Number_of_Preferred_Times>19</Number_of_Preferred_Times>
 	<Preferred_Time>
 		<Preferred_Day>Понеделник</Preferred_Day>
@@ -7773,7 +7930,7 @@
 	<Teacher_Name></Teacher_Name>
 	<Students_Name></Students_Name>
 	<Subject_Name></Subject_Name>
-	<Subject_Tag_Name>Среден2</Subject_Tag_Name>
+	<Activity_Tag_Name>Среден2</Activity_Tag_Name>
 	<Number_of_Preferred_Times>19</Number_of_Preferred_Times>
 	<Preferred_Time>
 		<Preferred_Day>Понеделник</Preferred_Day>
@@ -7857,7 +8014,7 @@
 	<Teacher_Name></Teacher_Name>
 	<Students_Name></Students_Name>
 	<Subject_Name></Subject_Name>
-	<Subject_Tag_Name>Лек2</Subject_Tag_Name>
+	<Activity_Tag_Name>Лек2</Activity_Tag_Name>
 	<Number_of_Preferred_Times>15</Number_of_Preferred_Times>
 	<Preferred_Time>
 		<Preferred_Day>Понеделник</Preferred_Day>
@@ -7925,7 +8082,7 @@
 	<Teacher_Name></Teacher_Name>
 	<Students_Name></Students_Name>
 	<Subject_Name></Subject_Name>
-	<Subject_Tag_Name>Лек1</Subject_Tag_Name>
+	<Activity_Tag_Name>Лек1</Activity_Tag_Name>
 	<Number_of_Preferred_Times>14</Number_of_Preferred_Times>
 	<Preferred_Time>
 		<Preferred_Day>Понеделник</Preferred_Day>
@@ -7998,7 +8155,7 @@
 	<Teacher_Name>М.Замфирова</Teacher_Name>
 	<Students_Name></Students_Name>
 	<Subject_Name></Subject_Name>
-	<Subject_Tag_Name></Subject_Tag_Name>
+	<Activity_Tag_Name></Activity_Tag_Name>
 	<Number_of_Preferred_Times>25</Number_of_Preferred_Times>
 	<Preferred_Time>
 		<Preferred_Day>Понеделник</Preferred_Day>

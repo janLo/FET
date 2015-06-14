@@ -1054,7 +1054,7 @@ Versions 5.3.0 - 5.3.6
 	- Added additional tests to check for impossible constraint min n days between activities
 	- Added possibility to change all min n days constraints' weight by a single command
 ---------------------------------------------------------------------------------
-Versions 5.4.0 - 5.4.
+Versions 5.4.0 - 5.4.18
 - Version 5.4.0
 	- Improvement in Spanish translation by Jose Cesar Fernandez Lopez
 	- Now the max hours daily for teachers and students has any weight percentage allowed, again
@@ -1136,4 +1136,59 @@ Versions 5.4.0 - 5.4.
 	- More allowed subgroups and teachers per activity.
 	- Added more redundant tests to check final solution to respect no gaps, early, max gaps, min hours daily
 	- Faster precalculation
+- Version 5.4.18
+	- Small code cleanup
+	- Italian instructions and FAQ by Marco Barsotti
+	- Greek translation update by my80s
+	- When opening a corrupt file, it reports line, column and error.
+	- Added an Italian sample by Marco Barsotti.
+	- Made possible to lock not only time, but also space or both when viewing the timetable 
+	(suggested by Horatiu Halmajan)
+	- Small improvement: maximum room capacity and number of students for a set is now 15000,
+	instead of 1000
+	- Teachers free periods timetable by Volker Dirr
+---------------------------------------------------------------------------------
+Versions 5.5.0 - 5.5.x
+- Version 5.5.0
+	- Modified the algorithm (better or (hopefully not) worse)
+	- Command line FET
+	- Constraint teacher(s) max gaps per day
+	- Constraint students (set) max gaps per week
+	- Constraint students (set) early max beginnings at second hour
+	- Subject tags are now named correctly activity tags
+	- Constraints students set/teacher home room(s)
+	- Buildings, building changes constraints
+	- Constraint activities same starting day
+	- Teachers, students sets, rooms, breaks not available matrices
+	- Updated Romanian, Greek, Italian, Arabic translations by the persons in charge
+- Version 5.5.1
+	- Improved handling of multiple constraints preferred room for same activity (or same
+	subject or same subject+activity tag) - suggested by Volker Dirr.
+	- Improved Romanian translation.
+	- Small improvements in the interface.
+- Version 5.5.2
+	- Small improvements in the interface.
+	- Updated German and Indonesian translation.
+	- Possibility to save current timetable in .fet form, with activities locked on their places
+	(suggested by Horatiu Halmajan)
+- Version 5.5.3
+	- Crash bug fix - when adding a year with same name as a group or subgroup (reported by Volker Dirr)
+	- Small interface improvements
+	- Added checks to ensure that duplicate students sets are reported (suggested by Volker Dirr)
+- Version 5.5.4
+	- Greek, Romanian, Spanish translations updates
+	- Small interface improvements
+	- Added constraint 2 activities ordered, to allow to say: activity A2 must be after A1, separated
+	by any number of days or hours (suggested by kdsayang)
+	- Added constraint teacher(s) max hours continuously (suggested by kdsayang)
+	- Added constraint students (set) max hours continuously (suggested by kdsayang)
+	- When modifying a constraint min n days between activities, it checks for duplicates (suggested by kdsayang)
+	- Crash bug fix (rare, if using home rooms with weight under 100% and rooms are constrained)
+	- Added more tests to ensure home rooms inputted correctly
+	- Generating multiple now saves each timetable in .fet form (suggested by kdsayang)
+	- Increased number of days per week to 28, to allow exam scheduling (suggested by kdsayang)
+- Version 5.5.5
+	- Very small bug fix (very unlikely to happen, also the effect is almost null)	
+	- Indonesian, Spanish and Arabic translation updates
+	- Added an additional check for inconsistency
 	

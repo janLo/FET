@@ -65,7 +65,7 @@ AddActivityForm::AddActivityForm()
 	updateStudentsListBox();
 	updateTeachersListBox();
 	updateSubjectsComboBox();
-	updateSubjectTagsComboBox();
+	updateActivityTagsComboBox();
 
 	minDayDistanceSpinBox->setMaxValue(gt.rules.nDaysPerWeek);
 	minDayDistanceSpinBox->setMinValue(0);
@@ -86,6 +86,10 @@ AddActivityForm::AddActivityForm()
 	forceAdjacentCheckBox->setEnabled(nSplit>=2);
 	
 	subactivitiesTabWidget->setCurrentIndex(0);
+	
+	nStudentsSpinBox->setMinValue(-1);
+	nStudentsSpinBox->setMaxValue(MAX_ROOM_CAPACITY);
+	nStudentsSpinBox->setValue(-1);
 }
 
 AddActivityForm::~AddActivityForm()
@@ -166,18 +170,18 @@ void AddActivityForm::updateSubjectsComboBox()
 	subjectChanged(subjectsComboBox->currentText());
 }
 
-void AddActivityForm::updateSubjectTagsComboBox()
+void AddActivityForm::updateActivityTagsComboBox()
 {
-	subjectTagsComboBox->clear();
-	subjectTagsComboBox->insertItem("");
-	for(int i=0; i<gt.rules.subjectTagsList.size(); i++){
-		SubjectTag* sbt=gt.rules.subjectTagsList[i];
-		subjectTagsComboBox->insertItem(sbt->name);
+	activityTagsComboBox->clear();
+	activityTagsComboBox->insertItem("");
+	for(int i=0; i<gt.rules.activityTagsList.size(); i++){
+		ActivityTag* sbt=gt.rules.activityTagsList[i];
+		activityTagsComboBox->insertItem(sbt->name);
 	}
 		
-	subjectTagsComboBox->setCurrentItem(0);
+	activityTagsComboBox->setCurrentItem(0);
 
-	subjectTagChanged(subjectTagsComboBox->currentText());
+	activityTagChanged(activityTagsComboBox->currentText());
 }
 
 void AddActivityForm::showYearsChanged()
@@ -252,7 +256,7 @@ void AddActivityForm::subjectChanged(const QString& dummy)
 	activityChanged();
 }
 
-void AddActivityForm::subjectTagChanged(const QString& dummy)
+void AddActivityForm::activityTagChanged(const QString& dummy)
 {
 	Q_UNUSED(dummy);
 	//if(dummy=="")
@@ -314,8 +318,8 @@ void AddActivityForm::activityChanged()
 
 	s+=tr("Subject=%1").arg(subjectsComboBox->currentText());
 	s+="\n";
-	if(subjectTagsComboBox->currentText()!=""){
-		s+=tr("Subject tag=%1").arg(subjectTagsComboBox->currentText());
+	if(activityTagsComboBox->currentText()!=""){
+		s+=tr("Activity tag=%1").arg(activityTagsComboBox->currentText());
 		s+="\n";
 	}
 	if(selectedStudentsListBox->count()==0){
@@ -445,12 +449,12 @@ void AddActivityForm::addActivity()
 		return;
 	}
 
-	//subject tag
-	QString subject_tag_name=subjectTagsComboBox->currentText();
-	int subject_tag_index=gt.rules.searchSubjectTag(subject_tag_name);
-	if(subject_tag_index<0 && subject_tag_name!=""){
+	//activity tag
+	QString activity_tag_name=activityTagsComboBox->currentText();
+	int activity_tag_index=gt.rules.searchActivityTag(activity_tag_name);
+	if(activity_tag_index<0 && activity_tag_name!=""){
 		QMessageBox::warning(this, tr("FET information"),
-			tr("Invalid subject tag"));
+			tr("Invalid activity tag"));
 		return;
 	}
 
@@ -490,7 +494,7 @@ void AddActivityForm::addActivity()
 				activityid = act->id;
 		}
 		activityid++;
-		Activity a(gt.rules, activityid, 0, teachers_names, subject_name, subject_tag_name, students_names,
+		Activity a(gt.rules, activityid, 0, teachers_names, subject_name, activity_tag_name, students_names,
 			duration, duration, /*parity,*/ active, (nStudentsSpinBox->value()==-1), nStudentsSpinBox->value());
 
 		bool already_existing=false;
@@ -511,7 +515,7 @@ void AddActivityForm::addActivity()
 				return;
 		}
 
-		bool tmp=gt.rules.addSimpleActivity(activityid, 0, teachers_names, subject_name, subject_tag_name,
+		bool tmp=gt.rules.addSimpleActivity(activityid, 0, teachers_names, subject_name, activity_tag_name,
 			students_names,	duration, duration, /*parity,*/ active, /*preferred_day, preferred_hour,*/
 			(nStudentsSpinBox->value()==-1), nStudentsSpinBox->value());
 		if(tmp)
@@ -520,6 +524,31 @@ void AddActivityForm::addActivity()
 			QMessageBox::critical(this, tr("FET information"), tr("Activity NOT added - please report error"));
 	}
 	else{ //split activity
+		if(minDayDistanceSpinBox->value()>0 && splitSpinBox->value()>gt.rules.nDaysPerWeek){
+			int t=QMessageBox::warning(this, tr("FET warning"),	
+			 tr("You want to add a container activity split into more than the number of days per week and also add a constraint min n days between activities."
+			  " This is a very bad practice from the way the algorithm of generation works (it slows down the generation and makes it harder to find a solution).")+
+			 "\n\n"+
+			 tr("The best way to add the activities would be:")+
+			 "\n\n"+
+			 tr("1. If you add 'force consecutive if same day', then couple extra activities in pairs to obtain a number of activities equal to the number of days per week"
+			  ". Example: 7 activities with duration 1 in a 5 days week, then transform into 5 activities with durations: 2,2,1,1,1 and add a single container activity with these 5 components"
+			  " (possibly raising the weight of added constraint min n days between activities up to 100%)")+
+			  "\n\n"+
+			 tr("2. If you don't add 'force consecutive if same day', then add a larger activity splitted into a number of"
+			  " activities equal with the number of days per week and the remaining components into other larger splitted activity."
+			  " For example, suppose you need to add 7 activities with duration 1 in a 5 days week. Add 2 larger container activities,"
+			  " first one splitted into 5 activities with duration 1 and second one splitted into 2 activities with duration 1"
+			  " (possibly raising the weight of added constraints min n days between activities for each of the 2 containers up to 100%)")+
+		  	 "\n\n"+
+			 tr("Do you want to add current activities as they are now (not recommended) or cancel and edit them as instructed?")
+			  ,
+			 QMessageBox::Yes, QMessageBox::Cancel);
+
+			if(t==QMessageBox::Cancel)
+				return;
+		}
+
 		int totalduration;
 		int durations[10];
 		//int parities[8];
@@ -555,7 +584,7 @@ void AddActivityForm::addActivity()
 
 		int minD=minDayDistanceSpinBox->value();
 		bool tmp=gt.rules.addSplitActivity(firstactivityid, firstactivityid,
-			teachers_names, subject_name, subject_tag_name, students_names,
+			teachers_names, subject_name, activity_tag_name, students_names,
 			nsplit, totalduration, durations,
 			/*parities,*/ active, minD, /*percentageSpinBox->value()*/weight, forceAdjacentCheckBox->isChecked(), /*preferred_days, preferred_hours,*/
 			(nStudentsSpinBox->value()==-1), nStudentsSpinBox->value());
@@ -642,7 +671,7 @@ void AddActivityForm::help()
 	 
 	 "Starting with version 5.0.0, it is possible to add activities with no students or no teachers"
 	 );
-	
+	 
 	//show the message in a dialog
 	QDialog* dialog=new QDialog();
 	

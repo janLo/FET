@@ -62,12 +62,16 @@ extern QString conflictsString;
 
 time_t start_time;
 
+time_t initial_time;
+
 extern int permutation[MAX_ACTIVITIES];
 int savedPermutation[MAX_ACTIVITIES];
 
 void GenerateMultipleThread::run()
 {
 	genMulti.abortOptimization=false;
+	
+	time(&initial_time);
 
 	for(int i=0; i<nTimetables; i++){
 		time(&start_time);
@@ -80,9 +84,11 @@ void GenerateMultipleThread::run()
 		for(int qq=0; qq<gt.rules.nInternalActivities; qq++)
 			permutation[qq]=savedPermutation[qq];
 
-		genMulti.generate(timeLimit, impossible, timeExceeded);
+		genMulti.generate(timeLimit, impossible, timeExceeded, true); //true means threaded
 
 		QString s;
+		
+		bool ok;
 
 		mutex.lock();
 		if(genMulti.abortOptimization){
@@ -91,11 +97,15 @@ void GenerateMultipleThread::run()
 		}
 		else if(impossible){
 			s=tr("Timetable impossible to generate");
+			ok=false;
 		}
 		else if(timeExceeded){
 			s=tr("Time exceeded for current timetable");
+			ok=false;
 		}
 		else{
+			ok=true;
+			
 			time_t finish_time;
 			time(&finish_time);
 			int seconds=finish_time-start_time;
@@ -115,7 +125,7 @@ void GenerateMultipleThread::run()
 		}
 		mutex.unlock();
 		
-		emit(timetableGenerated(i+1, s));
+		emit(timetableGenerated(i+1, s, ok));
 		semaphoreTimetableFinished.acquire();
 	}
 	
@@ -139,8 +149,8 @@ TimetableGenerateMultipleForm::TimetableGenerateMultipleForm()
 	minutesGroupBox->setEnabled(TRUE);
 	timetablesGroupBox->setEnabled(TRUE);
 
-	connect(&generateMultipleThread, SIGNAL(timetableGenerated(int, const QString&)),
-		this, SLOT(timetableGenerated(int, const QString&)));
+	connect(&generateMultipleThread, SIGNAL(timetableGenerated(int, const QString&, bool)),
+		this, SLOT(timetableGenerated(int, const QString&, bool)));
 
 	connect(&generateMultipleThread, SIGNAL(finished()),
 		this, SLOT(finished()));
@@ -168,7 +178,12 @@ void TimetableGenerateMultipleForm::help()
 	 " %1 to be emptied+deleted before proceeeding.\n\nPlease note that, for large data, each timetable might occupy more"
 	 " megabytes of hard disk space,"
 	 " so make sure you have enough space (you can check the dimension of a single timetable as a precaution).")
-	 .arg(destDir));
+	 .arg(destDir)
+	 +"\n\n"
+	 +tr("NEW: There are also saved the timetables in .fet format (data + constraints to lock the timetable), so that you can open each of them later")
+	 +"\n\n"
+	 +tr("If you get impossible timetable, please enter menu Generate (single) and see the initial order of evaluation of activities,"
+	 " this might help."));
 }
 
 void TimetableGenerateMultipleForm::start(){
@@ -233,33 +248,36 @@ void TimetableGenerateMultipleForm::start(){
 	generateMultipleThread.start();
 }
 
-void TimetableGenerateMultipleForm::timetableGenerated(int timetable, const QString& description)
+void TimetableGenerateMultipleForm::timetableGenerated(int timetable, const QString& description, bool ok)
 {
 	QString s=currentResultsTextEdit->text();
 	s+=tr("Timetable no: %1 => %2").arg(timetable).arg(description);
 	s+="\n";
 	currentResultsTextEdit->setText(s);
 
-	//needed to get the conflicts string
-	QString tmp;
-	genMulti.c.fitness(gt.rules, &tmp);
+	if(ok){
+		//needed to get the conflicts string
+		QString tmp;
+		//cout<<"tmp=="<<qPrintable(tmp)<<endl;
+		//cout<<"&tmp=="<<&tmp<<endl;
+		genMulti.c.fitness(gt.rules, &tmp);
 	
-	TimetableExport::getStudentsTimetable(genMulti.c);
-	TimetableExport::getTeachersTimetable(genMulti.c);
-	TimetableExport::getRoomsTimetable(genMulti.c);
+		TimetableExport::getStudentsTimetable(genMulti.c);
+		TimetableExport::getTeachersTimetable(genMulti.c);
+		TimetableExport::getRoomsTimetable(genMulti.c);
 
-	TimetableExport::writeSimulationResults(timetable);
+		TimetableExport::writeSimulationResults(timetable);
 
-	//update the string representing the conflicts
-	conflictsString = "";
-	conflictsString+="Total soft conflicts: ";
-	conflictsString+=QString::number(best_solution.conflictsTotal);
-	conflictsString+="\n";
-	conflictsString += tr("Soft conflicts listing (in decreasing order):\n");
+		//update the string representing the conflicts
+		conflictsString = "";
+		conflictsString+=tr("Total soft conflicts: ");
+		conflictsString+=QString::number(best_solution.conflictsTotal);
+		conflictsString+="\n";
+		conflictsString += tr("Soft conflicts listing (in decreasing order):\n");
 
-	foreach(QString t, best_solution.conflictsDescriptionList)
-		conflictsString+=t+"\n";
-
+		foreach(QString t, best_solution.conflictsDescriptionList)
+			conflictsString+=t+"\n";
+	}
 
 	semaphoreTimetableFinished.release();
 }
@@ -286,8 +304,20 @@ void TimetableGenerateMultipleForm::stop()
 	QString s2=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);
 	QString destDir=OUTPUT_DIR+FILE_SEP+s2;
 
+	time_t final_time;
+	time(&final_time);
+	int sec=final_time-initial_time;
+	int h=sec/3600;
+	sec%=3600;
+	int m=sec/60;
+	sec%=60;
+
 	s+=TimetableGenerateMultipleForm::tr("The results for the generated timetables are saved in the directory %1 in html and xml mode"
 	 " and the soft conflicts in txt mode").arg(destDir);
+	 
+	s+="\n\n"+tr("The data+timetables are also saved as .fet files (data+constraints to lock the timetable), so you can open-modify-regenerate the same timetables after that");
+	 
+	s+="\n\n"+tr("Total searching time was %1h %2m %3s").arg(h).arg(m).arg(sec);
 	 
 	QMessageBox::information(this, tr("FET information"), s);
 
@@ -317,10 +347,20 @@ void TimetableGenerateMultipleForm::simulationFinished()
 
 	QString s2=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev(FILE_SEP)-1);
 	QString destDir=OUTPUT_DIR+FILE_SEP+s2;
+	
+	time_t final_time;
+	time(&final_time);
+	int s=final_time-initial_time;
+	int h=s/3600;
+	s%=3600;
+	int m=s/60;
+	s%=60;
 
 	QMessageBox::information(this, TimetableGenerateMultipleForm::tr("FET information"),
 		TimetableGenerateMultipleForm::tr("Simulation terminated successfully. The results are saved in directory %1 in html"
-		" and xml mode and the soft conflicts in txt mode.").arg(destDir));
+		" and xml mode and the soft conflicts in txt mode.").arg(destDir)+"\n\n"
+		+tr("The data+timetables are also saved as .fet files (data+constraints to lock the timetable), so you can open-modify-regenerate the same timetables after that")
+		+"\n\n"+tr("Total searching time was %1h %2m %3s").arg(h).arg(m).arg(s));
 
 	startPushButton->setEnabled(TRUE);
 	stopPushButton->setDisabled(TRUE);

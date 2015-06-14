@@ -54,12 +54,12 @@ AddConstraintMinNDaysBetweenActivitiesForm::AddConstraintMinNDaysBetweenActiviti
 	}
 	subjectsComboBox->setCurrentItem(0);
 
-	subjectTagsComboBox->insertItem("");
-	for(int i=0; i<gt.rules.subjectTagsList.size(); i++){
-		SubjectTag* st=gt.rules.subjectTagsList[i];
-		subjectTagsComboBox->insertItem(st->name);
+	activityTagsComboBox->insertItem("");
+	for(int i=0; i<gt.rules.activityTagsList.size(); i++){
+		ActivityTag* st=gt.rules.activityTagsList[i];
+		activityTagsComboBox->insertItem(st->name);
 	}
-	subjectTagsComboBox->setCurrentItem(0);
+	activityTagsComboBox->setCurrentItem(0);
 
 	studentsComboBox->insertItem("");
 	for(int i=0; i<gt.rules.yearsList.size(); i++){
@@ -91,7 +91,7 @@ bool AddConstraintMinNDaysBetweenActivitiesForm::filterOk(Activity* act)
 	QString tn=teachersComboBox->currentText();
 	QString stn=studentsComboBox->currentText();
 	QString sbn=subjectsComboBox->currentText();
-	QString sbtn=subjectTagsComboBox->currentText();
+	QString sbtn=activityTagsComboBox->currentText();
 	int ok=true;
 
 	//teacher
@@ -110,8 +110,8 @@ bool AddConstraintMinNDaysBetweenActivitiesForm::filterOk(Activity* act)
 	if(sbn!="" && sbn!=act->subjectName)
 		ok=false;
 		
-	//subject tag
-	if(sbtn!="" && sbtn!=act->subjectTagName)
+	//activity tag
+	if(sbtn!="" && sbtn!=act->activityTagName)
 		ok=false;
 		
 	//students
@@ -188,6 +188,37 @@ void AddConstraintMinNDaysBetweenActivitiesForm::addConstraint()
 			QObject::tr("Please report error to the author\nMAX_CONSTRAINT_MIN_N_DAYS_BETWEEN_ACTIVITIES must be increased (you have too many activities)"));
 		return;
 	}
+
+#if 0&0&0
+	if(0 && this->selectedActivitiesList.size()>gt.rules.nDaysPerWeek){
+		QString s=tr("You want to add a constraint min n days between activities for more activities than the number of days per week."
+		  " This is a very bad practice from the way the algorithm of generation works (it slows down the generation and makes it harder to find a solution).")+
+		 "\n\n"+
+		 tr("The best way to add the activities would be:")+
+		 "\n\n"+
+
+		 tr("1. If you add 'force consecutive if same day', then couple extra activities in pairs to obtain a number of activities equal to the number of days per week"
+		  ". Example: 7 activities with duration 1 in a 5 days week, then transform into 5 activities with durations: 2,2,1,1,1 and add a single container activity with these 5 components"
+		  " (possibly raising the weight of added constraint min n days between activities up to 100%)")+
+
+		  "\n\n"+
+
+		 tr("2. If you don't add 'force consecutive if same day', then add a larger activity splitted into a number of"
+		  " activities equal with the number of days per week and the remaining components into other larger splitted activity."
+		  " For example, suppose you need to add 7 activities with duration 1 in a 5 days week. Add 2 larger container activities,"
+		  " first one splitted into 5 activities with duration 1 and second one splitted into 2 activities with duration 1"
+		  " (possibly raising the weight of added constraints min n days between activities for each of the 2 containers up to 100%)")+
+
+	  	 "\n\n"+
+
+		 tr("Do you want to add current constraint as it is now (not recommended) or cancel and edit as instructed?");
+	
+		int t=QMessageBox::warning(this, tr("FET warning"),	s,
+		 QMessageBox::Yes, QMessageBox::Cancel);
+		if(t==QMessageBox::Cancel)
+			return;
+	}
+#endif
 	
 	int ids[MAX_CONSTRAINT_MIN_N_DAYS_BETWEEN_ACTIVITIES];
 	int i;

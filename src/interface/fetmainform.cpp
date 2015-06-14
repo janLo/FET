@@ -33,7 +33,7 @@ using namespace std;
 #include "hoursform.h"
 #include "subjectsform.h"
 #include "subjectsstatisticsform.h"
-#include "subjecttagsform.h"
+#include "activitytagsform.h"
 #include "teachersform.h"
 #include "teachersstatisticsform.h"
 #include "yearsform.h"
@@ -42,6 +42,7 @@ using namespace std;
 #include "studentsstatisticsform.h"
 #include "activitiesform.h"
 #include "roomsform.h"
+#include "buildingsform.h"
 #include "alltimeconstraintsform.h"
 #include "allspaceconstraintsform.h"
 #include "helpaboutform.h"
@@ -52,45 +53,74 @@ using namespace std;
 
 #include "constraintactivityendsstudentsdayform.h"
 #include "constraint2activitiesconsecutiveform.h"
+#include "constraint2activitiesorderedform.h"
 #include "constraintactivitiespreferredtimesform.h"
 #include "constraintactivitiessamestartingtimeform.h"
 #include "constraintactivitiessamestartinghourform.h"
-#include "constraintteachernotavailableform.h"
+#include "constraintactivitiessamestartingdayform.h"
+#include "constraintteachernotavailabletimesform.h"
 #include "constraintbasiccompulsorytimeform.h"
 #include "constraintbasiccompulsoryspaceform.h"
-#include "constraintroomnotavailableform.h"
+#include "constraintroomnotavailabletimesform.h"
 #include "constraintactivitypreferredroomform.h"
-#include "constraintstudentssetnotavailableform.h"
-#include "constraintbreakform.h"
+#include "constraintstudentssetnotavailabletimesform.h"
+#include "constraintbreaktimesform.h"
 #include "constraintteachermaxdaysperweekform.h"
 #include "constraintteachermaxhoursdailyform.h"
 #include "constraintteachersmaxhoursdailyform.h"
+#include "constraintteachermaxhourscontinuouslyform.h"
+#include "constraintteachersmaxhourscontinuouslyform.h"
 #include "constraintteacherminhoursdailyform.h"
 #include "constraintteachersminhoursdailyform.h"
 #include "constraintactivitypreferredtimeform.h"
-#include "constraintstudentssetnogapsform.h"
-#include "constraintstudentsnogapsform.h"
+#include "constraintstudentssetmaxgapsperweekform.h"
+#include "constraintstudentsmaxgapsperweekform.h"
 #include "constraintteachersmaxgapsperweekform.h"
 #include "constraintteachermaxgapsperweekform.h"
-#include "constraintstudentsearlyform.h"
-#include "constraintstudentssetearlyform.h"
+#include "constraintteachersmaxgapsperdayform.h"
+#include "constraintteachermaxgapsperdayform.h"
+#include "constraintstudentsearlymaxbeginningsatsecondhourform.h"
+#include "constraintstudentssetearlymaxbeginningsatsecondhourform.h"
 #include "constraintstudentssetmaxhoursdailyform.h"
 #include "constraintstudentsmaxhoursdailyform.h"
+#include "constraintstudentssetmaxhourscontinuouslyform.h"
+#include "constraintstudentsmaxhourscontinuouslyform.h"
 #include "constraintstudentssetminhoursdailyform.h"
 #include "constraintstudentsminhoursdailyform.h"
 #include "constraintactivitiesnotoverlappingform.h"
 #include "constraintminndaysbetweenactivitiesform.h"
 #include "constraintactivitypreferredtimesform.h"
 #include "constraintactivitypreferredroomsform.h"
+
+#include "constraintstudentssethomeroomform.h"
+#include "constraintstudentssethomeroomsform.h"
+#include "constraintteacherhomeroomform.h"
+#include "constraintteacherhomeroomsform.h"
+
+#include "constraintstudentssetmaxbuildingchangesperdayform.h"
+#include "constraintstudentsmaxbuildingchangesperdayform.h"
+#include "constraintstudentssetmaxbuildingchangesperweekform.h"
+#include "constraintstudentsmaxbuildingchangesperweekform.h"
+#include "constraintstudentssetmingapsbetweenbuildingchangesform.h"
+#include "constraintstudentsmingapsbetweenbuildingchangesform.h"
+
+#include "constraintteachermaxbuildingchangesperdayform.h"
+#include "constraintteachersmaxbuildingchangesperdayform.h"
+#include "constraintteachermaxbuildingchangesperweekform.h"
+#include "constraintteachersmaxbuildingchangesperweekform.h"
+#include "constraintteachermingapsbetweenbuildingchangesform.h"
+#include "constraintteachersmingapsbetweenbuildingchangesform.h"
+
 #include "constraintsubjectpreferredroomform.h"
 #include "constraintsubjectpreferredroomsform.h"
-#include "constraintsubjectsubjecttagpreferredroomform.h"
-#include "constraintsubjectsubjecttagpreferredroomsform.h"
+#include "constraintsubjectactivitytagpreferredroomform.h"
+#include "constraintsubjectactivitytagpreferredroomsform.h"
 
 #include "settingstimetablehtmllevelform.h"
 
 #include <qmessagebox.h>
-#include <q3filedialog.h>
+//#include <q3filedialog.h>
+#include <QFileDialog>
 #include <qstring.h>
 #include <qdir.h>
 #include <q3popupmenu.h>
@@ -120,6 +150,8 @@ extern QApplication* pqapplication;
 #include <QSettings>
 
 static HttpGet getter;
+
+Rules rules2;
 
 static int ORIGINAL_WIDTH, ORIGINAL_HEIGHT;
 
@@ -335,7 +367,7 @@ void FetMainForm::on_fileNewAction_activated()
 	if(confirm){
 		INPUT_FILENAME_XML="";
 	
-		setWindowTitle(tr("FET - a free evolutionary timetabling program"));
+		setWindowTitle(tr("FET - a free timetabling program"));
 
 		if(gt.rules.initialized)
 			gt.rules.kill();
@@ -363,8 +395,10 @@ void FetMainForm::on_fileOpenAction_activated()
 	int confirm=1;
 
 	if(confirm){
-		QString s = Q3FileDialog::getOpenFileName(WORKING_DIRECTORY, tr("FET xml files (*.fet);;Old FET xml files (*.xml);;All files (*)", "Comment for translators (do not translate this comment): This field is for File/Open dialog. Please keep ;; without spaces before, between and after (it is a separator), and consider that the first must be *.fet. In special right to left languages, you might need to leave this field untranslated"),
-			this, tr("open file dialog"), tr("Choose a file"));
+		QString s = QFileDialog::getOpenFileName(this, tr("Choose a file"),
+			WORKING_DIRECTORY, 
+			tr("FET xml files (*.fet);;Old FET xml files (*.xml);;All files (*)", 
+			"Comment for translators (do not translate this comment): This field is for File/Open dialog. Please keep ;; without spaces before, between and after (it is a separator), and consider that the first must be *.fet. In special right to left languages, you might need to leave this field untranslated"));
 		if(s.isNull())
 			return;
 
@@ -409,15 +443,16 @@ void FetMainForm::on_fileOpenAction_activated()
 		int tmp=s.findRev("/");
 		WORKING_DIRECTORY=s.left(tmp+1);
 		
-		setWindowTitle(tr("FET - %1").arg(s.right(s.length()-tmp-1)));
+		if(INPUT_FILENAME_XML!="")
+			setWindowTitle(tr("FET - %1").arg(INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.findRev("/")-1)));
 	}
 }
 
 void FetMainForm::on_fileSaveAsAction_activated()
 {
-	QString s = Q3FileDialog::getSaveFileName(
+	QString s = QFileDialog::getSaveFileName(this, tr("Choose a filename to save under"),
 		INPUT_FILENAME_XML, tr("FET xml files (*.fet);;All files (*)", "Comment for translators (do not translate this comment): This field is for File/Save as dialog. Please keep ;; without spaces before, between and after (it is a separator), and consider that the first must be *.fet. In special right to left languages, you might need to leave this field untranslated"),
-		this, tr("Save file dialog"), tr("Choose a filename to save under" ));
+		0, QFileDialog::DontConfirmOverwrite);
 	if(s==QString::null)
 		return;
 
@@ -458,6 +493,276 @@ void FetMainForm::on_fileSaveAsAction_activated()
 	setWindowTitle(tr("FET - %1").arg(s.right(s.length()-tmp-1)));
 	
 	gt.rules.write(INPUT_FILENAME_XML);
+}
+
+void FetMainForm::on_timetableSaveTimetableAsAction_activated()
+{
+	if(!students_schedule_ready || !teachers_schedule_ready || !rooms_schedule_ready){
+		QMessageBox::warning(this, tr("FET - Warning"), tr("You have not yet generated a timetable - please generate firstly"));
+		return;	
+	}
+
+	Solution* tc=&best_solution;
+	
+	for(int ai=0; ai<gt.rules.nInternalActivities; ai++){
+		//Activity* act=&gt.rules.internalActivitiesList[ai];
+		int time=tc->times[ai];
+		if(time==UNALLOCATED_TIME){
+			QMessageBox::warning(this, tr("FET - Warning"), tr("It seems that you have an incomplete timetable."
+			 " Saving of timetable does not work for incomplete timetables. Please generate a complete timetable"));
+			 //.arg(act->id));
+			return;	
+		}
+		
+		int ri=tc->rooms[ai];
+		if(ri==UNALLOCATED_SPACE){
+			QMessageBox::warning(this, tr("FET - Warning"), tr("It seems that you have an incomplete timetable."
+			 " Saving of timetable does not work for incomplete timetables. Please generate a complete timetable"));
+			 //.arg(act->id));
+			return;	
+		}
+	}
+
+	QString t=tr("Please read this important information before proceeding:");
+	
+	t+="\n\n";
+	
+	t+=tr("This option is only useful if you need to lock current timetable into a file."
+		" Locking means that there will be added constraints activity preferred time and"
+		" activity preferred room with 100% importance for each activity to fix it at current place in current timetable."
+		" You can save this timetable as an ordinary .fet file; when you'll open it, you'll see all old inputted data (activities, teachers, etc.)" 
+		" and the locking constraints as the last time/space constraints."
+		" You can unlock some of these activities (by removing constraints) if small changes appear in the configuration, and generate again"
+		" and the remaining locking constraints will be respected.");
+		
+	t+="\n\n";
+	
+	t+=tr("This option is useful for institutions where you obtain a timetable, then some small changes appear,"
+		" and you need to regenerate timetable, but respecting in a large proportion the old timetable");
+
+	t+="\n\n";
+	
+	t+=tr("Current data file will not be affected by anything, locking constraints will only be added to the file you select to save"
+		" (you can save current datafile and open saved timetable file after that to check it)");
+		
+	t+="\n\n";
+	
+	t+=tr("If you need more information, contact author or mailing list");
+
+	QMessageBox::information(this, tr("FET - information about saving a timetable as"), t);
+	
+	QString s;
+
+	for(;;){
+		s = QFileDialog::getSaveFileName(this, tr("Choose a filename to save under" ), 
+			INPUT_FILENAME_XML, tr("FET xml files (*.fet);;All files (*)", "Comment for translators (do not translate this comment): This field is for File/Save as dialog. Please keep ;; without spaces before, between and after (it is a separator), and consider that the first must be *.fet. In special right to left languages, you might need to leave this field untranslated"),
+			0, QFileDialog::DontConfirmOverwrite);
+		if(s==QString::null)
+			return;
+
+		int tmp2=s.findRev("/");
+		QString s2=s.right(s.length()-tmp2-1);
+			
+		if(s2.indexOf("\"") >= 0){
+			QMessageBox::warning(this, tr("FET info"), tr("Please do not use quotation marks \" in filename, the html css code does not work"));
+			return;
+		}
+		if(s2.indexOf(";") >= 0){
+			QMessageBox::warning(this, tr("FET info"), tr("Please do not use semicolon ; in filename, the html css code does not work"));
+			return;
+		}
+		if(s2.indexOf("#") >= 0){
+			QMessageBox::warning(this, tr("FET info"), tr("Please do not use # in filename, the html css code does not work"));
+			return;
+		}
+		/*if(s2.indexOf("(") >= 0 || s2.indexOf(")")>=0){
+			QMessageBox::information(this, tr("FET info"), tr("Please do not use parentheses () in filename, the html css code does not work"));
+			return;
+		}*/
+			
+		if(s.right(4)!=".fet")
+			s+=".fet";
+
+		int tmp=s.findRev("/");
+		WORKING_DIRECTORY=s.left(tmp+1);
+
+		if(QFile::exists(s)){
+			t=tr("File exists");
+			t+="\n\n";
+			t+=tr("For safety (so you don't lose work), it is not allowed to overwrite an existing file with"
+				" locking and saving a current data+timetable");
+			t+="\n\n";
+			t+=tr("Please choose a non-existing name");
+	
+			QMessageBox::warning( this, tr("FET warning"), t);
+		}
+		else
+			break;
+	}
+			
+	//INPUT_FILENAME_XML = s; - do NOT add this
+	
+	//setWindowTitle(tr("FET - %1").arg(s.right(s.length()-tmp-1)));
+	
+	rules2.initialized=true;
+	
+	rules2.institutionName=gt.rules.institutionName;
+	rules2.comments=gt.rules.comments;
+	
+	rules2.nHoursPerDay=gt.rules.nHoursPerDay;
+	for(int i=0; i<gt.rules.nHoursPerDay; i++)
+		rules2.hoursOfTheDay[i]=gt.rules.hoursOfTheDay[i];
+
+	rules2.nDaysPerWeek=gt.rules.nDaysPerWeek;
+	for(int i=0; i<gt.rules.nDaysPerWeek; i++)
+		rules2.daysOfTheWeek[i]=gt.rules.daysOfTheWeek[i];
+		
+	rules2.yearsList=gt.rules.yearsList;
+	
+	rules2.teachersList=gt.rules.teachersList;
+	
+	rules2.subjectsList=gt.rules.subjectsList;
+	
+	rules2.activityTagsList=gt.rules.activityTagsList;
+
+	rules2.activitiesList=gt.rules.activitiesList;
+
+	rules2.buildingsList=gt.rules.buildingsList;
+
+	rules2.roomsList=gt.rules.roomsList;
+
+	rules2.timeConstraintsList=gt.rules.timeConstraintsList;
+	
+	rules2.spaceConstraintsList=gt.rules.spaceConstraintsList;
+
+
+	//add locking constraints
+	TimeConstraintsList lockTimeConstraintsList;
+	SpaceConstraintsList lockSpaceConstraintsList;
+
+
+
+	bool report=true;
+	
+	int addedTime=0, duplicatesTime=0;
+	int addedSpace=0, duplicatesSpace=0;
+
+	//lock selected activities
+	for(int ai=0; ai<gt.rules.nInternalActivities; ai++){
+		Activity* act=&gt.rules.internalActivitiesList[ai];
+		int time=tc->times[ai];
+		if(time>=0 && time<gt.rules.nDaysPerWeek*gt.rules.nHoursPerDay){
+			int hour=time/gt.rules.nDaysPerWeek;
+			int day=time%gt.rules.nDaysPerWeek;
+
+			ConstraintActivityPreferredTime* ctr=new ConstraintActivityPreferredTime(100.0, act->id, day, hour);
+			bool t=rules2.addTimeConstraint(ctr);
+						
+			if(t){
+				addedTime++;
+				lockTimeConstraintsList.append(ctr);
+			}
+			else
+				duplicatesTime++;
+
+			QString s;
+						
+			if(t)
+				s=tr("Added the following constraint to saved file:")+"\n"+ctr->getDetailedDescription(gt.rules);
+			else{
+				s=tr("Constraint\n%1 NOT added to saved file - duplicate").arg(ctr->getDetailedDescription(gt.rules));
+				delete ctr;
+			}
+						
+			if(report){
+				int k;
+				if(t)
+					k=QMessageBox::information(this, tr("FET information"), s,
+				 	 tr("Skip information"), tr("See next"), QString(), 1, 0 );
+				else
+					k=QMessageBox::warning(this, tr("FET warning"), s,
+				 	 tr("Skip information"), tr("See next"), QString(), 1, 0 );
+																			 				 	
+		 		if(k==0)
+					report=false;
+			}
+		}
+					
+		int ri=tc->rooms[ai];
+		if(ri!=UNALLOCATED_SPACE && ri!=UNSPECIFIED_ROOM && ri>=0 && ri<gt.rules.nInternalRooms){
+			ConstraintActivityPreferredRoom* ctr=new ConstraintActivityPreferredRoom(100, act->id, (gt.rules.internalRoomsList[ri])->name);
+			bool t=rules2.addSpaceConstraint(ctr);
+
+			QString s;
+						
+			if(t){
+				addedSpace++;
+				lockSpaceConstraintsList.append(ctr);
+			}
+			else
+				duplicatesSpace++;
+
+			if(t)
+				s=tr("Added the following constraint to saved file:")+"\n"+ctr->getDetailedDescription(gt.rules);
+			else{
+				s=tr("Constraint\n%1 NOT added to saved file - duplicate").arg(ctr->getDetailedDescription(gt.rules));
+				delete ctr;
+			}
+						
+			if(report){
+				int k;
+				if(t)
+					k=QMessageBox::information(this, tr("FET information"), s,
+				 	 tr("Skip information"), tr("See next"), QString(), 1, 0 );
+				else
+					k=QMessageBox::warning(this, tr("FET warning"), s,
+					 tr("Skip information"), tr("See next"), QString(), 1, 0 );
+																			 				 	
+				if(k==0)
+					report=false;
+			}
+		}
+	}
+
+	QMessageBox::information(this, tr("FET information"), tr("Added %1 locking time constraints and %2 locking space constraints to saved file,"
+	 " ignored %3 activities which were already fixed in time and %4 activities which were already fixed in space").arg(addedTime).arg(addedSpace).arg(duplicatesTime).arg(duplicatesSpace));
+		
+	bool result=rules2.write(s);
+	
+	while(!lockTimeConstraintsList.isEmpty())
+		delete lockTimeConstraintsList.takeFirst();
+	while(!lockSpaceConstraintsList.isEmpty())
+		delete lockSpaceConstraintsList.takeFirst();
+	/*foreach(TimeConstraint* tc, lockTimeConstraintsList)
+		delete tc;
+	foreach(SpaceConstraint* sc, lockSpaceConstraintsList)
+		delete sc;*/
+
+	if(result)	
+		QMessageBox::information(this, tr("FET information"),
+			tr("File saved successfully. You can see it on the hard disk. Current data file remained untouched (of locking constraints),"
+			" so you can save it also, or generate different timetables."));
+
+	rules2.nHoursPerDay=0;
+	rules2.nDaysPerWeek=0;
+
+	rules2.yearsList.clear();
+	
+	rules2.teachersList.clear();
+	
+	rules2.subjectsList.clear();
+	
+	rules2.activityTagsList.clear();
+
+	rules2.activitiesList.clear();
+
+	rules2.buildingsList.clear();
+
+	rules2.roomsList.clear();
+
+	rules2.timeConstraintsList.clear();
+	
+	rules2.spaceConstraintsList.clear();
 }
 
 void FetMainForm::on_fileSaveAction_activated()
@@ -540,7 +845,7 @@ void FetMainForm::on_dataSubjectsStatisticsAction_activated()
 	form->exec();
 }
 
-void FetMainForm::on_dataSubjectTagsAction_activated()
+void FetMainForm::on_dataActivityTagsAction_activated()
 {
 	if(simulation_running){
 		QMessageBox::information(this, tr("FET information"),
@@ -548,7 +853,7 @@ void FetMainForm::on_dataSubjectTagsAction_activated()
 		return;
 	}
 
-	SubjectTagsForm* form=new SubjectTagsForm();
+	ActivityTagsForm* form=new ActivityTagsForm();
 	form->exec();
 }
 
@@ -677,6 +982,18 @@ void FetMainForm::on_dataRoomsAction_activated()
 	form->exec();
 }
 
+void FetMainForm::on_dataBuildingsAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	BuildingsForm* form=new BuildingsForm();
+	form->exec();
+}
+
 void FetMainForm::on_dataAllTimeConstraintsAction_activated()
 {
 	if(simulation_running){
@@ -710,6 +1027,18 @@ void FetMainForm::on_dataTimeConstraints2ActivitiesConsecutiveAction_activated()
 	}
 
 	Constraint2ActivitiesConsecutiveForm* form=new Constraint2ActivitiesConsecutiveForm();
+	form->exec();
+}
+
+void FetMainForm::on_dataTimeConstraints2ActivitiesOrderedAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	Constraint2ActivitiesOrderedForm* form=new Constraint2ActivitiesOrderedForm();
 	form->exec();
 }
 
@@ -761,7 +1090,7 @@ void FetMainForm::on_dataTimeConstraintsActivitiesSameStartingHourAction_activat
 	form->exec();
 }
 
-void FetMainForm::on_dataTimeConstraintsTeacherNotAvailableAction_activated()
+void FetMainForm::on_dataTimeConstraintsActivitiesSameStartingDayAction_activated()
 {
 	if(simulation_running){
 		QMessageBox::information(this, tr("FET information"),
@@ -769,7 +1098,19 @@ void FetMainForm::on_dataTimeConstraintsTeacherNotAvailableAction_activated()
 		return;
 	}
 
-	ConstraintTeacherNotAvailableForm* form=new ConstraintTeacherNotAvailableForm();
+	ConstraintActivitiesSameStartingDayForm* form=new ConstraintActivitiesSameStartingDayForm();
+	form->exec();
+}
+
+void FetMainForm::on_dataTimeConstraintsTeacherNotAvailableTimesAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	ConstraintTeacherNotAvailableTimesForm* form=new ConstraintTeacherNotAvailableTimesForm();
 	form->exec();
 }
 
@@ -797,7 +1138,7 @@ void FetMainForm::on_dataSpaceConstraintsBasicCompulsorySpaceAction_activated()
 	form->exec();
 }
 
-void FetMainForm::on_dataSpaceConstraintsRoomNotAvailableAction_activated()
+void FetMainForm::on_dataSpaceConstraintsRoomNotAvailableTimesAction_activated()
 {
 	if(simulation_running){
 		QMessageBox::information(this, tr("FET information"),
@@ -805,7 +1146,7 @@ void FetMainForm::on_dataSpaceConstraintsRoomNotAvailableAction_activated()
 		return;
 	}
 
-	ConstraintRoomNotAvailableForm* form=new ConstraintRoomNotAvailableForm();
+	ConstraintRoomNotAvailableTimesForm* form=new ConstraintRoomNotAvailableTimesForm();
 	form->exec();
 }
 
@@ -857,7 +1198,7 @@ void FetMainForm::on_dataSpaceConstraintsSubjectPreferredRoomsAction_activated()
 	form->exec();
 }
 
-void FetMainForm::on_dataSpaceConstraintsSubjectSubjectTagPreferredRoomAction_activated()
+void FetMainForm::on_dataSpaceConstraintsSubjectActivityTagPreferredRoomAction_activated()
 {
 	if(simulation_running){
 		QMessageBox::information(this, tr("FET information"),
@@ -865,11 +1206,11 @@ void FetMainForm::on_dataSpaceConstraintsSubjectSubjectTagPreferredRoomAction_ac
 		return;
 	}
 
-	ConstraintSubjectSubjectTagPreferredRoomForm* form=new ConstraintSubjectSubjectTagPreferredRoomForm();
+	ConstraintSubjectActivityTagPreferredRoomForm* form=new ConstraintSubjectActivityTagPreferredRoomForm();
 	form->exec();
 }
 
-void FetMainForm::on_dataSpaceConstraintsSubjectSubjectTagPreferredRoomsAction_activated()
+void FetMainForm::on_dataSpaceConstraintsSubjectActivityTagPreferredRoomsAction_activated()
 {
 	if(simulation_running){
 		QMessageBox::information(this, tr("FET information"),
@@ -877,11 +1218,11 @@ void FetMainForm::on_dataSpaceConstraintsSubjectSubjectTagPreferredRoomsAction_a
 		return;
 	}
 
-	ConstraintSubjectSubjectTagPreferredRoomsForm* form=new ConstraintSubjectSubjectTagPreferredRoomsForm();
+	ConstraintSubjectActivityTagPreferredRoomsForm* form=new ConstraintSubjectActivityTagPreferredRoomsForm();
 	form->exec();
 }
 
-void FetMainForm::on_dataTimeConstraintsStudentsSetNotAvailableAction_activated()
+void FetMainForm::on_dataSpaceConstraintsStudentsSetHomeRoomAction_activated()
 {
 	if(simulation_running){
 		QMessageBox::information(this, tr("FET information"),
@@ -889,11 +1230,11 @@ void FetMainForm::on_dataTimeConstraintsStudentsSetNotAvailableAction_activated(
 		return;
 	}
 
-	ConstraintStudentsSetNotAvailableForm* form=new ConstraintStudentsSetNotAvailableForm();
+	ConstraintStudentsSetHomeRoomForm* form=new ConstraintStudentsSetHomeRoomForm();
 	form->exec();
 }
 
-void FetMainForm::on_dataTimeConstraintsBreakAction_activated()
+void FetMainForm::on_dataSpaceConstraintsStudentsSetHomeRoomsAction_activated()
 {
 	if(simulation_running){
 		QMessageBox::information(this, tr("FET information"),
@@ -901,7 +1242,199 @@ void FetMainForm::on_dataTimeConstraintsBreakAction_activated()
 		return;
 	}
 
-	ConstraintBreakForm* form=new ConstraintBreakForm();
+	ConstraintStudentsSetHomeRoomsForm* form=new ConstraintStudentsSetHomeRoomsForm();
+	form->exec();
+}
+
+
+void FetMainForm::on_dataSpaceConstraintsStudentsSetMaxBuildingChangesPerDayAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	ConstraintStudentsSetMaxBuildingChangesPerDayForm* form=new ConstraintStudentsSetMaxBuildingChangesPerDayForm();
+	form->exec();
+}
+
+void FetMainForm::on_dataSpaceConstraintsStudentsMaxBuildingChangesPerDayAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	ConstraintStudentsMaxBuildingChangesPerDayForm* form=new ConstraintStudentsMaxBuildingChangesPerDayForm();
+	form->exec();
+}
+
+void FetMainForm::on_dataSpaceConstraintsStudentsSetMaxBuildingChangesPerWeekAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	ConstraintStudentsSetMaxBuildingChangesPerWeekForm* form=new ConstraintStudentsSetMaxBuildingChangesPerWeekForm();
+	form->exec();
+}
+
+void FetMainForm::on_dataSpaceConstraintsStudentsMaxBuildingChangesPerWeekAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	ConstraintStudentsMaxBuildingChangesPerWeekForm* form=new ConstraintStudentsMaxBuildingChangesPerWeekForm();
+	form->exec();
+}
+
+void FetMainForm::on_dataSpaceConstraintsStudentsSetMinGapsBetweenBuildingChangesAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	ConstraintStudentsSetMinGapsBetweenBuildingChangesForm* form=new ConstraintStudentsSetMinGapsBetweenBuildingChangesForm();
+	form->exec();
+}
+
+void FetMainForm::on_dataSpaceConstraintsStudentsMinGapsBetweenBuildingChangesAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	ConstraintStudentsMinGapsBetweenBuildingChangesForm* form=new ConstraintStudentsMinGapsBetweenBuildingChangesForm();
+	form->exec();
+}
+
+void FetMainForm::on_dataSpaceConstraintsTeacherMaxBuildingChangesPerDayAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	ConstraintTeacherMaxBuildingChangesPerDayForm* form=new ConstraintTeacherMaxBuildingChangesPerDayForm();
+	form->exec();
+}
+void FetMainForm::on_dataSpaceConstraintsTeachersMaxBuildingChangesPerDayAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	ConstraintTeachersMaxBuildingChangesPerDayForm* form=new ConstraintTeachersMaxBuildingChangesPerDayForm();
+	form->exec();
+}
+
+void FetMainForm::on_dataSpaceConstraintsTeacherMaxBuildingChangesPerWeekAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	ConstraintTeacherMaxBuildingChangesPerWeekForm* form=new ConstraintTeacherMaxBuildingChangesPerWeekForm();
+	form->exec();
+}
+
+void FetMainForm::on_dataSpaceConstraintsTeachersMaxBuildingChangesPerWeekAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	ConstraintTeachersMaxBuildingChangesPerWeekForm* form=new ConstraintTeachersMaxBuildingChangesPerWeekForm();
+	form->exec();
+}
+
+void FetMainForm::on_dataSpaceConstraintsTeacherMinGapsBetweenBuildingChangesAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	ConstraintTeacherMinGapsBetweenBuildingChangesForm* form=new ConstraintTeacherMinGapsBetweenBuildingChangesForm();
+	form->exec();
+}
+
+void FetMainForm::on_dataSpaceConstraintsTeachersMinGapsBetweenBuildingChangesAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	ConstraintTeachersMinGapsBetweenBuildingChangesForm* form=new ConstraintTeachersMinGapsBetweenBuildingChangesForm();
+	form->exec();
+}
+
+void FetMainForm::on_dataSpaceConstraintsTeacherHomeRoomAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	ConstraintTeacherHomeRoomForm* form=new ConstraintTeacherHomeRoomForm();
+	form->exec();
+}
+
+void FetMainForm::on_dataSpaceConstraintsTeacherHomeRoomsAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	ConstraintTeacherHomeRoomsForm* form=new ConstraintTeacherHomeRoomsForm();
+	form->exec();
+}
+
+void FetMainForm::on_dataTimeConstraintsStudentsSetNotAvailableTimesAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	ConstraintStudentsSetNotAvailableTimesForm* form=new ConstraintStudentsSetNotAvailableTimesForm();
+	form->exec();
+}
+
+void FetMainForm::on_dataTimeConstraintsBreakTimesAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	ConstraintBreakTimesForm* form=new ConstraintBreakTimesForm();
 	form->exec();
 }
 
@@ -941,6 +1474,30 @@ void FetMainForm::on_dataTimeConstraintsTeacherMaxHoursDailyAction_activated()
 	form->exec();
 }
 
+void FetMainForm::on_dataTimeConstraintsTeachersMaxHoursContinuouslyAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	ConstraintTeachersMaxHoursContinuouslyForm* form=new ConstraintTeachersMaxHoursContinuouslyForm();
+	form->exec();
+}
+
+void FetMainForm::on_dataTimeConstraintsTeacherMaxHoursContinuouslyAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	ConstraintTeacherMaxHoursContinuouslyForm* form=new ConstraintTeacherMaxHoursContinuouslyForm();
+	form->exec();
+}
+
 void FetMainForm::on_dataTimeConstraintsTeachersMinHoursDailyAction_activated()
 {
 	if(simulation_running){
@@ -977,7 +1534,7 @@ void FetMainForm::on_dataTimeConstraintsActivityPreferredTimeAction_activated()
 	form->exec();
 }
 
-void FetMainForm::on_dataTimeConstraintsStudentsSetNoGapsAction_activated()
+void FetMainForm::on_dataTimeConstraintsStudentsSetMaxGapsPerWeekAction_activated()
 {
 	if(simulation_running){
 		QMessageBox::information(this, tr("FET information"),
@@ -985,11 +1542,11 @@ void FetMainForm::on_dataTimeConstraintsStudentsSetNoGapsAction_activated()
 		return;
 	}
 
-	ConstraintStudentsSetNoGapsForm* form=new ConstraintStudentsSetNoGapsForm();
+	ConstraintStudentsSetMaxGapsPerWeekForm* form=new ConstraintStudentsSetMaxGapsPerWeekForm();
 	form->exec();
 }
 
-void FetMainForm::on_dataTimeConstraintsStudentsNoGapsAction_activated()
+void FetMainForm::on_dataTimeConstraintsStudentsMaxGapsPerWeekAction_activated()
 {
 	if(simulation_running){
 		QMessageBox::information(this, tr("FET information"),
@@ -997,7 +1554,7 @@ void FetMainForm::on_dataTimeConstraintsStudentsNoGapsAction_activated()
 		return;
 	}
 
-	ConstraintStudentsNoGapsForm* form=new ConstraintStudentsNoGapsForm();
+	ConstraintStudentsMaxGapsPerWeekForm* form=new ConstraintStudentsMaxGapsPerWeekForm();
 	form->exec();
 }
 
@@ -1025,7 +1582,7 @@ void FetMainForm::on_dataTimeConstraintsTeacherMaxGapsPerWeekAction_activated()
 	form->exec();
 }
 
-void FetMainForm::on_dataTimeConstraintsStudentsEarlyAction_activated()
+void FetMainForm::on_dataTimeConstraintsTeachersMaxGapsPerDayAction_activated()
 {
 	if(simulation_running){
 		QMessageBox::information(this, tr("FET information"),
@@ -1033,11 +1590,11 @@ void FetMainForm::on_dataTimeConstraintsStudentsEarlyAction_activated()
 		return;
 	}
 
-	ConstraintStudentsEarlyForm* form=new ConstraintStudentsEarlyForm();
+	ConstraintTeachersMaxGapsPerDayForm* form=new ConstraintTeachersMaxGapsPerDayForm();
 	form->exec();
 }
 
-void FetMainForm::on_dataTimeConstraintsStudentsSetEarlyAction_activated()
+void FetMainForm::on_dataTimeConstraintsTeacherMaxGapsPerDayAction_activated()
 {
 	if(simulation_running){
 		QMessageBox::information(this, tr("FET information"),
@@ -1045,7 +1602,31 @@ void FetMainForm::on_dataTimeConstraintsStudentsSetEarlyAction_activated()
 		return;
 	}
 
-	ConstraintStudentsSetEarlyForm* form=new ConstraintStudentsSetEarlyForm();
+	ConstraintTeacherMaxGapsPerDayForm* form=new ConstraintTeacherMaxGapsPerDayForm();
+	form->exec();
+}
+
+void FetMainForm::on_dataTimeConstraintsStudentsEarlyMaxBeginningsAtSecondHourAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	ConstraintStudentsEarlyMaxBeginningsAtSecondHourForm* form=new ConstraintStudentsEarlyMaxBeginningsAtSecondHourForm();
+	form->exec();
+}
+
+void FetMainForm::on_dataTimeConstraintsStudentsSetEarlyMaxBeginningsAtSecondHourAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	ConstraintStudentsSetEarlyMaxBeginningsAtSecondHourForm* form=new ConstraintStudentsSetEarlyMaxBeginningsAtSecondHourForm();
 	form->exec();
 }
 
@@ -1070,6 +1651,30 @@ void FetMainForm::on_dataTimeConstraintsStudentsMaxHoursDailyAction_activated()
 	}
 
 	ConstraintStudentsMaxHoursDailyForm* form=new ConstraintStudentsMaxHoursDailyForm();
+	form->exec();
+}
+
+void FetMainForm::on_dataTimeConstraintsStudentsSetMaxHoursContinuouslyAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	ConstraintStudentsSetMaxHoursContinuouslyForm* form=new ConstraintStudentsSetMaxHoursContinuouslyForm();
+	form->exec();
+}
+
+void FetMainForm::on_dataTimeConstraintsStudentsMaxHoursContinuouslyAction_activated()
+{
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	ConstraintStudentsMaxHoursContinuouslyForm* form=new ConstraintStudentsMaxHoursContinuouslyForm();
 	form->exec();
 }
 
@@ -1155,9 +1760,15 @@ void FetMainForm::on_helpInOtherLanguagesAction_activated()
 {
 	QString s=tr("You can see help translated into other languages in the directory doc/ of FET");
 	s+="\n\n";	
-	s+=tr("Currently (4 Oct. 2007), there are:");	
+	s+=tr("Currently (11 Jan. 2008), there are:");	
 	s+="\n\n";	
 	s+=tr("1. es - Spanish - Instructions");
+	s+="\n\n";	
+	s+=tr("2. it - Italian - Instructions");
+	s+="\n\n";	
+	s+=tr("3. it - Italian - FAQ");
+	s+="\n\n";	
+	s+=tr("4. ar - Arabic - Manual");
 
 	//show the message in a dialog
 	QDialog* dialog=new QDialog();
@@ -1204,8 +1815,8 @@ void FetMainForm::on_timetableGenerateAction_activated()
 			count++;
 		}
 	}
-	if(count<2){
-		QMessageBox::information(this, tr("FET information"), tr("Please input at least two active activities before generating"));
+	if(count<1){
+		QMessageBox::information(this, tr("FET information"), tr("Please input at least one active activity before generating"));
 		return;
 	}
 	TimetableGenerateForm *form=new TimetableGenerateForm();
@@ -1234,8 +1845,8 @@ void FetMainForm::on_timetableGenerateMultipleAction_activated()
 			count++;
 		}
 	}
-	if(count<2){
-		QMessageBox::information(this, tr("FET information"), tr("Please input at least two active activities before generating multiple"));
+	if(count<1){
+		QMessageBox::information(this, tr("FET information"), tr("Please input at least one active activity before generating multiple"));
 		return;
 	}
 	TimetableGenerateMultipleForm *form=new TimetableGenerateMultipleForm();

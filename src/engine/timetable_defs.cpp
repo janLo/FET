@@ -27,7 +27,7 @@ QString internetVersion;
 /**
 FET version
 */
-const QString FET_VERSION="5.4.17";
+const QString FET_VERSION="5.5.5";
 
 /**
 FET language
@@ -287,19 +287,24 @@ QString iCalFolding(const QString s)
 	return t;
 }
 
-int X;
+int XX;
 
 //random routines
 void initRandomKnuth()
 {
-	X=1+((unsigned(time(NULL)))%(MM-1));
+	assert(MM==2147483647);
+	assert(AA==48271);
+	assert(QQ==44488);
+	assert(RR==3399);
+				
+	XX=1+((unsigned(time(NULL)))%(MM-1));
 }
 	
 int randomKnuth()
 {
-	X=AA*(X%QQ)-RR*(X/QQ);
-	if(X<0)
-		X+=MM;
+	XX=AA*(XX%QQ)-RR*(XX/QQ);
+	if(XX<0)
+		XX+=MM;
 		
-	return X;
+	return XX;
 }

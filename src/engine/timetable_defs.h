@@ -87,19 +87,8 @@ The maximum total number of different subgroups of students
 */
 const int MAX_TOTAL_SUBGROUPS=15000;//MAX_YEARS*MAX_GROUPS_PER_YEAR*MAX_SUBGROUPS_PER_GROUP;
 
-/**
-This constant represents the maximum number of total allowed subgroups
-for any activity.
-*/
-//const int MAX_SUBGROUPS_PER_ACTIVITY=400;//MAX_SUBGROUPS_PER_GROUP * MAX_GROUPS_PER_YEAR;
+const int MAX_ROOM_CAPACITY=15000;
 
-/**
-This constant represents the maximum number of teachers
-for any activity.
-*/
-//const int MAX_TEACHERS_PER_ACTIVITY = 100;
-
-//const int MAX_SUBGROUPS_PER_CONSTRAINT=400;//MAX_SUBGROUPS_PER_GROUP * MAX_GROUPS_PER_YEAR;
 
 /**
 The maximum number of different teachers
@@ -119,7 +108,12 @@ const int MAX_ACTIVITIES=5000;
 /**
 The maximum number of rooms
 */
-const int MAX_ROOMS=300;
+const int MAX_ROOMS=1000;
+
+/**
+The maximum number of buildings
+*/
+const int MAX_BUILDINGS=100;
 
 /**
 This constant represents an unallocated activity
@@ -129,19 +123,22 @@ const qint16 UNALLOCATED_ACTIVITY = MAX_ACTIVITIES;
 /**
 The maximum number of working hours per day.
 */
-const int MAX_HOURS_PER_DAY=30;
+const int MAX_HOURS_PER_DAY=60;
 
 /**
 The maximum number of working days per week.
 */
-const int MAX_DAYS_PER_WEEK=14;
+const int MAX_DAYS_PER_WEEK=28;
 
 /**
 The predefined names of the days of the week
 */
 const QString PREDEFINED_DAYS_OF_THE_WEEK[]={"Monday", "Tuesday", "Wednesday",
 	"Thursday", "Friday", "Saturday", "Sunday", "Monday2",
-	"Tuesday2", "Wednesday2", "Thursday2", "Friday2", "Saturday2", "Sunday2"};
+	"Tuesday2", "Wednesday2", "Thursday2", "Friday2", "Saturday2", "Sunday2",
+	"Monday3", "Tuesday3", "Wednesday3",
+	"Thursday3", "Friday3", "Saturday3", "Sunday3", "Monday4",
+	"Tuesday4", "Wednesday4", "Thursday4", "Friday4", "Saturday4", "Sunday4"};
 
 /**
 The maximum number of working hours in a week.
@@ -184,13 +181,13 @@ const int MAX_SPACE_CONSTRAINTS = 10000;
 The maximum number of preferred times that can be considered
 in this kind of constraint
 */
-const int MAX_N_CONSTRAINT_ACTIVITY_PREFERRED_TIMES = 120;
+const int MAX_N_CONSTRAINT_ACTIVITY_PREFERRED_TIMES = MAX_HOURS_PER_WEEK;
 
 /**
 The maximum number of preferred times that can be considered
 in this kind of constraint
 */
-const int MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_TIMES = 120;
+const int MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_TIMES = MAX_HOURS_PER_WEEK;
 
 /**
 The maximum number of activities that can be put in
@@ -199,21 +196,28 @@ I guess this variable must disappear and the
 restriction modified to allocate dynamically the
 necessary memory.
 */
-const int MAX_CONSTRAINT_MIN_N_DAYS_BETWEEN_ACTIVITIES = 20;
+const int MAX_CONSTRAINT_MIN_N_DAYS_BETWEEN_ACTIVITIES = 100;
 
 /**
 The maximum number of activities for a single
 constraint of type
 ConstraintActivitiesSameStartingTime
 */
-const int MAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME=50;
+const int MAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME=100;
 
 /**
 The maximum number of activities for a single
 constraint of type
 ConstraintActivitiesSameStartingHour
 */
-const int MAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_HOUR=50;
+const int MAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_HOUR=100;
+
+/**
+The maximum number of activities for a single
+constraint of type
+ConstraintActivitiesSameStartingHour
+*/
+const int MAX_CONSTRAINT_ACTIVITIES_SAME_STARTING_DAY=100;
 
 /**
 The maximum number of activities for a single
@@ -221,44 +225,6 @@ constraint of type
 ConstraintActivitiesNotOverlapping
 */
 const int MAX_CONSTRAINT_ACTIVITIES_NOT_OVERLAPPING=100;
-
-/**
-The maximum number of rooms for a single
-constraint of type
-ConstraintActivityPreferredRooms
-*/
-const int MAX_CONSTRAINT_ACTIVITY_PREFERRED_ROOMS=50;
-
-/**
-The maximum number of rooms for a single
-constraint of type
-ConstraintSubjectPreferredRooms
-*/
-const int MAX_CONSTRAINT_SUBJECT_PREFERRED_ROOMS=50;
-
-/**
-The maximum number of rooms for a single
-constraint of type
-ConstraintSubjectSubjectTagPreferredRooms
-*/
-const int MAX_CONSTRAINT_SUBJECT_SUBJECT_TAG_PREFERRED_ROOMS=50;
-
-/**
-The maximum number of activities for a single
-constraint of type
-ConstraintActivitiesSameRoom
-*/
-const int MAX_CONSTRAINT_ACTIVITIES_SAME_ROOM=20;
-
-/**
-The maximum number of activities which share the same subject name.
-*/
-const int MAX_ACTIVITIES_FOR_A_SUBJECT=500;
-
-/**
-The maximum number of activities which share the same subject+subject tag name.
-*/
-const int MAX_ACTIVITIES_FOR_A_SUBJECT_SUBJECT_TAG=500;
 
 
 /**
@@ -525,6 +491,40 @@ QString protect2id(const QString& str);
 A function used in iCal saving
 */
 QString protect3(const QString& str);
+
+/**
+This constants represents free periods of a teacher in the teachers free periods timetable
+*/
+const qint16 TEACHER_HAS_SINGLE_GAP =0;
+const qint16 TEACHER_HAS_BORDER_GAP =1;
+const qint16 TEACHER_HAS_BIG_GAP =2;
+
+const qint16 TEACHER_MUST_COME_EARLIER =4;
+const qint16 TEACHER_MUST_COME_MUCH_EARLIER =6;
+
+const qint16 TEACHER_MUST_STAY_LONGER =3;
+const qint16 TEACHER_MUST_STAY_MUCH_LONGER =5;		// BE CAREFULL, I just print into LESS_DETAILED timetable, if it's smaller then TEACHER_MUST_STAY_MUCH_LONGER
+
+const qint16 TEACHER_HAS_A_FREE_DAY =7;
+
+const qint16 TEACHER_IS_NOT_AVAILABLE =8;
+
+const int TEACHERS_FREE_PERIODS_N_CATEGORIES=9;
+
+/**
+An output file containing the timetable for free periods of teachers, arranged in html format.
+Days horizontal version.
+*/
+const QString TEACHERS_FREE_PERIODS_TIMETABLE_DAYS_HORIZONTAL_FILENAME_HTML="teachers_free_periods_timetable_days_horizontal.html";
+
+/**
+An output file containing the timetable for free periods of teachers, arranged in html format.
+Days vertical version.
+*/
+const QString TEACHERS_FREE_PERIODS_TIMETABLE_DAYS_VERTICAL_FILENAME_HTML="teachers_free_periods_timetable_days_vertical.html";
+
+const QString MULTIPLE_TIMETABLE_DATA_RESULTS_FILE="data_and_timetable.fet";
+
 
 //functions below are used in iCal exporting functions
 bool isLeapYear(int year);

@@ -1,43 +1,59 @@
+From Volker Dirr
+
+>> we have:
+>>
+>> 1. category: 3-4 classes
+>> 2. category: 5 courses
+>> 3. category: 4 religions (always same time, so i didn't enter it)
+>> 4. category: several working groups (after noon lesson, so i add them
+>> manualy)
+>>
+>> know have a closer look:
+>> 4 classes * 5 courses * 4 religion is already 80 subgroubs.
+>> so if i also add working groups (lets say 5, but there are more!)
+>> then we have total 400 subgroups.
+>>
+>> that is stupid, because i have only around 100 students in a year!
+>>
+>> i think in that case it is wise to enetr data not in groups, add
+>> students
+>> individual.
+>>
+>> that is like high school do it.
+>>
+>> - add a year.
+>> - add groups (NOT with split year, but same names)
+>> - add a group ALL STUDENTS.
+>> - add subgroup with all students names into ALL STUDENTS.
+>>
+>> - now we need a table to every year:
+>>    - horizontal are the division names (must not be group names, but
+>> can)
+>>    - vertical must be the student names
+>> - every cell is a bool checkbox
+>>
+>> no the timetablemaker can check every single student. of yourse by
+>> checking the studentsname must be added as subgroup into that group.
+>
+
+--------------------------------------------------------------------------------
+
+from Maciej Deorowicz:
+
+> I have idea for two features. First: possibility to disable contraint
+> without removing it. Such 'Active' checkbox like on activities dialog.
+
+--------------------------------------------------------------------------------
+
+to save results in a format that can reload and modify later. - partially done
+
+--------------------------------------------------------------------------------
+
 Multiple processor - split multiple timetable generation on multiple processors
 
 --------------------------------------------------------------------------------
 
-ConstraintsStudentsEarlyMaxBeginningsAtSecondHour
-
-Students min hours daily to consider only working days (???)
-
-----------------------------------------------------------------------------------
-
-From Maciej Deorowicz:
-
-Buildings for rooms and constraint students max building changes per day
-and constraint students min gaps between building changes.
-
-ConstraintActivitiesPreferredRoom(s) (like acts. pref. times)
-
-
-Maybe similar request with min gaps between building changes, from Marco Barsotti:
-
->    - I have more teachers with some activity in some classes at a *first
->    address* (subject tag 1). They have also some activity with some *other
->    classes* at a *second address* (subject tag 2). When I define an
->    activity and I add a subject tag, I would like to be able (select)
-> impose a gap after that activity IF (and only IF) *next activity (for
-> teacher*) has a different subject tag. Can you plan to add a such
-> constraint? - 
-
-
-Maybe similar request from Horatiu Halmajan:
-
-Students moving between buildings - we have classrooms in 5 different
-locations and we are trying to limit the number of daily movements for
-students
-
-----------------------------------------------------------------------------------
-
 From Hatim Ali:
-
-ConstraintTeachersMaxHoursContinuously
 
 > Dear all
 > please can you add "A set teachers has same timetabe (day+hour)" to make 2
@@ -46,16 +62,12 @@ ConstraintTeachersMaxHoursContinuously
 
 ----------------------------------------------------------------------------------
 
-From Peter Ambroz:
+From Volker Dirr
 
- It would be fine to have a new space constraint(s): A student set has a  
- preferred room / set of rooms
- In our school, we create timetables for every room in the building, not  
- only for those constrained by number of students or time. Therefore it  
- would be nice if I could create every room and set it as a default room  
- for some class (set of students) with some weight, so that the generated  
- timetable will contain room name for every activity. And then I could  
- print timetable for each particular room.
+>> how about displaying "minimum home
+>> room hours" and maybe also "maximum special room hours" in the teacher
+>> statistics? because a timetable maker (maybe) need that for his
+>> planning.
 
 ----------------------------------------------------------------------------------
 
@@ -133,7 +145,7 @@ weight
 them in status bar or in another log window.
 3.Option to remember last focused control in dialogs - very useful if 
 you want by keyboard to open many constraints and change their weight
-4.Constraint "Max gaps per day" and "longest gap is n hours"
+4.Constraint "longest gap is n hours"
 5.way to save last generated timetable and reopen it again (for example 
 for printing it with different html level, or for viewing it.
 6.Ability to show free teachers for every position in students and 
@@ -154,9 +166,6 @@ From my80s:
 > i hope these my one opinions are for better eye-candy,
 > and usefull for othrs to enjoin the team
 
-
-If u could add constraint 'teacher max gaps daily'
-it would be really very helpfull for me.
 
 
 > also in program we have
@@ -608,3 +617,93 @@ and write their requirements in text files or excel files (which can
 be exported to text files) in a standard format before the scheduler 
 (normally one person) who keys in the requirements in the timetabling 
 software for the different courses to maximize the use of resources.
+
+10---------------------------------------------------------
+From kdsayang
+
+I would like to see FET generate the time table in 
+
+1. certain amount of time for each time table
+2. with some setting about the remaining weight soft conflicts
+3. generate multiple variants
+
+For example
+(A) rules are
+(i) the user select to generate 10 minutes time limit for each time table
+(ii) user set 0 for remaining weight soft conflicts
+(iii) the user select 10 variants
+
+the outcome
+(B)
+(i) the time table finished and it has generate 10 time table that concur with 0 remaining soft conflicts for each time table
+(ii) the time table finish and it only manage to get 5 variants from 0 remaining weight soft conflicts
+(iii) the time table finish BUT it don't manage to generate any variants with 0 remaining weight soft conflicts
+
+refer to (B)(iii)
+
+the user can change
+(i) longer run time to generate time table (with crossing finger) hehe... Others setting is not change
+(ii) longer run time to generate time table with increasing value for remaining soft conflicts (0.5, 1.0, 1.5 etc)
+
+As u can see in timetable --> generate multiple variants, features in (A)(i) and (A)(iii) are already there. I hope that u 
+
+can figure it out on how to implement the feature in (A)(ii). It would be marvelous.
+
+11---------------------------------------------------------
+From kdsayang
+
+There are 3 types of locking and unlocking....
+ 
+A. By teachers
+(i)   Lock selected activities (only times)
+(ii)  Lock selected activities (only space)
+(iii) Lock selected activities (time&space)
+ 
+B. By students
+(i)   Lock selected activities (only times)
+(ii)  Lock selected activities (only space)
+(iii) Lock selected activities (time&space)
+ 
+C. By room
+(i)   Lock selected activities (only times)
+(ii)  Lock selected activities (only space)
+(iii) Lock selected activities  
+ 
+Before this, there is no indicator that time, space and time&space have been locked/unlocked in the 
+teachers/students/rooms time table. Unless user explore the time and space constrains in FET, they 
+will see all the rules about the locking/unlock constraints
+ 
+So, I suggest that coloring system to be use as an indicator so that it is easy for user to recognize and edit it (lock/unlock)
+ 
+No locking (unlock) = no color
+Lock selected activities (only times) = green
+Lock selected activities (only space) = yellow
+Lock selected activities (time&space) = red
+
+12---------------------------------------------------------
+From kdsayang
+
+If a user want to add "an activity have a set of preferred rooms", the user will need to click one 
+by one to add right???... So, I would like to suggest that we group them like when user want to add 
+an "activity". There (activity), we can select by years, groups and subgroup for students. Instead of 
+clicking all the student groups in years 1, user can just click year 1 to include them all into students....
+ 
+For example for rooms (room group then room subgroup)
+ 
+HALL
+Hall A
+Hall B
+Hall C
+ 
+TUTORIAL
+A-A1
+A-A2
+B-A1
+ 
+COMPUTER LAB
+Lab 1
+Lab 2
+Lab 3
+ 
+So when user want to add "an activity have a set of preferred rooms" for all the tutorial room, instead 
+of clicking 20 tutorial room one by one, user just click the group that is Tutorial. Easy right???

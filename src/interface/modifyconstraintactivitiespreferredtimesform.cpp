@@ -26,8 +26,8 @@
 
 #include <QDesktopWidget>
 
-#define YES	(QObject::tr("Yes"))
-#define NO	(QObject::tr("No"))
+#define YES	(QObject::tr("Allowed", "Please keep translation short"))
+#define NO	(QObject::tr("Not allowed", "Please keep translation short"))
 
 ModifyConstraintActivitiesPreferredTimesForm::ModifyConstraintActivitiesPreferredTimesForm(ConstraintActivitiesPreferredTimes* ctr)
 {
@@ -43,7 +43,7 @@ ModifyConstraintActivitiesPreferredTimesForm::ModifyConstraintActivitiesPreferre
 	updateTeachersComboBox();
 	updateStudentsComboBox();
 	updateSubjectsComboBox();
-	updateSubjectTagsComboBox();
+	updateActivityTagsComboBox();
 
 	preferredTimesTable->setNumRows(gt.rules.nHoursPerDay);
 	preferredTimesTable->setNumCols(gt.rules.nDaysPerWeek);
@@ -170,22 +170,22 @@ void ModifyConstraintActivitiesPreferredTimesForm::updateSubjectsComboBox(){
 	subjectsComboBox->setCurrentItem(j);
 }
 
-void ModifyConstraintActivitiesPreferredTimesForm::updateSubjectTagsComboBox(){
+void ModifyConstraintActivitiesPreferredTimesForm::updateActivityTagsComboBox(){
 	int i=0, j=-1;
-	subjectTagsComboBox->clear();
-	subjectTagsComboBox->insertItem("");
-	if(this->_ctr->subjectTagName=="")
+	activityTagsComboBox->clear();
+	activityTagsComboBox->insertItem("");
+	if(this->_ctr->activityTagName=="")
 		j=i;
 	i++;
-	for(int k=0; k<gt.rules.subjectTagsList.size(); k++){
-		SubjectTag* s=gt.rules.subjectTagsList[k];
-		subjectTagsComboBox->insertItem(s->name);
-		if(s->name==this->_ctr->subjectTagName)
+	for(int k=0; k<gt.rules.activityTagsList.size(); k++){
+		ActivityTag* s=gt.rules.activityTagsList[k];
+		activityTagsComboBox->insertItem(s->name);
+		if(s->name==this->_ctr->activityTagName)
 			j=i;
 		i++;
 	}
 	assert(j>=0);
-	subjectTagsComboBox->setCurrentItem(j);
+	activityTagsComboBox->setCurrentItem(j);
 }
 
 void ModifyConstraintActivitiesPreferredTimesForm::ok()
@@ -215,14 +215,56 @@ void ModifyConstraintActivitiesPreferredTimesForm::ok()
 	if(subject!="")
 		assert(gt.rules.searchSubject(subject)>=0);
 		
-	QString subjectTag=subjectTagsComboBox->currentText();
-	if(subjectTag!="")
-		assert(gt.rules.searchSubjectTag(subjectTag)>=0);
+	QString activityTag=activityTagsComboBox->currentText();
+	if(activityTag!="")
+		assert(gt.rules.searchActivityTag(activityTag)>=0);
 		
-	if(teacher=="" && students=="" && subject=="" && subjectTag==""){
+	if(teacher=="" && students=="" && subject=="" && activityTag==""){
 		int t=QMessageBox::question(this, tr("FET question"),
-		 tr("Are you sure you want to add this constraint for all activities?"
-		 " (no teacher, students, subject or subject tag specified)"),
+		 tr("You specified all the activities. This might be a small problem: if you specify"
+		  " a not allowed slot between two allowed slots, this not allowed slot will"
+		  " be counted as a gap in the teachers' and students' timetable.\n\n"
+		  " The best practice would be to use constraint break times.\n\n"
+		  " If you need weight under 100%, then you can use this constraint, but be careful"
+		  " not to obtain an impossible timetable (if your teachers/students are constrained on gaps"
+		  " or early gaps and if you leave a not allowed slot between 2 allowed slots or"
+		  " a not allowed slot early in the day and more allowed slots after it,"
+		  " this possible gap might be counted in teachers' and students' timetable)")
+		  +"\n\n"+tr("Do you want to add current constraint?"),
+		 QMessageBox::Yes, QMessageBox::Cancel);
+						 
+		if(t==QMessageBox::Cancel)
+				return;
+	}
+
+	if(teacher!="" && students=="" && subject=="" && activityTag==""){
+		int t=QMessageBox::question(this, tr("FET question"),
+		 tr("You specified only the teacher. This might be a small problem: if you specify"
+		  " a not allowed slot between two allowed slots, this not allowed slot will"
+		  " be counted as a gap in the teacher's timetable.\n\n"
+		  " The best practice would be to use constraint teacher not available times.\n\n"
+		  " If you need weight under 100%, then you can use this constraint, but be careful"
+		  " not to obtain an impossible timetable (if your teacher is constrained on gaps"
+		  " and if you leave a not allowed slot between 2 allowed slots, this possible"
+		  " gap might be counted in teacher's timetable)")
+		  +"\n\n"+tr("Do you want to add current constraint?"),
+		 QMessageBox::Yes, QMessageBox::Cancel);
+						 
+		if(t==QMessageBox::Cancel)
+				return;
+	}
+	if(teacher=="" && students!="" && subject=="" && activityTag==""){
+		int t=QMessageBox::question(this, tr("FET question"),
+		 tr("You specified only the students set. This might be a small problem: if you specify"
+		  " a not allowed slot between two allowed slots (or a not allowed slot before allowed slots),"
+		  " this not allowed slot will"
+		  " be counted as a gap (or early gap) in the students' timetable.\n\n"
+		  " The best practice would be to use constraint students set not available times.\n\n"
+		  " If you need weight under 100%, then you can use this constraint, but be careful"
+		  " not to obtain an impossible timetable (if your students set is constrained on gaps or early gaps"
+		  " and if you leave a not allowed slot between 2 allowed slots (or a not allowed slot before allowed slots), this possible"
+		  " gap might be counted in students' timetable)")
+		  +"\n\n"+tr("Do you want to add current constraint?"),
 		 QMessageBox::Yes, QMessageBox::Cancel);
 						 
 		if(t==QMessageBox::Cancel)

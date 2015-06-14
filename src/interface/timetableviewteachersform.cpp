@@ -116,7 +116,7 @@ void TimetableViewTeachersForm::updateTeachersTimetableTable(){
 				if(ai!=UNALLOCATED_ACTIVITY){
 					Activity* act=&gt.rules.internalActivitiesList[ai];
 					assert(act!=NULL);
-					s += act->subjectName+" "+act->subjectTagName+"\n"; //added in version 3_9_16, on 16 Oct. 2004; suggested by Nicholas Robinson
+					s += act->subjectName+" "+act->activityTagName+"\n"; //added in version 3_9_16, on 16 Oct. 2004; suggested by Nicholas Robinson
 					for(QStringList::Iterator it=act->studentsNames.begin(); it!=act->studentsNames.end(); it++)
 						s += (*it) + " ";
 
@@ -180,7 +180,22 @@ void TimetableViewTeachersForm::detailActivity(int row, int col){
 	}
 }
 
-void TimetableViewTeachersForm::lock()
+void TimetableViewTeachersForm::lockTime()
+{
+	this->lock(true, false);
+}
+	
+void TimetableViewTeachersForm::lockSpace()
+{
+	this->lock(false, true);
+}
+
+void TimetableViewTeachersForm::lockTimeSpace()
+{
+	this->lock(true, true);
+}
+			
+void TimetableViewTeachersForm::lock(bool lockTime, bool lockSpace)
 {
 	if(simulation_running){
 		QMessageBox::information(this, QObject::tr("FET information"),
@@ -198,6 +213,10 @@ void TimetableViewTeachersForm::lock()
 	int i=gt.rules.searchTeacher(teachername);
 
 	Solution* tc=&best_solution;
+	
+	bool report=true;
+	
+	int added=0, duplicates=0;
 
 	//lock selected activities
 	for(int j=0; j<gt.rules.nHoursPerDay; j++){
@@ -210,18 +229,75 @@ void TimetableViewTeachersForm::lock()
 					int day=time%gt.rules.nDaysPerWeek;
 					//Activity* act=gt.rules.activitiesList.at(ai);
 					Activity* act=&gt.rules.internalActivitiesList[ai];
-					ConstraintActivityPreferredTime* ctr=new ConstraintActivityPreferredTime(100.0, act->id, day, hour);
-					bool t=gt.rules.addTimeConstraint(ctr);
-					if(t)
-						QMessageBox::information(this, QObject::tr("FET information"), 
-						 QObject::tr("Added the following constraint:\n%1").arg(ctr->getDetailedDescription(gt.rules)));
-					else{
-						QMessageBox::warning(this, QObject::tr("FET information"), 
-						 QObject::tr("Constraint\n%1 NOT added - duplicate").arg(ctr->getDetailedDescription(gt.rules)));
-						delete ctr;
+
+					if(lockTime){
+						ConstraintActivityPreferredTime* ctr=new ConstraintActivityPreferredTime(100.0, act->id, day, hour);
+						bool t=gt.rules.addTimeConstraint(ctr);
+						
+						if(t)
+							added++;
+						else
+							duplicates++;
+
+						QString s;
+						
+						if(t)
+							s=tr("Added the following constraint:")+"\n"+ctr->getDetailedDescription(gt.rules);
+						else{
+							s=tr("Constraint\n%1 NOT added - duplicate").arg(ctr->getDetailedDescription(gt.rules));
+							delete ctr;
+						}
+						
+						if(report){
+							int k;
+							if(t)
+								k=QMessageBox::information(this, tr("FET information"), s,
+							 	 tr("Skip information"), tr("See next"), QString(), 1, 0 );
+							else
+								k=QMessageBox::warning(this, tr("FET warning"), s,
+							 	 tr("Skip information"), tr("See next"), QString(), 1, 0 );
+																			 				 	
+		 					if(k==0)
+								report=false;
+						}
+					}
+					
+					int ri=tc->rooms[ai];
+					if(ri!=UNALLOCATED_SPACE && ri!=UNSPECIFIED_ROOM && lockSpace){
+						ConstraintActivityPreferredRoom* ctr=new ConstraintActivityPreferredRoom(100, act->id, (gt.rules.internalRoomsList[ri])->name);
+						bool t=gt.rules.addSpaceConstraint(ctr);
+
+						QString s;
+						
+						if(t)
+							added++;
+						else
+							duplicates++;
+
+						if(t)
+							s=tr("Added the following constraint:")+"\n"+ctr->getDetailedDescription(gt.rules);
+						else{
+							s=tr("Constraint\n%1 NOT added - duplicate").arg(ctr->getDetailedDescription(gt.rules));
+							delete ctr;
+						}
+						
+						if(report){
+							int k;
+							if(t)
+								k=QMessageBox::information(this, tr("FET information"), s,
+							 	 tr("Skip information"), tr("See next"), QString(), 1, 0 );
+							else
+								k=QMessageBox::warning(this, tr("FET warning"), s,
+							 	 tr("Skip information"), tr("See next"), QString(), 1, 0 );
+																			 				 	
+		 					if(k==0)
+								report=false;
+						}
 					}
 				}
 			}
 		}
 	}
+	
+	QMessageBox::information(this, tr("FET information"), tr("Added %1 locking constraints, ignored %2 duplicates").arg(added).arg(duplicates));
 }

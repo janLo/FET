@@ -47,12 +47,12 @@ AddConstraint2ActivitiesConsecutiveForm::AddConstraint2ActivitiesConsecutiveForm
 	}
 	subjectsComboBox->setCurrentItem(0);
 
-	subjectTagsComboBox->insertItem("");
-	for(int i=0; i<gt.rules.subjectTagsList.size(); i++){
-		SubjectTag* st=gt.rules.subjectTagsList[i];
-		subjectTagsComboBox->insertItem(st->name);
+	activityTagsComboBox->insertItem("");
+	for(int i=0; i<gt.rules.activityTagsList.size(); i++){
+		ActivityTag* st=gt.rules.activityTagsList[i];
+		activityTagsComboBox->insertItem(st->name);
 	}
-	subjectTagsComboBox->setCurrentItem(0);
+	activityTagsComboBox->setCurrentItem(0);
 
 	studentsComboBox->insertItem("");
 	for(int i=0; i<gt.rules.yearsList.size(); i++){
@@ -81,7 +81,7 @@ bool AddConstraint2ActivitiesConsecutiveForm::filterOk(Activity* act)
 	QString tn=teachersComboBox->currentText();
 	QString stn=studentsComboBox->currentText();
 	QString sbn=subjectsComboBox->currentText();
-	QString sbtn=subjectTagsComboBox->currentText();
+	QString sbtn=activityTagsComboBox->currentText();
 	int ok=true;
 
 	//teacher
@@ -100,8 +100,8 @@ bool AddConstraint2ActivitiesConsecutiveForm::filterOk(Activity* act)
 	if(sbn!="" && sbn!=act->subjectName)
 		ok=false;
 		
-	//subject tag
-	if(sbtn!="" && sbtn!=act->subjectTagName)
+	//activity tag
+	if(sbtn!="" && sbtn!=act->activityTagName)
 		ok=false;
 		
 	//students
@@ -159,6 +159,8 @@ void AddConstraint2ActivitiesConsecutiveForm::constraintChanged()
 	s+="\n";
 
 	s+=QObject::tr("2 activities consecutive");
+	s+=" ";
+	s+=QObject::tr("(activity 2 must be immediately after activity 1, in the same day, possibly separated by breaks)");
 	s+="\n";
 
 	int tmp2=firstActivitiesComboBox->currentItem();

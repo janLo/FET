@@ -39,6 +39,10 @@ public:
 	static void writeSimulationResults();
 
 	static void writeSimulationResults(int n); //write in a directory with number n (for multiple generation)
+	
+	static void writeSimulationResultsCommandLine();
+	
+	static void writeTimetableDataFile(const QString& filename);
 
 	/**
 	Function writing the subgroups' timetable xml format, to a file
@@ -202,6 +206,18 @@ public:
 	Time vertical version
 	*/
 	static void writeSubjectsTimetableTimeVerticalHtml(const QString& htmlfilename, QString saveTime, int placedActivities);
+
+	/**
+	Function writing the teachers' free periods timetable in html format
+	Days horizontal version
+	*/
+	static void writeTeachersFreePeriodsTimetableDaysHorizontalHtml(const QString& htmlfilename, QString saveTime, int placedActivities);
+
+	/**
+	Function writing the teachers' free periods timetable in html format
+	Days vertical version
+	*/
+	static void writeTeachersFreePeriodsTimetableDaysVerticalHtml(const QString& htmlfilename, QString saveTime, int placedActivities);
 };
 
 #endif
