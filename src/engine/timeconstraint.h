@@ -2,25 +2,22 @@
 File timeconstraint.h
 */
 
-/*
-Copyright 2002, 2003 Lalescu Liviu.
+/***************************************************************************
+                          timeconstraint.h  -  description
+                             -------------------
+    begin                : 2002
+    copyright            : (C) 2002 by Lalescu Liviu
+    email                : Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)
+ ***************************************************************************/
 
-This file is part of FET.
-
-FET is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-FET is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with FET; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Affero General Public License as        *
+ *   published by the Free Software Foundation, either version 3 of the    *
+ *   License, or (at your option) any later version.                       *
+ *                                                                         *
+ ***************************************************************************/
 
 #ifndef TIMECONSTRAINT_H
 #define TIMECONSTRAINT_H
@@ -2198,6 +2195,8 @@ public:
 	*/
 	QString p_activityTagName;
 
+	int duration; //if -1, neglected. Otherwise, >=1.
+
 	/**
 	The number of preferred times
 	*/
@@ -2234,7 +2233,7 @@ public:
 	//ConstraintActivitiesPreferredTimeSlots(double wp, QString te,
 	//	QString st, QString su, QString sut, int nPT, int d[], int h[]);
 	ConstraintActivitiesPreferredTimeSlots(double wp, QString te,
-		QString st, QString su, QString sut, int nPT_L, QList<int> d_L, QList<int> h_L);
+		QString st, QString su, QString sut, int dur, int nPT_L, QList<int> d_L, QList<int> h_L);
 
 	bool computeInternalStructure(QWidget* parent, Rules& r);
 
@@ -2378,6 +2377,8 @@ public:
 	*/
 	QString activityTagName;
 
+	int duration; //if -1, neglected. Otherwise, >=1.
+
 	/**
 	The number of preferred times
 	*/
@@ -2414,7 +2415,7 @@ public:
 	//ConstraintActivitiesPreferredStartingTimes(double wp, QString te,
 	//	QString st, QString su, QString sut, int nPT, int d[], int h[]);
 	ConstraintActivitiesPreferredStartingTimes(double wp, QString te,
-		QString st, QString su, QString sut, int nPT_L, QList<int> d_L, QList<int> h_L);
+		QString st, QString su, QString sut, int dur, int nPT_L, QList<int> d_L, QList<int> h_L);
 
 	bool computeInternalStructure(QWidget* parent, Rules& r);
 

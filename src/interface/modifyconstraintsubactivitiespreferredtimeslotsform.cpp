@@ -8,10 +8,10 @@
 
 /***************************************************************************
  *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
+ *   This program is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Affero General Public License as        *
+ *   published by the Free Software Foundation, either version 3 of the    *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
 
@@ -59,7 +59,7 @@ ModifyConstraintSubactivitiesPreferredTimeSlotsForm::ModifyConstraintSubactiviti
 	this->_ctr=ctr;
 
 	updateTeachersComboBox();
-	updateStudentsComboBox();
+	updateStudentsComboBox(parent);
 	updateSubjectsComboBox();
 	updateActivityTagsComboBox();
 	
@@ -99,6 +99,8 @@ ModifyConstraintSubactivitiesPreferredTimeSlotsForm::ModifyConstraintSubactiviti
 			QTableWidgetItem* item= new QTableWidgetItem();
 			item->setTextAlignment(Qt::AlignCenter);
 			item->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
+			if(SHOW_TOOLTIPS_FOR_CONSTRAINTS_WITH_TABLES)
+				item->setToolTip(gt.rules.daysOfTheWeek[j]+QString("\n")+gt.rules.hoursOfTheDay[i]);
 			preferredTimesTable->setItem(i, j, item);
 
 			if(!currentMatrix[i][j])
@@ -230,7 +232,7 @@ void ModifyConstraintSubactivitiesPreferredTimeSlotsForm::updateTeachersComboBox
 	teachersComboBox->setCurrentIndex(j);
 }
 
-void ModifyConstraintSubactivitiesPreferredTimeSlotsForm::updateStudentsComboBox(){
+void ModifyConstraintSubactivitiesPreferredTimeSlotsForm::updateStudentsComboBox(QWidget* parent){
 	int i=0, j=-1;
 	studentsComboBox->clear();
 	studentsComboBox->addItem("");
@@ -249,7 +251,7 @@ void ModifyConstraintSubactivitiesPreferredTimeSlotsForm::updateStudentsComboBox
 			if(stg->name==this->_ctr->p_studentsName)
 				j=i;
 			i++;
-			for(int p=0; p<stg->subgroupsList.size(); p++){
+			if(SHOW_SUBGROUPS_IN_COMBO_BOXES) for(int p=0; p<stg->subgroupsList.size(); p++){
 				StudentsSubgroup* sts=stg->subgroupsList[p];
 				studentsComboBox->addItem(sts->name);
 				if(sts->name==this->_ctr->p_studentsName)
@@ -258,7 +260,10 @@ void ModifyConstraintSubactivitiesPreferredTimeSlotsForm::updateStudentsComboBox
 			}
 		}
 	}
-	assert(j>=0);
+	if(j<0)
+		showWarningForInvisibleSubgroupConstraint(parent, this->_ctr->p_studentsName);
+	else
+		assert(j>=0);
 	studentsComboBox->setCurrentIndex(j);
 }
 
@@ -300,6 +305,11 @@ void ModifyConstraintSubactivitiesPreferredTimeSlotsForm::updateActivityTagsComb
 
 void ModifyConstraintSubactivitiesPreferredTimeSlotsForm::ok()
 {
+	if(studentsComboBox->currentIndex()<0){
+		showWarningCannotModifyConstraintInvisibleSubgroupConstraint(this, this->_ctr->p_studentsName);
+		return;
+	}
+
 	double weight;
 	QString tmp=weightLineEdit->text();
 	weight_sscanf(tmp, "%lf", &weight);

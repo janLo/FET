@@ -8,10 +8,10 @@
 
 /***************************************************************************
  *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
+ *   This program is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Affero General Public License as        *
+ *   published by the Free Software Foundation, either version 3 of the    *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
 
@@ -36,6 +36,16 @@ ModifyConstraintActivitiesPreferredTimeSlotsForm::ModifyConstraintActivitiesPref
 {
 	setupUi(this);
 
+	int duration=ctr->duration;
+	durationCheckBox->setChecked(duration>=1);
+	durationSpinBox->setEnabled(duration>=1);
+	durationSpinBox->setMinimum(1);
+	durationSpinBox->setMaximum(gt.rules.nHoursPerDay);
+	if(duration>=1)
+		durationSpinBox->setValue(duration);
+	else
+		durationSpinBox->setValue(1);
+
 	okPushButton->setDefault(true);
 
 	connect(preferredTimesTable, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(itemClicked(QTableWidgetItem*)));
@@ -59,7 +69,7 @@ ModifyConstraintActivitiesPreferredTimeSlotsForm::ModifyConstraintActivitiesPref
 	this->_ctr=ctr;
 
 	updateTeachersComboBox();
-	updateStudentsComboBox();
+	updateStudentsComboBox(parent);
 	updateSubjectsComboBox();
 	updateActivityTagsComboBox();
 
@@ -96,6 +106,8 @@ ModifyConstraintActivitiesPreferredTimeSlotsForm::ModifyConstraintActivitiesPref
 			QTableWidgetItem* item= new QTableWidgetItem();
 			item->setTextAlignment(Qt::AlignCenter);
 			item->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
+			if(SHOW_TOOLTIPS_FOR_CONSTRAINTS_WITH_TABLES)
+				item->setToolTip(gt.rules.daysOfTheWeek[j]+QString("\n")+gt.rules.hoursOfTheDay[i]);
 			preferredTimesTable->setItem(i, j, item);
 			
 			if(!currentMatrix[i][j])
@@ -226,7 +238,7 @@ void ModifyConstraintActivitiesPreferredTimeSlotsForm::updateTeachersComboBox(){
 	teachersComboBox->setCurrentIndex(j);
 }
 
-void ModifyConstraintActivitiesPreferredTimeSlotsForm::updateStudentsComboBox(){
+void ModifyConstraintActivitiesPreferredTimeSlotsForm::updateStudentsComboBox(QWidget* parent){
 	int i=0, j=-1;
 	studentsComboBox->clear();
 	studentsComboBox->addItem("");
@@ -245,7 +257,7 @@ void ModifyConstraintActivitiesPreferredTimeSlotsForm::updateStudentsComboBox(){
 			if(stg->name==this->_ctr->p_studentsName)
 				j=i;
 			i++;
-			for(int p=0; p<stg->subgroupsList.size(); p++){
+			if(SHOW_SUBGROUPS_IN_COMBO_BOXES) for(int p=0; p<stg->subgroupsList.size(); p++){
 				StudentsSubgroup* sts=stg->subgroupsList[p];
 				studentsComboBox->addItem(sts->name);
 				if(sts->name==this->_ctr->p_studentsName)
@@ -254,7 +266,10 @@ void ModifyConstraintActivitiesPreferredTimeSlotsForm::updateStudentsComboBox(){
 			}
 		}
 	}
-	assert(j>=0);
+	if(j<0)
+		showWarningForInvisibleSubgroupConstraint(parent, this->_ctr->p_studentsName);
+	else
+		assert(j>=0);
 	studentsComboBox->setCurrentIndex(j);
 }
 
@@ -296,6 +311,17 @@ void ModifyConstraintActivitiesPreferredTimeSlotsForm::updateActivityTagsComboBo
 
 void ModifyConstraintActivitiesPreferredTimeSlotsForm::ok()
 {
+	int duration=-1;
+	if(durationCheckBox->isChecked()){
+		assert(durationSpinBox->isEnabled());
+		duration=durationSpinBox->value();
+	}
+
+	if(studentsComboBox->currentIndex()<0){
+		showWarningCannotModifyConstraintInvisibleSubgroupConstraint(this, this->_ctr->p_studentsName);
+		return;
+	}
+	
 	double weight;
 	QString tmp=weightLineEdit->text();
 	weight_sscanf(tmp, "%lf", &weight);
@@ -321,7 +347,7 @@ void ModifyConstraintActivitiesPreferredTimeSlotsForm::ok()
 	if(activityTag!="")
 		assert(gt.rules.searchActivityTag(activityTag)>=0);
 		
-	if(teacher=="" && students=="" && subject=="" && activityTag==""){
+	if(duration==-1 && teacher=="" && students=="" && subject=="" && activityTag==""){
 		int t=QMessageBox::question(this, tr("FET question"),
 		 tr("You specified all the activities. This might be a small problem: if you specify"
 		  " a not allowed slot between two allowed slots, this not allowed slot will"
@@ -339,7 +365,7 @@ void ModifyConstraintActivitiesPreferredTimeSlotsForm::ok()
 				return;
 	}
 
-	if(teacher!="" && students=="" && subject=="" && activityTag==""){
+	if(duration==-1 && teacher!="" && students=="" && subject=="" && activityTag==""){
 		int t=QMessageBox::question(this, tr("FET question"),
 		 tr("You specified only the teacher. This might be a small problem: if you specify"
 		  " a not allowed slot between two allowed slots, this not allowed slot will"
@@ -355,7 +381,7 @@ void ModifyConstraintActivitiesPreferredTimeSlotsForm::ok()
 		if(t==QMessageBox::Cancel)
 				return;
 	}
-	if(teacher=="" && students!="" && subject=="" && activityTag==""){
+	if(duration==-1 && teacher=="" && students!="" && subject=="" && activityTag==""){
 		int t=QMessageBox::question(this, tr("FET question"),
 		 tr("You specified only the students set. This might be a small problem: if you specify"
 		  " a not allowed slot between two allowed slots (or a not allowed slot before allowed slots),"
@@ -404,6 +430,8 @@ void ModifyConstraintActivitiesPreferredTimeSlotsForm::ok()
 	this->_ctr->p_days_L=days_L;
 	this->_ctr->p_hours_L=hours_L;
 
+	this->_ctr->duration=duration;
+
 	gt.rules.internalStructureComputed=false;
 	setRulesModifiedAndOtherThings(&gt.rules);
 	
@@ -413,6 +441,11 @@ void ModifyConstraintActivitiesPreferredTimeSlotsForm::ok()
 void ModifyConstraintActivitiesPreferredTimeSlotsForm::cancel()
 {
 	this->close();
+}
+
+void ModifyConstraintActivitiesPreferredTimeSlotsForm::on_durationCheckBox_toggled()
+{
+	durationSpinBox->setEnabled(durationCheckBox->isChecked());
 }
 
 #undef YES

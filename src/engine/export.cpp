@@ -15,16 +15,16 @@ File export.cpp
                          : http://www.timetabling.de/
  ***************************************************************************
  *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
+ *   This program is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Affero General Public License as        *
+ *   published by the Free Software Foundation, either version 3 of the    *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
 
 // Code contributed by Volker Dirr ( http://www.timetabling.de/ )
 
-//TODO: protect export strings. textquote must be dubbled
+//TODO: protect export strings. textquote must be doubled
 //TODO: count skipped min day constraints?
 //TODO: add cancel button
 
@@ -473,7 +473,7 @@ bool Export::exportCSVActivityTags(QWidget* parent, QString& lastWarnings, const
 
 	lastWarnings+=Export::tr("%1 activity tags exported.").arg(gt.rules.activityTagsList.size())+"\n";
 	if(fileExport.error()>0){
-		lastWarnings+=Export::tr("FET critical. Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(file).arg(fileExport.error()+"\n");
+		lastWarnings+=Export::tr("FET critical. Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(file).arg(fileExport.error())+QString("\n");
 		return false;
 	}
 	fileExport.close();
@@ -527,7 +527,7 @@ bool Export::exportCSVRoomsAndBuildings(QWidget* parent, QString& lastWarnings, 
 	}
 	
 	if(fileExport.error()>0){
-		lastWarnings+=Export::tr("FET critical. Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(file).arg(fileExport.error()+"\n");
+		lastWarnings+=Export::tr("FET critical. Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(file).arg(fileExport.error())+QString("\n");
 		return false;
 	}
 	fileExport.close();
@@ -570,7 +570,7 @@ bool Export::exportCSVSubjects(QWidget* parent, QString& lastWarnings, const QSt
 
 	lastWarnings+=Export::tr("%1 subjects exported.").arg(gt.rules.subjectsList.size())+"\n";	
 	if(fileExport.error()>0){
-		lastWarnings+=Export::tr("FET critical. Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(file).arg(fileExport.error()+"\n");
+		lastWarnings+=Export::tr("FET critical. Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(file).arg(fileExport.error())+QString("\n");
 		return false;
 	}
 	fileExport.close();
@@ -615,7 +615,7 @@ bool Export::exportCSVTeachers(QWidget* parent, QString& lastWarnings, const QSt
 
 	lastWarnings+=Export::tr("%1 teachers exported.").arg(gt.rules.teachersList.size())+"\n";
 	if(fileExport.error()>0){
-		lastWarnings+=Export::tr("FET critical. Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(file).arg(fileExport.error()+"\n");
+		lastWarnings+=Export::tr("FET critical. Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(file).arg(fileExport.error())+QString("\n");
 		return false;
 	}
 	fileExport.close();
@@ -690,7 +690,7 @@ bool Export::exportCSVStudents(QWidget* parent, QString& lastWarnings, const QSt
 	lastWarnings+=Export::tr("%1 groups exported.").arg(ig)+"\n";
 	lastWarnings+=Export::tr("%1 subgroups exported.").arg(is)+"\n";
 	if(fileExport.error()>0){
-		lastWarnings+=Export::tr("FET critical. Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(file).arg(fileExport.error()+"\n");
+		lastWarnings+=Export::tr("FET critical. Writing %1 gave error code %2, which means saving is compromised. Please check your disk's free space.").arg(file).arg(fileExport.error())+QString("\n");
 		return false;
 	}
 	fileExport.close();
@@ -736,7 +736,7 @@ bool Export::exportCSVActivities(QWidget* parent, QString& lastWarnings, const Q
 				<<textquote<<"Consecutive"<<textquote<<endl;
 
 	//code by Liviu Lalescu (begin)
-	//better detection of min day constraint
+	//better detection of min days constraint
 	QHash<int, int> activitiesRepresentant;
 	QHash<int, int> activitiesNumberOfSubactivities;
 	QHash<int, ConstraintMinDaysBetweenActivities*>activitiesConstraints;

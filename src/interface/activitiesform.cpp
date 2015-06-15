@@ -8,10 +8,10 @@
 
 /***************************************************************************
  *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
+ *   This program is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Affero General Public License as        *
+ *   published by the Free Software Foundation, either version 3 of the    *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
 
@@ -26,6 +26,8 @@
 #include "modifyactivityform.h"
 
 #include "activityplanningform.h"
+
+#include "centerwidgetonscreen.h"
 
 #include <QString>
 #include <QMessageBox>
@@ -132,7 +134,7 @@ ActivitiesForm::ActivitiesForm(QWidget* parent, const QString& teacherName, cons
 			currentID++;
 			if(stg->name==studentsSetName)
 				cist=currentID;
-			for(int k=0; k<stg->subgroupsList.size(); k++){
+			if(SHOW_SUBGROUPS_IN_COMBO_BOXES) for(int k=0; k<stg->subgroupsList.size(); k++){
 				StudentsSubgroup* sts=stg->subgroupsList[k];
 				studentsComboBox->addItem(sts->name);
 				currentID++;
@@ -144,7 +146,17 @@ ActivitiesForm::ActivitiesForm(QWidget* parent, const QString& teacherName, cons
 	studentsComboBox->setCurrentIndex(cist);
 	
 	if(studentsSetName!=""){
-		this->studentsFilterChanged();
+		if(cist==0){
+			showWarningForInvisibleSubgroupActivity(parent, studentsSetName);
+
+			showedStudents.clear();
+			showedStudents.insert("");
+	
+			filterChanged();
+		}
+		else{
+			this->studentsFilterChanged();
+		}
 	}
 	else{
 		showedStudents.clear();

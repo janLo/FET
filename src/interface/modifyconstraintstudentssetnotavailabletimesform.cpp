@@ -8,10 +8,10 @@
 
 /***************************************************************************
  *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
+ *   This program is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Affero General Public License as        *
+ *   published by the Free Software Foundation, either version 3 of the    *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
 
@@ -54,7 +54,7 @@ ModifyConstraintStudentsSetNotAvailableTimesForm::ModifyConstraintStudentsSetNot
 	
 	weightLineEdit->setText(CustomFETString::number(ctr->weightPercentage));
 	
-	updateStudentsComboBox();
+	updateStudentsComboBox(parent);
 
 	notAllowedTimesTable->setRowCount(gt.rules.nHoursPerDay);
 	notAllowedTimesTable->setColumnCount(gt.rules.nDaysPerWeek);
@@ -90,6 +90,8 @@ ModifyConstraintStudentsSetNotAvailableTimesForm::ModifyConstraintStudentsSetNot
 			QTableWidgetItem* item= new QTableWidgetItem();
 			item->setTextAlignment(Qt::AlignCenter);
 			item->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
+			if(SHOW_TOOLTIPS_FOR_CONSTRAINTS_WITH_TABLES)
+				item->setToolTip(gt.rules.daysOfTheWeek[j]+QString("\n")+gt.rules.hoursOfTheDay[i]);
 			notAllowedTimesTable->setItem(i, j, item);
 
 			if(!currentMatrix[i][j])
@@ -201,7 +203,7 @@ void ModifyConstraintStudentsSetNotAvailableTimesForm::itemClicked(QTableWidgetI
 	tableWidgetUpdateBug(notAllowedTimesTable);
 }
 
-void ModifyConstraintStudentsSetNotAvailableTimesForm::updateStudentsComboBox(){
+void ModifyConstraintStudentsSetNotAvailableTimesForm::updateStudentsComboBox(QWidget* parent){
 	studentsComboBox->clear();
 	int i=0, j=-1;
 	for(int m=0; m<gt.rules.yearsList.size(); m++){
@@ -216,7 +218,7 @@ void ModifyConstraintStudentsSetNotAvailableTimesForm::updateStudentsComboBox(){
 			if(stg->name==this->_ctr->students)
 				j=i;
 			i++;
-			for(int p=0; p<stg->subgroupsList.size(); p++){
+			if(SHOW_SUBGROUPS_IN_COMBO_BOXES) for(int p=0; p<stg->subgroupsList.size(); p++){
 				StudentsSubgroup* sts=stg->subgroupsList[p];
 				studentsComboBox->addItem(sts->name);
 				if(sts->name==this->_ctr->students)
@@ -225,12 +227,20 @@ void ModifyConstraintStudentsSetNotAvailableTimesForm::updateStudentsComboBox(){
 			}
 		}
 	}
-	assert(j>=0);
-	studentsComboBox->setCurrentIndex(j);																
+	if(j<0)
+		showWarningForInvisibleSubgroupConstraint(parent, this->_ctr->students);
+	else
+		assert(j>=0);
+	studentsComboBox->setCurrentIndex(j);
 }
 
 void ModifyConstraintStudentsSetNotAvailableTimesForm::ok()
 {
+	if(studentsComboBox->currentIndex()<0){
+		showWarningCannotModifyConstraintInvisibleSubgroupConstraint(this, this->_ctr->students);
+		return;
+	}
+
 	double weight;
 	QString tmp=weightLineEdit->text();
 	weight_sscanf(tmp, "%lf", &weight);

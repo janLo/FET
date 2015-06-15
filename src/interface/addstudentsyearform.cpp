@@ -8,10 +8,10 @@
 
 /***************************************************************************
  *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
+ *   This program is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Affero General Public License as        *
+ *   published by the Free Software Foundation, either version 3 of the    *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
 
@@ -56,16 +56,28 @@ void AddStudentsYearForm::addStudentsYear()
 		if(ss->type==STUDENTS_SUBGROUP){
 			QMessageBox::information( this, tr("Year insertion dialog"),
 				tr("This name is taken for a subgroup - please consider another name"));
+
+			nameLineEdit->selectAll();
+			nameLineEdit->setFocus();
+
 			return;
 		}
 		else if(ss->type==STUDENTS_GROUP){
 			QMessageBox::information( this, tr("Year insertion dialog"),
 				tr("This name is taken for a group - please consider another name"));
+
+			nameLineEdit->selectAll();
+			nameLineEdit->setFocus();
+
 			return;
 		}
 		else if(ss->type==STUDENTS_YEAR){
 			QMessageBox::information( this, tr("Year insertion dialog"),
 				tr("This name is taken for a year - please consider another name"));
+
+			nameLineEdit->selectAll();
+			nameLineEdit->setFocus();
+
 			return;
 		}
 		else
@@ -87,10 +99,12 @@ void AddStudentsYearForm::addStudentsYear()
 
 		QMessageBox::information(this, tr("Year insertion dialog"),
 			tr("Year added. You might want to divide it into sections - this is done in the years "
-			"dialog - button 'Divide year ...', or by manually adding groups and subgroups in the groups or subgroups menus\n\n"
-			" Important note: if you plan to use option 'divide', please try to use it only once for each year at the beginning, because"
+			"dialog - button 'Divide year ...', or by manually adding groups and subgroups in the groups or subgroups menus."
+			/*
+			"\n\nImportant note: if you plan to use option 'divide', please try to use it only once for each year at the beginning, because"
 			" a second use of option 'divide' for the same year will remove all activities and constraints referring to old groups and subgroups"
 			" from this year."
+			*/
 			));
 	}
 

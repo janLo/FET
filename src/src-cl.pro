@@ -57,7 +57,6 @@ win32 {
 	CONFIG += console
 }
 QT -= gui
-QT += xml
 
 DESTDIR = ..
 TARGET = fet-cl
@@ -69,3 +68,9 @@ RCC_DIR = ../tmp/commandline
 
 INCLUDEPATH += engine interface
 DEPENDPATH += engine interface
+
+unix {
+	target.path = /usr/bin
+
+	INSTALLS += target
+}

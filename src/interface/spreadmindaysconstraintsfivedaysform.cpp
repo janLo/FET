@@ -8,10 +8,10 @@
 //
 /***************************************************************************
  *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
+ *   This program is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Affero General Public License as        *
+ *   published by the Free Software Foundation, either version 3 of the    *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
 
@@ -34,6 +34,9 @@
 #include "longtextmessagebox.h"
 
 #include "timetable.h"
+
+#include <algorithm>
+using namespace std;
 
 extern Timetable gt;
 
@@ -138,7 +141,8 @@ void SpreadMinDaysConstraintsFiveDaysForm::wasAccepted()
 		activityGroupIdHash.insert(act->id, act->activityGroupId);
 	
 	for(int i=0; i<nActs; i++){
-		qSort(activitiesForRepresentant[i]);
+		//qSort(activitiesForRepresentant[i]);
+		std::stable_sort(activitiesForRepresentant[i].begin(), activitiesForRepresentant[i].end());
 		int fid=activitiesForRepresentant[i].at(0);
 		assert(activityGroupIdHash.contains(fid));
 		int gid=activityGroupIdHash.value(fid);

@@ -2,25 +2,22 @@
 File fet.cpp - this is where the program FET starts
 */
 
-/*
-Copyright 2002, 2003 Lalescu Liviu.
+/***************************************************************************
+                          fet.cpp  -  description
+                             -------------------
+    begin                : 2002
+    copyright            : (C) 2002 by Lalescu Liviu
+    email                : Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)
+ ***************************************************************************/
 
-This file is part of FET.
-
-FET is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-FET is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with timetable; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Affero General Public License as        *
+ *   published by the Free Software Foundation, either version 3 of the    *
+ *   License, or (at your option) any later version.                       *
+ *                                                                         *
+ ***************************************************************************/
 
 #include "fet.h"
 
@@ -39,7 +36,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include <QDate>
 #include <QDateTime>
 
+#include <QSet>
+
+static QSet<QString> languagesSet;
+
 #include <ctime>
+#include <cstdlib>
 
 #include "timetableexport.h"
 #include "generate.h"
@@ -102,9 +104,9 @@ int initialOrderOfActivitiesIndices[MAX_ACTIVITIES];
 extern bool students_schedule_ready, teachers_schedule_ready, rooms_schedule_ready;
 
 #ifndef FET_COMMAND_LINE
-extern QMutex mutex;
+extern QMutex myMutex;
 #else
-QMutex mutex;
+QMutex myMutex;
 #endif
 
 void writeDefaultSimulationParameters();
@@ -172,16 +174,33 @@ void usage(QTextStream* out, const QString& error)
 	
 	s+=QString(
 		"Command line usage: \"fet-cl --inputfile=x [--outputdir=d] [--timelimitseconds=y] [--htmllevel=z] [--language=t] "
+		"[--writetimetableconflicts=wt1] "
+		"[--writetimetablesstatistics=wt2] "
+		"[--writetimetablesxml=wt3] "
+		"[--writetimetablesdayshorizontal=wt4] "
+		"[--writetimetablesdaysvertical=wt5] "
+		"[--writetimetablestimehorizontal=wt6] "
+		"[--writetimetablestimevertical=wt7] "
+		"[--writetimetablessubgroups=wt8] "
+		"[--writetimetablesgroups=wt9] "
+		"[--writetimetablesyears=wt10] "
+		"[--writetimetablesteachers=wt11] "
+		"[--writetimetablesteachersfreeperiods=wt12] "
+		"[--writetimetablesrooms=wt13] "
+		"[--writetimetablessubjects=wt14] "
+		"[--writetimetablesactivities=wt15] "
 		"[--printactivitytags=a] [--printnotavailable=u] [--printbreak=b] [--dividetimeaxisbydays=v] [--duplicateverticalheaders=e] "
 		"[--printsimultaneousactivities=w] [--randomseedx=rx --randomseedy=ry] [--warnifusingnotperfectconstraints=s] "
-		"[--warnifusingstudentsminhoursdailywithallowemptydays=p] [--verbose=r]\",\n"
+		"[--warnifusingstudentsminhoursdailywithallowemptydays=p] [--warnifusinggroupactivitiesininitialorder=g] [--warnsubgroupswiththesameactivities=ssa] [--verbose=r]\",\n"
 		"where:\nx is the input file, for instance \"data.fet\"\n"
 		"d is the path to results directory, without trailing slash or backslash (default is current working path). "
 		"Make sure you have write permissions there.\n"
 		"y is integer (seconds) (default 2000000000, which is practically infinite).\n"
 		"z is integer from 0 to 6 and represents the detail level for the generated HTML timetables "
 		"(default 2, larger values have more details/facilities and larger file sizes).\n"
-		"t is one of en_US, ar, ca, da, de, el, es, fa, fr, gl, he, hu, id, it, lt, mk, ms, nl, pl, pt_BR, ro, ru, si, sk, sq, sr, tr, uk, uz, vi (default en_US).\n"
+		"t is one of en_US, ar, ca, da, de, el, es, fa, fr, gl, he, hu, id, it, lt, mk, ms, nl, pl, pt_BR, ro, ru, si, sk, sq, sr, tr, uk, uz, vi, "
+		"zh_CN, zh_TW (default en_US).\n"
+		"wt1 to wt15 are either true or false and represent whether you want the corresponding timetables to be written on the disk (default true).\n"
 		"a is either true or false and represets if you want activity tags to be present in the final HTML timetables (default true).\n"
 		"u is either true or false and represents if you want -x- (for true) or --- (for false) in the generated timetables for the "
 		"not available slots (default true).\n"
@@ -198,6 +217,10 @@ void usage(QTextStream* out, const QString& error)
 		"(activity tag max hours daily or students max gaps per day) (default true).\n"
 		"p is either true or false, represents whether you want a message box to be shown, with a warning, if the input file contains nonstandard constraints "
 		"students min hours daily with allow empty days (default true).\n"
+		"g is either true or false, represents whether you want a message box to be shown, with a warning, if the input file contains nonstandard timetable "
+		"generation options to group activities in the initial order (default true).\n"
+		"ssa is either true or false, represents whether you want a message box to be show, with a warning, if your input file contains subgroups which have "
+		"the same activities (default true)."
 		"r is either true or false, represents whether you want additional generation messages and other messages to be shown on the command line (default false)."
 		"\n"
 		"Alternatively, you can run \"fet-cl --version [--outputdir=d]\" to get the current FET version. "
@@ -239,9 +262,28 @@ void readSimulationParameters()
 		OUTPUT_DIR=predefDir;
 	}
 
+#ifndef USE_SYSTEM_LOCALE
 	FET_LANGUAGE=newSettings.value("language", "en_US").toString();
-	if(FET_LANGUAGE=="en_GB") //because older versions of FET used en_GB as the default language. I changed it to en_US
-		FET_LANGUAGE="en_US";
+#else
+	if(newSettings.contains("language")){
+		FET_LANGUAGE=newSettings.value("language").toString();
+	}
+	else{
+		FET_LANGUAGE=QLocale::system().name();
+
+		bool ok=false;
+		foreach(QString s, languagesSet){
+			if(FET_LANGUAGE.left(s.length())==s){
+				FET_LANGUAGE=s;
+				ok=true;
+				break;
+			}
+		}
+		if(!ok)
+			FET_LANGUAGE="en_US";
+	}
+#endif
+	
 	WORKING_DIRECTORY=newSettings.value("working-directory", "examples").toString();
 	IMPORT_DIRECTORY=newSettings.value("import-directory", OUTPUT_DIR).toString();
 	
@@ -272,6 +314,27 @@ void readSimulationParameters()
 	
 	USE_GUI_COLORS=newSettings.value("use-gui-colors", "false").toBool();
 
+	SHOW_SUBGROUPS_IN_COMBO_BOXES=newSettings.value("show-subgroups-in-combo-boxes", "true").toBool();
+	SHOW_SUBGROUPS_IN_ACTIVITY_PLANNING=newSettings.value("show-subgroups-in-activity-planning", "true").toBool();
+	
+	WRITE_TIMETABLE_CONFLICTS=newSettings.value("write-timetable-conflicts", "true").toBool();
+
+	WRITE_TIMETABLES_STATISTICS=newSettings.value("write-timetables-statistics", "true").toBool();
+	WRITE_TIMETABLES_XML=newSettings.value("write-timetables-xml", "true").toBool();
+	WRITE_TIMETABLES_DAYS_HORIZONTAL=newSettings.value("write-timetables-days-horizontal", "true").toBool();
+	WRITE_TIMETABLES_DAYS_VERTICAL=newSettings.value("write-timetables-days-vertical", "true").toBool();
+	WRITE_TIMETABLES_TIME_HORIZONTAL=newSettings.value("write-timetables-time-horizontal", "true").toBool();
+	WRITE_TIMETABLES_TIME_VERTICAL=newSettings.value("write-timetables-time-vertical", "true").toBool();
+
+	WRITE_TIMETABLES_SUBGROUPS=newSettings.value("write-timetables-subgroups", "true").toBool();
+	WRITE_TIMETABLES_GROUPS=newSettings.value("write-timetables-groups", "true").toBool();
+	WRITE_TIMETABLES_YEARS=newSettings.value("write-timetables-years", "true").toBool();
+	WRITE_TIMETABLES_TEACHERS=newSettings.value("write-timetables-teachers", "true").toBool();
+	WRITE_TIMETABLES_TEACHERS_FREE_PERIODS=newSettings.value("write-timetables-teachers-free-periods", "true").toBool();
+	WRITE_TIMETABLES_ROOMS=newSettings.value("write-timetables-rooms", "true").toBool();
+	WRITE_TIMETABLES_SUBJECTS=newSettings.value("write-timetables-subjects", "true").toBool();
+	WRITE_TIMETABLES_ACTIVITIES=newSettings.value("write-timetables-activities", "true").toBool();
+
 /////////confirmations
 	CONFIRM_ACTIVITY_PLANNING=newSettings.value("confirm-activity-planning", "true").toBool();
 	CONFIRM_SPREAD_ACTIVITIES=newSettings.value("confirm-spread-activities", "true").toBool();
@@ -282,8 +345,12 @@ void readSimulationParameters()
 	ENABLE_ACTIVITY_TAG_MAX_HOURS_DAILY=newSettings.value("enable-activity-tag-max-hours-daily", "false").toBool();
 	ENABLE_STUDENTS_MAX_GAPS_PER_DAY=newSettings.value("enable-students-max-gaps-per-day", "false").toBool();
 	SHOW_WARNING_FOR_NOT_PERFECT_CONSTRAINTS=newSettings.value("warn-if-using-not-perfect-constraints", "true").toBool();
+	SHOW_WARNING_FOR_SUBGROUPS_WITH_THE_SAME_ACTIVITIES=newSettings.value("warn-subgroups-with-the-same-activities", "true").toBool();
 	ENABLE_STUDENTS_MIN_HOURS_DAILY_WITH_ALLOW_EMPTY_DAYS=newSettings.value("enable-students-min-hours-daily-with-allow-empty-days", "false").toBool();
 	SHOW_WARNING_FOR_STUDENTS_MIN_HOURS_DAILY_WITH_ALLOW_EMPTY_DAYS=newSettings.value("warn-if-using-students-min-hours-daily-with-allow-empty-days", "true").toBool();
+	
+	ENABLE_GROUP_ACTIVITIES_IN_INITIAL_ORDER=newSettings.value("enable-group-activities-in-initial-order", "false").toBool();
+	SHOW_WARNING_FOR_GROUP_ACTIVITIES_IN_INITIAL_ORDER=newSettings.value("warn-if-using-group-activities-in-initial-order", "true").toBool();
 	
 	//main form
 	QRect rect=newSettings.value("FetMainForm/geometry", QRect(0,0,0,0)).toRect();
@@ -291,6 +358,8 @@ void readSimulationParameters()
 	//MAIN_FORM_SHORTCUTS_TAB_POSITION=newSettings.value("FetMainForm/shortcuts-tab-position", "0").toInt();
 	MAIN_FORM_SHORTCUTS_TAB_POSITION=0; //always restoring to the first page, as suggested by a user
 	SHOW_SHORTCUTS_ON_MAIN_WINDOW=newSettings.value("FetMainForm/show-shortcuts", "true").toBool();
+
+	SHOW_TOOLTIPS_FOR_CONSTRAINTS_WITH_TABLES=newSettings.value("FetMainForm/show-tooltips-for-constraints-with-tables", "false").toBool();
 	
 	if(VERBOSE){
 		cout<<"Settings read"<<endl;
@@ -316,7 +385,28 @@ void writeSimulationParameters()
 	settings.setValue("print-break", PRINT_BREAK_TIME_SLOTS);
 	
 	settings.setValue("use-gui-colors", USE_GUI_COLORS);
+
+	settings.setValue("show-subgroups-in-combo-boxes", SHOW_SUBGROUPS_IN_COMBO_BOXES);
+	settings.setValue("show-subgroups-in-activity-planning", SHOW_SUBGROUPS_IN_ACTIVITY_PLANNING);
 	
+	settings.setValue("write-timetable-conflicts", WRITE_TIMETABLE_CONFLICTS);
+
+	settings.setValue("write-timetables-statistics", WRITE_TIMETABLES_STATISTICS);
+	settings.setValue("write-timetables-xml", WRITE_TIMETABLES_XML);
+	settings.setValue("write-timetables-days-horizontal", WRITE_TIMETABLES_DAYS_HORIZONTAL);
+	settings.setValue("write-timetables-days-vertical", WRITE_TIMETABLES_DAYS_VERTICAL);
+	settings.setValue("write-timetables-time-horizontal", WRITE_TIMETABLES_TIME_HORIZONTAL);
+	settings.setValue("write-timetables-time-vertical", WRITE_TIMETABLES_TIME_VERTICAL);
+
+	settings.setValue("write-timetables-subgroups", WRITE_TIMETABLES_SUBGROUPS);
+	settings.setValue("write-timetables-groups", WRITE_TIMETABLES_GROUPS);
+	settings.setValue("write-timetables-years", WRITE_TIMETABLES_YEARS);
+	settings.setValue("write-timetables-teachers", WRITE_TIMETABLES_TEACHERS);
+	settings.setValue("write-timetables-teachers-free-periods", WRITE_TIMETABLES_TEACHERS_FREE_PERIODS);
+	settings.setValue("write-timetables-rooms", WRITE_TIMETABLES_ROOMS);
+	settings.setValue("write-timetables-subjects", WRITE_TIMETABLES_SUBJECTS);
+	settings.setValue("write-timetables-activities", WRITE_TIMETABLES_ACTIVITIES);
+
 ///////////confirmations
 	settings.setValue("confirm-activity-planning", CONFIRM_ACTIVITY_PLANNING);
 	settings.setValue("confirm-spread-activities", CONFIRM_SPREAD_ACTIVITIES);
@@ -327,16 +417,60 @@ void writeSimulationParameters()
 	settings.setValue("enable-activity-tag-max-hours-daily", ENABLE_ACTIVITY_TAG_MAX_HOURS_DAILY);
 	settings.setValue("enable-students-max-gaps-per-day", ENABLE_STUDENTS_MAX_GAPS_PER_DAY);
 	settings.setValue("warn-if-using-not-perfect-constraints", SHOW_WARNING_FOR_NOT_PERFECT_CONSTRAINTS);
+	settings.setValue("warn-subgroups-with-the-same-activities", SHOW_WARNING_FOR_SUBGROUPS_WITH_THE_SAME_ACTIVITIES);
 	settings.setValue("enable-students-min-hours-daily-with-allow-empty-days", ENABLE_STUDENTS_MIN_HOURS_DAILY_WITH_ALLOW_EMPTY_DAYS);
 	settings.setValue("warn-if-using-students-min-hours-daily-with-allow-empty-days", SHOW_WARNING_FOR_STUDENTS_MIN_HOURS_DAILY_WITH_ALLOW_EMPTY_DAYS);
+
+	settings.setValue("enable-group-activities-in-initial-order", ENABLE_GROUP_ACTIVITIES_IN_INITIAL_ORDER);
+	settings.setValue("warn-if-using-group-activities-in-initial-order", SHOW_WARNING_FOR_GROUP_ACTIVITIES_IN_INITIAL_ORDER);
 
 	//main form
 	settings.setValue("FetMainForm/geometry", mainFormSettingsRect);
 	//settings.setValue("FetMainForm/shortcuts-tab-position", MAIN_FORM_SHORTCUTS_TAB_POSITION);
 	//settings.setValue("FetMainForm/shortcuts-tab-position", 0); //always starting on the first page, as suggested by a user
 	settings.setValue("FetMainForm/show-shortcuts", SHOW_SHORTCUTS_ON_MAIN_WINDOW);
+
+	settings.setValue("FetMainForm/show-tooltips-for-constraints-with-tables", SHOW_TOOLTIPS_FOR_CONSTRAINTS_WITH_TABLES);
 }
 #endif
+
+void initLanguagesSet()
+{
+	//This is one of the two places to insert a new language in the sources (the other one is in fetmainform.cpp).
+	languagesSet.clear();
+	languagesSet.insert("en_US");
+	languagesSet.insert("ar");
+	languagesSet.insert("ca");
+	languagesSet.insert("de");
+	languagesSet.insert("el");
+	languagesSet.insert("es");
+	languagesSet.insert("fr");
+	languagesSet.insert("hu");
+	languagesSet.insert("id");
+	languagesSet.insert("it");
+	languagesSet.insert("lt");
+	languagesSet.insert("mk");
+	languagesSet.insert("ms");
+	languagesSet.insert("nl");
+	languagesSet.insert("pl");
+	languagesSet.insert("ro");
+	languagesSet.insert("tr");
+	languagesSet.insert("ru");
+	languagesSet.insert("fa");
+	languagesSet.insert("uk");
+	languagesSet.insert("pt_BR");
+	languagesSet.insert("da");
+	languagesSet.insert("si");
+	languagesSet.insert("sk");
+	languagesSet.insert("he");
+	languagesSet.insert("sr");
+	languagesSet.insert("gl");
+	languagesSet.insert("vi");
+	languagesSet.insert("uz");
+	languagesSet.insert("sq");
+	languagesSet.insert("zh_CN");
+	languagesSet.insert("zh_TW");
+}
 
 #ifndef FET_COMMAND_LINE
 void setLanguage(QApplication& qapplication, QWidget* parent)
@@ -358,16 +492,7 @@ void setLanguage(QCoreApplication& qapplication, QWidget* parent)
 	
 	bool translation_loaded=false;
 	
-	//this is one place (out of 2) in which you need to add a new language
-	if(FET_LANGUAGE=="ar" || FET_LANGUAGE=="ca" || FET_LANGUAGE=="de" || FET_LANGUAGE=="es"
-	 || FET_LANGUAGE=="el" || FET_LANGUAGE=="fr" || FET_LANGUAGE=="hu" || FET_LANGUAGE=="mk"
-	 || FET_LANGUAGE=="ms" || FET_LANGUAGE=="nl" || FET_LANGUAGE=="pl" || FET_LANGUAGE=="ro"
-	 || FET_LANGUAGE=="tr" || FET_LANGUAGE=="id" || FET_LANGUAGE=="it" || FET_LANGUAGE=="lt"
-	 || FET_LANGUAGE=="ru" || FET_LANGUAGE=="fa" || FET_LANGUAGE=="uk" || FET_LANGUAGE=="pt_BR"
-	 || FET_LANGUAGE=="da" || FET_LANGUAGE=="si" || FET_LANGUAGE=="sk" || FET_LANGUAGE=="he"
-	 || FET_LANGUAGE=="sr" || FET_LANGUAGE=="gl" || FET_LANGUAGE=="vi" || FET_LANGUAGE=="uz"
-	 || FET_LANGUAGE=="sq"){
-
+	if(FET_LANGUAGE!="en_US" && languagesSet.contains(FET_LANGUAGE)){
 		translation_loaded=translator.load("fet_"+FET_LANGUAGE, qapplication.applicationDirPath());
 		if(!translation_loaded){
 			translation_loaded=translator.load("fet_"+FET_LANGUAGE, qapplication.applicationDirPath()+"/translations");
@@ -541,6 +666,8 @@ int main(int argc, char **argv)
 	QCoreApplication qCoreApplication(argc, argv);
 #endif
 
+	initLanguagesSet();
+
 	VERBOSE=false;
 
 	terminateGeneratePointer=NULL;
@@ -645,6 +772,24 @@ int main(int argc, char **argv)
 		
 		PRINT_BREAK_TIME_SLOTS=true;
 		
+		WRITE_TIMETABLE_CONFLICTS=true;
+	
+		WRITE_TIMETABLES_STATISTICS=true;
+		WRITE_TIMETABLES_XML=true;
+		WRITE_TIMETABLES_DAYS_HORIZONTAL=true;
+		WRITE_TIMETABLES_DAYS_VERTICAL=true;
+		WRITE_TIMETABLES_TIME_HORIZONTAL=true;
+		WRITE_TIMETABLES_TIME_VERTICAL=true;
+
+		WRITE_TIMETABLES_SUBGROUPS=true;
+		WRITE_TIMETABLES_GROUPS=true;
+		WRITE_TIMETABLES_YEARS=true;
+		WRITE_TIMETABLES_TEACHERS=true;
+		WRITE_TIMETABLES_TEACHERS_FREE_PERIODS=true;
+		WRITE_TIMETABLES_ROOMS=true;
+		WRITE_TIMETABLES_SUBJECTS=true;
+		WRITE_TIMETABLES_ACTIVITIES=true;
+
 		DIVIDE_HTML_TIMETABLES_WITH_TIME_AXIS_BY_DAYS=false;
 		
 		TIMETABLE_HTML_REPEAT_NAMES=false;
@@ -655,7 +800,11 @@ int main(int argc, char **argv)
 		
 		SHOW_WARNING_FOR_NOT_PERFECT_CONSTRAINTS=true;
 		
+		SHOW_WARNING_FOR_SUBGROUPS_WITH_THE_SAME_ACTIVITIES=true;
+		
 		SHOW_WARNING_FOR_STUDENTS_MIN_HOURS_DAILY_WITH_ALLOW_EMPTY_DAYS=true;
+		
+		SHOW_WARNING_FOR_GROUP_ACTIVITIES_IN_INITIAL_ORDER=true;
 		
 		bool showVersion=false;
 		
@@ -711,6 +860,10 @@ int main(int argc, char **argv)
 				if(s.right(5)=="false")
 					SHOW_WARNING_FOR_NOT_PERFECT_CONSTRAINTS=false;
 			}
+			else if(s.left(37)=="--warnsubgroupswiththesameactivities="){
+				if(s.right(5)=="false")
+					SHOW_WARNING_FOR_SUBGROUPS_WITH_THE_SAME_ACTIVITIES=false;
+			}
 			else if(s.left(53)=="--warnifusingstudentsminhoursdailywithallowemptydays="){
 				if(s.right(5)=="false")
 					SHOW_WARNING_FOR_STUDENTS_MIN_HOURS_DAILY_WITH_ALLOW_EMPTY_DAYS=false;
@@ -722,6 +875,70 @@ int main(int argc, char **argv)
 			else if(s=="--version"){
 				showVersion=true;
 			}
+			///
+			else if(s.left(26)=="--writetimetableconflicts="){
+				if(s.right(5)=="false")
+					WRITE_TIMETABLE_CONFLICTS=false;
+			}
+			//
+			else if(s.left(28)=="--writetimetablesstatistics="){
+				if(s.right(5)=="false")
+					WRITE_TIMETABLES_STATISTICS=false;
+			}
+			else if(s.left(21)=="--writetimetablesxml="){
+				if(s.right(5)=="false")
+					WRITE_TIMETABLES_XML=false;
+			}
+			else if(s.left(32)=="--writetimetablesdayshorizontal="){
+				if(s.right(5)=="false")
+					WRITE_TIMETABLES_DAYS_HORIZONTAL=false;
+			}
+			else if(s.left(30)=="--writetimetablesdaysvertical="){
+				if(s.right(5)=="false")
+					WRITE_TIMETABLES_DAYS_VERTICAL=false;
+			}
+			else if(s.left(32)=="--writetimetablestimehorizontal="){
+				if(s.right(5)=="false")
+					WRITE_TIMETABLES_TIME_HORIZONTAL=false;
+			}
+			else if(s.left(30)=="--writetimetablestimevertical="){
+				if(s.right(5)=="false")
+					WRITE_TIMETABLES_TIME_VERTICAL=false;
+			}
+			//
+			else if(s.left(27)=="--writetimetablessubgroups="){
+				if(s.right(5)=="false")
+					WRITE_TIMETABLES_SUBGROUPS=false;
+			}
+			else if(s.left(24)=="--writetimetablesgroups="){
+				if(s.right(5)=="false")
+					WRITE_TIMETABLES_GROUPS=false;
+			}
+			else if(s.left(23)=="--writetimetablesyears="){
+				if(s.right(5)=="false")
+					WRITE_TIMETABLES_YEARS=false;
+			}
+			else if(s.left(26)=="--writetimetablesteachers="){
+				if(s.right(5)=="false")
+					WRITE_TIMETABLES_TEACHERS=false;
+			}
+			else if(s.left(37)=="--writetimetablesteachersfreeperiods="){
+				if(s.right(5)=="false")
+					WRITE_TIMETABLES_TEACHERS_FREE_PERIODS=false;
+			}
+			else if(s.left(23)=="--writetimetablesrooms="){
+				if(s.right(5)=="false")
+					WRITE_TIMETABLES_ROOMS=false;
+			}
+			else if(s.left(26)=="--writetimetablessubjects="){
+				if(s.right(5)=="false")
+					WRITE_TIMETABLES_SUBJECTS=false;
+			}
+			else if(s.left(28)=="--writetimetablesactivities="){
+				if(s.right(5)=="false")
+					WRITE_TIMETABLES_ACTIVITIES=false;
+			}
+			///
 			else
 				unrecognizedOptions.append(s);
 		}
@@ -775,13 +992,13 @@ int main(int argc, char **argv)
 	
 			//QString qv=qVersion();
 			out<<"FET version "<<qPrintable(FET_VERSION)<<endl;
-			out<<"Free timetabling software, licensed under GNU GPL v2 or later"<<endl;
-			out<<"Copyright (C) 2002-2014 Liviu Lalescu, Volker Dirr"<<endl;
+			out<<"Free timetabling software, licensed under the GNU Affero General Public License version 3 or later"<<endl;
+			out<<"Copyright (C) 2002-2015 Liviu Lalescu, Volker Dirr"<<endl;
 			out<<"Homepage: http://lalescu.ro/liviu/fet/"<<endl;
 			//out<<" (Using Qt version "<<qPrintable(qv)<<")"<<endl;
 			cout<<"FET version "<<qPrintable(FET_VERSION)<<endl;
-			cout<<"Free timetabling software, licensed under GNU GPL v2 or later"<<endl;
-			cout<<"Copyright (C) 2002-2014 Liviu Lalescu, Volker Dirr"<<endl;
+			cout<<"Free timetabling software, licensed under the GNU Affero General Public License version 3 or later"<<endl;
+			cout<<"Copyright (C) 2002-2015 Liviu Lalescu, Volker Dirr"<<endl;
 			cout<<"Homepage: http://lalescu.ro/liviu/fet/"<<endl;
 			//cout<<" (Using Qt version "<<qPrintable(qv)<<")"<<endl;
 

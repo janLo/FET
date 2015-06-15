@@ -12,10 +12,10 @@ File centerwidgetonscreen.cpp
 
 /***************************************************************************
  *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
+ *   This program is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Affero General Public License as        *
+ *   published by the Free Software Foundation, either version 3 of the    *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
 
@@ -35,6 +35,9 @@ File centerwidgetonscreen.cpp
 #include <QRect>
 #include <QSize>
 #include <QPoint>
+
+#include <QCoreApplication>
+#include <QMessageBox>
 
 #include <QSettings>
 #endif
@@ -200,6 +203,45 @@ void setRulesUnmodifiedAndOtherThings(Rules* rules)
 			if(pFetMainForm->isWindowModified())
 				pFetMainForm->setWindowModified(false);
 	}
+}
+
+void showWarningForInvisibleSubgroupConstraint(QWidget* parent, const QString& initialSubgroupName)
+{
+	QString title=QCoreApplication::translate("VariousGlobalWarningMessages", "FET warning");
+
+	QString message=QCoreApplication::translate("VariousGlobalWarningMessages", "Subgroups are invisible in combo boxes, by a global setting which you activated."
+	 " The current constraint is referring to subgroup %1, so the constraint is displayed incorrectly with a void subgroup here.")
+	 .arg(initialSubgroupName);
+	message+="\n\n";
+	message+=QCoreApplication::translate("VariousGlobalWarningMessages", "If you want, you can revert to the initial setting to show subgroups in combo boxes.");
+
+	QMessageBox::warning(parent, title, message);
+}
+
+void showWarningCannotModifyConstraintInvisibleSubgroupConstraint(QWidget* parent, const QString& initialSubgroupName)
+{
+	QString title=QCoreApplication::translate("VariousGlobalWarningMessages", "FET warning");
+
+	QString message=QCoreApplication::translate("VariousGlobalWarningMessages", "Subgroups are invisible in combo boxes, by a global setting which you activated."
+	 " You are trying to modify a constraint, leaving it to refer to the original subgroup %1, which is invisible in the combo box - but this is impossible.")
+	 .arg(initialSubgroupName);
+	message+="\n\n";
+	message+=QCoreApplication::translate("VariousGlobalWarningMessages", "If you want, you can revert to the initial setting to show subgroups in combo boxes.");
+	
+	QMessageBox::warning(parent, title, message);
+}
+
+void showWarningForInvisibleSubgroupActivity(QWidget* parent, const QString& initialSubgroupName)
+{
+	QString title=QCoreApplication::translate("VariousGlobalWarningMessages", "FET warning");
+
+	QString message=QCoreApplication::translate("VariousGlobalWarningMessages", "Subgroups are invisible in combo boxes, by a global setting which you activated."
+	 " The current activity is referring to subgroup %1, so the activity is displayed incorrectly with a void subgroup here.")
+	 .arg(initialSubgroupName);
+	message+="\n\n";
+	message+=QCoreApplication::translate("VariousGlobalWarningMessages", "If you want, you can revert to the initial setting to show subgroups in combo boxes.");
+
+	QMessageBox::warning(parent, title, message);
 }
 
 #else

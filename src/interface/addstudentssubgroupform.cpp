@@ -8,10 +8,10 @@
 
 /***************************************************************************
  *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
+ *   This program is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Affero General Public License as        *
+ *   published by the Free Software Foundation, either version 3 of the    *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
 
@@ -60,6 +60,10 @@ void AddStudentsSubgroupForm::addStudentsSubgroup()
 	if(gt.rules.searchSubgroup(yearName, groupName, subgroupName)>=0){
 		QMessageBox::information( this, tr("Subgroup insertion dialog"),
 			tr("Could not insert item. Must be a duplicate"));
+
+		nameLineEdit->selectAll();
+		nameLineEdit->setFocus();
+		
 		return;
 	}
 	StudentsSet* ss=gt.rules.searchStudentsSet(subgroupName);
@@ -67,11 +71,19 @@ void AddStudentsSubgroupForm::addStudentsSubgroup()
 	if(ss!=NULL && ss->type==STUDENTS_YEAR){
 		QMessageBox::information( this, tr("Subgroup insertion dialog"),
 			tr("This name is taken for a year - please consider another name"));
+
+		nameLineEdit->selectAll();
+		nameLineEdit->setFocus();
+
 		return;
 	}
 	if(ss!=NULL && ss->type==STUDENTS_GROUP){
 		QMessageBox::information( this, tr("Subgroup insertion dialog"),
 			tr("This name is taken for a group - please consider another name"));
+
+		nameLineEdit->selectAll();
+		nameLineEdit->setFocus();
+
 		return;
 	}
 	if(ss!=NULL){ //already existing subgroup, but in other group. Several groups share the same subgroup.
@@ -83,8 +95,13 @@ void AddStudentsSubgroupForm::addStudentsSubgroup()
 			"If you want to make a new subgroup, independent, "
 			"please abort now and give it another name.")+"\n\n"+tr("Note: the number of students for the added subgroup will be the number of students of the already existing subgroup "
 			"(you can modify the number of students in the modify subgroup dialog)."),
-			tr("Add"), tr("Abort"), 0, 0, 1 ) == 1)
+			tr("Add"), tr("Abort"), 0, 0, 1 ) == 1){
+
+			nameLineEdit->selectAll();
+			nameLineEdit->setFocus();
+
 			return;
+		}
 
 		numberSpinBox->setValue(ss->numberOfStudents);
 		sts=(StudentsSubgroup*)ss;

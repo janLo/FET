@@ -8,10 +8,10 @@
 
 /***************************************************************************
  *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
+ *   This program is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Affero General Public License as        *
+ *   published by the Free Software Foundation, either version 3 of the    *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
 
@@ -61,9 +61,13 @@ void ModifyStudentsYearForm::ok()
 	}
 	if(this->_initialYearName!=nameLineEdit->text() && gt.rules.searchStudentsSet(nameLineEdit->text())!=NULL){
 		QMessageBox::information(this, tr("FET information"), tr("Name existing - please choose another"));
+
+		nameLineEdit->selectAll();
+		nameLineEdit->setFocus();
+
 		return;
 	}
-	bool t=gt.rules.modifyYear(this->_initialYearName, nameLineEdit->text(), numberSpinBox->value());
+	bool t=gt.rules.modifyStudentsSet(this->_initialYearName, nameLineEdit->text(), numberSpinBox->value());
 	assert(t);
 
 	this->close();

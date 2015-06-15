@@ -1692,7 +1692,7 @@ Versions 5.21.0 - 5.21.3
 - Version 5.21.3
 	- Updated the Windows version to Qt 5.2.1.
 ---------------------------------------------------------------------------------
-Versions 5.22.0 - 5.22.v
+Version 5.22.0
 - Version 5.22.0
 	- Updated to Qt 5.3.0.
 	- Many improvements on memory and speed in pre-generating and after-generating.
@@ -1700,3 +1700,96 @@ Versions 5.22.0 - 5.22.v
 	- Now you can unlock all activities or activities of a single day without generating the timetable (suggested by Volker Dirr).
 	- Increased the maximum number of divisions in the first and second categories when dividing a year (suggested by Bobby Wise).
 	- Added a new Morocco example file, by Mohamed Bahaj.
+---------------------------------------------------------------------------------
+Versions 5.23.0 - 5.23.4
+- Version 5.23.0
+	- Updated to Qt 5.3.1.
+	- Added a new timetabling generation option, to group selected activities in the initial order, next to the activity which is
+	placed the earliest (suggested by Yush Yuen). This is useful in very rare cases of peculiar usage of constraint activities
+	occupy max time slots from selection, or if you want to change the initial order of the activities by bringing some activities
+	into front.
+	- Improved the timetable shortcuts tab, by adding the print, locking and advanced push buttons.
+- Version 5.23.1
+	- The teachers' timetables now show the list of teachers for team teaching; also the students' timetables now show the list
+	of students sets for team teaching or show the students set of the activity if it is different from the currently selected
+	students set (suggested and implemented by Volker Dirr).
+- Version 5.23.2
+	- Fixed a building problem under C++11 (reported by pkgsrc packager Thomas Klausner, solved by Jörg Sonnenberger).
+- Version 5.23.3
+	- Updated to Qt 5.3.2.
+	- Added a fet.desktop file (by Alexey Loginov).
+	- Fixed some comments concerning the license (reported by Alexey Loginov).
+	- Added a "make install" option (suggested by Alexey Loginov and other users, done by Zsolt Udvari and Liviu Lalescu).
+	- Added an icon (suggested by Alexey Loginov and other users).
+	- Added an option at compilation time so that FET automatically detects the system locale (suggested by Alexey Loginov and other users).
+- Version 5.23.4
+	- Added a partial Chinese Simplified (zh_CN) translation, by orange.
+	- Added two example files from Vietnam, by Nguyen Huu Tuyen.
+---------------------------------------------------------------------------------
+Version 5.24.0
+- Version 5.24.0
+	- Updated to Qt 5.4.0.
+	- Significant speed improvements when using many students sets (suggested by Volker Dirr).
+	- Speed improvements in the statistics menu.
+	- Other speed improvements for larger data.
+	- Added an option to hide students subgroups in combo boxes/activity planning (useful if you have too many students subgroups
+	and you don't use them in the interface).
+	- Added options to select the categories of timetables to write on the hard disk.
+	- Automatic division of years by categories is improved (suggested by alxgudea, Bobby Wise and Volker Dirr).
+	- Code improvement in reading the .fet XML files: converted from the obsolete Qt classes QDom* to QXmlStreamReader. It brings
+	speed and memory improvements when reading the input files, and ensures FET source compatibility with future Qt versions.
+	Also error reporting when reading a corrupt file is improved. The structure of the .fet XML files is slightly changed,
+	but of course older files are opened correctly.
+	- Several bug fixes, when trying to open corrupt files.
+	- Other bug fixes, reported by Vanyo Georgiev.
+	- It is now allowed to have constraints preferred/home rooms with a single room (suggested by liquid and Volker Dirr).
+	- Added a new example file from Vietnam, by nguyenhuuduyet.
+	- Added a new example file from Namibia, by Bobby Wise.
+	- Added two anonymous example files.
+---------------------------------------------------------------------------------
+Version 5.25.0
+- Version 5.25.0
+	- Improved the split year dialog: groups and subgroups which will exist in this year after the division will retain their activities and constraints.
+	- Sort (temporarily) the constraints by description in the all time/space constraints dialogs. Also, removed the 'Sort by comments' button,
+	which is probably useless.
+	- Fixed a bug introduced in version 5.24.0: when having individually modified activities, removing teachers, subjects, activity tags,
+	or students sets could remove only some components of the large split activity.
+	- Some minor strings improvements.
+---------------------------------------------------------------------------------
+Versions 5.26.0 - 5.26.2
+- Version 5.26.0
+	- FET is now licensed under the GNU Affero General Public License version 3 or later (suggested by Volker Dirr).
+	- Improved the speed of importing from comma separated values (CSV) files, especially when dealing with many students sets.
+	- Improved the speed of adding/modifying the (sub)activities from the corresponding dialogs (not noticeable, in usual cases).
+	- Other speed improvements in the interface.
+	- Leak and crash bug fixes (not usually met).
+	- Some minor strings improvements.
+	- Code cleanup.
+- Version 5.26.1
+	- Crash bug fix (probably never met, when using overlapping years) and improvements when removing students sets. Now you can completely remove a
+	subgroup/group from a single button.
+	- Added a test to report subgroups which have the same activities, so that the user can make generation faster by removing equivalent subgroups
+	(if the user checks that the subgroups also have the same constraints).
+	- Added a selectable option to show tool tips in the add/modify constraint dialogs which use tables (the tool tip is the day and the hour under
+	the current cursor position). Suggested by Bob Hairgrove.
+	- Updated the German translation, by Bob Hairgrove.
+	- Code cleanup.
+- Version 5.26.2
+	- Updated to Qt 5.4.1.
+	- Crash bug fix when generating with zero students sets (introduced in FET-5.26.0).
+	- Added a partial Chinese Traditional (zh_TW) translation, by James.
+	- Updated the German translation, by Bob Hairgrove.
+---------------------------------------------------------------------------------
+Versions 5.27.0 - 5.27.v
+- Version 5.27.0
+	- Writing the statistics of the generated timetable (gaps, min/max hours, free days), implemented by Volker Dirr.
+	- Updated the Chinese Traditional translation, by James.
+- Version 5.27.1
+	- Crash bug fix, when modifying a teacher after generating, and then viewing the timetable for that teacher without generating again.
+	Reported by Yush Yuen.
+	- Updated the German translation, by Bob Hairgrove.
+- Version 5.27.2
+	- Fixed a compilation error under CentOS 6 (reported by azaer).
+- Version 5.27.3
+	- Updated to Qt 5.4.2.
+	- Added the "duration" filter in activities preferred starting times and preferred time slots (suggested by Volker Dirr and jillali elghazoui).

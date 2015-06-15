@@ -8,10 +8,10 @@
 
 /***************************************************************************
  *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
+ *   This program is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Affero General Public License as        *
+ *   published by the Free Software Foundation, either version 3 of the    *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
 
@@ -331,25 +331,19 @@ void TimetableViewStudentsForm::updateStudentsTimetableTable(){
 	groupname = groupsListWidget->currentItem()->text();
 	subgroupname = subgroupsListWidget->currentItem()->text();
 
-	if( ! ((StudentsSubgroup*)gt.rules.searchAugmentedStudentsSet(subgroupname)) ){
+	StudentsSubgroup* sts=(StudentsSubgroup*)gt.rules.searchAugmentedStudentsSet(subgroupname);
+	if(sts==NULL){
 		QMessageBox::information(this, tr("FET warning"), tr("You have an old timetable view students dialog opened - please close it"));
 		return;
 	}
 
 	s="";
-/*	s = tr("Students");
-	s += ": ";*/
-	//s += yearname;
-	//s += ", ";
-	//s += groupname;
-	//s += ", ";
 	s += subgroupname;
 
 	classNameTextLabel->setText(s);
 
 	assert(gt.rules.initialized);
 
-	StudentsSubgroup* sts=(StudentsSubgroup*)gt.rules.searchAugmentedStudentsSet(subgroupname);
 	assert(sts);
 	int i;
 	for(i=0; i<gt.rules.nInternalSubgroups; i++)
@@ -363,6 +357,12 @@ void TimetableViewStudentsForm::updateStudentsTimetableTable(){
 			if(ai!=UNALLOCATED_ACTIVITY){
 				Activity* act=&gt.rules.internalActivitiesList[ai];
 				assert(act!=NULL);
+				
+				assert(act->studentsNames.count()>=1);
+				if((act->studentsNames.count()==1 && act->studentsNames.at(0)!=subgroupname) || act->studentsNames.count()>=2){
+					s+=act->studentsNames.join(", ");
+					s+="\n";
+				}
 				
 				if(TIMETABLE_HTML_PRINT_ACTIVITY_TAGS){
 					QString ats=act->activityTagsNames.join(", ");

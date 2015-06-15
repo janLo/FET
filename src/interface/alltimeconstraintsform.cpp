@@ -8,10 +8,10 @@
 
 /***************************************************************************
  *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
+ *   This program is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Affero General Public License as        *
+ *   published by the Free Software Foundation, either version 3 of the    *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
 
@@ -128,11 +128,14 @@
 
 #include <QtAlgorithms>
 
+#include <algorithm>
+using namespace std;
+
 extern const QString COMPANY;
 extern const QString PROGRAM;
 
 const int DESCRIPTION=0;
-const int DETDESCRIPTION=1;
+//const int DETDESCRIPTION=1;
 
 const int CONTAINS=0;
 const int DOESNOTCONTAIN=1;
@@ -142,6 +145,9 @@ const int NOTREGEXP=3;
 AllTimeConstraintsForm::AllTimeConstraintsForm(QWidget* parent): QDialog(parent)
 {
 	setupUi(this);
+
+	filterCheckBox->setChecked(false);
+	sortedCheckBox->setChecked(false);
 	
 	currentConstraintTextEdit->setReadOnly(true);
 	
@@ -155,9 +161,10 @@ AllTimeConstraintsForm::AllTimeConstraintsForm(QWidget* parent): QDialog(parent)
 	connect(modifyConstraintPushButton, SIGNAL(clicked()), this, SLOT(modifyConstraint()));
 	connect(constraintsListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(modifyConstraint()));
 	connect(filterCheckBox, SIGNAL(toggled(bool)), this, SLOT(filter(bool)));
+	connect(sortedCheckBox, SIGNAL(toggled(bool)), this, SLOT(sortedChanged(bool)));
 	connect(activatePushButton, SIGNAL(clicked()), this, SLOT(activateConstraint()));
 	connect(deactivatePushButton, SIGNAL(clicked()), this, SLOT(deactivateConstraint()));
-	connect(sortByCommentsPushButton, SIGNAL(clicked()), this, SLOT(sortConstraintsByComments()));
+	//connect(sortByCommentsPushButton, SIGNAL(clicked()), this, SLOT(sortConstraintsByComments()));
 	connect(commentsPushButton, SIGNAL(clicked()), this, SLOT(constraintComments()));
 
 	centerWidgetOnScreen(this);
@@ -191,6 +198,7 @@ AllTimeConstraintsForm::AllTimeConstraintsForm(QWidget* parent): QDialog(parent)
 	useFilter=false;
 	
 	assert(filterCheckBox->isChecked()==false);
+	assert(sortedCheckBox->isChecked()==false);
 	
 	filterChanged();
 }
@@ -282,23 +290,41 @@ bool AllTimeConstraintsForm::filterOk(TimeConstraint* ctr)
 	}
 }
 
+void AllTimeConstraintsForm::sortedChanged(bool checked)
+{
+	Q_UNUSED(checked);
+
+	filterChanged();
+}
+
+static int timeConstraintsAscendingByDescription(TimeConstraint* t1, TimeConstraint* t2)
+{
+	return t1->getDescription(gt.rules) < t2->getDescription(gt.rules);
+}
+
 void AllTimeConstraintsForm::filterChanged()
 {
 	visibleTimeConstraintsList.clear();
 	constraintsListWidget->clear();
 	int n_active=0;
 	foreach(TimeConstraint* ctr, gt.rules.timeConstraintsList)
-		if(filterOk(ctr)){
+		if(filterOk(ctr))
 			visibleTimeConstraintsList.append(ctr);
-			constraintsListWidget->addItem(ctr->getDescription(gt.rules));
-			
-			if(USE_GUI_COLORS && !ctr->active)
-				constraintsListWidget->item(constraintsListWidget->count()-1)->setBackground(constraintsListWidget->palette().alternateBase());
-				
-			if(ctr->active)
-				n_active++;
-		}
 		
+	if(sortedCheckBox->isChecked())
+		std::stable_sort(visibleTimeConstraintsList.begin(), visibleTimeConstraintsList.end(), timeConstraintsAscendingByDescription);
+
+	foreach(TimeConstraint* ctr, visibleTimeConstraintsList){
+		assert(filterOk(ctr));
+		constraintsListWidget->addItem(ctr->getDescription(gt.rules));
+			
+		if(USE_GUI_COLORS && !ctr->active)
+			constraintsListWidget->item(constraintsListWidget->count()-1)->setBackground(constraintsListWidget->palette().alternateBase());
+		
+		if(ctr->active)
+			n_active++;
+	}
+	
 	if(constraintsListWidget->count()<=0)
 		currentConstraintTextEdit->setPlainText("");
 	else
@@ -918,18 +944,18 @@ void AllTimeConstraintsForm::activateConstraint()
 			LockUnlock::computeLockedUnlockedActivitiesOnlyTime();
 			LockUnlock::increaseCommunicationSpinBox();
 		}
+		
+		int n_active=0;
+		foreach(TimeConstraint* ctr2, gt.rules.timeConstraintsList)
+			if(filterOk(ctr2)){
+				if(ctr2->active)
+					n_active++;
+			}
+	
+		constraintsTextLabel->setText(tr("%1 / %2 time constraints",
+		 "%1 represents the number of visible active time constraints, %2 represents the total number of visible time constraints")
+		 .arg(n_active).arg(visibleTimeConstraintsList.count()));
 	}
-	
-	int n_active=0;
-	foreach(TimeConstraint* ctr, gt.rules.timeConstraintsList)
-		if(filterOk(ctr)){
-			if(ctr->active)
-				n_active++;
-		}
-	
-	constraintsTextLabel->setText(tr("%1 / %2 time constraints",
-	 "%1 represents the number of visible active time constraints, %2 represents the total number of visible time constraints")
-	 .arg(n_active).arg(visibleTimeConstraintsList.count()));
 }
 
 void AllTimeConstraintsForm::deactivateConstraint()
@@ -963,21 +989,21 @@ void AllTimeConstraintsForm::deactivateConstraint()
 			LockUnlock::computeLockedUnlockedActivitiesOnlyTime();
 			LockUnlock::increaseCommunicationSpinBox();
 		}
-	}
 
-	int n_active=0;
-	foreach(TimeConstraint* ctr, gt.rules.timeConstraintsList)
-		if(filterOk(ctr)){
-			if(ctr->active)
-				n_active++;
-		}
+		int n_active=0;
+		foreach(TimeConstraint* ctr2, gt.rules.timeConstraintsList)
+			if(filterOk(ctr2)){
+				if(ctr2->active)
+					n_active++;
+			}
 	
-	constraintsTextLabel->setText(tr("%1 / %2 time constraints",
-	 "%1 represents the number of visible active time constraints, %2 represents the total number of visible time constraints")
-	 .arg(n_active).arg(visibleTimeConstraintsList.count()));
+		constraintsTextLabel->setText(tr("%1 / %2 time constraints",
+		 "%1 represents the number of visible active time constraints, %2 represents the total number of visible time constraints")
+		 .arg(n_active).arg(visibleTimeConstraintsList.count()));
+	}
 }
 
-static int timeConstraintsAscendingByComments(const TimeConstraint* t1, const TimeConstraint* t2)
+/*static int timeConstraintsAscendingByComments(const TimeConstraint* t1, const TimeConstraint* t2)
 {
 	return t1->comments < t2->comments;
 }
@@ -994,13 +1020,13 @@ void AllTimeConstraintsForm::sortConstraintsByComments()
 	if(t==QMessageBox::Cancel)
 		return;
 	
-	qStableSort(gt.rules.timeConstraintsList.begin(), gt.rules.timeConstraintsList.end(), timeConstraintsAscendingByComments);
+	std::stable_sort(gt.rules.timeConstraintsList.begin(), gt.rules.timeConstraintsList.end(), timeConstraintsAscendingByComments);
 
 	gt.rules.internalStructureComputed=false;
 	setRulesModifiedAndOtherThings(&gt.rules);
 	
 	filterChanged();
-}
+}*/
 
 void AllTimeConstraintsForm::constraintComments()
 {

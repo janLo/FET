@@ -8,10 +8,10 @@
 
 /***************************************************************************
  *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
+ *   This program is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Affero General Public License as        *
+ *   published by the Free Software Foundation, either version 3 of the    *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
 
@@ -35,8 +35,8 @@ ModifyStudentsSubgroupForm::ModifyStudentsSubgroupForm(QWidget* parent, const QS
 	numberSpinBox->setMinimum(0);
 	numberSpinBox->setValue(0);
 
-	this->_yearName=yearName;
-	this->_groupName=groupName;
+//	this->_yearName=yearName;
+//	this->_groupName=groupName;
 	this->_initialSubgroupName=initialSubgroupName;
 	
 	numberSpinBox->setValue(initialNumberOfStudents);
@@ -65,20 +65,23 @@ void ModifyStudentsSubgroupForm::ok()
 		return;
 	}
 	QString subgroupName=nameLineEdit->text();
-	QString yearName=yearNameLineEdit->text();
-	QString groupName=groupNameLineEdit->text();
+	//QString yearName=yearNameLineEdit->text();
+	//QString groupName=groupNameLineEdit->text();
 	
 	if(this->_initialSubgroupName!=subgroupName && gt.rules.searchStudentsSet(subgroupName)!=NULL){
-		QMessageBox::information(this, tr("FET information"), 
+		QMessageBox::information(this, tr("FET information"),
 		 tr("Name exists. If you would like to make more groups to contain a subgroup (overlapping groups),"
  		 " please remove current subgroup (FET will unfortunately remove all related activities and constraints)"
 		 " and add a new subgroup with desired name in current group."
  		 " I know this is a not an elegant procedure, I'll try to fix that in the future."));
 		
+		nameLineEdit->selectAll();
+		nameLineEdit->setFocus();
+
 		return;
 	}
 
-	bool t=gt.rules.modifySubgroup(this->_yearName, this->_groupName, this->_initialSubgroupName, subgroupName, numberSpinBox->value());
+	bool t=gt.rules.modifyStudentsSet(this->_initialSubgroupName, subgroupName, numberSpinBox->value());
 	assert(t);
 	
 	this->close();

@@ -8,10 +8,10 @@
 
 /***************************************************************************
  *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
+ *   This program is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Affero General Public License as        *
+ *   published by the Free Software Foundation, either version 3 of the    *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
 
@@ -80,11 +80,14 @@
 
 #include <QtAlgorithms>
 
+#include <algorithm>
+using namespace std;
+
 extern const QString COMPANY;
 extern const QString PROGRAM;
 
 const int DESCRIPTION=0;
-const int DETDESCRIPTION=1;
+//const int DETDESCRIPTION=1;
 
 const int CONTAINS=0;
 const int DOESNOTCONTAIN=1;
@@ -94,6 +97,9 @@ const int NOTREGEXP=3;
 AllSpaceConstraintsForm::AllSpaceConstraintsForm(QWidget* parent): QDialog(parent)
 {
 	setupUi(this);
+
+	filterCheckBox->setChecked(false);
+	sortedCheckBox->setChecked(false);
 	
 	currentConstraintTextEdit->setReadOnly(true);
 	
@@ -107,9 +113,10 @@ AllSpaceConstraintsForm::AllSpaceConstraintsForm(QWidget* parent): QDialog(paren
 	connect(modifyConstraintPushButton, SIGNAL(clicked()), this, SLOT(modifyConstraint()));
 	connect(constraintsListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(modifyConstraint()));
 	connect(filterCheckBox, SIGNAL(toggled(bool)), this, SLOT(filter(bool)));
+	connect(sortedCheckBox, SIGNAL(toggled(bool)), this, SLOT(sortedChanged(bool)));
 	connect(activatePushButton, SIGNAL(clicked()), this, SLOT(activateConstraint()));
 	connect(deactivatePushButton, SIGNAL(clicked()), this, SLOT(deactivateConstraint()));
-	connect(sortByCommentsPushButton, SIGNAL(clicked()), this, SLOT(sortConstraintsByComments()));
+	//connect(sortByCommentsPushButton, SIGNAL(clicked()), this, SLOT(sortConstraintsByComments()));
 	connect(commentsPushButton, SIGNAL(clicked()), this, SLOT(constraintComments()));
 
 	centerWidgetOnScreen(this);
@@ -143,6 +150,7 @@ AllSpaceConstraintsForm::AllSpaceConstraintsForm(QWidget* parent): QDialog(paren
 	useFilter=false;
 	
 	assert(filterCheckBox->isChecked()==false);
+	assert(sortedCheckBox->isChecked()==false);
 	
 	filterChanged();
 }
@@ -234,22 +242,40 @@ bool AllSpaceConstraintsForm::filterOk(SpaceConstraint* ctr)
 	}
 }
 
+void AllSpaceConstraintsForm::sortedChanged(bool checked)
+{
+	Q_UNUSED(checked);
+	
+	filterChanged();
+}
+
+static int spaceConstraintsAscendingByDescription(SpaceConstraint* s1, SpaceConstraint* s2)
+{
+	return s1->getDescription(gt.rules) < s2->getDescription(gt.rules);
+}
+
 void AllSpaceConstraintsForm::filterChanged()
 {
 	visibleSpaceConstraintsList.clear();
 	constraintsListWidget->clear();
 	int n_active=0;
 	foreach(SpaceConstraint* ctr, gt.rules.spaceConstraintsList)
-		if(filterOk(ctr)){
+		if(filterOk(ctr))
 			visibleSpaceConstraintsList.append(ctr);
-			constraintsListWidget->addItem(ctr->getDescription(gt.rules));
+			
+	if(sortedCheckBox->isChecked())
+		std::stable_sort(visibleSpaceConstraintsList.begin(), visibleSpaceConstraintsList.end(), spaceConstraintsAscendingByDescription);
+	
+	foreach(SpaceConstraint* ctr, visibleSpaceConstraintsList){
+		assert(filterOk(ctr));
+		constraintsListWidget->addItem(ctr->getDescription(gt.rules));
 
-			if(USE_GUI_COLORS && !ctr->active)
-				constraintsListWidget->item(constraintsListWidget->count()-1)->setBackground(constraintsListWidget->palette().alternateBase());
+		if(USE_GUI_COLORS && !ctr->active)
+			constraintsListWidget->item(constraintsListWidget->count()-1)->setBackground(constraintsListWidget->palette().alternateBase());
 
-			if(ctr->active)
-				n_active++;
-		}
+		if(ctr->active)
+			n_active++;
+	}
 		
 	if(constraintsListWidget->count()<=0)
 		currentConstraintTextEdit->setPlainText("");
@@ -639,18 +665,18 @@ void AllSpaceConstraintsForm::activateConstraint()
 			LockUnlock::computeLockedUnlockedActivitiesOnlySpace();
 			LockUnlock::increaseCommunicationSpinBox();
 		}
-	}
 	
-	int n_active=0;
-	foreach(SpaceConstraint* ctr, gt.rules.spaceConstraintsList)
-		if(filterOk(ctr)){
-			if(ctr->active)
-				n_active++;
-		}
+		int n_active=0;
+		foreach(SpaceConstraint* ctr2, gt.rules.spaceConstraintsList)
+			if(filterOk(ctr2)){
+				if(ctr2->active)
+					n_active++;
+			}
 		
-	constraintsTextLabel->setText(tr("%1 / %2 space constraints",
-	 "%1 represents the number of visible active space constraints, %2 represents the total number of visible space constraints")
-	 .arg(n_active).arg(visibleSpaceConstraintsList.count()));
+		constraintsTextLabel->setText(tr("%1 / %2 space constraints",
+		 "%1 represents the number of visible active space constraints, %2 represents the total number of visible space constraints")
+		 .arg(n_active).arg(visibleSpaceConstraintsList.count()));
+	}
 }
 
 void AllSpaceConstraintsForm::deactivateConstraint()
@@ -684,21 +710,21 @@ void AllSpaceConstraintsForm::deactivateConstraint()
 			LockUnlock::computeLockedUnlockedActivitiesOnlySpace();
 			LockUnlock::increaseCommunicationSpinBox();
 		}
-	}
 	
-	int n_active=0;
-	foreach(SpaceConstraint* ctr, gt.rules.spaceConstraintsList)
-		if(filterOk(ctr)){
-			if(ctr->active)
-				n_active++;
-		}
+		int n_active=0;
+		foreach(SpaceConstraint* ctr2, gt.rules.spaceConstraintsList)
+			if(filterOk(ctr2)){
+				if(ctr2->active)
+					n_active++;
+			}
 		
-	constraintsTextLabel->setText(tr("%1 / %2 space constraints",
-	 "%1 represents the number of visible active space constraints, %2 represents the total number of visible space constraints")
-	 .arg(n_active).arg(visibleSpaceConstraintsList.count()));
+		constraintsTextLabel->setText(tr("%1 / %2 space constraints",
+		 "%1 represents the number of visible active space constraints, %2 represents the total number of visible space constraints")
+		 .arg(n_active).arg(visibleSpaceConstraintsList.count()));
+	}
 }
 
-static int spaceConstraintsAscendingByComments(const SpaceConstraint* s1, const SpaceConstraint* s2)
+/*static int spaceConstraintsAscendingByComments(const SpaceConstraint* s1, const SpaceConstraint* s2)
 {
 	return s1->comments < s2->comments;
 }
@@ -715,13 +741,13 @@ void AllSpaceConstraintsForm::sortConstraintsByComments()
 	if(t==QMessageBox::Cancel)
 		return;
 	
-	qStableSort(gt.rules.spaceConstraintsList.begin(), gt.rules.spaceConstraintsList.end(), spaceConstraintsAscendingByComments);
+	std::stable_sort(gt.rules.spaceConstraintsList.begin(), gt.rules.spaceConstraintsList.end(), spaceConstraintsAscendingByComments);
 
 	gt.rules.internalStructureComputed=false;
 	setRulesModifiedAndOtherThings(&gt.rules);
 	
 	filterChanged();
-}
+}*/
 
 void AllSpaceConstraintsForm::constraintComments()
 {

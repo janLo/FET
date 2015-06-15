@@ -8,10 +8,10 @@
 
 /***************************************************************************
  *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
+ *   This program is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Affero General Public License as        *
+ *   published by the Free Software Foundation, either version 3 of the    *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
 
@@ -37,6 +37,12 @@
 AddConstraintActivitiesPreferredTimeSlotsForm::AddConstraintActivitiesPreferredTimeSlotsForm(QWidget* parent): QDialog(parent)
 {
 	setupUi(this);
+
+	durationCheckBox->setChecked(false);
+	durationSpinBox->setEnabled(false);
+	durationSpinBox->setMinimum(1);
+	durationSpinBox->setMaximum(gt.rules.nHoursPerDay);
+	durationSpinBox->setValue(1);
 
 	addConstraintPushButton->setDefault(true);
 
@@ -81,6 +87,8 @@ AddConstraintActivitiesPreferredTimeSlotsForm::AddConstraintActivitiesPreferredT
 			item->setTextAlignment(Qt::AlignCenter);
 			item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 			colorItem(item);
+			if(SHOW_TOOLTIPS_FOR_CONSTRAINTS_WITH_TABLES)
+				item->setToolTip(gt.rules.daysOfTheWeek[j]+QString("\n")+gt.rules.hoursOfTheDay[i]);
 			preferredTimesTable->setItem(i, j, item);
 		}
 		
@@ -219,7 +227,7 @@ void AddConstraintActivitiesPreferredTimeSlotsForm::updateStudentsComboBox(){
 		for(int j=0; j<sty->groupsList.size(); j++){
 			StudentsGroup* stg=sty->groupsList[j];
 			studentsComboBox->addItem(stg->name);
-			for(int k=0; k<stg->subgroupsList.size(); k++){
+			if(SHOW_SUBGROUPS_IN_COMBO_BOXES) for(int k=0; k<stg->subgroupsList.size(); k++){
 				StudentsSubgroup* sts=stg->subgroupsList[k];
 				studentsComboBox->addItem(sts->name);
 			}
@@ -248,6 +256,12 @@ void AddConstraintActivitiesPreferredTimeSlotsForm::updateActivityTagsComboBox()
 void AddConstraintActivitiesPreferredTimeSlotsForm::addConstraint()
 {
 	TimeConstraint *ctr=NULL;
+
+	int duration=-1;
+	if(durationCheckBox->isChecked()){
+		assert(durationSpinBox->isEnabled());
+		duration=durationSpinBox->value();
+	}
 
 	double weight;
 	QString tmp=weightLineEdit->text();
@@ -278,7 +292,7 @@ void AddConstraintActivitiesPreferredTimeSlotsForm::addConstraint()
 	if(activityTag!="")
 		assert(gt.rules.searchActivityTag(activityTag)>=0);
 		
-	if(teacher=="" && students=="" && subject=="" && activityTag==""){
+	if(duration==-1 && teacher=="" && students=="" && subject=="" && activityTag==""){
 		int t=QMessageBox::question(this, tr("FET question"),
 		 tr("You specified all the activities. This might be a small problem: if you specify"
 		  " a not allowed slot between two allowed slots, this not allowed slot will"
@@ -296,7 +310,7 @@ void AddConstraintActivitiesPreferredTimeSlotsForm::addConstraint()
 				return;
 	}
 
-	if(teacher!="" && students=="" && subject=="" && activityTag==""){
+	if(duration==-1 && teacher!="" && students=="" && subject=="" && activityTag==""){
 		int t=QMessageBox::question(this, tr("FET question"),
 		 tr("You specified only the teacher. This might be a small problem: if you specify"
 		  " a not allowed slot between two allowed slots, this not allowed slot will"
@@ -312,7 +326,7 @@ void AddConstraintActivitiesPreferredTimeSlotsForm::addConstraint()
 		if(t==QMessageBox::Cancel)
 				return;
 	}
-	if(teacher=="" && students!="" && subject=="" && activityTag==""){
+	if(duration==-1 && teacher=="" && students!="" && subject=="" && activityTag==""){
 		int t=QMessageBox::question(this, tr("FET question"),
 		 tr("You specified only the students set. This might be a small problem: if you specify"
 		  " a not allowed slot between two allowed slots (or a not allowed slot before allowed slots),"
@@ -363,7 +377,7 @@ void AddConstraintActivitiesPreferredTimeSlotsForm::addConstraint()
 				return;
 	}
 
-	ctr=new ConstraintActivitiesPreferredTimeSlots(weight, /*compulsory,*/ teacher, students, subject, activityTag, n, days_L, hours_L);
+	ctr=new ConstraintActivitiesPreferredTimeSlots(weight, /*compulsory,*/ teacher, students, subject, activityTag, duration, n, days_L, hours_L);
 
 	bool tmp2=gt.rules.addTimeConstraint(ctr);
 	if(tmp2){
@@ -377,6 +391,11 @@ void AddConstraintActivitiesPreferredTimeSlotsForm::addConstraint()
 			tr("Constraint NOT added - duplicate?"));
 		delete ctr;
 	}
+}
+
+void AddConstraintActivitiesPreferredTimeSlotsForm::on_durationCheckBox_toggled()
+{
+	durationSpinBox->setEnabled(durationCheckBox->isChecked());
 }
 
 #undef YES

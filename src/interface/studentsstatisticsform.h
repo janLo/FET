@@ -8,10 +8,10 @@
 
 /***************************************************************************
  *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
+ *   This program is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Affero General Public License as        *
+ *   published by the Free Software Foundation, either version 3 of the    *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
 
@@ -22,10 +22,17 @@
 
 #include <QDialog>
 
+#include <QString>
+#include <QHash>
+
 #include "studentsset.h"
 
 class StudentsStatisticsForm : public QDialog, Ui::StudentsStatisticsForm_template  {
 	Q_OBJECT
+	
+private:
+	QHash<QString, int> allHours;
+	QHash<QString, int> allActivities;
 
 public:
 	StudentsStatisticsForm(QWidget* parent);

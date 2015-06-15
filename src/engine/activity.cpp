@@ -1,37 +1,139 @@
 /*
-File activity.cpp 
+File activity.cpp
 */
 
-/*
-Copyright 2002, 2003 Lalescu Liviu.
+/***************************************************************************
+                          activity.cpp  -  description
+                             -------------------
+    begin                : 2002
+    copyright            : (C) 2002 by Lalescu Liviu
+    email                : Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)
+ ***************************************************************************/
 
-This file is part of FET.
-
-FET is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-FET is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with FET; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Affero General Public License as        *
+ *   published by the Free Software Foundation, either version 3 of the    *
+ *   License, or (at your option) any later version.                       *
+ *                                                                         *
+ ***************************************************************************/
 
 #include "timetable_defs.h"
 #include "activity.h"
 #include "rules.h"
+
+#include <QSet>
+
+QString getActivityDetailedDescription(Rules& r, int id); //Implemented in timeconstraint.cpp
+
+GroupActivitiesInInitialOrderItem::GroupActivitiesInInitialOrderItem()
+{
+	active=true;
+	comments=QString("");
+}
+
+GroupActivitiesInInitialOrderItem::~GroupActivitiesInInitialOrderItem()
+{
+}
+
+void GroupActivitiesInInitialOrderItem::removeUseless(Rules& r)
+{
+	QList<int> tmpList;
+	
+	foreach(int id, ids){
+		Activity* act=r.activitiesPointerHash.value(id, NULL);
+		if(act!=NULL)
+			tmpList.append(id);
+	}
+	
+	ids=tmpList;
+}
+
+QString GroupActivitiesInInitialOrderItem::getXmlDescription(Rules& r)
+{
+	Q_UNUSED(r);
+
+	QString s;
+
+	s+="<GroupActivitiesInInitialOrder>\n";
+	s+="	<Number_of_Activities>"+CustomFETString::number(ids.count())+"</Number_of_Activities>\n";
+	foreach(int id, ids)
+		s+=QString("	<Activity_Id>")+CustomFETString::number(id)+QString("</Activity_Id>\n");
+
+	s+="	<Active>";
+	if(this->active==true)
+		s+="true";
+	else
+		s+="false";
+	s+="</Active>\n";
+
+	s+="	<Comments>"+protect(comments)+"</Comments>\n";
+
+	s+="</GroupActivitiesInInitialOrder>\n";
+	
+	return s;
+}
+
+QString GroupActivitiesInInitialOrderItem::getDescription(Rules& r)
+{
+	Q_UNUSED(r);
+
+	QString begin=QString("");
+	if(!active)
+		begin="X - ";
+
+	QString s=tr("Group activities in initial order item");
+	s+=QString(", ");
+	s+=tr("NA:%1", "Number of activities").arg(ids.count());
+	foreach(int id, ids)
+		s+=QString(", ")+tr("Id:%1", "Id of activity").arg(id);
+
+	QString end=QString("");
+	if(!comments.isEmpty())
+		end=", "+tr("C: %1", "Comments").arg(comments);
+
+	return begin+s+end;
+}
+
+QString GroupActivitiesInInitialOrderItem::getDetailedDescription(Rules& r)
+{
+	QString s=tr("Timetable generation option"); s+=QString("\n");
+	s+=tr("Group activities in initial order item"); s+=QString("\n");
+	s+=tr("Number of activities=%1").arg(ids.count()); s+=QString("\n");
+	foreach(int id, ids){
+		s+=tr("Activity with id=%1 (%2)", "%1 is the id, %2 is the detailed description of the activity")
+		 .arg(id)
+		 .arg(getActivityDetailedDescription(r, id));
+		s+=QString("\n");
+	}
+
+	//Not active?
+	QString activeYesNo;
+	if(this->active==true)
+		activeYesNo=tr("yes");
+	else
+		activeYesNo=tr("no");
+	if(!active){
+		s+=tr("Active=%1", "Represents a boolean value, if a 'group activities in initial order' item is active or not, %1 is yes or no").arg(activeYesNo);
+		s+="\n";
+	}
+
+	//Has comments?
+	if(!comments.isEmpty()){
+		s+=tr("Comments=%1").arg(comments);
+		s+="\n";
+	}
+	
+	return s;
+}
 
 Activity::Activity()
 {
 	comments=QString("");
 }
 
-Activity::Activity(
+/*Activity::Activity(
 	Rules& r,
 	int _id,
 	int _activityGroupId,
@@ -58,7 +160,7 @@ Activity::Activity(
 	this->active=_active;
 	this->computeNTotalStudents=_computeNTotalStudents;
 	
-	if(_computeNTotalStudents==true){	
+	if(_computeNTotalStudents==true){
 		this->nTotalStudents=0;
 		for(QStringList::Iterator it=this->studentsNames.begin(); it!=this->studentsNames.end(); it++){
 			StudentsSet* ss=r.searchStudentsSet(*it);
@@ -70,7 +172,7 @@ Activity::Activity(
 		assert(_nTotalStudents>=0);
 		this->nTotalStudents=_nTotalStudents;
 	}
-}
+}*/
 
 Activity::Activity(
 	Rules& r,
@@ -88,7 +190,7 @@ Activity::Activity(
 	int _computedNumberOfStudents)
 {
 	Q_UNUSED(r);
-	Q_UNUSED(_nTotalStudents);
+	//Q_UNUSED(_nTotalStudents);
 
 	comments=QString("");
 
@@ -103,7 +205,11 @@ Activity::Activity(
 	this->active=_active;
 	this->computeNTotalStudents=_computeNTotalStudents;
 	
-	assert(_computeNTotalStudents);
+	//assert(_computeNTotalStudents);
+	if(_computeNTotalStudents)
+		assert(_nTotalStudents==-1);
+	else
+		assert(_nTotalStudents==_computedNumberOfStudents);
 	this->nTotalStudents=_computedNumberOfStudents;
 }
 
@@ -210,6 +316,7 @@ void Activity::computeInternalStructure(Rules& r)
 	//teachers
 	//this->nTeachers=0;
 	this->iTeachersList.clear();
+	QSet<int> iTeachersSet;
 	for(QStringList::Iterator it=this->teachersNames.begin(); it!=this->teachersNames.end(); it++){
 		int tmp=r.teachersHash.value(*it, -1);
 		/*for(tmp=0; tmp<r.nInternalTeachers; tmp++){
@@ -219,7 +326,10 @@ void Activity::computeInternalStructure(Rules& r)
 		assert(tmp>=0 && tmp < r.nInternalTeachers);
 		//assert(this->nTeachers<MAX_TEACHERS_PER_ACTIVITY);
 		//this->teachers[this->nTeachers++]=tmp;
-		this->iTeachersList.append(tmp);
+		if(!iTeachersSet.contains(tmp)){
+			iTeachersSet.insert(tmp);
+			this->iTeachersList.append(tmp);
+		}
 	}
 
 	//subjects
@@ -239,6 +349,7 @@ void Activity::computeInternalStructure(Rules& r)
 	//students	
 	//this->nSubgroups=0;
 	this->iSubgroupsList.clear();
+	QSet<int> iSubgroupsSet;
 	for(QStringList::Iterator it=this->studentsNames.begin(); it!=this->studentsNames.end(); it++){
 		StudentsSet* ss=r.studentsHash.value(*it, NULL); //r.searchAugmentedStudentsSet(*it);
 		assert(ss);
@@ -253,7 +364,7 @@ void Activity::computeInternalStructure(Rules& r)
 			//assert(this->nSubgroups<MAX_SUBGROUPS_PER_ACTIVITY);
 			
 			bool duplicate=false;
-			if(this->iSubgroupsList.contains(tmp))
+			if(iSubgroupsSet.contains(tmp))
 			//for(int j=0; j<this->nSubgroups; j++)
 			//	if(this->subgroups[j]==tmp)
 					duplicate=true;
@@ -263,9 +374,11 @@ void Activity::computeInternalStructure(Rules& r)
 					.arg(this->id);
 				cout<<qPrintable(s)<<endl;*/
 			}
-			else
-				this->iSubgroupsList.append(tmp);
+			else{
 				//this->subgroups[this->nSubgroups++]=tmp;
+				iSubgroupsSet.insert(tmp);
+				this->iSubgroupsList.append(tmp);
+			}
 		}
 		else if(ss->type==STUDENTS_GROUP){
 			StudentsGroup* stg=(StudentsGroup*)ss;
@@ -281,7 +394,7 @@ void Activity::computeInternalStructure(Rules& r)
 				//assert(this->nSubgroups<MAX_SUBGROUPS_PER_ACTIVITY);
 
 				bool duplicate=false;
-				if(this->iSubgroupsList.contains(tmp))
+				if(iSubgroupsSet.contains(tmp))
 				//for(int j=0; j<this->nSubgroups; j++)
 				//	if(this->subgroups[j]==tmp)
 						duplicate=true;
@@ -291,9 +404,11 @@ void Activity::computeInternalStructure(Rules& r)
 						.arg(this->id);
 					cout<<qPrintable(s)<<endl;*/
 				}
-				else
+				else{
 					//this->subgroups[this->nSubgroups++]=tmp;
+					iSubgroupsSet.insert(tmp);
 					this->iSubgroupsList.append(tmp);
+				}
 			}
 		}
 		else if(ss->type==STUDENTS_YEAR){
@@ -312,7 +427,7 @@ void Activity::computeInternalStructure(Rules& r)
 					//assert(this->nSubgroups<MAX_SUBGROUPS_PER_ACTIVITY);
 
 					bool duplicate=false;
-					if(this->iSubgroupsList.contains(tmp))
+					if(iSubgroupsSet.contains(tmp))
 					//for(int j=0; j<this->nSubgroups; j++)
 					//	if(this->subgroups[j]==tmp)
 							duplicate=true;
@@ -324,6 +439,7 @@ void Activity::computeInternalStructure(Rules& r)
 					}
 					else{
 						//this->subgroups[this->nSubgroups++]=tmp;
+						iSubgroupsSet.insert(tmp);
 						this->iSubgroupsList.append(tmp);
 					}
 				}
@@ -591,6 +707,19 @@ QString Activity::getDetailedDescriptionWithConstraints(Rules& r)
 		}
 	}
 	s+="--------------------------------------------------\n";
+
+	if(r.groupActivitiesInInitialOrderList.count()>0){
+		s+=tr("Timetable generation options directly related to this activity:");
+		s+="\n";
+		for(int i=0; i<r.groupActivitiesInInitialOrderList.count(); i++){
+			GroupActivitiesInInitialOrderItem* item=r.groupActivitiesInInitialOrderList[i];
+			if(item->ids.contains(id)){
+				s+="\n";
+				s+=item->getDetailedDescription(r);
+			}
+		}
+		s+="--------------------------------------------------\n";
+	}
 
 	return s;
 }

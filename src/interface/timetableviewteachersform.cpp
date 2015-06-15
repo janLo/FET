@@ -8,10 +8,10 @@
 
 /***************************************************************************
  *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
+ *   This program is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Affero General Public License as        *
+ *   published by the Free Software Foundation, either version 3 of the    *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
 
@@ -253,7 +253,8 @@ void TimetableViewTeachersForm::updateTeachersTimetableTable(){
 
 	teachername = teachersListWidget->currentItem()->text();
 	
-	if(gt.rules.searchTeacher(teachername)<0){
+	int teacher=gt.rules.searchTeacher(teachername);
+	if(teacher<0){
 		QMessageBox::warning(this, tr("FET warning"), tr("You have an old timetable view teachers dialog opened - please close it"));
 		return;
 	}
@@ -262,19 +263,6 @@ void TimetableViewTeachersForm::updateTeachersTimetableTable(){
 	teacherNameTextLabel->setText(s);
 
 	assert(gt.rules.initialized);
-/*	teachersTimetableTable->setNumRows(gt.rules.nHoursPerDay);
-	teachersTimetableTable->setNumCols(gt.rules.nDaysPerWeek);
-	for(int j=0; j<gt.rules.nDaysPerWeek; j++)
-		teachersTimetableTable->horizontalHeader()->setLabel(j, gt.rules.daysOfTheWeek[j]);
-	for(int i=0; i<gt.rules.nHoursPerDay; i++)
-		teachersTimetableTable->verticalHeader()->setLabel(i, gt.rules.hoursOfTheDay[i]);*/
-
-	int teacher=gt.rules.searchTeacher(teachername);
-	if(teacher<0){
-		QMessageBox::warning(this, tr("FET information"),
-			tr("The teacher's timetable cannot be printed, because the teacher is invalid"));
-		return;
-	}
 
 	for(int j=0; j<gt.rules.nHoursPerDay && j<teachersTimetableTable->rowCount(); j++){
 		for(int k=0; k<gt.rules.nDaysPerWeek && k<teachersTimetableTable->columnCount(); k++){
@@ -284,6 +272,20 @@ void TimetableViewTeachersForm::updateTeachersTimetableTable(){
 			if(ai!=UNALLOCATED_ACTIVITY){
 				Activity* act=&gt.rules.internalActivitiesList[ai];
 				assert(act!=NULL);
+				
+				if(act->teachersNames.count()==1){
+					//Don't do the assert below, because it crashes if you change the teacher's name and view the teachers' timetable,
+					//without generating again (as reported by Yush Yuen).
+					//assert(act->teachersNames.at(0)==teachername);
+				}
+				else{
+					assert(act->teachersNames.count()>=2);
+					//Don't do the assert below, because it crashes if you change the teacher's name and view the teachers' timetable,
+					//without generating again (as reported by Yush Yuen).
+					//assert(act->teachersNames.contains(teachername));
+					s+=act->teachersNames.join(", ");
+					s+="\n";
+				}
 				
 				if(TIMETABLE_HTML_PRINT_ACTIVITY_TAGS){
 					QString ats=act->activityTagsNames.join(", ");

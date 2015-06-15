@@ -2,25 +2,22 @@
 File generate.cpp
 */
 
-/*
-Copyright 2007 Lalescu Liviu.
+/***************************************************************************
+                          generate.cpp  -  description
+                             -------------------
+    begin                : 2002
+    copyright            : (C) 2002 by Lalescu Liviu
+    email                : Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)
+ ***************************************************************************/
 
-This file is part of FET.
-
-FET is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-FET is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with FET; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Affero General Public License as        *
+ *   published by the Free Software Foundation, either version 3 of the    *
+ *   License, or (at your option) any later version.                       *
+ *                                                                         *
+ ***************************************************************************/
 
 #include <ctime>
 
@@ -47,10 +44,11 @@ using namespace std;
 
 #include <QList>
 #include <QSet>
+#include <QHash>
 
 #include <QSemaphore>
 
-extern QMutex mutex; //timetablegenerateform.cpp
+extern QMutex myMutex; //timetablegenerateform.cpp
 
 #ifndef FET_COMMAND_LINE
 extern QSemaphore semaphorePlacedActivity;
@@ -2141,7 +2139,8 @@ inline bool Generate::checkActivitiesOccupyMaxDifferentRooms(const QList<int>& g
 		
 		//To keep generation identical on all computers - 2013-01-03
 		QList<int> tmpListFromSet=activitiesInRoom.at(indexToRemove).toList();
-		qSort(tmpListFromSet);
+		//qSort(tmpListFromSet);
+		std::stable_sort(tmpListFromSet.begin(), tmpListFromSet.end());
 		//Randomize list
 		for(int i=0; i<tmpListFromSet.count(); i++){
 			int t=tmpListFromSet.at(i);
@@ -2431,7 +2430,8 @@ inline bool Generate::getPreferredRoom(const QList<int>& globalConflActivities, 
 	QList<int> allowedRoomsList;
 	foreach(int rm, allowedRooms)
 		allowedRoomsList.append(rm);
-	qSort(allowedRoomsList); //To keep generation identical on all computers - 2013-01-03
+	//qSort(allowedRoomsList); //To keep generation identical on all computers - 2013-01-03
+	std::stable_sort(allowedRoomsList.begin(), allowedRoomsList.end()); //To keep generation identical on all computers - 2013-01-03
 	//Randomize list
 	for(int i=0; i<allowedRoomsList.count(); i++){
 		int t=allowedRoomsList.at(i);
@@ -2598,7 +2598,7 @@ void Generate::generate(int maxSeconds, bool& impossible, bool& timeExceeded, bo
 	}
 
 if(threaded){
-		mutex.lock();
+		myMutex.lock();
 }
 	c.makeUnallocated(gt.rules);
 
@@ -2614,7 +2614,7 @@ if(threaded){
 	maxActivitiesPlaced=0;
 
 if(threaded){
-		mutex.unlock();
+		myMutex.unlock();
 }
 
 	triedRemovals.resize(gt.rules.nInternalActivities, gt.rules.nHoursPerWeek);
@@ -2647,13 +2647,13 @@ if(threaded){
 	time(&starting_time);
 	
 if(threaded){
-		mutex.lock();
+		myMutex.lock();
 }
 	timeToHighestStage=0;
 	searchTime=0;
 	generationStartDateTime=QDateTime::currentDateTime();
 if(threaded){
-		mutex.unlock();
+		myMutex.unlock();
 }
 	
 	//2000 was before
@@ -2668,11 +2668,11 @@ if(threaded){
 		prevvalue:
 
 if(threaded){
-		mutex.lock();
+		myMutex.lock();
 }
 		if(abortOptimization){
 if(threaded){
-			mutex.unlock();
+			myMutex.unlock();
 }
 			return;
 		}
@@ -2682,7 +2682,7 @@ if(threaded){
 		
 		if(searchTime>=maxSeconds){
 if(threaded){
-			mutex.unlock();
+			myMutex.unlock();
 }
 			
 			timeExceeded=true;
@@ -2947,7 +2947,7 @@ if(threaded){
 		if(!foundGoodSwap){
 			if(impossibleActivity){
 if(threaded){
-				mutex.unlock();
+				myMutex.unlock();
 }
 				nDifficultActivities=1;
 				difficultActivities[0]=permutation[added_act];
@@ -3077,7 +3077,7 @@ if(threaded){
 				
 			added_act=q+1;
 if(threaded){
-			mutex.unlock();
+			myMutex.unlock();
 }
 	
 			//if(semaphorePlacedActivity){
@@ -3121,18 +3121,18 @@ if(threaded){
 			}
 			
 if(threaded){
-			mutex.unlock();
+			myMutex.unlock();
 }
 			emit(activityPlaced(added_act+1));
 if(threaded){
 			semaphorePlacedActivity.acquire();
 }
 if(threaded){
-			mutex.lock();
+			myMutex.lock();
 }
 			if(added_act==gt.rules.nInternalActivities && foundGoodSwap){
 if(threaded){
-				mutex.unlock();
+				myMutex.unlock();
 }
 				break;
 			}
@@ -3152,7 +3152,7 @@ if(threaded){
 		}
 
 if(threaded){
-		mutex.unlock();
+		myMutex.unlock();
 }
 	}
 
@@ -4058,7 +4058,7 @@ impossiblenotoverlapping:
 		
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-		//allowed from 2 activities consecutive
+		//allowed from two activities consecutive
 		oktwoactivitiesconsecutive=true;
 		
 		for(int i=0; i<constrTwoActivitiesConsecutiveActivities[ai].count(); i++){
@@ -4171,7 +4171,7 @@ impossibletwoactivitiesconsecutive:
 		
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-		//allowed from 2 activities grouped
+		//allowed from two activities grouped
 		oktwoactivitiesgrouped=true;
 		
 		for(int i=0; i<constrTwoActivitiesGroupedActivities[ai].count(); i++){
@@ -4247,7 +4247,7 @@ impossibletwoactivitiesgrouped:
 		
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-		//allowed from 3 activities grouped
+		//allowed from three activities grouped
 		okthreeactivitiesgrouped=true;
 		
 		for(int i=0; i<constrThreeActivitiesGroupedActivities[ai].count(); i++){
@@ -4645,7 +4645,7 @@ impossiblethreeactivitiesgrouped:
 		
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-		//allowed from 2 activities ordered
+		//allowed from two activities ordered
 		oktwoactivitiesordered=true;
 		
 		for(int i=0; i<constrTwoActivitiesOrderedActivities[ai].count(); i++){
@@ -4848,7 +4848,9 @@ impossibleactivityendsstudentsday:
 				//with activities which were moved forward and back again
 				//being put at the end.
 				//If you do not follow this, you'll get impossible timetables
-				//for italian sample or samples from South Africa, I am not sure which of these 2
+				//for the Italian example Italy/2007/difficult/highschool-Ancona.fet or the examples from
+				//South Africa: South-Africa/difficult/Collegiate_Junior_School2.fet or
+				//South-Africa/difficult/Insight_Learning_Centre2.fet, I am not sure which of these 3
 								
 				if(subgroupActivitiesOfTheDay(st,d2).count()>0 || d2==d)
 					_nOc++;
@@ -5782,7 +5784,7 @@ impossiblestudentsmaxgapsperday:
 									if(d2!=d){
 										int g=limitHoursDaily-newSubgroupsDayNHours(sbg,d2);
 										//TODO: if g lower than 0 make g 0
-										//but with this change, speed decreases for test 25_2_2008_1.fet (private Greek sample from my80s)
+										//but with this change, speed decreases for file examples/anonymous/1/2008/anonymous-1-2008.fet
 										g=newSubgroupsDayNFirstGaps(sbg,d2)+newSubgroupsDayNGaps(sbg,d2)-g;
 										if(g>0)
 											rg-=g;
@@ -5846,7 +5848,7 @@ impossiblestudentsmaxgapsperday:
 									if(d2!=d){
 										int g=limitHoursDaily-newSubgroupsDayNHours(sbg,d2);
 										//TODO: if g lower than 0 make g 0
-										//but with this change, speed decreases for test 25_2_2008_1.fet (private Greek sample from my80s)
+										//but with this change, speed decreases for file examples/anonymous/1/2008/anonymous-1-2008.fet
 										g=newSubgroupsDayNGaps(sbg,d2)-g;
 										if(g>0)
 											rg-=g;
@@ -5910,7 +5912,7 @@ impossiblestudentsmaxgapsperday:
 										if(d2!=d){
 											int g=limitHoursDaily-sbgDayNHours[d2];
 											//TODO: if g lower than 0 make g 0
-											//but with this change, speed decreases for test 25_2_2008_1.fet (private Greek sample from my80s)
+											//but with this change, speed decreases for file examples/anonymous/1/2008/anonymous-1-2008.fet
 											g=sbgDayNFirstGaps[d2]+sbgDayNGaps[d2]-g;
 											if(g>0)
 												rg-=g;
@@ -5974,7 +5976,7 @@ impossiblestudentsmaxgapsperday:
 										if(d2!=d){
 											int g=limitHoursDaily-sbgDayNHours[d2];
 											//TODO: if g lower than 0 make g 0
-											//but with this change, speed decreases for test 25_2_2008_1.fet (private Greek sample from my80s)
+											//but with this change, speed decreases for file examples/anonymous/1/2008/anonymous-1-2008.fet
 											g=sbgDayNGaps[d2]-g;
 											if(g>0)
 												rg-=g;
@@ -6924,7 +6926,9 @@ impossiblestudentsminhoursdaily:
 				//with activities which were moved forward and back again
 				//being put at the end.
 				//If you do not follow this, you'll get impossible timetables
-				//for italian sample or samples from South Africa, I am not sure which of these 2
+				//for the Italian example Italy/2007/difficult/highschool-Ancona.fet or the examples from
+				//South Africa: South-Africa/difficult/Collegiate_Junior_School2.fet or
+				//South-Africa/difficult/Insight_Learning_Centre2.fet, I am not sure which of these 3
 								
 				if(teacherActivitiesOfTheDay(tch,d2).count()>0 || d2==d)
 					_nOc++;
@@ -7547,7 +7551,7 @@ impossibleteachersmaxgapsperday:
 								if(d2!=d){
 									int g=limitHoursDaily-newTeachersDayNHours(tch,d2);
 									//TODO: if g lower than 0 make g 0
-									//but with this change, speed decreases for test 25_2_2008_1.fet (private Greek sample from my80s)
+									//but with this change, speed decreases for file examples/anonymous/1/2008/anonymous-1-2008.fet
 									g=newTeachersDayNGaps(tch,d2)-g;
 									if(g>0)
 										rg-=g;
@@ -7610,7 +7614,7 @@ impossibleteachersmaxgapsperday:
 									if(d2!=d){
 										int g=limitHoursDaily-tchDayNHours[d2];
 										//TODO: if g lower than 0 make g 0
-										//but with this change, speed decreases for test 25_2_2008_1.fet (private Greek sample from my80s)
+										//but with this change, speed decreases for file examples/anonymous/1/2008/anonymous-1-2008.fet
 										g=tchDayNGaps[d2]-g;
 										if(g>0)
 											rg-=g;
@@ -8772,7 +8776,8 @@ impossibleteachersmindaysperweek:
 						
 						//To keep generation identical on all computers - 2013-01-03
 						QList<int> tmpSortedList=allCandidates.toList();
-						qSort(tmpSortedList);
+						//qSort(tmpSortedList);
+						std::stable_sort(tmpSortedList.begin(), tmpSortedList.end());
 						int ai2=tmpSortedList.at(q);
 						//int ai2=allCandidates.toList().at(q);
 						
@@ -8902,14 +8907,16 @@ impossibleactivitiesmaxsimultaneousinselectedtimeslots:
 						
 						//To keep generation identical on all computers - 2013-01-03
 						QList<int> tmpSortedList=candidates.toList();
-						qSort(tmpSortedList);
+						//qSort(tmpSortedList);
+						std::stable_sort(tmpSortedList.begin(), tmpSortedList.end());
 						int t=tmpSortedList.at(q);
 						//int t=candidates.toList().at(q);
 						
 						QSet<int> tmpSet=slotSetOfActivities[t];
 						//To keep generation identical on all computers - 2013-01-03
 						QList<int> tmpListFromSet=tmpSet.toList();
-						qSort(tmpListFromSet);
+						//qSort(tmpListFromSet);
+						std::stable_sort(tmpListFromSet.begin(), tmpListFromSet.end());
 						//Randomize list
 						for(int i=0; i<tmpListFromSet.count(); i++){
 							int t=tmpListFromSet.at(i);
@@ -9085,7 +9092,8 @@ skip_here_if_already_allocated_in_time:
 			
 	//O(n*log(n)) stable sorting
 	currentLevel=level;
-	qStableSort(perm+0, perm+gt.rules.nHoursPerWeek, compareFunctionGenerate);
+	//qStableSort(perm+0, perm+gt.rules.nHoursPerWeek, compareFunctionGenerate);
+	std::stable_sort(perm+0, perm+gt.rules.nHoursPerWeek, compareFunctionGenerate);
 			
 	/*cout<<"perm[i]: ";
 	for(int i=0; i<gt.rules.nHoursPerWeek; i++)
@@ -9117,8 +9125,8 @@ skip_here_if_already_allocated_in_time:
 	if(level==0 && (nConflActivities[perm[0]]==MAX_ACTIVITIES)){
 		//to check if generation was stopped
 if(this->isThreaded){
-			mutex.unlock();
-			mutex.lock();
+			myMutex.unlock();
+			myMutex.lock();
 }
 		if(!abortOptimization && activity_count_impossible_tries<MAX_RETRIES_FOR_AN_ACTIVITY_AT_LEVEL_0){
 			activity_count_impossible_tries++;
@@ -9450,7 +9458,7 @@ if(this->isThreaded){
 			
 			assert(!foundGoodSwap);
 			
-			if(level>=5) //7 also might be used? This is a value found practically, has no theoretical meaning probably
+			if(level>=5) //7 also might be used? This is a value found practically.
 				return;
 		}
 	}

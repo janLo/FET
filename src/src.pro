@@ -383,6 +383,10 @@ SOURCES += \
 	interface/addconstraintmindaysbetweenactivitiesform.cpp \
 	interface/modifyconstraintmindaysbetweenactivitiesform.cpp \
 	\
+	interface/groupactivitiesininitialorderitemsform.cpp \
+	interface/addgroupactivitiesininitialorderitemform.cpp \
+	interface/modifygroupactivitiesininitialorderitemform.cpp \
+	\
 	interface/constraintmaxdaysbetweenactivitiesform.cpp \
 	interface/addconstraintmaxdaysbetweenactivitiesform.cpp \
 	interface/modifyconstraintmaxdaysbetweenactivitiesform.cpp \
@@ -812,6 +816,10 @@ HEADERS += \
 	interface/addconstraintmindaysbetweenactivitiesform.h \
 	interface/modifyconstraintmindaysbetweenactivitiesform.h \
 	\
+	interface/groupactivitiesininitialorderitemsform.h \
+	interface/addgroupactivitiesininitialorderitemform.h \
+	interface/modifygroupactivitiesininitialorderitemform.h \
+	\
 	interface/constraintmaxdaysbetweenactivitiesform.h \
 	interface/addconstraintmaxdaysbetweenactivitiesform.h \
 	interface/modifyconstraintmaxdaysbetweenactivitiesform.h \
@@ -1231,6 +1239,10 @@ FORMS += \
 	interface/addconstraintmindaysbetweenactivitiesform_template.ui \
 	interface/modifyconstraintmindaysbetweenactivitiesform_template.ui \
 	\
+	interface/groupactivitiesininitialorderitemsform_template.ui \
+	interface/addgroupactivitiesininitialorderitemform_template.ui \
+	interface/modifygroupactivitiesininitialorderitemform_template.ui \
+	\
 	interface/constraintmaxdaysbetweenactivitiesform_template.ui \
 	interface/addconstraintmaxdaysbetweenactivitiesform_template.ui \
 	interface/modifyconstraintmaxdaysbetweenactivitiesform_template.ui \
@@ -1281,12 +1293,14 @@ TRANSLATIONS += \
 	../translations/fet_uk.ts \
 	../translations/fet_untranslated.ts \
 	../translations/fet_uz.ts \
-	../translations/fet_vi.ts
+	../translations/fet_vi.ts \
+	../translations/fet_zh_CN.ts \
+	../translations/fet_zh_TW.ts
 
 TEMPLATE = app
 
 CONFIG += release warn_on thread
-QT += xml network
+QT += network
 
 greaterThan(QT_MAJOR_VERSION, 4){
 	QT += widgets
@@ -1296,6 +1310,13 @@ greaterThan(QT_MAJOR_VERSION, 4){
 DESTDIR = ..
 TARGET = fet
 
+win32 {
+	RC_FILE += interface/fet.rc
+}
+else: macx {
+	ICON = ../icons/fet.icns
+}
+
 OBJECTS_DIR = ../tmp/gui
 UI_DIR = ../tmp/gui
 MOC_DIR = ../tmp/gui
@@ -1304,4 +1325,10 @@ RCC_DIR = ../tmp/gui
 INCLUDEPATH += engine interface
 DEPENDPATH += engine interface
 
-RESOURCES+=interface/interface_images.qrc
+RESOURCES += interface/interface_images.qrc
+
+unix {
+	target.path = /usr/bin
+
+	INSTALLS += target
+}

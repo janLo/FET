@@ -8,10 +8,10 @@
 //
 /***************************************************************************
  *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
+ *   This program is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Affero General Public License as        *
+ *   published by the Free Software Foundation, either version 3 of the    *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
 
@@ -34,9 +34,12 @@
 #include <QResizeEvent>
 #include <QCloseEvent>
 
+#include <QString>
 #include <QStringList>
 
 #include <QAction>
+
+#include <QMap>
 
 class QNetworkAccessManager;
 class QNetworkReply;
@@ -86,6 +89,9 @@ private:
 	QMenu* shortcutDataSpaceMenu;
 	QMenu* shortcutDataAdvancedMenu;
 	QMenu* shortcutAdvancedTimeMenu;
+	//2014-07-01
+	QMenu* shortcutTimetableLockingMenu;
+	QMenu* shortcutTimetableAdvancedMenu;
 	
 	QNetworkAccessManager* networkManager;
 	
@@ -100,6 +106,8 @@ private:
 	QString strippedName(const QString& fullFileName);
 	void updateRecentFileActions();
 
+	void populateLanguagesMap(QMap<QString, QString>& languagesMap);
+	
 public:
 	FetMainForm();
 	~FetMainForm();
@@ -147,7 +155,30 @@ public slots:
 	
 	void on_helpSettingsAction_triggered();
 	void on_settingsUseColorsAction_toggled();
+	void showSubgroupsInComboBoxesToggled(bool checked);
+	void showSubgroupsInActivityPlanningToggled(bool checked);
 	void on_settingsShowShortcutsOnMainWindowAction_toggled();
+	void on_settingsShowToolTipsForConstraintsWithTablesAction_toggled();
+	
+	///write timetables options
+	void on_enableConflictsTimetableAction_toggled();
+
+	void on_enableStatisticsTimetablesAction_toggled();
+	void on_enableXmlTimetablesAction_toggled();
+	void on_enableDaysHorizontalTimetablesAction_toggled();
+	void on_enableDaysVerticalTimetablesAction_toggled();
+	void on_enableTimeHorizontalTimetablesAction_toggled();
+	void on_enableTimeVerticalTimetablesAction_toggled();
+
+	void on_enableSubgroupsTimetablesAction_toggled();
+	void on_enableGroupsTimetablesAction_toggled();
+	void on_enableYearsTimetablesAction_toggled();
+	void on_enableTeachersTimetablesAction_toggled();
+	void on_enableTeachersFreePeriodsTimetablesAction_toggled();
+	void on_enableRoomsTimetablesAction_toggled();
+	void on_enableSubjectsTimetablesAction_toggled();
+	void on_enableActivitiesTimetablesAction_toggled();
+	///
 
 	//////confirmations
 	void on_settingsConfirmActivityPlanningAction_toggled();
@@ -155,6 +186,8 @@ public slots:
 	void on_settingsConfirmRemoveRedundantAction_toggled();
 	void on_settingsConfirmSaveTimetableAction_toggled();
 	//////
+
+	void showWarningForSubgroupsWithTheSameActivitiesToggled(bool checked);
 	
 	void enableActivityTagMaxHoursDailyToggled(bool checked);
 	void enableStudentsMaxGapsPerDayToggled(bool checked);
@@ -162,6 +195,11 @@ public slots:
 
 	void enableStudentsMinHoursDailyWithAllowEmptyDaysToggled(bool checked);
 	void showWarningForStudentsMinHoursDailyWithAllowEmptyDaysToggled(bool checked);
+	
+	void enableGroupActivitiesInInitialOrderToggled(bool checked);
+	void showWarningForGroupActivitiesInInitialOrderToggled(bool checked);
+	
+	void on_groupActivitiesInInitialOrderAction_triggered();
 	
 	void on_dataActivitiesAction_triggered();
 	void on_dataSubactivitiesAction_triggered();
@@ -366,6 +404,10 @@ public slots:
 	void on_shortcutViewStudentsPushButton_clicked();
 	void on_shortcutViewRoomsPushButton_clicked();
 	void on_shortcutShowSoftConflictsPushButton_clicked();
+	//2014-07-01
+	void on_shortcutsTimetableAdvancedPushButton_clicked();
+	void on_shortcutsTimetablePrintPushButton_clicked();
+	void on_shortcutsTimetableLockingPushButton_clicked();
 	
 	void on_shortcutBasicPushButton_clicked();
 	void on_shortcutSubjectsPushButton_clicked();

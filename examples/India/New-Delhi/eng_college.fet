@@ -1,311 +1,339 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 
-<fet version="5.16.0">
+<fet version="5.27.3">
 
 <Institution_Name>Engineering College</Institution_Name>
 
 <Comments></Comments>
 
-<Hours_List>
-	<Number>9</Number>
-	<Name>09:30 -10:20</Name>
-	<Name>10:20-11:10</Name>
-	<Name>11:10-12:00</Name>
-	<Name>12:00-12:50</Name>
-	<Name>12:50-13:40</Name>
-	<Name>13:40-14:30</Name>
-	<Name>14:30-15:20</Name>
-	<Name>15:20-16:10</Name>
-	<Name>16:10-17:00</Name>
-</Hours_List>
-
 <Days_List>
-	<Number>5</Number>
+<Number_of_Days>5</Number_of_Days>
+<Day>
 	<Name>MON</Name>
+</Day>
+<Day>
 	<Name>TUE</Name>
+</Day>
+<Day>
 	<Name>WED</Name>
+</Day>
+<Day>
 	<Name>THU</Name>
+</Day>
+<Day>
 	<Name>FRI</Name>
+</Day>
 </Days_List>
+
+<Hours_List>
+<Number_of_Hours>9</Number_of_Hours>
+<Hour>
+	<Name>09:30 -10:20</Name>
+</Hour>
+<Hour>
+	<Name>10:20-11:10</Name>
+</Hour>
+<Hour>
+	<Name>11:10-12:00</Name>
+</Hour>
+<Hour>
+	<Name>12:00-12:50</Name>
+</Hour>
+<Hour>
+	<Name>12:50-13:40</Name>
+</Hour>
+<Hour>
+	<Name>13:40-14:30</Name>
+</Hour>
+<Hour>
+	<Name>14:30-15:20</Name>
+</Hour>
+<Hour>
+	<Name>15:20-16:10</Name>
+</Hour>
+<Hour>
+	<Name>16:10-17:00</Name>
+</Hour>
+</Hours_List>
 
 <Students_List>
 <Year>
-<Name>First Year</Name>
-<Number_of_Students>960</Number_of_Students>
+	<Name>First Year</Name>
+	<Number_of_Students>960</Number_of_Students>
 	<Group>
-	<Name>CE A</Name>
-	<Number_of_Students>60</Number_of_Students>
+		<Name>CE A</Name>
+		<Number_of_Students>60</Number_of_Students>
 		<Subgroup>
-		<Name>CE A1</Name>
-		<Number_of_Students>30</Number_of_Students>
+			<Name>CE A1</Name>
+			<Number_of_Students>30</Number_of_Students>
 		</Subgroup>
 		<Subgroup>
-		<Name>CE A2</Name>
-		<Number_of_Students>30</Number_of_Students>
+			<Name>CE A2</Name>
+			<Number_of_Students>30</Number_of_Students>
 		</Subgroup>
 	</Group>
 	<Group>
-	<Name>CE B</Name>
-	<Number_of_Students>60</Number_of_Students>
+		<Name>CE B</Name>
+		<Number_of_Students>60</Number_of_Students>
 		<Subgroup>
-		<Name>CE B1</Name>
-		<Number_of_Students>30</Number_of_Students>
+			<Name>CE B1</Name>
+			<Number_of_Students>30</Number_of_Students>
 		</Subgroup>
 		<Subgroup>
-		<Name>CE B2</Name>
-		<Number_of_Students>30</Number_of_Students>
-		</Subgroup>
-	</Group>
-	<Group>
-	<Name>CS A</Name>
-	<Number_of_Students>60</Number_of_Students>
-		<Subgroup>
-		<Name>CS A1</Name>
-		<Number_of_Students>30</Number_of_Students>
-		</Subgroup>
-		<Subgroup>
-		<Name>CS A2</Name>
-		<Number_of_Students>30</Number_of_Students>
+			<Name>CE B2</Name>
+			<Number_of_Students>30</Number_of_Students>
 		</Subgroup>
 	</Group>
 	<Group>
-	<Name>CS B</Name>
-	<Number_of_Students>60</Number_of_Students>
+		<Name>CS A</Name>
+		<Number_of_Students>60</Number_of_Students>
 		<Subgroup>
-		<Name>CS B1</Name>
-		<Number_of_Students>30</Number_of_Students>
+			<Name>CS A1</Name>
+			<Number_of_Students>30</Number_of_Students>
 		</Subgroup>
 		<Subgroup>
-		<Name>CS B2</Name>
-		<Number_of_Students>30</Number_of_Students>
-		</Subgroup>
-	</Group>
-	<Group>
-	<Name>EC A</Name>
-	<Number_of_Students>60</Number_of_Students>
-		<Subgroup>
-		<Name>EC A1</Name>
-		<Number_of_Students>30</Number_of_Students>
-		</Subgroup>
-		<Subgroup>
-		<Name>EC A2</Name>
-		<Number_of_Students>30</Number_of_Students>
+			<Name>CS A2</Name>
+			<Number_of_Students>30</Number_of_Students>
 		</Subgroup>
 	</Group>
 	<Group>
-	<Name>EC B</Name>
-	<Number_of_Students>60</Number_of_Students>
+		<Name>CS B</Name>
+		<Number_of_Students>60</Number_of_Students>
 		<Subgroup>
-		<Name>EC B1</Name>
-		<Number_of_Students>30</Number_of_Students>
+			<Name>CS B1</Name>
+			<Number_of_Students>30</Number_of_Students>
 		</Subgroup>
 		<Subgroup>
-		<Name>EC B2</Name>
-		<Number_of_Students>30</Number_of_Students>
-		</Subgroup>
-	</Group>
-	<Group>
-	<Name>EE</Name>
-	<Number_of_Students>60</Number_of_Students>
-		<Subgroup>
-		<Name>EE 1</Name>
-		<Number_of_Students>30</Number_of_Students>
-		</Subgroup>
-		<Subgroup>
-		<Name>EE 2</Name>
-		<Number_of_Students>30</Number_of_Students>
+			<Name>CS B2</Name>
+			<Number_of_Students>30</Number_of_Students>
 		</Subgroup>
 	</Group>
 	<Group>
-	<Name>EEE A</Name>
-	<Number_of_Students>60</Number_of_Students>
+		<Name>EC A</Name>
+		<Number_of_Students>60</Number_of_Students>
 		<Subgroup>
-		<Name>EEE A1</Name>
-		<Number_of_Students>30</Number_of_Students>
+			<Name>EC A1</Name>
+			<Number_of_Students>30</Number_of_Students>
 		</Subgroup>
 		<Subgroup>
-		<Name>EEE A2</Name>
-		<Number_of_Students>30</Number_of_Students>
-		</Subgroup>
-	</Group>
-	<Group>
-	<Name>EEE B</Name>
-	<Number_of_Students>60</Number_of_Students>
-		<Subgroup>
-		<Name>EEE B1</Name>
-		<Number_of_Students>30</Number_of_Students>
-		</Subgroup>
-		<Subgroup>
-		<Name>EEE B2</Name>
-		<Number_of_Students>30</Number_of_Students>
+			<Name>EC A2</Name>
+			<Number_of_Students>30</Number_of_Students>
 		</Subgroup>
 	</Group>
 	<Group>
-	<Name>EI A</Name>
-	<Number_of_Students>60</Number_of_Students>
+		<Name>EC B</Name>
+		<Number_of_Students>60</Number_of_Students>
 		<Subgroup>
-		<Name>EI A1</Name>
-		<Number_of_Students>30</Number_of_Students>
+			<Name>EC B1</Name>
+			<Number_of_Students>30</Number_of_Students>
 		</Subgroup>
 		<Subgroup>
-		<Name>EI A2</Name>
-		<Number_of_Students>30</Number_of_Students>
-		</Subgroup>
-	</Group>
-	<Group>
-	<Name>EI B</Name>
-	<Number_of_Students>60</Number_of_Students>
-		<Subgroup>
-		<Name>EI B1</Name>
-		<Number_of_Students>30</Number_of_Students>
-		</Subgroup>
-		<Subgroup>
-		<Name>EI B2</Name>
-		<Number_of_Students>30</Number_of_Students>
+			<Name>EC B2</Name>
+			<Number_of_Students>30</Number_of_Students>
 		</Subgroup>
 	</Group>
 	<Group>
-	<Name>IC</Name>
-	<Number_of_Students>60</Number_of_Students>
+		<Name>EE</Name>
+		<Number_of_Students>60</Number_of_Students>
 		<Subgroup>
-		<Name>IC 1</Name>
-		<Number_of_Students>30</Number_of_Students>
+			<Name>EE 1</Name>
+			<Number_of_Students>30</Number_of_Students>
 		</Subgroup>
 		<Subgroup>
-		<Name>IC 2</Name>
-		<Number_of_Students>30</Number_of_Students>
-		</Subgroup>
-	</Group>
-	<Group>
-	<Name>IT A</Name>
-	<Number_of_Students>60</Number_of_Students>
-		<Subgroup>
-		<Name>IT A1</Name>
-		<Number_of_Students>30</Number_of_Students>
-		</Subgroup>
-		<Subgroup>
-		<Name>IT A2</Name>
-		<Number_of_Students>30</Number_of_Students>
+			<Name>EE 2</Name>
+			<Number_of_Students>30</Number_of_Students>
 		</Subgroup>
 	</Group>
 	<Group>
-	<Name>IT B</Name>
-	<Number_of_Students>60</Number_of_Students>
+		<Name>EEE A</Name>
+		<Number_of_Students>60</Number_of_Students>
 		<Subgroup>
-		<Name>IT B1</Name>
-		<Number_of_Students>30</Number_of_Students>
+			<Name>EEE A1</Name>
+			<Number_of_Students>30</Number_of_Students>
 		</Subgroup>
 		<Subgroup>
-		<Name>IT B2</Name>
-		<Number_of_Students>30</Number_of_Students>
-		</Subgroup>
-	</Group>
-	<Group>
-	<Name>ME A</Name>
-	<Number_of_Students>60</Number_of_Students>
-		<Subgroup>
-		<Name>ME A1</Name>
-		<Number_of_Students>30</Number_of_Students>
-		</Subgroup>
-		<Subgroup>
-		<Name>ME A2</Name>
-		<Number_of_Students>30</Number_of_Students>
+			<Name>EEE A2</Name>
+			<Number_of_Students>30</Number_of_Students>
 		</Subgroup>
 	</Group>
 	<Group>
-	<Name>ME B</Name>
-	<Number_of_Students>60</Number_of_Students>
+		<Name>EEE B</Name>
+		<Number_of_Students>60</Number_of_Students>
 		<Subgroup>
-		<Name>ME B1</Name>
-		<Number_of_Students>30</Number_of_Students>
+			<Name>EEE B1</Name>
+			<Number_of_Students>30</Number_of_Students>
 		</Subgroup>
 		<Subgroup>
-		<Name>ME B2</Name>
-		<Number_of_Students>30</Number_of_Students>
-		</Subgroup>
-	</Group>
-</Year>
-<Year>
-<Name>Second year</Name>
-<Number_of_Students>120</Number_of_Students>
-	<Group>
-	<Name>III A</Name>
-	<Number_of_Students>60</Number_of_Students>
-		<Subgroup>
-		<Name>III A1</Name>
-		<Number_of_Students>30</Number_of_Students>
-		</Subgroup>
-		<Subgroup>
-		<Name>III A2</Name>
-		<Number_of_Students>30</Number_of_Students>
+			<Name>EEE B2</Name>
+			<Number_of_Students>30</Number_of_Students>
 		</Subgroup>
 	</Group>
 	<Group>
-	<Name>III B</Name>
-	<Number_of_Students>60</Number_of_Students>
+		<Name>EI A</Name>
+		<Number_of_Students>60</Number_of_Students>
 		<Subgroup>
-		<Name>III B1</Name>
-		<Number_of_Students>30</Number_of_Students>
+			<Name>EI A1</Name>
+			<Number_of_Students>30</Number_of_Students>
 		</Subgroup>
 		<Subgroup>
-		<Name>III B2</Name>
-		<Number_of_Students>30</Number_of_Students>
+			<Name>EI A2</Name>
+			<Number_of_Students>30</Number_of_Students>
+		</Subgroup>
+	</Group>
+	<Group>
+		<Name>EI B</Name>
+		<Number_of_Students>60</Number_of_Students>
+		<Subgroup>
+			<Name>EI B1</Name>
+			<Number_of_Students>30</Number_of_Students>
+		</Subgroup>
+		<Subgroup>
+			<Name>EI B2</Name>
+			<Number_of_Students>30</Number_of_Students>
+		</Subgroup>
+	</Group>
+	<Group>
+		<Name>IC</Name>
+		<Number_of_Students>60</Number_of_Students>
+		<Subgroup>
+			<Name>IC 1</Name>
+			<Number_of_Students>30</Number_of_Students>
+		</Subgroup>
+		<Subgroup>
+			<Name>IC 2</Name>
+			<Number_of_Students>30</Number_of_Students>
+		</Subgroup>
+	</Group>
+	<Group>
+		<Name>IT A</Name>
+		<Number_of_Students>60</Number_of_Students>
+		<Subgroup>
+			<Name>IT A1</Name>
+			<Number_of_Students>30</Number_of_Students>
+		</Subgroup>
+		<Subgroup>
+			<Name>IT A2</Name>
+			<Number_of_Students>30</Number_of_Students>
+		</Subgroup>
+	</Group>
+	<Group>
+		<Name>IT B</Name>
+		<Number_of_Students>60</Number_of_Students>
+		<Subgroup>
+			<Name>IT B1</Name>
+			<Number_of_Students>30</Number_of_Students>
+		</Subgroup>
+		<Subgroup>
+			<Name>IT B2</Name>
+			<Number_of_Students>30</Number_of_Students>
+		</Subgroup>
+	</Group>
+	<Group>
+		<Name>ME A</Name>
+		<Number_of_Students>60</Number_of_Students>
+		<Subgroup>
+			<Name>ME A1</Name>
+			<Number_of_Students>30</Number_of_Students>
+		</Subgroup>
+		<Subgroup>
+			<Name>ME A2</Name>
+			<Number_of_Students>30</Number_of_Students>
+		</Subgroup>
+	</Group>
+	<Group>
+		<Name>ME B</Name>
+		<Number_of_Students>60</Number_of_Students>
+		<Subgroup>
+			<Name>ME B1</Name>
+			<Number_of_Students>30</Number_of_Students>
+		</Subgroup>
+		<Subgroup>
+			<Name>ME B2</Name>
+			<Number_of_Students>30</Number_of_Students>
 		</Subgroup>
 	</Group>
 </Year>
 <Year>
-<Name>Third Year</Name>
-<Number_of_Students>120</Number_of_Students>
+	<Name>Second year</Name>
+	<Number_of_Students>120</Number_of_Students>
 	<Group>
-	<Name>V A</Name>
-	<Number_of_Students>60</Number_of_Students>
+		<Name>III A</Name>
+		<Number_of_Students>60</Number_of_Students>
 		<Subgroup>
-		<Name>V A1</Name>
-		<Number_of_Students>30</Number_of_Students>
+			<Name>III A1</Name>
+			<Number_of_Students>30</Number_of_Students>
 		</Subgroup>
 		<Subgroup>
-		<Name>V A2</Name>
-		<Number_of_Students>30</Number_of_Students>
+			<Name>III A2</Name>
+			<Number_of_Students>30</Number_of_Students>
 		</Subgroup>
 	</Group>
 	<Group>
-	<Name>V B</Name>
-	<Number_of_Students>60</Number_of_Students>
+		<Name>III B</Name>
+		<Number_of_Students>60</Number_of_Students>
 		<Subgroup>
-		<Name>V B1</Name>
-		<Number_of_Students>30</Number_of_Students>
+			<Name>III B1</Name>
+			<Number_of_Students>30</Number_of_Students>
 		</Subgroup>
 		<Subgroup>
-		<Name>V B2</Name>
-		<Number_of_Students>30</Number_of_Students>
+			<Name>III B2</Name>
+			<Number_of_Students>30</Number_of_Students>
 		</Subgroup>
 	</Group>
 </Year>
 <Year>
-<Name>Fourth Year</Name>
-<Number_of_Students>120</Number_of_Students>
+	<Name>Third Year</Name>
+	<Number_of_Students>120</Number_of_Students>
 	<Group>
-	<Name>VII A</Name>
-	<Number_of_Students>60</Number_of_Students>
+		<Name>V A</Name>
+		<Number_of_Students>60</Number_of_Students>
 		<Subgroup>
-		<Name>VII A1</Name>
-		<Number_of_Students>30</Number_of_Students>
+			<Name>V A1</Name>
+			<Number_of_Students>30</Number_of_Students>
 		</Subgroup>
 		<Subgroup>
-		<Name>VII A2</Name>
-		<Number_of_Students>30</Number_of_Students>
+			<Name>V A2</Name>
+			<Number_of_Students>30</Number_of_Students>
 		</Subgroup>
 	</Group>
 	<Group>
-	<Name>VII B</Name>
-	<Number_of_Students>60</Number_of_Students>
+		<Name>V B</Name>
+		<Number_of_Students>60</Number_of_Students>
 		<Subgroup>
-		<Name>VII B1</Name>
-		<Number_of_Students>30</Number_of_Students>
+			<Name>V B1</Name>
+			<Number_of_Students>30</Number_of_Students>
 		</Subgroup>
 		<Subgroup>
-		<Name>VII B2</Name>
-		<Number_of_Students>30</Number_of_Students>
+			<Name>V B2</Name>
+			<Number_of_Students>30</Number_of_Students>
+		</Subgroup>
+	</Group>
+</Year>
+<Year>
+	<Name>Fourth Year</Name>
+	<Number_of_Students>120</Number_of_Students>
+	<Group>
+		<Name>VII A</Name>
+		<Number_of_Students>60</Number_of_Students>
+		<Subgroup>
+			<Name>VII A1</Name>
+			<Number_of_Students>30</Number_of_Students>
+		</Subgroup>
+		<Subgroup>
+			<Name>VII A2</Name>
+			<Number_of_Students>30</Number_of_Students>
+		</Subgroup>
+	</Group>
+	<Group>
+		<Name>VII B</Name>
+		<Number_of_Students>60</Number_of_Students>
+		<Subgroup>
+			<Name>VII B1</Name>
+			<Number_of_Students>30</Number_of_Students>
+		</Subgroup>
+		<Subgroup>
+			<Name>VII B2</Name>
+			<Number_of_Students>30</Number_of_Students>
 		</Subgroup>
 	</Group>
 </Year>
@@ -12849,6 +12877,7 @@
 	<Students_Name></Students_Name>
 	<Subject_Name>RE</Subject_Name>
 	<Activity_Tag_Name></Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>5</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>MON</Preferred_Day>
@@ -12879,6 +12908,7 @@
 	<Students_Name></Students_Name>
 	<Subject_Name>WORKSHOP</Subject_Name>
 	<Activity_Tag_Name></Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>20</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>MON</Preferred_Day>
@@ -12969,6 +12999,7 @@
 	<Students_Name></Students_Name>
 	<Subject_Name>GRAPHICS</Subject_Name>
 	<Activity_Tag_Name></Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>29</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>MON</Preferred_Day>
@@ -13095,6 +13126,7 @@
 	<Students_Name></Students_Name>
 	<Subject_Name>CP</Subject_Name>
 	<Activity_Tag_Name>Lab</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>20</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>MON</Preferred_Day>
@@ -13185,6 +13217,7 @@
 	<Students_Name></Students_Name>
 	<Subject_Name>CHEM</Subject_Name>
 	<Activity_Tag_Name>Lab</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>20</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>MON</Preferred_Day>
@@ -13282,6 +13315,7 @@
 	<Students_Name></Students_Name>
 	<Subject_Name>EM</Subject_Name>
 	<Activity_Tag_Name>(L)</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>40</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>MON</Preferred_Day>
@@ -13452,6 +13486,7 @@
 	<Students_Name></Students_Name>
 	<Subject_Name>EC</Subject_Name>
 	<Activity_Tag_Name>(L)</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>40</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>MON</Preferred_Day>
@@ -13622,6 +13657,7 @@
 	<Students_Name></Students_Name>
 	<Subject_Name>EE</Subject_Name>
 	<Activity_Tag_Name>(L)</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>40</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>MON</Preferred_Day>
@@ -13792,6 +13828,7 @@
 	<Students_Name></Students_Name>
 	<Subject_Name>MP</Subject_Name>
 	<Activity_Tag_Name>(L)</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>35</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>MON</Preferred_Day>
@@ -13942,6 +13979,7 @@
 	<Students_Name></Students_Name>
 	<Subject_Name>PC</Subject_Name>
 	<Activity_Tag_Name>(L)</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>30</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>MON</Preferred_Day>
@@ -14072,6 +14110,7 @@
 	<Students_Name></Students_Name>
 	<Subject_Name>EVS</Subject_Name>
 	<Activity_Tag_Name>(L)</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>35</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>MON</Preferred_Day>
@@ -14222,6 +14261,7 @@
 	<Students_Name></Students_Name>
 	<Subject_Name>PC</Subject_Name>
 	<Activity_Tag_Name>Lab</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>39</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>MON</Preferred_Day>
@@ -14388,6 +14428,7 @@
 	<Students_Name></Students_Name>
 	<Subject_Name>EM</Subject_Name>
 	<Activity_Tag_Name>Lab</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>39</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>MON</Preferred_Day>
@@ -14554,6 +14595,7 @@
 	<Students_Name>CS B1</Students_Name>
 	<Subject_Name>EE</Subject_Name>
 	<Activity_Tag_Name>Lab</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>2</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>MON</Preferred_Day>
@@ -14572,6 +14614,7 @@
 	<Students_Name></Students_Name>
 	<Subject_Name>PHY</Subject_Name>
 	<Activity_Tag_Name>Lab</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>39</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>MON</Preferred_Day>
@@ -14738,6 +14781,7 @@
 	<Students_Name></Students_Name>
 	<Subject_Name>MATHS</Subject_Name>
 	<Activity_Tag_Name></Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>40</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>MON</Preferred_Day>
@@ -15506,6 +15550,7 @@
 	<Students_Name></Students_Name>
 	<Subject_Name>Sociology</Subject_Name>
 	<Activity_Tag_Name>(L)</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>20</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>MON</Preferred_Day>
@@ -15832,6 +15877,7 @@
 	<Students_Name></Students_Name>
 	<Subject_Name>Ind./Practical Trg.</Subject_Name>
 	<Activity_Tag_Name></Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>20</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>MON</Preferred_Day>
@@ -15931,6 +15977,7 @@
 	<Students_Name></Students_Name>
 	<Subject_Name>CAD/CAM Lab</Subject_Name>
 	<Activity_Tag_Name></Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>35</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>MON</Preferred_Day>
@@ -16081,6 +16128,7 @@
 	<Students_Name></Students_Name>
 	<Subject_Name>MS</Subject_Name>
 	<Activity_Tag_Name>Lab</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>30</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>MON</Preferred_Day>
@@ -16211,6 +16259,7 @@
 	<Students_Name></Students_Name>
 	<Subject_Name>FM</Subject_Name>
 	<Activity_Tag_Name>Lab</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>30</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>MON</Preferred_Day>
@@ -16341,6 +16390,7 @@
 	<Students_Name></Students_Name>
 	<Subject_Name>TD</Subject_Name>
 	<Activity_Tag_Name>Lab</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>30</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>MON</Preferred_Day>
@@ -16471,6 +16521,7 @@
 	<Students_Name></Students_Name>
 	<Subject_Name>Mfg. Sc. II</Subject_Name>
 	<Activity_Tag_Name>Lab</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>40</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>MON</Preferred_Day>
@@ -16641,6 +16692,7 @@
 	<Students_Name></Students_Name>
 	<Subject_Name>HMT</Subject_Name>
 	<Activity_Tag_Name>Lab</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>40</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>MON</Preferred_Day>
@@ -16811,6 +16863,7 @@
 	<Students_Name></Students_Name>
 	<Subject_Name>MD-1</Subject_Name>
 	<Activity_Tag_Name>Lab</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>40</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>MON</Preferred_Day>
@@ -17838,6 +17891,7 @@
 	<Students_Name></Students_Name>
 	<Subject_Name>PDP</Subject_Name>
 	<Activity_Tag_Name></Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>2</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>WED</Preferred_Day>
@@ -17989,6 +18043,7 @@
 	<Students_Name></Students_Name>
 	<Subject_Name>EM</Subject_Name>
 	<Activity_Tag_Name>(L)</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>19</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>MON</Preferred_Day>
@@ -18075,6 +18130,7 @@
 	<Students_Name></Students_Name>
 	<Subject_Name>EM</Subject_Name>
 	<Activity_Tag_Name>Lab</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>28</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>MON</Preferred_Day>
@@ -18210,6 +18266,7 @@
 	<Students_Name>EEE A</Students_Name>
 	<Subject_Name>CP</Subject_Name>
 	<Activity_Tag_Name>Lab</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>2</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>MON</Preferred_Day>
@@ -18228,6 +18285,7 @@
 	<Students_Name>EEE B</Students_Name>
 	<Subject_Name>CP</Subject_Name>
 	<Activity_Tag_Name>Lab</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>2</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>THU</Preferred_Day>
@@ -18246,6 +18304,7 @@
 	<Students_Name>EI A</Students_Name>
 	<Subject_Name>CP</Subject_Name>
 	<Activity_Tag_Name>Lab</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>2</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>MON</Preferred_Day>
@@ -18264,6 +18323,7 @@
 	<Students_Name>EI B</Students_Name>
 	<Subject_Name>CP</Subject_Name>
 	<Activity_Tag_Name>Lab</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>2</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>FRI</Preferred_Day>
@@ -18434,6 +18494,7 @@
 	<Students_Name></Students_Name>
 	<Subject_Name>CHEM</Subject_Name>
 	<Activity_Tag_Name>(L)</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>40</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>MON</Preferred_Day>
@@ -18634,6 +18695,7 @@
 	<Students_Name>CS B2</Students_Name>
 	<Subject_Name>EE</Subject_Name>
 	<Activity_Tag_Name>Lab</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>2</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>TUE</Preferred_Day>
@@ -18652,6 +18714,7 @@
 	<Students_Name>CS A1</Students_Name>
 	<Subject_Name>EE</Subject_Name>
 	<Activity_Tag_Name>Lab</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>2</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>WED</Preferred_Day>
@@ -18670,6 +18733,7 @@
 	<Students_Name>IT A2</Students_Name>
 	<Subject_Name>EE</Subject_Name>
 	<Activity_Tag_Name>Lab</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>2</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>THU</Preferred_Day>
@@ -18688,6 +18752,7 @@
 	<Students_Name>CE B2</Students_Name>
 	<Subject_Name>EE</Subject_Name>
 	<Activity_Tag_Name>Lab</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>2</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>THU</Preferred_Day>
@@ -18706,6 +18771,7 @@
 	<Students_Name>IT B1</Students_Name>
 	<Subject_Name>EE</Subject_Name>
 	<Activity_Tag_Name>Lab</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>2</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>FRI</Preferred_Day>
@@ -18724,6 +18790,7 @@
 	<Students_Name>CE A1</Students_Name>
 	<Subject_Name>EE</Subject_Name>
 	<Activity_Tag_Name>Lab</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>2</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>FRI</Preferred_Day>
@@ -18742,6 +18809,7 @@
 	<Students_Name>ME B2</Students_Name>
 	<Subject_Name>EE</Subject_Name>
 	<Activity_Tag_Name>Lab</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>2</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>MON</Preferred_Day>
@@ -18760,6 +18828,7 @@
 	<Students_Name>CE A2</Students_Name>
 	<Subject_Name>EE</Subject_Name>
 	<Activity_Tag_Name>Lab</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>2</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>MON</Preferred_Day>
@@ -18778,6 +18847,7 @@
 	<Students_Name>IT A1</Students_Name>
 	<Subject_Name>EE</Subject_Name>
 	<Activity_Tag_Name>Lab</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>2</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>TUE</Preferred_Day>
@@ -18796,6 +18866,7 @@
 	<Students_Name>ME A1</Students_Name>
 	<Subject_Name>EE</Subject_Name>
 	<Activity_Tag_Name>Lab</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>2</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>WED</Preferred_Day>
@@ -18814,6 +18885,7 @@
 	<Students_Name>IT B2</Students_Name>
 	<Subject_Name>EE</Subject_Name>
 	<Activity_Tag_Name>Lab</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>2</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>WED</Preferred_Day>
@@ -18832,6 +18904,7 @@
 	<Students_Name>ME B1</Students_Name>
 	<Subject_Name>EE</Subject_Name>
 	<Activity_Tag_Name>Lab</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>2</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>THU</Preferred_Day>
@@ -18850,6 +18923,7 @@
 	<Students_Name>ME A2</Students_Name>
 	<Subject_Name>EE</Subject_Name>
 	<Activity_Tag_Name>Lab</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>2</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>THU</Preferred_Day>
@@ -18868,6 +18942,7 @@
 	<Students_Name>CS A2</Students_Name>
 	<Subject_Name>EE</Subject_Name>
 	<Activity_Tag_Name>Lab</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>2</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>FRI</Preferred_Day>
@@ -18886,6 +18961,7 @@
 	<Students_Name>CE B1</Students_Name>
 	<Subject_Name>EE</Subject_Name>
 	<Activity_Tag_Name>Lab</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>2</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>FRI</Preferred_Day>
@@ -18904,6 +18980,7 @@
 	<Students_Name></Students_Name>
 	<Subject_Name>M/C Drg-I Lab</Subject_Name>
 	<Activity_Tag_Name></Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>6</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>MON</Preferred_Day>
@@ -19040,6 +19117,7 @@
 	<Students_Name></Students_Name>
 	<Subject_Name>Seminar</Subject_Name>
 	<Activity_Tag_Name></Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>42</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>MON</Preferred_Day>
@@ -19246,6 +19324,7 @@
 	<Students_Name></Students_Name>
 	<Subject_Name>OE</Subject_Name>
 	<Activity_Tag_Name></Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>4</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>MON</Preferred_Day>
@@ -19315,6 +19394,7 @@
 	<Students_Name></Students_Name>
 	<Subject_Name></Subject_Name>
 	<Activity_Tag_Name>(T)</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>30</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>MON</Preferred_Day>
@@ -19525,6 +19605,7 @@
 	<Students_Name>EI A</Students_Name>
 	<Subject_Name>EVS</Subject_Name>
 	<Activity_Tag_Name>(L)</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>27</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>MON</Preferred_Day>
@@ -19643,6 +19724,7 @@
 	<Students_Name>EI B</Students_Name>
 	<Subject_Name>EVS</Subject_Name>
 	<Activity_Tag_Name>(L)</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>27</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>WED</Preferred_Day>
@@ -19761,6 +19843,7 @@
 	<Students_Name></Students_Name>
 	<Subject_Name>CHEM</Subject_Name>
 	<Activity_Tag_Name>(L)</Activity_Tag_Name>
+	<Duration></Duration>
 	<Number_of_Preferred_Time_Slots>35</Number_of_Preferred_Time_Slots>
 	<Preferred_Time_Slot>
 		<Preferred_Day>MON</Preferred_Day>

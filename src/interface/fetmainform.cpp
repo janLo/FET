@@ -8,10 +8,10 @@
 //
 /***************************************************************************
  *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
+ *   This program is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Affero General Public License as        *
+ *   published by the Free Software Foundation, either version 3 of the    *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
 
@@ -69,6 +69,7 @@ using namespace std;
 
 #include "fet.h"
 
+#include "groupactivitiesininitialorderitemsform.h"
 #include "constraintactivityendsstudentsdayform.h"
 #include "constraintactivitiesendstudentsdayform.h"
 #include "constrainttwoactivitiesconsecutiveform.h"
@@ -257,6 +258,24 @@ Solution best_solution;
 QString conflictsString; //the string that contains a log of the broken constraints
 QString conflictsStringTitle;
 
+bool WRITE_TIMETABLE_CONFLICTS=true;
+
+bool WRITE_TIMETABLES_STATISTICS=true;
+bool WRITE_TIMETABLES_XML=true;
+bool WRITE_TIMETABLES_DAYS_HORIZONTAL=true;
+bool WRITE_TIMETABLES_DAYS_VERTICAL=true;
+bool WRITE_TIMETABLES_TIME_HORIZONTAL=true;
+bool WRITE_TIMETABLES_TIME_VERTICAL=true;
+
+bool WRITE_TIMETABLES_SUBGROUPS=true;
+bool WRITE_TIMETABLES_GROUPS=true;
+bool WRITE_TIMETABLES_YEARS=true;
+bool WRITE_TIMETABLES_TEACHERS=true;
+bool WRITE_TIMETABLES_TEACHERS_FREE_PERIODS=true;
+bool WRITE_TIMETABLES_ROOMS=true;
+bool WRITE_TIMETABLES_SUBJECTS=true;
+bool WRITE_TIMETABLES_ACTIVITIES=true;
+
 #ifndef FET_COMMAND_LINE
 extern QApplication* pqapplication;
 #endif
@@ -274,16 +293,26 @@ const QString PROGRAM=QString("fettimetabling");
 
 bool USE_GUI_COLORS=false;
 
+bool SHOW_SUBGROUPS_IN_COMBO_BOXES=true;
+bool SHOW_SUBGROUPS_IN_ACTIVITY_PLANNING=true;
+
 bool SHOW_SHORTCUTS_ON_MAIN_WINDOW=true;
+
+bool SHOW_TOOLTIPS_FOR_CONSTRAINTS_WITH_TABLES=false;
 
 bool ENABLE_ACTIVITY_TAG_MAX_HOURS_DAILY=false;
 bool ENABLE_STUDENTS_MAX_GAPS_PER_DAY=false;
 
 bool SHOW_WARNING_FOR_NOT_PERFECT_CONSTRAINTS=true;
 
+bool SHOW_WARNING_FOR_SUBGROUPS_WITH_THE_SAME_ACTIVITIES=true;
+
 bool ENABLE_STUDENTS_MIN_HOURS_DAILY_WITH_ALLOW_EMPTY_DAYS=false;
 
 bool SHOW_WARNING_FOR_STUDENTS_MIN_HOURS_DAILY_WITH_ALLOW_EMPTY_DAYS=true;
+
+bool ENABLE_GROUP_ACTIVITIES_IN_INITIAL_ORDER=false;
+bool SHOW_WARNING_FOR_GROUP_ACTIVITIES_IN_INITIAL_ORDER=true;
 
 bool CONFIRM_ACTIVITY_PLANNING=true;
 bool CONFIRM_SPREAD_ACTIVITIES=true;
@@ -410,6 +439,9 @@ void RandomSeedDialog::ok()
 FetMainForm::FetMainForm()
 {
 	setupUi(this);
+	
+	QIcon appIcon(":/images/appicon.png");
+	pqapplication->setWindowIcon(appIcon);
 
 	QSettings settings(COMPANY, PROGRAM);
 	int nRec=settings.value(QString("FetMainForm/number-of-recent-files"), 0).toInt();
@@ -450,6 +482,8 @@ FetMainForm::FetMainForm()
 	shortcutAdvancedTimeMenu->addAction(spreadActivitiesAction);
 	shortcutAdvancedTimeMenu->addSeparator();
 	shortcutAdvancedTimeMenu->addAction(removeRedundantConstraintsAction);
+	//shortcutAdvancedTimeMenu->addSeparator();
+	//shortcutAdvancedTimeMenu->addAction(groupActivitiesInInitialOrderAction);
 	
 	shortcutDataSpaceMenu=new QMenu();
 	shortcutDataSpaceMenu->addAction(dataBuildingsAction);
@@ -464,6 +498,20 @@ FetMainForm::FetMainForm()
 	shortcutDataAdvancedMenu->addAction(dataStudentsStatisticsAction);
 	shortcutDataAdvancedMenu->addSeparator();
 	shortcutDataAdvancedMenu->addAction(dataActivitiesRoomsStatisticsAction);
+	
+	//2014-07-01
+	shortcutTimetableLockingMenu=new QMenu();
+	shortcutTimetableLockingMenu->addAction(timetableLockAllActivitiesAction);
+	shortcutTimetableLockingMenu->addAction(timetableUnlockAllActivitiesAction);
+	shortcutTimetableLockingMenu->addSeparator();
+	shortcutTimetableLockingMenu->addAction(timetableLockActivitiesDayAction);
+	shortcutTimetableLockingMenu->addAction(timetableUnlockActivitiesDayAction);
+	shortcutTimetableLockingMenu->addSeparator();
+	shortcutTimetableLockingMenu->addAction(timetableLockActivitiesEndStudentsDayAction);
+	shortcutTimetableLockingMenu->addAction(timetableUnlockActivitiesEndStudentsDayAction);
+	
+	shortcutTimetableAdvancedMenu=new QMenu();
+	shortcutTimetableAdvancedMenu->addAction(groupActivitiesInInitialOrderAction);
 	
 	ORIGINAL_WIDTH=width();
 	ORIGINAL_HEIGHT=height();
@@ -504,11 +552,57 @@ FetMainForm::FetMainForm()
 	settingsShowShortcutsOnMainWindowAction->setCheckable(true);
 	settingsShowShortcutsOnMainWindowAction->setChecked(SHOW_SHORTCUTS_ON_MAIN_WINDOW);
 	
+	settingsShowToolTipsForConstraintsWithTablesAction->setCheckable(true);
+	settingsShowToolTipsForConstraintsWithTablesAction->setChecked(SHOW_TOOLTIPS_FOR_CONSTRAINTS_WITH_TABLES);
+	
 	checkForUpdatesAction->setCheckable(true);
 	checkForUpdatesAction->setChecked(checkForUpdates);
 	
 	settingsUseColorsAction->setCheckable(true);
 	settingsUseColorsAction->setChecked(USE_GUI_COLORS);
+	
+	settingsShowSubgroupsInComboBoxesAction->setCheckable(true);
+	settingsShowSubgroupsInComboBoxesAction->setChecked(SHOW_SUBGROUPS_IN_COMBO_BOXES);
+	settingsShowSubgroupsInActivityPlanningAction->setCheckable(true);
+	settingsShowSubgroupsInActivityPlanningAction->setChecked(SHOW_SUBGROUPS_IN_ACTIVITY_PLANNING);
+
+	///
+	enableConflictsTimetableAction->setCheckable(true);
+
+	enableStatisticsTimetablesAction->setCheckable(true);
+	enableXmlTimetablesAction->setCheckable(true);
+	enableDaysHorizontalTimetablesAction->setCheckable(true);
+	enableDaysVerticalTimetablesAction->setCheckable(true);
+	enableTimeHorizontalTimetablesAction->setCheckable(true);
+	enableTimeVerticalTimetablesAction->setCheckable(true);
+
+	enableSubgroupsTimetablesAction->setCheckable(true);
+	enableGroupsTimetablesAction->setCheckable(true);
+	enableYearsTimetablesAction->setCheckable(true);
+	enableTeachersTimetablesAction->setCheckable(true);
+	enableTeachersFreePeriodsTimetablesAction->setCheckable(true);
+	enableRoomsTimetablesAction->setCheckable(true);
+	enableSubjectsTimetablesAction->setCheckable(true);
+	enableActivitiesTimetablesAction->setCheckable(true);
+	//
+	enableConflictsTimetableAction->setChecked(WRITE_TIMETABLE_CONFLICTS);
+
+	enableStatisticsTimetablesAction->setChecked(WRITE_TIMETABLES_STATISTICS);
+	enableXmlTimetablesAction->setChecked(WRITE_TIMETABLES_XML);
+	enableDaysHorizontalTimetablesAction->setChecked(WRITE_TIMETABLES_DAYS_HORIZONTAL);
+	enableDaysVerticalTimetablesAction->setChecked(WRITE_TIMETABLES_DAYS_VERTICAL);
+	enableTimeHorizontalTimetablesAction->setChecked(WRITE_TIMETABLES_TIME_HORIZONTAL);
+	enableTimeVerticalTimetablesAction->setChecked(WRITE_TIMETABLES_TIME_VERTICAL);
+
+	enableSubgroupsTimetablesAction->setChecked(WRITE_TIMETABLES_SUBGROUPS);
+	enableGroupsTimetablesAction->setChecked(WRITE_TIMETABLES_GROUPS);
+	enableYearsTimetablesAction->setChecked(WRITE_TIMETABLES_YEARS);
+	enableTeachersTimetablesAction->setChecked(WRITE_TIMETABLES_TEACHERS);
+	enableTeachersFreePeriodsTimetablesAction->setChecked(WRITE_TIMETABLES_TEACHERS_FREE_PERIODS);
+	enableRoomsTimetablesAction->setChecked(WRITE_TIMETABLES_ROOMS);
+	enableSubjectsTimetablesAction->setChecked(WRITE_TIMETABLES_SUBJECTS);
+	enableActivitiesTimetablesAction->setChecked(WRITE_TIMETABLES_ACTIVITIES);
+	///
 	
 	////////confirmations
 	settingsConfirmActivityPlanningAction->setCheckable(true);
@@ -557,12 +651,34 @@ FetMainForm::FetMainForm()
 	LockUnlock::computeLockedUnlockedActivitiesTimeSpace();
 	LockUnlock::increaseCommunicationSpinBox();
 	
+	showWarningForSubgroupsWithTheSameActivitiesAction->setCheckable(true);
+	
+	enableActivityTagMaxHoursDailyAction->setCheckable(true);
+	enableStudentsMaxGapsPerDayAction->setCheckable(true);
+	showWarningForNotPerfectConstraintsAction->setCheckable(true);
+
+	enableStudentsMinHoursDailyWithAllowEmptyDaysAction->setCheckable(true);
+	showWarningForStudentsMinHoursDailyWithAllowEmptyDaysAction->setCheckable(true);
+	
+	enableGroupActivitiesInInitialOrderAction->setCheckable(true);
+	showWarningForGroupActivitiesInInitialOrderAction->setCheckable(true);
+	
+	showWarningForSubgroupsWithTheSameActivitiesAction->setChecked(SHOW_WARNING_FOR_SUBGROUPS_WITH_THE_SAME_ACTIVITIES);
+
 	enableActivityTagMaxHoursDailyAction->setChecked(ENABLE_ACTIVITY_TAG_MAX_HOURS_DAILY);
 	enableStudentsMaxGapsPerDayAction->setChecked(ENABLE_STUDENTS_MAX_GAPS_PER_DAY);
 	showWarningForNotPerfectConstraintsAction->setChecked(SHOW_WARNING_FOR_NOT_PERFECT_CONSTRAINTS);
 
 	enableStudentsMinHoursDailyWithAllowEmptyDaysAction->setChecked(ENABLE_STUDENTS_MIN_HOURS_DAILY_WITH_ALLOW_EMPTY_DAYS);
 	showWarningForStudentsMinHoursDailyWithAllowEmptyDaysAction->setChecked(SHOW_WARNING_FOR_STUDENTS_MIN_HOURS_DAILY_WITH_ALLOW_EMPTY_DAYS);
+
+	enableGroupActivitiesInInitialOrderAction->setChecked(ENABLE_GROUP_ACTIVITIES_IN_INITIAL_ORDER);
+	showWarningForGroupActivitiesInInitialOrderAction->setChecked(SHOW_WARNING_FOR_GROUP_ACTIVITIES_IN_INITIAL_ORDER);
+	
+	connect(showWarningForSubgroupsWithTheSameActivitiesAction, SIGNAL(toggled(bool)), this, SLOT(showWarningForSubgroupsWithTheSameActivitiesToggled(bool)));
+
+	connect(settingsShowSubgroupsInComboBoxesAction, SIGNAL(toggled(bool)), this, SLOT(showSubgroupsInComboBoxesToggled(bool)));
+	connect(settingsShowSubgroupsInActivityPlanningAction, SIGNAL(toggled(bool)), this, SLOT(showSubgroupsInActivityPlanningToggled(bool)));
 	
 	connect(enableActivityTagMaxHoursDailyAction, SIGNAL(toggled(bool)), this, SLOT(enableActivityTagMaxHoursDailyToggled(bool)));
 	connect(enableStudentsMaxGapsPerDayAction, SIGNAL(toggled(bool)), this, SLOT(enableStudentsMaxGapsPerDayToggled(bool)));
@@ -570,6 +686,9 @@ FetMainForm::FetMainForm()
 
 	connect(enableStudentsMinHoursDailyWithAllowEmptyDaysAction, SIGNAL(toggled(bool)), this, SLOT(enableStudentsMinHoursDailyWithAllowEmptyDaysToggled(bool)));
 	connect(showWarningForStudentsMinHoursDailyWithAllowEmptyDaysAction, SIGNAL(toggled(bool)), this, SLOT(showWarningForStudentsMinHoursDailyWithAllowEmptyDaysToggled(bool)));
+
+	connect(enableGroupActivitiesInInitialOrderAction, SIGNAL(toggled(bool)), this, SLOT(enableGroupActivitiesInInitialOrderToggled(bool)));
+	connect(showWarningForGroupActivitiesInInitialOrderAction, SIGNAL(toggled(bool)), this, SLOT(showWarningForGroupActivitiesInInitialOrderToggled(bool)));
 
 	dataTimeConstraintsTeacherActivityTagMaxHoursDailyAction->setIconVisibleInMenu(true);
 	dataTimeConstraintsTeachersActivityTagMaxHoursDailyAction->setIconVisibleInMenu(true);
@@ -579,6 +698,8 @@ FetMainForm::FetMainForm()
 	dataTimeConstraintsStudentsSetMaxGapsPerDayAction->setIconVisibleInMenu(true);
 	dataTimeConstraintsStudentsMaxGapsPerDayAction->setIconVisibleInMenu(true);
 
+	groupActivitiesInInitialOrderAction->setIconVisibleInMenu(true);
+
 	setEnabledIcon(dataTimeConstraintsTeacherActivityTagMaxHoursDailyAction, ENABLE_ACTIVITY_TAG_MAX_HOURS_DAILY);
 	setEnabledIcon(dataTimeConstraintsTeachersActivityTagMaxHoursDailyAction, ENABLE_ACTIVITY_TAG_MAX_HOURS_DAILY);
 	setEnabledIcon(dataTimeConstraintsStudentsActivityTagMaxHoursDailyAction, ENABLE_ACTIVITY_TAG_MAX_HOURS_DAILY);
@@ -586,6 +707,8 @@ FetMainForm::FetMainForm()
 
 	setEnabledIcon(dataTimeConstraintsStudentsSetMaxGapsPerDayAction, ENABLE_STUDENTS_MAX_GAPS_PER_DAY);
 	setEnabledIcon(dataTimeConstraintsStudentsMaxGapsPerDayAction, ENABLE_STUDENTS_MAX_GAPS_PER_DAY);
+
+	setEnabledIcon(groupActivitiesInInitialOrderAction, ENABLE_GROUP_ACTIVITIES_IN_INITIAL_ORDER);
 }
 
 void FetMainForm::setEnabledIcon(QAction* action, bool enabled)
@@ -597,6 +720,44 @@ void FetMainForm::setEnabledIcon(QAction* action, bool enabled)
 		action->setIcon(unlocked);
 	else
 		action->setIcon(locked);
+}
+
+//this is another place (out of two) in which you need to add a new language. The other one is in the file fet.cpp
+void FetMainForm::populateLanguagesMap(QMap<QString, QString>& languagesMap)
+{
+	languagesMap.clear();
+	languagesMap.insert("en_US", tr("US English"));
+	languagesMap.insert("ar", tr("Arabic"));
+	languagesMap.insert("ca", tr("Catalan"));
+	languagesMap.insert("de", tr("German"));
+	languagesMap.insert("el", tr("Greek"));
+	languagesMap.insert("es", tr("Spanish"));
+	languagesMap.insert("fr", tr("French"));
+	languagesMap.insert("hu", tr("Hungarian"));
+	languagesMap.insert("id", tr("Indonesian"));
+	languagesMap.insert("it", tr("Italian"));
+	languagesMap.insert("lt", tr("Lithuanian"));
+	languagesMap.insert("mk", tr("Macedonian"));
+	languagesMap.insert("ms", tr("Malay"));
+	languagesMap.insert("nl", tr("Dutch"));
+	languagesMap.insert("pl", tr("Polish"));
+	languagesMap.insert("ro", tr("Romanian"));
+	languagesMap.insert("tr", tr("Turkish"));
+	languagesMap.insert("ru", tr("Russian"));
+	languagesMap.insert("fa", tr("Persian"));
+	languagesMap.insert("uk", tr("Ukrainian"));
+	languagesMap.insert("pt_BR", tr("Brazilian Portuguese"));
+	languagesMap.insert("da", tr("Danish"));
+	languagesMap.insert("si", tr("Sinhala"));
+	languagesMap.insert("sk", tr("Slovak"));
+	languagesMap.insert("he", tr("Hebrew"));
+	languagesMap.insert("sr", tr("Serbian"));
+	languagesMap.insert("gl", tr("Galician"));
+	languagesMap.insert("vi", tr("Vietnamese"));
+	languagesMap.insert("uz", tr("Uzbek"));
+	languagesMap.insert("sq", tr("Albanian"));
+	languagesMap.insert("zh_CN", tr("Chinese Simplified"));
+	languagesMap.insert("zh_TW", tr("Chinese Traditional"));
 }
 
 
@@ -623,6 +784,48 @@ void FetMainForm::on_checkForUpdatesAction_toggled()
 void FetMainForm::on_settingsUseColorsAction_toggled()
 {
 	USE_GUI_COLORS=settingsUseColorsAction->isChecked();
+}
+
+void FetMainForm::showSubgroupsInComboBoxesToggled(bool checked)
+{
+	if(checked==false){
+		QString s=tr("Note: if you disable this option, you will not be able to add/modify constraints for subgroups,"
+		 " and you will not be able to make filters using a particular subgroup, when selecting activities.");
+		//s+="\n\n";
+		//s+=tr("Continue only if you know what you are doing.");
+	
+		QMessageBox::StandardButton b=QMessageBox::warning(this, tr("FET warning"), s, QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Ok);
+	
+		if(b!=QMessageBox::Ok){
+			disconnect(settingsShowSubgroupsInComboBoxesAction, SIGNAL(toggled(bool)), this, SLOT(showSubgroupsInComboBoxesToggled(bool)));
+			settingsShowSubgroupsInComboBoxesAction->setChecked(true);
+			connect(settingsShowSubgroupsInComboBoxesAction, SIGNAL(toggled(bool)), this, SLOT(showSubgroupsInComboBoxesToggled(bool)));
+			return;
+		}
+	}
+	
+	SHOW_SUBGROUPS_IN_COMBO_BOXES=checked;
+}
+
+void FetMainForm::showSubgroupsInActivityPlanningToggled(bool checked)
+{
+	if(checked==false){
+		QString s=tr("Note: if you disable this option, you will not be able to view activities for subgroups"
+		 " in the activity planning dialog.");
+		//s+="\n\n";
+		//s+=tr("Continue only if you know what you are doing.");
+	
+		QMessageBox::StandardButton b=QMessageBox::warning(this, tr("FET warning"), s, QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Ok);
+	
+		if(b!=QMessageBox::Ok){
+			disconnect(settingsShowSubgroupsInActivityPlanningAction, SIGNAL(toggled(bool)), this, SLOT(showSubgroupsInActivityPlanningToggled(bool)));
+			settingsShowSubgroupsInActivityPlanningAction->setChecked(true);
+			connect(settingsShowSubgroupsInActivityPlanningAction, SIGNAL(toggled(bool)), this, SLOT(showSubgroupsInActivityPlanningToggled(bool)));
+			return;
+		}
+	}
+	
+	SHOW_SUBGROUPS_IN_ACTIVITY_PLANNING=checked;
 }
 
 /////////confirmations
@@ -653,6 +856,11 @@ void FetMainForm::on_settingsShowShortcutsOnMainWindowAction_toggled()
 	tabWidget->setVisible(SHOW_SHORTCUTS_ON_MAIN_WINDOW);
 }
 
+void FetMainForm::on_settingsShowToolTipsForConstraintsWithTablesAction_toggled()
+{
+	SHOW_TOOLTIPS_FOR_CONSTRAINTS_WITH_TABLES=settingsShowToolTipsForConstraintsWithTablesAction->isChecked();
+}
+
 void FetMainForm::on_settingsDivideTimetablesByDaysAction_toggled()
 {
 	DIVIDE_HTML_TIMETABLES_WITH_TIME_AXIS_BY_DAYS=settingsDivideTimetablesByDaysAction->isChecked();
@@ -663,16 +871,93 @@ void FetMainForm::on_settingsDuplicateVerticalNamesAction_toggled()
 	TIMETABLE_HTML_REPEAT_NAMES=settingsDuplicateVerticalNamesAction->isChecked();
 }
 
+///write timetables options
+void FetMainForm::on_enableConflictsTimetableAction_toggled()
+{
+	WRITE_TIMETABLE_CONFLICTS=enableConflictsTimetableAction->isChecked();
+}
+
+void FetMainForm::on_enableStatisticsTimetablesAction_toggled()
+{
+	WRITE_TIMETABLES_STATISTICS=enableStatisticsTimetablesAction->isChecked();
+}
+
+void FetMainForm::on_enableXmlTimetablesAction_toggled()
+{
+	WRITE_TIMETABLES_XML=enableXmlTimetablesAction->isChecked();
+}
+
+void FetMainForm::on_enableDaysHorizontalTimetablesAction_toggled()
+{
+	WRITE_TIMETABLES_DAYS_HORIZONTAL=enableDaysHorizontalTimetablesAction->isChecked();
+}
+
+void FetMainForm::on_enableDaysVerticalTimetablesAction_toggled()
+{
+	WRITE_TIMETABLES_DAYS_VERTICAL=enableDaysVerticalTimetablesAction->isChecked();
+}
+
+void FetMainForm::on_enableTimeHorizontalTimetablesAction_toggled()
+{
+	WRITE_TIMETABLES_TIME_HORIZONTAL=enableTimeHorizontalTimetablesAction->isChecked();
+}
+
+void FetMainForm::on_enableTimeVerticalTimetablesAction_toggled()
+{
+	WRITE_TIMETABLES_TIME_VERTICAL=enableTimeVerticalTimetablesAction->isChecked();
+}
+
+void FetMainForm::on_enableSubgroupsTimetablesAction_toggled()
+{
+	WRITE_TIMETABLES_SUBGROUPS=enableSubgroupsTimetablesAction->isChecked();
+}
+
+void FetMainForm::on_enableGroupsTimetablesAction_toggled()
+{
+	WRITE_TIMETABLES_GROUPS=enableGroupsTimetablesAction->isChecked();
+}
+
+void FetMainForm::on_enableYearsTimetablesAction_toggled()
+{
+	WRITE_TIMETABLES_YEARS=enableYearsTimetablesAction->isChecked();
+}
+
+void FetMainForm::on_enableTeachersTimetablesAction_toggled()
+{
+	WRITE_TIMETABLES_TEACHERS=enableTeachersTimetablesAction->isChecked();
+}
+
+void FetMainForm::on_enableTeachersFreePeriodsTimetablesAction_toggled()
+{
+	WRITE_TIMETABLES_TEACHERS_FREE_PERIODS=enableTeachersFreePeriodsTimetablesAction->isChecked();
+}
+
+void FetMainForm::on_enableRoomsTimetablesAction_toggled()
+{
+	WRITE_TIMETABLES_ROOMS=enableRoomsTimetablesAction->isChecked();
+}
+
+void FetMainForm::on_enableSubjectsTimetablesAction_toggled()
+{
+	WRITE_TIMETABLES_SUBJECTS=enableSubjectsTimetablesAction->isChecked();
+}
+
+void FetMainForm::on_enableActivitiesTimetablesAction_toggled()
+{
+	WRITE_TIMETABLES_ACTIVITIES=enableActivitiesTimetablesAction->isChecked();
+}
+///
+
 void FetMainForm::replyFinished(QNetworkReply* networkReply)
 {
 	if(networkReply->error()!=QNetworkReply::NoError){
 		QString s=QString("");
-		s+=tr("Could not search for possible updates on Internet - error message is: %1.").arg(networkReply->errorString());
+		s+=tr("Could not search for possible updates on the internet - error message is: %1.").arg(networkReply->errorString());
 		s+=QString("\n\n");
 		s+=tr("Searching for file %1.").arg("http://lalescu.ro/liviu/fet/crtversion/crtversion.txt");
 		s+=QString("\n\n");
 		s+=tr("Possible actions: check your network connection, try again later, try to visit FET homepage: %1, or"
-		 " try to search for the new FET page on the Internet (maybe it has changed).").arg("http://lalescu.ro/liviu/fet/");
+		 " try to search for the new FET page on the internet (maybe it has changed).").arg("http://lalescu.ro/liviu/fet/");
 
 		QMessageBox::warning(this, tr("FET warning"), s);
 	}
@@ -688,7 +973,7 @@ void FetMainForm::replyFinished(QNetworkReply* networkReply)
 			s+=QString("\n\n");
 			s+=tr("Maybe the FET homepage has some temporary problems, so try again later."
 			 " Or maybe the current structure on FET homepage was changed. You may visit FET homepage: %1, and get latest version or,"
-			 " if it does not work, try to search for the new FET page on the Internet (maybe it has changed).")
+			 " if it does not work, try to search for the new FET page on the internet (maybe it has changed).")
 			  .arg("http://lalescu.ro/liviu/fet/");
 
 			QMessageBox::warning(this, tr("FET warning"), s);
@@ -717,7 +1002,7 @@ void FetMainForm::replyFinished(QNetworkReply* networkReply)
 				if(button==QMessageBox::Yes){
 					bool tds=QDesktopServices::openUrl(QUrl("http://lalescu.ro/liviu/fet/"));
 					if(!tds){
-						QMessageBox::warning(this, tr("FET warning"), tr("Could not start the default Internet browser (trying to open the link %1)."
+						QMessageBox::warning(this, tr("FET warning"), tr("Could not start the default internet browser (trying to open the link %1)."
 							" Maybe you can try to manually start your browser and open this link.").arg("http://lalescu.ro/liviu/fet/"));
 					}
 				}
@@ -793,6 +1078,13 @@ FetMainForm::~FetMainForm()
 
 	shortcutDataAdvancedMenu->clear();
 	delete shortcutDataAdvancedMenu;
+	
+	//2014-07-01
+	shortcutTimetableLockingMenu->clear();
+	delete shortcutTimetableLockingMenu;
+	
+	shortcutTimetableAdvancedMenu->clear();
+	delete shortcutTimetableAdvancedMenu;
 }
 
 void FetMainForm::on_fileExitAction_triggered()
@@ -988,7 +1280,7 @@ void FetMainForm::openFile(const QString& fileName)
 		QString s2=s.right(s.length()-tmp2-1);
 			
 		if(s2.indexOf("\"") >= 0){
-			QMessageBox::warning(this, tr("FET information"), 
+			QMessageBox::warning(this, tr("FET information"),
 			 tr("Please do not use quotation marks \" in filename, the html css code does not work."
 			  " File was not loaded. Please rename it, removing not allowed characters and open it after that with FET."));
 			return;
@@ -1015,7 +1307,7 @@ void FetMainForm::openFile(const QString& fileName)
 			statusBar()->showMessage(tr("Loading...", "This is a message in the status bar, that we are loading the file"), 0);
 			pqapplication->processEvents();
 		
-			bool before=gt.rules.modified;
+			//bool before=gt.rules.modified;
 			gt.rules.modified=true; //to avoid flicker of the main form modified flag
 
 			if(gt.rules.read(this, s)){
@@ -1036,13 +1328,16 @@ void FetMainForm::openFile(const QString& fileName)
 				setCurrentFile(INPUT_FILENAME_XML);
 			}
 			else{
-				gt.rules.modified=before;
+				//incorrect code - the old file may be broken - so we generate a new file.
+				/*gt.rules.modified=before;
 			
 				statusBar()->showMessage("", STATUS_BAR_MILLISECONDS);
 				
-				//QMessageBox::information(this, tr("FET information"), tr("Invalid file"));
-
-				setCurrentFile(INPUT_FILENAME_XML);
+				setCurrentFile(INPUT_FILENAME_XML);*/
+				
+				assert(!simulation_running);
+				gt.rules.modified=false;
+				on_fileNewAction_triggered();
 			}
 			
 			//this->setCursor(orig);
@@ -1094,17 +1389,22 @@ bool FetMainForm::fileSaveAs()
 		 QMessageBox::Yes|QMessageBox::No) == QMessageBox::No)
 		 	return false;
 			
-	INPUT_FILENAME_XML = s;
-	gt.rules.write(this, INPUT_FILENAME_XML);
+	bool t=gt.rules.write(this, s);
+	if(t){
+		INPUT_FILENAME_XML = s;
 	
-	gt.rules.modified=true; //force update of the modified flag of the main window
-	setRulesUnmodifiedAndOtherThings(&gt.rules);
+		gt.rules.modified=true; //force update of the modified flag of the main window
+		setRulesUnmodifiedAndOtherThings(&gt.rules);
 	
-	setCurrentFile(INPUT_FILENAME_XML);
+		setCurrentFile(INPUT_FILENAME_XML);
 	
-	statusBar()->showMessage(tr("File saved"), STATUS_BAR_MILLISECONDS);
-	
-	return true;
+		statusBar()->showMessage(tr("File saved"), STATUS_BAR_MILLISECONDS);
+		
+		return true;
+	}
+	else{
+		return false;
+	}
 }
 
 void FetMainForm::on_fileSaveAsAction_triggered()
@@ -1317,6 +1617,8 @@ void FetMainForm::on_timetableSaveTimetableAsAction_triggered()
 		rules2.apstHash=gt.rules.apstHash;
 		rules2.aprHash=gt.rules.aprHash;
 
+		rules2.groupActivitiesInInitialOrderList=gt.rules.groupActivitiesInInitialOrderList;
+
 		//add locking constraints
 		TimeConstraintsList lockTimeConstraintsList;
 		SpaceConstraintsList lockSpaceConstraintsList;
@@ -1422,6 +1724,8 @@ void FetMainForm::on_timetableSaveTimetableAsAction_triggered()
 
 		rules2.apstHash.clear();
 		rules2.aprHash.clear();
+
+		rules2.groupActivitiesInInitialOrderList.clear();
 	}
 	
 	if(pc_form!=NULL)
@@ -1433,15 +1737,20 @@ bool FetMainForm::fileSave()
 	if(INPUT_FILENAME_XML.isEmpty())
 		return fileSaveAs();
 	else{
-		gt.rules.write(this, INPUT_FILENAME_XML);
-
-		gt.rules.modified=true; //force update of the modified flag of the main window
-		setRulesUnmodifiedAndOtherThings(&gt.rules);
+		bool t=gt.rules.write(this, INPUT_FILENAME_XML);
 		
-		setCurrentFile(INPUT_FILENAME_XML);
-
-		statusBar()->showMessage(tr("File saved"), STATUS_BAR_MILLISECONDS);
-		return true;
+		if(t){
+			gt.rules.modified=true; //force update of the modified flag of the main window
+			setRulesUnmodifiedAndOtherThings(&gt.rules);
+		
+			setCurrentFile(INPUT_FILENAME_XML);
+	
+			statusBar()->showMessage(tr("File saved"), STATUS_BAR_MILLISECONDS);
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 }
 
@@ -1632,13 +1941,17 @@ void FetMainForm::on_helpSettingsAction_triggered()
 	s+=tr("Interface - use colors: the places with colors in FET interface are in:");
 	s+="\n";
 	s+=" -";
-	s+=tr("add/modify constraints break, not available, preferred starting times or time slots (the table cells will have green or red colors).");
+	s+=tr("add/modify constraints break, not available, preferred starting times or time slots, occupy max time slots from selection or"
+		" max simultaneous in selected time slots (the table cells will have green or red colors).");
 	s+="\n";
 	s+=" -";
 	s+=tr("activities and subactivities dialogs, the inactive activities will have a distinctive background color");
 	s+="\n";
 	s+=" -";
 	s+=tr("all time constraints and all space constraints dialogs, the inactive constraints will have a distinctive background color");
+	s+="\n";
+	s+=" -";
+	s+=tr("group activities in initial order items, the inactive items will have a distinctive background color");
 	
 	s+="\n\n";
 	s+=tr("Enable activity tag max hours daily:");
@@ -1677,6 +1990,31 @@ void FetMainForm::on_helpSettingsAction_triggered()
 	
 	s+=tr("Duplicate vertical headers to the right (in timetable settings) - select this if you want the timetables to duplicate the table left vertical headers to the right"
 		" part of the tables");
+		
+	s+="\n\n";
+	
+	s+=tr("If you have many subgroups and you don't explicitely use them, it is recommended to use the three global settings: hide subgroups"
+		" in combo boxes, hide subgroups in activity planning, and do not write subgroups timetables on hard disk.");
+	s+="\n";
+	s+=tr("Note that using the global menu setting to hide subgroups in activity planning is a different thing from the check box in the activity"
+		" planning dialog, and the global setting works better and faster.");
+	s+="\n";
+	s+=tr("If you hide subgroups in combo boxes, the affected dialogs (like the activities dialog or the add constraint students set not available times dialog)"
+		" will load much faster if you have many subgroups.");
+		
+	s+="\n\n";
+	
+	s+=tr("If you are only working on a timetable, and you do not need to publish it, you may want to disable writing some categories of timetables"
+		" on the hard disk, for operativity (the generation speed is not affected, only the overhead to write the partial/complete timetables"
+		" when stopping/finishing the simulation). The timetables taking the longest time are the subgroups, groups AND years ones.");
+	s+=" ";
+	s+=tr("(Also the conflicts timetable might take long to write, if the file is large.)");
+	s+=" ";
+	s+=tr("After that, you can re-enable writing of the timetables and re-generate.");
+
+	s+="\n\n";
+	s+=tr("Show tool tips for constraints with tables: in the add/modify constraint dialogs which use tables, like the 'not available times' ones,"
+		" each table cell will have a tool tip to show the current day/hour (column/row name).");
 	
 	LongTextMessageBox::largeInformation(this, tr("FET information"), s);
 }
@@ -2702,6 +3040,31 @@ void FetMainForm::on_dataTimeConstraintsStudentsMaxGapsPerWeekAction_triggered()
 	form.exec();
 }
 
+void FetMainForm::on_groupActivitiesInInitialOrderAction_triggered()
+{
+	if(simulation_running){
+		QMessageBox::information(this, tr("FET information"),
+			tr("Allocation in course.\nPlease stop simulation before this."));
+		return;
+	}
+
+	if(!ENABLE_GROUP_ACTIVITIES_IN_INITIAL_ORDER){
+		QString s=tr("Feature is not enabled. To use this type of feature you must enable it from the Settings->Advanced menu.");
+		s+="\n\n";
+		s+=tr("Explanation:");
+		s+=" ";
+		s+=tr("The feature must be used with caution, by experienced users.");
+
+		QMessageBox::information(this, tr("FET information"), s);
+
+		return;
+	}
+
+	GroupActivitiesInInitialOrderItemsForm form(this);
+	setParentAndOtherThings(&form, this);
+	form.exec();
+}
+
 void FetMainForm::on_dataTimeConstraintsStudentsSetMaxGapsPerDayAction_triggered()
 {
 	if(simulation_running){
@@ -3077,7 +3440,7 @@ void FetMainForm::on_helpHomepageAction_triggered()
 	bool tds=QDesktopServices::openUrl(QUrl("http://lalescu.ro/liviu/fet/"));
 
 	if(!tds){
-		QMessageBox::warning(this, tr("FET warning"), tr("Could not start the default Internet browser (trying to open the link %1)."
+		QMessageBox::warning(this, tr("FET warning"), tr("Could not start the default internet browser (trying to open the link %1)."
 		" Maybe you can try to manually start your browser and open this link.").arg("http://lalescu.ro/liviu/fet/"));
 	}
 }
@@ -3087,7 +3450,7 @@ void FetMainForm::on_helpContentsAction_triggered()
 	bool tds=QDesktopServices::openUrl(QUrl("http://lalescu.ro/liviu/fet/doc/"));
 
 	if(!tds){
-		QMessageBox::warning(this, tr("FET warning"), tr("Could not start the default Internet browser (trying to open the link %1)."
+		QMessageBox::warning(this, tr("FET warning"), tr("Could not start the default internet browser (trying to open the link %1)."
 		" Maybe you can try to manually start your browser and open this link.").arg("http://lalescu.ro/liviu/fet/doc/"));
 	}
 }
@@ -3097,7 +3460,7 @@ void FetMainForm::on_helpForumAction_triggered()
 	bool tds=QDesktopServices::openUrl(QUrl("http://lalescu.ro/liviu/fet/forum/"));
 
 	if(!tds){
-		QMessageBox::warning(this, tr("FET warning"), tr("Could not start the default Internet browser (trying to open the link %1)."
+		QMessageBox::warning(this, tr("FET warning"), tr("Could not start the default internet browser (trying to open the link %1)."
 		" Maybe you can try to manually start your browser and open this link.").arg("http://lalescu.ro/liviu/fet/forum/"));
 	}
 }
@@ -3105,7 +3468,7 @@ void FetMainForm::on_helpForumAction_triggered()
 void FetMainForm::on_helpAddressesAction_triggered()
 {
 	QString s="";
-	s+=tr("In case the Help/Online menus do not function, please write down these addresses and open them in an Internet browser:");
+	s+=tr("In case the Help/Online menus do not function, please write down these addresses and open them in an internet browser:");
 	s+="\n\n";
 	s+=tr("FET homepage: %1", "%1 is FET homepage, begins with http://...").arg("http://lalescu.ro/liviu/fet/");
 	s+="\n";
@@ -3115,7 +3478,7 @@ void FetMainForm::on_helpAddressesAction_triggered()
 	s+="\n\n";
 	s+=tr("Additionally, you may find on the FET homepage other contact information.");
 	s+="\n\n";
-	s+=tr("In case these addresses do not function, maybe the FET webpage has temporary problems, so try again later. Or maybe the FET webpage has changed, so search for the new page on the Internet.");
+	s+=tr("In case these addresses do not function, maybe the FET webpage has temporary problems, so try again later. Or maybe the FET webpage has changed, so search for the new page on the internet.");
 
 	LongTextMessageBox::largeInformation(this, tr("FET web addresses"), s);
 }
@@ -3400,38 +3763,8 @@ void FetMainForm::on_languageAction_triggered()
 	QSize tmp=languagesComboBox->minimumSizeHint();
 	Q_UNUSED(tmp);
 	
-	//this is the other place (out of 2) in which you need to add a new language
 	QMap<QString, QString> languagesMap;
-	languagesMap.insert("en_US", tr("US English"));
-	languagesMap.insert("ar", tr("Arabic"));
-	languagesMap.insert("ca", tr("Catalan"));
-	languagesMap.insert("de", tr("German"));
-	languagesMap.insert("el", tr("Greek"));
-	languagesMap.insert("es", tr("Spanish"));
-	languagesMap.insert("fr", tr("French"));
-	languagesMap.insert("hu", tr("Hungarian"));
-	languagesMap.insert("id", tr("Indonesian"));
-	languagesMap.insert("it", tr("Italian"));
-	languagesMap.insert("lt", tr("Lithuanian"));
-	languagesMap.insert("mk", tr("Macedonian"));
-	languagesMap.insert("ms", tr("Malay"));
-	languagesMap.insert("nl", tr("Dutch"));
-	languagesMap.insert("pl", tr("Polish"));
-	languagesMap.insert("ro", tr("Romanian"));
-	languagesMap.insert("tr", tr("Turkish"));
-	languagesMap.insert("ru", tr("Russian"));
-	languagesMap.insert("fa", tr("Persian"));
-	languagesMap.insert("uk", tr("Ukrainian"));
-	languagesMap.insert("pt_BR", tr("Brazilian Portuguese"));
-	languagesMap.insert("da", tr("Danish"));
-	languagesMap.insert("si", tr("Sinhala"));
-	languagesMap.insert("sk", tr("Slovak"));
-	languagesMap.insert("he", tr("Hebrew"));
-	languagesMap.insert("sr", tr("Serbian"));
-	languagesMap.insert("gl", tr("Galician"));
-	languagesMap.insert("vi", tr("Vietnamese"));
-	languagesMap.insert("uz", tr("Uzbek"));
-	languagesMap.insert("sq", tr("Albanian"));
+	populateLanguagesMap(languagesMap);
 	
 	//assert(languagesMap.count()==N_LANGUAGES);
 	
@@ -3533,85 +3866,172 @@ void FetMainForm::on_settingsRestoreDefaultsAction_triggered()
 	s+=tr("That means:");
 	s+="\n";
 
-	s+=QString("1. ")+tr("The geometry and any other saved settings of all the windows and dialogs will be reset to default");
+	s+=tr("1")+QString(". ")+tr("The geometry and any other saved settings of all the windows and dialogs will be reset to default");
 	s+="\n";
 
-	s+=QString("2. ")+tr("Show shortcut buttons in main window will be %1", "%1 is true or false").arg(tr("true"));
+	s+=tr("2")+QString(". ")+tr("Show shortcut buttons in main window will be %1", "%1 is true or false").arg(tr("true"));
 	s+="\n";
 
-	s+=QString("3. ")+tr("In the shortcuts tab from the main window, the first section will be selected/shown", "Option refers to the main window tab widget for shortcuts, which currently contains 5 tabs: File, Data, "
+	s+=tr("3")+QString(". ")+tr("In the shortcuts tab from the main window, the first section will be selected/shown", "Option refers to the main window tab widget for shortcuts, which currently contains 5 tabs: File, Data, "
 		"Time, Space, Timetable (so it will select/show File tab).");
 	s+="\n";
 
-	s+=QString("4. ")+tr("Check for updates at startup will be %1", "%1 is true or false").arg(tr("false"));
+	s+=tr("4")+QString(". ")+tr("Check for updates at startup will be %1", "%1 is true or false").arg(tr("false"));
 	s+="\n";
 
-	s+=QString("5. ")+tr("Use colors in FET graphical user interface will be %1", "%1 is true or false").arg(tr("false"));
+	s+=tr("5")+QString(". ")+tr("Use colors in FET graphical user interface will be %1", "%1 is true or false").arg(tr("false"));
 	s+="\n";
 
-	s+=QString("6. ")+tr("Language will be %1", "%1 is the default language").arg(QString("en_US")+QString(" (")+tr("US English")+QString(")"));
+#ifndef USE_SYSTEM_LOCALE
+	s+=tr("6")+QString(". ")+tr("Language will be %1", "%1 is the default language").arg(QString("en_US")+QString(" (")+tr("US English")+QString(")"));
+#else
+	QMap<QString, QString> languagesMap;
+	populateLanguagesMap(languagesMap);
+
+	QString NEW_FET_LANGUAGE=QLocale::system().name();
+	
+	bool ok=false;
+	QMapIterator<QString, QString> i(languagesMap);
+	while(i.hasNext()){
+		i.next();
+		if(NEW_FET_LANGUAGE.left(i.key().length())==i.key()){
+			NEW_FET_LANGUAGE=i.key();
+			ok=true;
+			break;
+		}
+	}
+	if(!ok)
+		NEW_FET_LANGUAGE="en_US";
+		
+	assert(languagesMap.contains(NEW_FET_LANGUAGE));
+	s+=tr("6")+QString(". ")+tr("Language will be %1", "%1 is the default language").arg(NEW_FET_LANGUAGE+QString(" (")+languagesMap.value(NEW_FET_LANGUAGE)+QString(")"));
+#endif
 	s+="\n";
 
-	s+=QString("7. ")+tr("The list of recently used files will be cleared");
+	s+=tr("7")+QString(". ")+tr("The list of recently used files will be cleared");
 	s+="\n";
 	
-	s+=QString("8. ")+tr("Working directory will be %1", "%1 is the directory").arg(QDir::toNativeSeparators(default_working_directory));
+	s+=tr("8")+QString(". ")+tr("Working directory will be %1", "%1 is the directory").arg(QDir::toNativeSeparators(default_working_directory));
 	s+="\n";
 
-	s+=QString("9. ")+tr("Output directory will be %1", "%1 is the directory").arg(QDir::toNativeSeparators(QDir::homePath()+FILE_SEP+"fet-results"));
+	s+=tr("9")+QString(". ")+tr("Output directory will be %1", "%1 is the directory").arg(QDir::toNativeSeparators(QDir::homePath()+FILE_SEP+"fet-results"));
 	s+="\n";
 
-	s+=QString("10. ")+tr("Import directory will be %1", "%1 is the directory").arg(QDir::toNativeSeparators(QDir::homePath()+FILE_SEP+"fet-results"));
+	s+=tr("10")+QString(". ")+tr("Import directory will be %1", "%1 is the directory").arg(QDir::toNativeSeparators(QDir::homePath()+FILE_SEP+"fet-results"));
 	s+="\n";
 
-	s+=QString("11. ")+tr("Html level of the timetables will be %1", "%1 is default html level").arg(2);
+	s+=tr("11")+QString(". ")+tr("Html level of the timetables will be %1", "%1 is default html level").arg(2);
 	s+="\n";
 
-	s+=QString("12. ")+tr("Mark not available slots with -x- in timetables will be %1", "%1 is true or false. Lowercase -x-").arg(tr("true"));
+	s+=tr("12")+QString(". ")+tr("Mark not available slots with -x- in timetables will be %1", "%1 is true or false. Lowercase -x-").arg(tr("true"));
 	s+="\n";
 
-	s+=QString("13. ")+tr("Mark break slots with -X- in timetables will be %1", "%1 is true or false. Uppercase -X-").arg(tr("true"));
+	s+=tr("13")+QString(". ")+tr("Mark break slots with -X- in timetables will be %1", "%1 is true or false. Uppercase -X-").arg(tr("true"));
 	s+="\n";
 
-	s+=QString("14. ")+tr("Divide html timetables with time-axis by days will be %1", "%1 is true or false").arg(tr("false"));
+	s+=tr("14")+QString(". ")+tr("Divide html timetables with time-axis by days will be %1", "%1 is true or false").arg(tr("false"));
 	s+="\n";
 
-	s+=QString("15. ")+tr("Duplicate vertical headers to the right will be %1", "%1 is true or false").arg(tr("false"));
+	s+=tr("15")+QString(". ")+tr("Duplicate vertical headers to the right will be %1", "%1 is true or false").arg(tr("false"));
 	s+="\n";
 
-	s+=QString("16. ")+tr("Print activities with same starting time will be %1", "%1 is true or false").arg(tr("false"));
+	s+=tr("16")+QString(". ")+tr("Print activities with same starting time will be %1", "%1 is true or false").arg(tr("false"));
 	s+="\n";
 
-	s+=QString("17. ")+tr("Print activities tags will be %1", "%1 is true or false").arg(tr("true"));
+	s+=tr("17")+QString(". ")+tr("Print activities tags will be %1", "%1 is true or false").arg(tr("true"));
 	s+="\n";
 
-	s+=QString("18. ")+tr("Enable activity tag max hours daily will be %1", "%1 is true or false").arg(tr("false"));
+	s+=tr("18")+QString(". ")+tr("Enable activity tag max hours daily will be %1", "%1 is true or false").arg(tr("false"));
 	s+="\n";
 
-	s+=QString("19. ")+tr("Enable students max gaps per day will be %1", "%1 is true or false").arg(tr("false"));
+	s+=tr("19")+QString(". ")+tr("Enable students max gaps per day will be %1", "%1 is true or false").arg(tr("false"));
 	s+="\n";
 
-	s+=QString("20. ")+tr("Warn if using not perfect constraints will be %1", "%1 is true or false. This is a warning if user uses not perfect constraints").arg(tr("true"));
+	s+=tr("20")+QString(". ")+tr("Warn if using not perfect constraints will be %1", "%1 is true or false. This is a warning if user uses not perfect constraints").arg(tr("true"));
 	s+="\n";
 
-	s+=QString("21. ")+tr("Enable constraints students min hours daily with empty days will be %1", "%1 is true or false").arg(tr("false"));
+	s+=tr("21")+QString(". ")+tr("Enable constraints students min hours daily with empty days will be %1", "%1 is true or false").arg(tr("false"));
 	s+="\n";
 
-	s+=QString("22. ")+tr("Warn if using constraints students min hours daily with empty days will be %1", "%1 is true or false. This is a warning if user uses a nonstandard constraint"
+	s+=tr("22")+QString(". ")+tr("Warn if using constraints students min hours daily with empty days will be %1", "%1 is true or false. This is a warning if user uses a nonstandard constraint"
 		" students min hours daily with allowed empty days").arg(tr("true"));
 	s+="\n";
 
 	///////////////confirmations
-	s+=QString("23. ")+tr("Confirm activity planning will be %1", "%1 is true or false").arg(tr("true"));
+	s+=tr("23")+QString(". ")+tr("Confirm activity planning will be %1", "%1 is true or false").arg(tr("true"));
 	s+="\n";
-	s+=QString("24. ")+tr("Confirm spread activities over the week will be %1", "%1 is true or false").arg(tr("true"));
+	s+=tr("24")+QString(". ")+tr("Confirm spread activities over the week will be %1", "%1 is true or false").arg(tr("true"));
 	s+="\n";
-	s+=QString("25. ")+tr("Confirm remove redundant constraints will be %1", "%1 is true or false").arg(tr("true"));
+	s+=tr("25")+QString(". ")+tr("Confirm remove redundant constraints will be %1", "%1 is true or false").arg(tr("true"));
 	s+="\n";
-	s+=QString("26. ")+tr("Confirm save data and timetable as will be %1", "%1 is true or false").arg(tr("true"));
-	//s+="\n";
+	s+=tr("26")+QString(". ")+tr("Confirm save data and timetable as will be %1", "%1 is true or false").arg(tr("true"));
+	s+="\n";
+	///////////////
+	
+	s+=tr("27")+QString(". ")+tr("Enable group activities in the initial order of generation will be %1", "%1 is true or false").arg(tr("false"));
+	s+="\n";
+	s+=tr("28")+QString(". ")+tr("Warn if using group activities in the initial order of generation will be %1", "%1 is true or false").arg(tr("true"));
+	s+="\n";
 	///////////////
 
+	s+=tr("29")+QString(". ")+tr("Show subgroups in combo boxes will be %1", "%1 is true or false").arg(tr("true"));
+	s+="\n";
+	s+=tr("30")+QString(". ")+tr("Show subgroups in activity planning will be %1", "%1 is true or false").arg(tr("true"));
+	s+="\n";
+	///////////////
+
+	s+=tr("31")+QString(". ")+tr("Write on disk the %1 timetable will be %2", "%1 is a category of timetables, like conflicts, %2 is true or false")
+	 .arg(tr("conflicts")).arg(tr("true"));
+	s+="\n";
+
+	s+=tr("32")+QString(". ")+tr("Write on disk the %1 timetables will be %2", "%1 is a category of timetables, like XML or subgroups timetables, %2 is true or false")
+	 .arg(tr("statistics")).arg(tr("true"));
+	s+="\n";
+	s+=tr("33")+QString(". ")+tr("Write on disk the %1 timetables will be %2", "%1 is a category of timetables, like XML or subgroups timetables, %2 is true or false")
+	 .arg(tr("XML")).arg(tr("true"));
+	s+="\n";
+	s+=tr("34")+QString(". ")+tr("Write on disk the %1 timetables will be %2", "%1 is a category of timetables, like XML or subgroups timetables, %2 is true or false")
+	 .arg(tr("days horizontal")).arg(tr("true"));
+	s+="\n";
+	s+=tr("35")+QString(". ")+tr("Write on disk the %1 timetables will be %2", "%1 is a category of timetables, like XML or subgroups timetables, %2 is true or false")
+	 .arg(tr("days vertical")).arg(tr("true"));
+	s+="\n";
+	s+=tr("36")+QString(". ")+tr("Write on disk the %1 timetables will be %2", "%1 is a category of timetables, like XML or subgroups timetables, %2 is true or false")
+	 .arg(tr("time horizontal")).arg(tr("true"));
+	s+="\n";
+	s+=tr("37")+QString(". ")+tr("Write on disk the %1 timetables will be %2", "%1 is a category of timetables, like XML or subgroups timetables, %2 is true or false")
+	 .arg(tr("time vertical")).arg(tr("true"));
+	s+="\n";
+
+	s+=tr("38")+QString(". ")+tr("Write on disk the %1 timetables will be %2", "%1 is a category of timetables, like XML or subgroups timetables, %2 is true or false")
+	 .arg(tr("subgroups")).arg(tr("true"));
+	s+="\n";
+	s+=tr("39")+QString(". ")+tr("Write on disk the %1 timetables will be %2", "%1 is a category of timetables, like XML or subgroups timetables, %2 is true or false")
+	 .arg(tr("groups")).arg(tr("true"));
+	s+="\n";
+	s+=tr("40")+QString(". ")+tr("Write on disk the %1 timetables will be %2", "%1 is a category of timetables, like XML or subgroups timetables, %2 is true or false")
+	 .arg(tr("years")).arg(tr("true"));
+	s+="\n";
+	s+=tr("41")+QString(". ")+tr("Write on disk the %1 timetables will be %2", "%1 is a category of timetables, like XML or subgroups timetables, %2 is true or false")
+	 .arg(tr("teachers")).arg(tr("true"));
+	s+="\n";
+	s+=tr("42")+QString(". ")+tr("Write on disk the %1 timetables will be %2", "%1 is a category of timetables, like XML or subgroups timetables, %2 is true or false")
+	 .arg(tr("teachers free periods")).arg(tr("true"));
+	s+="\n";
+	s+=tr("43")+QString(". ")+tr("Write on disk the %1 timetables will be %2", "%1 is a category of timetables, like XML or subgroups timetables, %2 is true or false")
+	 .arg(tr("rooms")).arg(tr("true"));
+	s+="\n";
+	s+=tr("44")+QString(". ")+tr("Write on disk the %1 timetables will be %2", "%1 is a category of timetables, like XML or subgroups timetables, %2 is true or false")
+	 .arg(tr("subjects")).arg(tr("true"));
+	s+="\n";
+	s+=tr("45")+QString(". ")+tr("Write on disk the %1 timetables will be %2", "%1 is a category of timetables, like XML or subgroups timetables, %2 is true or false")
+	 .arg(tr("activities")).arg(tr("true"));
+	s+="\n";
+	s+=tr("46")+QString(". ")+tr("Show tool tips for constraints with tables will be %1", "%1 is true or false").arg(tr("false"));
+	s+="\n";
+	s+=tr("47")+QString(". ")+tr("Show warning for subgroups with the same activities will be %1", "%1 is true or false").arg(tr("true"));
+	s+="\n";
+	
 	switch( LongTextMessageBox::largeConfirmation( this, tr("FET confirmation"), s,
 	 tr("&Yes"), tr("&No"), QString(), 0 , 1 ) ) {
 	case 0: // Yes
@@ -3630,7 +4050,11 @@ void FetMainForm::on_settingsRestoreDefaultsAction_triggered()
 	//move(ORIGINAL_X, ORIGINAL_Y);
 	forceCenterWidgetOnScreen(this);
 	
-	FET_LANGUAGE="en_US";
+#ifndef USE_SYSTEM_LOCALE
+	FET_LANGUAGE=QString("en_US");
+#else
+	FET_LANGUAGE=NEW_FET_LANGUAGE;
+#endif
 	
 	checkForUpdatesAction->setChecked(false);
 	checkForUpdates=0;
@@ -3638,11 +4062,58 @@ void FetMainForm::on_settingsRestoreDefaultsAction_triggered()
 	SHOW_SHORTCUTS_ON_MAIN_WINDOW=true;
 	settingsShowShortcutsOnMainWindowAction->setChecked(SHOW_SHORTCUTS_ON_MAIN_WINDOW);
 	tabWidget->setVisible(SHOW_SHORTCUTS_ON_MAIN_WINDOW);
-	
+
 	tabWidget->setCurrentIndex(0);
+	
+	SHOW_TOOLTIPS_FOR_CONSTRAINTS_WITH_TABLES=false;
+	settingsShowToolTipsForConstraintsWithTablesAction->setChecked(SHOW_TOOLTIPS_FOR_CONSTRAINTS_WITH_TABLES);
 	
 	USE_GUI_COLORS=false;
 	settingsUseColorsAction->setChecked(USE_GUI_COLORS);
+	
+	SHOW_SUBGROUPS_IN_COMBO_BOXES=true;
+	settingsShowSubgroupsInComboBoxesAction->setChecked(SHOW_SUBGROUPS_IN_COMBO_BOXES);
+	
+	SHOW_SUBGROUPS_IN_ACTIVITY_PLANNING=true;
+	settingsShowSubgroupsInActivityPlanningAction->setChecked(SHOW_SUBGROUPS_IN_ACTIVITY_PLANNING);
+
+	///
+	WRITE_TIMETABLE_CONFLICTS=true;
+
+	WRITE_TIMETABLES_STATISTICS=true;
+	WRITE_TIMETABLES_XML=true;
+	WRITE_TIMETABLES_DAYS_HORIZONTAL=true;
+	WRITE_TIMETABLES_DAYS_VERTICAL=true;
+	WRITE_TIMETABLES_TIME_HORIZONTAL=true;
+	WRITE_TIMETABLES_TIME_VERTICAL=true;
+
+	WRITE_TIMETABLES_SUBGROUPS=true;
+	WRITE_TIMETABLES_GROUPS=true;
+	WRITE_TIMETABLES_YEARS=true;
+	WRITE_TIMETABLES_TEACHERS=true;
+	WRITE_TIMETABLES_TEACHERS_FREE_PERIODS=true;
+	WRITE_TIMETABLES_ROOMS=true;
+	WRITE_TIMETABLES_SUBJECTS=true;
+	WRITE_TIMETABLES_ACTIVITIES=true;
+	//
+	enableConflictsTimetableAction->setChecked(WRITE_TIMETABLE_CONFLICTS);
+
+	enableStatisticsTimetablesAction->setChecked(WRITE_TIMETABLES_STATISTICS);
+	enableXmlTimetablesAction->setChecked(WRITE_TIMETABLES_XML);
+	enableDaysHorizontalTimetablesAction->setChecked(WRITE_TIMETABLES_DAYS_HORIZONTAL);
+	enableDaysVerticalTimetablesAction->setChecked(WRITE_TIMETABLES_DAYS_VERTICAL);
+	enableTimeHorizontalTimetablesAction->setChecked(WRITE_TIMETABLES_TIME_HORIZONTAL);
+	enableTimeVerticalTimetablesAction->setChecked(WRITE_TIMETABLES_TIME_VERTICAL);
+
+	enableSubgroupsTimetablesAction->setChecked(WRITE_TIMETABLES_SUBGROUPS);
+	enableGroupsTimetablesAction->setChecked(WRITE_TIMETABLES_GROUPS);
+	enableYearsTimetablesAction->setChecked(WRITE_TIMETABLES_YEARS);
+	enableTeachersTimetablesAction->setChecked(WRITE_TIMETABLES_TEACHERS);
+	enableTeachersFreePeriodsTimetablesAction->setChecked(WRITE_TIMETABLES_TEACHERS_FREE_PERIODS);
+	enableRoomsTimetablesAction->setChecked(WRITE_TIMETABLES_ROOMS);
+	enableSubjectsTimetablesAction->setChecked(WRITE_TIMETABLES_SUBJECTS);
+	enableActivitiesTimetablesAction->setChecked(WRITE_TIMETABLES_ACTIVITIES);
+	///
 	
 	////////confirmations
 	CONFIRM_ACTIVITY_PLANNING=true;
@@ -3659,6 +4130,9 @@ void FetMainForm::on_settingsRestoreDefaultsAction_triggered()
 	///////
 
 	///////////
+	SHOW_WARNING_FOR_SUBGROUPS_WITH_THE_SAME_ACTIVITIES=true;
+	showWarningForSubgroupsWithTheSameActivitiesAction->setChecked(SHOW_WARNING_FOR_SUBGROUPS_WITH_THE_SAME_ACTIVITIES);
+	
 	ENABLE_ACTIVITY_TAG_MAX_HOURS_DAILY=false;
 	enableActivityTagMaxHoursDailyAction->setChecked(ENABLE_ACTIVITY_TAG_MAX_HOURS_DAILY);
 
@@ -3668,6 +4142,11 @@ void FetMainForm::on_settingsRestoreDefaultsAction_triggered()
 	SHOW_WARNING_FOR_NOT_PERFECT_CONSTRAINTS=true;
 	showWarningForNotPerfectConstraintsAction->setChecked(SHOW_WARNING_FOR_NOT_PERFECT_CONSTRAINTS);
 	
+	ENABLE_GROUP_ACTIVITIES_IN_INITIAL_ORDER=false;
+	SHOW_WARNING_FOR_GROUP_ACTIVITIES_IN_INITIAL_ORDER=true;
+	enableGroupActivitiesInInitialOrderAction->setChecked(ENABLE_GROUP_ACTIVITIES_IN_INITIAL_ORDER);
+	showWarningForGroupActivitiesInInitialOrderAction->setChecked(SHOW_WARNING_FOR_GROUP_ACTIVITIES_IN_INITIAL_ORDER);
+	
 	setEnabledIcon(dataTimeConstraintsTeacherActivityTagMaxHoursDailyAction, ENABLE_ACTIVITY_TAG_MAX_HOURS_DAILY);
 	setEnabledIcon(dataTimeConstraintsTeachersActivityTagMaxHoursDailyAction, ENABLE_ACTIVITY_TAG_MAX_HOURS_DAILY);
 	setEnabledIcon(dataTimeConstraintsStudentsActivityTagMaxHoursDailyAction, ENABLE_ACTIVITY_TAG_MAX_HOURS_DAILY);
@@ -3675,6 +4154,8 @@ void FetMainForm::on_settingsRestoreDefaultsAction_triggered()
 
 	setEnabledIcon(dataTimeConstraintsStudentsSetMaxGapsPerDayAction, ENABLE_STUDENTS_MAX_GAPS_PER_DAY);
 	setEnabledIcon(dataTimeConstraintsStudentsMaxGapsPerDayAction, ENABLE_STUDENTS_MAX_GAPS_PER_DAY);
+
+	setEnabledIcon(groupActivitiesInInitialOrderAction, ENABLE_GROUP_ACTIVITIES_IN_INITIAL_ORDER);
 
 	ENABLE_STUDENTS_MIN_HOURS_DAILY_WITH_ALLOW_EMPTY_DAYS=false;
 	enableStudentsMinHoursDailyWithAllowEmptyDaysAction->setChecked(ENABLE_STUDENTS_MIN_HOURS_DAILY_WITH_ALLOW_EMPTY_DAYS);
@@ -4000,6 +4481,28 @@ void FetMainForm::enableStudentsMaxGapsPerDayToggled(bool checked)
 	setEnabledIcon(dataTimeConstraintsStudentsMaxGapsPerDayAction, ENABLE_STUDENTS_MAX_GAPS_PER_DAY);
 }
 
+void FetMainForm::showWarningForSubgroupsWithTheSameActivitiesToggled(bool checked)
+{
+	if(checked==false){
+		QString s=tr("It is recommended to keep this warning active, but if you really want, you can disable it.");
+		s+="\n\n";
+		s+=tr("Disable it only if you know what you are doing.");
+		s+="\n\n";
+		s+=tr("Are you sure you want to disable it?");
+	
+		QMessageBox::StandardButton b=QMessageBox::warning(this, tr("FET warning"), s, QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Yes);
+	
+		if(b!=QMessageBox::Yes){
+			disconnect(showWarningForSubgroupsWithTheSameActivitiesAction, SIGNAL(toggled(bool)), this, SLOT(showWarningForSubgroupsWithTheSameActivitiesToggled(bool)));
+			showWarningForSubgroupsWithTheSameActivitiesAction->setChecked(true);
+			connect(showWarningForSubgroupsWithTheSameActivitiesAction, SIGNAL(toggled(bool)), this, SLOT(showWarningForSubgroupsWithTheSameActivitiesToggled(bool)));
+			return;
+		}
+	}
+	
+	SHOW_WARNING_FOR_SUBGROUPS_WITH_THE_SAME_ACTIVITIES=checked;
+}
+
 void FetMainForm::showWarningForNotPerfectConstraintsToggled(bool checked)
 {
 	if(checked==false){
@@ -4069,6 +4572,51 @@ void FetMainForm::showWarningForStudentsMinHoursDailyWithAllowEmptyDaysToggled(b
 	}
 	
 	SHOW_WARNING_FOR_STUDENTS_MIN_HOURS_DAILY_WITH_ALLOW_EMPTY_DAYS=checked;
+}
+
+void FetMainForm::enableGroupActivitiesInInitialOrderToggled(bool checked)
+{
+	if(checked==true){
+		QString s=tr("This kind of option is good, but only in the right case. Adding such an option in the wrong circumstance may make your"
+		 " timetable solve too slow or even impossible.");
+		s+="\n\n";
+		s+=tr("Continue only if you know what you are doing.");
+	
+		QMessageBox::StandardButton b=QMessageBox::warning(this, tr("FET warning"), s, QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Ok);
+	
+		if(b!=QMessageBox::Ok){
+			disconnect(enableGroupActivitiesInInitialOrderAction, SIGNAL(toggled(bool)), this, SLOT(enableGroupActivitiesInInitialOrderToggled(bool)));
+			enableGroupActivitiesInInitialOrderAction->setChecked(false);
+			connect(enableGroupActivitiesInInitialOrderAction, SIGNAL(toggled(bool)), this, SLOT(enableGroupActivitiesInInitialOrderToggled(bool)));
+			return;
+		}
+	}
+
+	ENABLE_GROUP_ACTIVITIES_IN_INITIAL_ORDER=checked;
+
+	setEnabledIcon(groupActivitiesInInitialOrderAction, ENABLE_GROUP_ACTIVITIES_IN_INITIAL_ORDER);
+}
+
+void FetMainForm::showWarningForGroupActivitiesInInitialOrderToggled(bool checked)
+{
+	if(checked==false){
+		QString s=tr("It is recommended to keep this warning active, but if you really want, you can disable it.");
+		s+="\n\n";
+		s+=tr("Disable it only if you know what you are doing.");
+		s+="\n\n";
+		s+=tr("Are you sure you want to disable it?");
+	
+		QMessageBox::StandardButton b=QMessageBox::warning(this, tr("FET warning"), s, QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Yes);
+	
+		if(b!=QMessageBox::Yes){
+			disconnect(showWarningForGroupActivitiesInInitialOrderAction, SIGNAL(toggled(bool)), this, SLOT(showWarningForGroupActivitiesInInitialOrderToggled(bool)));
+			showWarningForGroupActivitiesInInitialOrderAction->setChecked(true);
+			connect(showWarningForGroupActivitiesInInitialOrderAction, SIGNAL(toggled(bool)), this, SLOT(showWarningForGroupActivitiesInInitialOrderToggled(bool)));
+			return;
+		}
+	}
+	
+	SHOW_WARNING_FOR_GROUP_ACTIVITIES_IN_INITIAL_ORDER=checked;
 }
 
 
@@ -4176,6 +4724,22 @@ void FetMainForm::on_shortcutShowSoftConflictsPushButton_clicked()
 	on_timetableShowConflictsAction_triggered();
 }
 
+//2014-07-01
+void FetMainForm::on_shortcutsTimetableAdvancedPushButton_clicked()
+{
+	shortcutTimetableAdvancedMenu->popup(QCursor::pos());
+}
+
+void FetMainForm::on_shortcutsTimetablePrintPushButton_clicked()
+{
+	on_timetablePrintAction_triggered();
+}
+
+void FetMainForm::on_shortcutsTimetableLockingPushButton_clicked()
+{
+	shortcutTimetableLockingMenu->popup(QCursor::pos());
+}
+
 //data shortcut
 void FetMainForm::on_shortcutBasicPushButton_clicked()
 {
@@ -4249,6 +4813,9 @@ void FetMainForm::on_shortcutSaveAsPushButton_clicked()
 }
 
 #else
+bool SHOW_WARNING_FOR_SUBGROUPS_WITH_THE_SAME_ACTIVITIES=true;
+
 bool SHOW_WARNING_FOR_NOT_PERFECT_CONSTRAINTS=true;
 bool SHOW_WARNING_FOR_STUDENTS_MIN_HOURS_DAILY_WITH_ALLOW_EMPTY_DAYS=true;
+bool SHOW_WARNING_FOR_GROUP_ACTIVITIES_IN_INITIAL_ORDER=true;
 #endif

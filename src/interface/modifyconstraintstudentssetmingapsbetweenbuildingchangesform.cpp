@@ -8,10 +8,10 @@
 
 /***************************************************************************
  *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
+ *   This program is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Affero General Public License as        *
+ *   published by the Free Software Foundation, either version 3 of the    *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
 
@@ -39,11 +39,11 @@ ModifyConstraintStudentsSetMinGapsBetweenBuildingChangesForm::ModifyConstraintSt
 	
 	weightLineEdit->setText(CustomFETString::number(ctr->weightPercentage));
 	
-	updateStudentsComboBox();
+	updateStudentsComboBox(parent);
 
 	minGapsSpinBox->setMinimum(1);
 	minGapsSpinBox->setMaximum(gt.rules.nHoursPerDay);
-	minGapsSpinBox->setValue(ctr->minGapsBetweenBuildingChanges);	
+	minGapsSpinBox->setValue(ctr->minGapsBetweenBuildingChanges);
 		
 	constraintChanged();
 }
@@ -53,7 +53,7 @@ ModifyConstraintStudentsSetMinGapsBetweenBuildingChangesForm::~ModifyConstraintS
 	saveFETDialogGeometry(this);
 }
 
-void ModifyConstraintStudentsSetMinGapsBetweenBuildingChangesForm::updateStudentsComboBox(){
+void ModifyConstraintStudentsSetMinGapsBetweenBuildingChangesForm::updateStudentsComboBox(QWidget* parent){
 	studentsComboBox->clear();
 	int i=0, j=-1;
 	for(int m=0; m<gt.rules.yearsList.size(); m++){
@@ -68,7 +68,7 @@ void ModifyConstraintStudentsSetMinGapsBetweenBuildingChangesForm::updateStudent
 			if(stg->name==this->_ctr->studentsName)
 				j=i;
 			i++;
-			for(int p=0; p<stg->subgroupsList.size(); p++){
+			if(SHOW_SUBGROUPS_IN_COMBO_BOXES) for(int p=0; p<stg->subgroupsList.size(); p++){
 				StudentsSubgroup* sts=stg->subgroupsList[p];
 				studentsComboBox->addItem(sts->name);
 				if(sts->name==this->_ctr->studentsName)
@@ -77,8 +77,11 @@ void ModifyConstraintStudentsSetMinGapsBetweenBuildingChangesForm::updateStudent
 			}
 		}
 	}
-	assert(j>=0);
-	studentsComboBox->setCurrentIndex(j);																
+	if(j<0)
+		showWarningForInvisibleSubgroupConstraint(parent, this->_ctr->studentsName);
+	else
+		assert(j>=0);
+	studentsComboBox->setCurrentIndex(j);
 
 	constraintChanged();
 }
@@ -89,6 +92,11 @@ void ModifyConstraintStudentsSetMinGapsBetweenBuildingChangesForm::constraintCha
 
 void ModifyConstraintStudentsSetMinGapsBetweenBuildingChangesForm::ok()
 {
+	if(studentsComboBox->currentIndex()<0){
+		showWarningCannotModifyConstraintInvisibleSubgroupConstraint(this, this->_ctr->studentsName);
+		return;
+	}
+
 	double weight;
 	QString tmp=weightLineEdit->text();
 	weight_sscanf(tmp, "%lf", &weight);

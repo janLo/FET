@@ -1,25 +1,22 @@
 /*File generate_pre.cpp
 */
 
-/*
-Copyright 2007 Lalescu Liviu.
+/***************************************************************************
+                          generate_pre.cpp  -  description
+                             -------------------
+    begin                : 2002
+    copyright            : (C) 2002 by Lalescu Liviu
+    email                : Please see http://lalescu.ro/liviu/ for details about contacting Liviu Lalescu (in particular, you can find here the e-mail address)
+ ***************************************************************************/
 
-This file is part of FET.
-
-FET is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-FET is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with FET; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Affero General Public License as        *
+ *   published by the Free Software Foundation, either version 3 of the    *
+ *   License, or (at your option) any later version.                       *
+ *                                                                         *
+ ***************************************************************************/
 
 #include "timetable_defs.h"
 #include "rules.h"
@@ -403,14 +400,53 @@ static Matrix1D<PreferredRoomsItem> maxPercentagePrefRooms;
 static int reprNInc[MAX_ACTIVITIES];
 ////////////////////////////////////
 
+static int nIncompatibleFromFather[MAX_ACTIVITIES];
+int fatherActivityInInitialOrder[MAX_ACTIVITIES];
+////////////////////////////////////
+
+inline bool findEquivalentSubgroupsCompareFunction(int i1, int i2)
+{
+	const QList<int>& a1=gt.rules.internalSubgroupsList[i1]->activitiesForSubgroup;
+	const QList<int>& a2=gt.rules.internalSubgroupsList[i2]->activitiesForSubgroup;
+	
+	if(a1.count()<a2.count()){
+		return true;
+	}
+	else if(a1.count()>a2.count()){
+		return false;
+	}
+	else{
+		assert(a1.count()==a2.count());
+		for(int i=0; i<a1.count(); i++){
+			if(a1.at(i)<a2.at(i)){
+				return true;
+			}
+			else if(a1.at(i)>a2.at(i)){
+				return false;
+			}
+		}
+	}
+	return false;
+}
+
+////////////////////////////////////
 
 inline bool compareFunctionGeneratePre(int i, int j)
 {
-	if(nIncompatible[i]>nIncompatible[j] ||
-	 (nIncompatible[i]==nIncompatible[j] &&
-	 nMinDaysConstraintsBroken[i]>nMinDaysConstraintsBroken[j]))
+	if(nIncompatible[i]>nIncompatible[j] || (nIncompatible[i]==nIncompatible[j] && nMinDaysConstraintsBroken[i]>nMinDaysConstraintsBroken[j]))
 		return true;
 	
+	return false;
+}
+
+inline bool compareFunctionGeneratePreWithGroupedActivities(int i, int j)
+{
+	//nMinDaysBroken is different from 0.0 only if the activity is fixed
+	if( nIncompatibleFromFather[i]>nIncompatibleFromFather[j]
+	 || (nIncompatibleFromFather[i]==nIncompatibleFromFather[j] && nMinDaysConstraintsBroken[i]>nMinDaysConstraintsBroken[j])
+	 || (nIncompatibleFromFather[i]==nIncompatibleFromFather[j] && nMinDaysConstraintsBroken[i]==nMinDaysConstraintsBroken[j] && nIncompatible[i]>nIncompatible[j] ) )
+		return true;
+
 	return false;
 }
 
@@ -418,6 +454,67 @@ inline bool compareFunctionGeneratePre(int i, int j)
 bool processTimeSpaceConstraints(QWidget* parent, QTextStream* initialOrderStream)
 {
 	assert(gt.rules.internalStructureComputed);
+	
+	////////////Compute equivalent subgroups
+	if(SHOW_WARNING_FOR_SUBGROUPS_WITH_THE_SAME_ACTIVITIES){
+		QList<int> tmpSortedSubgroupsList;
+		Matrix1D<bool> isSignificantSubgroup;
+		
+		isSignificantSubgroup.resize(gt.rules.nInternalSubgroups);
+		
+		tmpSortedSubgroupsList.clear();
+		for(int i=0; i<gt.rules.nInternalSubgroups; i++)
+			tmpSortedSubgroupsList.append(i);
+		
+		std::stable_sort(tmpSortedSubgroupsList.begin(), tmpSortedSubgroupsList.end(), findEquivalentSubgroupsCompareFunction);
+		
+		QStringList s;
+		
+		if(gt.rules.nInternalSubgroups>0)
+			isSignificantSubgroup[tmpSortedSubgroupsList.at(0)]=true;
+		for(int i=1; i<gt.rules.nInternalSubgroups; i++){
+			int s1=tmpSortedSubgroupsList.at(i-1);
+			int s2=tmpSortedSubgroupsList.at(i);
+			
+			isSignificantSubgroup[s2]=true;
+		
+			const QList<int>& l1=gt.rules.internalSubgroupsList[s1]->activitiesForSubgroup;
+			const QList<int>& l2=gt.rules.internalSubgroupsList[s2]->activitiesForSubgroup;
+			if(l1.count()==l2.count()){
+				int i;
+				for(i=0; i<l1.count(); i++)
+					if(l1.at(i)!=l2.at(i))
+						break;
+				if(i==l1.count()){
+					isSignificantSubgroup[s2]=false;
+					
+					s.append(GeneratePreTranslate::tr("Subgroup %1 has the same activities as subgroup %2.").arg(gt.rules.internalSubgroupsList[s2]->name).arg(gt.rules.internalSubgroupsList[s1]->name));
+				}
+			}
+		}
+		
+		int cnt=0;
+		for(int i=0; i<gt.rules.nInternalSubgroups; i++)
+			if(!isSignificantSubgroup[i])
+				cnt++;
+		
+		if(cnt>0){
+			QString s0=GeneratePreTranslate::tr("Optimization tip:");
+			s0+=" ";
+			s0+=GeneratePreTranslate::tr("There are %1 subgroups (from the total of %2 subgroups) which have the same activities as other subgroups. They are listed below."
+				" If the constraints relating to these subgroups are also the same, you can make the generation (directly proportional) faster by completely removing the subgroups"
+				" which are equivalent to other subgroups (leaving only one representant for each equivalence set). (The generation algorithm will not completely remove the equivalent"
+				" subgroups automatically.)").arg(cnt).arg(gt.rules.nInternalSubgroups);
+			s0+="\n\n";
+			s0+=GeneratePreTranslate::tr("If you did not add all the activities yet or if the number of equivalent subgroups compared to the total number of subgroups"
+				" is small, probably you can safely ignore this message.");
+			s0+="\n\n";
+			s0+=GeneratePreTranslate::tr("You can deactivate this message from the 'Settings' menu.");
+			
+			GeneratePreReconcilableMessage::largeInformation(parent, GeneratePreTranslate::tr("FET warning"), s0+QString("\n\n")+s.join("\n"));
+		}
+	}
+	//////////////////////////////////
 
 	//////////////////begin resizing
 
@@ -760,7 +857,7 @@ bool processTimeSpaceConstraints(QWidget* parent, QTextStream* initialOrderStrea
 		return false;
 	
 	//must have here repr computed correctly
-	sortActivities(reprSameStartingTime, reprSameActivitiesSet, initialOrderStream);
+	sortActivities(parent, reprSameStartingTime, reprSameActivitiesSet, initialOrderStream);
 	
 	if(SHOW_WARNING_FOR_NOT_PERFECT_CONSTRAINTS){
 		if(haveStudentsMaxGapsPerDay || haveTeachersActivityTagMaxHoursDaily || haveStudentsActivityTagMaxHoursDaily){
@@ -806,7 +903,30 @@ bool processTimeSpaceConstraints(QWidget* parent, QTextStream* initialOrderStrea
 #endif
 		}
 	}
-	
+
+	if(SHOW_WARNING_FOR_GROUP_ACTIVITIES_IN_INITIAL_ORDER){
+		if(gt.rules.groupActivitiesInInitialOrderList.count()>0){
+			QString s=GeneratePreTranslate::tr("Your data contains the option to group activities in the initial order.");
+			s+="\n\n";
+			s+=GeneratePreTranslate::tr("This option is nonstandard. It is recommended only if you know what you are doing,"
+				" otherwise the solution might be impossible for FET to find.");
+			s+=" ";
+			s+=GeneratePreTranslate::tr("Use with caution.");
+			s+="\n\n";
+			s+=GeneratePreTranslate::tr("Are you sure you want to continue?");
+
+#ifdef FET_COMMAND_LINE
+			int b=GeneratePreReconcilableMessage::mediumConfirmation(parent, GeneratePreTranslate::tr("FET warning"), s, GeneratePreTranslate::tr("Yes"), GeneratePreTranslate::tr("No"), QString(), 0, 1);
+			if(b!=0)
+				return false;
+#else
+			QMessageBox::StandardButton b=QMessageBox::warning(parent, GeneratePreTranslate::tr("FET warning"), s, QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+			if(b!=QMessageBox::Yes)
+				return false;
+#endif
+		}
+	}
+
 	bool ok=true;
 	
 	return ok;
@@ -6915,9 +7035,7 @@ bool computeActivitiesRoomsPreferences(QWidget* parent)
 					
 					int t=GeneratePreIrreconcilableMessage::mediumConfirmation(parent, GeneratePreTranslate::tr("FET warning"),
 					 GeneratePreTranslate::tr("Cannot generate timetable, because for activity with id==%1 "
-					 "you have no allowed preferred room (from preferred room(s) constraints). "
-					 "This means that a constraint preferred room(s) has 0 rooms in it. "
-					 "This should not happen. Please report possible bug.")
+					 "you have no allowed preferred room (from preferred room(s) constraints).")
 					 .arg(gt.rules.internalActivitiesList[i].id),
 					 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 					 1, 0 );
@@ -7688,19 +7806,18 @@ bool homeRoomsAreOk(QWidget* parent)
 	return ok;
 }
 
-void sortActivities(const QHash<int, int> & reprSameStartingTime, const QHash<int, QSet<int> > & reprSameActivitiesSet, QTextStream* initialOrderStream)
+void sortActivities(QWidget* parent, const QHash<int, int> & reprSameStartingTime, const QHash<int, QSet<int> > & reprSameActivitiesSet, QTextStream* initialOrderStream)
 {
-//	const int INF  = 2000000000;
-	const int INF  = 1500000000; //INF and INF2 values of variables may be increased, so they should be INF2>>INF and INF2<<MAXINT(2147.........)
-//	const int INF2 = 2000000001;
-	const int INF2 = 2000000000;
-	
 	//I should take care of home rooms, but I don't want to change the routine below which works well
+
+	//	const int INF  = 2000000000;
+	const int INF  = 1500000000; //INF and INF2 values of variables may be increased, so they should be INF2>>INF and INF2<<MAXINT(2147.........)
+	//	const int INF2 = 2000000001;
+	const int INF2 = 2000000000;
 
 	const double THRESHOLD=80.0;
 	
 	//int nIncompatible[MAX_ACTIVITIES];
-	
 	
 	
 	//rooms init
@@ -7906,7 +8023,6 @@ void sortActivities(const QHash<int, int> & reprSameStartingTime, const QHash<in
 		}
 				
 		
-
 		nIncompatible[i]*=gt.rules.internalActivitiesList[i].duration;
 		
 		assert(nIncompatible[i]<INF);
@@ -8115,6 +8231,80 @@ void sortActivities(const QHash<int, int> & reprSameStartingTime, const QHash<in
 	}
 	//new volker (end)
 	
+	//2014-06-30 - group activities in initial order
+	if(gt.rules.groupActivitiesInInitialOrderList.count()>0){
+		for(int i=0; i<gt.rules.nInternalActivities; i++)
+			fatherActivityInInitialOrder[i]=-1;
+		
+		bool report=true;
+		int j=0;
+		
+		foreach(GroupActivitiesInInitialOrderItem* item, gt.rules.groupActivitiesInInitialOrderList){
+			j++;
+			
+			if(!item->active)
+				continue;
+			
+			if(item->indices.count()<2){
+				if(report){
+					QString s=GeneratePreTranslate::tr("Group activities in initial order item number %1 is ignored, because it contains less than"
+					 " two active activities").arg(j);
+				
+					int t=GeneratePreReconcilableMessage::mediumConfirmation(parent, GeneratePreTranslate::tr("FET warning"),
+					 s, GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
+					 1, 0 );
+				
+					if(t==0)
+						report=false;
+				}
+			}
+			else{
+				int index0=item->indices.at(0);
+				int xx=nIncompatible[index0];
+				/*if(fixedTimeActivity[index0] && fixedSpaceActivity[index0]){
+					assert(xx>=INF2);
+					xx-=(INF2-INF);
+				}
+				assert(xx>=0);
+				assert(xx<INF2);*/
+				
+				int MM=xx;
+				int father=0;
+				
+				for(int i=1; i<item->indices.count(); i++){
+					int indexi=item->indices.at(i);
+
+					int yy=nIncompatible[indexi];
+					/*if(fixedTimeActivity[indexi] && fixedSpaceActivity[indexi]){
+						assert(yy>=INF2);
+						yy-=(INF2-INF);
+					}
+					assert(yy>=0);
+					assert(yy<INF2);*/
+					
+					if(MM<yy){
+						MM=yy;
+						father=i;
+					}
+				}
+				
+				//if(MM>=INF)
+				//	MM=INF-1;
+
+				for(int i=0; i<item->indices.count(); i++)
+					if(i!=father){
+						assert(fatherActivityInInitialOrder[item->indices.at(i)]==-1);
+						fatherActivityInInitialOrder[item->indices.at(i)]=item->indices.at(father);
+					}
+					
+				/*for(int i=0; i<item.indices.count(); i++){
+					int ai=item.indices.at(i);
+					if(nIncompatible[ai]<MM)
+						nIncompatible[ai]=MM;
+				}*/
+			}
+		}
+	}
 	
 	//this is to avoid an "impossible to generate" bug in fixed timetables - does not eliminate completely the bug, unfortunately
 	for(int i=0; i<gt.rules.nInternalActivities; i++){
@@ -8209,22 +8399,84 @@ void sortActivities(const QHash<int, int> & reprSameStartingTime, const QHash<in
 	
 	//descending by nIncompatible, then by nMinDaysConstraintsBroken
 	//(by nMinDaysConstraintsBroken to alleviate an 'impossible to generate' bug if generating for a fixed timetable).
-	qStableSort(permutation+0, permutation+gt.rules.nInternalActivities, compareFunctionGeneratePre);
-	
-	for(int i=1; i<gt.rules.nInternalActivities; i++){
-		//don't assert nMinDaysConstraintsBroken is descending (if nIncompatible is equal), because it is a double number and we may get rounding errors
-		assert(nIncompatible[permutation[i-1]]>=nIncompatible[permutation[i]]);
+	if(gt.rules.groupActivitiesInInitialOrderList.count()==0){
+		//qStableSort(permutation+0, permutation+gt.rules.nInternalActivities, compareFunctionGeneratePre);
+		std::stable_sort(permutation+0, permutation+gt.rules.nInternalActivities, compareFunctionGeneratePre);
+
+		for(int q=1; q<gt.rules.nInternalActivities; q++){
+			int i=permutation[q-1];
+			int j=permutation[q];
+			//DEPRECATED COMMENT: don't assert nMinDaysConstraintsBroken is descending (if nIncompatible is equal), because it is a double number and we may get rounding errors
+			//assert(nIncompatible[permutation[i-1]]>=nIncompatible[permutation[i]]);
+			assert(nIncompatible[i]>nIncompatible[j] || (nIncompatible[i]==nIncompatible[j] && nMinDaysConstraintsBroken[i]>=nMinDaysConstraintsBroken[j]));
+		}
+	}
+	else{
+		for(int i=0; i<gt.rules.nInternalActivities; i++){
+			int nInc_i;
+			
+			if(fatherActivityInInitialOrder[i]==-1)
+				nInc_i=nIncompatible[i];
+			else
+				nInc_i=nIncompatible[fatherActivityInInitialOrder[i]];
+			
+			if(nInc_i>=INF2){
+				if(fixedTimeActivity[i] && fixedSpaceActivity[i]){
+					nInc_i=INF2;
+			
+					nInc_i+=gt.rules.internalActivitiesList[i].iSubgroupsList.count()+
+					gt.rules.internalActivitiesList[i].iTeachersList.count();
+				
+					assert(nInc_i>=INF2);
+				}
+				else if(fixedTimeActivity[i]){
+					nInc_i=INF;
+			
+					nInc_i+=gt.rules.internalActivitiesList[i].iSubgroupsList.count()+
+					gt.rules.internalActivitiesList[i].iTeachersList.count();
+				
+					assert(nInc_i>=INF);
+				}
+				else{
+					nInc_i=INF;
+				}
+			}
+			else if(nInc_i>=INF && nInc_i<INF2){
+				if(fixedTimeActivity[i]){
+					nInc_i=INF;
+			
+					nInc_i+=gt.rules.internalActivitiesList[i].iSubgroupsList.count()+
+					gt.rules.internalActivitiesList[i].iTeachersList.count();
+				
+					assert(nInc_i>=INF);
+				}
+				else{
+					nInc_i=INF;
+				}
+			}
+			
+			nIncompatibleFromFather[i]=nInc_i;
+		}
+
+		//qStableSort(permutation+0, permutation+gt.rules.nInternalActivities, compareFunctionGeneratePreWithGroupedActivities);
+		std::stable_sort(permutation+0, permutation+gt.rules.nInternalActivities, compareFunctionGeneratePreWithGroupedActivities);
+		
+		for(int q=1; q<gt.rules.nInternalActivities; q++){
+			int i=permutation[q-1];
+			int j=permutation[q];
+			assert( nIncompatibleFromFather[i]>nIncompatibleFromFather[j]
+			 || (nIncompatibleFromFather[i]==nIncompatibleFromFather[j] && nMinDaysConstraintsBroken[i]>nMinDaysConstraintsBroken[j])
+			 || (nIncompatibleFromFather[i]==nIncompatibleFromFather[j] && nMinDaysConstraintsBroken[i]==nMinDaysConstraintsBroken[j] && nIncompatible[i]>=nIncompatible[j] ) );
+		}
 	}
 	
 	if(VERBOSE){
 		cout<<"The order of activities (id-s):"<<endl;
 		for(int i=0; i<gt.rules.nInternalActivities; i++){
-			cout<<"No: "<<i+1<<", nIncompatible[permutation[i]]=="<<nIncompatible[permutation[i]]<<", ";
-			if(nMinDaysConstraintsBroken[permutation[i]]>0.0)
-				cout<<"nMinDaysConstraintsBroken[permutation[i]]=="<<nMinDaysConstraintsBroken[permutation[i]]<<", ";
+			cout<<"No: "<<i+1;
 		
 			Activity* act=&gt.rules.internalActivitiesList[permutation[i]];
-			cout<<"id=="<<act->id;
+			cout<<", id="<<act->id;
 			cout<<", teachers: ";
 			QString tj=act->teachersNames.join(" ");
 			//foreach(QString s, act->teachersNames)
@@ -8240,6 +8492,14 @@ void sortActivities(const QHash<int, int> & reprSameStartingTime, const QHash<in
 			//foreach(QString s, act->studentsNames)
 			//	cout<<qPrintable(s)<<" ";
 			cout<<qPrintable(sj);
+			
+			cout<<", nIncompatible[permutation[i]]="<<nIncompatible[permutation[i]];
+			if(nMinDaysConstraintsBroken[permutation[i]]>0.0)
+				cout<<", nMinDaysConstraintsBroken[permutation[i]]="<<nMinDaysConstraintsBroken[permutation[i]];
+				
+			if(gt.rules.groupActivitiesInInitialOrderList.count()>0 && fatherActivityInInitialOrder[permutation[i]]>=0)
+				cout<<" (grouped with id "<<gt.rules.internalActivitiesList[fatherActivityInInitialOrder[permutation[i]]].id<<")";
+			
 			cout<<endl;
 		}
 		cout<<"End - the order of activities (id-s):"<<endl;
@@ -8270,6 +8530,20 @@ void sortActivities(const QHash<int, int> & reprSameStartingTime, const QHash<in
 		s+=GeneratePreTranslate::tr("Activity tags: %1").arg(act->activityTagsNames.join(", "));
 		s+=", ";
 		s+=GeneratePreTranslate::tr("Students: %1").arg(act->studentsNames.join(", "));
+
+		if(gt.rules.groupActivitiesInInitialOrderList.count()>0){
+			s+=", ";
+			s+=GeneratePreTranslate::tr("nIncompatible: %1").arg(nIncompatible[permutation[i]]);
+			if(nMinDaysConstraintsBroken[permutation[i]]>0.0){
+				s+=", ";
+				s+=GeneratePreTranslate::tr("nMinDaysConstraintsBroken: %1").arg(nMinDaysConstraintsBroken[permutation[i]]);
+			}
+			
+			if(fatherActivityInInitialOrder[permutation[i]]>=0){
+				s+=" ";
+				s+=GeneratePreTranslate::tr("(grouped with id %1)").arg(gt.rules.internalActivitiesList[fatherActivityInInitialOrder[permutation[i]]].id);
+			}
+		}
 		
 		s+="\n";
 	}

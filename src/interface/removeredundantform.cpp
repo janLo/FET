@@ -8,10 +8,10 @@
 //
 /***************************************************************************
  *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
+ *   This program is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Affero General Public License as        *
+ *   published by the Free Software Foundation, either version 3 of the    *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
 
@@ -33,6 +33,9 @@ extern Timetable gt;
 #include <QLineEdit>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+
+#include <algorithm>
+using namespace std;
 
 RemoveRedundantForm::RemoveRedundantForm(QWidget* parent): QDialog(parent)
 {
@@ -122,7 +125,8 @@ void RemoveRedundantForm::wasAccepted()
 			a1List.append(m);
 		}
 		
-		qSort(a1List);
+		//qSort(a1List);
+		std::stable_sort(a1List.begin(), a1List.end());
 		
 		for(int j=i+1; j<mdcList.count(); j++){
 			ConstraintMinDaysBetweenActivities* c2=mdcList.at(j);
@@ -134,7 +138,8 @@ void RemoveRedundantForm::wasAccepted()
 				a2List.append(m);
 			}
 			
-			qSort(a2List);
+			//qSort(a2List);
+			std::stable_sort(a2List.begin(), a2List.end());
 			
 			bool equal=true;
 			

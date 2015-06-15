@@ -8,10 +8,10 @@
 
 /***************************************************************************
  *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
+ *   This program is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Affero General Public License as        *
+ *   published by the Free Software Foundation, either version 3 of the    *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
 
@@ -46,7 +46,7 @@ void HelpFaqForm::setText()
 	
 	s+=tr("Frequently asked questions.");
 	s+="\n\n";
-	s+=tr("Last modified on %1.").arg(tr("28 September 2013"));
+	s+=tr("Last modified on %1.").arg(tr("21 December 2014"));
 	
 	s+="\n\n";
 	s+="--------------------";
@@ -121,9 +121,9 @@ void HelpFaqForm::setText()
 	s+="\n\n";
 
 	s+=tr("Q: Is it possible to use non-integer weights for constraints?\n\n"
-		"A: Yes. Using values like 99.75% might be good sometimes. "
-		"The precision in FET is limited to %1 decimal digits after the decimal point, "
-		"but probably nobody will use such a fine precision").arg(CUSTOM_DOUBLE_PRECISION);
+		"A: Yes. If a constraint is allowed values under 100%, you can use any weight, even fractional numbers like 99.75%. It might help "
+		"in constraints like min days, preferred rooms or max hours daily. The precision in FET is limited to %1 decimal digits after the decimal point, "
+		"but probably nobody will use such a fine precision.").arg(CUSTOM_DOUBLE_PRECISION);
 
 	s+="\n\n";
 	s+="--------------------";
@@ -154,16 +154,9 @@ void HelpFaqForm::setText()
 	s+="\n\n";
 
 	s+=tr("Q: How to define the students into sections?\n\n"
-		"A: FET can automatically divide years by at most 4 categories of options. If you need to divide "
-		"a year into 5 categories, you can use a small trick (see below)."
+		"A: FET can automatically divide years by categories of options."
 		"\n\n"
-		"Add years and the option 'Divide ...' in the years dialog is the easiest way. You can also add manually years, groups and subgroups."
-		"\n\n"
-		"If each year (for instance 9) is divided by at most 4 categories, you can add year 9 and divide it in 4 categories. "
-		"If a year is divided by 5 categories (for instance, year 9 is divided by: section (a, b, c, d), first language (en, fr), "
-		"religion, boys/girls and second language (de, it)), you might consider years: 9a, 9b, 9c, 9d, each divided "
-		"into 4 categories, and divide each year in the dialog. For more than 5 categories, very unlikely case, you will need to "
-		"manually adjust groups/subgroups.");
+		"Add years and the option 'Divide ...' in the years dialog is the easiest way. You can also add manually years, groups and subgroups.");
 	s+="\n\n";
 	s+=tr("Important: you must consider that each year contains groups which contain independent subgroups. Subgroups should have "
 		"all the activities of the year and group plus additional optional activities. Please check menu statistics/students for "
@@ -175,12 +168,12 @@ void HelpFaqForm::setText()
 		"activities. All the subgroups are independent. If you have a subgroup with only 2 hours per week and constraint early, "
 		"then these 2 activities must be placed in the first hours of the day, which is probably much too hard (wrong).");
 	s+="\n\n";
-	s+=tr("Important note: please do the correct division of a year from the beginning. Each time you divide a year, the "
+	/*s+=tr("Important note: please do the correct division of a year from the beginning. Each time you divide a year, the "
 		"corresponding activities and constraints referring to year's groups and subgroups will be removed, along with groups "
 		"and subgroups. This is not elegant, I know, I will try to find a better solution in the future. If you already inputted "
 		"a lot of constraints and activities referring to a year's groups/subgroups, you might want to manually change the division of "
 		"a year by the groups/subgroups menus.");
-	s+="\n\n";
+	s+="\n\n";*/
 	s+=tr("Another possibility: you can see that each activity has allowed more teachers/students sets. If you need to split year Y "
 		"according to Language1 (with teachers T1 and T2), you might not split Y and add an activity with Y and teachers T1 and "
 		"T2 and subject 'Language1'. This is a small trick, which might be easier to use than to divide a year.");
@@ -327,15 +320,6 @@ void HelpFaqForm::setText()
 	s+="--------------------";
 	s+="\n\n";
 
-	s+=tr("Q: Is it allowed to use non-integer weights?\n\n"
-		"A: If a constraint is allowed values under 100%, you can use any weight, even fractional numbers like 99.75%. It might help "
-		"in constraints like min days, preferred rooms or max hours daily.");
-
-	s+="\n\n";
-	s+="--------------------";
-	s+="\n\n";
-
-
 	s+=tr("Q: I have a sports room which allows more than 1 activity simultaneously in it. How to make the preferred room constraints? "
 		"Can FET accept more than one activity at the same time in a single room?\n\n"
 		"A: Each room can host a single activity at the same time. How to implement what you need? You can add more "
@@ -357,14 +341,36 @@ void HelpFaqForm::setText()
 	s+=tr("Q: Is it possible to work with 0 hour?\n\n"
 		"A: A bit difficult. You have to choose a day for this 0 hour. Then add breaks or not available to "
 		"prevent other activities in other days at hour 0, then add students set not available to prevent other "
-		"students set from having hours at this hour 0. Or variants of this.\n\n"
-		"Mr. Zsolt Udvari used another trick: considered the last hour to be hour 0. But this is not always applicable.");
+		"students sets from having hours at this hour 0. Or variants of this.\n\n"
+		"Zsolt Udvari used another trick: considered the last hour to be hour 0. But this is not always applicable.");
 
 	s+="\n\n";
 	s+="--------------------";
 	s+="\n\n";
 
-	s+=tr("Q: How does FET care about weights. What do they mean?\n\n"
+	s+=tr("Q: How does FET care about weights? What do they mean?\n\n"
+		"A: The weights under 100% are subjective, because FET can skip them if "
+		"necessary.\n\n"
+		"Volker Dirr tried to express how FET considers under 100% weights:\n\n"
+		"weight = 50% means: In average FET retries two times to place an "
+		"activity without a conflict. If it isn't able to place the activity "
+		"without a conflict after average 2 times it keeps the conflict and tries "
+		"to place the next activity.\n"
+		"weight = 75% means: In average FET retries four times to place an "
+		"activity without a conflict. If it isn't able to place the activity "
+		"without a conflict after average 4 times it keeps the conflict and tries "
+		"to place the next activity.\n"
+		"weight = 99% means: In average FET retries 100 times to place an "
+		"activity without a conflict. If it isn't able to place the activity "
+		"without a conflict after average 100 times it keeps the conflict and "
+		"tries to place the next activity.\n"
+		"weight = 99.99% means: In average FET retries 10000 times to place an "
+		"activity without a conflict. If it isn't able to place the activity "
+		"without a conflict after average 10000 times it keeps the conflict and "
+		"tries to place the next activity.\n\n"
+		"Also, activities might get unallocated, and the cycle would be opened.");
+
+	/*s+=tr("Q: How does FET care about weights. What do they mean?\n\n"
 		"A: The weights under 100% are subjective, because FET can skip them if necessary.\n\n"
 		"Volker Dirr tried to express how FET considers under 100% weights, but his words are not completely reflecting the fact:\n\n"
 		"Here is a comment from Volker Dirr:\n\n"
@@ -376,7 +382,7 @@ void HelpFaqForm::setText()
 		"If it isn't able to place the activity without a conflict after average 100 times it keeps the conflict and tries to place the next activity.\n"
 		"weight = 99.99% means: In average FET retries 10000 times to place an activity without a conflict."
 		" If it isn't able to place the activity without a conflict after average 10000 times it keeps the conflict and tries to place the next activity.\n\n"
-		"This is not 100% correct. Activities might get unallocated, and cycle reopened.");
+		"This is not 100% correct. Activities might get unallocated, and cycle reopened.");*/
 
 	s+="\n\n";
 	s+="--------------------";
@@ -619,6 +625,9 @@ void HelpFaqForm::setText()
 		"Hour 11:00 Break\n"
 		"Hour 12:00 Math (second hour of act. 100)?\n\n"
 		"A: No, the activity must respect the break, so it is before or after the break with all the hours of it.");
+	s+=" ";
+	s+=tr("Alternative solutions: either you can split that activity into two subactivities with duration 1 (without a min days constraint "
+		"between them), and add a two activities consecutive constraint, or you can choose to not add the break constraint in your file.");
 
 	s+="\n\n";
 	s+="--------------------";
@@ -911,7 +920,7 @@ void HelpFaqForm::setText()
 	s+=tr("A: You can activate/deactivate a constraint by clicking the 'Activate'/'Deactivate' buttons in the all time/space"
 	 " constraints dialogs.");
 
-	s+="\n\n";
+	/*s+="\n\n";
 	s+="--------------------";
 	s+="\n\n";
 
@@ -919,7 +928,7 @@ void HelpFaqForm::setText()
 	s+="\n\n";
 	s+=tr("A: You can sort the constraints in the all time/space constraints dialogs. Sorting is done ascending, according to each"
 	 " constraints' comments. You can add suitable comments to obtain a desired order, like: 'rank #1 ... other comments' and"
-	 " 'rank #2 ... other different comments'.");
+	 " 'rank #2 ... other different comments'.");*/
 
 	s+="\n\n";
 	s+="--------------------";
@@ -930,6 +939,76 @@ void HelpFaqForm::setText()
 	 " students set to take place in the same room, be it Lab-1 or Lab-2");
 	s+="\n\n";
 	s+=tr("A: You can use the constraint activities occupy max different rooms, with max different rooms = 1.");
+
+	s+="\n\n";
+	s+="--------------------";
+	s+="\n\n";
+
+	s+=tr("Q: How can I backup/restore the FET settings on a computer, or share them between different computers?");
+	s+="\n\n";
+	s+=tr("A: GNU/Linux: Usually, in your %1 directory you will find a directory \"%2\""
+	 " containing the file \"%3\". If you copy this file to another computer, the FET settings will be copied. You can also make"
+	 " a backup of this file and copy it on the same computer, later, to restore the previous settings."
+	 " If you remove this file, all FET settings on this computer will be reset to defaults."
+	 ).arg("$HOME/.config").arg("fet").arg("fettimetabling.conf");
+	s+="\n\n";
+	s+=tr("Mac OS X: It seems that the configuration file might be %1").arg("$HOME/Library/Preferences/com.fet.fettimetabling.plist");
+	s+="\n\n";
+	s+=tr("Windows: Run regedit.exe (Registry Editor) and search for the key \"%1\". You will find a section with this name,"
+	 " with the subsection \"%2\". You can export this section to a file, and import it from this file on the same or another computer."
+	 " If you remove this section, all FET settings will be reset to defaults.").arg("fet").arg("fettimetabling.conf");
+
+	s+="\n\n";
+	s+="--------------------";
+	s+="\n\n";
+
+	s+=tr("Q: I have many subgroups and I don't explicitely use them. Can I hide them in the combo boxes, to add easier the constraints?"
+	 " Also, can I make the FET interface work faster?");
+	s+="\n\n";
+	s+=tr("A:", "Answer");
+	s+=" ";
+	s+=tr("If you have many subgroups and you don't explicitely use them, it is recommended to use the three global settings: hide subgroups"
+		" in combo boxes, hide subgroups in activity planning, and do not write subgroups timetables on hard disk.");
+	s+="\n";
+	s+=tr("Note that using the global menu setting to hide subgroups in activity planning is a different thing from the check box in the activity"
+		" planning dialog, and the global setting works better and faster.");
+	s+="\n";
+	s+=tr("If you hide subgroups in combo boxes, the affected dialogs (like the activities dialog or the add constraint students set not available times dialog)"
+		" will load much faster if you have many subgroups.");
+		
+	s+="\n\n";
+		
+	s+=tr("If you are only working on a timetable, and you do not need to publish it, you may want to disable writing some categories of timetables"
+		" on the hard disk, for operativity (the generation speed is not affected, only the overhead to write the partial/complete timetables"
+		" when stopping/finishing the simulation). The timetables taking the longest time are the subgroups, groups AND years ones.");
+	s+=" ";
+	s+=tr("(Also the conflicts timetable might take long to write, if the file is large.)");
+	s+=" ";
+	s+=tr("After that, you can re-enable writing of the timetables and re-generate.");
+
+	s+="\n\n";
+	s+="--------------------";
+	s+="\n\n";
+	
+	s+=tr("Q: How about dividing a students year automatically into many subgroups?");
+	s+="\n\n";
+	s+=tr("A:", "Answer");
+	s+=" ";
+	s+=tr("About using a large number of categories, divisions per category and subgroups: it is highly recommended to"
+		" keep these to a minimum, especially the number of categories, by using any kind of tricks. Otherwise the timetable"
+		" might become impossible (taking too much time to generate).");
+	s+=" ";
+	s+=tr("Maybe a reasonable number of categories could be 2, 3 or maximum 4. The divide year dialog allows much higher values, but"
+		" these are not at all recommended.");
+	s+="\n\n";
+	s+=tr("Maybe an alternative to dividing a year into many categories/subgroups would be to enter individual students as FET subgroups and add into"
+		" each group the corresponding subgroups. But this is hard to do from the FET interface - maybe a solution would be to use an automatic"
+		" tool to convert your instition data into a file in .fet format.");
+	s+=" ";
+	s+=tr("Or you might use the FET feature to import students sets from comma separated values (CSV) files.");
+	s+=" ";
+	s+=tr("In such cases (individual students as FET subgroups), remember that a smaller number of total subgroups means faster generation time, so"
+		" you might want to consider a single subgroup for two or more students who have the exact same activities and constraints.");
 
 	plainTextEdit->setPlainText(s);
 }
