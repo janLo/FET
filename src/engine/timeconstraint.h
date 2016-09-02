@@ -233,10 +233,30 @@ public:
 	Returns true if this constraint is related to this students set
 	*/
 	virtual bool isRelatedToStudentsSet(Rules& r, StudentsSet* s)=0;
-	
+
 	virtual bool hasWrongDayOrHour(Rules& r)=0;
 	virtual bool canRepairWrongDayOrHour(Rules& r)=0;
 	virtual bool repairWrongDayOrHour(Rules& r)=0;
+};
+
+
+class TeacherConstraint {
+private:
+    QString _teacherName;
+
+public:
+    TeacherConstraint();
+
+    TeacherConstraint(QString const &teacherName);
+
+    virtual ~TeacherConstraint();
+
+    QString teacherName() const {
+        return _teacherName;
+    }
+    void teacherName(QString const &teacherName) {
+        _teacherName = teacherName;
+    }
 };
 
 /**
@@ -278,17 +298,13 @@ public:
 	bool repairWrongDayOrHour(Rules& r);
 };
 
-class ConstraintTeacherNotAvailableTimes: public TimeConstraint{
+class ConstraintTeacherNotAvailableTimes: 	public TimeConstraint,
+											public TeacherConstraint {
 	Q_DECLARE_TR_FUNCTIONS(ConstraintTeacherNotAvailableTimes)
 
 public:
 	QList<int> days;
 	QList<int> hours;
-
-	/**
-	The teacher's name
-	*/
-	QString teacher;
 
 	/**
 	The teacher's id, or index in the rules
@@ -771,7 +787,8 @@ public:
 	bool repairWrongDayOrHour(Rules& r);
 };
 
-class ConstraintTeacherMaxHoursDaily: public TimeConstraint{
+class ConstraintTeacherMaxHoursDaily: 	public TimeConstraint,
+                                        public TeacherConstraint {
 	Q_DECLARE_TR_FUNCTIONS(ConstraintTeacherMaxHoursDaily)
 
 public:
@@ -779,8 +796,6 @@ public:
 	The maximum hours daily
 	*/
 	int maxHoursDaily;
-	
-	QString teacherName;
 	
 	int teacher_ID;
 
@@ -859,7 +874,8 @@ public:
 	bool repairWrongDayOrHour(Rules& r);
 };
 
-class ConstraintTeacherMaxHoursContinuously: public TimeConstraint{
+class ConstraintTeacherMaxHoursContinuously: 	public TimeConstraint,
+                                                public TeacherConstraint {
 	Q_DECLARE_TR_FUNCTIONS(ConstraintTeacherMaxHoursContinuously)
 
 public:
@@ -867,8 +883,6 @@ public:
 	The maximum hours continuously
 	*/
 	int maxHoursContinuously;
-	
-	QString teacherName;
 	
 	int teacher_ID;
 
@@ -949,7 +963,8 @@ public:
 	bool repairWrongDayOrHour(Rules& r);
 };
 
-class ConstraintTeacherActivityTagMaxHoursContinuously: public TimeConstraint{
+class ConstraintTeacherActivityTagMaxHoursContinuously: public TimeConstraint,
+                                                        public TeacherConstraint {
 	Q_DECLARE_TR_FUNCTIONS(ConstraintTeacherActivityTagMaxHoursContinuously)
 
 public:
@@ -957,8 +972,6 @@ public:
 	The maximum hours continuously
 	*/
 	int maxHoursContinuously;
-	
-	QString teacherName;
 	
 	QString activityTagName;
 	
@@ -1005,7 +1018,8 @@ The resulting timetable must respect the requirement
 that this teacher must not have too much working
 days per week.
 */
-class ConstraintTeacherMaxDaysPerWeek: public TimeConstraint{
+class ConstraintTeacherMaxDaysPerWeek: 	public TimeConstraint,
+                                        public TeacherConstraint {
 	Q_DECLARE_TR_FUNCTIONS(ConstraintTeacherMaxDaysPerWeek)
 
 public:
@@ -1015,18 +1029,13 @@ public:
 	int maxDaysPerWeek;
 
 	/**
-	The teacher's name
-	*/
-	QString teacherName;
-
-	/**
 	The teacher's id, or index in the rules
 	*/
 	int teacher_ID;
 
 	ConstraintTeacherMaxDaysPerWeek();
 
-	ConstraintTeacherMaxDaysPerWeek(double wp, int maxnd, QString t);
+    ConstraintTeacherMaxDaysPerWeek(double wp, int maxnd, QString const &tn);
 
 	bool computeInternalStructure(QWidget* parent, Rules& r);
 
@@ -1095,16 +1104,12 @@ public:
 	bool repairWrongDayOrHour(Rules& r);
 };
 
-class ConstraintTeacherMinDaysPerWeek: public TimeConstraint{
+class ConstraintTeacherMinDaysPerWeek: 	public TimeConstraint,
+                                        public TeacherConstraint {
 	Q_DECLARE_TR_FUNCTIONS(ConstraintTeacherMinDaysPerWeek)
 
 public:
 	int minDaysPerWeek;
-
-	/**
-	The teacher's name
-	*/
-	QString teacherName;
 
 	/**
 	The teacher's id, or index in the rules
@@ -1361,13 +1366,12 @@ public:
 	bool repairWrongDayOrHour(Rules& r);
 };
 
-class ConstraintTeacherMaxGapsPerWeek: public TimeConstraint{
+class ConstraintTeacherMaxGapsPerWeek: 	public TimeConstraint,
+                                        public TeacherConstraint {
 	Q_DECLARE_TR_FUNCTIONS(ConstraintTeacherMaxGapsPerWeek)
 
 public:
 	int maxGaps;
-	
-	QString teacherName;
 	
 	int teacherIndex;
 
@@ -1439,13 +1443,12 @@ public:
 	bool repairWrongDayOrHour(Rules& r);
 };
 
-class ConstraintTeacherMaxGapsPerDay: public TimeConstraint{
+class ConstraintTeacherMaxGapsPerDay: 	public TimeConstraint,
+                                        public TeacherConstraint {
 	Q_DECLARE_TR_FUNCTIONS(ConstraintTeacherMaxGapsPerDay)
 
 public:
 	int maxGaps;
-	
-	QString teacherName;
 	
 	int teacherIndex;
 
@@ -2173,14 +2176,11 @@ than the preferred set of times.
 The set of activities is specified by a subject, teacher, students or a combination
 of these.
 */
-class ConstraintActivitiesPreferredTimeSlots: public TimeConstraint{
+class ConstraintActivitiesPreferredTimeSlots: 	public TimeConstraint,
+                                                public TeacherConstraint {
 	Q_DECLARE_TR_FUNCTIONS(ConstraintActivitiesPreferredTimeSlots)
 
 public:
-	/**
-	The teacher. If void, all teachers.
-	*/
-	QString p_teacherName;
 
 	/**
 	The students. If void, all students.
@@ -2234,8 +2234,8 @@ public:
 
 	//ConstraintActivitiesPreferredTimeSlots(double wp, QString te,
 	//	QString st, QString su, QString sut, int nPT, int d[], int h[]);
-	ConstraintActivitiesPreferredTimeSlots(double wp, QString te,
-		QString st, QString su, QString sut, int dur, int nPT_L, QList<int> d_L, QList<int> h_L);
+    ConstraintActivitiesPreferredTimeSlots(double wp, QString const &te,
+        QString const &st, QString const &su, QString const &sut, int dur, int nPT_L, QList<int> const &d_L, QList<int> const &h_L);
 
 	bool computeInternalStructure(QWidget* parent, Rules& r);
 
@@ -2264,16 +2264,12 @@ public:
 	bool repairWrongDayOrHour(Rules& r);
 };
 
-class ConstraintSubactivitiesPreferredTimeSlots: public TimeConstraint{
+class ConstraintSubactivitiesPreferredTimeSlots: 	public TimeConstraint,
+                                                    public TeacherConstraint {
 	Q_DECLARE_TR_FUNCTIONS(ConstraintSubactivitiesPreferredTimeSlots)
 
 public:
 	int componentNumber;
-
-	/**
-	The teacher. If void, all teachers.
-	*/
-	QString p_teacherName;
 
 	/**
 	The students. If void, all students.
@@ -2325,8 +2321,8 @@ public:
 
 	//ConstraintSubactivitiesPreferredTimeSlots(double wp, int compNo, QString te,
 	//	QString st, QString su, QString sut, int nPT, int d[], int h[]);
-	ConstraintSubactivitiesPreferredTimeSlots(double wp, int compNo, QString te,
-		QString st, QString su, QString sut, int nPT_L, QList<int> d_L, QList<int> h_L);
+    ConstraintSubactivitiesPreferredTimeSlots(double wp, int compNo, QString const &te,
+        QString const &st, QString const &su, QString const &sut, int nPT_L, QList<int> const &d_L, QList<int> const &h_L);
 
 	bool computeInternalStructure(QWidget* parent, Rules& r);
 
@@ -2355,14 +2351,11 @@ public:
 	bool repairWrongDayOrHour(Rules& r);
 };
 
-class ConstraintActivitiesPreferredStartingTimes: public TimeConstraint{
+class ConstraintActivitiesPreferredStartingTimes: 	public TimeConstraint,
+                                                    public TeacherConstraint {
 	Q_DECLARE_TR_FUNCTIONS(ConstraintActivitiesPreferredStartingTimes)
 
 public:
-	/**
-	The teacher. If void, all teachers.
-	*/
-	QString teacherName;
 
 	/**
 	The students. If void, all students.
@@ -2416,8 +2409,8 @@ public:
 
 	//ConstraintActivitiesPreferredStartingTimes(double wp, QString te,
 	//	QString st, QString su, QString sut, int nPT, int d[], int h[]);
-	ConstraintActivitiesPreferredStartingTimes(double wp, QString te,
-		QString st, QString su, QString sut, int dur, int nPT_L, QList<int> d_L, QList<int> h_L);
+    ConstraintActivitiesPreferredStartingTimes(double wp, QString const &te,
+        QString const &st, QString const &su, QString const &sut, int dur, int nPT_L, QList<int> const &d_L, QList<int> const &h_L);
 
 	bool computeInternalStructure(QWidget* parent, Rules& r);
 
@@ -2446,16 +2439,12 @@ public:
 	bool repairWrongDayOrHour(Rules& r);
 };
 
-class ConstraintSubactivitiesPreferredStartingTimes: public TimeConstraint{
+class ConstraintSubactivitiesPreferredStartingTimes: 	public TimeConstraint,
+                                                        public TeacherConstraint {
 	Q_DECLARE_TR_FUNCTIONS(ConstraintSubactivitiesPreferredStartingTimes)
 
 public:
 	int componentNumber;
-
-	/**
-	The teacher. If void, all teachers.
-	*/
-	QString teacherName;
 
 	/**
 	The students. If void, all students.
@@ -2505,8 +2494,8 @@ public:
 
 	ConstraintSubactivitiesPreferredStartingTimes();
 
-	ConstraintSubactivitiesPreferredStartingTimes(double wp, int compNo, QString te,
-		QString st, QString su, QString sut, int nPT_L, QList<int> d_L, QList<int> h_L);
+    ConstraintSubactivitiesPreferredStartingTimes(double wp, int compNo, QString const &te,
+        QString const &st, QString const &su, QString const &sut, int nPT_L, QList<int> const &d_L, QList<int> const &h_L);
 
 	bool computeInternalStructure(QWidget* parent, Rules& r);
 
@@ -2980,7 +2969,8 @@ public:
 	bool repairWrongDayOrHour(Rules& r);
 };
 
-class ConstraintTeacherMinHoursDaily: public TimeConstraint{
+class ConstraintTeacherMinHoursDaily: 	public TimeConstraint,
+                                        public TeacherConstraint {
 	Q_DECLARE_TR_FUNCTIONS(ConstraintTeacherMinHoursDaily)
 
 public:
@@ -2988,8 +2978,6 @@ public:
 	The minimum hours daily
 	*/
 	int minHoursDaily;
-	
-	QString teacherName;
 	
 	int teacher_ID;
 	
@@ -3026,7 +3014,8 @@ public:
 	bool repairWrongDayOrHour(Rules& r);
 };
 
-class ConstraintTeacherIntervalMaxDaysPerWeek: public TimeConstraint{
+class ConstraintTeacherIntervalMaxDaysPerWeek: 	public TimeConstraint,
+                                                public TeacherConstraint {
 	Q_DECLARE_TR_FUNCTIONS(ConstraintTeacherIntervalMaxDaysPerWeek)
 
 public:
@@ -3040,18 +3029,13 @@ public:
 	int endHour; //might be = to gt.rules.nHoursPerDay
 
 	/**
-	The teacher's name
-	*/
-	QString teacherName;
-
-	/**
 	The teacher's id, or index in the rules
 	*/
 	int teacher_ID;
 
 	ConstraintTeacherIntervalMaxDaysPerWeek();
 
-	ConstraintTeacherIntervalMaxDaysPerWeek(double wp, int maxnd, QString tn, int sh, int eh);
+    ConstraintTeacherIntervalMaxDaysPerWeek(double wp, int maxnd, QString const &tn, int sh, int eh);
 
 	bool computeInternalStructure(QWidget* parent, Rules& r);
 
@@ -3231,14 +3215,11 @@ public:
 	bool repairWrongDayOrHour(Rules& r);
 };
 
-class ConstraintActivitiesEndStudentsDay: public TimeConstraint{
+class ConstraintActivitiesEndStudentsDay: 	public TimeConstraint,
+                                            public TeacherConstraint {
 	Q_DECLARE_TR_FUNCTIONS(ConstraintActivitiesEndStudentsDay)
 
 public:
-	/**
-	The teacher. If void, all teachers.
-	*/
-	QString teacherName;
 
 	/**
 	The students. If void, all students.
@@ -3272,7 +3253,7 @@ public:
 
 	ConstraintActivitiesEndStudentsDay();
 
-	ConstraintActivitiesEndStudentsDay(double wp, QString te, QString st, QString su, QString sut);
+    ConstraintActivitiesEndStudentsDay(double wp, QString const &te, QString const &st, QString const &su, QString const &sut);
 
 	bool computeInternalStructure(QWidget* parent, Rules& r);
 
@@ -3347,7 +3328,8 @@ public:
 	bool repairWrongDayOrHour(Rules& r);
 };
 
-class ConstraintTeacherActivityTagMaxHoursDaily: public TimeConstraint{
+class ConstraintTeacherActivityTagMaxHoursDaily: 	public TimeConstraint,
+                                                    public TeacherConstraint {
 	Q_DECLARE_TR_FUNCTIONS(ConstraintTeacherActivityTagMaxHoursDaily)
 
 public:
@@ -3355,8 +3337,6 @@ public:
 	The maximum hours daily
 	*/
 	int maxHoursDaily;
-	
-	QString teacherName;
 	
 	QString activityTagName;
 	
@@ -3368,7 +3348,7 @@ public:
 
 	ConstraintTeacherActivityTagMaxHoursDaily();
 
-	ConstraintTeacherActivityTagMaxHoursDaily(double wp, int maxhours, const QString& teacher, const QString& activityTag);
+    ConstraintTeacherActivityTagMaxHoursDaily(double wp, int maxhours, const QString& teacher, const QString& activityTag);
 
 	QString getXmlDescription(Rules& r);
 

@@ -69,7 +69,7 @@ bool ConstraintTeacherMaxGapsPerDayForm::filterOk(TimeConstraint* ctr)
 {
 	if(ctr->type==CONSTRAINT_TEACHER_MAX_GAPS_PER_DAY){
 		ConstraintTeacherMaxGapsPerDay* ctna=(ConstraintTeacherMaxGapsPerDay*) ctr;
-		return ctna->teacherName==teachersComboBox->currentText() || teachersComboBox->currentText()=="";
+        return ctna->teacherName()==teachersComboBox->currentText() || teachersComboBox->currentText()=="";
 	}
 	else
 		return false;

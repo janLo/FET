@@ -1036,83 +1036,83 @@ bool Rules::modifyTeacher(const QString& initialTeacherName, const QString& fina
 	foreach(TimeConstraint* ctr, timeConstraintsList){
 		if(ctr->type==CONSTRAINT_TEACHER_NOT_AVAILABLE_TIMES){
 			ConstraintTeacherNotAvailableTimes* crt_constraint=(ConstraintTeacherNotAvailableTimes*)ctr;
-			if(initialTeacherName == crt_constraint->teacher)
-				crt_constraint->teacher=finalTeacherName;
+			if(initialTeacherName == crt_constraint->teacherName())
+				crt_constraint->teacherName(finalTeacherName);
 		}
 		else if(ctr->type==CONSTRAINT_TEACHER_MAX_GAPS_PER_WEEK){
 			ConstraintTeacherMaxGapsPerWeek* crt_constraint=(ConstraintTeacherMaxGapsPerWeek*)ctr;
-			if(initialTeacherName == crt_constraint->teacherName)
-				crt_constraint->teacherName=finalTeacherName;
+            if(initialTeacherName == crt_constraint->teacherName())
+                crt_constraint->teacherName(finalTeacherName);
 		}
 		else if(ctr->type==CONSTRAINT_TEACHER_MAX_GAPS_PER_DAY){
 			ConstraintTeacherMaxGapsPerDay* crt_constraint=(ConstraintTeacherMaxGapsPerDay*)ctr;
-			if(initialTeacherName == crt_constraint->teacherName)
-				crt_constraint->teacherName=finalTeacherName;
+            if(initialTeacherName == crt_constraint->teacherName())
+                crt_constraint->teacherName(finalTeacherName);
 		}
 		else if(ctr->type==CONSTRAINT_TEACHER_MAX_HOURS_DAILY){
 			ConstraintTeacherMaxHoursDaily* crt_constraint=(ConstraintTeacherMaxHoursDaily*)ctr;
-			if(initialTeacherName == crt_constraint->teacherName)
-				crt_constraint->teacherName=finalTeacherName;
+            if(initialTeacherName == crt_constraint->teacherName())
+                crt_constraint->teacherName(finalTeacherName);
 		}
 		else if(ctr->type==CONSTRAINT_TEACHER_MAX_HOURS_CONTINUOUSLY){
 			ConstraintTeacherMaxHoursContinuously* crt_constraint=(ConstraintTeacherMaxHoursContinuously*)ctr;
-			if(initialTeacherName == crt_constraint->teacherName)
-				crt_constraint->teacherName=finalTeacherName;
+            if(initialTeacherName == crt_constraint->teacherName())
+                crt_constraint->teacherName(finalTeacherName);
 		}
 		else if(ctr->type==CONSTRAINT_TEACHER_ACTIVITY_TAG_MAX_HOURS_CONTINUOUSLY){
 			ConstraintTeacherActivityTagMaxHoursContinuously* crt_constraint=(ConstraintTeacherActivityTagMaxHoursContinuously*)ctr;
-			if(initialTeacherName == crt_constraint->teacherName)
-				crt_constraint->teacherName=finalTeacherName;
+            if(initialTeacherName == crt_constraint->teacherName())
+                crt_constraint->teacherName(finalTeacherName);
 		}
 		else if(ctr->type==CONSTRAINT_TEACHER_ACTIVITY_TAG_MAX_HOURS_DAILY){
 			ConstraintTeacherActivityTagMaxHoursDaily* crt_constraint=(ConstraintTeacherActivityTagMaxHoursDaily*)ctr;
-			if(initialTeacherName == crt_constraint->teacherName)
-				crt_constraint->teacherName=finalTeacherName;
+            if(initialTeacherName == crt_constraint->teacherName())
+                crt_constraint->teacherName(finalTeacherName);
 		}
 		else if(ctr->type==CONSTRAINT_TEACHER_MIN_HOURS_DAILY){
 			ConstraintTeacherMinHoursDaily* crt_constraint=(ConstraintTeacherMinHoursDaily*)ctr;
-			if(initialTeacherName == crt_constraint->teacherName)
-				crt_constraint->teacherName=finalTeacherName;
+            if(initialTeacherName == crt_constraint->teacherName())
+                crt_constraint->teacherName(finalTeacherName);
 		}
 		else if(ctr->type==CONSTRAINT_TEACHER_MAX_DAYS_PER_WEEK){
 			ConstraintTeacherMaxDaysPerWeek* crt_constraint=(ConstraintTeacherMaxDaysPerWeek*)ctr;
-			if(initialTeacherName == crt_constraint->teacherName)
-				crt_constraint->teacherName=finalTeacherName;
+            if(initialTeacherName == crt_constraint->teacherName())
+                crt_constraint->teacherName(finalTeacherName);
 		}
 		else if(ctr->type==CONSTRAINT_TEACHER_MIN_DAYS_PER_WEEK){
 			ConstraintTeacherMinDaysPerWeek* crt_constraint=(ConstraintTeacherMinDaysPerWeek*)ctr;
-			if(initialTeacherName == crt_constraint->teacherName)
-				crt_constraint->teacherName=finalTeacherName;
+            if(initialTeacherName == crt_constraint->teacherName())
+                crt_constraint->teacherName(finalTeacherName);
 		}
 		else if(ctr->type==CONSTRAINT_TEACHER_INTERVAL_MAX_DAYS_PER_WEEK){
 			ConstraintTeacherIntervalMaxDaysPerWeek* crt_constraint=(ConstraintTeacherIntervalMaxDaysPerWeek*)ctr;
-			if(initialTeacherName == crt_constraint->teacherName)
-				crt_constraint->teacherName=finalTeacherName;
+            if(initialTeacherName == crt_constraint->teacherName())
+                crt_constraint->teacherName(finalTeacherName);
 		}
 		else if(ctr->type==CONSTRAINT_ACTIVITIES_PREFERRED_TIME_SLOTS){
 			ConstraintActivitiesPreferredTimeSlots* crt_constraint=(ConstraintActivitiesPreferredTimeSlots*)ctr;
-			if(initialTeacherName == crt_constraint->p_teacherName)
-				crt_constraint->p_teacherName=finalTeacherName;
+            if(initialTeacherName == crt_constraint->teacherName())
+                crt_constraint->teacherName(finalTeacherName);
 		}
 		else if(ctr->type==CONSTRAINT_ACTIVITIES_PREFERRED_STARTING_TIMES){
 			ConstraintActivitiesPreferredStartingTimes* crt_constraint=(ConstraintActivitiesPreferredStartingTimes*)ctr;
-			if(initialTeacherName == crt_constraint->teacherName)
-				crt_constraint->teacherName=finalTeacherName;
+            if(initialTeacherName == crt_constraint->teacherName())
+                crt_constraint->teacherName(finalTeacherName);
 		}
 		else if(ctr->type==CONSTRAINT_ACTIVITIES_END_STUDENTS_DAY){
 			ConstraintActivitiesEndStudentsDay* crt_constraint=(ConstraintActivitiesEndStudentsDay*)ctr;
-			if(initialTeacherName == crt_constraint->teacherName)
-				crt_constraint->teacherName=finalTeacherName;
+            if(initialTeacherName == crt_constraint->teacherName())
+                crt_constraint->teacherName(finalTeacherName);
 		}
 		else if(ctr->type==CONSTRAINT_SUBACTIVITIES_PREFERRED_TIME_SLOTS){
 			ConstraintSubactivitiesPreferredTimeSlots* crt_constraint=(ConstraintSubactivitiesPreferredTimeSlots*)ctr;
-			if(initialTeacherName == crt_constraint->p_teacherName)
-				crt_constraint->p_teacherName=finalTeacherName;
+            if(initialTeacherName == crt_constraint->teacherName())
+                crt_constraint->teacherName(finalTeacherName);
 		}
 		else if(ctr->type==CONSTRAINT_SUBACTIVITIES_PREFERRED_STARTING_TIMES){
 			ConstraintSubactivitiesPreferredStartingTimes* crt_constraint=(ConstraintSubactivitiesPreferredStartingTimes*)ctr;
-			if(initialTeacherName == crt_constraint->teacherName)
-				crt_constraint->teacherName=finalTeacherName;
+            if(initialTeacherName == crt_constraint->teacherName())
+                crt_constraint->teacherName(finalTeacherName);
 		}
 	}
 	
@@ -3463,9 +3463,9 @@ bool Rules::addTimeConstraint(TimeConstraint* ctr)
 	
 	else if(ctr->type==CONSTRAINT_TEACHER_NOT_AVAILABLE_TIMES){
 		ConstraintTeacherNotAvailableTimes* c=(ConstraintTeacherNotAvailableTimes*) ctr;
-		QSet<ConstraintTeacherNotAvailableTimes*> cs=tnatHash.value(c->teacher, QSet<ConstraintTeacherNotAvailableTimes*>());
+        QSet<ConstraintTeacherNotAvailableTimes*> cs=tnatHash.value(c->teacherName(), QSet<ConstraintTeacherNotAvailableTimes*>());
 		foreach(ConstraintTeacherNotAvailableTimes* oldc, cs){
-			if(oldc->teacher==c->teacher){
+			if(oldc->teacherName()==c->teacherName()){
 				ok=false;
 				break;
 			}
@@ -3541,10 +3541,10 @@ bool Rules::addTimeConstraint(TimeConstraint* ctr)
 
 		else if(ctr->type==CONSTRAINT_TEACHER_NOT_AVAILABLE_TIMES){
 			ConstraintTeacherNotAvailableTimes* c=(ConstraintTeacherNotAvailableTimes*) ctr;
-			QSet<ConstraintTeacherNotAvailableTimes*> cs=tnatHash.value(c->teacher, QSet<ConstraintTeacherNotAvailableTimes*>());
+            QSet<ConstraintTeacherNotAvailableTimes*> cs=tnatHash.value(c->teacherName(), QSet<ConstraintTeacherNotAvailableTimes*>());
 			assert(!cs.contains(c));
 			cs.insert(c);
-			tnatHash.insert(c->teacher, cs);
+			tnatHash.insert(c->teacherName(), cs);
 		}
 
 		else if(ctr->type==CONSTRAINT_STUDENTS_SET_NOT_AVAILABLE_TIMES){
@@ -3599,10 +3599,10 @@ bool Rules::removeTimeConstraint(TimeConstraint* ctr)
 
 			else if(ctr->type==CONSTRAINT_TEACHER_NOT_AVAILABLE_TIMES){
 				ConstraintTeacherNotAvailableTimes* c=(ConstraintTeacherNotAvailableTimes*) ctr;
-				QSet<ConstraintTeacherNotAvailableTimes*> cs=tnatHash.value(c->teacher, QSet<ConstraintTeacherNotAvailableTimes*>());
+				QSet<ConstraintTeacherNotAvailableTimes*> cs=tnatHash.value(c->teacherName(), QSet<ConstraintTeacherNotAvailableTimes*>());
 				assert(cs.contains(c));
 				cs.remove(c);
-				tnatHash.insert(c->teacher, cs);
+				tnatHash.insert(c->teacherName(), cs);
 			}
 
 			else if(ctr->type==CONSTRAINT_STUDENTS_SET_NOT_AVAILABLE_TIMES){
@@ -3665,10 +3665,10 @@ bool Rules::removeTimeConstraints(QList<TimeConstraint*> _tcl)
 
 			else if(ctr->type==CONSTRAINT_TEACHER_NOT_AVAILABLE_TIMES){
 				ConstraintTeacherNotAvailableTimes* c=(ConstraintTeacherNotAvailableTimes*) ctr;
-				QSet<ConstraintTeacherNotAvailableTimes*> cs=tnatHash.value(c->teacher, QSet<ConstraintTeacherNotAvailableTimes*>());
+				QSet<ConstraintTeacherNotAvailableTimes*> cs=tnatHash.value(c->teacherName(), QSet<ConstraintTeacherNotAvailableTimes*>());
 				assert(cs.contains(c));
 				cs.remove(c);
-				tnatHash.insert(c->teacher, cs);
+				tnatHash.insert(c->teacherName(), cs);
 			}
 
 			else if(ctr->type==CONSTRAINT_STUDENTS_SET_NOT_AVAILABLE_TIMES){
@@ -3972,7 +3972,7 @@ void Rules::updateConstraintsAfterRemoval()
 	foreach(TimeConstraint* tc, timeConstraintsList){
 		if(tc->type==CONSTRAINT_TEACHER_NOT_AVAILABLE_TIMES){
 			ConstraintTeacherNotAvailableTimes* c=(ConstraintTeacherNotAvailableTimes*)tc;
-			if(!existingTeachersNames.contains(c->teacher))
+			if(!existingTeachersNames.contains(c->teacherName()))
 				toBeRemovedTime.append(tc);
 		}
 		else if(tc->type==CONSTRAINT_STUDENTS_SET_NOT_AVAILABLE_TIMES){
@@ -4012,12 +4012,12 @@ void Rules::updateConstraintsAfterRemoval()
 		}
 		else if(tc->type==CONSTRAINT_TEACHER_MAX_HOURS_DAILY){
 			ConstraintTeacherMaxHoursDaily* c=(ConstraintTeacherMaxHoursDaily*)tc;
-			if(!existingTeachersNames.contains(c->teacherName))
+            if(!existingTeachersNames.contains(c->teacherName()))
 				toBeRemovedTime.append(tc);
 		}
 		else if(tc->type==CONSTRAINT_TEACHER_MAX_HOURS_CONTINUOUSLY){
 			ConstraintTeacherMaxHoursContinuously* c=(ConstraintTeacherMaxHoursContinuously*)tc;
-			if(!existingTeachersNames.contains(c->teacherName))
+            if(!existingTeachersNames.contains(c->teacherName()))
 				toBeRemovedTime.append(tc);
 		}
 		else if(tc->type==CONSTRAINT_TEACHERS_ACTIVITY_TAG_MAX_HOURS_CONTINUOUSLY){
@@ -4027,17 +4027,17 @@ void Rules::updateConstraintsAfterRemoval()
 		}
 		else if(tc->type==CONSTRAINT_TEACHER_ACTIVITY_TAG_MAX_HOURS_CONTINUOUSLY){
 			ConstraintTeacherActivityTagMaxHoursContinuously* c=(ConstraintTeacherActivityTagMaxHoursContinuously*)tc;
-			if(!existingActivityTagsNames.contains(c->activityTagName) || !existingTeachersNames.contains(c->teacherName))
+            if(!existingActivityTagsNames.contains(c->activityTagName) || !existingTeachersNames.contains(c->teacherName()))
 				toBeRemovedTime.append(tc);
 		}
 		else if(tc->type==CONSTRAINT_TEACHER_MAX_DAYS_PER_WEEK){
 			ConstraintTeacherMaxDaysPerWeek* c=(ConstraintTeacherMaxDaysPerWeek*)tc;
-			if(!existingTeachersNames.contains(c->teacherName))
+            if(!existingTeachersNames.contains(c->teacherName()))
 				toBeRemovedTime.append(tc);
 		}
 		else if(tc->type==CONSTRAINT_TEACHER_MIN_DAYS_PER_WEEK){
 			ConstraintTeacherMinDaysPerWeek* c=(ConstraintTeacherMinDaysPerWeek*)tc;
-			if(!existingTeachersNames.contains(c->teacherName))
+            if(!existingTeachersNames.contains(c->teacherName()))
 				toBeRemovedTime.append(tc);
 		}
 		else if(tc->type==CONSTRAINT_STUDENTS_SET_MAX_GAPS_PER_WEEK){
@@ -4047,12 +4047,12 @@ void Rules::updateConstraintsAfterRemoval()
 		}
 		else if(tc->type==CONSTRAINT_TEACHER_MAX_GAPS_PER_WEEK){
 			ConstraintTeacherMaxGapsPerWeek* c=(ConstraintTeacherMaxGapsPerWeek*)tc;
-			if(!existingTeachersNames.contains(c->teacherName))
+            if(!existingTeachersNames.contains(c->teacherName()))
 				toBeRemovedTime.append(tc);
 		}
 		else if(tc->type==CONSTRAINT_TEACHER_MAX_GAPS_PER_DAY){
 			ConstraintTeacherMaxGapsPerDay* c=(ConstraintTeacherMaxGapsPerDay*)tc;
-			if(!existingTeachersNames.contains(c->teacherName))
+            if(!existingTeachersNames.contains(c->teacherName()))
 				toBeRemovedTime.append(tc);
 		}
 		else if(tc->type==CONSTRAINT_STUDENTS_SET_EARLY_MAX_BEGINNINGS_AT_SECOND_HOUR){
@@ -4104,7 +4104,7 @@ void Rules::updateConstraintsAfterRemoval()
 		}
 		else if(tc->type==CONSTRAINT_ACTIVITIES_PREFERRED_TIME_SLOTS){
 			ConstraintActivitiesPreferredTimeSlots* c=(ConstraintActivitiesPreferredTimeSlots*)tc;
-			if( (c->p_teacherName!="" && !existingTeachersNames.contains(c->p_teacherName)) ||
+            if( (c->teacherName()!="" && !existingTeachersNames.contains(c->teacherName())) ||
 			 (c->p_studentsName!="" && !permanentStudentsHash.contains(c->p_studentsName)) ||
 			 (c->p_subjectName!="" && !existingSubjectsNames.contains(c->p_subjectName)) ||
 			 (c->p_activityTagName!="" && !existingActivityTagsNames.contains(c->p_activityTagName)) )
@@ -4112,7 +4112,7 @@ void Rules::updateConstraintsAfterRemoval()
 		}
 		else if(tc->type==CONSTRAINT_SUBACTIVITIES_PREFERRED_TIME_SLOTS){
 			ConstraintSubactivitiesPreferredTimeSlots* c=(ConstraintSubactivitiesPreferredTimeSlots*)tc;
-			if( (c->p_teacherName!="" && !existingTeachersNames.contains(c->p_teacherName)) ||
+            if( (c->teacherName()!="" && !existingTeachersNames.contains(c->teacherName())) ||
 			 (c->p_studentsName!="" && !permanentStudentsHash.contains(c->p_studentsName)) ||
 			 (c->p_subjectName!="" && !existingSubjectsNames.contains(c->p_subjectName)) ||
 			 (c->p_activityTagName!="" && !existingActivityTagsNames.contains(c->p_activityTagName)) )
@@ -4120,7 +4120,7 @@ void Rules::updateConstraintsAfterRemoval()
 		}
 		else if(tc->type==CONSTRAINT_ACTIVITIES_PREFERRED_STARTING_TIMES){
 			ConstraintActivitiesPreferredStartingTimes* c=(ConstraintActivitiesPreferredStartingTimes*)tc;
-			if( (c->teacherName!="" && !existingTeachersNames.contains(c->teacherName)) ||
+            if( (c->teacherName()!="" && !existingTeachersNames.contains(c->teacherName())) ||
 			 (c->studentsName!="" && !permanentStudentsHash.contains(c->studentsName)) ||
 			 (c->subjectName!="" && !existingSubjectsNames.contains(c->subjectName)) ||
 			 (c->activityTagName!="" && !existingActivityTagsNames.contains(c->activityTagName)) )
@@ -4128,7 +4128,7 @@ void Rules::updateConstraintsAfterRemoval()
 		}
 		else if(tc->type==CONSTRAINT_SUBACTIVITIES_PREFERRED_STARTING_TIMES){
 			ConstraintSubactivitiesPreferredStartingTimes* c=(ConstraintSubactivitiesPreferredStartingTimes*)tc;
-			if( (c->teacherName!="" && !existingTeachersNames.contains(c->teacherName)) ||
+            if( (c->teacherName()!="" && !existingTeachersNames.contains(c->teacherName())) ||
 			 (c->studentsName!="" && !permanentStudentsHash.contains(c->studentsName)) ||
 			 (c->subjectName!="" && !existingSubjectsNames.contains(c->subjectName)) ||
 			 (c->activityTagName!="" && !existingActivityTagsNames.contains(c->activityTagName)) )
@@ -4178,12 +4178,12 @@ void Rules::updateConstraintsAfterRemoval()
 		}
 		else if(tc->type==CONSTRAINT_TEACHER_MIN_HOURS_DAILY){
 			ConstraintTeacherMinHoursDaily* c=(ConstraintTeacherMinHoursDaily*)tc;
-			if(!existingTeachersNames.contains(c->teacherName))
+            if(!existingTeachersNames.contains(c->teacherName()))
 				toBeRemovedTime.append(tc);
 		}
 		else if(tc->type==CONSTRAINT_TEACHER_INTERVAL_MAX_DAYS_PER_WEEK){
 			ConstraintTeacherIntervalMaxDaysPerWeek* c=(ConstraintTeacherIntervalMaxDaysPerWeek*)tc;
-			if(!existingTeachersNames.contains(c->teacherName))
+            if(!existingTeachersNames.contains(c->teacherName()))
 				toBeRemovedTime.append(tc);
 		}
 		else if(tc->type==CONSTRAINT_STUDENTS_SET_INTERVAL_MAX_DAYS_PER_WEEK){
@@ -4193,7 +4193,7 @@ void Rules::updateConstraintsAfterRemoval()
 		}
 		else if(tc->type==CONSTRAINT_ACTIVITIES_END_STUDENTS_DAY){
 			ConstraintActivitiesEndStudentsDay* c=(ConstraintActivitiesEndStudentsDay*)tc;
-			if( (c->teacherName!="" && !existingTeachersNames.contains(c->teacherName)) ||
+            if( (c->teacherName()!="" && !existingTeachersNames.contains(c->teacherName())) ||
 			 (c->studentsName!="" && !permanentStudentsHash.contains(c->studentsName)) ||
 			 (c->subjectName!="" && !existingSubjectsNames.contains(c->subjectName)) ||
 			 (c->activityTagName!="" && !existingActivityTagsNames.contains(c->activityTagName)) )
@@ -4206,7 +4206,7 @@ void Rules::updateConstraintsAfterRemoval()
 		}
 		else if(tc->type==CONSTRAINT_TEACHER_ACTIVITY_TAG_MAX_HOURS_DAILY){
 			ConstraintTeacherActivityTagMaxHoursDaily* c=(ConstraintTeacherActivityTagMaxHoursDaily*)tc;
-			if(!existingActivityTagsNames.contains(c->activityTagName) || !existingTeachersNames.contains(c->teacherName))
+            if(!existingActivityTagsNames.contains(c->activityTagName) || !existingTeachersNames.contains(c->teacherName()))
 				toBeRemovedTime.append(tc);
 		}
 		else if(tc->type==CONSTRAINT_STUDENTS_ACTIVITY_TAG_MAX_HOURS_DAILY){
@@ -7424,7 +7424,7 @@ TimeConstraint* Rules::readTeacherNotAvailable(QXmlStreamReader& xmlReader, Fake
 	foreach(TimeConstraint* c, this->timeConstraintsList)
 		if(c->type==CONSTRAINT_TEACHER_NOT_AVAILABLE_TIMES){
 			ConstraintTeacherNotAvailableTimes* tna=(ConstraintTeacherNotAvailableTimes*) c;
-			if(tna->teacher==teacher){
+			if(tna->teacherName()==teacher){
 				found=true;
 				
 				for(int hh=h1; hh<h2; hh++){
@@ -7559,8 +7559,8 @@ TimeConstraint* Rules::readTeacherNotAvailableTimes(QXmlStreamReader& xmlReader,
 		}
 		else if(xmlReader.name()=="Teacher"){
 			QString text=xmlReader.readElementText();
-			cn->teacher=text;
-			xmlReadingLog+="    Read teacher name="+cn->teacher+"\n";
+			cn->teacherName(text);
+			xmlReadingLog+="    Read teacher name="+cn->teacherName()+"\n";
 		}
 		else{
 			xmlReader.skipCurrentElement();
@@ -7621,8 +7621,8 @@ TimeConstraint* Rules::readTeacherMaxDaysPerWeek(QXmlStreamReader& xmlReader, Fa
 		}
 		else if(xmlReader.name()=="Teacher_Name"){
 			QString text=xmlReader.readElementText();
-			cn->teacherName=text;
-			xmlReadingLog+="    Read teacher name="+cn->teacherName+"\n";
+            cn->teacherName(text);
+            xmlReadingLog+="    Read teacher name="+cn->teacherName()+"\n";
 		}
 		else if(xmlReader.name()=="Max_Days_Per_Week"){
 			QString text=xmlReader.readElementText();
@@ -7715,8 +7715,8 @@ TimeConstraint* Rules::readTeacherMinDaysPerWeek(QXmlStreamReader& xmlReader, Fa
 		}
 		else if(xmlReader.name()=="Teacher_Name"){
 			QString text=xmlReader.readElementText();
-			cn->teacherName=text;
-			xmlReadingLog+="    Read teacher name="+cn->teacherName+"\n";
+            cn->teacherName(text);
+            xmlReadingLog+="    Read teacher name="+cn->teacherName()+"\n";
 		}
 		else if(xmlReader.name()=="Minimum_Days_Per_Week"){
 			QString text=xmlReader.readElementText();
@@ -7831,8 +7831,8 @@ TimeConstraint* Rules::readTeacherIntervalMaxDaysPerWeek(QWidget* parent, QXmlSt
 		}
 		else if(xmlReader.name()=="Teacher_Name"){
 			QString text=xmlReader.readElementText();
-			cn->teacherName=text;
-			xmlReadingLog+="    Read teacher name="+cn->teacherName+"\n";
+            cn->teacherName(text);
+            xmlReadingLog+="    Read teacher name="+cn->teacherName()+"\n";
 		}
 		else if(xmlReader.name()=="Max_Days_Per_Week"){
 			QString text=xmlReader.readElementText();
@@ -7840,7 +7840,7 @@ TimeConstraint* Rules::readTeacherIntervalMaxDaysPerWeek(QWidget* parent, QXmlSt
 			if(cn->maxDaysPerWeek>this->nDaysPerWeek){
 				RulesReconcilableMessage::information(parent, tr("FET information"), 
 					tr("Constraint TeacherIntervalMaxDaysPerWeek max days corrupt for teacher %1, max days %2 >nDaysPerWeek, constraint added, please correct constraint")
-					.arg(cn->teacherName)
+                    .arg(cn->teacherName())
 					.arg(text));
 				/*delete cn;
 				cn=NULL;
@@ -9369,8 +9369,8 @@ TimeConstraint* Rules::readTeacherMaxHoursDaily(QXmlStreamReader& xmlReader, Fak
 		}
 		else if(xmlReader.name()=="Teacher_Name"){
 			QString text=xmlReader.readElementText();
-			cn->teacherName=text;
-			xmlReadingLog+="    Read teacher name="+cn->teacherName+"\n";
+            cn->teacherName(text);
+            xmlReadingLog+="    Read teacher name="+cn->teacherName()+"\n";
 		}
 		else{
 			xmlReader.skipCurrentElement();
@@ -9478,8 +9478,8 @@ TimeConstraint* Rules::readTeacherMaxHoursContinuously(QXmlStreamReader& xmlRead
 		}
 		else if(xmlReader.name()=="Teacher_Name"){
 			QString text=xmlReader.readElementText();
-			cn->teacherName=text;
-			xmlReadingLog+="    Read teacher name="+cn->teacherName+"\n";
+            cn->teacherName(text);
+            xmlReadingLog+="    Read teacher name="+cn->teacherName()+"\n";
 		}
 		else{
 			xmlReader.skipCurrentElement();
@@ -9516,8 +9516,8 @@ TimeConstraint* Rules::readTeacherActivityTagMaxHoursContinuously(QXmlStreamRead
 		}
 		else if(xmlReader.name()=="Teacher_Name"){
 			QString text=xmlReader.readElementText();
-			cn->teacherName=text;
-			xmlReadingLog+="    Read teacher name="+cn->teacherName+"\n";
+            cn->teacherName(text);
+            xmlReadingLog+="    Read teacher name="+cn->teacherName()+"\n";
 		}
 		else if(xmlReader.name()=="Activity_Tag_Name"){
 			QString text=xmlReader.readElementText();
@@ -9597,8 +9597,8 @@ TimeConstraint* Rules::readTeacherActivityTagMaxHoursDaily(QXmlStreamReader& xml
 		}
 		else if(xmlReader.name()=="Teacher_Name"){
 			QString text=xmlReader.readElementText();
-			cn->teacherName=text;
-			xmlReadingLog+="    Read teacher name="+cn->teacherName+"\n";
+            cn->teacherName(text);
+            xmlReadingLog+="    Read teacher name="+cn->teacherName()+"\n";
 		}
 		else if(xmlReader.name()=="Activity_Tag_Name"){
 			QString text=xmlReader.readElementText();
@@ -9770,8 +9770,8 @@ TimeConstraint* Rules::readTeacherMinHoursDaily(QWidget* parent, QXmlStreamReade
 		}
 		else if(xmlReader.name()=="Teacher_Name"){
 			QString text=xmlReader.readElementText();
-			cn->teacherName=text;
-			xmlReadingLog+="    Read teacher name="+cn->teacherName+"\n";
+            cn->teacherName(text);
+            xmlReadingLog+="    Read teacher name="+cn->teacherName()+"\n";
 		}
 		else if(xmlReader.name()=="Allow_Empty_Days"){
 			QString text=xmlReader.readElementText();
@@ -10862,7 +10862,7 @@ TimeConstraint* Rules::readActivityEndsStudentsDay(QXmlStreamReader& xmlReader, 
 TimeConstraint* Rules::readActivitiesEndStudentsDay(QXmlStreamReader& xmlReader, FakeString& xmlReadingLog){
 	assert(xmlReader.isStartElement() && xmlReader.name()=="ConstraintActivitiesEndStudentsDay");
 	ConstraintActivitiesEndStudentsDay* cn=new ConstraintActivitiesEndStudentsDay();
-	cn->teacherName="";
+    cn->teacherName("");
 	cn->studentsName="";
 	cn->subjectName="";
 	cn->activityTagName="";
@@ -10887,8 +10887,8 @@ TimeConstraint* Rules::readActivitiesEndStudentsDay(QXmlStreamReader& xmlReader,
 		}
 		else if(xmlReader.name()=="Teacher_Name"){
 			QString text=xmlReader.readElementText();
-			cn->teacherName=text;
-			xmlReadingLog+="    Read teacher name="+cn->teacherName+"\n";
+            cn->teacherName(text);
+            xmlReadingLog+="    Read teacher name="+cn->teacherName()+"\n";
 		}
 		else if(xmlReader.name()=="Students_Name"){
 			QString text=xmlReader.readElementText();
@@ -12141,8 +12141,8 @@ TimeConstraint* Rules::readTeacherMaxGapsPerWeek(QXmlStreamReader& xmlReader, Fa
 		}
 		else if(xmlReader.name()=="Teacher_Name"){
 			QString text=xmlReader.readElementText();
-			cn->teacherName=text;
-			xmlReadingLog+="    Read teacher name="+cn->teacherName+"\n";
+            cn->teacherName(text);
+            xmlReadingLog+="    Read teacher name="+cn->teacherName()+"\n";
 		}
 		else if(xmlReader.name()=="Weight_Percentage"){
 			QString text=xmlReader.readElementText();
@@ -12250,8 +12250,8 @@ TimeConstraint* Rules::readTeacherMaxGapsPerDay(QXmlStreamReader& xmlReader, Fak
 		}
 		else if(xmlReader.name()=="Teacher_Name"){
 			QString text=xmlReader.readElementText();
-			cn->teacherName=text;
-			xmlReadingLog+="    Read teacher name="+cn->teacherName+"\n";
+            cn->teacherName(text);
+            xmlReadingLog+="    Read teacher name="+cn->teacherName()+"\n";
 		}
 		else if(xmlReader.name()=="Weight_Percentage"){
 			QString text=xmlReader.readElementText();
@@ -12887,7 +12887,7 @@ TimeConstraint* Rules::readActivitiesPreferredTimes(QXmlStreamReader& xmlReader,
 	/*for(i=0; i<MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_STARTING_TIMES; i++){
 		cn->days[i] = cn->hours[i] = -1;
 	}*/
-	cn->teacherName="";
+    cn->teacherName("");
 	cn->studentsName="";
 	cn->subjectName="";
 	cn->activityTagName="";
@@ -12931,8 +12931,8 @@ TimeConstraint* Rules::readActivitiesPreferredTimes(QXmlStreamReader& xmlReader,
 		}
 		else if(xmlReader.name()=="Teacher_Name"){
 			QString text=xmlReader.readElementText();
-			cn->teacherName=text;
-			xmlReadingLog+="    Read teacher name="+cn->teacherName+"\n";
+            cn->teacherName(text);
+            xmlReadingLog+="    Read teacher name="+cn->teacherName()+"\n";
 		}
 		else if(xmlReader.name()=="Students_Name"){
 			QString text=xmlReader.readElementText();
@@ -13058,7 +13058,7 @@ TimeConstraint* Rules::readActivitiesPreferredTimeSlots(QXmlStreamReader& xmlRea
 	/*for(i=0; i<MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_TIME_SLOTS; i++){
 		cn->p_days[i] = cn->p_hours[i] = -1;
 	}*/
-	cn->p_teacherName="";
+    cn->teacherName("");
 	cn->p_studentsName="";
 	cn->p_subjectName="";
 	cn->p_activityTagName="";
@@ -13102,8 +13102,8 @@ TimeConstraint* Rules::readActivitiesPreferredTimeSlots(QXmlStreamReader& xmlRea
 		}
 		else if(xmlReader.name()=="Teacher_Name"){
 			QString text=xmlReader.readElementText();
-			cn->p_teacherName=text;
-			xmlReadingLog+="    Read teacher name="+cn->p_teacherName+"\n";
+            cn->teacherName(text);
+            xmlReadingLog+="    Read teacher name="+cn->teacherName()+"\n";
 		}
 		else if(xmlReader.name()=="Students_Name"){
 			QString text=xmlReader.readElementText();
@@ -13239,7 +13239,7 @@ TimeConstraint* Rules::readActivitiesPreferredStartingTimes(QXmlStreamReader& xm
 	/*for(i=0; i<MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_STARTING_TIMES; i++){
 		cn->days[i] = cn->hours[i] = -1;
 	}*/
-	cn->teacherName="";
+    cn->teacherName("");
 	cn->studentsName="";
 	cn->subjectName="";
 	cn->activityTagName="";
@@ -13283,8 +13283,8 @@ TimeConstraint* Rules::readActivitiesPreferredStartingTimes(QXmlStreamReader& xm
 		}
 		else if(xmlReader.name()=="Teacher_Name"){
 			QString text=xmlReader.readElementText();
-			cn->teacherName=text;
-			xmlReadingLog+="    Read teacher name="+cn->teacherName+"\n";
+            cn->teacherName(text);
+            xmlReadingLog+="    Read teacher name="+cn->teacherName()+"\n";
 		}
 		else if(xmlReader.name()=="Students_Name"){
 			QString text=xmlReader.readElementText();
@@ -13421,7 +13421,7 @@ TimeConstraint* Rules::readSubactivitiesPreferredTimeSlots(QXmlStreamReader& xml
 	/*for(i=0; i<MAX_N_CONSTRAINT_SUBACTIVITIES_PREFERRED_TIME_SLOTS; i++){
 		cn->p_days[i] = cn->p_hours[i] = -1;
 	}*/
-	cn->p_teacherName="";
+    cn->teacherName("");
 	cn->p_studentsName="";
 	cn->p_subjectName="";
 	cn->p_activityTagName="";
@@ -13470,8 +13470,8 @@ TimeConstraint* Rules::readSubactivitiesPreferredTimeSlots(QXmlStreamReader& xml
 		}
 		else if(xmlReader.name()=="Teacher_Name"){
 			QString text=xmlReader.readElementText();
-			cn->p_teacherName=text;
-			xmlReadingLog+="    Read teacher name="+cn->p_teacherName+"\n";
+            cn->teacherName(text);
+            xmlReadingLog+="    Read teacher name="+cn->teacherName()+"\n";
 		}
 		else if(xmlReader.name()=="Students_Name"){
 			QString text=xmlReader.readElementText();
@@ -13597,7 +13597,7 @@ TimeConstraint* Rules::readSubactivitiesPreferredStartingTimes(QXmlStreamReader&
 	/*for(i=0; i<MAX_N_CONSTRAINT_SUBACTIVITIES_PREFERRED_STARTING_TIMES; i++){
 		cn->days[i] = cn->hours[i] = -1;
 	}*/
-	cn->teacherName="";
+    cn->teacherName("");
 	cn->studentsName="";
 	cn->subjectName="";
 	cn->activityTagName="";
@@ -13646,8 +13646,8 @@ TimeConstraint* Rules::readSubactivitiesPreferredStartingTimes(QXmlStreamReader&
 		}
 		else if(xmlReader.name()=="Teacher_Name"){
 			QString text=xmlReader.readElementText();
-			cn->teacherName=text;
-			xmlReadingLog+="    Read teacher name="+cn->teacherName+"\n";
+            cn->teacherName(text);
+            xmlReadingLog+="    Read teacher name="+cn->teacherName()+"\n";
 		}
 		else if(xmlReader.name()=="Students_Name"){
 			QString text=xmlReader.readElementText();

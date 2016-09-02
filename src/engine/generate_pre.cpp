@@ -3123,7 +3123,7 @@ bool computeTeachersMinHoursDaily(QWidget* parent)
 				 GeneratePreTranslate::tr("Cannot optimize, because you have constraint teacher min hours daily for teacher %1 with"
 				 " weight (percentage) below 100. Starting with FET version 5.4.0 it is only possible"
 				 " to use 100% weight for such constraints. Please make weight 100% and try again")
-				 .arg(tmd->teacherName),
+                 .arg(tmd->teacherName()),
 				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 			 	
@@ -3139,7 +3139,7 @@ bool computeTeachersMinHoursDaily(QWidget* parent)
 				int t=GeneratePreIrreconcilableMessage::mediumConfirmation(parent, GeneratePreTranslate::tr("FET warning"),
 				 GeneratePreTranslate::tr("Cannot optimize, because you have constraint teacher min hours daily for teacher %1 with"
 				 " %2 min hours daily, and the number of working hours per day is only %3. Please correct and try again")
-				 .arg(tmd->teacherName)
+                 .arg(tmd->teacherName())
 				 .arg(tmd->minHoursDaily)
 				 .arg(gt.rules.nHoursPerDay),
 				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
@@ -3262,7 +3262,7 @@ bool computeTeachersMinDaysPerWeek(QWidget* parent)
 				int t=GeneratePreIrreconcilableMessage::mediumConfirmation(parent, GeneratePreTranslate::tr("FET warning"),
 				 GeneratePreTranslate::tr("Cannot optimize, because you have constraint teacher min days per week for teacher %1 with"
 				 " weight (percentage) below 100. Please make weight 100% and try again")
-				 .arg(tmd->teacherName),
+                 .arg(tmd->teacherName()),
 				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 			 	
@@ -3278,7 +3278,7 @@ bool computeTeachersMinDaysPerWeek(QWidget* parent)
 				int t=GeneratePreIrreconcilableMessage::mediumConfirmation(parent, GeneratePreTranslate::tr("FET warning"),
 				 GeneratePreTranslate::tr("Cannot optimize, because you have constraint teacher min days per week for teacher %1 with"
 				 " %2 min days per week, and the number of working days per week is only %3. Please correct and try again")
-				 .arg(tmd->teacherName)
+                 .arg(tmd->teacherName())
 				 .arg(tmd->minDaysPerWeek)
 				 .arg(gt.rules.nDaysPerWeek),
 				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
@@ -3952,7 +3952,7 @@ bool computeTeachersMaxGapsPerWeekPercentage(QWidget* parent)
 				int t=GeneratePreIrreconcilableMessage::mediumConfirmation(parent, GeneratePreTranslate::tr("FET warning"),
 				 GeneratePreTranslate::tr("Cannot optimize, because you have constraint teacher max gaps per week with"
 				 " weight (percentage) below 100 for teacher %1. Please make weight 100% and try again")
-				 .arg(tg->teacherName),
+                 .arg(tg->teacherName()),
 				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 			 	
@@ -4063,7 +4063,7 @@ bool computeTeachersMaxGapsPerDayPercentage(QWidget* parent)
 				int t=GeneratePreIrreconcilableMessage::mediumConfirmation(parent, GeneratePreTranslate::tr("FET warning"),
 				 GeneratePreTranslate::tr("Cannot optimize, because you have constraint teacher max gaps per day with"
 				 " weight (percentage) below 100 for teacher %1. Please make weight 100% and try again")
-				 .arg(tg->teacherName),
+                 .arg(tg->teacherName()),
 				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 			 	
@@ -4302,7 +4302,7 @@ bool computeMaxDaysPerWeekForTeachers(QWidget* parent)
 				 GeneratePreTranslate::tr("Cannot optimize, because you have constraint teacher max days per week with"
 				 " weight (percentage) below 100 for teacher %1. Starting with FET version 5.2.17 it is only possible"
 				 " to use 100% weight for such constraints. Please make weight 100% and try again")
-				 .arg(tn->teacherName),
+                 .arg(tn->teacherName()),
 				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 			 	
@@ -4798,7 +4798,7 @@ bool computeNotAllowedTimesPercentages(QWidget* parent)
 					 GeneratePreTranslate::tr("Cannot optimize, because you have constraints of type "
 					 "teacher not available with weight percentage less than 100% for teacher %1. Currently, FET can only optimize with "
 					 "constraints teacher not available with 100% weight (or no constraint). Please "
-					 "modify your data accordingly and try again.").arg(tn->teacher));
+                     "modify your data accordingly and try again.").arg(tn->teacherName()));
 			
 					return ok;
 				}
@@ -6116,7 +6116,7 @@ bool computeTeachersIntervalMaxDaysPerWeek(QWidget* parent)
 				 GeneratePreTranslate::tr("Cannot optimize, because you have constraint teacher interval max days per week with"
 				 " weight (percentage) below 100 for teacher %1. Starting with FET version 5.6.2 it is only possible"
 				 " to use 100% weight for such constraints. Please make weight 100% and try again")
-				 .arg(tn->teacherName),
+                 .arg(tn->teacherName()),
 				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 			 	

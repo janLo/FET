@@ -218,13 +218,13 @@ void ModifyConstraintSubactivitiesPreferredStartingTimesForm::updateTeachersComb
 	int i=0, j=-1;
 	teachersComboBox->clear();
 	teachersComboBox->addItem("");
-	if(this->_ctr->teacherName=="")
+    if(this->_ctr->teacherName()=="")
 		j=i;
 	i++;
 	for(int k=0; k<gt.rules.teachersList.size(); k++){
 		Teacher* t=gt.rules.teachersList[k];
 		teachersComboBox->addItem(t->name);
-		if(t->name==this->_ctr->teacherName)
+        if(t->name==this->_ctr->teacherName())
 			j=i;
 		i++;
 	}
@@ -361,7 +361,7 @@ void ModifyConstraintSubactivitiesPreferredStartingTimesForm::ok()
 
 	this->_ctr->componentNumber=componentNumberSpinBox->value();
 	
-	this->_ctr->teacherName=teacher;
+    this->_ctr->teacherName(teacher);
 	this->_ctr->studentsName=students;
 	this->_ctr->subjectName=subject;
 	this->_ctr->activityTagName=activityTag;

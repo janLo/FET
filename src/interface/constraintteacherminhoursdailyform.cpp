@@ -69,7 +69,7 @@ bool ConstraintTeacherMinHoursDailyForm::filterOk(TimeConstraint* ctr)
 {
 	if(ctr->type==CONSTRAINT_TEACHER_MIN_HOURS_DAILY){
 		ConstraintTeacherMinHoursDaily* ct=(ConstraintTeacherMinHoursDaily*) ctr;
-		return ct->teacherName==teachersComboBox->currentText() || teachersComboBox->currentText()=="";
+        return ct->teacherName()==teachersComboBox->currentText() || teachersComboBox->currentText()=="";
 	}
 	else
 		return false;

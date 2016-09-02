@@ -69,7 +69,7 @@ bool ConstraintTeacherMaxDaysPerWeekForm::filterOk(TimeConstraint* ctr)
 {
 	if(ctr->type==CONSTRAINT_TEACHER_MAX_DAYS_PER_WEEK){
 		ConstraintTeacherMaxDaysPerWeek* c=(ConstraintTeacherMaxDaysPerWeek*) ctr;
-		return c->teacherName==teachersComboBox->currentText() || teachersComboBox->currentText()=="";
+        return c->teacherName()==teachersComboBox->currentText() || teachersComboBox->currentText()=="";
 	}
 	else
 		return false;

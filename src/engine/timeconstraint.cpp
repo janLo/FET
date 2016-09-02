@@ -521,9 +521,8 @@ ConstraintTeacherNotAvailableTimes::ConstraintTeacherNotAvailableTimes()
 }
 
 ConstraintTeacherNotAvailableTimes::ConstraintTeacherNotAvailableTimes(double wp, const QString& tn, QList<int> d, QList<int> h)
-	: TimeConstraint(wp)
+	: TimeConstraint(wp), TeacherConstraint(tn)
 {
-	this->teacher=tn;
 	assert(d.count()==h.count());
 	this->days=d;
 	this->hours=h;
@@ -533,7 +532,7 @@ ConstraintTeacherNotAvailableTimes::ConstraintTeacherNotAvailableTimes(double wp
 QString ConstraintTeacherNotAvailableTimes::getXmlDescription(Rules& r){
 	QString s="<ConstraintTeacherNotAvailableTimes>\n";
 	s+="	<Weight_Percentage>"+CustomFETString::number(weightPercentage)+"</Weight_Percentage>\n";
-	s+="	<Teacher>"+protect(this->teacher)+"</Teacher>\n";
+    s+="	<Teacher>"+protect(this->teacherName())+"</Teacher>\n";
 
 	s+="	<Number_of_Not_Available_Times>"+CustomFETString::number(this->days.count())+"</Number_of_Not_Available_Times>\n";
 	assert(days.count()==hours.count());
@@ -563,7 +562,7 @@ QString ConstraintTeacherNotAvailableTimes::getDescription(Rules& r){
 		
 	QString s=tr("Teacher not available");s+=", ";
 	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
-	s+=tr("T:%1", "Teacher").arg(this->teacher);s+=", ";
+    s+=tr("T:%1", "Teacher").arg(this->teacherName());s+=", ";
 
 	s+=tr("NA at:", "Not available at");
 	s+=" ";
@@ -587,7 +586,7 @@ QString ConstraintTeacherNotAvailableTimes::getDetailedDescription(Rules& r){
 	QString s=tr("Time constraint");s+="\n";
 	s+=tr("A teacher is not available");s+="\n";
 	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
-	s+=tr("Teacher=%1").arg(this->teacher);s+="\n";
+    s+=tr("Teacher=%1").arg(this->teacherName());s+="\n";
 
 	s+=tr("Not available at:", "It refers to a teacher");
 	s+="\n";
@@ -619,7 +618,7 @@ QString ConstraintTeacherNotAvailableTimes::getDetailedDescription(Rules& r){
 
 bool ConstraintTeacherNotAvailableTimes::computeInternalStructure(QWidget* parent, Rules& r){
 	//this->teacher_ID=r.searchTeacher(this->teacher);
-	teacher_ID=r.teachersHash.value(teacher, -1);
+    teacher_ID=r.teachersHash.value(teacherName(), -1);
 
 	if(this->teacher_ID<0){
 		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
@@ -725,7 +724,7 @@ bool ConstraintTeacherNotAvailableTimes::isRelatedToActivity(Rules& r, Activity*
 
 bool ConstraintTeacherNotAvailableTimes::isRelatedToTeacher(Teacher* t)
 {
-	if(this->teacher==t->name)
+    if(this->teacherName()==t->name)
 		return true;
 	return false;
 }
@@ -2961,13 +2960,12 @@ ConstraintTeacherMaxHoursDaily::ConstraintTeacherMaxHoursDaily()
 }
 
 ConstraintTeacherMaxHoursDaily::ConstraintTeacherMaxHoursDaily(double wp, int maxhours, const QString& teacher)
- : TimeConstraint(wp)
+ : TimeConstraint(wp), TeacherConstraint(teacher)
  {
 	assert(maxhours>0);
 	this->maxHoursDaily=maxhours;
-	this->teacherName=teacher;
 
-	this->type=CONSTRAINT_TEACHER_MAX_HOURS_DAILY;
+    this->type=CONSTRAINT_TEACHER_MAX_HOURS_DAILY;
 }
 
 bool ConstraintTeacherMaxHoursDaily::computeInternalStructure(QWidget* parent, Rules& r)
@@ -2975,7 +2973,7 @@ bool ConstraintTeacherMaxHoursDaily::computeInternalStructure(QWidget* parent, R
 	Q_UNUSED(parent);
 
 	//this->teacher_ID=r.searchTeacher(this->teacherName);
-	teacher_ID=r.teachersHash.value(teacherName, -1);
+    teacher_ID=r.teachersHash.value(teacherName(), -1);
 	assert(this->teacher_ID>=0);
 	return true;
 }
@@ -2991,7 +2989,7 @@ QString ConstraintTeacherMaxHoursDaily::getXmlDescription(Rules& r){
 
 	QString s="<ConstraintTeacherMaxHoursDaily>\n";
 	s+="	<Weight_Percentage>"+CustomFETString::number(this->weightPercentage)+"</Weight_Percentage>\n";
-	s+="	<Teacher_Name>"+protect(this->teacherName)+"</Teacher_Name>\n";
+    s+="	<Teacher_Name>"+protect(this->teacherName())+"</Teacher_Name>\n";
 	s+="	<Maximum_Hours_Daily>"+CustomFETString::number(this->maxHoursDaily)+"</Maximum_Hours_Daily>\n";
 	s+="	<Active>"+trueFalse(active)+"</Active>\n";
 	s+="	<Comments>"+protect(comments)+"</Comments>\n";
@@ -3013,7 +3011,7 @@ QString ConstraintTeacherMaxHoursDaily::getDescription(Rules& r){
 	QString s;
 	s+=tr("Teacher max hours daily");s+=", ";
 	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
-	s+=tr("T:%1", "Teacher").arg(this->teacherName);s+=", ";
+    s+=tr("T:%1", "Teacher").arg(this->teacherName());s+=", ";
 	s+=tr("MH:%1", "Maximum hours (daily)").arg(this->maxHoursDaily);
 
 	return begin+s+end;
@@ -3025,7 +3023,7 @@ QString ConstraintTeacherMaxHoursDaily::getDetailedDescription(Rules& r){
 	QString s=tr("Time constraint");s+="\n";
 	s+=tr("A teacher must respect the maximum number of hours daily");s+="\n";
 	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
-	s+=tr("Teacher=%1").arg(this->teacherName);s+="\n";
+    s+=tr("Teacher=%1").arg(this->teacherName());s+="\n";
 	s+=tr("Maximum hours daily=%1").arg(this->maxHoursDaily);s+="\n";
 
 	if(!active){
@@ -3118,7 +3116,7 @@ bool ConstraintTeacherMaxHoursDaily::isRelatedToActivity(Rules& r, Activity* a)
 
 bool ConstraintTeacherMaxHoursDaily::isRelatedToTeacher(Teacher* t)
 {
-	if(this->teacherName==t->name)
+    if(this->teacherName()==t->name)
 		return true;
 	return false;
 }
@@ -3404,11 +3402,10 @@ ConstraintTeacherMaxHoursContinuously::ConstraintTeacherMaxHoursContinuously()
 }
 
 ConstraintTeacherMaxHoursContinuously::ConstraintTeacherMaxHoursContinuously(double wp, int maxhours, const QString& teacher)
- : TimeConstraint(wp)
+ : TimeConstraint(wp), TeacherConstraint(teacher)
  {
 	assert(maxhours>0);
 	this->maxHoursContinuously=maxhours;
-	this->teacherName=teacher;
 
 	this->type=CONSTRAINT_TEACHER_MAX_HOURS_CONTINUOUSLY;
 }
@@ -3418,7 +3415,7 @@ bool ConstraintTeacherMaxHoursContinuously::computeInternalStructure(QWidget* pa
 	Q_UNUSED(parent);
 
 	//this->teacher_ID=r.searchTeacher(this->teacherName);
-	teacher_ID=r.teachersHash.value(teacherName, -1);
+    teacher_ID=r.teachersHash.value(teacherName(), -1);
 	assert(this->teacher_ID>=0);
 	return true;
 }
@@ -3434,7 +3431,7 @@ QString ConstraintTeacherMaxHoursContinuously::getXmlDescription(Rules& r){
 
 	QString s="<ConstraintTeacherMaxHoursContinuously>\n";
 	s+="	<Weight_Percentage>"+CustomFETString::number(this->weightPercentage)+"</Weight_Percentage>\n";
-	s+="	<Teacher_Name>"+protect(this->teacherName)+"</Teacher_Name>\n";
+    s+="	<Teacher_Name>"+protect(this->teacherName())+"</Teacher_Name>\n";
 	s+="	<Maximum_Hours_Continuously>"+CustomFETString::number(this->maxHoursContinuously)+"</Maximum_Hours_Continuously>\n";
 	s+="	<Active>"+trueFalse(active)+"</Active>\n";
 	s+="	<Comments>"+protect(comments)+"</Comments>\n";
@@ -3456,7 +3453,7 @@ QString ConstraintTeacherMaxHoursContinuously::getDescription(Rules& r){
 	QString s;
 	s+=tr("Teacher max hours continuously");s+=", ";
 	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
-	s+=tr("T:%1", "Teacher").arg(this->teacherName);s+=", ";
+    s+=tr("T:%1", "Teacher").arg(this->teacherName());s+=", ";
 	s+=tr("MH:%1", "Maximum hours continuously").arg(this->maxHoursContinuously);
 
 	return begin+s+end;
@@ -3468,7 +3465,7 @@ QString ConstraintTeacherMaxHoursContinuously::getDetailedDescription(Rules& r){
 	QString s=tr("Time constraint");s+="\n";
 	s+=tr("A teacher must respect the maximum number of hours continuously");s+="\n";
 	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
-	s+=tr("Teacher=%1").arg(this->teacherName);s+="\n";
+    s+=tr("Teacher=%1").arg(this->teacherName());s+="\n";
 	s+=tr("Maximum hours continuously=%1").arg(this->maxHoursContinuously);s+="\n";
 
 	if(!active){
@@ -3571,7 +3568,7 @@ bool ConstraintTeacherMaxHoursContinuously::isRelatedToActivity(Rules& r, Activi
 
 bool ConstraintTeacherMaxHoursContinuously::isRelatedToTeacher(Teacher* t)
 {
-	if(this->teacherName==t->name)
+    if(this->teacherName()==t->name)
 		return true;
 	return false;
 }
@@ -3898,11 +3895,10 @@ ConstraintTeacherActivityTagMaxHoursContinuously::ConstraintTeacherActivityTagMa
 }
 
 ConstraintTeacherActivityTagMaxHoursContinuously::ConstraintTeacherActivityTagMaxHoursContinuously(double wp, int maxhours, const QString& teacher, const QString& activityTag)
- : TimeConstraint(wp)
+ : TimeConstraint(wp), TeacherConstraint(teacher)
  {
 	assert(maxhours>0);
 	this->maxHoursContinuously=maxhours;
-	this->teacherName=teacher;
 	this->activityTagName=activityTag;
 
 	this->type=CONSTRAINT_TEACHER_ACTIVITY_TAG_MAX_HOURS_CONTINUOUSLY;
@@ -3913,7 +3909,7 @@ bool ConstraintTeacherActivityTagMaxHoursContinuously::computeInternalStructure(
 	Q_UNUSED(parent);
 
 	//this->teacher_ID=r.searchTeacher(this->teacherName);
-	teacher_ID=r.teachersHash.value(teacherName, -1);
+    teacher_ID=r.teachersHash.value(teacherName(), -1);
 	assert(this->teacher_ID>=0);
 
 	//this->activityTagIndex=r.searchActivityTag(this->activityTagName);
@@ -3949,7 +3945,7 @@ QString ConstraintTeacherActivityTagMaxHoursContinuously::getXmlDescription(Rule
 
 	QString s="<ConstraintTeacherActivityTagMaxHoursContinuously>\n";
 	s+="	<Weight_Percentage>"+CustomFETString::number(this->weightPercentage)+"</Weight_Percentage>\n";
-	s+="	<Teacher_Name>"+protect(this->teacherName)+"</Teacher_Name>\n";
+    s+="	<Teacher_Name>"+protect(this->teacherName())+"</Teacher_Name>\n";
 	s+="	<Activity_Tag_Name>"+protect(this->activityTagName)+"</Activity_Tag_Name>\n";
 	s+="	<Maximum_Hours_Continuously>"+CustomFETString::number(this->maxHoursContinuously)+"</Maximum_Hours_Continuously>\n";
 	s+="	<Active>"+trueFalse(active)+"</Active>\n";
@@ -3970,7 +3966,7 @@ QString ConstraintTeacherActivityTagMaxHoursContinuously::getDescription(Rules& 
 		end=", "+tr("C: %1", "Comments").arg(comments);
 		
 	QString s;
-	s+=tr("Teacher %1 for activity tag %2 has max %3 hours continuously").arg(this->teacherName).arg(this->activityTagName).arg(this->maxHoursContinuously);s+=", ";
+    s+=tr("Teacher %1 for activity tag %2 has max %3 hours continuously").arg(this->teacherName()).arg(this->activityTagName).arg(this->maxHoursContinuously);s+=", ";
 	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));
 
 	return begin+s+end;
@@ -3982,7 +3978,7 @@ QString ConstraintTeacherActivityTagMaxHoursContinuously::getDetailedDescription
 	QString s=tr("Time constraint");s+="\n";
 	s+=tr("A teacher for an activity tag must respect the maximum number of hours continuously");s+="\n";
 	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
-	s+=tr("Teacher=%1").arg(this->teacherName);s+="\n";
+    s+=tr("Teacher=%1").arg(this->teacherName());s+="\n";
 	s+=tr("Activity tag=%1").arg(this->activityTagName);s+="\n";
 	s+=tr("Maximum hours continuously=%1").arg(this->maxHoursContinuously); s+="\n";
 
@@ -4110,7 +4106,7 @@ bool ConstraintTeacherActivityTagMaxHoursContinuously::isRelatedToActivity(Rules
 
 bool ConstraintTeacherActivityTagMaxHoursContinuously::isRelatedToTeacher(Teacher* t)
 {
-	if(this->teacherName==t->name)
+    if(this->teacherName()==t->name)
 		return true;
 	return false;
 }
@@ -4169,10 +4165,9 @@ ConstraintTeacherMaxDaysPerWeek::ConstraintTeacherMaxDaysPerWeek()
 	this->type=CONSTRAINT_TEACHER_MAX_DAYS_PER_WEEK;
 }
 
-ConstraintTeacherMaxDaysPerWeek::ConstraintTeacherMaxDaysPerWeek(double wp, int maxnd, QString tn)
-	 : TimeConstraint(wp)
+ConstraintTeacherMaxDaysPerWeek::ConstraintTeacherMaxDaysPerWeek(double wp, int maxnd, QString const &tn)
+     : TimeConstraint(wp), TeacherConstraint(tn)
 {
-	this->teacherName = tn;
 	this->maxDaysPerWeek=maxnd;
 	this->type=CONSTRAINT_TEACHER_MAX_DAYS_PER_WEEK;
 }
@@ -4182,7 +4177,7 @@ bool ConstraintTeacherMaxDaysPerWeek::computeInternalStructure(QWidget* parent, 
 	Q_UNUSED(parent);
 
 	//this->teacher_ID=r.searchTeacher(this->teacherName);
-	teacher_ID=r.teachersHash.value(teacherName, -1);
+    teacher_ID=r.teachersHash.value(teacherName(), -1);
 	assert(this->teacher_ID>=0);
 	return true;
 }
@@ -4199,7 +4194,7 @@ QString ConstraintTeacherMaxDaysPerWeek::getXmlDescription(Rules& r)
 
 	QString s="<ConstraintTeacherMaxDaysPerWeek>\n";
 	s+="	<Weight_Percentage>"+CustomFETString::number(this->weightPercentage)+"</Weight_Percentage>\n";
-	s+="	<Teacher_Name>"+protect(this->teacherName)+"</Teacher_Name>\n";
+    s+="	<Teacher_Name>"+protect(this->teacherName())+"</Teacher_Name>\n";
 	s+="	<Max_Days_Per_Week>"+CustomFETString::number(this->maxDaysPerWeek)+"</Max_Days_Per_Week>\n";
 	s+="	<Active>"+trueFalse(active)+"</Active>\n";
 	s+="	<Comments>"+protect(comments)+"</Comments>\n";
@@ -4220,7 +4215,7 @@ QString ConstraintTeacherMaxDaysPerWeek::getDescription(Rules& r){
 		
 	QString s=tr("Teacher max days per week");s+=", ";
 	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
-	s+=tr("T:%1", "Teacher").arg(this->teacherName);s+=", ";
+    s+=tr("T:%1", "Teacher").arg(this->teacherName());s+=", ";
 	s+=tr("MD:%1", "Max days (per week)").arg(this->maxDaysPerWeek);
 
 	return begin+s+end;
@@ -4232,7 +4227,7 @@ QString ConstraintTeacherMaxDaysPerWeek::getDetailedDescription(Rules& r){
 	QString s=tr("Time constraint");s+="\n";
 	s+=tr("A teacher must respect the maximum number of days per week");s+="\n";
 	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
-	s+=tr("Teacher=%1").arg(this->teacherName);s+="\n";
+    s+=tr("Teacher=%1").arg(this->teacherName());s+="\n";
 	s+=tr("Maximum days per week=%1").arg(this->maxDaysPerWeek);s+="\n";
 
 	if(!active){
@@ -4347,7 +4342,7 @@ bool ConstraintTeacherMaxDaysPerWeek::isRelatedToActivity(Rules& r, Activity* a)
 
 bool ConstraintTeacherMaxDaysPerWeek::isRelatedToTeacher(Teacher* t)
 {
-	if(this->teacherName==t->name)
+    if(this->teacherName()==t->name)
 		return true;
 	return false;
 }
@@ -4857,10 +4852,9 @@ ConstraintTeacherMaxGapsPerWeek::ConstraintTeacherMaxGapsPerWeek()
 }
 
 ConstraintTeacherMaxGapsPerWeek::ConstraintTeacherMaxGapsPerWeek(double wp, QString tn, int mg)
-	: TimeConstraint(wp)
+    : TimeConstraint(wp), TeacherConstraint(tn)
 {
 	this->type = CONSTRAINT_TEACHER_MAX_GAPS_PER_WEEK;
-	this->teacherName=tn;
 	this->maxGaps=mg;
 }
 
@@ -4869,7 +4863,7 @@ bool ConstraintTeacherMaxGapsPerWeek::computeInternalStructure(QWidget* parent, 
 	Q_UNUSED(parent);
 
 	//this->teacherIndex=r.searchTeacher(this->teacherName);
-	teacherIndex=r.teachersHash.value(teacherName, -1);
+    teacherIndex=r.teachersHash.value(teacherName(), -1);
 	assert(this->teacherIndex>=0);
 	return true;
 }
@@ -4885,7 +4879,7 @@ QString ConstraintTeacherMaxGapsPerWeek::getXmlDescription(Rules& r){
 
 	QString s="<ConstraintTeacherMaxGapsPerWeek>\n";
 	s+="	<Weight_Percentage>"+CustomFETString::number(this->weightPercentage)+"</Weight_Percentage>\n";
-	s+="	<Teacher_Name>"+protect(this->teacherName)+"</Teacher_Name>\n";
+    s+="	<Teacher_Name>"+protect(this->teacherName())+"</Teacher_Name>\n";
 	s+="	<Max_Gaps>"+CustomFETString::number(this->maxGaps)+"</Max_Gaps>\n";
 	s+="	<Active>"+trueFalse(active)+"</Active>\n";
 	s+="	<Comments>"+protect(comments)+"</Comments>\n";
@@ -4907,7 +4901,7 @@ QString ConstraintTeacherMaxGapsPerWeek::getDescription(Rules& r){
 	QString s;
 	s+=tr("Teacher max gaps per week");s+=", ";
 	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
-	s+=tr("T:%1", "Teacher").arg(this->teacherName); s+=", ";
+    s+=tr("T:%1", "Teacher").arg(this->teacherName()); s+=", ";
 	s+=tr("MG:%1", "Max gaps (per week").arg(this->maxGaps);
 
 	return begin+s+end;
@@ -4920,7 +4914,7 @@ QString ConstraintTeacherMaxGapsPerWeek::getDetailedDescription(Rules& r){
 	s+=tr("A teacher must respect the maximum number of gaps per week"); s+="\n";
 	s+=tr("(breaks and teacher not available not counted)");s+="\n";
 	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage)); s+="\n";
-	s+=tr("Teacher=%1").arg(this->teacherName); s+="\n";
+    s+=tr("Teacher=%1").arg(this->teacherName()); s+="\n";
 	s+=tr("Maximum gaps per week=%1").arg(this->maxGaps); s+="\n";
 
 	if(!active){
@@ -5004,7 +4998,7 @@ bool ConstraintTeacherMaxGapsPerWeek::isRelatedToActivity(Rules& r, Activity* a)
 
 bool ConstraintTeacherMaxGapsPerWeek::isRelatedToTeacher(Teacher* t)
 {
-	if(this->teacherName==t->name)
+    if(this->teacherName()==t->name)
 		return true;
 	return false;
 }
@@ -5269,10 +5263,9 @@ ConstraintTeacherMaxGapsPerDay::ConstraintTeacherMaxGapsPerDay()
 }
 
 ConstraintTeacherMaxGapsPerDay::ConstraintTeacherMaxGapsPerDay(double wp, QString tn, int mg)
-	: TimeConstraint(wp)
+    : TimeConstraint(wp), TeacherConstraint(tn)
 {
 	this->type = CONSTRAINT_TEACHER_MAX_GAPS_PER_DAY;
-	this->teacherName=tn;
 	this->maxGaps=mg;
 }
 
@@ -5281,7 +5274,7 @@ bool ConstraintTeacherMaxGapsPerDay::computeInternalStructure(QWidget* parent, R
 	Q_UNUSED(parent);
 
 	//this->teacherIndex=r.searchTeacher(this->teacherName);
-	teacherIndex=r.teachersHash.value(teacherName, -1);
+    teacherIndex=r.teachersHash.value(teacherName(), -1);
 	assert(this->teacherIndex>=0);
 	return true;
 }
@@ -5297,7 +5290,7 @@ QString ConstraintTeacherMaxGapsPerDay::getXmlDescription(Rules& r){
 
 	QString s="<ConstraintTeacherMaxGapsPerDay>\n";
 	s+="	<Weight_Percentage>"+CustomFETString::number(this->weightPercentage)+"</Weight_Percentage>\n";
-	s+="	<Teacher_Name>"+protect(this->teacherName)+"</Teacher_Name>\n";
+    s+="	<Teacher_Name>"+protect(this->teacherName())+"</Teacher_Name>\n";
 	s+="	<Max_Gaps>"+CustomFETString::number(this->maxGaps)+"</Max_Gaps>\n";
 	s+="	<Active>"+trueFalse(active)+"</Active>\n";
 	s+="	<Comments>"+protect(comments)+"</Comments>\n";
@@ -5319,7 +5312,7 @@ QString ConstraintTeacherMaxGapsPerDay::getDescription(Rules& r){
 	QString s;
 	s+=tr("Teacher max gaps per day");s+=", ";
 	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
-	s+=tr("T:%1", "Teacher").arg(this->teacherName); s+=", ";
+    s+=tr("T:%1", "Teacher").arg(this->teacherName()); s+=", ";
 	s+=tr("MG:%1", "Max gaps (per day)").arg(this->maxGaps);
 
 	return begin+s+end;
@@ -5332,7 +5325,7 @@ QString ConstraintTeacherMaxGapsPerDay::getDetailedDescription(Rules& r){
 	s+=tr("A teacher must respect the maximum number of gaps per day"); s+="\n";
 	s+=tr("(breaks and teacher not available not counted)");s+="\n";
 	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage)); s+="\n";
-	s+=tr("Teacher=%1").arg(this->teacherName); s+="\n";
+    s+=tr("Teacher=%1").arg(this->teacherName()); s+="\n";
 	s+=tr("Maximum gaps per day=%1").arg(this->maxGaps); s+="\n";
 
 	if(!active){
@@ -5417,7 +5410,7 @@ bool ConstraintTeacherMaxGapsPerDay::isRelatedToActivity(Rules& r, Activity* a)
 
 bool ConstraintTeacherMaxGapsPerDay::isRelatedToTeacher(Teacher* t)
 {
-	if(this->teacherName==t->name)
+    if(this->teacherName()==t->name)
 		return true;
 	return false;
 }
@@ -9412,9 +9405,9 @@ ConstraintActivitiesPreferredTimeSlots::ConstraintActivitiesPreferredTimeSlots()
 	this->type = CONSTRAINT_ACTIVITIES_PREFERRED_TIME_SLOTS;
 }
 
-ConstraintActivitiesPreferredTimeSlots::ConstraintActivitiesPreferredTimeSlots(double wp, QString te,
-	QString st, QString su, QString sut, int dur, int nPT_L, QList<int> d_L, QList<int> h_L)
-	: TimeConstraint(wp)
+ConstraintActivitiesPreferredTimeSlots::ConstraintActivitiesPreferredTimeSlots(double wp, QString const &te,
+    QString const &st, QString const &su, QString const &sut, int dur, int nPT_L, QList<int> const &d_L, QList<int> const &h_L)
+    : TimeConstraint(wp), TeacherConstraint(te)
 {
 	assert(dur==-1 || dur>=1);
 	duration=dur;
@@ -9422,7 +9415,6 @@ ConstraintActivitiesPreferredTimeSlots::ConstraintActivitiesPreferredTimeSlots(d
 	assert(d_L.count()==nPT_L);
 	assert(h_L.count()==nPT_L);
 
-	this->p_teacherName=te;
 	this->p_subjectName=su;
 	this->p_activityTagName=sut;
 	this->p_studentsName=st;
@@ -9444,8 +9436,8 @@ bool ConstraintActivitiesPreferredTimeSlots::computeInternalStructure(QWidget* p
 		act=&r.internalActivitiesList[i];
 
 		//check if this activity has the corresponding teacher
-		if(this->p_teacherName!=""){
-			it = act->teachersNames.indexOf(this->p_teacherName);
+        if(this->teacherName()!=""){
+            it = act->teachersNames.indexOf(this->teacherName());
 			if(it==-1)
 				continue;
 		}
@@ -9535,8 +9527,8 @@ bool ConstraintActivitiesPreferredTimeSlots::hasInactiveActivities(Rules& r)
 		act=r.activitiesList.at(i);
 
 		//check if this activity has the corresponding teacher
-		if(this->p_teacherName!=""){
-			it = act->teachersNames.indexOf(this->p_teacherName);
+        if(this->teacherName()!=""){
+            it = act->teachersNames.indexOf(this->teacherName());
 			if(it==-1)
 				continue;
 		}
@@ -9582,7 +9574,7 @@ QString ConstraintActivitiesPreferredTimeSlots::getXmlDescription(Rules& r)
 {
 	QString s="<ConstraintActivitiesPreferredTimeSlots>\n";
 	s+="	<Weight_Percentage>"+CustomFETString::number(this->weightPercentage)+"</Weight_Percentage>\n";
-	s+="	<Teacher_Name>"+protect(this->p_teacherName)+"</Teacher_Name>\n";
+    s+="	<Teacher_Name>"+protect(this->teacherName())+"</Teacher_Name>\n";
 	s+="	<Students_Name>"+protect(this->p_studentsName)+"</Students_Name>\n";
 	s+="	<Subject_Name>"+protect(this->p_subjectName)+"</Subject_Name>\n";
 	s+="	<Activity_Tag_Name>"+protect(this->p_activityTagName)+"</Activity_Tag_Name>\n";
@@ -9619,8 +9611,8 @@ QString ConstraintActivitiesPreferredTimeSlots::getDescription(Rules& r)
 
 	QString tc, st, su, at, dur;
 	
-	if(this->p_teacherName!="")
-		tc=tr("teacher=%1").arg(this->p_teacherName);
+    if(this->teacherName()!="")
+        tc=tr("teacher=%1").arg(this->teacherName());
 	else
 		tc=tr("all teachers");
 		
@@ -9669,8 +9661,8 @@ QString ConstraintActivitiesPreferredTimeSlots::getDetailedDescription(Rules& r)
 	QString s=tr("Time constraint");s+="\n";
 	s+=tr("Activities with:");s+="\n";
 
-	if(this->p_teacherName!="")
-		s+=tr("Teacher=%1").arg(this->p_teacherName);
+    if(this->teacherName()!="")
+        s+=tr("Teacher=%1").arg(this->teacherName());
 	else
 		s+=tr("All teachers");
 	s+="\n";
@@ -9797,8 +9789,8 @@ bool ConstraintActivitiesPreferredTimeSlots::isRelatedToActivity(Rules& r, Activ
 	int it;
 
 	//check if this activity has the corresponding teacher
-	if(this->p_teacherName!=""){
-		it = a->teachersNames.indexOf(this->p_teacherName);
+    if(this->teacherName()!=""){
+        it = a->teachersNames.indexOf(this->teacherName());
 		if(it==-1)
 			return false;
 	}
@@ -9914,15 +9906,14 @@ ConstraintSubactivitiesPreferredTimeSlots::ConstraintSubactivitiesPreferredTimeS
 	this->type = CONSTRAINT_SUBACTIVITIES_PREFERRED_TIME_SLOTS;
 }
 
-ConstraintSubactivitiesPreferredTimeSlots::ConstraintSubactivitiesPreferredTimeSlots(double wp, int compNo, QString te,
-	QString st, QString su, QString sut, int nPT_L, QList<int> d_L, QList<int> h_L)
-	: TimeConstraint(wp)
+ConstraintSubactivitiesPreferredTimeSlots::ConstraintSubactivitiesPreferredTimeSlots(double wp, int compNo, QString const &te,
+    QString const &st, QString const &su, QString const &sut, int nPT_L, QList<int> const &d_L, QList<int> const &h_L)
+    : TimeConstraint(wp), TeacherConstraint(te)
 {
 	assert(d_L.count()==nPT_L);
 	assert(h_L.count()==nPT_L);
 
 	this->componentNumber=compNo;
-	this->p_teacherName=te;
 	this->p_subjectName=su;
 	this->p_activityTagName=sut;
 	this->p_studentsName=st;
@@ -9947,8 +9938,8 @@ bool ConstraintSubactivitiesPreferredTimeSlots::computeInternalStructure(QWidget
 			continue;
 
 		//check if this activity has the corresponding teacher
-		if(this->p_teacherName!=""){
-			it = act->teachersNames.indexOf(this->p_teacherName);
+        if(this->teacherName()!=""){
+            it = act->teachersNames.indexOf(this->teacherName());
 			if(it==-1)
 				continue;
 		}
@@ -10038,8 +10029,8 @@ bool ConstraintSubactivitiesPreferredTimeSlots::hasInactiveActivities(Rules& r)
 			continue;
 
 		//check if this activity has the corresponding teacher
-		if(this->p_teacherName!=""){
-			it = act->teachersNames.indexOf(this->p_teacherName);
+        if(this->teacherName()!=""){
+            it = act->teachersNames.indexOf(this->teacherName());
 			if(it==-1)
 				continue;
 		}
@@ -10081,7 +10072,7 @@ QString ConstraintSubactivitiesPreferredTimeSlots::getXmlDescription(Rules& r)
 	QString s="<ConstraintSubactivitiesPreferredTimeSlots>\n";
 	s+="	<Weight_Percentage>"+CustomFETString::number(this->weightPercentage)+"</Weight_Percentage>\n";
 	s+="	<Component_Number>"+CustomFETString::number(this->componentNumber)+"</Component_Number>\n";
-	s+="	<Teacher_Name>"+protect(this->p_teacherName)+"</Teacher_Name>\n";
+    s+="	<Teacher_Name>"+protect(this->teacherName())+"</Teacher_Name>\n";
 	s+="	<Students_Name>"+protect(this->p_studentsName)+"</Students_Name>\n";
 	s+="	<Subject_Name>"+protect(this->p_subjectName)+"</Subject_Name>\n";
 	s+="	<Activity_Tag_Name>"+protect(this->p_activityTagName)+"</Activity_Tag_Name>\n";
@@ -10114,8 +10105,8 @@ QString ConstraintSubactivitiesPreferredTimeSlots::getDescription(Rules& r)
 	
 	QString tc, st, su, at;
 	
-	if(this->p_teacherName!="")
-		tc=tr("teacher=%1").arg(this->p_teacherName);
+    if(this->teacherName()!="")
+        tc=tr("teacher=%1").arg(this->teacherName());
 	else
 		tc=tr("all teachers");
 		
@@ -10165,8 +10156,8 @@ QString ConstraintSubactivitiesPreferredTimeSlots::getDetailedDescription(Rules&
 	s+=tr("Component number=%1").arg(this->componentNumber);
 	s+="\n";
 
-	if(this->p_teacherName!="")
-		s+=tr("Teacher=%1").arg(this->p_teacherName);
+    if(this->teacherName()!="")
+        s+=tr("Teacher=%1").arg(this->teacherName());
 	else
 		s+=tr("All teachers");
 	s+="\n";
@@ -10294,8 +10285,8 @@ bool ConstraintSubactivitiesPreferredTimeSlots::isRelatedToActivity(Rules& r, Ac
 	int it;
 
 	//check if this activity has the corresponding teacher
-	if(this->p_teacherName!=""){
-		it = a->teachersNames.indexOf(this->p_teacherName);
+    if(this->teacherName()!=""){
+        it = a->teachersNames.indexOf(this->teacherName());
 		if(it==-1)
 			return false;
 	}
@@ -10714,9 +10705,9 @@ ConstraintActivitiesPreferredStartingTimes::ConstraintActivitiesPreferredStartin
 	this->type = CONSTRAINT_ACTIVITIES_PREFERRED_STARTING_TIMES;
 }
 
-ConstraintActivitiesPreferredStartingTimes::ConstraintActivitiesPreferredStartingTimes(double wp, QString te,
-	QString st, QString su, QString sut, int dur, int nPT_L, QList<int> d_L, QList<int> h_L)
-	: TimeConstraint(wp)
+ConstraintActivitiesPreferredStartingTimes::ConstraintActivitiesPreferredStartingTimes(double wp, QString const &te,
+    QString const &st, QString const &su, QString const &sut, int dur, int nPT_L, QList<int> const &d_L, QList<int> const &h_L)
+    : TimeConstraint(wp), TeacherConstraint(te)
 {
 	assert(dur==-1 || dur>=1);
 	duration=dur;
@@ -10724,7 +10715,6 @@ ConstraintActivitiesPreferredStartingTimes::ConstraintActivitiesPreferredStartin
 	assert(d_L.count()==nPT_L);
 	assert(h_L.count()==nPT_L);
 
-	this->teacherName=te;
 	this->subjectName=su;
 	this->activityTagName=sut;
 	this->studentsName=st;
@@ -10746,8 +10736,8 @@ bool ConstraintActivitiesPreferredStartingTimes::computeInternalStructure(QWidge
 		act=&r.internalActivitiesList[i];
 
 		//check if this activity has the corresponding teacher
-		if(this->teacherName!=""){
-			it = act->teachersNames.indexOf(this->teacherName);
+        if(this->teacherName()!=""){
+            it = act->teachersNames.indexOf(this->teacherName());
 			if(it==-1)
 				continue;
 		}
@@ -10831,8 +10821,8 @@ bool ConstraintActivitiesPreferredStartingTimes::hasInactiveActivities(Rules& r)
 		act=r.activitiesList.at(i);
 
 		//check if this activity has the corresponding teacher
-		if(this->teacherName!=""){
-			it = act->teachersNames.indexOf(this->teacherName);
+        if(this->teacherName()!=""){
+            it = act->teachersNames.indexOf(this->teacherName());
 			if(it==-1)
 				continue;
 		}
@@ -10876,7 +10866,7 @@ QString ConstraintActivitiesPreferredStartingTimes::getXmlDescription(Rules& r)
 {
 	QString s="<ConstraintActivitiesPreferredStartingTimes>\n";
 	s+="	<Weight_Percentage>"+CustomFETString::number(this->weightPercentage)+"</Weight_Percentage>\n";
-	s+="	<Teacher_Name>"+protect(this->teacherName)+"</Teacher_Name>\n";
+    s+="	<Teacher_Name>"+protect(this->teacherName())+"</Teacher_Name>\n";
 	s+="	<Students_Name>"+protect(this->studentsName)+"</Students_Name>\n";
 	s+="	<Subject_Name>"+protect(this->subjectName)+"</Subject_Name>\n";
 	s+="	<Activity_Tag_Name>"+protect(this->activityTagName)+"</Activity_Tag_Name>\n";
@@ -10913,8 +10903,8 @@ QString ConstraintActivitiesPreferredStartingTimes::getDescription(Rules& r)
 
 	QString tc, st, su, at, dur;
 	
-	if(this->teacherName!="")
-		tc=tr("teacher=%1").arg(this->teacherName);
+    if(this->teacherName()!="")
+        tc=tr("teacher=%1").arg(this->teacherName());
 	else
 		tc=tr("all teachers");
 		
@@ -10964,8 +10954,8 @@ QString ConstraintActivitiesPreferredStartingTimes::getDetailedDescription(Rules
 	QString s=tr("Time constraint");s+="\n";
 	s+=tr("Activities with:");s+="\n";
 
-	if(this->teacherName!="")
-		s+=tr("Teacher=%1").arg(this->teacherName);
+    if(this->teacherName()!="")
+        s+=tr("Teacher=%1").arg(this->teacherName());
 	else
 		s+=tr("All teachers");
 	s+="\n";
@@ -11086,8 +11076,8 @@ bool ConstraintActivitiesPreferredStartingTimes::isRelatedToActivity(Rules& r, A
 	int it;
 
 	//check if this activity has the corresponding teacher
-	if(this->teacherName!=""){
-		it = a->teachersNames.indexOf(this->teacherName);
+    if(this->teacherName()!=""){
+        it = a->teachersNames.indexOf(this->teacherName());
 		if(it==-1)
 			return false;
 	}
@@ -11203,15 +11193,14 @@ ConstraintSubactivitiesPreferredStartingTimes::ConstraintSubactivitiesPreferredS
 	this->type = CONSTRAINT_SUBACTIVITIES_PREFERRED_STARTING_TIMES;
 }
 
-ConstraintSubactivitiesPreferredStartingTimes::ConstraintSubactivitiesPreferredStartingTimes(double wp, int compNo, QString te,
-	QString st, QString su, QString sut, int nPT_L, QList<int> d_L, QList<int> h_L)
-	: TimeConstraint(wp)
+ConstraintSubactivitiesPreferredStartingTimes::ConstraintSubactivitiesPreferredStartingTimes(double wp, int compNo, QString const &te,
+    QString const &st, QString const &su, QString const &sut, int nPT_L, QList<int> const &d_L, QList<int> const &h_L)
+    : TimeConstraint(wp), TeacherConstraint(te)
 {
 	assert(d_L.count()==nPT_L);
 	assert(h_L.count()==nPT_L);
 
 	this->componentNumber=compNo;
-	this->teacherName=te;
 	this->subjectName=su;
 	this->activityTagName=sut;
 	this->studentsName=st;
@@ -11236,8 +11225,8 @@ bool ConstraintSubactivitiesPreferredStartingTimes::computeInternalStructure(QWi
 			continue;
 
 		//check if this activity has the corresponding teacher
-		if(this->teacherName!=""){
-			it = act->teachersNames.indexOf(this->teacherName);
+        if(this->teacherName()!=""){
+            it = act->teachersNames.indexOf(this->teacherName());
 			if(it==-1)
 				continue;
 		}
@@ -11321,8 +11310,8 @@ bool ConstraintSubactivitiesPreferredStartingTimes::hasInactiveActivities(Rules&
 			continue;
 
 		//check if this activity has the corresponding teacher
-		if(this->teacherName!=""){
-			it = act->teachersNames.indexOf(this->teacherName);
+        if(this->teacherName()!=""){
+            it = act->teachersNames.indexOf(this->teacherName());
 			if(it==-1)
 				continue;
 		}
@@ -11364,7 +11353,7 @@ QString ConstraintSubactivitiesPreferredStartingTimes::getXmlDescription(Rules& 
 	QString s="<ConstraintSubactivitiesPreferredStartingTimes>\n";
 	s+="	<Weight_Percentage>"+CustomFETString::number(this->weightPercentage)+"</Weight_Percentage>\n";
 	s+="	<Component_Number>"+CustomFETString::number(this->componentNumber)+"</Component_Number>\n";
-	s+="	<Teacher_Name>"+protect(this->teacherName)+"</Teacher_Name>\n";
+    s+="	<Teacher_Name>"+protect(this->teacherName())+"</Teacher_Name>\n";
 	s+="	<Students_Name>"+protect(this->studentsName)+"</Students_Name>\n";
 	s+="	<Subject_Name>"+protect(this->subjectName)+"</Subject_Name>\n";
 	s+="	<Activity_Tag_Name>"+protect(this->activityTagName)+"</Activity_Tag_Name>\n";
@@ -11395,8 +11384,8 @@ QString ConstraintSubactivitiesPreferredStartingTimes::getDescription(Rules& r)
 		
 	QString tc, st, su, at;
 	
-	if(this->teacherName!="")
-		tc=tr("teacher=%1").arg(this->teacherName);
+    if(this->teacherName()!="")
+        tc=tr("teacher=%1").arg(this->teacherName());
 	else
 		tc=tr("all teachers");
 		
@@ -11446,8 +11435,8 @@ QString ConstraintSubactivitiesPreferredStartingTimes::getDetailedDescription(Ru
 
 	s+=tr("Component number=%1").arg(this->componentNumber);s+="\n";
 
-	if(this->teacherName!="")
-		s+=tr("Teacher=%1").arg(this->teacherName);
+    if(this->teacherName()!="")
+        s+=tr("Teacher=%1").arg(this->teacherName());
 	else
 		s+=tr("All teachers");
 	s+="\n";
@@ -11566,8 +11555,8 @@ bool ConstraintSubactivitiesPreferredStartingTimes::isRelatedToActivity(Rules& r
 	int it;
 	
 	//check if this activity has the corresponding teacher
-	if(this->teacherName!=""){
-		it = a->teachersNames.indexOf(this->teacherName);
+    if(this->teacherName()!=""){
+        it = a->teachersNames.indexOf(this->teacherName());
 		if(it==-1)
 			return false;
 	}
@@ -13929,11 +13918,10 @@ ConstraintTeacherMinHoursDaily::ConstraintTeacherMinHoursDaily()
 }
 
 ConstraintTeacherMinHoursDaily::ConstraintTeacherMinHoursDaily(double wp, int minhours, const QString& teacher, bool _allowEmptyDays)
- : TimeConstraint(wp)
+ : TimeConstraint(wp), TeacherConstraint(teacher)
  {
 	assert(minhours>0);
 	this->minHoursDaily=minhours;
-	this->teacherName=teacher;
 	
 	this->allowEmptyDays=_allowEmptyDays;
 
@@ -13943,7 +13931,7 @@ ConstraintTeacherMinHoursDaily::ConstraintTeacherMinHoursDaily(double wp, int mi
 bool ConstraintTeacherMinHoursDaily::computeInternalStructure(QWidget* parent, Rules& r)
 {
 	//this->teacher_ID=r.searchTeacher(this->teacherName);
-	teacher_ID=r.teachersHash.value(teacherName, -1);
+    teacher_ID=r.teachersHash.value(teacherName(), -1);
 	assert(this->teacher_ID>=0);
 	
 	if(allowEmptyDays==false){
@@ -13970,7 +13958,7 @@ QString ConstraintTeacherMinHoursDaily::getXmlDescription(Rules& r){
 
 	QString s="<ConstraintTeacherMinHoursDaily>\n";
 	s+="	<Weight_Percentage>"+CustomFETString::number(this->weightPercentage)+"</Weight_Percentage>\n";
-	s+="	<Teacher_Name>"+protect(this->teacherName)+"</Teacher_Name>\n";
+    s+="	<Teacher_Name>"+protect(this->teacherName())+"</Teacher_Name>\n";
 	s+="	<Minimum_Hours_Daily>"+CustomFETString::number(this->minHoursDaily)+"</Minimum_Hours_Daily>\n";
 	if(this->allowEmptyDays)
 		s+="	<Allow_Empty_Days>true</Allow_Empty_Days>\n";
@@ -13996,7 +13984,7 @@ QString ConstraintTeacherMinHoursDaily::getDescription(Rules& r){
 	QString s;
 	s+=tr("Teacher min hours daily");s+=", ";
 	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
-	s+=tr("T:%1", "Teacher").arg(this->teacherName);s+=", ";
+    s+=tr("T:%1", "Teacher").arg(this->teacherName());s+=", ";
 	s+=tr("mH:%1", "Minimum hours (daily)").arg(this->minHoursDaily);s+=", ";
 	s+=tr("AED:%1", "Allow empty days").arg(yesNoTranslated(this->allowEmptyDays));
 
@@ -14009,7 +13997,7 @@ QString ConstraintTeacherMinHoursDaily::getDetailedDescription(Rules& r){
 	QString s=tr("Time constraint");s+="\n";
 	s+=tr("A teacher must respect the minimum number of hours daily");s+="\n";
 	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
-	s+=tr("Teacher=%1").arg(this->teacherName);s+="\n";
+    s+=tr("Teacher=%1").arg(this->teacherName());s+="\n";
 	s+=tr("Minimum hours daily=%1").arg(this->minHoursDaily);s+="\n";
 	s+=tr("Allow empty days=%1").arg(yesNoTranslated(this->allowEmptyDays));s+="\n";
 
@@ -14107,7 +14095,7 @@ bool ConstraintTeacherMinHoursDaily::isRelatedToActivity(Rules& r, Activity* a)
 
 bool ConstraintTeacherMinHoursDaily::isRelatedToTeacher(Teacher* t)
 {
-	if(this->teacherName==t->name)
+    if(this->teacherName()==t->name)
 		return true;
 	return false;
 }
@@ -14169,11 +14157,10 @@ ConstraintTeacherMinDaysPerWeek::ConstraintTeacherMinDaysPerWeek()
 }
 
 ConstraintTeacherMinDaysPerWeek::ConstraintTeacherMinDaysPerWeek(double wp, int mindays, const QString& teacher)
- : TimeConstraint(wp)
+ : TimeConstraint(wp), TeacherConstraint(teacher)
  {
 	assert(mindays>0);
 	this->minDaysPerWeek=mindays;
-	this->teacherName=teacher;
 
 	this->type=CONSTRAINT_TEACHER_MIN_DAYS_PER_WEEK;
 }
@@ -14183,7 +14170,7 @@ bool ConstraintTeacherMinDaysPerWeek::computeInternalStructure(QWidget* parent, 
 	Q_UNUSED(parent);
 
 	//this->teacher_ID=r.searchTeacher(this->teacherName);
-	teacher_ID=r.teachersHash.value(teacherName, -1);
+    teacher_ID=r.teachersHash.value(teacherName(), -1);
 	assert(this->teacher_ID>=0);
 	return true;
 }
@@ -14199,7 +14186,7 @@ QString ConstraintTeacherMinDaysPerWeek::getXmlDescription(Rules& r){
 
 	QString s="<ConstraintTeacherMinDaysPerWeek>\n";
 	s+="	<Weight_Percentage>"+CustomFETString::number(this->weightPercentage)+"</Weight_Percentage>\n";
-	s+="	<Teacher_Name>"+protect(this->teacherName)+"</Teacher_Name>\n";
+    s+="	<Teacher_Name>"+protect(this->teacherName())+"</Teacher_Name>\n";
 	s+="	<Minimum_Days_Per_Week>"+CustomFETString::number(this->minDaysPerWeek)+"</Minimum_Days_Per_Week>\n";
 	s+="	<Active>"+trueFalse(active)+"</Active>\n";
 	s+="	<Comments>"+protect(comments)+"</Comments>\n";
@@ -14221,7 +14208,7 @@ QString ConstraintTeacherMinDaysPerWeek::getDescription(Rules& r){
 	QString s;
 	s+=tr("Teacher min days per week");s+=", ";
 	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
-	s+=tr("T:%1", "Teacher").arg(this->teacherName);s+=", ";
+    s+=tr("T:%1", "Teacher").arg(this->teacherName());s+=", ";
 	s+=tr("mD:%1", "Minimum days per week").arg(this->minDaysPerWeek);
 
 	return begin+s+end;
@@ -14233,7 +14220,7 @@ QString ConstraintTeacherMinDaysPerWeek::getDetailedDescription(Rules& r){
 	QString s=tr("Time constraint");s+="\n";
 	s+=tr("A teacher must respect the minimum number of days per week");s+="\n";
 	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
-	s+=tr("Teacher=%1").arg(this->teacherName);s+="\n";
+    s+=tr("Teacher=%1").arg(this->teacherName());s+="\n";
 	s+=tr("Minimum days per week=%1").arg(this->minDaysPerWeek);s+="\n";
 
 	if(!active){
@@ -14311,7 +14298,7 @@ bool ConstraintTeacherMinDaysPerWeek::isRelatedToActivity(Rules& r, Activity* a)
 
 bool ConstraintTeacherMinDaysPerWeek::isRelatedToTeacher(Teacher* t)
 {
-	if(this->teacherName==t->name)
+    if(this->teacherName()==t->name)
 		return true;
 	return false;
 }
@@ -14573,10 +14560,9 @@ ConstraintTeacherIntervalMaxDaysPerWeek::ConstraintTeacherIntervalMaxDaysPerWeek
 	this->type=CONSTRAINT_TEACHER_INTERVAL_MAX_DAYS_PER_WEEK;
 }
 
-ConstraintTeacherIntervalMaxDaysPerWeek::ConstraintTeacherIntervalMaxDaysPerWeek(double wp, int maxnd, QString tn, int sh, int eh)
-	 : TimeConstraint(wp)
+ConstraintTeacherIntervalMaxDaysPerWeek::ConstraintTeacherIntervalMaxDaysPerWeek(double wp, int maxnd, QString const &tn, int sh, int eh)
+     : TimeConstraint(wp), TeacherConstraint(tn)
 {
-	this->teacherName = tn;
 	this->maxDaysPerWeek=maxnd;
 	this->type=CONSTRAINT_TEACHER_INTERVAL_MAX_DAYS_PER_WEEK;
 	this->startHour=sh;
@@ -14588,7 +14574,7 @@ ConstraintTeacherIntervalMaxDaysPerWeek::ConstraintTeacherIntervalMaxDaysPerWeek
 bool ConstraintTeacherIntervalMaxDaysPerWeek::computeInternalStructure(QWidget* parent, Rules& r)
 {
 	//this->teacher_ID=r.searchTeacher(this->teacherName);
-	teacher_ID=r.teachersHash.value(teacherName, -1);
+    teacher_ID=r.teachersHash.value(teacherName(), -1);
 	assert(this->teacher_ID>=0);
 	if(this->startHour>=this->endHour){
 		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
@@ -14626,7 +14612,7 @@ QString ConstraintTeacherIntervalMaxDaysPerWeek::getXmlDescription(Rules& r)
 
 	QString s="<ConstraintTeacherIntervalMaxDaysPerWeek>\n";
 	s+="	<Weight_Percentage>"+CustomFETString::number(this->weightPercentage)+"</Weight_Percentage>\n";
-	s+="	<Teacher_Name>"+protect(this->teacherName)+"</Teacher_Name>\n";
+    s+="	<Teacher_Name>"+protect(this->teacherName())+"</Teacher_Name>\n";
 	s+="	<Interval_Start_Hour>"+protect(r.hoursOfTheDay[this->startHour])+"</Interval_Start_Hour>\n";
 	if(this->endHour < r.nHoursPerDay){
 		s+="	<Interval_End_Hour>"+protect(r.hoursOfTheDay[this->endHour])+"</Interval_End_Hour>\n";
@@ -14655,7 +14641,7 @@ QString ConstraintTeacherIntervalMaxDaysPerWeek::getDescription(Rules& r){
 		
 	QString s=tr("Teacher interval max days per week");s+=", ";
 	s+=tr("WP:%1%", "Abbreviation for weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
-	s+=tr("T:%1", "Abbreviation for teacher").arg(this->teacherName);s+=", ";
+    s+=tr("T:%1", "Abbreviation for teacher").arg(this->teacherName());s+=", ";
 	s+=tr("ISH:%1", "Abbreviation for interval start hour").arg(r.hoursOfTheDay[this->startHour]);s+=", ";
 	if(this->endHour<r.nHoursPerDay)
 		s+=tr("IEH:%1", "Abbreviation for interval end hour").arg(r.hoursOfTheDay[this->endHour]);
@@ -14673,7 +14659,7 @@ QString ConstraintTeacherIntervalMaxDaysPerWeek::getDetailedDescription(Rules& r
 	QString s=tr("Time constraint");s+="\n";
 	s+=tr("A teacher respects working in an hourly interval a maximum number of days per week");s+="\n";
 	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
-	s+=tr("Teacher=%1").arg(this->teacherName);s+="\n";
+    s+=tr("Teacher=%1").arg(this->teacherName());s+="\n";
 	s+=tr("Interval start hour=%1").arg(r.hoursOfTheDay[this->startHour]);s+="\n";
 
 	if(this->endHour<r.nHoursPerDay)
@@ -14760,7 +14746,7 @@ bool ConstraintTeacherIntervalMaxDaysPerWeek::isRelatedToActivity(Rules& r, Acti
 
 bool ConstraintTeacherIntervalMaxDaysPerWeek::isRelatedToTeacher(Teacher* t)
 {
-	if(this->teacherName==t->name)
+    if(this->teacherName()==t->name)
 		return true;
 	return false;
 }
@@ -15637,11 +15623,10 @@ ConstraintActivitiesEndStudentsDay::ConstraintActivitiesEndStudentsDay()
 	this->type = CONSTRAINT_ACTIVITIES_END_STUDENTS_DAY;
 }
 
-ConstraintActivitiesEndStudentsDay::ConstraintActivitiesEndStudentsDay(double wp, QString te,
-	QString st, QString su, QString sut)
-	: TimeConstraint(wp)
+ConstraintActivitiesEndStudentsDay::ConstraintActivitiesEndStudentsDay(double wp, QString const &te,
+    QString const &st, QString const &su, QString const &sut)
+    : TimeConstraint(wp), TeacherConstraint(te)
 {
-	this->teacherName=te;
 	this->subjectName=su;
 	this->activityTagName=sut;
 	this->studentsName=st;
@@ -15660,8 +15645,8 @@ bool ConstraintActivitiesEndStudentsDay::computeInternalStructure(QWidget* paren
 		act=&r.internalActivitiesList[i];
 
 		//check if this activity has the corresponding teacher
-		if(this->teacherName!=""){
-			it = act->teachersNames.indexOf(this->teacherName);
+        if(this->teacherName()!=""){
+            it = act->teachersNames.indexOf(this->teacherName());
 			if(it==-1)
 				continue;
 		}
@@ -15714,7 +15699,7 @@ QString ConstraintActivitiesEndStudentsDay::getXmlDescription(Rules& r)
 
 	QString s="<ConstraintActivitiesEndStudentsDay>\n";
 	s+="	<Weight_Percentage>"+CustomFETString::number(this->weightPercentage)+"</Weight_Percentage>\n";
-	s+="	<Teacher_Name>"+protect(this->teacherName)+"</Teacher_Name>\n";
+    s+="	<Teacher_Name>"+protect(this->teacherName())+"</Teacher_Name>\n";
 	s+="	<Students_Name>"+protect(this->studentsName)+"</Students_Name>\n";
 	s+="	<Subject_Name>"+protect(this->subjectName)+"</Subject_Name>\n";
 	s+="	<Activity_Tag_Name>"+protect(this->activityTagName)+"</Activity_Tag_Name>\n";
@@ -15738,8 +15723,8 @@ QString ConstraintActivitiesEndStudentsDay::getDescription(Rules& r)
 		
 	QString tc, st, su, at;
 	
-	if(this->teacherName!="")
-		tc=tr("teacher=%1").arg(this->teacherName);
+    if(this->teacherName()!="")
+        tc=tr("teacher=%1").arg(this->teacherName());
 	else
 		tc=tr("all teachers");
 		
@@ -15775,8 +15760,8 @@ QString ConstraintActivitiesEndStudentsDay::getDetailedDescription(Rules& r)
 	QString s=tr("Time constraint");s+="\n";
 	s+=tr("Activities with:");s+="\n";
 
-	if(this->teacherName!="")
-		s+=tr("Teacher=%1").arg(this->teacherName);
+    if(this->teacherName()!="")
+        s+=tr("Teacher=%1").arg(this->teacherName());
 	else
 		s+=tr("All teachers");
 	s+="\n";
@@ -15877,8 +15862,8 @@ bool ConstraintActivitiesEndStudentsDay::isRelatedToActivity(Rules& r, Activity*
 	int it;
 
 	//check if this activity has the corresponding teacher
-	if(this->teacherName!=""){
-		it = a->teachersNames.indexOf(this->teacherName);
+    if(this->teacherName()!=""){
+        it = a->teachersNames.indexOf(this->teacherName());
 		if(it==-1)
 			return false;
 	}
@@ -16200,11 +16185,10 @@ ConstraintTeacherActivityTagMaxHoursDaily::ConstraintTeacherActivityTagMaxHoursD
 }
 
 ConstraintTeacherActivityTagMaxHoursDaily::ConstraintTeacherActivityTagMaxHoursDaily(double wp, int maxhours, const QString& teacher, const QString& activityTag)
- : TimeConstraint(wp)
+ : TimeConstraint(wp), TeacherConstraint(teacher)
  {
 	assert(maxhours>0);
 	this->maxHoursDaily=maxhours;
-	this->teacherName=teacher;
 	this->activityTagName=activityTag;
 
 	this->type=CONSTRAINT_TEACHER_ACTIVITY_TAG_MAX_HOURS_DAILY;
@@ -16215,7 +16199,7 @@ bool ConstraintTeacherActivityTagMaxHoursDaily::computeInternalStructure(QWidget
 	Q_UNUSED(parent);
 
 	//this->teacher_ID=r.searchTeacher(this->teacherName);
-	teacher_ID=r.teachersHash.value(teacherName, -1);
+    teacher_ID=r.teachersHash.value(teacherName(), -1);
 	assert(this->teacher_ID>=0);
 
 	//this->activityTagIndex=r.searchActivityTag(this->activityTagName);
@@ -16251,7 +16235,7 @@ QString ConstraintTeacherActivityTagMaxHoursDaily::getXmlDescription(Rules& r){
 
 	QString s="<ConstraintTeacherActivityTagMaxHoursDaily>\n";
 	s+="	<Weight_Percentage>"+CustomFETString::number(this->weightPercentage)+"</Weight_Percentage>\n";
-	s+="	<Teacher_Name>"+protect(this->teacherName)+"</Teacher_Name>\n";
+    s+="	<Teacher_Name>"+protect(this->teacherName())+"</Teacher_Name>\n";
 	s+="	<Activity_Tag_Name>"+protect(this->activityTagName)+"</Activity_Tag_Name>\n";
 	s+="	<Maximum_Hours_Daily>"+CustomFETString::number(this->maxHoursDaily)+"</Maximum_Hours_Daily>\n";
 	s+="	<Active>"+trueFalse(active)+"</Active>\n";
@@ -16273,7 +16257,7 @@ QString ConstraintTeacherActivityTagMaxHoursDaily::getDescription(Rules& r){
 		
 	QString s;
 	s+="! ";
-	s+=tr("Teacher %1 for activity tag %2 has max %3 hours daily").arg(this->teacherName).arg(this->activityTagName).arg(this->maxHoursDaily);s+=", ";
+    s+=tr("Teacher %1 for activity tag %2 has max %3 hours daily").arg(this->teacherName()).arg(this->activityTagName).arg(this->maxHoursDaily);s+=", ";
 	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));
 
 	return begin+s+end;
@@ -16286,7 +16270,7 @@ QString ConstraintTeacherActivityTagMaxHoursDaily::getDetailedDescription(Rules&
 	s+=tr("(not perfect)", "It refers to a not perfect constraint"); s+="\n";
 	s+=tr("A teacher for an activity tag must respect the maximum number of hours daily");s+="\n";
 	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
-	s+=tr("Teacher=%1").arg(this->teacherName);s+="\n";
+    s+=tr("Teacher=%1").arg(this->teacherName());s+="\n";
 	s+=tr("Activity tag=%1").arg(this->activityTagName);s+="\n";
 	s+=tr("Maximum hours daily=%1").arg(this->maxHoursDaily); s+="\n";
 
@@ -16381,7 +16365,7 @@ bool ConstraintTeacherActivityTagMaxHoursDaily::isRelatedToActivity(Rules& r, Ac
 
 bool ConstraintTeacherActivityTagMaxHoursDaily::isRelatedToTeacher(Teacher* t)
 {
-	if(this->teacherName==t->name)
+    if(this->teacherName()==t->name)
 		return true;
 	return false;
 }
@@ -18624,3 +18608,12 @@ bool ConstraintStudentsMaxDaysPerWeek::repairWrongDayOrHour(Rules& r)
 
 	return true;
 }
+
+TeacherConstraint::TeacherConstraint() { }
+
+TeacherConstraint::TeacherConstraint(const QString &teacherName)
+    : _teacherName(teacherName)
+{ }
+
+TeacherConstraint::~TeacherConstraint()
+{ }

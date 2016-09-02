@@ -224,13 +224,13 @@ void ModifyConstraintActivitiesPreferredTimeSlotsForm::updateTeachersComboBox(){
 	int i=0, j=-1;
 	teachersComboBox->clear();
 	teachersComboBox->addItem("");
-	if(this->_ctr->p_teacherName=="")
+    if(this->_ctr->teacherName()=="")
 		j=i;
 	i++;
 	for(int k=0; k<gt.rules.teachersList.size(); k++){
 		Teacher* t=gt.rules.teachersList[k];
 		teachersComboBox->addItem(t->name);
-		if(t->name==this->_ctr->p_teacherName)
+        if(t->name==this->_ctr->teacherName())
 			j=i;
 		i++;
 	}
@@ -422,7 +422,7 @@ void ModifyConstraintActivitiesPreferredTimeSlotsForm::ok()
 	}
 
 	this->_ctr->weightPercentage=weight;
-	this->_ctr->p_teacherName=teacher;
+    this->_ctr->teacherName(teacher);
 	this->_ctr->p_studentsName=students;
 	this->_ctr->p_subjectName=subject;
 	this->_ctr->p_activityTagName=activityTag;

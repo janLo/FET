@@ -48,7 +48,7 @@ ModifyConstraintTeacherMaxHoursContinuouslyForm::ModifyConstraintTeacherMaxHours
 	for(int k=0; k<gt.rules.teachersList.size(); k++, i++){
 		Teacher* tch=gt.rules.teachersList[k];
 		teachersComboBox->addItem(tch->name);
-		if(tch->name==this->_ctr->teacherName)
+        if(tch->name==this->_ctr->teacherName())
 			j=i;
 	}
 	assert(j>=0);
@@ -94,7 +94,7 @@ void ModifyConstraintTeacherMaxHoursContinuouslyForm::ok()
 
 	this->_ctr->weightPercentage=weight;
 	this->_ctr->maxHoursContinuously=max_hours;
-	this->_ctr->teacherName=teacher_name;
+    this->_ctr->teacherName(teacher_name);
 
 	gt.rules.internalStructureComputed=false;
 	setRulesModifiedAndOtherThings(&gt.rules);

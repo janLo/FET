@@ -194,7 +194,7 @@ void ModifyConstraintTeacherNotAvailableTimesForm::updateTeachersComboBox(){
 	for(int k=0; k<gt.rules.teachersList.size(); k++, i++){
 		Teacher* tch=gt.rules.teachersList[k];
 		teachersComboBox->addItem(tch->name);
-		if(tch->name==this->_ctr->teacher)
+        if(tch->name==this->_ctr->teacherName())
 			j=i;
 	}
 	assert(j>=0);
@@ -238,7 +238,7 @@ void ModifyConstraintTeacherNotAvailableTimesForm::ok()
 	foreach(TimeConstraint* c, gt.rules.timeConstraintsList)
 		if(c!=this->_ctr && c->type==CONSTRAINT_TEACHER_NOT_AVAILABLE_TIMES){
 			ConstraintTeacherNotAvailableTimes* cc=(ConstraintTeacherNotAvailableTimes*)c;
-			if(cc->teacher==teacher_name){
+            if(cc->teacherName()==teacher_name){
 				QMessageBox::warning(this, tr("FET information"),
 					tr("A constraint of this type exists for the same teacher - cannot proceed"));
 				return;
@@ -247,8 +247,8 @@ void ModifyConstraintTeacherNotAvailableTimesForm::ok()
 			
 	this->_ctr->weightPercentage=weight;
 
-	if(_ctr->teacher!=teacher_name){
-		QString oldName=_ctr->teacher;
+    if(_ctr->teacherName()!=teacher_name){
+        QString oldName=_ctr->teacherName();
 		QString newName=teacher_name;
 
 		QSet<ConstraintTeacherNotAvailableTimes*> cs=gt.rules.tnatHash.value(oldName, QSet<ConstraintTeacherNotAvailableTimes*>());
@@ -261,7 +261,7 @@ void ModifyConstraintTeacherNotAvailableTimesForm::ok()
 		cs.insert(_ctr);
 		gt.rules.tnatHash.insert(newName, cs);
 		
-		this->_ctr->teacher=teacher_name;
+        this->_ctr->teacherName(teacher_name);
 	}
 
 	QList<int> days;
