@@ -3894,277 +3894,396 @@ void Rules::updateConstraintsAfterRemoval()
 		existingRoomsNames.insert(rm->name);
 		
 	foreach(TimeConstraint* tc, timeConstraintsList){
-		if(tc->type==CONSTRAINT_TEACHER_NOT_AVAILABLE_TIMES){
-			ConstraintTeacherNotAvailableTimes* c=(ConstraintTeacherNotAvailableTimes*)tc;
-			if(!existingTeachersNames.contains(c->teacherName()))
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_STUDENTS_SET_NOT_AVAILABLE_TIMES){
-			ConstraintStudentsSetNotAvailableTimes* c=(ConstraintStudentsSetNotAvailableTimes*)tc;
-			if(!permanentStudentsHash.contains(c->students))
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME){
-			ConstraintActivitiesSameStartingTime* c=(ConstraintActivitiesSameStartingTime*)tc;
-			c->removeUseless(*this);
-			if(c->n_activities<2)
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_ACTIVITIES_NOT_OVERLAPPING){
-			ConstraintActivitiesNotOverlapping* c=(ConstraintActivitiesNotOverlapping*)tc;
-			c->removeUseless(*this);
-			if(c->n_activities<2)
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES){
-			ConstraintMinDaysBetweenActivities* c=(ConstraintMinDaysBetweenActivities*)tc;
-			c->removeUseless(*this);
-			if(c->n_activities<2)
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_MAX_DAYS_BETWEEN_ACTIVITIES){
-			ConstraintMaxDaysBetweenActivities* c=(ConstraintMaxDaysBetweenActivities*)tc;
-			c->removeUseless(*this);
-			if(c->n_activities<2)
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_MIN_GAPS_BETWEEN_ACTIVITIES){
-			ConstraintMinGapsBetweenActivities* c=(ConstraintMinGapsBetweenActivities*)tc;
-			c->removeUseless(*this);
-			if(c->n_activities<2)
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_TEACHER_MAX_HOURS_DAILY){
-			ConstraintTeacherMaxHoursDaily* c=(ConstraintTeacherMaxHoursDaily*)tc;
-            if(!existingTeachersNames.contains(c->teacherName()))
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_TEACHER_MAX_HOURS_CONTINUOUSLY){
-			ConstraintTeacherMaxHoursContinuously* c=(ConstraintTeacherMaxHoursContinuously*)tc;
-            if(!existingTeachersNames.contains(c->teacherName()))
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_TEACHERS_ACTIVITY_TAG_MAX_HOURS_CONTINUOUSLY){
-			ConstraintTeachersActivityTagMaxHoursContinuously* c=(ConstraintTeachersActivityTagMaxHoursContinuously*)tc;
-			if(!existingActivityTagsNames.contains(c->activityTagName))
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_TEACHER_ACTIVITY_TAG_MAX_HOURS_CONTINUOUSLY){
-			ConstraintTeacherActivityTagMaxHoursContinuously* c=(ConstraintTeacherActivityTagMaxHoursContinuously*)tc;
-            if(!existingActivityTagsNames.contains(c->activityTagName) || !existingTeachersNames.contains(c->teacherName()))
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_TEACHER_MAX_DAYS_PER_WEEK){
-			ConstraintTeacherMaxDaysPerWeek* c=(ConstraintTeacherMaxDaysPerWeek*)tc;
-            if(!existingTeachersNames.contains(c->teacherName()))
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_TEACHER_MIN_DAYS_PER_WEEK){
-			ConstraintTeacherMinDaysPerWeek* c=(ConstraintTeacherMinDaysPerWeek*)tc;
-            if(!existingTeachersNames.contains(c->teacherName()))
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_STUDENTS_SET_MAX_GAPS_PER_WEEK){
-			ConstraintStudentsSetMaxGapsPerWeek* c=(ConstraintStudentsSetMaxGapsPerWeek*)tc;
-			if(!permanentStudentsHash.contains(c->students))
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_TEACHER_MAX_GAPS_PER_WEEK){
-			ConstraintTeacherMaxGapsPerWeek* c=(ConstraintTeacherMaxGapsPerWeek*)tc;
-            if(!existingTeachersNames.contains(c->teacherName()))
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_TEACHER_MAX_GAPS_PER_DAY){
-			ConstraintTeacherMaxGapsPerDay* c=(ConstraintTeacherMaxGapsPerDay*)tc;
-            if(!existingTeachersNames.contains(c->teacherName()))
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_STUDENTS_SET_EARLY_MAX_BEGINNINGS_AT_SECOND_HOUR){
-			ConstraintStudentsSetEarlyMaxBeginningsAtSecondHour* c=(ConstraintStudentsSetEarlyMaxBeginningsAtSecondHour*)tc;
-			if(!permanentStudentsHash.contains(c->students))
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_STUDENTS_SET_MAX_HOURS_DAILY){
-			ConstraintStudentsSetMaxHoursDaily* c=(ConstraintStudentsSetMaxHoursDaily*)tc;
-			if(!permanentStudentsHash.contains(c->students))
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_STUDENTS_SET_MAX_HOURS_CONTINUOUSLY){
-			ConstraintStudentsSetMaxHoursContinuously* c=(ConstraintStudentsSetMaxHoursContinuously*)tc;
-			if(!permanentStudentsHash.contains(c->students))
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_STUDENTS_ACTIVITY_TAG_MAX_HOURS_CONTINUOUSLY){
-			ConstraintStudentsActivityTagMaxHoursContinuously* c=(ConstraintStudentsActivityTagMaxHoursContinuously*)tc;
-			if(!existingActivityTagsNames.contains(c->activityTagName))
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_STUDENTS_SET_ACTIVITY_TAG_MAX_HOURS_CONTINUOUSLY){
-			ConstraintStudentsSetActivityTagMaxHoursContinuously* c=(ConstraintStudentsSetActivityTagMaxHoursContinuously*)tc;
-			if(!existingActivityTagsNames.contains(c->activityTagName) || !permanentStudentsHash.contains(c->students))
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_STUDENTS_SET_MIN_HOURS_DAILY){
-			ConstraintStudentsSetMinHoursDaily* c=(ConstraintStudentsSetMinHoursDaily*)tc;
-			if(!permanentStudentsHash.contains(c->students))
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_ACTIVITY_PREFERRED_STARTING_TIME){
-			ConstraintActivityPreferredStartingTime* c=(ConstraintActivityPreferredStartingTime*)tc;
-			if(!existingActivitiesIds.contains(c->activityId)){
-				toBeRemovedTime.append(tc);
-				recomputeTime=true;
-			}
-		}
-		else if(tc->type==CONSTRAINT_ACTIVITY_PREFERRED_TIME_SLOTS){
-			ConstraintActivityPreferredTimeSlots* c=(ConstraintActivityPreferredTimeSlots*)tc;
-			if(!existingActivitiesIds.contains(c->p_activityId))
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_ACTIVITY_PREFERRED_STARTING_TIMES){
-			ConstraintActivityPreferredStartingTimes* c=(ConstraintActivityPreferredStartingTimes*)tc;
-			if(!existingActivitiesIds.contains(c->activityId))
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_ACTIVITIES_PREFERRED_TIME_SLOTS){
-			ConstraintActivitiesPreferredTimeSlots* c=(ConstraintActivitiesPreferredTimeSlots*)tc;
-            if( (c->teacherName()!="" && !existingTeachersNames.contains(c->teacherName())) ||
-			 (c->p_studentsName!="" && !permanentStudentsHash.contains(c->p_studentsName)) ||
-			 (c->p_subjectName!="" && !existingSubjectsNames.contains(c->p_subjectName)) ||
-			 (c->p_activityTagName!="" && !existingActivityTagsNames.contains(c->p_activityTagName)) )
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_SUBACTIVITIES_PREFERRED_TIME_SLOTS){
-			ConstraintSubactivitiesPreferredTimeSlots* c=(ConstraintSubactivitiesPreferredTimeSlots*)tc;
-            if( (c->teacherName()!="" && !existingTeachersNames.contains(c->teacherName())) ||
-			 (c->p_studentsName!="" && !permanentStudentsHash.contains(c->p_studentsName)) ||
-			 (c->p_subjectName!="" && !existingSubjectsNames.contains(c->p_subjectName)) ||
-			 (c->p_activityTagName!="" && !existingActivityTagsNames.contains(c->p_activityTagName)) )
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_ACTIVITIES_PREFERRED_STARTING_TIMES){
-			ConstraintActivitiesPreferredStartingTimes* c=(ConstraintActivitiesPreferredStartingTimes*)tc;
-            if( (c->teacherName()!="" && !existingTeachersNames.contains(c->teacherName())) ||
-			 (c->studentsName!="" && !permanentStudentsHash.contains(c->studentsName)) ||
-			 (c->subjectName!="" && !existingSubjectsNames.contains(c->subjectName)) ||
-			 (c->activityTagName!="" && !existingActivityTagsNames.contains(c->activityTagName)) )
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_SUBACTIVITIES_PREFERRED_STARTING_TIMES){
-			ConstraintSubactivitiesPreferredStartingTimes* c=(ConstraintSubactivitiesPreferredStartingTimes*)tc;
-            if( (c->teacherName()!="" && !existingTeachersNames.contains(c->teacherName())) ||
-			 (c->studentsName!="" && !permanentStudentsHash.contains(c->studentsName)) ||
-			 (c->subjectName!="" && !existingSubjectsNames.contains(c->subjectName)) ||
-			 (c->activityTagName!="" && !existingActivityTagsNames.contains(c->activityTagName)) )
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_ACTIVITIES_SAME_STARTING_HOUR){
-			ConstraintActivitiesSameStartingHour* c=(ConstraintActivitiesSameStartingHour*)tc;
-			c->removeUseless(*this);
-			if(c->n_activities<2)
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_ACTIVITIES_SAME_STARTING_DAY){
-			ConstraintActivitiesSameStartingDay* c=(ConstraintActivitiesSameStartingDay*)tc;
-			c->removeUseless(*this);
-			if(c->n_activities<2)
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_TWO_ACTIVITIES_CONSECUTIVE){
-			ConstraintTwoActivitiesConsecutive* c=(ConstraintTwoActivitiesConsecutive*)tc;
-			if( !existingActivitiesIds.contains(c->firstActivityId) ||
-			 !existingActivitiesIds.contains(c->secondActivityId) )
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_TWO_ACTIVITIES_GROUPED){
-			ConstraintTwoActivitiesGrouped* c=(ConstraintTwoActivitiesGrouped*)tc;
-			if( !existingActivitiesIds.contains(c->firstActivityId) ||
-			 !existingActivitiesIds.contains(c->secondActivityId) )
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_THREE_ACTIVITIES_GROUPED){
-			ConstraintThreeActivitiesGrouped* c=(ConstraintThreeActivitiesGrouped*)tc;
-			if( !existingActivitiesIds.contains(c->firstActivityId) ||
-			 !existingActivitiesIds.contains(c->secondActivityId) ||
-			 !existingActivitiesIds.contains(c->thirdActivityId) )
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_TWO_ACTIVITIES_ORDERED){
-			ConstraintTwoActivitiesOrdered* c=(ConstraintTwoActivitiesOrdered*)tc;
-			if( !existingActivitiesIds.contains(c->firstActivityId) ||
-			 !existingActivitiesIds.contains(c->secondActivityId) )
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_ACTIVITY_ENDS_STUDENTS_DAY){
-			ConstraintActivityEndsStudentsDay* c=(ConstraintActivityEndsStudentsDay*)tc;
-			if(!existingActivitiesIds.contains(c->activityId))
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_TEACHER_MIN_HOURS_DAILY){
-			ConstraintTeacherMinHoursDaily* c=(ConstraintTeacherMinHoursDaily*)tc;
-            if(!existingTeachersNames.contains(c->teacherName()))
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_TEACHER_INTERVAL_MAX_DAYS_PER_WEEK){
-			ConstraintTeacherIntervalMaxDaysPerWeek* c=(ConstraintTeacherIntervalMaxDaysPerWeek*)tc;
-            if(!existingTeachersNames.contains(c->teacherName()))
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_STUDENTS_SET_INTERVAL_MAX_DAYS_PER_WEEK){
-			ConstraintStudentsSetIntervalMaxDaysPerWeek* c=(ConstraintStudentsSetIntervalMaxDaysPerWeek*)tc;
-			if(!permanentStudentsHash.contains(c->students))
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_ACTIVITIES_END_STUDENTS_DAY){
-			ConstraintActivitiesEndStudentsDay* c=(ConstraintActivitiesEndStudentsDay*)tc;
-            if( (c->teacherName()!="" && !existingTeachersNames.contains(c->teacherName())) ||
-			 (c->studentsName!="" && !permanentStudentsHash.contains(c->studentsName)) ||
-			 (c->subjectName!="" && !existingSubjectsNames.contains(c->subjectName)) ||
-			 (c->activityTagName!="" && !existingActivityTagsNames.contains(c->activityTagName)) )
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_TEACHERS_ACTIVITY_TAG_MAX_HOURS_DAILY){
-			ConstraintTeachersActivityTagMaxHoursDaily* c=(ConstraintTeachersActivityTagMaxHoursDaily*)tc;
-			if(!existingActivityTagsNames.contains(c->activityTagName))
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_TEACHER_ACTIVITY_TAG_MAX_HOURS_DAILY){
-			ConstraintTeacherActivityTagMaxHoursDaily* c=(ConstraintTeacherActivityTagMaxHoursDaily*)tc;
-            if(!existingActivityTagsNames.contains(c->activityTagName) || !existingTeachersNames.contains(c->teacherName()))
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_STUDENTS_ACTIVITY_TAG_MAX_HOURS_DAILY){
-			ConstraintStudentsActivityTagMaxHoursDaily* c=(ConstraintStudentsActivityTagMaxHoursDaily*)tc;
-			if(!existingActivityTagsNames.contains(c->activityTagName))
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_STUDENTS_SET_ACTIVITY_TAG_MAX_HOURS_DAILY){
-			ConstraintStudentsSetActivityTagMaxHoursDaily* c=(ConstraintStudentsSetActivityTagMaxHoursDaily*)tc;
-			if(!existingActivityTagsNames.contains(c->activityTagName) || !permanentStudentsHash.contains(c->students))
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_STUDENTS_SET_MAX_GAPS_PER_DAY){
-			ConstraintStudentsSetMaxGapsPerDay* c=(ConstraintStudentsSetMaxGapsPerDay*)tc;
-			if(!permanentStudentsHash.contains(c->students))
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_ACTIVITIES_OCCUPY_MAX_TIME_SLOTS_FROM_SELECTION){
-			ConstraintActivitiesOccupyMaxTimeSlotsFromSelection* c=(ConstraintActivitiesOccupyMaxTimeSlotsFromSelection*)tc;
-			c->removeUseless(*this);
-			if(c->activitiesIds.count()<1)
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_ACTIVITIES_MAX_SIMULTANEOUS_IN_SELECTED_TIME_SLOTS){
-			ConstraintActivitiesMaxSimultaneousInSelectedTimeSlots* c=(ConstraintActivitiesMaxSimultaneousInSelectedTimeSlots*)tc;
-			c->removeUseless(*this);
-			if(c->activitiesIds.count()<1)
-				toBeRemovedTime.append(tc);
-		}
-		else if(tc->type==CONSTRAINT_STUDENTS_SET_MAX_DAYS_PER_WEEK){
-			ConstraintStudentsSetMaxDaysPerWeek* c=(ConstraintStudentsSetMaxDaysPerWeek*)tc;
-			if(!permanentStudentsHash.contains(c->students))
-				toBeRemovedTime.append(tc);
-		}
+        switch (tc->type) {
+        case CONSTRAINT_TEACHER_NOT_AVAILABLE_TIMES:
+            {
+                ConstraintTeacherNotAvailableTimes* c=(ConstraintTeacherNotAvailableTimes*)tc;
+                if(!existingTeachersNames.contains(c->teacherName()))
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_STUDENTS_SET_NOT_AVAILABLE_TIMES:
+            {
+                ConstraintStudentsSetNotAvailableTimes* c=(ConstraintStudentsSetNotAvailableTimes*)tc;
+                if(!permanentStudentsHash.contains(c->students))
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME:
+            {
+                ConstraintActivitiesSameStartingTime* c=(ConstraintActivitiesSameStartingTime*)tc;
+                c->removeUseless(*this);
+                if(c->n_activities<2)
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_ACTIVITIES_NOT_OVERLAPPING:
+            {
+                ConstraintActivitiesNotOverlapping* c=(ConstraintActivitiesNotOverlapping*)tc;
+                c->removeUseless(*this);
+                if(c->n_activities<2)
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES:
+            {
+                ConstraintMinDaysBetweenActivities* c=(ConstraintMinDaysBetweenActivities*)tc;
+                c->removeUseless(*this);
+                if(c->n_activities<2)
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_MAX_DAYS_BETWEEN_ACTIVITIES:
+            {
+                ConstraintMaxDaysBetweenActivities* c=(ConstraintMaxDaysBetweenActivities*)tc;
+                c->removeUseless(*this);
+                if(c->n_activities<2)
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_MIN_GAPS_BETWEEN_ACTIVITIES:
+            {
+                ConstraintMinGapsBetweenActivities* c=(ConstraintMinGapsBetweenActivities*)tc;
+                c->removeUseless(*this);
+                if(c->n_activities<2)
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_TEACHER_MAX_HOURS_DAILY:
+            {
+                ConstraintTeacherMaxHoursDaily* c=(ConstraintTeacherMaxHoursDaily*)tc;
+                if(!existingTeachersNames.contains(c->teacherName()))
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_TEACHER_MAX_HOURS_CONTINUOUSLY:
+            {
+                ConstraintTeacherMaxHoursContinuously* c=(ConstraintTeacherMaxHoursContinuously*)tc;
+                if(!existingTeachersNames.contains(c->teacherName()))
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_TEACHERS_ACTIVITY_TAG_MAX_HOURS_CONTINUOUSLY:
+            {
+                ConstraintTeachersActivityTagMaxHoursContinuously* c=(ConstraintTeachersActivityTagMaxHoursContinuously*)tc;
+                if(!existingActivityTagsNames.contains(c->activityTagName))
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_TEACHER_ACTIVITY_TAG_MAX_HOURS_CONTINUOUSLY:
+            {
+                ConstraintTeacherActivityTagMaxHoursContinuously* c=(ConstraintTeacherActivityTagMaxHoursContinuously*)tc;
+                if(!existingActivityTagsNames.contains(c->activityTagName) || !existingTeachersNames.contains(c->teacherName()))
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_TEACHER_MAX_DAYS_PER_WEEK:
+            {
+                ConstraintTeacherMaxDaysPerWeek* c=(ConstraintTeacherMaxDaysPerWeek*)tc;
+                if(!existingTeachersNames.contains(c->teacherName()))
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_TEACHER_MIN_DAYS_PER_WEEK:
+            {
+                ConstraintTeacherMinDaysPerWeek* c=(ConstraintTeacherMinDaysPerWeek*)tc;
+                if(!existingTeachersNames.contains(c->teacherName()))
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_STUDENTS_SET_MAX_GAPS_PER_WEEK:
+            {
+                ConstraintStudentsSetMaxGapsPerWeek* c=(ConstraintStudentsSetMaxGapsPerWeek*)tc;
+                if(!permanentStudentsHash.contains(c->students))
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_TEACHER_MAX_GAPS_PER_WEEK:
+            {
+                ConstraintTeacherMaxGapsPerWeek* c=(ConstraintTeacherMaxGapsPerWeek*)tc;
+                if(!existingTeachersNames.contains(c->teacherName()))
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_TEACHER_MAX_GAPS_PER_DAY:
+            {
+                ConstraintTeacherMaxGapsPerDay* c=(ConstraintTeacherMaxGapsPerDay*)tc;
+                if(!existingTeachersNames.contains(c->teacherName()))
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_STUDENTS_SET_EARLY_MAX_BEGINNINGS_AT_SECOND_HOUR:
+            {
+                ConstraintStudentsSetEarlyMaxBeginningsAtSecondHour* c=(ConstraintStudentsSetEarlyMaxBeginningsAtSecondHour*)tc;
+                if(!permanentStudentsHash.contains(c->students))
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_STUDENTS_SET_MAX_HOURS_DAILY:
+            {
+                ConstraintStudentsSetMaxHoursDaily* c=(ConstraintStudentsSetMaxHoursDaily*)tc;
+                if(!permanentStudentsHash.contains(c->students))
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_STUDENTS_SET_MAX_HOURS_CONTINUOUSLY:
+            {
+                ConstraintStudentsSetMaxHoursContinuously* c=(ConstraintStudentsSetMaxHoursContinuously*)tc;
+                if(!permanentStudentsHash.contains(c->students))
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_STUDENTS_ACTIVITY_TAG_MAX_HOURS_CONTINUOUSLY:
+            {
+                ConstraintStudentsActivityTagMaxHoursContinuously* c=(ConstraintStudentsActivityTagMaxHoursContinuously*)tc;
+                if(!existingActivityTagsNames.contains(c->activityTagName))
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_STUDENTS_SET_ACTIVITY_TAG_MAX_HOURS_CONTINUOUSLY:
+            {
+                ConstraintStudentsSetActivityTagMaxHoursContinuously* c=(ConstraintStudentsSetActivityTagMaxHoursContinuously*)tc;
+                if(!existingActivityTagsNames.contains(c->activityTagName) || !permanentStudentsHash.contains(c->students))
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_STUDENTS_SET_MIN_HOURS_DAILY:
+            {
+                ConstraintStudentsSetMinHoursDaily* c=(ConstraintStudentsSetMinHoursDaily*)tc;
+                if(!permanentStudentsHash.contains(c->students))
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_STARTING_TIME:
+            {
+                ConstraintActivityPreferredStartingTime* c=(ConstraintActivityPreferredStartingTime*)tc;
+                if(!existingActivitiesIds.contains(c->activityId)){
+                    toBeRemovedTime.append(tc);
+                    recomputeTime=true;
+                }
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_TIME_SLOTS:
+            {
+                ConstraintActivityPreferredTimeSlots* c=(ConstraintActivityPreferredTimeSlots*)tc;
+                if(!existingActivitiesIds.contains(c->p_activityId))
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_STARTING_TIMES:
+            {
+                ConstraintActivityPreferredStartingTimes* c=(ConstraintActivityPreferredStartingTimes*)tc;
+                if(!existingActivitiesIds.contains(c->activityId))
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_ACTIVITIES_PREFERRED_TIME_SLOTS:
+            {
+                ConstraintActivitiesPreferredTimeSlots* c=(ConstraintActivitiesPreferredTimeSlots*)tc;
+                if( (c->teacherName()!="" && !existingTeachersNames.contains(c->teacherName())) ||
+                     (c->p_studentsName!="" && !permanentStudentsHash.contains(c->p_studentsName)) ||
+                     (c->p_subjectName!="" && !existingSubjectsNames.contains(c->p_subjectName)) ||
+                     (c->p_activityTagName!="" && !existingActivityTagsNames.contains(c->p_activityTagName)) )
+                        toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_SUBACTIVITIES_PREFERRED_TIME_SLOTS:
+            {
+                ConstraintSubactivitiesPreferredTimeSlots* c=(ConstraintSubactivitiesPreferredTimeSlots*)tc;
+                if( (c->teacherName()!="" && !existingTeachersNames.contains(c->teacherName())) ||
+                     (c->p_studentsName!="" && !permanentStudentsHash.contains(c->p_studentsName)) ||
+                     (c->p_subjectName!="" && !existingSubjectsNames.contains(c->p_subjectName)) ||
+                     (c->p_activityTagName!="" && !existingActivityTagsNames.contains(c->p_activityTagName)) )
+                        toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_ACTIVITIES_PREFERRED_STARTING_TIMES:
+            {
+                ConstraintActivitiesPreferredStartingTimes* c=(ConstraintActivitiesPreferredStartingTimes*)tc;
+                if( (c->teacherName()!="" && !existingTeachersNames.contains(c->teacherName())) ||
+                     (c->studentsName!="" && !permanentStudentsHash.contains(c->studentsName)) ||
+                     (c->subjectName!="" && !existingSubjectsNames.contains(c->subjectName)) ||
+                     (c->activityTagName!="" && !existingActivityTagsNames.contains(c->activityTagName)) )
+                        toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_SUBACTIVITIES_PREFERRED_STARTING_TIMES:
+            {
+                ConstraintSubactivitiesPreferredStartingTimes* c=(ConstraintSubactivitiesPreferredStartingTimes*)tc;
+                if( (c->teacherName()!="" && !existingTeachersNames.contains(c->teacherName())) ||
+                     (c->studentsName!="" && !permanentStudentsHash.contains(c->studentsName)) ||
+                     (c->subjectName!="" && !existingSubjectsNames.contains(c->subjectName)) ||
+                     (c->activityTagName!="" && !existingActivityTagsNames.contains(c->activityTagName)) )
+                        toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_ACTIVITIES_SAME_STARTING_HOUR:
+            {
+                ConstraintActivitiesSameStartingHour* c=(ConstraintActivitiesSameStartingHour*)tc;
+                c->removeUseless(*this);
+                if(c->n_activities<2)
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_ACTIVITIES_SAME_STARTING_DAY:
+            {
+                ConstraintActivitiesSameStartingDay* c=(ConstraintActivitiesSameStartingDay*)tc;
+                c->removeUseless(*this);
+                if(c->n_activities<2)
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_TWO_ACTIVITIES_CONSECUTIVE:
+            {
+                ConstraintTwoActivitiesConsecutive* c=(ConstraintTwoActivitiesConsecutive*)tc;
+                if( !existingActivitiesIds.contains(c->firstActivityId) ||
+                 !existingActivitiesIds.contains(c->secondActivityId) )
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_TWO_ACTIVITIES_GROUPED:
+            {
+                ConstraintTwoActivitiesGrouped* c=(ConstraintTwoActivitiesGrouped*)tc;
+                if( !existingActivitiesIds.contains(c->firstActivityId) ||
+                 !existingActivitiesIds.contains(c->secondActivityId) )
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_THREE_ACTIVITIES_GROUPED:
+            {
+                ConstraintThreeActivitiesGrouped* c=(ConstraintThreeActivitiesGrouped*)tc;
+                if( !existingActivitiesIds.contains(c->firstActivityId) ||
+                 !existingActivitiesIds.contains(c->secondActivityId) ||
+                 !existingActivitiesIds.contains(c->thirdActivityId) )
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_TWO_ACTIVITIES_ORDERED:
+            {
+                ConstraintTwoActivitiesOrdered* c=(ConstraintTwoActivitiesOrdered*)tc;
+                if( !existingActivitiesIds.contains(c->firstActivityId) ||
+                 !existingActivitiesIds.contains(c->secondActivityId) )
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_ACTIVITY_ENDS_STUDENTS_DAY:
+            {
+                ConstraintActivityEndsStudentsDay* c=(ConstraintActivityEndsStudentsDay*)tc;
+                if(!existingActivitiesIds.contains(c->activityId))
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_TEACHER_MIN_HOURS_DAILY:
+            {
+                ConstraintTeacherMinHoursDaily* c=(ConstraintTeacherMinHoursDaily*)tc;
+                if(!existingTeachersNames.contains(c->teacherName()))
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_TEACHER_INTERVAL_MAX_DAYS_PER_WEEK:
+            {
+                ConstraintTeacherIntervalMaxDaysPerWeek* c=(ConstraintTeacherIntervalMaxDaysPerWeek*)tc;
+                if(!existingTeachersNames.contains(c->teacherName()))
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_STUDENTS_SET_INTERVAL_MAX_DAYS_PER_WEEK:
+            {
+                ConstraintStudentsSetIntervalMaxDaysPerWeek* c=(ConstraintStudentsSetIntervalMaxDaysPerWeek*)tc;
+                if(!permanentStudentsHash.contains(c->students))
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_ACTIVITIES_END_STUDENTS_DAY:
+            {
+                ConstraintActivitiesEndStudentsDay* c=(ConstraintActivitiesEndStudentsDay*)tc;
+                if( (c->teacherName()!="" && !existingTeachersNames.contains(c->teacherName())) ||
+                     (c->studentsName!="" && !permanentStudentsHash.contains(c->studentsName)) ||
+                     (c->subjectName!="" && !existingSubjectsNames.contains(c->subjectName)) ||
+                     (c->activityTagName!="" && !existingActivityTagsNames.contains(c->activityTagName)) )
+                        toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_TEACHERS_ACTIVITY_TAG_MAX_HOURS_DAILY:
+            {
+                ConstraintTeachersActivityTagMaxHoursDaily* c=(ConstraintTeachersActivityTagMaxHoursDaily*)tc;
+                if(!existingActivityTagsNames.contains(c->activityTagName))
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_TEACHER_ACTIVITY_TAG_MAX_HOURS_DAILY:
+            {
+                ConstraintTeacherActivityTagMaxHoursDaily* c=(ConstraintTeacherActivityTagMaxHoursDaily*)tc;
+                if(!existingActivityTagsNames.contains(c->activityTagName) || !existingTeachersNames.contains(c->teacherName()))
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_STUDENTS_ACTIVITY_TAG_MAX_HOURS_DAILY:
+            {
+                ConstraintStudentsActivityTagMaxHoursDaily* c=(ConstraintStudentsActivityTagMaxHoursDaily*)tc;
+                if(!existingActivityTagsNames.contains(c->activityTagName))
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_STUDENTS_SET_ACTIVITY_TAG_MAX_HOURS_DAILY:
+            {
+                ConstraintStudentsSetActivityTagMaxHoursDaily* c=(ConstraintStudentsSetActivityTagMaxHoursDaily*)tc;
+                if(!existingActivityTagsNames.contains(c->activityTagName) || !permanentStudentsHash.contains(c->students))
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_STUDENTS_SET_MAX_GAPS_PER_DAY:
+            {
+                ConstraintStudentsSetMaxGapsPerDay* c=(ConstraintStudentsSetMaxGapsPerDay*)tc;
+                if(!permanentStudentsHash.contains(c->students))
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_ACTIVITIES_OCCUPY_MAX_TIME_SLOTS_FROM_SELECTION:
+            {
+                ConstraintActivitiesOccupyMaxTimeSlotsFromSelection* c=(ConstraintActivitiesOccupyMaxTimeSlotsFromSelection*)tc;
+                c->removeUseless(*this);
+                if(c->activitiesIds.count()<1)
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_ACTIVITIES_MAX_SIMULTANEOUS_IN_SELECTED_TIME_SLOTS:
+            {
+                ConstraintActivitiesMaxSimultaneousInSelectedTimeSlots* c=(ConstraintActivitiesMaxSimultaneousInSelectedTimeSlots*)tc;
+                c->removeUseless(*this);
+                if(c->activitiesIds.count()<1)
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_STUDENTS_SET_MAX_DAYS_PER_WEEK:
+            {
+                ConstraintStudentsSetMaxDaysPerWeek* c=(ConstraintStudentsSetMaxDaysPerWeek*)tc;
+                if(!permanentStudentsHash.contains(c->students))
+                    toBeRemovedTime.append(tc);
+            }
+            break;
+        case TimeConstraintType::CONSTRAINT_GENERIC_TIME:
+        case TimeConstraintType::CONSTRAINT_BASIC_COMPULSORY_TIME:
+        case TimeConstraintType::CONSTRAINT_BREAK_TIMES:
+        case TimeConstraintType::CONSTRAINT_TEACHERS_MAX_HOURS_DAILY:
+        case TimeConstraintType::CONSTRAINT_TEACHERS_MAX_GAPS_PER_WEEK:
+        case TimeConstraintType::CONSTRAINT_TEACHERS_MAX_HOURS_CONTINUOUSLY:
+        case TimeConstraintType::CONSTRAINT_TEACHERS_MIN_HOURS_DAILY:
+        case TimeConstraintType::CONSTRAINT_TEACHERS_MAX_GAPS_PER_DAY:
+        case TimeConstraintType::CONSTRAINT_STUDENTS_EARLY_MAX_BEGINNINGS_AT_SECOND_HOUR:
+        case TimeConstraintType::CONSTRAINT_STUDENTS_MAX_GAPS_PER_WEEK:
+        case TimeConstraintType::CONSTRAINT_STUDENTS_MAX_HOURS_DAILY:
+        case TimeConstraintType::CONSTRAINT_STUDENTS_MAX_HOURS_CONTINUOUSLY:
+        case TimeConstraintType::CONSTRAINT_STUDENTS_MIN_HOURS_DAILY:
+        case TimeConstraintType::CONSTRAINT_TEACHERS_INTERVAL_MAX_DAYS_PER_WEEK:
+        case TimeConstraintType::CONSTRAINT_TEACHERS_MAX_DAYS_PER_WEEK:
+        case TimeConstraintType::CONSTRAINT_TEACHERS_MIN_DAYS_PER_WEEK:
+        case TimeConstraintType::CONSTRAINT_STUDENTS_INTERVAL_MAX_DAYS_PER_WEEK:
+        case TimeConstraintType::CONSTRAINT_STUDENTS_MAX_GAPS_PER_DAY:
+        case TimeConstraintType::CONSTRAINT_STUDENTS_MAX_DAYS_PER_WEEK:
+            // XXX Evaluate
+            break;
+        }
 	}
 
 	foreach(SpaceConstraint* sc, spaceConstraintsList){
