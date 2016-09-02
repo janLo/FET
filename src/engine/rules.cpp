@@ -1034,86 +1034,10 @@ bool Rules::modifyTeacher(const QString& initialTeacherName, const QString& fina
 		this->activitiesList.at(i)->renameTeacher(initialTeacherName, finalTeacherName);
 		
 	foreach(TimeConstraint* ctr, timeConstraintsList){
-		if(ctr->type==CONSTRAINT_TEACHER_NOT_AVAILABLE_TIMES){
-			ConstraintTeacherNotAvailableTimes* crt_constraint=(ConstraintTeacherNotAvailableTimes*)ctr;
-			if(initialTeacherName == crt_constraint->teacherName())
-				crt_constraint->teacherName(finalTeacherName);
-		}
-		else if(ctr->type==CONSTRAINT_TEACHER_MAX_GAPS_PER_WEEK){
-			ConstraintTeacherMaxGapsPerWeek* crt_constraint=(ConstraintTeacherMaxGapsPerWeek*)ctr;
-            if(initialTeacherName == crt_constraint->teacherName())
-                crt_constraint->teacherName(finalTeacherName);
-		}
-		else if(ctr->type==CONSTRAINT_TEACHER_MAX_GAPS_PER_DAY){
-			ConstraintTeacherMaxGapsPerDay* crt_constraint=(ConstraintTeacherMaxGapsPerDay*)ctr;
-            if(initialTeacherName == crt_constraint->teacherName())
-                crt_constraint->teacherName(finalTeacherName);
-		}
-		else if(ctr->type==CONSTRAINT_TEACHER_MAX_HOURS_DAILY){
-			ConstraintTeacherMaxHoursDaily* crt_constraint=(ConstraintTeacherMaxHoursDaily*)ctr;
-            if(initialTeacherName == crt_constraint->teacherName())
-                crt_constraint->teacherName(finalTeacherName);
-		}
-		else if(ctr->type==CONSTRAINT_TEACHER_MAX_HOURS_CONTINUOUSLY){
-			ConstraintTeacherMaxHoursContinuously* crt_constraint=(ConstraintTeacherMaxHoursContinuously*)ctr;
-            if(initialTeacherName == crt_constraint->teacherName())
-                crt_constraint->teacherName(finalTeacherName);
-		}
-		else if(ctr->type==CONSTRAINT_TEACHER_ACTIVITY_TAG_MAX_HOURS_CONTINUOUSLY){
-			ConstraintTeacherActivityTagMaxHoursContinuously* crt_constraint=(ConstraintTeacherActivityTagMaxHoursContinuously*)ctr;
-            if(initialTeacherName == crt_constraint->teacherName())
-                crt_constraint->teacherName(finalTeacherName);
-		}
-		else if(ctr->type==CONSTRAINT_TEACHER_ACTIVITY_TAG_MAX_HOURS_DAILY){
-			ConstraintTeacherActivityTagMaxHoursDaily* crt_constraint=(ConstraintTeacherActivityTagMaxHoursDaily*)ctr;
-            if(initialTeacherName == crt_constraint->teacherName())
-                crt_constraint->teacherName(finalTeacherName);
-		}
-		else if(ctr->type==CONSTRAINT_TEACHER_MIN_HOURS_DAILY){
-			ConstraintTeacherMinHoursDaily* crt_constraint=(ConstraintTeacherMinHoursDaily*)ctr;
-            if(initialTeacherName == crt_constraint->teacherName())
-                crt_constraint->teacherName(finalTeacherName);
-		}
-		else if(ctr->type==CONSTRAINT_TEACHER_MAX_DAYS_PER_WEEK){
-			ConstraintTeacherMaxDaysPerWeek* crt_constraint=(ConstraintTeacherMaxDaysPerWeek*)ctr;
-            if(initialTeacherName == crt_constraint->teacherName())
-                crt_constraint->teacherName(finalTeacherName);
-		}
-		else if(ctr->type==CONSTRAINT_TEACHER_MIN_DAYS_PER_WEEK){
-			ConstraintTeacherMinDaysPerWeek* crt_constraint=(ConstraintTeacherMinDaysPerWeek*)ctr;
-            if(initialTeacherName == crt_constraint->teacherName())
-                crt_constraint->teacherName(finalTeacherName);
-		}
-		else if(ctr->type==CONSTRAINT_TEACHER_INTERVAL_MAX_DAYS_PER_WEEK){
-			ConstraintTeacherIntervalMaxDaysPerWeek* crt_constraint=(ConstraintTeacherIntervalMaxDaysPerWeek*)ctr;
-            if(initialTeacherName == crt_constraint->teacherName())
-                crt_constraint->teacherName(finalTeacherName);
-		}
-		else if(ctr->type==CONSTRAINT_ACTIVITIES_PREFERRED_TIME_SLOTS){
-			ConstraintActivitiesPreferredTimeSlots* crt_constraint=(ConstraintActivitiesPreferredTimeSlots*)ctr;
-            if(initialTeacherName == crt_constraint->teacherName())
-                crt_constraint->teacherName(finalTeacherName);
-		}
-		else if(ctr->type==CONSTRAINT_ACTIVITIES_PREFERRED_STARTING_TIMES){
-			ConstraintActivitiesPreferredStartingTimes* crt_constraint=(ConstraintActivitiesPreferredStartingTimes*)ctr;
-            if(initialTeacherName == crt_constraint->teacherName())
-                crt_constraint->teacherName(finalTeacherName);
-		}
-		else if(ctr->type==CONSTRAINT_ACTIVITIES_END_STUDENTS_DAY){
-			ConstraintActivitiesEndStudentsDay* crt_constraint=(ConstraintActivitiesEndStudentsDay*)ctr;
-            if(initialTeacherName == crt_constraint->teacherName())
-                crt_constraint->teacherName(finalTeacherName);
-		}
-		else if(ctr->type==CONSTRAINT_SUBACTIVITIES_PREFERRED_TIME_SLOTS){
-			ConstraintSubactivitiesPreferredTimeSlots* crt_constraint=(ConstraintSubactivitiesPreferredTimeSlots*)ctr;
-            if(initialTeacherName == crt_constraint->teacherName())
-                crt_constraint->teacherName(finalTeacherName);
-		}
-		else if(ctr->type==CONSTRAINT_SUBACTIVITIES_PREFERRED_STARTING_TIMES){
-			ConstraintSubactivitiesPreferredStartingTimes* crt_constraint=(ConstraintSubactivitiesPreferredStartingTimes*)ctr;
-            if(initialTeacherName == crt_constraint->teacherName())
-                crt_constraint->teacherName(finalTeacherName);
-		}
+        TeacherConstraint * crt_constraint = dynamic_cast<TeacherConstraint* >(ctr);
+        if (0 != crt_constraint && initialTeacherName == crt_constraint->teacherName()) {
+            crt_constraint->teacherName(finalTeacherName);
+        }
 	}
 	
 	foreach(SpaceConstraint* ctr, spaceConstraintsList){
