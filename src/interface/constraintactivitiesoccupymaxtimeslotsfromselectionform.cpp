@@ -111,7 +111,7 @@ ConstraintActivitiesOccupyMaxTimeSlotsFromSelectionForm::~ConstraintActivitiesOc
 
 bool ConstraintActivitiesOccupyMaxTimeSlotsFromSelectionForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type!=CONSTRAINT_ACTIVITIES_OCCUPY_MAX_TIME_SLOTS_FROM_SELECTION)
+	if(ctr->type!=TimeConstraintType::CONSTRAINT_ACTIVITIES_OCCUPY_MAX_TIME_SLOTS_FROM_SELECTION)
 		return false;
 
 	ConstraintActivitiesOccupyMaxTimeSlotsFromSelection* c=(ConstraintActivitiesOccupyMaxTimeSlotsFromSelection*) ctr;

@@ -57,7 +57,7 @@ ConstraintStudentsEarlyMaxBeginningsAtSecondHourForm::~ConstraintStudentsEarlyMa
 
 bool ConstraintStudentsEarlyMaxBeginningsAtSecondHourForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_STUDENTS_EARLY_MAX_BEGINNINGS_AT_SECOND_HOUR)
+	if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_EARLY_MAX_BEGINNINGS_AT_SECOND_HOUR)
 		return true;
 	else
 		return false;

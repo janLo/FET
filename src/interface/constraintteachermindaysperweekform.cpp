@@ -67,7 +67,7 @@ ConstraintTeacherMinDaysPerWeekForm::~ConstraintTeacherMinDaysPerWeekForm()
 
 bool ConstraintTeacherMinDaysPerWeekForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_TEACHER_MIN_DAYS_PER_WEEK){
+	if(ctr->type==TimeConstraintType::CONSTRAINT_TEACHER_MIN_DAYS_PER_WEEK){
 		ConstraintTeacherMinDaysPerWeek* c=(ConstraintTeacherMinDaysPerWeek*) ctr;
         return c->teacherName()==teachersComboBox->currentText() || teachersComboBox->currentText()=="";
 	}

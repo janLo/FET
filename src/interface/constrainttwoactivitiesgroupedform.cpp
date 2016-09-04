@@ -57,7 +57,7 @@ ConstraintTwoActivitiesGroupedForm::~ConstraintTwoActivitiesGroupedForm()
 
 bool ConstraintTwoActivitiesGroupedForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_TWO_ACTIVITIES_GROUPED)
+	if(ctr->type==TimeConstraintType::CONSTRAINT_TWO_ACTIVITIES_GROUPED)
 		return true;
 	else
 		return false;

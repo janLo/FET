@@ -61,7 +61,7 @@ ConstraintStudentsMinHoursDailyForm::~ConstraintStudentsMinHoursDailyForm()
 
 bool ConstraintStudentsMinHoursDailyForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_STUDENTS_MIN_HOURS_DAILY)
+	if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_MIN_HOURS_DAILY)
 		return true;
 	else
 		return false;

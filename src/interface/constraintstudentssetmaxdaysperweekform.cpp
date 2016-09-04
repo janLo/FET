@@ -76,7 +76,7 @@ ConstraintStudentsSetMaxDaysPerWeekForm::~ConstraintStudentsSetMaxDaysPerWeekFor
 
 bool ConstraintStudentsSetMaxDaysPerWeekForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_STUDENTS_SET_MAX_DAYS_PER_WEEK){
+	if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_SET_MAX_DAYS_PER_WEEK){
 		ConstraintStudentsSetMaxDaysPerWeek* c=(ConstraintStudentsSetMaxDaysPerWeek*) ctr;
 		return c->students==studentsComboBox->currentText() || studentsComboBox->currentText()=="";
 	}

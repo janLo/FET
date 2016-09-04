@@ -76,7 +76,7 @@ ConstraintStudentsSetEarlyMaxBeginningsAtSecondHourForm::~ConstraintStudentsSetE
 
 bool ConstraintStudentsSetEarlyMaxBeginningsAtSecondHourForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_STUDENTS_SET_EARLY_MAX_BEGINNINGS_AT_SECOND_HOUR){
+	if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_SET_EARLY_MAX_BEGINNINGS_AT_SECOND_HOUR){
 		ConstraintStudentsSetEarlyMaxBeginningsAtSecondHour* c=(ConstraintStudentsSetEarlyMaxBeginningsAtSecondHour*) ctr;
 		return c->students==studentsComboBox->currentText() || studentsComboBox->currentText()=="";
 	}

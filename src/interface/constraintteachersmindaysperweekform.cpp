@@ -57,7 +57,7 @@ ConstraintTeachersMinDaysPerWeekForm::~ConstraintTeachersMinDaysPerWeekForm()
 
 bool ConstraintTeachersMinDaysPerWeekForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_TEACHERS_MIN_DAYS_PER_WEEK)
+	if(ctr->type==TimeConstraintType::CONSTRAINT_TEACHERS_MIN_DAYS_PER_WEEK)
 		return true;
 	else
 		return false;

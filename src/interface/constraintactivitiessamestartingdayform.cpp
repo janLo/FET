@@ -78,7 +78,7 @@ void ConstraintActivitiesSameStartingDayForm::refreshConstraintsListWidget()
 
 bool ConstraintActivitiesSameStartingDayForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_ACTIVITIES_SAME_STARTING_DAY)
+	if(ctr->type==TimeConstraintType::CONSTRAINT_ACTIVITIES_SAME_STARTING_DAY)
 		return true;
 	else
 		return false;

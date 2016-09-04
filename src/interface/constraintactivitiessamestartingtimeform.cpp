@@ -131,7 +131,7 @@ void ConstraintActivitiesSameStartingTimeForm::refreshConstraintsListWidget()
 
 bool ConstraintActivitiesSameStartingTimeForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type!=CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME)
+	if(ctr->type!=TimeConstraintType::CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME)
 		return false;
 		
 	ConstraintActivitiesSameStartingTime* c=(ConstraintActivitiesSameStartingTime*) ctr;

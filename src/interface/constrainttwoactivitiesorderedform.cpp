@@ -57,7 +57,7 @@ ConstraintTwoActivitiesOrderedForm::~ConstraintTwoActivitiesOrderedForm()
 
 bool ConstraintTwoActivitiesOrderedForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_TWO_ACTIVITIES_ORDERED)
+	if(ctr->type==TimeConstraintType::CONSTRAINT_TWO_ACTIVITIES_ORDERED)
 		return true;
 	else
 		return false;

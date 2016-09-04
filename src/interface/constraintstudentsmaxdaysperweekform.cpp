@@ -57,7 +57,7 @@ ConstraintStudentsMaxDaysPerWeekForm::~ConstraintStudentsMaxDaysPerWeekForm()
 
 bool ConstraintStudentsMaxDaysPerWeekForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_STUDENTS_MAX_DAYS_PER_WEEK)
+	if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_MAX_DAYS_PER_WEEK)
 		return true;
 	else
 		return false;

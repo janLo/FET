@@ -61,7 +61,7 @@ void RemoveRedundantForm::wasAccepted()
 
 	foreach(TimeConstraint* tc, gt.rules.timeConstraintsList){
 		if(tc->weightPercentage==100.0){
-			if(tc->type==CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME){
+			if(tc->type==TimeConstraintType::CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME){
 				ConstraintActivitiesSameStartingTime* cst=(ConstraintActivitiesSameStartingTime*) tc;
 				
 				for(int i=1; i<cst->n_activities; i++){
@@ -69,7 +69,7 @@ void RemoveRedundantForm::wasAccepted()
 					adjMatrix.insert(cst->activitiesId[i], cst->activitiesId[0]);
 				}
 			}
-			else if(tc->type==CONSTRAINT_ACTIVITIES_SAME_STARTING_DAY){
+			else if(tc->type==TimeConstraintType::CONSTRAINT_ACTIVITIES_SAME_STARTING_DAY){
 				ConstraintActivitiesSameStartingDay* csd=(ConstraintActivitiesSameStartingDay*) tc;
 
 				for(int i=1; i<csd->n_activities; i++){
@@ -110,7 +110,7 @@ void RemoveRedundantForm::wasAccepted()
 	QList<ConstraintMinDaysBetweenActivities*> mdcList;
 	
 	foreach(TimeConstraint* tc, gt.rules.timeConstraintsList){
-		if(tc->type==CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES){
+		if(tc->type==TimeConstraintType::CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES){
 			mdcList.prepend((ConstraintMinDaysBetweenActivities*)tc); //inverse order, so earlier activities are not removed (the older ones are)
 		}
 	}

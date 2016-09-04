@@ -60,7 +60,7 @@ ConstraintStudentsMaxGapsPerDayForm::~ConstraintStudentsMaxGapsPerDayForm()
 
 bool ConstraintStudentsMaxGapsPerDayForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_STUDENTS_MAX_GAPS_PER_DAY)
+	if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_MAX_GAPS_PER_DAY)
 		return true;
 	else
 		return false;

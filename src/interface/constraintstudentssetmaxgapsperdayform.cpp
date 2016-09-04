@@ -79,7 +79,7 @@ ConstraintStudentsSetMaxGapsPerDayForm::~ConstraintStudentsSetMaxGapsPerDayForm(
 
 bool ConstraintStudentsSetMaxGapsPerDayForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_STUDENTS_SET_MAX_GAPS_PER_DAY){
+	if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_SET_MAX_GAPS_PER_DAY){
 		ConstraintStudentsSetMaxGapsPerDay* c=(ConstraintStudentsSetMaxGapsPerDay*) ctr;
 		return c->students==studentsComboBox->currentText() || studentsComboBox->currentText()=="";
 	}

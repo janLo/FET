@@ -110,7 +110,7 @@ ConstraintActivityPreferredStartingTimeForm::~ConstraintActivityPreferredStartin
 
 bool ConstraintActivityPreferredStartingTimeForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type!=CONSTRAINT_ACTIVITY_PREFERRED_STARTING_TIME)
+	if(ctr->type!=TimeConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_STARTING_TIME)
 		return false;
 		
 	ConstraintActivityPreferredStartingTime* c=(ConstraintActivityPreferredStartingTime*) ctr;

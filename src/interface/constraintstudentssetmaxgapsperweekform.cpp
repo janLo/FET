@@ -76,7 +76,7 @@ ConstraintStudentsSetMaxGapsPerWeekForm::~ConstraintStudentsSetMaxGapsPerWeekFor
 
 bool ConstraintStudentsSetMaxGapsPerWeekForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_STUDENTS_SET_MAX_GAPS_PER_WEEK){
+	if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_SET_MAX_GAPS_PER_WEEK){
 		ConstraintStudentsSetMaxGapsPerWeek* c=(ConstraintStudentsSetMaxGapsPerWeek*) ctr;
 		return c->students==studentsComboBox->currentText() || studentsComboBox->currentText()=="";
 	}

@@ -57,7 +57,7 @@ ConstraintTeachersMaxGapsPerDayForm::~ConstraintTeachersMaxGapsPerDayForm()
 
 bool ConstraintTeachersMaxGapsPerDayForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_TEACHERS_MAX_GAPS_PER_DAY)
+	if(ctr->type==TimeConstraintType::CONSTRAINT_TEACHERS_MAX_GAPS_PER_DAY)
 		return true;
 	else
 		return false;

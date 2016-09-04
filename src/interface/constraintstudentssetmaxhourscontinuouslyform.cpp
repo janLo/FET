@@ -76,7 +76,7 @@ ConstraintStudentsSetMaxHoursContinuouslyForm::~ConstraintStudentsSetMaxHoursCon
 
 bool ConstraintStudentsSetMaxHoursContinuouslyForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_STUDENTS_SET_MAX_HOURS_CONTINUOUSLY){
+	if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_SET_MAX_HOURS_CONTINUOUSLY){
 		ConstraintStudentsSetMaxHoursContinuously* c=(ConstraintStudentsSetMaxHoursContinuously*) ctr;
 		return c->students==studentsComboBox->currentText() || studentsComboBox->currentText()=="";
 	}

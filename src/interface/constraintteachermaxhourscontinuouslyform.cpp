@@ -67,7 +67,7 @@ ConstraintTeacherMaxHoursContinuouslyForm::~ConstraintTeacherMaxHoursContinuousl
 
 bool ConstraintTeacherMaxHoursContinuouslyForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_TEACHER_MAX_HOURS_CONTINUOUSLY){
+	if(ctr->type==TimeConstraintType::CONSTRAINT_TEACHER_MAX_HOURS_CONTINUOUSLY){
 		ConstraintTeacherMaxHoursContinuously* ct=(ConstraintTeacherMaxHoursContinuously*) ctr;
         return ct->teacherName()==teachersComboBox->currentText() || teachersComboBox->currentText()=="";
 	}

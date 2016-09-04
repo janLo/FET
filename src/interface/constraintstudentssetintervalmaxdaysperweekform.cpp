@@ -76,7 +76,7 @@ ConstraintStudentsSetIntervalMaxDaysPerWeekForm::~ConstraintStudentsSetIntervalM
 
 bool ConstraintStudentsSetIntervalMaxDaysPerWeekForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_STUDENTS_SET_INTERVAL_MAX_DAYS_PER_WEEK){
+	if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_SET_INTERVAL_MAX_DAYS_PER_WEEK){
 		ConstraintStudentsSetIntervalMaxDaysPerWeek* c=(ConstraintStudentsSetIntervalMaxDaysPerWeek*) ctr;
 		return c->students==studentsComboBox->currentText() || studentsComboBox->currentText()=="";
 	}

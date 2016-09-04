@@ -57,7 +57,7 @@ ConstraintThreeActivitiesGroupedForm::~ConstraintThreeActivitiesGroupedForm()
 
 bool ConstraintThreeActivitiesGroupedForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_THREE_ACTIVITIES_GROUPED)
+	if(ctr->type==TimeConstraintType::CONSTRAINT_THREE_ACTIVITIES_GROUPED)
 		return true;
 	else
 		return false;

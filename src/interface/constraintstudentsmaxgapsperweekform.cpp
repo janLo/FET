@@ -57,7 +57,7 @@ ConstraintStudentsMaxGapsPerWeekForm::~ConstraintStudentsMaxGapsPerWeekForm()
 
 bool ConstraintStudentsMaxGapsPerWeekForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_STUDENTS_MAX_GAPS_PER_WEEK)
+	if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_MAX_GAPS_PER_WEEK)
 		return true;
 	else
 		return false;

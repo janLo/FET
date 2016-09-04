@@ -57,7 +57,7 @@ ConstraintBasicCompulsoryTimeForm::~ConstraintBasicCompulsoryTimeForm()
 
 bool ConstraintBasicCompulsoryTimeForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_BASIC_COMPULSORY_TIME)
+	if(ctr->type==TimeConstraintType::CONSTRAINT_BASIC_COMPULSORY_TIME)
 		return true;
 	else
 		return false;
@@ -155,7 +155,7 @@ void ConstraintBasicCompulsoryTimeForm::removeConstraint()
 	if(lres==0){
 		//The user clicked the OK button or pressed Enter
 		
-		assert(ctr->type==CONSTRAINT_BASIC_COMPULSORY_TIME);
+		assert(ctr->type==TimeConstraintType::CONSTRAINT_BASIC_COMPULSORY_TIME);
 		
 		QString s=tr("Do you really want to remove the basic compulsory time constraint?");
 		s+=" ";

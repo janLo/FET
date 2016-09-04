@@ -67,7 +67,7 @@ ConstraintTeacherMaxGapsPerWeekForm::~ConstraintTeacherMaxGapsPerWeekForm()
 
 bool ConstraintTeacherMaxGapsPerWeekForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_TEACHER_MAX_GAPS_PER_WEEK){
+	if(ctr->type==TimeConstraintType::CONSTRAINT_TEACHER_MAX_GAPS_PER_WEEK){
 		ConstraintTeacherMaxGapsPerWeek* ctna=(ConstraintTeacherMaxGapsPerWeek*) ctr;
         return ctna->teacherName()==teachersComboBox->currentText() || teachersComboBox->currentText()=="";
 	}

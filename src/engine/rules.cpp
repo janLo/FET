@@ -1211,27 +1211,27 @@ bool Rules::modifySubject(const QString& initialSubjectName, const QString& fina
 	
 	//modify the time constraints related to this subject
 	foreach(TimeConstraint* ctr, timeConstraintsList){
-		if(ctr->type==CONSTRAINT_ACTIVITIES_PREFERRED_TIME_SLOTS){
+		if(ctr->type==TimeConstraintType::CONSTRAINT_ACTIVITIES_PREFERRED_TIME_SLOTS){
 			ConstraintActivitiesPreferredTimeSlots* crt_constraint=(ConstraintActivitiesPreferredTimeSlots*)ctr;
 			if(initialSubjectName == crt_constraint->p_subjectName)
 				crt_constraint->p_subjectName=finalSubjectName;
 		}
-		else if(ctr->type==CONSTRAINT_ACTIVITIES_PREFERRED_STARTING_TIMES){
+		else if(ctr->type==TimeConstraintType::CONSTRAINT_ACTIVITIES_PREFERRED_STARTING_TIMES){
 			ConstraintActivitiesPreferredStartingTimes* crt_constraint=(ConstraintActivitiesPreferredStartingTimes*)ctr;
 			if(initialSubjectName == crt_constraint->subjectName)
 				crt_constraint->subjectName=finalSubjectName;
 		}
-		else if(ctr->type==CONSTRAINT_ACTIVITIES_END_STUDENTS_DAY){
+		else if(ctr->type==TimeConstraintType::CONSTRAINT_ACTIVITIES_END_STUDENTS_DAY){
 			ConstraintActivitiesEndStudentsDay* crt_constraint=(ConstraintActivitiesEndStudentsDay*)ctr;
 			if(initialSubjectName == crt_constraint->subjectName)
 				crt_constraint->subjectName=finalSubjectName;
 		}
-		else if(ctr->type==CONSTRAINT_SUBACTIVITIES_PREFERRED_TIME_SLOTS){
+		else if(ctr->type==TimeConstraintType::CONSTRAINT_SUBACTIVITIES_PREFERRED_TIME_SLOTS){
 			ConstraintSubactivitiesPreferredTimeSlots* crt_constraint=(ConstraintSubactivitiesPreferredTimeSlots*)ctr;
 			if(initialSubjectName == crt_constraint->p_subjectName)
 				crt_constraint->p_subjectName=finalSubjectName;
 		}
-		else if(ctr->type==CONSTRAINT_SUBACTIVITIES_PREFERRED_STARTING_TIMES){
+		else if(ctr->type==TimeConstraintType::CONSTRAINT_SUBACTIVITIES_PREFERRED_STARTING_TIMES){
 			ConstraintSubactivitiesPreferredStartingTimes* crt_constraint=(ConstraintSubactivitiesPreferredStartingTimes*)ctr;
 			if(initialSubjectName == crt_constraint->subjectName)
 				crt_constraint->subjectName=finalSubjectName;
@@ -1373,67 +1373,67 @@ bool Rules::modifyActivityTag(const QString& initialActivityTagName, const QStri
 	
 	//modify the constraints related to this activity tag
 	foreach(TimeConstraint* ctr, timeConstraintsList){
-		if(ctr->type==CONSTRAINT_TEACHER_ACTIVITY_TAG_MAX_HOURS_CONTINUOUSLY){
+		if(ctr->type==TimeConstraintType::CONSTRAINT_TEACHER_ACTIVITY_TAG_MAX_HOURS_CONTINUOUSLY){
 			ConstraintTeacherActivityTagMaxHoursContinuously* crt_constraint=(ConstraintTeacherActivityTagMaxHoursContinuously*)ctr;
 			if(initialActivityTagName == crt_constraint->activityTagName)
 				crt_constraint->activityTagName=finalActivityTagName;
 		}
-		else if(ctr->type==CONSTRAINT_TEACHER_ACTIVITY_TAG_MAX_HOURS_DAILY){
+		else if(ctr->type==TimeConstraintType::CONSTRAINT_TEACHER_ACTIVITY_TAG_MAX_HOURS_DAILY){
 			ConstraintTeacherActivityTagMaxHoursDaily* crt_constraint=(ConstraintTeacherActivityTagMaxHoursDaily*)ctr;
 			if(initialActivityTagName == crt_constraint->activityTagName)
 				crt_constraint->activityTagName=finalActivityTagName;
 		}
-		else if(ctr->type==CONSTRAINT_TEACHERS_ACTIVITY_TAG_MAX_HOURS_CONTINUOUSLY){
+		else if(ctr->type==TimeConstraintType::CONSTRAINT_TEACHERS_ACTIVITY_TAG_MAX_HOURS_CONTINUOUSLY){
 			ConstraintTeachersActivityTagMaxHoursContinuously* crt_constraint=(ConstraintTeachersActivityTagMaxHoursContinuously*)ctr;
 			if(initialActivityTagName == crt_constraint->activityTagName)
 				crt_constraint->activityTagName=finalActivityTagName;
 		}
-		else if(ctr->type==CONSTRAINT_TEACHERS_ACTIVITY_TAG_MAX_HOURS_DAILY){
+		else if(ctr->type==TimeConstraintType::CONSTRAINT_TEACHERS_ACTIVITY_TAG_MAX_HOURS_DAILY){
 			ConstraintTeachersActivityTagMaxHoursDaily* crt_constraint=(ConstraintTeachersActivityTagMaxHoursDaily*)ctr;
 			if(initialActivityTagName == crt_constraint->activityTagName)
 				crt_constraint->activityTagName=finalActivityTagName;
 		}
-		else if(ctr->type==CONSTRAINT_STUDENTS_ACTIVITY_TAG_MAX_HOURS_CONTINUOUSLY){
+		else if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_ACTIVITY_TAG_MAX_HOURS_CONTINUOUSLY){
 			ConstraintStudentsActivityTagMaxHoursContinuously* crt_constraint=(ConstraintStudentsActivityTagMaxHoursContinuously*)ctr;
 			if(initialActivityTagName == crt_constraint->activityTagName)
 				crt_constraint->activityTagName=finalActivityTagName;
 		}
-		else if(ctr->type==CONSTRAINT_STUDENTS_ACTIVITY_TAG_MAX_HOURS_DAILY){
+		else if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_ACTIVITY_TAG_MAX_HOURS_DAILY){
 			ConstraintStudentsActivityTagMaxHoursDaily* crt_constraint=(ConstraintStudentsActivityTagMaxHoursDaily*)ctr;
 			if(initialActivityTagName == crt_constraint->activityTagName)
 				crt_constraint->activityTagName=finalActivityTagName;
 		}
-		else if(ctr->type==CONSTRAINT_STUDENTS_SET_ACTIVITY_TAG_MAX_HOURS_CONTINUOUSLY){
+		else if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_SET_ACTIVITY_TAG_MAX_HOURS_CONTINUOUSLY){
 			ConstraintStudentsSetActivityTagMaxHoursContinuously* crt_constraint=(ConstraintStudentsSetActivityTagMaxHoursContinuously*)ctr;
 			if(initialActivityTagName == crt_constraint->activityTagName)
 				crt_constraint->activityTagName=finalActivityTagName;
 		}
-		else if(ctr->type==CONSTRAINT_STUDENTS_SET_ACTIVITY_TAG_MAX_HOURS_DAILY){
+		else if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_SET_ACTIVITY_TAG_MAX_HOURS_DAILY){
 			ConstraintStudentsSetActivityTagMaxHoursDaily* crt_constraint=(ConstraintStudentsSetActivityTagMaxHoursDaily*)ctr;
 			if(initialActivityTagName == crt_constraint->activityTagName)
 				crt_constraint->activityTagName=finalActivityTagName;
 		}
-		else if(ctr->type==CONSTRAINT_ACTIVITIES_PREFERRED_TIME_SLOTS){
+		else if(ctr->type==TimeConstraintType::CONSTRAINT_ACTIVITIES_PREFERRED_TIME_SLOTS){
 			ConstraintActivitiesPreferredTimeSlots* crt_constraint=(ConstraintActivitiesPreferredTimeSlots*)ctr;
 			if(initialActivityTagName == crt_constraint->p_activityTagName)
 				crt_constraint->p_activityTagName=finalActivityTagName;
 		}
-		else if(ctr->type==CONSTRAINT_ACTIVITIES_PREFERRED_STARTING_TIMES){
+		else if(ctr->type==TimeConstraintType::CONSTRAINT_ACTIVITIES_PREFERRED_STARTING_TIMES){
 			ConstraintActivitiesPreferredStartingTimes* crt_constraint=(ConstraintActivitiesPreferredStartingTimes*)ctr;
 			if(initialActivityTagName == crt_constraint->activityTagName)
 				crt_constraint->activityTagName=finalActivityTagName;
 		}
-		else if(ctr->type==CONSTRAINT_ACTIVITIES_END_STUDENTS_DAY){
+		else if(ctr->type==TimeConstraintType::CONSTRAINT_ACTIVITIES_END_STUDENTS_DAY){
 			ConstraintActivitiesEndStudentsDay* crt_constraint=(ConstraintActivitiesEndStudentsDay*)ctr;
 			if(initialActivityTagName == crt_constraint->activityTagName)
 				crt_constraint->activityTagName=finalActivityTagName;
 		}
-		else if(ctr->type==CONSTRAINT_SUBACTIVITIES_PREFERRED_TIME_SLOTS){
+		else if(ctr->type==TimeConstraintType::CONSTRAINT_SUBACTIVITIES_PREFERRED_TIME_SLOTS){
 			ConstraintSubactivitiesPreferredTimeSlots* crt_constraint=(ConstraintSubactivitiesPreferredTimeSlots*)ctr;
 			if(initialActivityTagName == crt_constraint->p_activityTagName)
 				crt_constraint->p_activityTagName=finalActivityTagName;
 		}
-		else if(ctr->type==CONSTRAINT_SUBACTIVITIES_PREFERRED_STARTING_TIMES){
+		else if(ctr->type==TimeConstraintType::CONSTRAINT_SUBACTIVITIES_PREFERRED_STARTING_TIMES){
 			ConstraintSubactivitiesPreferredStartingTimes* crt_constraint=(ConstraintSubactivitiesPreferredStartingTimes*)ctr;
 			if(initialActivityTagName == crt_constraint->activityTagName)
 				crt_constraint->activityTagName=finalActivityTagName;
@@ -1876,82 +1876,82 @@ bool Rules::modifyStudentsSet(const QString& initialStudentsSetName, const QStri
 	
 	if(initialStudentsSetName!=finalStudentsSetName){
 		foreach(TimeConstraint* ctr, timeConstraintsList){
-			if(ctr->type==CONSTRAINT_STUDENTS_SET_NOT_AVAILABLE_TIMES){
+			if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_SET_NOT_AVAILABLE_TIMES){
 				ConstraintStudentsSetNotAvailableTimes* crt_constraint=(ConstraintStudentsSetNotAvailableTimes*)ctr;
 				if(initialStudentsSetName == crt_constraint->students)
 					crt_constraint->students=finalStudentsSetName;
 			}
-			else if(ctr->type==CONSTRAINT_STUDENTS_SET_MAX_HOURS_DAILY){
+			else if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_SET_MAX_HOURS_DAILY){
 				ConstraintStudentsSetMaxHoursDaily* crt_constraint=(ConstraintStudentsSetMaxHoursDaily*)ctr;
 				if(initialStudentsSetName == crt_constraint->students)
 					crt_constraint->students=finalStudentsSetName;
 			}
-			else if(ctr->type==CONSTRAINT_STUDENTS_SET_MAX_DAYS_PER_WEEK){
+			else if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_SET_MAX_DAYS_PER_WEEK){
 				ConstraintStudentsSetMaxDaysPerWeek* crt_constraint=(ConstraintStudentsSetMaxDaysPerWeek*)ctr;
 				if(initialStudentsSetName == crt_constraint->students)
 					crt_constraint->students=finalStudentsSetName;
 			}
-			else if(ctr->type==CONSTRAINT_STUDENTS_SET_INTERVAL_MAX_DAYS_PER_WEEK){
+			else if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_SET_INTERVAL_MAX_DAYS_PER_WEEK){
 				ConstraintStudentsSetIntervalMaxDaysPerWeek* crt_constraint=(ConstraintStudentsSetIntervalMaxDaysPerWeek*)ctr;
 				if(initialStudentsSetName == crt_constraint->students)
 					crt_constraint->students=finalStudentsSetName;
 			}
-			else if(ctr->type==CONSTRAINT_STUDENTS_SET_MAX_HOURS_CONTINUOUSLY){
+			else if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_SET_MAX_HOURS_CONTINUOUSLY){
 				ConstraintStudentsSetMaxHoursContinuously* crt_constraint=(ConstraintStudentsSetMaxHoursContinuously*)ctr;
 				if(initialStudentsSetName == crt_constraint->students)
 					crt_constraint->students=finalStudentsSetName;
 			}
-			else if(ctr->type==CONSTRAINT_STUDENTS_SET_ACTIVITY_TAG_MAX_HOURS_CONTINUOUSLY){
+			else if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_SET_ACTIVITY_TAG_MAX_HOURS_CONTINUOUSLY){
 				ConstraintStudentsSetActivityTagMaxHoursContinuously* crt_constraint=(ConstraintStudentsSetActivityTagMaxHoursContinuously*)ctr;
 				if(initialStudentsSetName == crt_constraint->students)
 					crt_constraint->students=finalStudentsSetName;
 			}
-			else if(ctr->type==CONSTRAINT_STUDENTS_SET_ACTIVITY_TAG_MAX_HOURS_DAILY){
+			else if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_SET_ACTIVITY_TAG_MAX_HOURS_DAILY){
 				ConstraintStudentsSetActivityTagMaxHoursDaily* crt_constraint=(ConstraintStudentsSetActivityTagMaxHoursDaily*)ctr;
 				if(initialStudentsSetName == crt_constraint->students)
 					crt_constraint->students=finalStudentsSetName;
 			}
-			else if(ctr->type==CONSTRAINT_STUDENTS_SET_MIN_HOURS_DAILY){
+			else if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_SET_MIN_HOURS_DAILY){
 				ConstraintStudentsSetMinHoursDaily* crt_constraint=(ConstraintStudentsSetMinHoursDaily*)ctr;
 				if(initialStudentsSetName == crt_constraint->students)
 					crt_constraint->students=finalStudentsSetName;
 			}
-			else if(ctr->type==CONSTRAINT_STUDENTS_SET_EARLY_MAX_BEGINNINGS_AT_SECOND_HOUR){
+			else if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_SET_EARLY_MAX_BEGINNINGS_AT_SECOND_HOUR){
 				ConstraintStudentsSetEarlyMaxBeginningsAtSecondHour* crt_constraint=(ConstraintStudentsSetEarlyMaxBeginningsAtSecondHour*)ctr;
 				if(initialStudentsSetName == crt_constraint->students)
 					crt_constraint->students=finalStudentsSetName;
 			}
-			else if(ctr->type==CONSTRAINT_STUDENTS_SET_MAX_GAPS_PER_WEEK){
+			else if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_SET_MAX_GAPS_PER_WEEK){
 				ConstraintStudentsSetMaxGapsPerWeek* crt_constraint=(ConstraintStudentsSetMaxGapsPerWeek*)ctr;
 				if(initialStudentsSetName == crt_constraint->students)
 					crt_constraint->students=finalStudentsSetName;
 			}
-			else if(ctr->type==CONSTRAINT_STUDENTS_SET_MAX_GAPS_PER_DAY){
+			else if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_SET_MAX_GAPS_PER_DAY){
 				ConstraintStudentsSetMaxGapsPerDay* crt_constraint=(ConstraintStudentsSetMaxGapsPerDay*)ctr;
 				if(initialStudentsSetName == crt_constraint->students)
 					crt_constraint->students=finalStudentsSetName;
 			}
-			else if(ctr->type==CONSTRAINT_ACTIVITIES_PREFERRED_TIME_SLOTS){
+			else if(ctr->type==TimeConstraintType::CONSTRAINT_ACTIVITIES_PREFERRED_TIME_SLOTS){
 				ConstraintActivitiesPreferredTimeSlots* crt_constraint=(ConstraintActivitiesPreferredTimeSlots*)ctr;
 				if(initialStudentsSetName == crt_constraint->p_studentsName)
 					crt_constraint->p_studentsName=finalStudentsSetName;
 			}
-			else if(ctr->type==CONSTRAINT_ACTIVITIES_PREFERRED_STARTING_TIMES){
+			else if(ctr->type==TimeConstraintType::CONSTRAINT_ACTIVITIES_PREFERRED_STARTING_TIMES){
 				ConstraintActivitiesPreferredStartingTimes* crt_constraint=(ConstraintActivitiesPreferredStartingTimes*)ctr;
 				if(initialStudentsSetName == crt_constraint->studentsName)
 					crt_constraint->studentsName=finalStudentsSetName;
 			}
-			else if(ctr->type==CONSTRAINT_ACTIVITIES_END_STUDENTS_DAY){
+			else if(ctr->type==TimeConstraintType::CONSTRAINT_ACTIVITIES_END_STUDENTS_DAY){
 				ConstraintActivitiesEndStudentsDay* crt_constraint=(ConstraintActivitiesEndStudentsDay*)ctr;
 				if(initialStudentsSetName == crt_constraint->studentsName)
 					crt_constraint->studentsName=finalStudentsSetName;
 			}
-			else if(ctr->type==CONSTRAINT_SUBACTIVITIES_PREFERRED_TIME_SLOTS){
+			else if(ctr->type==TimeConstraintType::CONSTRAINT_SUBACTIVITIES_PREFERRED_TIME_SLOTS){
 				ConstraintSubactivitiesPreferredTimeSlots* crt_constraint=(ConstraintSubactivitiesPreferredTimeSlots*)ctr;
 				if(initialStudentsSetName == crt_constraint->p_studentsName)
 					crt_constraint->p_studentsName=finalStudentsSetName;
 			}
-			else if(ctr->type==CONSTRAINT_SUBACTIVITIES_PREFERRED_STARTING_TIMES){
+			else if(ctr->type==TimeConstraintType::CONSTRAINT_SUBACTIVITIES_PREFERRED_STARTING_TIMES){
 				ConstraintSubactivitiesPreferredStartingTimes* crt_constraint=(ConstraintSubactivitiesPreferredStartingTimes*)ctr;
 				if(initialStudentsSetName == crt_constraint->studentsName)
 					crt_constraint->studentsName=finalStudentsSetName;
@@ -2025,82 +2025,82 @@ bool Rules::modifyStudentsSets(const QHash<QString, QString>& oldAndNewStudentsS
 	}
 	
 	foreach(TimeConstraint* ctr, timeConstraintsList){
-		if(ctr->type==CONSTRAINT_STUDENTS_SET_NOT_AVAILABLE_TIMES){
+		if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_SET_NOT_AVAILABLE_TIMES){
 			ConstraintStudentsSetNotAvailableTimes* crt_constraint=(ConstraintStudentsSetNotAvailableTimes*)ctr;
 			if(oldAndNewStudentsSetNames.contains(crt_constraint->students))
 				crt_constraint->students=oldAndNewStudentsSetNames.value(crt_constraint->students);
 		}
-		else if(ctr->type==CONSTRAINT_STUDENTS_SET_MAX_HOURS_DAILY){
+		else if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_SET_MAX_HOURS_DAILY){
 			ConstraintStudentsSetMaxHoursDaily* crt_constraint=(ConstraintStudentsSetMaxHoursDaily*)ctr;
 			if(oldAndNewStudentsSetNames.contains(crt_constraint->students))
 				crt_constraint->students=oldAndNewStudentsSetNames.value(crt_constraint->students);
 		}
-		else if(ctr->type==CONSTRAINT_STUDENTS_SET_MAX_DAYS_PER_WEEK){
+		else if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_SET_MAX_DAYS_PER_WEEK){
 			ConstraintStudentsSetMaxDaysPerWeek* crt_constraint=(ConstraintStudentsSetMaxDaysPerWeek*)ctr;
 			if(oldAndNewStudentsSetNames.contains(crt_constraint->students))
 				crt_constraint->students=oldAndNewStudentsSetNames.value(crt_constraint->students);
 		}
-		else if(ctr->type==CONSTRAINT_STUDENTS_SET_INTERVAL_MAX_DAYS_PER_WEEK){
+		else if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_SET_INTERVAL_MAX_DAYS_PER_WEEK){
 			ConstraintStudentsSetIntervalMaxDaysPerWeek* crt_constraint=(ConstraintStudentsSetIntervalMaxDaysPerWeek*)ctr;
 			if(oldAndNewStudentsSetNames.contains(crt_constraint->students))
 				crt_constraint->students=oldAndNewStudentsSetNames.value(crt_constraint->students);
 		}
-		else if(ctr->type==CONSTRAINT_STUDENTS_SET_MAX_HOURS_CONTINUOUSLY){
+		else if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_SET_MAX_HOURS_CONTINUOUSLY){
 			ConstraintStudentsSetMaxHoursContinuously* crt_constraint=(ConstraintStudentsSetMaxHoursContinuously*)ctr;
 			if(oldAndNewStudentsSetNames.contains(crt_constraint->students))
 				crt_constraint->students=oldAndNewStudentsSetNames.value(crt_constraint->students);
 		}
-		else if(ctr->type==CONSTRAINT_STUDENTS_SET_ACTIVITY_TAG_MAX_HOURS_CONTINUOUSLY){
+		else if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_SET_ACTIVITY_TAG_MAX_HOURS_CONTINUOUSLY){
 			ConstraintStudentsSetActivityTagMaxHoursContinuously* crt_constraint=(ConstraintStudentsSetActivityTagMaxHoursContinuously*)ctr;
 			if(oldAndNewStudentsSetNames.contains(crt_constraint->students))
 				crt_constraint->students=oldAndNewStudentsSetNames.value(crt_constraint->students);
 		}
-		else if(ctr->type==CONSTRAINT_STUDENTS_SET_ACTIVITY_TAG_MAX_HOURS_DAILY){
+		else if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_SET_ACTIVITY_TAG_MAX_HOURS_DAILY){
 			ConstraintStudentsSetActivityTagMaxHoursDaily* crt_constraint=(ConstraintStudentsSetActivityTagMaxHoursDaily*)ctr;
 			if(oldAndNewStudentsSetNames.contains(crt_constraint->students))
 				crt_constraint->students=oldAndNewStudentsSetNames.value(crt_constraint->students);
 		}
-		else if(ctr->type==CONSTRAINT_STUDENTS_SET_MIN_HOURS_DAILY){
+		else if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_SET_MIN_HOURS_DAILY){
 			ConstraintStudentsSetMinHoursDaily* crt_constraint=(ConstraintStudentsSetMinHoursDaily*)ctr;
 			if(oldAndNewStudentsSetNames.contains(crt_constraint->students))
 				crt_constraint->students=oldAndNewStudentsSetNames.value(crt_constraint->students);
 		}
-		else if(ctr->type==CONSTRAINT_STUDENTS_SET_EARLY_MAX_BEGINNINGS_AT_SECOND_HOUR){
+		else if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_SET_EARLY_MAX_BEGINNINGS_AT_SECOND_HOUR){
 			ConstraintStudentsSetEarlyMaxBeginningsAtSecondHour* crt_constraint=(ConstraintStudentsSetEarlyMaxBeginningsAtSecondHour*)ctr;
 			if(oldAndNewStudentsSetNames.contains(crt_constraint->students))
 				crt_constraint->students=oldAndNewStudentsSetNames.value(crt_constraint->students);
 		}
-		else if(ctr->type==CONSTRAINT_STUDENTS_SET_MAX_GAPS_PER_WEEK){
+		else if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_SET_MAX_GAPS_PER_WEEK){
 			ConstraintStudentsSetMaxGapsPerWeek* crt_constraint=(ConstraintStudentsSetMaxGapsPerWeek*)ctr;
 			if(oldAndNewStudentsSetNames.contains(crt_constraint->students))
 				crt_constraint->students=oldAndNewStudentsSetNames.value(crt_constraint->students);
 		}
-		else if(ctr->type==CONSTRAINT_STUDENTS_SET_MAX_GAPS_PER_DAY){
+		else if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_SET_MAX_GAPS_PER_DAY){
 			ConstraintStudentsSetMaxGapsPerDay* crt_constraint=(ConstraintStudentsSetMaxGapsPerDay*)ctr;
 			if(oldAndNewStudentsSetNames.contains(crt_constraint->students))
 				crt_constraint->students=oldAndNewStudentsSetNames.value(crt_constraint->students);
 		}
-		else if(ctr->type==CONSTRAINT_ACTIVITIES_PREFERRED_TIME_SLOTS){
+		else if(ctr->type==TimeConstraintType::CONSTRAINT_ACTIVITIES_PREFERRED_TIME_SLOTS){
 			ConstraintActivitiesPreferredTimeSlots* crt_constraint=(ConstraintActivitiesPreferredTimeSlots*)ctr;
 			if(oldAndNewStudentsSetNames.contains(crt_constraint->p_studentsName))
 				crt_constraint->p_studentsName=oldAndNewStudentsSetNames.value(crt_constraint->p_studentsName);
 		}
-		else if(ctr->type==CONSTRAINT_ACTIVITIES_PREFERRED_STARTING_TIMES){
+		else if(ctr->type==TimeConstraintType::CONSTRAINT_ACTIVITIES_PREFERRED_STARTING_TIMES){
 			ConstraintActivitiesPreferredStartingTimes* crt_constraint=(ConstraintActivitiesPreferredStartingTimes*)ctr;
 			if(oldAndNewStudentsSetNames.contains(crt_constraint->studentsName))
 				crt_constraint->studentsName=oldAndNewStudentsSetNames.value(crt_constraint->studentsName);
 		}
-		else if(ctr->type==CONSTRAINT_ACTIVITIES_END_STUDENTS_DAY){
+		else if(ctr->type==TimeConstraintType::CONSTRAINT_ACTIVITIES_END_STUDENTS_DAY){
 			ConstraintActivitiesEndStudentsDay* crt_constraint=(ConstraintActivitiesEndStudentsDay*)ctr;
 			if(oldAndNewStudentsSetNames.contains(crt_constraint->studentsName))
 				crt_constraint->studentsName=oldAndNewStudentsSetNames.value(crt_constraint->studentsName);
 		}
-		else if(ctr->type==CONSTRAINT_SUBACTIVITIES_PREFERRED_TIME_SLOTS){
+		else if(ctr->type==TimeConstraintType::CONSTRAINT_SUBACTIVITIES_PREFERRED_TIME_SLOTS){
 			ConstraintSubactivitiesPreferredTimeSlots* crt_constraint=(ConstraintSubactivitiesPreferredTimeSlots*)ctr;
 			if(oldAndNewStudentsSetNames.contains(crt_constraint->p_studentsName))
 				crt_constraint->p_studentsName=oldAndNewStudentsSetNames.value(crt_constraint->p_studentsName);
 		}
-		else if(ctr->type==CONSTRAINT_SUBACTIVITIES_PREFERRED_STARTING_TIMES){
+		else if(ctr->type==TimeConstraintType::CONSTRAINT_SUBACTIVITIES_PREFERRED_STARTING_TIMES){
 			ConstraintSubactivitiesPreferredStartingTimes* crt_constraint=(ConstraintSubactivitiesPreferredStartingTimes*)ctr;
 			if(oldAndNewStudentsSetNames.contains(crt_constraint->studentsName))
 				crt_constraint->studentsName=oldAndNewStudentsSetNames.value(crt_constraint->studentsName);
@@ -3303,7 +3303,7 @@ bool Rules::addTimeConstraint(TimeConstraint* ctr)
 	//TODO: improve this
 
 	//check if this constraint is already added, for ConstraintActivityPreferredStartingTime
-	if(ctr->type==CONSTRAINT_ACTIVITY_PREFERRED_STARTING_TIME){
+	if(ctr->type==TimeConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_STARTING_TIME){
 		ConstraintActivityPreferredStartingTime* c=(ConstraintActivityPreferredStartingTime*) ctr;
 		QSet<ConstraintActivityPreferredStartingTime*> cs=apstHash.value(c->activityId, QSet<ConstraintActivityPreferredStartingTime*>());
 		foreach(ConstraintActivityPreferredStartingTime* oldc, cs){
@@ -3316,7 +3316,7 @@ bool Rules::addTimeConstraint(TimeConstraint* ctr)
 		/*int i;
 		for(i=0; i<this->timeConstraintsList.size(); i++){
 			TimeConstraint* ctr2=this->timeConstraintsList[i];
-			if(ctr2->type==CONSTRAINT_ACTIVITY_PREFERRED_STARTING_TIME)
+			if(ctr2->type==TimeConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_STARTING_TIME)
 				if(
 				 *((ConstraintActivityPreferredStartingTime*)ctr2)
 				 ==
@@ -3330,7 +3330,7 @@ bool Rules::addTimeConstraint(TimeConstraint* ctr)
 	}
 
 	//check if this constraint is already added, for ConstraintMinDaysBetweenActivities
-	else if(ctr->type==CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES){
+	else if(ctr->type==TimeConstraintType::CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES){
 		ConstraintMinDaysBetweenActivities* c=(ConstraintMinDaysBetweenActivities*) ctr;
 		foreach(int aid, c->activitiesId){
 			QSet<ConstraintMinDaysBetweenActivities*> cs=mdbaHash.value(aid, QSet<ConstraintMinDaysBetweenActivities*>());
@@ -3347,7 +3347,7 @@ bool Rules::addTimeConstraint(TimeConstraint* ctr)
 		/*int i;
 		for(i=0; i<this->timeConstraintsList.size(); i++){
 			TimeConstraint* ctr2=this->timeConstraintsList[i];
-			if(ctr2->type==CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES)
+			if(ctr2->type==TimeConstraintType::CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES)
 				if(
 				 *((ConstraintMinDaysBetweenActivities*)ctr2)
 				 ==
@@ -3360,7 +3360,7 @@ bool Rules::addTimeConstraint(TimeConstraint* ctr)
 			ok=false;*/
 	}
 	
-	else if(ctr->type==CONSTRAINT_STUDENTS_SET_NOT_AVAILABLE_TIMES){
+	else if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_SET_NOT_AVAILABLE_TIMES){
 		ConstraintStudentsSetNotAvailableTimes* c=(ConstraintStudentsSetNotAvailableTimes*) ctr;
 		QSet<ConstraintStudentsSetNotAvailableTimes*> cs=ssnatHash.value(c->students, QSet<ConstraintStudentsSetNotAvailableTimes*>());
 		foreach(ConstraintStudentsSetNotAvailableTimes* oldc, cs){
@@ -3374,7 +3374,7 @@ bool Rules::addTimeConstraint(TimeConstraint* ctr)
 		ConstraintStudentsSetNotAvailableTimes* ssna=(ConstraintStudentsSetNotAvailableTimes*)ctr;
 		for(i=0; i<this->timeConstraintsList.size(); i++){
 			TimeConstraint* ctr2=this->timeConstraintsList[i];
-			if(ctr2->type==CONSTRAINT_STUDENTS_SET_NOT_AVAILABLE_TIMES) {
+			if(ctr2->type==TimeConstraintType::CONSTRAINT_STUDENTS_SET_NOT_AVAILABLE_TIMES) {
 				ConstraintStudentsSetNotAvailableTimes* ssna2=(ConstraintStudentsSetNotAvailableTimes*)ctr2;
 				if(ssna->students==ssna2->students)
 					break;
@@ -3385,7 +3385,7 @@ bool Rules::addTimeConstraint(TimeConstraint* ctr)
 			ok=false;*/
 	}
 	
-	else if(ctr->type==CONSTRAINT_TEACHER_NOT_AVAILABLE_TIMES){
+	else if(ctr->type==TimeConstraintType::CONSTRAINT_TEACHER_NOT_AVAILABLE_TIMES){
 		ConstraintTeacherNotAvailableTimes* c=(ConstraintTeacherNotAvailableTimes*) ctr;
         QSet<ConstraintTeacherNotAvailableTimes*> cs=tnatHash.value(c->teacherName(), QSet<ConstraintTeacherNotAvailableTimes*>());
 		foreach(ConstraintTeacherNotAvailableTimes* oldc, cs){
@@ -3399,7 +3399,7 @@ bool Rules::addTimeConstraint(TimeConstraint* ctr)
 		ConstraintTeacherNotAvailableTimes* tna=(ConstraintTeacherNotAvailableTimes*)ctr;
 		for(i=0; i<this->timeConstraintsList.size(); i++){
 			TimeConstraint* ctr2=this->timeConstraintsList[i];
-			if(ctr2->type==CONSTRAINT_TEACHER_NOT_AVAILABLE_TIMES) {
+			if(ctr2->type==TimeConstraintType::CONSTRAINT_TEACHER_NOT_AVAILABLE_TIMES) {
 				ConstraintTeacherNotAvailableTimes* tna2=(ConstraintTeacherNotAvailableTimes*)ctr2;
 				if(tna->teacher==tna2->teacher)
 					break;
@@ -3410,7 +3410,7 @@ bool Rules::addTimeConstraint(TimeConstraint* ctr)
 			ok=false;*/
 	}
 	
-	else if(ctr->type==CONSTRAINT_BREAK_TIMES){
+	else if(ctr->type==TimeConstraintType::CONSTRAINT_BREAK_TIMES){
 		//ConstraintBreakTimes* c=(ConstraintBreakTimes*) ctr;
 		QSet<ConstraintBreakTimes*> cs=btSet;
 		if(cs.count()>0)
@@ -3418,7 +3418,7 @@ bool Rules::addTimeConstraint(TimeConstraint* ctr)
 		/*int i;
 		for(i=0; i<this->timeConstraintsList.size(); i++){
 			TimeConstraint* ctr2=this->timeConstraintsList[i];
-			if(ctr2->type==CONSTRAINT_BREAK_TIMES)
+			if(ctr2->type==TimeConstraintType::CONSTRAINT_BREAK_TIMES)
 				break;
 		}
 				
@@ -3426,7 +3426,7 @@ bool Rules::addTimeConstraint(TimeConstraint* ctr)
 			ok=false;*/
 	}
 	
-	else if(ctr->type==CONSTRAINT_BASIC_COMPULSORY_TIME){
+	else if(ctr->type==TimeConstraintType::CONSTRAINT_BASIC_COMPULSORY_TIME){
 		//ConstraintBasicCompulsoryTime* c=(ConstraintBasicCompulsoryTime*) ctr;
 		QSet<ConstraintBasicCompulsoryTime*> cs=bctSet;
 		if(cs.count()>0)
@@ -3434,7 +3434,7 @@ bool Rules::addTimeConstraint(TimeConstraint* ctr)
 		/*int i;
 		for(i=0; i<this->timeConstraintsList.size(); i++){
 			TimeConstraint* ctr2=this->timeConstraintsList[i];
-			if(ctr2->type==CONSTRAINT_BASIC_COMPULSORY_TIME)
+			if(ctr2->type==TimeConstraintType::CONSTRAINT_BASIC_COMPULSORY_TIME)
 				break;
 		}
 				
@@ -3445,7 +3445,7 @@ bool Rules::addTimeConstraint(TimeConstraint* ctr)
 	if(ok){
 		this->timeConstraintsList << ctr; //append
 		
-		if(ctr->type==CONSTRAINT_ACTIVITY_PREFERRED_STARTING_TIME){
+		if(ctr->type==TimeConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_STARTING_TIME){
 			ConstraintActivityPreferredStartingTime* c=(ConstraintActivityPreferredStartingTime*) ctr;
 			QSet<ConstraintActivityPreferredStartingTime*> cs=apstHash.value(c->activityId, QSet<ConstraintActivityPreferredStartingTime*>());
 			assert(!cs.contains(c));
@@ -3453,7 +3453,7 @@ bool Rules::addTimeConstraint(TimeConstraint* ctr)
 			apstHash.insert(c->activityId, cs);
 		}
 
-		else if(ctr->type==CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES){
+		else if(ctr->type==TimeConstraintType::CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES){
 			ConstraintMinDaysBetweenActivities* c=(ConstraintMinDaysBetweenActivities*) ctr;
 			foreach(int aid, c->activitiesId){
 				QSet<ConstraintMinDaysBetweenActivities*> cs=mdbaHash.value(aid, QSet<ConstraintMinDaysBetweenActivities*>());
@@ -3463,7 +3463,7 @@ bool Rules::addTimeConstraint(TimeConstraint* ctr)
 			}
 		}
 
-		else if(ctr->type==CONSTRAINT_TEACHER_NOT_AVAILABLE_TIMES){
+		else if(ctr->type==TimeConstraintType::CONSTRAINT_TEACHER_NOT_AVAILABLE_TIMES){
 			ConstraintTeacherNotAvailableTimes* c=(ConstraintTeacherNotAvailableTimes*) ctr;
             QSet<ConstraintTeacherNotAvailableTimes*> cs=tnatHash.value(c->teacherName(), QSet<ConstraintTeacherNotAvailableTimes*>());
 			assert(!cs.contains(c));
@@ -3471,20 +3471,20 @@ bool Rules::addTimeConstraint(TimeConstraint* ctr)
 			tnatHash.insert(c->teacherName(), cs);
 		}
 
-		else if(ctr->type==CONSTRAINT_STUDENTS_SET_NOT_AVAILABLE_TIMES){
+		else if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_SET_NOT_AVAILABLE_TIMES){
 			ConstraintStudentsSetNotAvailableTimes* c=(ConstraintStudentsSetNotAvailableTimes*) ctr;
 			QSet<ConstraintStudentsSetNotAvailableTimes*> cs=ssnatHash.value(c->students, QSet<ConstraintStudentsSetNotAvailableTimes*>());
 			assert(!cs.contains(c));
 			cs.insert(c);
 			ssnatHash.insert(c->students, cs);
 		}
-		else if(ctr->type==CONSTRAINT_BASIC_COMPULSORY_TIME){
+		else if(ctr->type==TimeConstraintType::CONSTRAINT_BASIC_COMPULSORY_TIME){
 			ConstraintBasicCompulsoryTime* c=(ConstraintBasicCompulsoryTime*) ctr;
 			QSet<ConstraintBasicCompulsoryTime*> &cs=bctSet;
 			assert(!cs.contains(c));
 			cs.insert(c);
 		}
-		else if(ctr->type==CONSTRAINT_BREAK_TIMES){
+		else if(ctr->type==TimeConstraintType::CONSTRAINT_BREAK_TIMES){
 			ConstraintBreakTimes* c=(ConstraintBreakTimes*) ctr;
 			QSet<ConstraintBreakTimes*> &cs=btSet;
 			assert(!cs.contains(c));
@@ -3503,7 +3503,7 @@ bool Rules::removeTimeConstraint(TimeConstraint* ctr)
 {
 	for(int i=0; i<this->timeConstraintsList.size(); i++){
 		if(this->timeConstraintsList[i]==ctr){
-			if(ctr->type==CONSTRAINT_ACTIVITY_PREFERRED_STARTING_TIME){
+			if(ctr->type==TimeConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_STARTING_TIME){
 				ConstraintActivityPreferredStartingTime* c=(ConstraintActivityPreferredStartingTime*) ctr;
 				QSet<ConstraintActivityPreferredStartingTime*> cs=apstHash.value(c->activityId, QSet<ConstraintActivityPreferredStartingTime*>());
 				assert(cs.contains(c));
@@ -3511,7 +3511,7 @@ bool Rules::removeTimeConstraint(TimeConstraint* ctr)
 				apstHash.insert(c->activityId, cs);
 			}
 
-			else if(ctr->type==CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES){
+			else if(ctr->type==TimeConstraintType::CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES){
 				ConstraintMinDaysBetweenActivities* c=(ConstraintMinDaysBetweenActivities*) ctr;
 				foreach(int aid, c->activitiesId){
 					QSet<ConstraintMinDaysBetweenActivities*> cs=mdbaHash.value(aid, QSet<ConstraintMinDaysBetweenActivities*>());
@@ -3521,7 +3521,7 @@ bool Rules::removeTimeConstraint(TimeConstraint* ctr)
 				}
 			}
 
-			else if(ctr->type==CONSTRAINT_TEACHER_NOT_AVAILABLE_TIMES){
+			else if(ctr->type==TimeConstraintType::CONSTRAINT_TEACHER_NOT_AVAILABLE_TIMES){
 				ConstraintTeacherNotAvailableTimes* c=(ConstraintTeacherNotAvailableTimes*) ctr;
 				QSet<ConstraintTeacherNotAvailableTimes*> cs=tnatHash.value(c->teacherName(), QSet<ConstraintTeacherNotAvailableTimes*>());
 				assert(cs.contains(c));
@@ -3529,20 +3529,20 @@ bool Rules::removeTimeConstraint(TimeConstraint* ctr)
 				tnatHash.insert(c->teacherName(), cs);
 			}
 
-			else if(ctr->type==CONSTRAINT_STUDENTS_SET_NOT_AVAILABLE_TIMES){
+			else if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_SET_NOT_AVAILABLE_TIMES){
 				ConstraintStudentsSetNotAvailableTimes* c=(ConstraintStudentsSetNotAvailableTimes*) ctr;
 				QSet<ConstraintStudentsSetNotAvailableTimes*> cs=ssnatHash.value(c->students, QSet<ConstraintStudentsSetNotAvailableTimes*>());
 				assert(cs.contains(c));
 				cs.remove(c);
 				ssnatHash.insert(c->students, cs);
 			}
-			else if(ctr->type==CONSTRAINT_BASIC_COMPULSORY_TIME){
+			else if(ctr->type==TimeConstraintType::CONSTRAINT_BASIC_COMPULSORY_TIME){
 				ConstraintBasicCompulsoryTime* c=(ConstraintBasicCompulsoryTime*) ctr;
 				QSet<ConstraintBasicCompulsoryTime*> &cs=bctSet;
 				assert(cs.contains(c));
 				cs.remove(c);
 			}
-			else if(ctr->type==CONSTRAINT_BREAK_TIMES){
+			else if(ctr->type==TimeConstraintType::CONSTRAINT_BREAK_TIMES){
 				ConstraintBreakTimes* c=(ConstraintBreakTimes*) ctr;
 				QSet<ConstraintBreakTimes*> &cs=btSet;
 				assert(cs.contains(c));
@@ -3569,7 +3569,7 @@ bool Rules::removeTimeConstraints(QList<TimeConstraint*> _tcl)
 	for(int i=0; i<this->timeConstraintsList.size(); i++){
 		TimeConstraint* ctr=timeConstraintsList[i];
 		if(_tcs.contains(ctr)){
-			if(ctr->type==CONSTRAINT_ACTIVITY_PREFERRED_STARTING_TIME){
+			if(ctr->type==TimeConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_STARTING_TIME){
 				ConstraintActivityPreferredStartingTime* c=(ConstraintActivityPreferredStartingTime*) ctr;
 				QSet<ConstraintActivityPreferredStartingTime*> cs=apstHash.value(c->activityId, QSet<ConstraintActivityPreferredStartingTime*>());
 				assert(cs.contains(c));
@@ -3577,7 +3577,7 @@ bool Rules::removeTimeConstraints(QList<TimeConstraint*> _tcl)
 				apstHash.insert(c->activityId, cs);
 			}
 
-			else if(ctr->type==CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES){
+			else if(ctr->type==TimeConstraintType::CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES){
 				ConstraintMinDaysBetweenActivities* c=(ConstraintMinDaysBetweenActivities*) ctr;
 				foreach(int aid, c->activitiesId){
 					QSet<ConstraintMinDaysBetweenActivities*> cs=mdbaHash.value(aid, QSet<ConstraintMinDaysBetweenActivities*>());
@@ -3587,7 +3587,7 @@ bool Rules::removeTimeConstraints(QList<TimeConstraint*> _tcl)
 				}
 			}
 
-			else if(ctr->type==CONSTRAINT_TEACHER_NOT_AVAILABLE_TIMES){
+			else if(ctr->type==TimeConstraintType::CONSTRAINT_TEACHER_NOT_AVAILABLE_TIMES){
 				ConstraintTeacherNotAvailableTimes* c=(ConstraintTeacherNotAvailableTimes*) ctr;
 				QSet<ConstraintTeacherNotAvailableTimes*> cs=tnatHash.value(c->teacherName(), QSet<ConstraintTeacherNotAvailableTimes*>());
 				assert(cs.contains(c));
@@ -3595,20 +3595,20 @@ bool Rules::removeTimeConstraints(QList<TimeConstraint*> _tcl)
 				tnatHash.insert(c->teacherName(), cs);
 			}
 
-			else if(ctr->type==CONSTRAINT_STUDENTS_SET_NOT_AVAILABLE_TIMES){
+			else if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_SET_NOT_AVAILABLE_TIMES){
 				ConstraintStudentsSetNotAvailableTimes* c=(ConstraintStudentsSetNotAvailableTimes*) ctr;
 				QSet<ConstraintStudentsSetNotAvailableTimes*> cs=ssnatHash.value(c->students, QSet<ConstraintStudentsSetNotAvailableTimes*>());
 				assert(cs.contains(c));
 				cs.remove(c);
 				ssnatHash.insert(c->students, cs);
 			}
-			else if(ctr->type==CONSTRAINT_BASIC_COMPULSORY_TIME){
+			else if(ctr->type==TimeConstraintType::CONSTRAINT_BASIC_COMPULSORY_TIME){
 				ConstraintBasicCompulsoryTime* c=(ConstraintBasicCompulsoryTime*) ctr;
 				QSet<ConstraintBasicCompulsoryTime*> &cs=bctSet;
 				assert(cs.contains(c));
 				cs.remove(c);
 			}
-			else if(ctr->type==CONSTRAINT_BREAK_TIMES){
+			else if(ctr->type==TimeConstraintType::CONSTRAINT_BREAK_TIMES){
 				ConstraintBreakTimes* c=(ConstraintBreakTimes*) ctr;
 				QSet<ConstraintBreakTimes*> &cs=btSet;
 				assert(cs.contains(c));
@@ -3895,7 +3895,7 @@ void Rules::updateConstraintsAfterRemoval()
 		
 	foreach(TimeConstraint* tc, timeConstraintsList){
         switch (tc->type) {
-        case CONSTRAINT_TEACHER_NOT_AVAILABLE_TIMES:
+        case TimeConstraintType::CONSTRAINT_TEACHER_NOT_AVAILABLE_TIMES:
             {
                 ConstraintTeacherNotAvailableTimes* c=(ConstraintTeacherNotAvailableTimes*)tc;
                 if(!existingTeachersNames.contains(c->teacherName()))
@@ -4281,12 +4281,13 @@ void Rules::updateConstraintsAfterRemoval()
         case TimeConstraintType::CONSTRAINT_STUDENTS_INTERVAL_MAX_DAYS_PER_WEEK:
         case TimeConstraintType::CONSTRAINT_STUDENTS_MAX_GAPS_PER_DAY:
         case TimeConstraintType::CONSTRAINT_STUDENTS_MAX_DAYS_PER_WEEK:
-            // XXX Evaluate
+            // XXX Evaluate missing
             break;
         }
 	}
 
 	foreach(SpaceConstraint* sc, spaceConstraintsList){
+        // XXX Switch statement here
 		if(sc->type==CONSTRAINT_ROOM_NOT_AVAILABLE_TIMES){
 			ConstraintRoomNotAvailableTimes* c=(ConstraintRoomNotAvailableTimes*)sc;
 			if(!existingRoomsNames.contains(c->room))
@@ -7465,7 +7466,7 @@ TimeConstraint* Rules::readTeacherNotAvailable(QXmlStreamReader& xmlReader, Fake
 	
 	bool found=false;
 	foreach(TimeConstraint* c, this->timeConstraintsList)
-		if(c->type==CONSTRAINT_TEACHER_NOT_AVAILABLE_TIMES){
+		if(c->type==TimeConstraintType::CONSTRAINT_TEACHER_NOT_AVAILABLE_TIMES){
 			ConstraintTeacherNotAvailableTimes* tna=(ConstraintTeacherNotAvailableTimes*) c;
 			if(tna->teacherName()==teacher){
 				found=true;
@@ -8505,7 +8506,7 @@ TimeConstraint* Rules::readStudentsSetNotAvailable(QXmlStreamReader& xmlReader, 
 	
 	bool found=false;
 	foreach(TimeConstraint* c, this->timeConstraintsList)
-		if(c->type==CONSTRAINT_STUDENTS_SET_NOT_AVAILABLE_TIMES){
+		if(c->type==TimeConstraintType::CONSTRAINT_STUDENTS_SET_NOT_AVAILABLE_TIMES){
 			ConstraintStudentsSetNotAvailableTimes* ssna=(ConstraintStudentsSetNotAvailableTimes*) c;
 			if(ssna->students==students){
 				found=true;
@@ -11395,7 +11396,7 @@ TimeConstraint* Rules::readActivityPreferredTimes(QXmlStreamReader& xmlReader, F
 	ConstraintActivityPreferredStartingTimes* cn=new ConstraintActivityPreferredStartingTimes();
 	cn->nPreferredStartingTimes_L=0;
 	int i;
-	/*for(i=0; i<MAX_N_CONSTRAINT_ACTIVITY_PREFERRED_STARTING_TIMES; i++){
+	/*for(i=0; i<MAX_N_TimeConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_STARTING_TIMES; i++){
 		cn->days[i] = cn->hours[i] = -1;
 	}*/
 	i=0;
@@ -11533,7 +11534,7 @@ TimeConstraint* Rules::readActivityPreferredTimeSlots(QXmlStreamReader& xmlReade
 	ConstraintActivityPreferredTimeSlots* cn=new ConstraintActivityPreferredTimeSlots();
 	cn->p_nPreferredTimeSlots_L=0;
 	int i;
-	/*for(i=0; i<MAX_N_CONSTRAINT_ACTIVITY_PREFERRED_TIME_SLOTS; i++){
+	/*for(i=0; i<MAX_N_TimeConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_TIME_SLOTS; i++){
 		cn->p_days[i] = cn->p_hours[i] = -1;
 	}*/
 	i=0;
@@ -11672,7 +11673,7 @@ TimeConstraint* Rules::readActivityPreferredStartingTimes(QXmlStreamReader& xmlR
 	ConstraintActivityPreferredStartingTimes* cn=new ConstraintActivityPreferredStartingTimes();
 	cn->nPreferredStartingTimes_L=0;
 	int i;
-	/*for(i=0; i<MAX_N_CONSTRAINT_ACTIVITY_PREFERRED_STARTING_TIMES; i++){
+	/*for(i=0; i<MAX_N_TimeConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_STARTING_TIMES; i++){
 		cn->days[i] = cn->hours[i] = -1;
 	}*/
 	i=0;
@@ -11923,7 +11924,7 @@ TimeConstraint* Rules::readBreak(QXmlStreamReader& xmlReader, FakeString& xmlRea
 	
 	bool found=false;
 	foreach(TimeConstraint* c, this->timeConstraintsList)
-		if(c->type==CONSTRAINT_BREAK_TIMES){
+		if(c->type==TimeConstraintType::CONSTRAINT_BREAK_TIMES){
 			ConstraintBreakTimes* tna=(ConstraintBreakTimes*) c;
 			if(true){
 				found=true;
@@ -12927,7 +12928,7 @@ TimeConstraint* Rules::readActivitiesPreferredTimes(QXmlStreamReader& xmlReader,
 	cn->duration=-1;
 	cn->nPreferredStartingTimes_L=0;
 	int i;
-	/*for(i=0; i<MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_STARTING_TIMES; i++){
+	/*for(i=0; i<MAX_N_TimeConstraintType::CONSTRAINT_ACTIVITIES_PREFERRED_STARTING_TIMES; i++){
 		cn->days[i] = cn->hours[i] = -1;
 	}*/
     cn->teacherName("");
@@ -13098,7 +13099,7 @@ TimeConstraint* Rules::readActivitiesPreferredTimeSlots(QXmlStreamReader& xmlRea
 	cn->duration=-1;
 	cn->p_nPreferredTimeSlots_L=0;
 	int i;
-	/*for(i=0; i<MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_TIME_SLOTS; i++){
+	/*for(i=0; i<MAX_N_TimeConstraintType::CONSTRAINT_ACTIVITIES_PREFERRED_TIME_SLOTS; i++){
 		cn->p_days[i] = cn->p_hours[i] = -1;
 	}*/
     cn->teacherName("");
@@ -13279,7 +13280,7 @@ TimeConstraint* Rules::readActivitiesPreferredStartingTimes(QXmlStreamReader& xm
 	cn->duration=-1;
 	cn->nPreferredStartingTimes_L=0;
 	int i;
-	/*for(i=0; i<MAX_N_CONSTRAINT_ACTIVITIES_PREFERRED_STARTING_TIMES; i++){
+	/*for(i=0; i<MAX_N_TimeConstraintType::CONSTRAINT_ACTIVITIES_PREFERRED_STARTING_TIMES; i++){
 		cn->days[i] = cn->hours[i] = -1;
 	}*/
     cn->teacherName("");
@@ -13461,7 +13462,7 @@ TimeConstraint* Rules::readSubactivitiesPreferredTimeSlots(QXmlStreamReader& xml
 	cn->p_nPreferredTimeSlots_L=0;
 	cn->componentNumber=0;
 	int i;
-	/*for(i=0; i<MAX_N_CONSTRAINT_SUBACTIVITIES_PREFERRED_TIME_SLOTS; i++){
+	/*for(i=0; i<MAX_N_TimeConstraintType::CONSTRAINT_SUBACTIVITIES_PREFERRED_TIME_SLOTS; i++){
 		cn->p_days[i] = cn->p_hours[i] = -1;
 	}*/
     cn->teacherName("");
@@ -13637,7 +13638,7 @@ TimeConstraint* Rules::readSubactivitiesPreferredStartingTimes(QXmlStreamReader&
 	cn->nPreferredStartingTimes_L=0;
 	cn->componentNumber=0;
 	int i;
-	/*for(i=0; i<MAX_N_CONSTRAINT_SUBACTIVITIES_PREFERRED_STARTING_TIMES; i++){
+	/*for(i=0; i<MAX_N_TimeConstraintType::CONSTRAINT_SUBACTIVITIES_PREFERRED_STARTING_TIMES; i++){
 		cn->days[i] = cn->hours[i] = -1;
 	}*/
     cn->teacherName("");

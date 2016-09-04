@@ -76,7 +76,7 @@ void ConstraintActivitiesSameStartingHourForm::refreshConstraintsListWidget()
 
 bool ConstraintActivitiesSameStartingHourForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_ACTIVITIES_SAME_STARTING_HOUR)
+	if(ctr->type==TimeConstraintType::CONSTRAINT_ACTIVITIES_SAME_STARTING_HOUR)
 		return true;
 	else
 		return false;

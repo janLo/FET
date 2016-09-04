@@ -236,7 +236,7 @@ void ModifyConstraintTeacherNotAvailableTimesForm::ok()
 	}
 
 	foreach(TimeConstraint* c, gt.rules.timeConstraintsList)
-		if(c!=this->_ctr && c->type==CONSTRAINT_TEACHER_NOT_AVAILABLE_TIMES){
+		if(c!=this->_ctr && c->type==TimeConstraintType::CONSTRAINT_TEACHER_NOT_AVAILABLE_TIMES){
 			ConstraintTeacherNotAvailableTimes* cc=(ConstraintTeacherNotAvailableTimes*)c;
             if(cc->teacherName()==teacher_name){
 				QMessageBox::warning(this, tr("FET information"),

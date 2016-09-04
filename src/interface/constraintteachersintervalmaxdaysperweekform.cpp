@@ -57,7 +57,7 @@ ConstraintTeachersIntervalMaxDaysPerWeekForm::~ConstraintTeachersIntervalMaxDays
 
 bool ConstraintTeachersIntervalMaxDaysPerWeekForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_TEACHERS_INTERVAL_MAX_DAYS_PER_WEEK){
+	if(ctr->type==TimeConstraintType::CONSTRAINT_TEACHERS_INTERVAL_MAX_DAYS_PER_WEEK){
 		return true;
 	}
 	else{

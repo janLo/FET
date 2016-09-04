@@ -67,7 +67,7 @@ ConstraintTeacherIntervalMaxDaysPerWeekForm::~ConstraintTeacherIntervalMaxDaysPe
 
 bool ConstraintTeacherIntervalMaxDaysPerWeekForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_TEACHER_INTERVAL_MAX_DAYS_PER_WEEK){
+	if(ctr->type==TimeConstraintType::CONSTRAINT_TEACHER_INTERVAL_MAX_DAYS_PER_WEEK){
 		ConstraintTeacherIntervalMaxDaysPerWeek* c=(ConstraintTeacherIntervalMaxDaysPerWeek*) ctr;
         return c->teacherName()==teachersComboBox->currentText() || teachersComboBox->currentText()=="";
 	}

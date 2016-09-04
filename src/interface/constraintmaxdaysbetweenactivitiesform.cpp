@@ -109,7 +109,7 @@ ConstraintMaxDaysBetweenActivitiesForm::~ConstraintMaxDaysBetweenActivitiesForm(
 
 bool ConstraintMaxDaysBetweenActivitiesForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type!=CONSTRAINT_MAX_DAYS_BETWEEN_ACTIVITIES)
+	if(ctr->type!=TimeConstraintType::CONSTRAINT_MAX_DAYS_BETWEEN_ACTIVITIES)
 		return false;
 		
 	ConstraintMaxDaysBetweenActivities* c=(ConstraintMaxDaysBetweenActivities*) ctr;

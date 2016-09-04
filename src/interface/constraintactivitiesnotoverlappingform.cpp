@@ -109,7 +109,7 @@ ConstraintActivitiesNotOverlappingForm::~ConstraintActivitiesNotOverlappingForm(
 
 bool ConstraintActivitiesNotOverlappingForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type!=CONSTRAINT_ACTIVITIES_NOT_OVERLAPPING)
+	if(ctr->type!=TimeConstraintType::CONSTRAINT_ACTIVITIES_NOT_OVERLAPPING)
 		return false;
 
 	ConstraintActivitiesNotOverlapping* c=(ConstraintActivitiesNotOverlapping*) ctr;

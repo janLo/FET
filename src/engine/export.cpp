@@ -756,7 +756,7 @@ bool Export::exportCSVActivities(QWidget* parent, QString& lastWarnings, const Q
 		}
 	}
 	foreach(TimeConstraint* tc, gt.rules.timeConstraintsList){
-		if(tc->type==CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES && tc->active){
+		if(tc->type==TimeConstraintType::CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES && tc->active){
 			ConstraintMinDaysBetweenActivities* c=(ConstraintMinDaysBetweenActivities*) tc;
 	
 			QSet<int> aset;
@@ -933,7 +933,7 @@ bool Export::exportCSVActivities(QWidget* parent, QString& lastWarnings, const Q
 				}
 				//end new code
 				if(careAboutMinDay){
-					assert(tcmd->type==CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES);
+					assert(tcmd->type==TimeConstraintType::CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES);
 					tosExport<<CustomFETString::number(tcmd->minDays);
 				}
 				tosExport<<fieldSeparator;

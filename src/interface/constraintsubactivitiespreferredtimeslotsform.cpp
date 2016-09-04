@@ -78,7 +78,7 @@ void ConstraintSubactivitiesPreferredTimeSlotsForm::refreshConstraintsListWidget
 
 bool ConstraintSubactivitiesPreferredTimeSlotsForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_SUBACTIVITIES_PREFERRED_TIME_SLOTS)
+	if(ctr->type==TimeConstraintType::CONSTRAINT_SUBACTIVITIES_PREFERRED_TIME_SLOTS)
 		return true;
 	else
 		return false;

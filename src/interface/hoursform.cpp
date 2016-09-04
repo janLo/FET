@@ -224,7 +224,7 @@ void HoursForm::ok()
 
 		if(toBeRemovedTime.count()>0){
 			foreach(TimeConstraint* tc, toBeRemovedTime){
-				if(tc->type==CONSTRAINT_ACTIVITY_PREFERRED_STARTING_TIME)
+				if(tc->type==TimeConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_STARTING_TIME)
 					recomputeTime=true;
 				bool tmp=gt.rules.removeTimeConstraint(tc);
 				assert(tmp);

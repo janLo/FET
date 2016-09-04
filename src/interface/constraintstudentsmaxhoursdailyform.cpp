@@ -57,7 +57,7 @@ ConstraintStudentsMaxHoursDailyForm::~ConstraintStudentsMaxHoursDailyForm()
 
 bool ConstraintStudentsMaxHoursDailyForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_STUDENTS_MAX_HOURS_DAILY)
+	if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_MAX_HOURS_DAILY)
 		return true;
 	else
 		return false;

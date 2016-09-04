@@ -111,7 +111,7 @@ ConstraintActivitiesMaxSimultaneousInSelectedTimeSlotsForm::~ConstraintActivitie
 
 bool ConstraintActivitiesMaxSimultaneousInSelectedTimeSlotsForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type!=CONSTRAINT_ACTIVITIES_MAX_SIMULTANEOUS_IN_SELECTED_TIME_SLOTS)
+	if(ctr->type!=TimeConstraintType::CONSTRAINT_ACTIVITIES_MAX_SIMULTANEOUS_IN_SELECTED_TIME_SLOTS)
 		return false;
 
 	ConstraintActivitiesMaxSimultaneousInSelectedTimeSlots* c=(ConstraintActivitiesMaxSimultaneousInSelectedTimeSlots*) ctr;

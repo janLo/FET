@@ -108,7 +108,7 @@ ConstraintActivityPreferredTimeSlotsForm::~ConstraintActivityPreferredTimeSlotsF
 
 bool ConstraintActivityPreferredTimeSlotsForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type!=CONSTRAINT_ACTIVITY_PREFERRED_TIME_SLOTS)
+	if(ctr->type!=TimeConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_TIME_SLOTS)
 		return false;
 		
 	ConstraintActivityPreferredTimeSlots* c=(ConstraintActivityPreferredTimeSlots*) ctr;

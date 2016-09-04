@@ -4944,7 +4944,7 @@ void TimetableExport::computeActivitiesWithSameStartingTime(){
 	if(PRINT_ACTIVITIES_WITH_SAME_STARTING_TIME){
 		for(int i=0; i<gt.rules.nInternalTimeConstraints; i++){
 			TimeConstraint* tc=gt.rules.internalTimeConstraintsList[i];
-			if(tc->type==CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME){ //not needed anymore:  && tc->weightPercentage==100
+			if(tc->type==TimeConstraintType::CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME){ //not needed anymore:  && tc->weightPercentage==100
 				ConstraintActivitiesSameStartingTime* c=(ConstraintActivitiesSameStartingTime*) tc;
 				for(int a=0; a<c->_n_activities; a++){
 					//speed improvement

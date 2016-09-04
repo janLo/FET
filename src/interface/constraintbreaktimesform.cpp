@@ -57,7 +57,7 @@ ConstraintBreakTimesForm::~ConstraintBreakTimesForm()
 
 bool ConstraintBreakTimesForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_BREAK_TIMES)
+	if(ctr->type==TimeConstraintType::CONSTRAINT_BREAK_TIMES)
 		return true;
 	else
 		return false;

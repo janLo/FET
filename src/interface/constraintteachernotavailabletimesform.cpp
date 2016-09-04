@@ -67,7 +67,7 @@ ConstraintTeacherNotAvailableTimesForm::~ConstraintTeacherNotAvailableTimesForm(
 
 bool ConstraintTeacherNotAvailableTimesForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_TEACHER_NOT_AVAILABLE_TIMES){
+	if(ctr->type==TimeConstraintType::CONSTRAINT_TEACHER_NOT_AVAILABLE_TIMES){
 		ConstraintTeacherNotAvailableTimes* ctna=(ConstraintTeacherNotAvailableTimes*) ctr;
         return ctna->teacherName()==teachersComboBox->currentText() || teachersComboBox->currentText()=="";
 	}

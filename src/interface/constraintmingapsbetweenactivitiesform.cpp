@@ -109,7 +109,7 @@ ConstraintMinGapsBetweenActivitiesForm::~ConstraintMinGapsBetweenActivitiesForm(
 
 bool ConstraintMinGapsBetweenActivitiesForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type!=CONSTRAINT_MIN_GAPS_BETWEEN_ACTIVITIES)
+	if(ctr->type!=TimeConstraintType::CONSTRAINT_MIN_GAPS_BETWEEN_ACTIVITIES)
 		return false;
 		
 	ConstraintMinGapsBetweenActivities* c=(ConstraintMinGapsBetweenActivities*) ctr;

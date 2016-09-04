@@ -66,7 +66,7 @@ ConstraintStudentsActivityTagMaxHoursContinuouslyForm::~ConstraintStudentsActivi
 
 bool ConstraintStudentsActivityTagMaxHoursContinuouslyForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_STUDENTS_ACTIVITY_TAG_MAX_HOURS_CONTINUOUSLY){
+	if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_ACTIVITY_TAG_MAX_HOURS_CONTINUOUSLY){
 		ConstraintStudentsActivityTagMaxHoursContinuously* c=(ConstraintStudentsActivityTagMaxHoursContinuously*) ctr;
 		return (c->activityTagName==activityTagsComboBox->currentText() || activityTagsComboBox->currentText()=="");
 	}

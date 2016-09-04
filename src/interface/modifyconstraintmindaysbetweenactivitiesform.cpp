@@ -258,7 +258,7 @@ void ModifyConstraintMinDaysBetweenActivitiesForm::ok()
 		bool duplicate=false;
 		
 		foreach(TimeConstraint* tc, gt.rules.timeConstraintsList)
-			if(tc!=this->_ctr && tc->type==CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES)
+			if(tc!=this->_ctr && tc->type==TimeConstraintType::CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES)
 				if( ( *((ConstraintMinDaysBetweenActivities*)tc) ) == adc){
 					duplicate=true;
 					break;

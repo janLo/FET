@@ -1775,7 +1775,7 @@ void AdvancedLockUnlockForm::unlockAllWithoutTimetable(QWidget* parent)
 	
 	if(unlockTime)
 		foreach(TimeConstraint* tc, gt.rules.timeConstraintsList)
-			if(tc->type==CONSTRAINT_ACTIVITY_PREFERRED_STARTING_TIME){
+			if(tc->type==TimeConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_STARTING_TIME){
 				ConstraintActivityPreferredStartingTime* c=(ConstraintActivityPreferredStartingTime*)tc;
 				if(tc->weightPercentage==100.0 && c->day>=0 && c->hour>=0){
 					if(!c->permanentlyLocked){
@@ -2077,7 +2077,7 @@ void AdvancedLockUnlockForm::unlockDayWithoutTimetable(QWidget* parent)
 	
 	if(unlockTime)
 		foreach(TimeConstraint* tc, gt.rules.timeConstraintsList)
-			if(tc->type==CONSTRAINT_ACTIVITY_PREFERRED_STARTING_TIME){
+			if(tc->type==TimeConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_STARTING_TIME){
 				ConstraintActivityPreferredStartingTime* c=(ConstraintActivityPreferredStartingTime*)tc;
 				if(c->weightPercentage==100.0 && c->day>=0 && c->hour>=0 && c->day==selectedDayInt){
 					actsSet.insert(c->activityId);

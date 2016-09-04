@@ -57,7 +57,7 @@ ConstraintTwoActivitiesConsecutiveForm::~ConstraintTwoActivitiesConsecutiveForm(
 
 bool ConstraintTwoActivitiesConsecutiveForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_TWO_ACTIVITIES_CONSECUTIVE)
+	if(ctr->type==TimeConstraintType::CONSTRAINT_TWO_ACTIVITIES_CONSECUTIVE)
 		return true;
 	else
 		return false;

@@ -79,7 +79,7 @@ ConstraintStudentsSetMinHoursDailyForm::~ConstraintStudentsSetMinHoursDailyForm(
 
 bool ConstraintStudentsSetMinHoursDailyForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_STUDENTS_SET_MIN_HOURS_DAILY){
+	if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_SET_MIN_HOURS_DAILY){
 		ConstraintStudentsSetMinHoursDaily* c=(ConstraintStudentsSetMinHoursDaily*) ctr;
 		return c->students==studentsComboBox->currentText() || studentsComboBox->currentText()=="";
 	}

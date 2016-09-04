@@ -78,7 +78,7 @@ void ConstraintSubactivitiesPreferredStartingTimesForm::refreshConstraintsListWi
 
 bool ConstraintSubactivitiesPreferredStartingTimesForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_SUBACTIVITIES_PREFERRED_STARTING_TIMES)
+	if(ctr->type==TimeConstraintType::CONSTRAINT_SUBACTIVITIES_PREFERRED_STARTING_TIMES)
 		return true;
 	else
 		return false;

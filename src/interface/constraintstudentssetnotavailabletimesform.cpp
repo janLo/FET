@@ -76,7 +76,7 @@ ConstraintStudentsSetNotAvailableTimesForm::~ConstraintStudentsSetNotAvailableTi
 
 bool ConstraintStudentsSetNotAvailableTimesForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_STUDENTS_SET_NOT_AVAILABLE_TIMES){
+	if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_SET_NOT_AVAILABLE_TIMES){
 		ConstraintStudentsSetNotAvailableTimes* c=(ConstraintStudentsSetNotAvailableTimes*) ctr;
 		return c->students==studentsComboBox->currentText() || studentsComboBox->currentText()=="";
 	}

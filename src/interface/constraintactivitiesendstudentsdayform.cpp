@@ -77,7 +77,7 @@ void ConstraintActivitiesEndStudentsDayForm::refreshConstraintsListWidget()
 
 bool ConstraintActivitiesEndStudentsDayForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_ACTIVITIES_END_STUDENTS_DAY)
+	if(ctr->type==TimeConstraintType::CONSTRAINT_ACTIVITIES_END_STUDENTS_DAY)
 		return true;
 	else
 		return false;

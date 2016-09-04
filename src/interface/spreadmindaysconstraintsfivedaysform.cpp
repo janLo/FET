@@ -159,7 +159,7 @@ void SpreadMinDaysConstraintsFiveDaysForm::wasAccepted()
 	QList<ConstraintMinDaysBetweenActivities*> constraintsToBeRemoved;
 	
 	foreach(TimeConstraint* tc, gt.rules.timeConstraintsList){
-		if(tc->type==CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES){
+		if(tc->type==TimeConstraintType::CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES){
 			ConstraintMinDaysBetweenActivities* mdc=(ConstraintMinDaysBetweenActivities*) tc;
 			
 			//find representant
@@ -210,7 +210,7 @@ void SpreadMinDaysConstraintsFiveDaysForm::wasAccepted()
 
 			int n_acts;
 			QList<int> acts;
-			//int acts[MAX_CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES];
+			//int acts[MAX_TimeConstraintType::CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES];
 			
 			n_acts=cl.count();
 			acts.clear();

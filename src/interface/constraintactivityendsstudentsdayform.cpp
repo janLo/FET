@@ -108,7 +108,7 @@ ConstraintActivityEndsStudentsDayForm::~ConstraintActivityEndsStudentsDayForm()
 
 bool ConstraintActivityEndsStudentsDayForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type!=CONSTRAINT_ACTIVITY_ENDS_STUDENTS_DAY)
+	if(ctr->type!=TimeConstraintType::CONSTRAINT_ACTIVITY_ENDS_STUDENTS_DAY)
 		return false;
 		
 	ConstraintActivityEndsStudentsDay* c=(ConstraintActivityEndsStudentsDay*) ctr;

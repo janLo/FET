@@ -76,7 +76,7 @@ ConstraintStudentsSetMaxHoursDailyForm::~ConstraintStudentsSetMaxHoursDailyForm(
 
 bool ConstraintStudentsSetMaxHoursDailyForm::filterOk(TimeConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_STUDENTS_SET_MAX_HOURS_DAILY){
+	if(ctr->type==TimeConstraintType::CONSTRAINT_STUDENTS_SET_MAX_HOURS_DAILY){
 		ConstraintStudentsSetMaxHoursDaily* c=(ConstraintStudentsSetMaxHoursDaily*) ctr;
 		return c->students==studentsComboBox->currentText() || studentsComboBox->currentText()=="";
 	}
