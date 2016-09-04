@@ -101,7 +101,7 @@ void ConstraintSubjectActivityTagPreferredRoomsForm::filterChanged()
 
 bool ConstraintSubjectActivityTagPreferredRoomsForm::filterOk(SpaceConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_SUBJECT_ACTIVITY_TAG_PREFERRED_ROOMS){
+	if(ctr->type==SpaceConstraintType::CONSTRAINT_SUBJECT_ACTIVITY_TAG_PREFERRED_ROOMS){
 		ConstraintSubjectActivityTagPreferredRooms* c=(ConstraintSubjectActivityTagPreferredRooms*)ctr;
 		return (c->subjectName==subjectsComboBox->currentText() || subjectsComboBox->currentText()=="") &&
 		 (c->activityTagName==activityTagsComboBox->currentText() || activityTagsComboBox->currentText()=="");

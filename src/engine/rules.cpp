@@ -1041,27 +1041,27 @@ bool Rules::modifyTeacher(const QString& initialTeacherName, const QString& fina
 	}
 	
 	foreach(SpaceConstraint* ctr, spaceConstraintsList){
-		if(ctr->type==CONSTRAINT_TEACHER_HOME_ROOM){
+		if(ctr->type==SpaceConstraintType::CONSTRAINT_TEACHER_HOME_ROOM){
 			ConstraintTeacherHomeRoom* crt_constraint=(ConstraintTeacherHomeRoom*)ctr;
 			if(initialTeacherName == crt_constraint->teacherName)
 				crt_constraint->teacherName=finalTeacherName;
 		}
-		else if(ctr->type==CONSTRAINT_TEACHER_HOME_ROOMS){
+		else if(ctr->type==SpaceConstraintType::CONSTRAINT_TEACHER_HOME_ROOMS){
 			ConstraintTeacherHomeRooms* crt_constraint=(ConstraintTeacherHomeRooms*)ctr;
 			if(initialTeacherName == crt_constraint->teacherName)
 				crt_constraint->teacherName=finalTeacherName;
 		}
-		else if(ctr->type==CONSTRAINT_TEACHER_MAX_BUILDING_CHANGES_PER_DAY){
+		else if(ctr->type==SpaceConstraintType::CONSTRAINT_TEACHER_MAX_BUILDING_CHANGES_PER_DAY){
 			ConstraintTeacherMaxBuildingChangesPerDay* crt_constraint=(ConstraintTeacherMaxBuildingChangesPerDay*)ctr;
 			if(initialTeacherName == crt_constraint->teacherName)
 				crt_constraint->teacherName=finalTeacherName;
 		}
-		else if(ctr->type==CONSTRAINT_TEACHER_MAX_BUILDING_CHANGES_PER_WEEK){
+		else if(ctr->type==SpaceConstraintType::CONSTRAINT_TEACHER_MAX_BUILDING_CHANGES_PER_WEEK){
 			ConstraintTeacherMaxBuildingChangesPerWeek* crt_constraint=(ConstraintTeacherMaxBuildingChangesPerWeek*)ctr;
 			if(initialTeacherName == crt_constraint->teacherName)
 				crt_constraint->teacherName=finalTeacherName;
 		}
-		else if(ctr->type==CONSTRAINT_TEACHER_MIN_GAPS_BETWEEN_BUILDING_CHANGES){
+		else if(ctr->type==SpaceConstraintType::CONSTRAINT_TEACHER_MIN_GAPS_BETWEEN_BUILDING_CHANGES){
 			ConstraintTeacherMinGapsBetweenBuildingChanges* crt_constraint=(ConstraintTeacherMinGapsBetweenBuildingChanges*)ctr;
 			if(initialTeacherName == crt_constraint->teacherName)
 				crt_constraint->teacherName=finalTeacherName;
@@ -1240,22 +1240,22 @@ bool Rules::modifySubject(const QString& initialSubjectName, const QString& fina
 	
 	//modify the space constraints related to this subject
 	foreach(SpaceConstraint* ctr, spaceConstraintsList){
-		if(ctr->type==CONSTRAINT_SUBJECT_PREFERRED_ROOM){
+		if(ctr->type==SpaceConstraintType::CONSTRAINT_SUBJECT_PREFERRED_ROOM){
 			ConstraintSubjectPreferredRoom* c=(ConstraintSubjectPreferredRoom*)ctr;
 			if(c->subjectName == initialSubjectName)
 				c->subjectName=finalSubjectName;
 		}
-		else if(ctr->type==CONSTRAINT_SUBJECT_PREFERRED_ROOMS){
+		else if(ctr->type==SpaceConstraintType::CONSTRAINT_SUBJECT_PREFERRED_ROOMS){
 			ConstraintSubjectPreferredRooms* c=(ConstraintSubjectPreferredRooms*)ctr;
 			if(c->subjectName == initialSubjectName)
 				c->subjectName=finalSubjectName;
 		}
-		else if(ctr->type==CONSTRAINT_SUBJECT_ACTIVITY_TAG_PREFERRED_ROOM){
+		else if(ctr->type==SpaceConstraintType::CONSTRAINT_SUBJECT_ACTIVITY_TAG_PREFERRED_ROOM){
 			ConstraintSubjectActivityTagPreferredRoom* c=(ConstraintSubjectActivityTagPreferredRoom*)ctr;
 			if(c->subjectName == initialSubjectName)
 				c->subjectName=finalSubjectName;
 		}
-		else if(ctr->type==CONSTRAINT_SUBJECT_ACTIVITY_TAG_PREFERRED_ROOMS){
+		else if(ctr->type==SpaceConstraintType::CONSTRAINT_SUBJECT_ACTIVITY_TAG_PREFERRED_ROOMS){
 			ConstraintSubjectActivityTagPreferredRooms* c=(ConstraintSubjectActivityTagPreferredRooms*)ctr;
 			if(c->subjectName == initialSubjectName)
 				c->subjectName=finalSubjectName;
@@ -1442,22 +1442,22 @@ bool Rules::modifyActivityTag(const QString& initialActivityTagName, const QStri
 
 	//modify the space constraints related to this subject tag
 	foreach(SpaceConstraint* ctr, spaceConstraintsList){
-		if(ctr->type==CONSTRAINT_SUBJECT_ACTIVITY_TAG_PREFERRED_ROOM){
+		if(ctr->type==SpaceConstraintType::CONSTRAINT_SUBJECT_ACTIVITY_TAG_PREFERRED_ROOM){
 			ConstraintSubjectActivityTagPreferredRoom* c=(ConstraintSubjectActivityTagPreferredRoom*)ctr;
 			if(c->activityTagName == initialActivityTagName)
 				c->activityTagName=finalActivityTagName;
 		}
-		else if(ctr->type==CONSTRAINT_SUBJECT_ACTIVITY_TAG_PREFERRED_ROOMS){
+		else if(ctr->type==SpaceConstraintType::CONSTRAINT_SUBJECT_ACTIVITY_TAG_PREFERRED_ROOMS){
 			ConstraintSubjectActivityTagPreferredRooms* c=(ConstraintSubjectActivityTagPreferredRooms*)ctr;
 			if(c->activityTagName == initialActivityTagName)
 				c->activityTagName=finalActivityTagName;
 		}
-		else if(ctr->type==CONSTRAINT_ACTIVITY_TAG_PREFERRED_ROOM){
+		else if(ctr->type==SpaceConstraintType::CONSTRAINT_ACTIVITY_TAG_PREFERRED_ROOM){
 			ConstraintActivityTagPreferredRoom* c=(ConstraintActivityTagPreferredRoom*)ctr;
 			if(c->activityTagName == initialActivityTagName)
 				c->activityTagName=finalActivityTagName;
 		}
-		else if(ctr->type==CONSTRAINT_ACTIVITY_TAG_PREFERRED_ROOMS){
+		else if(ctr->type==SpaceConstraintType::CONSTRAINT_ACTIVITY_TAG_PREFERRED_ROOMS){
 			ConstraintActivityTagPreferredRooms* c=(ConstraintActivityTagPreferredRooms*)ctr;
 			if(c->activityTagName == initialActivityTagName)
 				c->activityTagName=finalActivityTagName;
@@ -1959,27 +1959,27 @@ bool Rules::modifyStudentsSet(const QString& initialStudentsSetName, const QStri
 		}
 
 		foreach(SpaceConstraint* ctr, spaceConstraintsList){
-			if(ctr->type==CONSTRAINT_STUDENTS_SET_HOME_ROOM){
+			if(ctr->type==SpaceConstraintType::CONSTRAINT_STUDENTS_SET_HOME_ROOM){
 				ConstraintStudentsSetHomeRoom* crt_constraint=(ConstraintStudentsSetHomeRoom*)ctr;
 				if(initialStudentsSetName == crt_constraint->studentsName)
 					crt_constraint->studentsName=finalStudentsSetName;
 			}
-			else if(ctr->type==CONSTRAINT_STUDENTS_SET_HOME_ROOMS){
+			else if(ctr->type==SpaceConstraintType::CONSTRAINT_STUDENTS_SET_HOME_ROOMS){
 				ConstraintStudentsSetHomeRooms* crt_constraint=(ConstraintStudentsSetHomeRooms*)ctr;
 				if(initialStudentsSetName == crt_constraint->studentsName)
 					crt_constraint->studentsName=finalStudentsSetName;
 			}
-			else if(ctr->type==CONSTRAINT_STUDENTS_SET_MAX_BUILDING_CHANGES_PER_DAY){
+			else if(ctr->type==SpaceConstraintType::CONSTRAINT_STUDENTS_SET_MAX_BUILDING_CHANGES_PER_DAY){
 				ConstraintStudentsSetMaxBuildingChangesPerDay* crt_constraint=(ConstraintStudentsSetMaxBuildingChangesPerDay*)ctr;
 				if(initialStudentsSetName == crt_constraint->studentsName)
 					crt_constraint->studentsName=finalStudentsSetName;
 			}
-			else if(ctr->type==CONSTRAINT_STUDENTS_SET_MAX_BUILDING_CHANGES_PER_WEEK){
+			else if(ctr->type==SpaceConstraintType::CONSTRAINT_STUDENTS_SET_MAX_BUILDING_CHANGES_PER_WEEK){
 				ConstraintStudentsSetMaxBuildingChangesPerWeek* crt_constraint=(ConstraintStudentsSetMaxBuildingChangesPerWeek*)ctr;
 				if(initialStudentsSetName == crt_constraint->studentsName)
 					crt_constraint->studentsName=finalStudentsSetName;
 			}
-			else if(ctr->type==CONSTRAINT_STUDENTS_SET_MIN_GAPS_BETWEEN_BUILDING_CHANGES){
+			else if(ctr->type==SpaceConstraintType::CONSTRAINT_STUDENTS_SET_MIN_GAPS_BETWEEN_BUILDING_CHANGES){
 				ConstraintStudentsSetMinGapsBetweenBuildingChanges* crt_constraint=(ConstraintStudentsSetMinGapsBetweenBuildingChanges*)ctr;
 				if(initialStudentsSetName == crt_constraint->studentsName)
 					crt_constraint->studentsName=finalStudentsSetName;
@@ -2108,27 +2108,27 @@ bool Rules::modifyStudentsSets(const QHash<QString, QString>& oldAndNewStudentsS
 	}
 
 	foreach(SpaceConstraint* ctr, spaceConstraintsList){
-		if(ctr->type==CONSTRAINT_STUDENTS_SET_HOME_ROOM){
+		if(ctr->type==SpaceConstraintType::CONSTRAINT_STUDENTS_SET_HOME_ROOM){
 			ConstraintStudentsSetHomeRoom* crt_constraint=(ConstraintStudentsSetHomeRoom*)ctr;
 			if(oldAndNewStudentsSetNames.contains(crt_constraint->studentsName))
 				crt_constraint->studentsName=oldAndNewStudentsSetNames.value(crt_constraint->studentsName);
 		}
-		else if(ctr->type==CONSTRAINT_STUDENTS_SET_HOME_ROOMS){
+		else if(ctr->type==SpaceConstraintType::CONSTRAINT_STUDENTS_SET_HOME_ROOMS){
 			ConstraintStudentsSetHomeRooms* crt_constraint=(ConstraintStudentsSetHomeRooms*)ctr;
 			if(oldAndNewStudentsSetNames.contains(crt_constraint->studentsName))
 				crt_constraint->studentsName=oldAndNewStudentsSetNames.value(crt_constraint->studentsName);
 		}
-		else if(ctr->type==CONSTRAINT_STUDENTS_SET_MAX_BUILDING_CHANGES_PER_DAY){
+		else if(ctr->type==SpaceConstraintType::CONSTRAINT_STUDENTS_SET_MAX_BUILDING_CHANGES_PER_DAY){
 			ConstraintStudentsSetMaxBuildingChangesPerDay* crt_constraint=(ConstraintStudentsSetMaxBuildingChangesPerDay*)ctr;
 			if(oldAndNewStudentsSetNames.contains(crt_constraint->studentsName))
 				crt_constraint->studentsName=oldAndNewStudentsSetNames.value(crt_constraint->studentsName);
 		}
-		else if(ctr->type==CONSTRAINT_STUDENTS_SET_MAX_BUILDING_CHANGES_PER_WEEK){
+		else if(ctr->type==SpaceConstraintType::CONSTRAINT_STUDENTS_SET_MAX_BUILDING_CHANGES_PER_WEEK){
 			ConstraintStudentsSetMaxBuildingChangesPerWeek* crt_constraint=(ConstraintStudentsSetMaxBuildingChangesPerWeek*)ctr;
 			if(oldAndNewStudentsSetNames.contains(crt_constraint->studentsName))
 				crt_constraint->studentsName=oldAndNewStudentsSetNames.value(crt_constraint->studentsName);
 		}
-		else if(ctr->type==CONSTRAINT_STUDENTS_SET_MIN_GAPS_BETWEEN_BUILDING_CHANGES){
+		else if(ctr->type==SpaceConstraintType::CONSTRAINT_STUDENTS_SET_MIN_GAPS_BETWEEN_BUILDING_CHANGES){
 			ConstraintStudentsSetMinGapsBetweenBuildingChanges* crt_constraint=(ConstraintStudentsSetMinGapsBetweenBuildingChanges*)ctr;
 			if(oldAndNewStudentsSetNames.contains(crt_constraint->studentsName))
 				crt_constraint->studentsName=oldAndNewStudentsSetNames.value(crt_constraint->studentsName);
@@ -3086,17 +3086,17 @@ bool Rules::modifyRoom(const QString& initialRoomName, const QString& finalRoomN
 	assert(searchedRoom->name==initialRoomName);
 
 	foreach(SpaceConstraint* ctr, spaceConstraintsList){
-		if(ctr->type==CONSTRAINT_ROOM_NOT_AVAILABLE_TIMES){
+		if(ctr->type==SpaceConstraintType::CONSTRAINT_ROOM_NOT_AVAILABLE_TIMES){
 			ConstraintRoomNotAvailableTimes* crna=(ConstraintRoomNotAvailableTimes*)ctr;
 			if(crna->room==initialRoomName)
 				crna->room=finalRoomName;
 		}
-		else if(ctr->type==CONSTRAINT_ACTIVITY_PREFERRED_ROOM){
+		else if(ctr->type==SpaceConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_ROOM){
 			ConstraintActivityPreferredRoom* c=(ConstraintActivityPreferredRoom*)ctr;
 			if(c->roomName==initialRoomName)
 				c->roomName=finalRoomName;
 		}
-		else if(ctr->type==CONSTRAINT_ACTIVITY_PREFERRED_ROOMS){
+		else if(ctr->type==SpaceConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_ROOMS){
 			ConstraintActivityPreferredRooms* c=(ConstraintActivityPreferredRooms*)ctr;
 			int t=0;
 			for(QStringList::Iterator it=c->roomsNames.begin(); it!=c->roomsNames.end(); it++){
@@ -3107,12 +3107,12 @@ bool Rules::modifyRoom(const QString& initialRoomName, const QString& finalRoomN
 			}
 			assert(t<=1);
 		}
-		else if(ctr->type==CONSTRAINT_STUDENTS_SET_HOME_ROOM){
+		else if(ctr->type==SpaceConstraintType::CONSTRAINT_STUDENTS_SET_HOME_ROOM){
 			ConstraintStudentsSetHomeRoom* c=(ConstraintStudentsSetHomeRoom*)ctr;
 			if(c->roomName==initialRoomName)
 				c->roomName=finalRoomName;
 		}
-		else if(ctr->type==CONSTRAINT_STUDENTS_SET_HOME_ROOMS){
+		else if(ctr->type==SpaceConstraintType::CONSTRAINT_STUDENTS_SET_HOME_ROOMS){
 			ConstraintStudentsSetHomeRooms* c=(ConstraintStudentsSetHomeRooms*)ctr;
 			int t=0;
 			for(QStringList::Iterator it=c->roomsNames.begin(); it!=c->roomsNames.end(); it++){
@@ -3123,12 +3123,12 @@ bool Rules::modifyRoom(const QString& initialRoomName, const QString& finalRoomN
 			}
 			assert(t<=1);
 		}
-		else if(ctr->type==CONSTRAINT_TEACHER_HOME_ROOM){
+		else if(ctr->type==SpaceConstraintType::CONSTRAINT_TEACHER_HOME_ROOM){
 			ConstraintTeacherHomeRoom* c=(ConstraintTeacherHomeRoom*)ctr;
 			if(c->roomName==initialRoomName)
 				c->roomName=finalRoomName;
 		}
-		else if(ctr->type==CONSTRAINT_TEACHER_HOME_ROOMS){
+		else if(ctr->type==SpaceConstraintType::CONSTRAINT_TEACHER_HOME_ROOMS){
 			ConstraintTeacherHomeRooms* c=(ConstraintTeacherHomeRooms*)ctr;
 			int t=0;
 			for(QStringList::Iterator it=c->roomsNames.begin(); it!=c->roomsNames.end(); it++){
@@ -3139,12 +3139,12 @@ bool Rules::modifyRoom(const QString& initialRoomName, const QString& finalRoomN
 			}
 			assert(t<=1);
 		}
-		else if(ctr->type==CONSTRAINT_SUBJECT_PREFERRED_ROOM){
+		else if(ctr->type==SpaceConstraintType::CONSTRAINT_SUBJECT_PREFERRED_ROOM){
 			ConstraintSubjectPreferredRoom* c=(ConstraintSubjectPreferredRoom*)ctr;
 			if(c->roomName==initialRoomName)
 				c->roomName=finalRoomName;
 		}
-		else if(ctr->type==CONSTRAINT_SUBJECT_PREFERRED_ROOMS){
+		else if(ctr->type==SpaceConstraintType::CONSTRAINT_SUBJECT_PREFERRED_ROOMS){
 			ConstraintSubjectPreferredRooms* c=(ConstraintSubjectPreferredRooms*)ctr;
 			int t=0;
 			for(QStringList::Iterator it=c->roomsNames.begin(); it!=c->roomsNames.end(); it++){
@@ -3155,12 +3155,12 @@ bool Rules::modifyRoom(const QString& initialRoomName, const QString& finalRoomN
 			}
 			assert(t<=1);
 		}
-		else if(ctr->type==CONSTRAINT_SUBJECT_ACTIVITY_TAG_PREFERRED_ROOM){
+		else if(ctr->type==SpaceConstraintType::CONSTRAINT_SUBJECT_ACTIVITY_TAG_PREFERRED_ROOM){
 			ConstraintSubjectActivityTagPreferredRoom* c=(ConstraintSubjectActivityTagPreferredRoom*)ctr;
 			if(c->roomName==initialRoomName)
 				c->roomName=finalRoomName;
 		}
-		else if(ctr->type==CONSTRAINT_SUBJECT_ACTIVITY_TAG_PREFERRED_ROOMS){
+		else if(ctr->type==SpaceConstraintType::CONSTRAINT_SUBJECT_ACTIVITY_TAG_PREFERRED_ROOMS){
 			ConstraintSubjectActivityTagPreferredRooms* c=(ConstraintSubjectActivityTagPreferredRooms*)ctr;
 			int t=0;
 			for(QStringList::Iterator it=c->roomsNames.begin(); it!=c->roomsNames.end(); it++){
@@ -3171,12 +3171,12 @@ bool Rules::modifyRoom(const QString& initialRoomName, const QString& finalRoomN
 			}
 			assert(t<=1);
 		}
-		else if(ctr->type==CONSTRAINT_ACTIVITY_TAG_PREFERRED_ROOM){
+		else if(ctr->type==SpaceConstraintType::CONSTRAINT_ACTIVITY_TAG_PREFERRED_ROOM){
 			ConstraintActivityTagPreferredRoom* c=(ConstraintActivityTagPreferredRoom*)ctr;
 			if(c->roomName==initialRoomName)
 				c->roomName=finalRoomName;
 		}
-		else if(ctr->type==CONSTRAINT_ACTIVITY_TAG_PREFERRED_ROOMS){
+		else if(ctr->type==SpaceConstraintType::CONSTRAINT_ACTIVITY_TAG_PREFERRED_ROOMS){
 			ConstraintActivityTagPreferredRooms* c=(ConstraintActivityTagPreferredRooms*)ctr;
 			int t=0;
 			for(QStringList::Iterator it=c->roomsNames.begin(); it!=c->roomsNames.end(); it++){
@@ -3644,7 +3644,7 @@ bool Rules::addSpaceConstraint(SpaceConstraint* ctr)
 	bool ok=true;
 
 	//TODO: check if this constraint is already added...(if any possibility of duplicates)
-	if(ctr->type==CONSTRAINT_ACTIVITY_PREFERRED_ROOM){
+	if(ctr->type==SpaceConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_ROOM){
 		ConstraintActivityPreferredRoom* c=(ConstraintActivityPreferredRoom*) ctr;
 		QSet<ConstraintActivityPreferredRoom*> cs=aprHash.value(c->activityId, QSet<ConstraintActivityPreferredRoom*>());
 		foreach(ConstraintActivityPreferredRoom* oldc, cs){
@@ -3657,7 +3657,7 @@ bool Rules::addSpaceConstraint(SpaceConstraint* ctr)
 		/*int i;
 		for(i=0; i<this->spaceConstraintsList.size(); i++){
 			SpaceConstraint* ctr2=this->spaceConstraintsList[i];
-			if(ctr2->type==CONSTRAINT_ACTIVITY_PREFERRED_ROOM)
+			if(ctr2->type==SpaceConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_ROOM)
 				if(
 				 *((ConstraintActivityPreferredRoom*)ctr2)
 				 ==
@@ -3669,12 +3669,12 @@ bool Rules::addSpaceConstraint(SpaceConstraint* ctr)
 		if(i<this->spaceConstraintsList.size())
 			ok=false;*/
 	}
-/*	else if(ctr->type==CONSTRAINT_ROOM_NOT_AVAILABLE_TIMES){
+/*	else if(ctr->type==SpaceConstraintType::CONSTRAINT_ROOM_NOT_AVAILABLE_TIMES){
 		int i;
 		ConstraintRoomNotAvailableTimes* c=(ConstraintRoomNotAvailableTimes*)ctr;
 		for(i=0; i<this->spaceConstraintsList.size(); i++){
 			SpaceConstraint* ctr2=this->spaceConstraintsList[i];
-			if(ctr2->type==CONSTRAINT_ROOM_NOT_AVAILABLE_TIMES){
+			if(ctr2->type==SpaceConstraintType::CONSTRAINT_ROOM_NOT_AVAILABLE_TIMES){
 				ConstraintRoomNotAvailableTimes* c2=(ConstraintRoomNotAvailableTimes*)ctr2;				
 				if(c->room==c2->room)
 					break;
@@ -3684,7 +3684,7 @@ bool Rules::addSpaceConstraint(SpaceConstraint* ctr)
 		if(i<this->spaceConstraintsList.size())
 			ok=false;
 	}*/
-	else if(ctr->type==CONSTRAINT_BASIC_COMPULSORY_SPACE){
+	else if(ctr->type==SpaceConstraintType::CONSTRAINT_BASIC_COMPULSORY_SPACE){
 		//ConstraintBasicCompulsorySpace* c=(ConstraintBasicCompulsorySpace*) ctr;
 		QSet<ConstraintBasicCompulsorySpace*> cs=bcsSet;
 		if(cs.count()>0)
@@ -3692,7 +3692,7 @@ bool Rules::addSpaceConstraint(SpaceConstraint* ctr)
 		/*int i;
 		for(i=0; i<this->spaceConstraintsList.size(); i++){
 			SpaceConstraint* ctr2=this->spaceConstraintsList[i];
-			if(ctr2->type==CONSTRAINT_BASIC_COMPULSORY_SPACE)
+			if(ctr2->type==SpaceConstraintType::CONSTRAINT_BASIC_COMPULSORY_SPACE)
 				break;
 		}
 				
@@ -3703,14 +3703,14 @@ bool Rules::addSpaceConstraint(SpaceConstraint* ctr)
 	if(ok){
 		this->spaceConstraintsList << ctr; //append
 		
-		if(ctr->type==CONSTRAINT_ACTIVITY_PREFERRED_ROOM){
+		if(ctr->type==SpaceConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_ROOM){
 			ConstraintActivityPreferredRoom* c=(ConstraintActivityPreferredRoom*) ctr;
 			QSet<ConstraintActivityPreferredRoom*> cs=aprHash.value(c->activityId, QSet<ConstraintActivityPreferredRoom*>());
 			assert(!cs.contains(c));
 			cs.insert(c);
 			aprHash.insert(c->activityId, cs);
 		}
-		else if(ctr->type==CONSTRAINT_BASIC_COMPULSORY_SPACE){
+		else if(ctr->type==SpaceConstraintType::CONSTRAINT_BASIC_COMPULSORY_SPACE){
 			ConstraintBasicCompulsorySpace* c=(ConstraintBasicCompulsorySpace*) ctr;
 			QSet<ConstraintBasicCompulsorySpace*> &cs=bcsSet;
 			assert(!cs.contains(c));
@@ -3729,7 +3729,7 @@ bool Rules::removeSpaceConstraint(SpaceConstraint* ctr)
 {
 	for(int i=0; i<this->spaceConstraintsList.size(); i++){
 		if(this->spaceConstraintsList[i]==ctr){
-			if(ctr->type==CONSTRAINT_ACTIVITY_PREFERRED_ROOM){
+			if(ctr->type==SpaceConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_ROOM){
 				ConstraintActivityPreferredRoom* c=(ConstraintActivityPreferredRoom*) ctr;
 				QSet<ConstraintActivityPreferredRoom*> cs=aprHash.value(c->activityId, QSet<ConstraintActivityPreferredRoom*>());
 				assert(cs.contains(c));
@@ -3737,7 +3737,7 @@ bool Rules::removeSpaceConstraint(SpaceConstraint* ctr)
 				aprHash.insert(c->activityId, cs);
 			}
 
-			else if(ctr->type==CONSTRAINT_BASIC_COMPULSORY_SPACE){
+			else if(ctr->type==SpaceConstraintType::CONSTRAINT_BASIC_COMPULSORY_SPACE){
 				ConstraintBasicCompulsorySpace* c=(ConstraintBasicCompulsorySpace*) ctr;
 				QSet<ConstraintBasicCompulsorySpace*> &cs=bcsSet;
 				assert(cs.contains(c));
@@ -3764,7 +3764,7 @@ bool Rules::removeSpaceConstraints(QList<SpaceConstraint*> _scl)
 	for(int i=0; i<this->spaceConstraintsList.size(); i++){
 		SpaceConstraint* ctr=spaceConstraintsList[i];
 		if(_scs.contains(ctr)){
-			if(ctr->type==CONSTRAINT_ACTIVITY_PREFERRED_ROOM){
+			if(ctr->type==SpaceConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_ROOM){
 				ConstraintActivityPreferredRoom* c=(ConstraintActivityPreferredRoom*) ctr;
 				QSet<ConstraintActivityPreferredRoom*> cs=aprHash.value(c->activityId, QSet<ConstraintActivityPreferredRoom*>());
 				assert(cs.contains(c));
@@ -3772,7 +3772,7 @@ bool Rules::removeSpaceConstraints(QList<SpaceConstraint*> _scl)
 				aprHash.insert(c->activityId, cs);
 			}
 
-			else if(ctr->type==CONSTRAINT_BASIC_COMPULSORY_SPACE){
+			else if(ctr->type==SpaceConstraintType::CONSTRAINT_BASIC_COMPULSORY_SPACE){
 				ConstraintBasicCompulsorySpace* c=(ConstraintBasicCompulsorySpace*) ctr;
 				QSet<ConstraintBasicCompulsorySpace*> &cs=bcsSet;
 				assert(cs.contains(c));
@@ -4288,19 +4288,19 @@ void Rules::updateConstraintsAfterRemoval()
 
 	foreach(SpaceConstraint* sc, spaceConstraintsList){
         // XXX Switch statement here
-		if(sc->type==CONSTRAINT_ROOM_NOT_AVAILABLE_TIMES){
+		if(sc->type==SpaceConstraintType::CONSTRAINT_ROOM_NOT_AVAILABLE_TIMES){
 			ConstraintRoomNotAvailableTimes* c=(ConstraintRoomNotAvailableTimes*)sc;
 			if(!existingRoomsNames.contains(c->room))
 				toBeRemovedSpace.append(sc);
 		}
-		else if(sc->type==CONSTRAINT_ACTIVITY_PREFERRED_ROOM){
+		else if(sc->type==SpaceConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_ROOM){
 			ConstraintActivityPreferredRoom* c=(ConstraintActivityPreferredRoom*)sc;
 			if(!existingActivitiesIds.contains(c->activityId) || !existingRoomsNames.contains(c->roomName)){
 				toBeRemovedSpace.append(sc);
 				recomputeSpace=true;
 			}
 		}
-		else if(sc->type==CONSTRAINT_ACTIVITY_PREFERRED_ROOMS){
+		else if(sc->type==SpaceConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_ROOMS){
 			ConstraintActivityPreferredRooms* c=(ConstraintActivityPreferredRooms*)sc;
 			if(!existingActivitiesIds.contains(c->activityId))
 				toBeRemovedSpace.append(sc);
@@ -4314,12 +4314,12 @@ void Rules::updateConstraintsAfterRemoval()
 					toBeRemovedSpace.append(sc);
 			}
 		}
-		else if(sc->type==CONSTRAINT_STUDENTS_SET_HOME_ROOM){
+		else if(sc->type==SpaceConstraintType::CONSTRAINT_STUDENTS_SET_HOME_ROOM){
 			ConstraintStudentsSetHomeRoom* c=(ConstraintStudentsSetHomeRoom*)sc;
 			if(!permanentStudentsHash.contains(c->studentsName) || !existingRoomsNames.contains(c->roomName))
 				toBeRemovedSpace.append(sc);
 		}
-		else if(sc->type==CONSTRAINT_STUDENTS_SET_HOME_ROOMS){
+		else if(sc->type==SpaceConstraintType::CONSTRAINT_STUDENTS_SET_HOME_ROOMS){
 			ConstraintStudentsSetHomeRooms* c=(ConstraintStudentsSetHomeRooms*)sc;
 			if(!permanentStudentsHash.contains(c->studentsName))
 				toBeRemovedSpace.append(sc);
@@ -4333,12 +4333,12 @@ void Rules::updateConstraintsAfterRemoval()
 					toBeRemovedSpace.append(sc);
 			}
 		}
-		else if(sc->type==CONSTRAINT_TEACHER_HOME_ROOM){
+		else if(sc->type==SpaceConstraintType::CONSTRAINT_TEACHER_HOME_ROOM){
 			ConstraintTeacherHomeRoom* c=(ConstraintTeacherHomeRoom*)sc;
 			if(!existingTeachersNames.contains(c->teacherName) || !existingRoomsNames.contains(c->roomName))
 				toBeRemovedSpace.append(sc);
 		}
-		else if(sc->type==CONSTRAINT_TEACHER_HOME_ROOMS){
+		else if(sc->type==SpaceConstraintType::CONSTRAINT_TEACHER_HOME_ROOMS){
 			ConstraintTeacherHomeRooms* c=(ConstraintTeacherHomeRooms*)sc;
 			if(!existingTeachersNames.contains(c->teacherName))
 				toBeRemovedSpace.append(sc);
@@ -4352,12 +4352,12 @@ void Rules::updateConstraintsAfterRemoval()
 					toBeRemovedSpace.append(sc);
 			}
 		}
-		else if(sc->type==CONSTRAINT_SUBJECT_PREFERRED_ROOM){
+		else if(sc->type==SpaceConstraintType::CONSTRAINT_SUBJECT_PREFERRED_ROOM){
 			ConstraintSubjectPreferredRoom* c=(ConstraintSubjectPreferredRoom*)sc;
 			if(!existingSubjectsNames.contains(c->subjectName) || !existingRoomsNames.contains(c->roomName))
 				toBeRemovedSpace.append(sc);
 		}
-		else if(sc->type==CONSTRAINT_SUBJECT_PREFERRED_ROOMS){
+		else if(sc->type==SpaceConstraintType::CONSTRAINT_SUBJECT_PREFERRED_ROOMS){
 			ConstraintSubjectPreferredRooms* c=(ConstraintSubjectPreferredRooms*)sc;
 			if(!existingSubjectsNames.contains(c->subjectName))
 				toBeRemovedSpace.append(sc);
@@ -4371,13 +4371,13 @@ void Rules::updateConstraintsAfterRemoval()
 					toBeRemovedSpace.append(sc);
 			}
 		}
-		else if(sc->type==CONSTRAINT_SUBJECT_ACTIVITY_TAG_PREFERRED_ROOM){
+		else if(sc->type==SpaceConstraintType::CONSTRAINT_SUBJECT_ACTIVITY_TAG_PREFERRED_ROOM){
 			ConstraintSubjectActivityTagPreferredRoom* c=(ConstraintSubjectActivityTagPreferredRoom*)sc;
 			if(!existingSubjectsNames.contains(c->subjectName) || !existingActivityTagsNames.contains(c->activityTagName) ||
 			 !existingRoomsNames.contains(c->roomName))
 				toBeRemovedSpace.append(sc);
 		}
-		else if(sc->type==CONSTRAINT_SUBJECT_ACTIVITY_TAG_PREFERRED_ROOMS){
+		else if(sc->type==SpaceConstraintType::CONSTRAINT_SUBJECT_ACTIVITY_TAG_PREFERRED_ROOMS){
 			ConstraintSubjectActivityTagPreferredRooms* c=(ConstraintSubjectActivityTagPreferredRooms*)sc;
 			if(!existingSubjectsNames.contains(c->subjectName) || !existingActivityTagsNames.contains(c->activityTagName))
 				toBeRemovedSpace.append(sc);
@@ -4391,12 +4391,12 @@ void Rules::updateConstraintsAfterRemoval()
 					toBeRemovedSpace.append(sc);
 			}
 		}
-		else if(sc->type==CONSTRAINT_ACTIVITY_TAG_PREFERRED_ROOM){
+		else if(sc->type==SpaceConstraintType::CONSTRAINT_ACTIVITY_TAG_PREFERRED_ROOM){
 			ConstraintActivityTagPreferredRoom* c=(ConstraintActivityTagPreferredRoom*)sc;
 			if(!existingActivityTagsNames.contains(c->activityTagName) || !existingRoomsNames.contains(c->roomName))
 				toBeRemovedSpace.append(sc);
 		}
-		else if(sc->type==CONSTRAINT_ACTIVITY_TAG_PREFERRED_ROOMS){
+		else if(sc->type==SpaceConstraintType::CONSTRAINT_ACTIVITY_TAG_PREFERRED_ROOMS){
 			ConstraintActivityTagPreferredRooms* c=(ConstraintActivityTagPreferredRooms*)sc;
 			if(!existingActivityTagsNames.contains(c->activityTagName))
 				toBeRemovedSpace.append(sc);
@@ -4410,43 +4410,43 @@ void Rules::updateConstraintsAfterRemoval()
 					toBeRemovedSpace.append(sc);
 			}
 		}
-		else if(sc->type==CONSTRAINT_STUDENTS_SET_MAX_BUILDING_CHANGES_PER_DAY){
+		else if(sc->type==SpaceConstraintType::CONSTRAINT_STUDENTS_SET_MAX_BUILDING_CHANGES_PER_DAY){
 			ConstraintStudentsSetMaxBuildingChangesPerDay* c=(ConstraintStudentsSetMaxBuildingChangesPerDay*)sc;
 			if(!permanentStudentsHash.contains(c->studentsName))
 				toBeRemovedSpace.append(sc);
 		}
-		else if(sc->type==CONSTRAINT_STUDENTS_SET_MAX_BUILDING_CHANGES_PER_WEEK){
+		else if(sc->type==SpaceConstraintType::CONSTRAINT_STUDENTS_SET_MAX_BUILDING_CHANGES_PER_WEEK){
 			ConstraintStudentsSetMaxBuildingChangesPerWeek* c=(ConstraintStudentsSetMaxBuildingChangesPerWeek*)sc;
 			if(!permanentStudentsHash.contains(c->studentsName))
 				toBeRemovedSpace.append(sc);
 		}
-		else if(sc->type==CONSTRAINT_STUDENTS_SET_MIN_GAPS_BETWEEN_BUILDING_CHANGES){
+		else if(sc->type==SpaceConstraintType::CONSTRAINT_STUDENTS_SET_MIN_GAPS_BETWEEN_BUILDING_CHANGES){
 			ConstraintStudentsSetMinGapsBetweenBuildingChanges* c=(ConstraintStudentsSetMinGapsBetweenBuildingChanges*)sc;
 			if(!permanentStudentsHash.contains(c->studentsName))
 				toBeRemovedSpace.append(sc);
 		}
-		else if(sc->type==CONSTRAINT_TEACHER_MAX_BUILDING_CHANGES_PER_DAY){
+		else if(sc->type==SpaceConstraintType::CONSTRAINT_TEACHER_MAX_BUILDING_CHANGES_PER_DAY){
 			ConstraintTeacherMaxBuildingChangesPerDay* c=(ConstraintTeacherMaxBuildingChangesPerDay*)sc;
 			if(!existingTeachersNames.contains(c->teacherName))
 				toBeRemovedSpace.append(sc);
 		}
-		else if(sc->type==CONSTRAINT_TEACHER_MAX_BUILDING_CHANGES_PER_WEEK){
+		else if(sc->type==SpaceConstraintType::CONSTRAINT_TEACHER_MAX_BUILDING_CHANGES_PER_WEEK){
 			ConstraintTeacherMaxBuildingChangesPerWeek* c=(ConstraintTeacherMaxBuildingChangesPerWeek*)sc;
 			if(!existingTeachersNames.contains(c->teacherName))
 				toBeRemovedSpace.append(sc);
 		}
-		else if(sc->type==CONSTRAINT_TEACHER_MIN_GAPS_BETWEEN_BUILDING_CHANGES){
+		else if(sc->type==SpaceConstraintType::CONSTRAINT_TEACHER_MIN_GAPS_BETWEEN_BUILDING_CHANGES){
 			ConstraintTeacherMinGapsBetweenBuildingChanges* c=(ConstraintTeacherMinGapsBetweenBuildingChanges*)sc;
 			if(!existingTeachersNames.contains(c->teacherName))
 				toBeRemovedSpace.append(sc);
 		}
-		else if(sc->type==CONSTRAINT_ACTIVITIES_OCCUPY_MAX_DIFFERENT_ROOMS){
+		else if(sc->type==SpaceConstraintType::CONSTRAINT_ACTIVITIES_OCCUPY_MAX_DIFFERENT_ROOMS){
 			ConstraintActivitiesOccupyMaxDifferentRooms* c=(ConstraintActivitiesOccupyMaxDifferentRooms*)sc;
 			c->removeUseless(*this);
 			if(c->activitiesIds.count()<2)
 				toBeRemovedSpace.append(sc);
 		}
-		else if(sc->type==CONSTRAINT_ACTIVITIES_SAME_ROOM_IF_CONSECUTIVE){
+		else if(sc->type==SpaceConstraintType::CONSTRAINT_ACTIVITIES_SAME_ROOM_IF_CONSECUTIVE){
 			ConstraintActivitiesSameRoomIfConsecutive* c=(ConstraintActivitiesSameRoomIfConsecutive*)sc;
 			c->removeUseless(*this);
 			if(c->activitiesIds.count()<2)
@@ -14269,7 +14269,7 @@ SpaceConstraint* Rules::readRoomNotAvailable(QXmlStreamReader& xmlReader, FakeSt
 	
 	bool found=false;
 	foreach(SpaceConstraint* c, this->spaceConstraintsList)
-		if(c->type==CONSTRAINT_ROOM_NOT_AVAILABLE_TIMES){
+		if(c->type==SpaceConstraintType::CONSTRAINT_ROOM_NOT_AVAILABLE_TIMES){
 			ConstraintRoomNotAvailableTimes* tna=(ConstraintRoomNotAvailableTimes*) c;
 			if(tna->room==room){
 				found=true;

@@ -76,7 +76,7 @@ ConstraintStudentsSetMaxBuildingChangesPerWeekForm::~ConstraintStudentsSetMaxBui
 
 bool ConstraintStudentsSetMaxBuildingChangesPerWeekForm::filterOk(SpaceConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_STUDENTS_SET_MAX_BUILDING_CHANGES_PER_WEEK){
+	if(ctr->type==SpaceConstraintType::CONSTRAINT_STUDENTS_SET_MAX_BUILDING_CHANGES_PER_WEEK){
 		ConstraintStudentsSetMaxBuildingChangesPerWeek* c=(ConstraintStudentsSetMaxBuildingChangesPerWeek*) ctr;
 		return c->studentsName==studentsComboBox->currentText() || studentsComboBox->currentText()=="";
 	}

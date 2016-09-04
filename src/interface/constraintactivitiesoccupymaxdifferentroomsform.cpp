@@ -111,7 +111,7 @@ ConstraintActivitiesOccupyMaxDifferentRoomsForm::~ConstraintActivitiesOccupyMaxD
 
 bool ConstraintActivitiesOccupyMaxDifferentRoomsForm::filterOk(SpaceConstraint* ctr)
 {
-	if(ctr->type!=CONSTRAINT_ACTIVITIES_OCCUPY_MAX_DIFFERENT_ROOMS)
+	if(ctr->type!=SpaceConstraintType::CONSTRAINT_ACTIVITIES_OCCUPY_MAX_DIFFERENT_ROOMS)
 		return false;
 
 	ConstraintActivitiesOccupyMaxDifferentRooms* c=(ConstraintActivitiesOccupyMaxDifferentRooms*) ctr;

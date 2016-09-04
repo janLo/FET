@@ -120,7 +120,7 @@ ConstraintActivityPreferredRoomForm::~ConstraintActivityPreferredRoomForm()
 
 bool ConstraintActivityPreferredRoomForm::filterOk(SpaceConstraint* ctr)
 {
-	if(ctr->type!=CONSTRAINT_ACTIVITY_PREFERRED_ROOM)
+	if(ctr->type!=SpaceConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_ROOM)
 		return false;
 		
 	ConstraintActivityPreferredRoom* c=(ConstraintActivityPreferredRoom*) ctr;

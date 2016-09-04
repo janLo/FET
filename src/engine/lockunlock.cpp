@@ -92,7 +92,7 @@ void LockUnlock::computeLockedUnlockedActivitiesTimeSpace()
 	}
 	
 	foreach(SpaceConstraint* sc, gt.rules.spaceConstraintsList){
-		if(sc->type==CONSTRAINT_ACTIVITY_PREFERRED_ROOM && sc->weightPercentage==100.0 && sc->active){
+		if(sc->type==SpaceConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_ROOM && sc->weightPercentage==100.0 && sc->active){
 			ConstraintActivityPreferredRoom* c=(ConstraintActivityPreferredRoom*) sc;
 
 			if(c->permanentlyLocked)
@@ -129,7 +129,7 @@ void LockUnlock::computeLockedUnlockedActivitiesOnlySpace()
 	idsOfPermanentlyLockedSpace.clear();
 
 	foreach(SpaceConstraint* sc, gt.rules.spaceConstraintsList){
-		if(sc->type==CONSTRAINT_ACTIVITY_PREFERRED_ROOM && sc->weightPercentage==100.0 && sc->active){
+		if(sc->type==SpaceConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_ROOM && sc->weightPercentage==100.0 && sc->active){
 			ConstraintActivityPreferredRoom* c=(ConstraintActivityPreferredRoom*) sc;
 
 			if(c->permanentlyLocked)

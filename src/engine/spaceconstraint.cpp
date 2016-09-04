@@ -71,7 +71,7 @@ QString getActivityDetailedDescription(Rules& r, int id);
 
 SpaceConstraint::SpaceConstraint()
 {
-	type=CONSTRAINT_GENERIC_SPACE;
+	type=SpaceConstraintType::CONSTRAINT_GENERIC_SPACE;
 	
 	active=true;
 	comments=QString("");
@@ -83,7 +83,7 @@ SpaceConstraint::~SpaceConstraint()
 
 SpaceConstraint::SpaceConstraint(double wp)
 {
-	type=CONSTRAINT_GENERIC_SPACE;
+	type=SpaceConstraintType::CONSTRAINT_GENERIC_SPACE;
 
 	weightPercentage=wp;
 	assert(wp<=100 && wp>=0);
@@ -98,14 +98,14 @@ SpaceConstraint::SpaceConstraint(double wp)
 ConstraintBasicCompulsorySpace::ConstraintBasicCompulsorySpace()
 	: SpaceConstraint()
 {
-	this->type=CONSTRAINT_BASIC_COMPULSORY_SPACE;
+	this->type=SpaceConstraintType::CONSTRAINT_BASIC_COMPULSORY_SPACE;
 	this->weightPercentage=100;
 }
 
 ConstraintBasicCompulsorySpace::ConstraintBasicCompulsorySpace(double wp)
 	: SpaceConstraint(wp)
 {
-	this->type=CONSTRAINT_BASIC_COMPULSORY_SPACE;
+	this->type=SpaceConstraintType::CONSTRAINT_BASIC_COMPULSORY_SPACE;
 }
 
 bool ConstraintBasicCompulsorySpace::computeInternalStructure(QWidget* parent, Rules& r)
@@ -437,7 +437,7 @@ bool ConstraintBasicCompulsorySpace::repairWrongDayOrHour(Rules& r)
 ConstraintRoomNotAvailableTimes::ConstraintRoomNotAvailableTimes()
 	: SpaceConstraint()
 {
-	this->type=CONSTRAINT_ROOM_NOT_AVAILABLE_TIMES;
+	this->type=SpaceConstraintType::CONSTRAINT_ROOM_NOT_AVAILABLE_TIMES;
 }
 
 ConstraintRoomNotAvailableTimes::ConstraintRoomNotAvailableTimes(double wp, const QString& rn, QList<int> d, QList<int> h)
@@ -446,7 +446,7 @@ ConstraintRoomNotAvailableTimes::ConstraintRoomNotAvailableTimes(double wp, cons
 	this->room=rn;
 	this->days=d;
 	this->hours=h;
-	this->type=CONSTRAINT_ROOM_NOT_AVAILABLE_TIMES;
+	this->type=SpaceConstraintType::CONSTRAINT_ROOM_NOT_AVAILABLE_TIMES;
 }
 
 bool ConstraintRoomNotAvailableTimes::hasInactiveActivities(Rules& r)
@@ -729,13 +729,13 @@ bool ConstraintRoomNotAvailableTimes::repairWrongDayOrHour(Rules& r)
 ConstraintActivityPreferredRoom::ConstraintActivityPreferredRoom()
 	: SpaceConstraint()
 {
-	this->type=CONSTRAINT_ACTIVITY_PREFERRED_ROOM;
+	this->type=SpaceConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_ROOM;
 }
 
 ConstraintActivityPreferredRoom::ConstraintActivityPreferredRoom(double wp, int aid, const QString& room, bool perm)
 	: SpaceConstraint(wp)
 {
-	this->type=CONSTRAINT_ACTIVITY_PREFERRED_ROOM;
+	this->type=SpaceConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_ROOM;
 	this->activityId=aid;
 	this->roomName=room;
 	this->permanentlyLocked=perm;
@@ -994,13 +994,13 @@ bool ConstraintActivityPreferredRoom::repairWrongDayOrHour(Rules& r)
 ConstraintActivityPreferredRooms::ConstraintActivityPreferredRooms()
 	: SpaceConstraint()
 {
-	this->type=CONSTRAINT_ACTIVITY_PREFERRED_ROOMS;
+	this->type=SpaceConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_ROOMS;
 }
 
 ConstraintActivityPreferredRooms::ConstraintActivityPreferredRooms(double wp, int aid, const QStringList& roomsList)
 	: SpaceConstraint(wp)
 {
-	this->type=CONSTRAINT_ACTIVITY_PREFERRED_ROOMS;
+	this->type=SpaceConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_ROOMS;
 	this->activityId=aid;
 	this->roomsNames=roomsList;
 }
@@ -1247,13 +1247,13 @@ bool ConstraintActivityPreferredRooms::repairWrongDayOrHour(Rules& r)
 ConstraintStudentsSetHomeRoom::ConstraintStudentsSetHomeRoom()
 	: SpaceConstraint()
 {
-	this->type=CONSTRAINT_STUDENTS_SET_HOME_ROOM;
+	this->type=SpaceConstraintType::CONSTRAINT_STUDENTS_SET_HOME_ROOM;
 }
 
 ConstraintStudentsSetHomeRoom::ConstraintStudentsSetHomeRoom(double wp, QString st, QString rm)
 	: SpaceConstraint(wp)
 {
-	this->type=CONSTRAINT_STUDENTS_SET_HOME_ROOM;
+	this->type=SpaceConstraintType::CONSTRAINT_STUDENTS_SET_HOME_ROOM;
 	this->studentsName=st;
 	this->roomName=rm;
 }
@@ -1518,13 +1518,13 @@ bool ConstraintStudentsSetHomeRoom::repairWrongDayOrHour(Rules& r)
 ConstraintStudentsSetHomeRooms::ConstraintStudentsSetHomeRooms()
 	: SpaceConstraint()
 {
-	this->type=CONSTRAINT_STUDENTS_SET_HOME_ROOMS;
+	this->type=SpaceConstraintType::CONSTRAINT_STUDENTS_SET_HOME_ROOMS;
 }
 
 ConstraintStudentsSetHomeRooms::ConstraintStudentsSetHomeRooms(double wp, QString st, const QStringList& rms)
 	: SpaceConstraint(wp)
 {
-	this->type=CONSTRAINT_STUDENTS_SET_HOME_ROOMS;
+	this->type=SpaceConstraintType::CONSTRAINT_STUDENTS_SET_HOME_ROOMS;
 
 	this->studentsName=st;
 
@@ -1804,13 +1804,13 @@ bool ConstraintStudentsSetHomeRooms::repairWrongDayOrHour(Rules& r)
 ConstraintTeacherHomeRoom::ConstraintTeacherHomeRoom()
 	: SpaceConstraint()
 {
-	this->type=CONSTRAINT_TEACHER_HOME_ROOM;
+	this->type=SpaceConstraintType::CONSTRAINT_TEACHER_HOME_ROOM;
 }
 
 ConstraintTeacherHomeRoom::ConstraintTeacherHomeRoom(double wp, QString tc, QString rm)
 	: SpaceConstraint(wp)
 {
-	this->type=CONSTRAINT_TEACHER_HOME_ROOM;
+	this->type=SpaceConstraintType::CONSTRAINT_TEACHER_HOME_ROOM;
 	this->teacherName=tc;
 	this->roomName=rm;
 }
@@ -2073,13 +2073,13 @@ bool ConstraintTeacherHomeRoom::repairWrongDayOrHour(Rules& r)
 ConstraintTeacherHomeRooms::ConstraintTeacherHomeRooms()
 	: SpaceConstraint()
 {
-	this->type=CONSTRAINT_TEACHER_HOME_ROOMS;
+	this->type=SpaceConstraintType::CONSTRAINT_TEACHER_HOME_ROOMS;
 }
 
 ConstraintTeacherHomeRooms::ConstraintTeacherHomeRooms(double wp, QString tc, const QStringList& rms)
 	: SpaceConstraint(wp)
 {
-	this->type=CONSTRAINT_TEACHER_HOME_ROOMS;
+	this->type=SpaceConstraintType::CONSTRAINT_TEACHER_HOME_ROOMS;
 
 	this->teacherName=tc;
 
@@ -2357,13 +2357,13 @@ bool ConstraintTeacherHomeRooms::repairWrongDayOrHour(Rules& r)
 ConstraintSubjectPreferredRoom::ConstraintSubjectPreferredRoom()
 	: SpaceConstraint()
 {
-	this->type=CONSTRAINT_SUBJECT_PREFERRED_ROOM;
+	this->type=SpaceConstraintType::CONSTRAINT_SUBJECT_PREFERRED_ROOM;
 }
 
 ConstraintSubjectPreferredRoom::ConstraintSubjectPreferredRoom(double wp, const QString& subj, const QString& rm)
 	: SpaceConstraint(wp)
 {
-	this->type=CONSTRAINT_SUBJECT_PREFERRED_ROOM;
+	this->type=SpaceConstraintType::CONSTRAINT_SUBJECT_PREFERRED_ROOM;
 	this->subjectName=subj;
 	this->roomName=rm;
 }
@@ -2593,13 +2593,13 @@ bool ConstraintSubjectPreferredRoom::repairWrongDayOrHour(Rules& r)
 ConstraintSubjectPreferredRooms::ConstraintSubjectPreferredRooms()
 	: SpaceConstraint()
 {
-	this->type=CONSTRAINT_SUBJECT_PREFERRED_ROOMS;
+	this->type=SpaceConstraintType::CONSTRAINT_SUBJECT_PREFERRED_ROOMS;
 }
 
 ConstraintSubjectPreferredRooms::ConstraintSubjectPreferredRooms(double wp, const QString& subj, const QStringList& rms)
 	: SpaceConstraint(wp)
 {
-	this->type=CONSTRAINT_SUBJECT_PREFERRED_ROOMS;
+	this->type=SpaceConstraintType::CONSTRAINT_SUBJECT_PREFERRED_ROOMS;
 	this->subjectName=subj;
 	this->roomsNames=rms;
 }
@@ -2844,13 +2844,13 @@ bool ConstraintSubjectPreferredRooms::repairWrongDayOrHour(Rules& r)
 ConstraintSubjectActivityTagPreferredRoom::ConstraintSubjectActivityTagPreferredRoom()
 	: SpaceConstraint()
 {
-	this->type=CONSTRAINT_SUBJECT_ACTIVITY_TAG_PREFERRED_ROOM;
+	this->type=SpaceConstraintType::CONSTRAINT_SUBJECT_ACTIVITY_TAG_PREFERRED_ROOM;
 }
 
 ConstraintSubjectActivityTagPreferredRoom::ConstraintSubjectActivityTagPreferredRoom(double wp, const QString& subj, const QString& subjTag, const QString& rm)
 	: SpaceConstraint(wp)
 {
-	this->type=CONSTRAINT_SUBJECT_ACTIVITY_TAG_PREFERRED_ROOM;
+	this->type=SpaceConstraintType::CONSTRAINT_SUBJECT_ACTIVITY_TAG_PREFERRED_ROOM;
 	this->subjectName=subj;
 	this->activityTagName=subjTag;
 	this->roomName=rm;
@@ -3089,13 +3089,13 @@ bool ConstraintSubjectActivityTagPreferredRoom::repairWrongDayOrHour(Rules& r)
 ConstraintSubjectActivityTagPreferredRooms::ConstraintSubjectActivityTagPreferredRooms()
 	: SpaceConstraint()
 {
-	this->type=CONSTRAINT_SUBJECT_ACTIVITY_TAG_PREFERRED_ROOMS;
+	this->type=SpaceConstraintType::CONSTRAINT_SUBJECT_ACTIVITY_TAG_PREFERRED_ROOMS;
 }
 
 ConstraintSubjectActivityTagPreferredRooms::ConstraintSubjectActivityTagPreferredRooms(double wp, const QString& subj, const QString& subjTag, const QStringList& rms)
 	: SpaceConstraint(wp)
 {
-	this->type=CONSTRAINT_SUBJECT_ACTIVITY_TAG_PREFERRED_ROOMS;
+	this->type=SpaceConstraintType::CONSTRAINT_SUBJECT_ACTIVITY_TAG_PREFERRED_ROOMS;
 	this->subjectName=subj;
 	this->activityTagName=subjTag;
 	this->roomsNames=rms;
@@ -3349,13 +3349,13 @@ bool ConstraintSubjectActivityTagPreferredRooms::repairWrongDayOrHour(Rules& r)
 ConstraintActivityTagPreferredRoom::ConstraintActivityTagPreferredRoom()
 	: SpaceConstraint()
 {
-	this->type=CONSTRAINT_ACTIVITY_TAG_PREFERRED_ROOM;
+	this->type=SpaceConstraintType::CONSTRAINT_ACTIVITY_TAG_PREFERRED_ROOM;
 }
 
 ConstraintActivityTagPreferredRoom::ConstraintActivityTagPreferredRoom(double wp, const QString& subjTag, const QString& rm)
 	: SpaceConstraint(wp)
 {
-	this->type=CONSTRAINT_ACTIVITY_TAG_PREFERRED_ROOM;
+	this->type=SpaceConstraintType::CONSTRAINT_ACTIVITY_TAG_PREFERRED_ROOM;
 	this->activityTagName=subjTag;
 	this->roomName=rm;
 }
@@ -3586,13 +3586,13 @@ bool ConstraintActivityTagPreferredRoom::repairWrongDayOrHour(Rules& r)
 ConstraintActivityTagPreferredRooms::ConstraintActivityTagPreferredRooms()
 	: SpaceConstraint()
 {
-	this->type=CONSTRAINT_ACTIVITY_TAG_PREFERRED_ROOMS;
+	this->type=SpaceConstraintType::CONSTRAINT_ACTIVITY_TAG_PREFERRED_ROOMS;
 }
 
 ConstraintActivityTagPreferredRooms::ConstraintActivityTagPreferredRooms(double wp, const QString& subjTag, const QStringList& rms)
 	: SpaceConstraint(wp)
 {
-	this->type=CONSTRAINT_ACTIVITY_TAG_PREFERRED_ROOMS;
+	this->type=SpaceConstraintType::CONSTRAINT_ACTIVITY_TAG_PREFERRED_ROOMS;
 	this->activityTagName=subjTag;
 	this->roomsNames=rms;
 }
@@ -3838,13 +3838,13 @@ bool ConstraintActivityTagPreferredRooms::repairWrongDayOrHour(Rules& r)
 ConstraintStudentsSetMaxBuildingChangesPerDay::ConstraintStudentsSetMaxBuildingChangesPerDay()
 	: SpaceConstraint()
 {
-	this->type=CONSTRAINT_STUDENTS_SET_MAX_BUILDING_CHANGES_PER_DAY;
+	this->type=SpaceConstraintType::CONSTRAINT_STUDENTS_SET_MAX_BUILDING_CHANGES_PER_DAY;
 }
 
 ConstraintStudentsSetMaxBuildingChangesPerDay::ConstraintStudentsSetMaxBuildingChangesPerDay(double wp, QString st, int mc)
 	: SpaceConstraint(wp)
 {
-	this->type=CONSTRAINT_STUDENTS_SET_MAX_BUILDING_CHANGES_PER_DAY;
+	this->type=SpaceConstraintType::CONSTRAINT_STUDENTS_SET_MAX_BUILDING_CHANGES_PER_DAY;
 	this->studentsName=st;
 	this->maxBuildingChangesPerDay=mc;
 }
@@ -4124,13 +4124,13 @@ bool ConstraintStudentsSetMaxBuildingChangesPerDay::repairWrongDayOrHour(Rules& 
 ConstraintStudentsMaxBuildingChangesPerDay::ConstraintStudentsMaxBuildingChangesPerDay()
 	: SpaceConstraint()
 {
-	this->type=CONSTRAINT_STUDENTS_MAX_BUILDING_CHANGES_PER_DAY;
+	this->type=SpaceConstraintType::CONSTRAINT_STUDENTS_MAX_BUILDING_CHANGES_PER_DAY;
 }
 
 ConstraintStudentsMaxBuildingChangesPerDay::ConstraintStudentsMaxBuildingChangesPerDay(double wp, int mc)
 	: SpaceConstraint(wp)
 {
-	this->type=CONSTRAINT_STUDENTS_MAX_BUILDING_CHANGES_PER_DAY;
+	this->type=SpaceConstraintType::CONSTRAINT_STUDENTS_MAX_BUILDING_CHANGES_PER_DAY;
 	this->maxBuildingChangesPerDay=mc;
 }
 
@@ -4362,13 +4362,13 @@ bool ConstraintStudentsMaxBuildingChangesPerDay::repairWrongDayOrHour(Rules& r)
 ConstraintStudentsSetMaxBuildingChangesPerWeek::ConstraintStudentsSetMaxBuildingChangesPerWeek()
 	: SpaceConstraint()
 {
-	this->type=CONSTRAINT_STUDENTS_SET_MAX_BUILDING_CHANGES_PER_WEEK;
+	this->type=SpaceConstraintType::CONSTRAINT_STUDENTS_SET_MAX_BUILDING_CHANGES_PER_WEEK;
 }
 
 ConstraintStudentsSetMaxBuildingChangesPerWeek::ConstraintStudentsSetMaxBuildingChangesPerWeek(double wp, QString st, int mc)
 	: SpaceConstraint(wp)
 {
-	this->type=CONSTRAINT_STUDENTS_SET_MAX_BUILDING_CHANGES_PER_WEEK;
+	this->type=SpaceConstraintType::CONSTRAINT_STUDENTS_SET_MAX_BUILDING_CHANGES_PER_WEEK;
 	this->studentsName=st;
 	this->maxBuildingChangesPerWeek=mc;
 }
@@ -4647,13 +4647,13 @@ bool ConstraintStudentsSetMaxBuildingChangesPerWeek::repairWrongDayOrHour(Rules&
 ConstraintStudentsMaxBuildingChangesPerWeek::ConstraintStudentsMaxBuildingChangesPerWeek()
 	: SpaceConstraint()
 {
-	this->type=CONSTRAINT_STUDENTS_MAX_BUILDING_CHANGES_PER_WEEK;
+	this->type=SpaceConstraintType::CONSTRAINT_STUDENTS_MAX_BUILDING_CHANGES_PER_WEEK;
 }
 
 ConstraintStudentsMaxBuildingChangesPerWeek::ConstraintStudentsMaxBuildingChangesPerWeek(double wp, int mc)
 	: SpaceConstraint(wp)
 {
-	this->type=CONSTRAINT_STUDENTS_MAX_BUILDING_CHANGES_PER_WEEK;
+	this->type=SpaceConstraintType::CONSTRAINT_STUDENTS_MAX_BUILDING_CHANGES_PER_WEEK;
 	this->maxBuildingChangesPerWeek=mc;
 }
 
@@ -4885,13 +4885,13 @@ bool ConstraintStudentsMaxBuildingChangesPerWeek::repairWrongDayOrHour(Rules& r)
 ConstraintStudentsSetMinGapsBetweenBuildingChanges::ConstraintStudentsSetMinGapsBetweenBuildingChanges()
 	: SpaceConstraint()
 {
-	this->type=CONSTRAINT_STUDENTS_SET_MIN_GAPS_BETWEEN_BUILDING_CHANGES;
+	this->type=SpaceConstraintType::CONSTRAINT_STUDENTS_SET_MIN_GAPS_BETWEEN_BUILDING_CHANGES;
 }
 
 ConstraintStudentsSetMinGapsBetweenBuildingChanges::ConstraintStudentsSetMinGapsBetweenBuildingChanges(double wp, QString st, int mg)
 	: SpaceConstraint(wp)
 {
-	this->type=CONSTRAINT_STUDENTS_SET_MIN_GAPS_BETWEEN_BUILDING_CHANGES;
+	this->type=SpaceConstraintType::CONSTRAINT_STUDENTS_SET_MIN_GAPS_BETWEEN_BUILDING_CHANGES;
 	this->studentsName=st;
 	this->minGapsBetweenBuildingChanges=mg;
 }
@@ -5183,13 +5183,13 @@ bool ConstraintStudentsSetMinGapsBetweenBuildingChanges::repairWrongDayOrHour(Ru
 ConstraintStudentsMinGapsBetweenBuildingChanges::ConstraintStudentsMinGapsBetweenBuildingChanges()
 	: SpaceConstraint()
 {
-	this->type=CONSTRAINT_STUDENTS_MIN_GAPS_BETWEEN_BUILDING_CHANGES;
+	this->type=SpaceConstraintType::CONSTRAINT_STUDENTS_MIN_GAPS_BETWEEN_BUILDING_CHANGES;
 }
 
 ConstraintStudentsMinGapsBetweenBuildingChanges::ConstraintStudentsMinGapsBetweenBuildingChanges(double wp, int mg)
 	: SpaceConstraint(wp)
 {
-	this->type=CONSTRAINT_STUDENTS_MIN_GAPS_BETWEEN_BUILDING_CHANGES;
+	this->type=SpaceConstraintType::CONSTRAINT_STUDENTS_MIN_GAPS_BETWEEN_BUILDING_CHANGES;
 	this->minGapsBetweenBuildingChanges=mg;
 }
 
@@ -5433,13 +5433,13 @@ bool ConstraintStudentsMinGapsBetweenBuildingChanges::repairWrongDayOrHour(Rules
 ConstraintTeacherMaxBuildingChangesPerDay::ConstraintTeacherMaxBuildingChangesPerDay()
 	: SpaceConstraint()
 {
-	this->type=CONSTRAINT_TEACHER_MAX_BUILDING_CHANGES_PER_DAY;
+	this->type=SpaceConstraintType::CONSTRAINT_TEACHER_MAX_BUILDING_CHANGES_PER_DAY;
 }
 
 ConstraintTeacherMaxBuildingChangesPerDay::ConstraintTeacherMaxBuildingChangesPerDay(double wp, QString tc, int mc)
 	: SpaceConstraint(wp)
 {
-	this->type=CONSTRAINT_TEACHER_MAX_BUILDING_CHANGES_PER_DAY;
+	this->type=SpaceConstraintType::CONSTRAINT_TEACHER_MAX_BUILDING_CHANGES_PER_DAY;
 	this->teacherName=tc;
 	this->maxBuildingChangesPerDay=mc;
 }
@@ -5683,13 +5683,13 @@ bool ConstraintTeacherMaxBuildingChangesPerDay::repairWrongDayOrHour(Rules& r)
 ConstraintTeachersMaxBuildingChangesPerDay::ConstraintTeachersMaxBuildingChangesPerDay()
 	: SpaceConstraint()
 {
-	this->type=CONSTRAINT_TEACHERS_MAX_BUILDING_CHANGES_PER_DAY;
+	this->type=SpaceConstraintType::CONSTRAINT_TEACHERS_MAX_BUILDING_CHANGES_PER_DAY;
 }
 
 ConstraintTeachersMaxBuildingChangesPerDay::ConstraintTeachersMaxBuildingChangesPerDay(double wp, int mc)
 	: SpaceConstraint(wp)
 {
-	this->type=CONSTRAINT_TEACHERS_MAX_BUILDING_CHANGES_PER_DAY;
+	this->type=SpaceConstraintType::CONSTRAINT_TEACHERS_MAX_BUILDING_CHANGES_PER_DAY;
 	this->maxBuildingChangesPerDay=mc;
 }
 
@@ -5921,13 +5921,13 @@ bool ConstraintTeachersMaxBuildingChangesPerDay::repairWrongDayOrHour(Rules& r)
 ConstraintTeacherMaxBuildingChangesPerWeek::ConstraintTeacherMaxBuildingChangesPerWeek()
 	: SpaceConstraint()
 {
-	this->type=CONSTRAINT_TEACHER_MAX_BUILDING_CHANGES_PER_WEEK;
+	this->type=SpaceConstraintType::CONSTRAINT_TEACHER_MAX_BUILDING_CHANGES_PER_WEEK;
 }
 
 ConstraintTeacherMaxBuildingChangesPerWeek::ConstraintTeacherMaxBuildingChangesPerWeek(double wp, QString tc, int mc)
 	: SpaceConstraint(wp)
 {
-	this->type=CONSTRAINT_TEACHER_MAX_BUILDING_CHANGES_PER_WEEK;
+	this->type=SpaceConstraintType::CONSTRAINT_TEACHER_MAX_BUILDING_CHANGES_PER_WEEK;
 	this->teacherName=tc;
 	this->maxBuildingChangesPerWeek=mc;
 }
@@ -6171,13 +6171,13 @@ bool ConstraintTeacherMaxBuildingChangesPerWeek::repairWrongDayOrHour(Rules& r)
 ConstraintTeachersMaxBuildingChangesPerWeek::ConstraintTeachersMaxBuildingChangesPerWeek()
 	: SpaceConstraint()
 {
-	this->type=CONSTRAINT_TEACHERS_MAX_BUILDING_CHANGES_PER_WEEK;
+	this->type=SpaceConstraintType::CONSTRAINT_TEACHERS_MAX_BUILDING_CHANGES_PER_WEEK;
 }
 
 ConstraintTeachersMaxBuildingChangesPerWeek::ConstraintTeachersMaxBuildingChangesPerWeek(double wp, int mc)
 	: SpaceConstraint(wp)
 {
-	this->type=CONSTRAINT_TEACHERS_MAX_BUILDING_CHANGES_PER_WEEK;
+	this->type=SpaceConstraintType::CONSTRAINT_TEACHERS_MAX_BUILDING_CHANGES_PER_WEEK;
 	this->maxBuildingChangesPerWeek=mc;
 }
 
@@ -6409,13 +6409,13 @@ bool ConstraintTeachersMaxBuildingChangesPerWeek::repairWrongDayOrHour(Rules& r)
 ConstraintTeacherMinGapsBetweenBuildingChanges::ConstraintTeacherMinGapsBetweenBuildingChanges()
 	: SpaceConstraint()
 {
-	this->type=CONSTRAINT_TEACHER_MIN_GAPS_BETWEEN_BUILDING_CHANGES;
+	this->type=SpaceConstraintType::CONSTRAINT_TEACHER_MIN_GAPS_BETWEEN_BUILDING_CHANGES;
 }
 
 ConstraintTeacherMinGapsBetweenBuildingChanges::ConstraintTeacherMinGapsBetweenBuildingChanges(double wp, QString tc, int mg)
 	: SpaceConstraint(wp)
 {
-	this->type=CONSTRAINT_TEACHER_MIN_GAPS_BETWEEN_BUILDING_CHANGES;
+	this->type=SpaceConstraintType::CONSTRAINT_TEACHER_MIN_GAPS_BETWEEN_BUILDING_CHANGES;
 	this->teacherName=tc;
 	this->minGapsBetweenBuildingChanges=mg;
 }
@@ -6671,13 +6671,13 @@ bool ConstraintTeacherMinGapsBetweenBuildingChanges::repairWrongDayOrHour(Rules&
 ConstraintTeachersMinGapsBetweenBuildingChanges::ConstraintTeachersMinGapsBetweenBuildingChanges()
 	: SpaceConstraint()
 {
-	this->type=CONSTRAINT_TEACHERS_MIN_GAPS_BETWEEN_BUILDING_CHANGES;
+	this->type=SpaceConstraintType::CONSTRAINT_TEACHERS_MIN_GAPS_BETWEEN_BUILDING_CHANGES;
 }
 
 ConstraintTeachersMinGapsBetweenBuildingChanges::ConstraintTeachersMinGapsBetweenBuildingChanges(double wp, int mg)
 	: SpaceConstraint(wp)
 {
-	this->type=CONSTRAINT_TEACHERS_MIN_GAPS_BETWEEN_BUILDING_CHANGES;
+	this->type=SpaceConstraintType::CONSTRAINT_TEACHERS_MIN_GAPS_BETWEEN_BUILDING_CHANGES;
 	this->minGapsBetweenBuildingChanges=mg;
 }
 
@@ -6921,7 +6921,7 @@ bool ConstraintTeachersMinGapsBetweenBuildingChanges::repairWrongDayOrHour(Rules
 ConstraintActivitiesOccupyMaxDifferentRooms::ConstraintActivitiesOccupyMaxDifferentRooms()
 	: SpaceConstraint()
 {
-	this->type = CONSTRAINT_ACTIVITIES_OCCUPY_MAX_DIFFERENT_ROOMS;
+	this->type = SpaceConstraintType::CONSTRAINT_ACTIVITIES_OCCUPY_MAX_DIFFERENT_ROOMS;
 }
 
 ConstraintActivitiesOccupyMaxDifferentRooms::ConstraintActivitiesOccupyMaxDifferentRooms(double wp,
@@ -6931,7 +6931,7 @@ ConstraintActivitiesOccupyMaxDifferentRooms::ConstraintActivitiesOccupyMaxDiffer
 	this->activitiesIds=a_L;
 	this->maxDifferentRooms=max_different_rooms;
 	
-	this->type=CONSTRAINT_ACTIVITIES_OCCUPY_MAX_DIFFERENT_ROOMS;
+	this->type=SpaceConstraintType::CONSTRAINT_ACTIVITIES_OCCUPY_MAX_DIFFERENT_ROOMS;
 }
 
 bool ConstraintActivitiesOccupyMaxDifferentRooms::computeInternalStructure(QWidget* parent, Rules& r)
@@ -7196,7 +7196,7 @@ bool ConstraintActivitiesOccupyMaxDifferentRooms::repairWrongDayOrHour(Rules& r)
 ConstraintActivitiesSameRoomIfConsecutive::ConstraintActivitiesSameRoomIfConsecutive()
 	: SpaceConstraint()
 {
-	this->type = CONSTRAINT_ACTIVITIES_SAME_ROOM_IF_CONSECUTIVE;
+	this->type = SpaceConstraintType::CONSTRAINT_ACTIVITIES_SAME_ROOM_IF_CONSECUTIVE;
 }
 
 ConstraintActivitiesSameRoomIfConsecutive::ConstraintActivitiesSameRoomIfConsecutive(double wp,
@@ -7205,7 +7205,7 @@ ConstraintActivitiesSameRoomIfConsecutive::ConstraintActivitiesSameRoomIfConsecu
 {
 	this->activitiesIds=a_L;
 	
-	this->type=CONSTRAINT_ACTIVITIES_SAME_ROOM_IF_CONSECUTIVE;
+	this->type=SpaceConstraintType::CONSTRAINT_ACTIVITIES_SAME_ROOM_IF_CONSECUTIVE;
 }
 
 bool ConstraintActivitiesSameRoomIfConsecutive::computeInternalStructure(QWidget* parent, Rules& r)

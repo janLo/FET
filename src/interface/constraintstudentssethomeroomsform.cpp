@@ -109,7 +109,7 @@ void ConstraintStudentsSetHomeRoomsForm::filterChanged()
 
 bool ConstraintStudentsSetHomeRoomsForm::filterOk(SpaceConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_STUDENTS_SET_HOME_ROOMS){
+	if(ctr->type==SpaceConstraintType::CONSTRAINT_STUDENTS_SET_HOME_ROOMS){
 		ConstraintStudentsSetHomeRooms* c=(ConstraintStudentsSetHomeRooms*)ctr;
 		return (c->studentsName==studentsComboBox->currentText() || studentsComboBox->currentText()=="")
 		  && (roomsComboBox->currentText()=="" || c->roomsNames.contains(roomsComboBox->currentText()));

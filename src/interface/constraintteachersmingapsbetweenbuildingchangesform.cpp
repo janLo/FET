@@ -57,7 +57,7 @@ ConstraintTeachersMinGapsBetweenBuildingChangesForm::~ConstraintTeachersMinGapsB
 
 bool ConstraintTeachersMinGapsBetweenBuildingChangesForm::filterOk(SpaceConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_TEACHERS_MIN_GAPS_BETWEEN_BUILDING_CHANGES){
+	if(ctr->type==SpaceConstraintType::CONSTRAINT_TEACHERS_MIN_GAPS_BETWEEN_BUILDING_CHANGES){
 		return true;
 	}
 	else

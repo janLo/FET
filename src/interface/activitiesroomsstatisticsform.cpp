@@ -56,7 +56,7 @@ ActivitiesRoomsStatisticsForm::ActivitiesRoomsStatisticsForm(QWidget* parent): Q
 			if(!genericConstraint->active)
 				continue;
 		
-			if(genericConstraint->type==CONSTRAINT_STUDENTS_SET_HOME_ROOM){
+			if(genericConstraint->type==SpaceConstraintType::CONSTRAINT_STUDENTS_SET_HOME_ROOM){
 				ConstraintStudentsSetHomeRoom* ctr=(ConstraintStudentsSetHomeRoom*)genericConstraint;
 				
 				if(act->studentsNames.count()==1){
@@ -75,7 +75,7 @@ ActivitiesRoomsStatisticsForm::ActivitiesRoomsStatisticsForm(QWidget* parent): Q
 				}
 			}
 
-			else if(genericConstraint->type==CONSTRAINT_STUDENTS_SET_HOME_ROOMS){
+			else if(genericConstraint->type==SpaceConstraintType::CONSTRAINT_STUDENTS_SET_HOME_ROOMS){
 				ConstraintStudentsSetHomeRooms* ctr=(ConstraintStudentsSetHomeRooms*)genericConstraint;
 				
 				if(act->studentsNames.count()==1){
@@ -94,7 +94,7 @@ ActivitiesRoomsStatisticsForm::ActivitiesRoomsStatisticsForm(QWidget* parent): Q
 				}
 			}
 
-			else if(genericConstraint->type==CONSTRAINT_TEACHER_HOME_ROOM){
+			else if(genericConstraint->type==SpaceConstraintType::CONSTRAINT_TEACHER_HOME_ROOM){
 				ConstraintTeacherHomeRoom* ctr=(ConstraintTeacherHomeRoom*)genericConstraint;
 				
 				if(act->teachersNames.count()==1){
@@ -113,7 +113,7 @@ ActivitiesRoomsStatisticsForm::ActivitiesRoomsStatisticsForm(QWidget* parent): Q
 				}
 			}
 
-			else if(genericConstraint->type==CONSTRAINT_TEACHER_HOME_ROOMS){
+			else if(genericConstraint->type==SpaceConstraintType::CONSTRAINT_TEACHER_HOME_ROOMS){
 				ConstraintTeacherHomeRooms* ctr=(ConstraintTeacherHomeRooms*)genericConstraint;
 				
 				if(act->teachersNames.count()==1){
@@ -132,7 +132,7 @@ ActivitiesRoomsStatisticsForm::ActivitiesRoomsStatisticsForm(QWidget* parent): Q
 				}
 			}
 
-			else if(genericConstraint->type==CONSTRAINT_SUBJECT_PREFERRED_ROOM){
+			else if(genericConstraint->type==SpaceConstraintType::CONSTRAINT_SUBJECT_PREFERRED_ROOM){
 				ConstraintSubjectPreferredRoom* ctr=(ConstraintSubjectPreferredRoom*)genericConstraint;
 				
 				if(act->subjectName==ctr->subjectName){
@@ -149,7 +149,7 @@ ActivitiesRoomsStatisticsForm::ActivitiesRoomsStatisticsForm(QWidget* parent): Q
 				}
 			}
 
-			else if(genericConstraint->type==CONSTRAINT_SUBJECT_PREFERRED_ROOMS){
+			else if(genericConstraint->type==SpaceConstraintType::CONSTRAINT_SUBJECT_PREFERRED_ROOMS){
 				ConstraintSubjectPreferredRooms* ctr=(ConstraintSubjectPreferredRooms*)genericConstraint;
 				
 				if(act->subjectName==ctr->subjectName){
@@ -166,7 +166,7 @@ ActivitiesRoomsStatisticsForm::ActivitiesRoomsStatisticsForm(QWidget* parent): Q
 				}
 			}
 
-			else if(genericConstraint->type==CONSTRAINT_SUBJECT_ACTIVITY_TAG_PREFERRED_ROOM){
+			else if(genericConstraint->type==SpaceConstraintType::CONSTRAINT_SUBJECT_ACTIVITY_TAG_PREFERRED_ROOM){
 				ConstraintSubjectActivityTagPreferredRoom* ctr=(ConstraintSubjectActivityTagPreferredRoom*)genericConstraint;
 				
 				if(act->subjectName==ctr->subjectName && currentActivityTagsSet.contains(ctr->activityTagName)){
@@ -183,7 +183,7 @@ ActivitiesRoomsStatisticsForm::ActivitiesRoomsStatisticsForm(QWidget* parent): Q
 				}
 			}
 
-			else if(genericConstraint->type==CONSTRAINT_SUBJECT_ACTIVITY_TAG_PREFERRED_ROOMS){
+			else if(genericConstraint->type==SpaceConstraintType::CONSTRAINT_SUBJECT_ACTIVITY_TAG_PREFERRED_ROOMS){
 				ConstraintSubjectActivityTagPreferredRooms* ctr=(ConstraintSubjectActivityTagPreferredRooms*)genericConstraint;
 				
 				if(act->subjectName==ctr->subjectName && currentActivityTagsSet.contains(ctr->activityTagName)){
@@ -200,7 +200,7 @@ ActivitiesRoomsStatisticsForm::ActivitiesRoomsStatisticsForm(QWidget* parent): Q
 				}
 			}
 
-			else if(genericConstraint->type==CONSTRAINT_ACTIVITY_TAG_PREFERRED_ROOM){
+			else if(genericConstraint->type==SpaceConstraintType::CONSTRAINT_ACTIVITY_TAG_PREFERRED_ROOM){
 				ConstraintActivityTagPreferredRoom* ctr=(ConstraintActivityTagPreferredRoom*)genericConstraint;
 				
 				if(currentActivityTagsSet.contains(ctr->activityTagName)){
@@ -217,7 +217,7 @@ ActivitiesRoomsStatisticsForm::ActivitiesRoomsStatisticsForm(QWidget* parent): Q
 				}
 			}
 
-			else if(genericConstraint->type==CONSTRAINT_ACTIVITY_TAG_PREFERRED_ROOMS){
+			else if(genericConstraint->type==SpaceConstraintType::CONSTRAINT_ACTIVITY_TAG_PREFERRED_ROOMS){
 				ConstraintActivityTagPreferredRooms* ctr=(ConstraintActivityTagPreferredRooms*)genericConstraint;
 				
 				if(currentActivityTagsSet.contains(ctr->activityTagName)){
@@ -234,7 +234,7 @@ ActivitiesRoomsStatisticsForm::ActivitiesRoomsStatisticsForm(QWidget* parent): Q
 				}
 			}
 
-			else if(genericConstraint->type==CONSTRAINT_ACTIVITY_PREFERRED_ROOM){
+			else if(genericConstraint->type==SpaceConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_ROOM){
 				ConstraintActivityPreferredRoom* ctr=(ConstraintActivityPreferredRoom*)genericConstraint;
 				
 				if(act->id==ctr->activityId){
@@ -251,7 +251,7 @@ ActivitiesRoomsStatisticsForm::ActivitiesRoomsStatisticsForm(QWidget* parent): Q
 				}
 			}
 
-			else if(genericConstraint->type==CONSTRAINT_ACTIVITY_PREFERRED_ROOMS){
+			else if(genericConstraint->type==SpaceConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_ROOMS){
 				ConstraintActivityPreferredRooms* ctr=(ConstraintActivityPreferredRooms*)genericConstraint;
 				
 				if(act->id==ctr->activityId){

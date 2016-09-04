@@ -251,7 +251,7 @@ void HoursForm::ok()
 		
 		if(toBeRemovedSpace.count()>0){
 			foreach(SpaceConstraint* sc, toBeRemovedSpace){
-				if(sc->type==CONSTRAINT_ACTIVITY_PREFERRED_ROOM)
+				if(sc->type==SpaceConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_ROOM)
 					recomputeSpace=true;
 				bool tmp=gt.rules.removeSpaceConstraint(sc);
 				assert(tmp);

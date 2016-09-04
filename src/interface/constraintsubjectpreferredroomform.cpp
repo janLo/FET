@@ -75,7 +75,7 @@ ConstraintSubjectPreferredRoomForm::~ConstraintSubjectPreferredRoomForm()
 
 bool ConstraintSubjectPreferredRoomForm::filterOk(SpaceConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_SUBJECT_PREFERRED_ROOM){
+	if(ctr->type==SpaceConstraintType::CONSTRAINT_SUBJECT_PREFERRED_ROOM){
 		ConstraintSubjectPreferredRoom* c=(ConstraintSubjectPreferredRoom*) ctr;
 		return (c->roomName==roomsComboBox->currentText() || roomsComboBox->currentText()=="")
 		 && (c->subjectName==subjectsComboBox->currentText() || subjectsComboBox->currentText()=="");

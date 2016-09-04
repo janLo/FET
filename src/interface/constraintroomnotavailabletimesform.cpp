@@ -67,7 +67,7 @@ ConstraintRoomNotAvailableTimesForm::~ConstraintRoomNotAvailableTimesForm()
 
 bool ConstraintRoomNotAvailableTimesForm::filterOk(SpaceConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_ROOM_NOT_AVAILABLE_TIMES){
+	if(ctr->type==SpaceConstraintType::CONSTRAINT_ROOM_NOT_AVAILABLE_TIMES){
 		ConstraintRoomNotAvailableTimes* c=(ConstraintRoomNotAvailableTimes*) ctr;
 		return c->room==roomsComboBox->currentText() || roomsComboBox->currentText()=="";
 	}

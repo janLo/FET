@@ -6455,7 +6455,7 @@ bool computeActivitiesOccupyMaxDifferentRooms(QWidget* parent)
 		aomdrListForActivity[i].clear();
 
 	for(int i=0; i<gt.rules.nInternalSpaceConstraints; i++){
-		if(gt.rules.internalSpaceConstraintsList[i]->type==CONSTRAINT_ACTIVITIES_OCCUPY_MAX_DIFFERENT_ROOMS){
+		if(gt.rules.internalSpaceConstraintsList[i]->type==SpaceConstraintType::CONSTRAINT_ACTIVITIES_OCCUPY_MAX_DIFFERENT_ROOMS){
 			ConstraintActivitiesOccupyMaxDifferentRooms* cn=(ConstraintActivitiesOccupyMaxDifferentRooms*)gt.rules.internalSpaceConstraintsList[i];
 
 			if(cn->weightPercentage!=100.0){
@@ -6497,7 +6497,7 @@ bool computeActivitiesSameRoomIfConsecutive(QWidget* parent)
 		asricListForActivity[i].clear();
 
 	for(int i=0; i<gt.rules.nInternalSpaceConstraints; i++){
-		if(gt.rules.internalSpaceConstraintsList[i]->type==CONSTRAINT_ACTIVITIES_SAME_ROOM_IF_CONSECUTIVE){
+		if(gt.rules.internalSpaceConstraintsList[i]->type==SpaceConstraintType::CONSTRAINT_ACTIVITIES_SAME_ROOM_IF_CONSECUTIVE){
 			ConstraintActivitiesSameRoomIfConsecutive* cn=(ConstraintActivitiesSameRoomIfConsecutive*)gt.rules.internalSpaceConstraintsList[i];
 
 			if(cn->weightPercentage!=100.0){
@@ -6533,7 +6533,7 @@ bool computeBasicSpace(QWidget* parent)
 	double m=-1;
 	bool ok=false;
 	for(int i=0; i<gt.rules.nInternalSpaceConstraints; i++)
-		if(gt.rules.internalSpaceConstraintsList[i]->type==CONSTRAINT_BASIC_COMPULSORY_SPACE){
+		if(gt.rules.internalSpaceConstraintsList[i]->type==SpaceConstraintType::CONSTRAINT_BASIC_COMPULSORY_SPACE){
 			ok=true;
 			if(gt.rules.internalSpaceConstraintsList[i]->weightPercentage>m)
 				m=gt.rules.internalSpaceConstraintsList[i]->weightPercentage;
@@ -6574,7 +6574,7 @@ bool computeNotAllowedRoomTimePercentages()
 			notAllowedRoomTimePercentages[i][j]=-1;
 
 	for(int i=0; i<gt.rules.nInternalSpaceConstraints; i++){
-		if(gt.rules.internalSpaceConstraintsList[i]->type==CONSTRAINT_ROOM_NOT_AVAILABLE_TIMES){
+		if(gt.rules.internalSpaceConstraintsList[i]->type==SpaceConstraintType::CONSTRAINT_ROOM_NOT_AVAILABLE_TIMES){
 			ConstraintRoomNotAvailableTimes* rn=(ConstraintRoomNotAvailableTimes*)gt.rules.internalSpaceConstraintsList[i];
 			
 			assert(rn->days.count()==rn->hours.count());
@@ -6619,7 +6619,7 @@ bool computeActivitiesRoomsPreferences(QWidget* parent)
 	bool ok=true;
 
 	for(int i=0; i<gt.rules.nInternalSpaceConstraints; i++){
-		if(gt.rules.internalSpaceConstraintsList[i]->type==CONSTRAINT_STUDENTS_SET_HOME_ROOM){
+		if(gt.rules.internalSpaceConstraintsList[i]->type==SpaceConstraintType::CONSTRAINT_STUDENTS_SET_HOME_ROOM){
 			ConstraintStudentsSetHomeRoom* spr=(ConstraintStudentsSetHomeRoom*)gt.rules.internalSpaceConstraintsList[i];
 			
 			if(studentsSetHomeRoom.contains(spr->studentsName)){
@@ -6657,7 +6657,7 @@ bool computeActivitiesRoomsPreferences(QWidget* parent)
 				}
 			}
 		}
-		else if(gt.rules.internalSpaceConstraintsList[i]->type==CONSTRAINT_STUDENTS_SET_HOME_ROOMS){
+		else if(gt.rules.internalSpaceConstraintsList[i]->type==SpaceConstraintType::CONSTRAINT_STUDENTS_SET_HOME_ROOMS){
 			ConstraintStudentsSetHomeRooms* spr=(ConstraintStudentsSetHomeRooms*)gt.rules.internalSpaceConstraintsList[i];
 		
 			if(studentsSetHomeRoom.contains(spr->studentsName)){
@@ -6702,7 +6702,7 @@ bool computeActivitiesRoomsPreferences(QWidget* parent)
 				}
 			}
 		}
-		else if(gt.rules.internalSpaceConstraintsList[i]->type==CONSTRAINT_TEACHER_HOME_ROOM){
+		else if(gt.rules.internalSpaceConstraintsList[i]->type==SpaceConstraintType::CONSTRAINT_TEACHER_HOME_ROOM){
 			ConstraintTeacherHomeRoom* spr=(ConstraintTeacherHomeRoom*)gt.rules.internalSpaceConstraintsList[i];
 			
 			if(teachersHomeRoom.contains(spr->teacherName)){
@@ -6740,7 +6740,7 @@ bool computeActivitiesRoomsPreferences(QWidget* parent)
 				}
 			}
 		}
-		else if(gt.rules.internalSpaceConstraintsList[i]->type==CONSTRAINT_TEACHER_HOME_ROOMS){
+		else if(gt.rules.internalSpaceConstraintsList[i]->type==SpaceConstraintType::CONSTRAINT_TEACHER_HOME_ROOMS){
 			ConstraintTeacherHomeRooms* spr=(ConstraintTeacherHomeRooms*)gt.rules.internalSpaceConstraintsList[i];
 		
 			if(teachersHomeRoom.contains(spr->teacherName)){
@@ -6785,7 +6785,7 @@ bool computeActivitiesRoomsPreferences(QWidget* parent)
 				}
 			}
 		}
-		else if(gt.rules.internalSpaceConstraintsList[i]->type==CONSTRAINT_SUBJECT_PREFERRED_ROOM){
+		else if(gt.rules.internalSpaceConstraintsList[i]->type==SpaceConstraintType::CONSTRAINT_SUBJECT_PREFERRED_ROOM){
 			ConstraintSubjectPreferredRoom* spr=(ConstraintSubjectPreferredRoom*)gt.rules.internalSpaceConstraintsList[i];
 			
 			/*if(subjectsPreferredRoom.contains(spr->subjectName)){
@@ -6834,7 +6834,7 @@ bool computeActivitiesRoomsPreferences(QWidget* parent)
 				}
 			}
 		}
-		else if(gt.rules.internalSpaceConstraintsList[i]->type==CONSTRAINT_SUBJECT_PREFERRED_ROOMS){
+		else if(gt.rules.internalSpaceConstraintsList[i]->type==SpaceConstraintType::CONSTRAINT_SUBJECT_PREFERRED_ROOMS){
 			ConstraintSubjectPreferredRooms* spr=(ConstraintSubjectPreferredRooms*)gt.rules.internalSpaceConstraintsList[i];
 			
 			/*if(subjectsPreferredRoom.contains(spr->subjectName)){
@@ -6894,7 +6894,7 @@ bool computeActivitiesRoomsPreferences(QWidget* parent)
 				}*/
 			}
 		}
-		else if(gt.rules.internalSpaceConstraintsList[i]->type==CONSTRAINT_SUBJECT_ACTIVITY_TAG_PREFERRED_ROOM){
+		else if(gt.rules.internalSpaceConstraintsList[i]->type==SpaceConstraintType::CONSTRAINT_SUBJECT_ACTIVITY_TAG_PREFERRED_ROOM){
 			ConstraintSubjectActivityTagPreferredRoom* spr=(ConstraintSubjectActivityTagPreferredRoom*)gt.rules.internalSpaceConstraintsList[i];
 			
 			/*QPair<QString, QString> pair=qMakePair(spr->subjectName, spr->activityTagName);
@@ -6948,7 +6948,7 @@ bool computeActivitiesRoomsPreferences(QWidget* parent)
 				}*/
 			}
 		}
-		else if(gt.rules.internalSpaceConstraintsList[i]->type==CONSTRAINT_SUBJECT_ACTIVITY_TAG_PREFERRED_ROOMS){
+		else if(gt.rules.internalSpaceConstraintsList[i]->type==SpaceConstraintType::CONSTRAINT_SUBJECT_ACTIVITY_TAG_PREFERRED_ROOMS){
 			ConstraintSubjectActivityTagPreferredRooms* spr=(ConstraintSubjectActivityTagPreferredRooms*)gt.rules.internalSpaceConstraintsList[i];
 			
 			/*QPair<QString, QString> pair=qMakePair(spr->subjectName, spr->activityTagName);
@@ -7011,7 +7011,7 @@ bool computeActivitiesRoomsPreferences(QWidget* parent)
 			}
 		}
 
-		else if(gt.rules.internalSpaceConstraintsList[i]->type==CONSTRAINT_ACTIVITY_TAG_PREFERRED_ROOM){
+		else if(gt.rules.internalSpaceConstraintsList[i]->type==SpaceConstraintType::CONSTRAINT_ACTIVITY_TAG_PREFERRED_ROOM){
 			ConstraintActivityTagPreferredRoom* spr=(ConstraintActivityTagPreferredRoom*)gt.rules.internalSpaceConstraintsList[i];
 
 			foreach(int a, spr->_activities){
@@ -7031,7 +7031,7 @@ bool computeActivitiesRoomsPreferences(QWidget* parent)
 				}
 			}
 		}
-		else if(gt.rules.internalSpaceConstraintsList[i]->type==CONSTRAINT_ACTIVITY_TAG_PREFERRED_ROOMS){
+		else if(gt.rules.internalSpaceConstraintsList[i]->type==SpaceConstraintType::CONSTRAINT_ACTIVITY_TAG_PREFERRED_ROOMS){
 			ConstraintActivityTagPreferredRooms* spr=(ConstraintActivityTagPreferredRooms*)gt.rules.internalSpaceConstraintsList[i];
 
 			foreach(int a, spr->_activities){
@@ -7053,7 +7053,7 @@ bool computeActivitiesRoomsPreferences(QWidget* parent)
 			}
 		}
 
-		else if(gt.rules.internalSpaceConstraintsList[i]->type==CONSTRAINT_ACTIVITY_PREFERRED_ROOM){
+		else if(gt.rules.internalSpaceConstraintsList[i]->type==SpaceConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_ROOM){
 			ConstraintActivityPreferredRoom* apr=(ConstraintActivityPreferredRoom*)gt.rules.internalSpaceConstraintsList[i];
 			
 			/*if(activitiesPreferredRoom.contains(apr->activityId)){
@@ -7102,7 +7102,7 @@ bool computeActivitiesRoomsPreferences(QWidget* parent)
 				}
 			}*/
 		}
-		else if(gt.rules.internalSpaceConstraintsList[i]->type==CONSTRAINT_ACTIVITY_PREFERRED_ROOMS){
+		else if(gt.rules.internalSpaceConstraintsList[i]->type==SpaceConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_ROOMS){
 			ConstraintActivityPreferredRooms* apr=(ConstraintActivityPreferredRooms*)gt.rules.internalSpaceConstraintsList[i];
 			
 			/*if(activitiesPreferredRoom.contains(apr->activityId)){
@@ -7178,7 +7178,7 @@ bool computeActivitiesRoomsPreferences(QWidget* parent)
 	
 			bool begin=true;
 			foreach(SpaceConstraint* ctr, scl){
-				if(ctr->type==CONSTRAINT_SUBJECT_PREFERRED_ROOM){
+				if(ctr->type==SpaceConstraintType::CONSTRAINT_SUBJECT_PREFERRED_ROOM){
 					ConstraintSubjectPreferredRoom* spr=(ConstraintSubjectPreferredRoom*)ctr;
 					
 					if(begin){
@@ -7191,7 +7191,7 @@ bool computeActivitiesRoomsPreferences(QWidget* parent)
 						it.preferredRooms.intersect(set);
 					}
 				}
-				else if(ctr->type==CONSTRAINT_SUBJECT_PREFERRED_ROOMS){
+				else if(ctr->type==SpaceConstraintType::CONSTRAINT_SUBJECT_PREFERRED_ROOMS){
 					ConstraintSubjectPreferredRooms* spr=(ConstraintSubjectPreferredRooms*)ctr;
 					
 					if(begin){
@@ -7202,7 +7202,7 @@ bool computeActivitiesRoomsPreferences(QWidget* parent)
 						it.preferredRooms.intersect(spr->_rooms.toSet());
 					}
 				}
-				else if(ctr->type==CONSTRAINT_SUBJECT_ACTIVITY_TAG_PREFERRED_ROOM){
+				else if(ctr->type==SpaceConstraintType::CONSTRAINT_SUBJECT_ACTIVITY_TAG_PREFERRED_ROOM){
 					ConstraintSubjectActivityTagPreferredRoom* spr=(ConstraintSubjectActivityTagPreferredRoom*)ctr;
 					
 					if(begin){
@@ -7215,7 +7215,7 @@ bool computeActivitiesRoomsPreferences(QWidget* parent)
 						it.preferredRooms.intersect(set);
 					}
 				}
-				else if(ctr->type==CONSTRAINT_SUBJECT_ACTIVITY_TAG_PREFERRED_ROOMS){
+				else if(ctr->type==SpaceConstraintType::CONSTRAINT_SUBJECT_ACTIVITY_TAG_PREFERRED_ROOMS){
 					ConstraintSubjectActivityTagPreferredRooms* spr=(ConstraintSubjectActivityTagPreferredRooms*)ctr;
 					
 					if(begin){
@@ -7226,7 +7226,7 @@ bool computeActivitiesRoomsPreferences(QWidget* parent)
 						it.preferredRooms.intersect(spr->_rooms.toSet());
 					}
 				}
-				else if(ctr->type==CONSTRAINT_ACTIVITY_TAG_PREFERRED_ROOM){
+				else if(ctr->type==SpaceConstraintType::CONSTRAINT_ACTIVITY_TAG_PREFERRED_ROOM){
 					ConstraintActivityTagPreferredRoom* spr=(ConstraintActivityTagPreferredRoom*)ctr;
 					
 					if(begin){
@@ -7239,7 +7239,7 @@ bool computeActivitiesRoomsPreferences(QWidget* parent)
 						it.preferredRooms.intersect(set);
 					}
 				}
-				else if(ctr->type==CONSTRAINT_ACTIVITY_TAG_PREFERRED_ROOMS){
+				else if(ctr->type==SpaceConstraintType::CONSTRAINT_ACTIVITY_TAG_PREFERRED_ROOMS){
 					ConstraintActivityTagPreferredRooms* spr=(ConstraintActivityTagPreferredRooms*)ctr;
 					
 					if(begin){
@@ -7250,7 +7250,7 @@ bool computeActivitiesRoomsPreferences(QWidget* parent)
 						it.preferredRooms.intersect(spr->_rooms.toSet());
 					}
 				}
-				else if(ctr->type==CONSTRAINT_ACTIVITY_PREFERRED_ROOM){
+				else if(ctr->type==SpaceConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_ROOM){
 					ConstraintActivityPreferredRoom* spr=(ConstraintActivityPreferredRoom*)ctr;
 					
 					if(begin){
@@ -7263,7 +7263,7 @@ bool computeActivitiesRoomsPreferences(QWidget* parent)
 						it.preferredRooms.intersect(set);
 					}
 				}
-				else if(ctr->type==CONSTRAINT_ACTIVITY_PREFERRED_ROOMS){
+				else if(ctr->type==SpaceConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_ROOMS){
 					ConstraintActivityPreferredRooms* spr=(ConstraintActivityPreferredRooms*)ctr;
 					
 					if(begin){
@@ -7458,7 +7458,7 @@ bool computeMaxBuildingChangesPerDayForStudents(QWidget* parent)
 	bool ok=true;
 	
 	for(int i=0; i<gt.rules.nInternalSpaceConstraints; i++){
-		if(gt.rules.internalSpaceConstraintsList[i]->type==CONSTRAINT_STUDENTS_SET_MAX_BUILDING_CHANGES_PER_DAY){
+		if(gt.rules.internalSpaceConstraintsList[i]->type==SpaceConstraintType::CONSTRAINT_STUDENTS_SET_MAX_BUILDING_CHANGES_PER_DAY){
 			ConstraintStudentsSetMaxBuildingChangesPerDay* spr=(ConstraintStudentsSetMaxBuildingChangesPerDay*)gt.rules.internalSpaceConstraintsList[i];
 			
 			if(spr->weightPercentage!=100){
@@ -7482,7 +7482,7 @@ bool computeMaxBuildingChangesPerDayForStudents(QWidget* parent)
 					maxBuildingChangesPerDayForStudentsMaxChanges[sbg]=min(maxBuildingChangesPerDayForStudentsMaxChanges[sbg], spr->maxBuildingChangesPerDay);
 			}
 		}
-		else if(gt.rules.internalSpaceConstraintsList[i]->type==CONSTRAINT_STUDENTS_MAX_BUILDING_CHANGES_PER_DAY){
+		else if(gt.rules.internalSpaceConstraintsList[i]->type==SpaceConstraintType::CONSTRAINT_STUDENTS_MAX_BUILDING_CHANGES_PER_DAY){
 			ConstraintStudentsMaxBuildingChangesPerDay* spr=(ConstraintStudentsMaxBuildingChangesPerDay*)gt.rules.internalSpaceConstraintsList[i];
 			
 			if(spr->weightPercentage!=100){
@@ -7521,7 +7521,7 @@ bool computeMaxBuildingChangesPerWeekForStudents(QWidget* parent)
 	bool ok=true;
 	
 	for(int i=0; i<gt.rules.nInternalSpaceConstraints; i++){
-		if(gt.rules.internalSpaceConstraintsList[i]->type==CONSTRAINT_STUDENTS_SET_MAX_BUILDING_CHANGES_PER_WEEK){
+		if(gt.rules.internalSpaceConstraintsList[i]->type==SpaceConstraintType::CONSTRAINT_STUDENTS_SET_MAX_BUILDING_CHANGES_PER_WEEK){
 			ConstraintStudentsSetMaxBuildingChangesPerWeek* spr=(ConstraintStudentsSetMaxBuildingChangesPerWeek*)gt.rules.internalSpaceConstraintsList[i];
 			
 			if(spr->weightPercentage!=100){
@@ -7545,7 +7545,7 @@ bool computeMaxBuildingChangesPerWeekForStudents(QWidget* parent)
 					maxBuildingChangesPerWeekForStudentsMaxChanges[sbg]=min(maxBuildingChangesPerWeekForStudentsMaxChanges[sbg], spr->maxBuildingChangesPerWeek);
 			}
 		}
-		else if(gt.rules.internalSpaceConstraintsList[i]->type==CONSTRAINT_STUDENTS_MAX_BUILDING_CHANGES_PER_WEEK){
+		else if(gt.rules.internalSpaceConstraintsList[i]->type==SpaceConstraintType::CONSTRAINT_STUDENTS_MAX_BUILDING_CHANGES_PER_WEEK){
 			ConstraintStudentsMaxBuildingChangesPerWeek* spr=(ConstraintStudentsMaxBuildingChangesPerWeek*)gt.rules.internalSpaceConstraintsList[i];
 			
 			if(spr->weightPercentage!=100){
@@ -7584,7 +7584,7 @@ bool computeMinGapsBetweenBuildingChangesForStudents(QWidget* parent)
 	bool ok=true;
 	
 	for(int i=0; i<gt.rules.nInternalSpaceConstraints; i++){
-		if(gt.rules.internalSpaceConstraintsList[i]->type==CONSTRAINT_STUDENTS_SET_MIN_GAPS_BETWEEN_BUILDING_CHANGES){
+		if(gt.rules.internalSpaceConstraintsList[i]->type==SpaceConstraintType::CONSTRAINT_STUDENTS_SET_MIN_GAPS_BETWEEN_BUILDING_CHANGES){
 			ConstraintStudentsSetMinGapsBetweenBuildingChanges* spr=(ConstraintStudentsSetMinGapsBetweenBuildingChanges*)gt.rules.internalSpaceConstraintsList[i];
 			
 			if(spr->weightPercentage!=100){
@@ -7608,7 +7608,7 @@ bool computeMinGapsBetweenBuildingChangesForStudents(QWidget* parent)
 					minGapsBetweenBuildingChangesForStudentsMinGaps[sbg]=max(minGapsBetweenBuildingChangesForStudentsMinGaps[sbg], spr->minGapsBetweenBuildingChanges);
 			}
 		}
-		else if(gt.rules.internalSpaceConstraintsList[i]->type==CONSTRAINT_STUDENTS_MIN_GAPS_BETWEEN_BUILDING_CHANGES){
+		else if(gt.rules.internalSpaceConstraintsList[i]->type==SpaceConstraintType::CONSTRAINT_STUDENTS_MIN_GAPS_BETWEEN_BUILDING_CHANGES){
 			ConstraintStudentsMinGapsBetweenBuildingChanges* spr=(ConstraintStudentsMinGapsBetweenBuildingChanges*)gt.rules.internalSpaceConstraintsList[i];
 			
 			if(spr->weightPercentage!=100){
@@ -7648,7 +7648,7 @@ bool computeMaxBuildingChangesPerDayForTeachers(QWidget* parent)
 	bool ok=true;
 	
 	for(int i=0; i<gt.rules.nInternalSpaceConstraints; i++){
-		if(gt.rules.internalSpaceConstraintsList[i]->type==CONSTRAINT_TEACHER_MAX_BUILDING_CHANGES_PER_DAY){
+		if(gt.rules.internalSpaceConstraintsList[i]->type==SpaceConstraintType::CONSTRAINT_TEACHER_MAX_BUILDING_CHANGES_PER_DAY){
 			ConstraintTeacherMaxBuildingChangesPerDay* spr=(ConstraintTeacherMaxBuildingChangesPerDay*)gt.rules.internalSpaceConstraintsList[i];
 			
 			if(spr->weightPercentage!=100){
@@ -7670,7 +7670,7 @@ bool computeMaxBuildingChangesPerDayForTeachers(QWidget* parent)
 			else
 				maxBuildingChangesPerDayForTeachersMaxChanges[spr->teacher_ID]=min(maxBuildingChangesPerDayForTeachersMaxChanges[spr->teacher_ID], spr->maxBuildingChangesPerDay);
 		}
-		else if(gt.rules.internalSpaceConstraintsList[i]->type==CONSTRAINT_TEACHERS_MAX_BUILDING_CHANGES_PER_DAY){
+		else if(gt.rules.internalSpaceConstraintsList[i]->type==SpaceConstraintType::CONSTRAINT_TEACHERS_MAX_BUILDING_CHANGES_PER_DAY){
 			ConstraintTeachersMaxBuildingChangesPerDay* spr=(ConstraintTeachersMaxBuildingChangesPerDay*)gt.rules.internalSpaceConstraintsList[i];
 			
 			if(spr->weightPercentage!=100){
@@ -7709,7 +7709,7 @@ bool computeMaxBuildingChangesPerWeekForTeachers(QWidget* parent)
 	bool ok=true;
 	
 	for(int i=0; i<gt.rules.nInternalSpaceConstraints; i++){
-		if(gt.rules.internalSpaceConstraintsList[i]->type==CONSTRAINT_TEACHER_MAX_BUILDING_CHANGES_PER_WEEK){
+		if(gt.rules.internalSpaceConstraintsList[i]->type==SpaceConstraintType::CONSTRAINT_TEACHER_MAX_BUILDING_CHANGES_PER_WEEK){
 			ConstraintTeacherMaxBuildingChangesPerWeek* spr=(ConstraintTeacherMaxBuildingChangesPerWeek*)gt.rules.internalSpaceConstraintsList[i];
 			
 			if(spr->weightPercentage!=100){
@@ -7731,7 +7731,7 @@ bool computeMaxBuildingChangesPerWeekForTeachers(QWidget* parent)
 			else
 				maxBuildingChangesPerWeekForTeachersMaxChanges[spr->teacher_ID]=min(maxBuildingChangesPerWeekForTeachersMaxChanges[spr->teacher_ID], spr->maxBuildingChangesPerWeek);
 		}
-		else if(gt.rules.internalSpaceConstraintsList[i]->type==CONSTRAINT_TEACHERS_MAX_BUILDING_CHANGES_PER_WEEK){
+		else if(gt.rules.internalSpaceConstraintsList[i]->type==SpaceConstraintType::CONSTRAINT_TEACHERS_MAX_BUILDING_CHANGES_PER_WEEK){
 			ConstraintTeachersMaxBuildingChangesPerWeek* spr=(ConstraintTeachersMaxBuildingChangesPerWeek*)gt.rules.internalSpaceConstraintsList[i];
 			
 			if(spr->weightPercentage!=100){
@@ -7770,7 +7770,7 @@ bool computeMinGapsBetweenBuildingChangesForTeachers(QWidget* parent)
 	bool ok=true;
 	
 	for(int i=0; i<gt.rules.nInternalSpaceConstraints; i++){
-		if(gt.rules.internalSpaceConstraintsList[i]->type==CONSTRAINT_TEACHER_MIN_GAPS_BETWEEN_BUILDING_CHANGES){
+		if(gt.rules.internalSpaceConstraintsList[i]->type==SpaceConstraintType::CONSTRAINT_TEACHER_MIN_GAPS_BETWEEN_BUILDING_CHANGES){
 			ConstraintTeacherMinGapsBetweenBuildingChanges* spr=(ConstraintTeacherMinGapsBetweenBuildingChanges*)gt.rules.internalSpaceConstraintsList[i];
 			
 			if(spr->weightPercentage!=100){
@@ -7792,7 +7792,7 @@ bool computeMinGapsBetweenBuildingChangesForTeachers(QWidget* parent)
 			else
 				minGapsBetweenBuildingChangesForTeachersMinGaps[spr->teacher_ID]=max(minGapsBetweenBuildingChangesForTeachersMinGaps[spr->teacher_ID], spr->minGapsBetweenBuildingChanges);
 		}
-		else if(gt.rules.internalSpaceConstraintsList[i]->type==CONSTRAINT_TEACHERS_MIN_GAPS_BETWEEN_BUILDING_CHANGES){
+		else if(gt.rules.internalSpaceConstraintsList[i]->type==SpaceConstraintType::CONSTRAINT_TEACHERS_MIN_GAPS_BETWEEN_BUILDING_CHANGES){
 			ConstraintTeachersMinGapsBetweenBuildingChanges* spr=(ConstraintTeachersMinGapsBetweenBuildingChanges*)gt.rules.internalSpaceConstraintsList[i];
 			
 			if(spr->weightPercentage!=100){

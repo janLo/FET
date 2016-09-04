@@ -1813,7 +1813,7 @@ void AdvancedLockUnlockForm::unlockAllWithoutTimetable(QWidget* parent)
 
 	if(unlockSpace)
 		foreach(SpaceConstraint* sc, gt.rules.spaceConstraintsList)
-			if(sc->type==CONSTRAINT_ACTIVITY_PREFERRED_ROOM){
+			if(sc->type==SpaceConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_ROOM){
 				ConstraintActivityPreferredRoom* c=(ConstraintActivityPreferredRoom*)sc;
 				if(c->weightPercentage==100.0){
 					if(!c->permanentlyLocked){
@@ -2122,7 +2122,7 @@ void AdvancedLockUnlockForm::unlockDayWithoutTimetable(QWidget* parent)
 
 	if(unlockSpace)
 		foreach(SpaceConstraint* sc, gt.rules.spaceConstraintsList)
-			if(sc->type==CONSTRAINT_ACTIVITY_PREFERRED_ROOM){
+			if(sc->type==SpaceConstraintType::CONSTRAINT_ACTIVITY_PREFERRED_ROOM){
 				ConstraintActivityPreferredRoom* c=(ConstraintActivityPreferredRoom*) sc;
 				if(c->weightPercentage==100.0 && actsSet.contains(c->activityId)){
 					if(!c->permanentlyLocked){

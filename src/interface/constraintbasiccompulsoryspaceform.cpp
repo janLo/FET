@@ -55,7 +55,7 @@ ConstraintBasicCompulsorySpaceForm::~ConstraintBasicCompulsorySpaceForm()
 
 bool ConstraintBasicCompulsorySpaceForm::filterOk(SpaceConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_BASIC_COMPULSORY_SPACE)
+	if(ctr->type==SpaceConstraintType::CONSTRAINT_BASIC_COMPULSORY_SPACE)
 		return true;
 	else
 		return false;
@@ -153,7 +153,7 @@ void ConstraintBasicCompulsorySpaceForm::removeConstraint()
 	if(lres==0){
 		//The user clicked the OK button or pressed Enter
 		
-		assert(ctr->type==CONSTRAINT_BASIC_COMPULSORY_SPACE);
+		assert(ctr->type==SpaceConstraintType::CONSTRAINT_BASIC_COMPULSORY_SPACE);
 		
 		QString s=tr("Do you really want to remove the basic compulsory space constraint?");
 		s+=" ";

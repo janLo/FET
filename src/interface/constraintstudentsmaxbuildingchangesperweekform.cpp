@@ -57,7 +57,7 @@ ConstraintStudentsMaxBuildingChangesPerWeekForm::~ConstraintStudentsMaxBuildingC
 
 bool ConstraintStudentsMaxBuildingChangesPerWeekForm::filterOk(SpaceConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_STUDENTS_MAX_BUILDING_CHANGES_PER_WEEK){
+	if(ctr->type==SpaceConstraintType::CONSTRAINT_STUDENTS_MAX_BUILDING_CHANGES_PER_WEEK){
 		return true;
 	}
 	else

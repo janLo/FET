@@ -65,7 +65,7 @@ ConstraintTeacherMaxBuildingChangesPerDayForm::~ConstraintTeacherMaxBuildingChan
 
 bool ConstraintTeacherMaxBuildingChangesPerDayForm::filterOk(SpaceConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_TEACHER_MAX_BUILDING_CHANGES_PER_DAY){
+	if(ctr->type==SpaceConstraintType::CONSTRAINT_TEACHER_MAX_BUILDING_CHANGES_PER_DAY){
 		ConstraintTeacherMaxBuildingChangesPerDay* c=(ConstraintTeacherMaxBuildingChangesPerDay*) ctr;
 		return c->teacherName==teachersComboBox->currentText() || teachersComboBox->currentText()=="";
 	}

@@ -111,7 +111,7 @@ ConstraintActivitiesSameRoomIfConsecutiveForm::~ConstraintActivitiesSameRoomIfCo
 
 bool ConstraintActivitiesSameRoomIfConsecutiveForm::filterOk(SpaceConstraint* ctr)
 {
-	if(ctr->type!=CONSTRAINT_ACTIVITIES_SAME_ROOM_IF_CONSECUTIVE)
+	if(ctr->type!=SpaceConstraintType::CONSTRAINT_ACTIVITIES_SAME_ROOM_IF_CONSECUTIVE)
 		return false;
 
 	ConstraintActivitiesSameRoomIfConsecutive* c=(ConstraintActivitiesSameRoomIfConsecutive*) ctr;

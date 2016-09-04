@@ -76,7 +76,7 @@ ConstraintStudentsSetMinGapsBetweenBuildingChangesForm::~ConstraintStudentsSetMi
 
 bool ConstraintStudentsSetMinGapsBetweenBuildingChangesForm::filterOk(SpaceConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_STUDENTS_SET_MIN_GAPS_BETWEEN_BUILDING_CHANGES){
+	if(ctr->type==SpaceConstraintType::CONSTRAINT_STUDENTS_SET_MIN_GAPS_BETWEEN_BUILDING_CHANGES){
 		ConstraintStudentsSetMinGapsBetweenBuildingChanges* c=(ConstraintStudentsSetMinGapsBetweenBuildingChanges*) ctr;
 		return c->studentsName==studentsComboBox->currentText() || studentsComboBox->currentText()=="";
 	}

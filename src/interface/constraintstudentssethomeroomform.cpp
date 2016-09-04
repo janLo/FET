@@ -84,7 +84,7 @@ ConstraintStudentsSetHomeRoomForm::~ConstraintStudentsSetHomeRoomForm()
 
 bool ConstraintStudentsSetHomeRoomForm::filterOk(SpaceConstraint* ctr)
 {
-	if(ctr->type==CONSTRAINT_STUDENTS_SET_HOME_ROOM){
+	if(ctr->type==SpaceConstraintType::CONSTRAINT_STUDENTS_SET_HOME_ROOM){
 		ConstraintStudentsSetHomeRoom* c=(ConstraintStudentsSetHomeRoom*) ctr;
 		return (c->roomName==roomsComboBox->currentText() || roomsComboBox->currentText()=="")
 		 && (c->studentsName==studentsComboBox->currentText() || studentsComboBox->currentText()=="");
