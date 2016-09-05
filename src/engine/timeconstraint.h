@@ -152,7 +152,7 @@ public:
 	/**
 	Specifies the type of this constraint (using the above constants).
 	*/
-    TimeConstraintType type;
+    TimeConstraintType const type;
 
 	/**
 	True for mandatory constraints, false for non-mandatory constraints.
@@ -163,7 +163,7 @@ public:
 	Dummy constructor - needed for the static array of constraints.
 	Any other use should be avoided.
 	*/
-	TimeConstraint();
+    TimeConstraint(TimeConstraintType const &constraintType);
 	
 	virtual ~TimeConstraint()=0;
 
@@ -174,7 +174,7 @@ public:
 	and any other restrictions must have much more lower weight,
 	so that the timetable can evolve when starting with uninitialized activities.
 	*/
-	TimeConstraint(double wp);
+    TimeConstraint(TimeConstraintType const &constraintType, double wp);
 
 	/**
 	The function that calculates the fitness of a solution, according to this
