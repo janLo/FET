@@ -4262,7 +4262,6 @@ void Rules::updateConstraintsAfterRemoval()
                     toBeRemovedTime.append(tc);
             }
             break;
-        case TimeConstraintType::CONSTRAINT_GENERIC_TIME:
         case TimeConstraintType::CONSTRAINT_BASIC_COMPULSORY_TIME:
         case TimeConstraintType::CONSTRAINT_BREAK_TIMES:
         case TimeConstraintType::CONSTRAINT_TEACHERS_MAX_HOURS_DAILY:

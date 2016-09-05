@@ -47,8 +47,6 @@ class QWidget;
 typedef QList<SpaceConstraint*> SpaceConstraintsList;
 
 enum SpaceConstraintType {
-    CONSTRAINT_GENERIC_SPACE										=1000, //time constraints are beginning from 1
-
     CONSTRAINT_BASIC_COMPULSORY_SPACE								=1001, //space constraints from 1001
     CONSTRAINT_ROOM_NOT_AVAILABLE_TIMES								=1002,
 

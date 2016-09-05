@@ -44,8 +44,6 @@ class QWidget;
 typedef QList<TimeConstraint*> TimeConstraintsList;
 
 enum TimeConstraintType {
-    CONSTRAINT_GENERIC_TIME											=0,
-
     CONSTRAINT_BASIC_COMPULSORY_TIME								=1,
     CONSTRAINT_BREAK_TIMES											=2,
 
