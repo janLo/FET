@@ -106,13 +106,13 @@ public:
 	/**
 	Specifies the type of this constraint (using the above constants).
 	*/
-    SpaceConstraintType type;
+    SpaceConstraintType const type;
 
 	/**
 	Dummy constructor - needed for the static array of constraints.
 	Use of this function must be avoided.
 	*/
-	SpaceConstraint();
+    SpaceConstraint(SpaceConstraintType const &constaintType);
 	
 	virtual ~SpaceConstraint()=0;
 
@@ -122,7 +122,7 @@ public:
 	and any other restrictions must have much more lower weight,
 	so that the timetable can evolve when starting with uninitialized activities
 	*/
-	SpaceConstraint(double wp);
+    SpaceConstraint(SpaceConstraintType const &constraintType, double wp);
 
 	/**
 	The function that calculates the fitness of a solution, according to this
