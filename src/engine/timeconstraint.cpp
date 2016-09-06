@@ -610,10 +610,7 @@ QString ConstraintTeacherNotAvailableTimes::getDetailedDescription(Rules& r){
 }
 
 bool ConstraintTeacherNotAvailableTimes::computeInternalStructure(QWidget* parent, Rules& r){
-	//this->teacher_ID=r.searchTeacher(this->teacher);
-    teacher_ID=r.teachersHash.value(teacherName(), -1);
-
-	if(this->teacher_ID<0){
+    if(! fetchTeacherId(r)){
 		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
 		 tr("Constraint teacher not available times is wrong because it refers to inexistent teacher."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
@@ -639,7 +636,6 @@ bool ConstraintTeacherNotAvailableTimes::computeInternalStructure(QWidget* paren
 		}
 	}
 
-	assert(this->teacher_ID>=0);
 	return true;
 }
 
@@ -669,7 +665,7 @@ double ConstraintTeacherNotAvailableTimes::fitness(Solution& c, Rules& r, QList<
 	//5 broken restrictions for that function.
 	//TODO: decide if it is better to consider only 2 or 10 as a return value in this particular case
 	//(currently it is 10)
-	int tch=this->teacher_ID;
+    int tch=this->teacherId();
 
 	int nbroken;
 
@@ -2945,14 +2941,10 @@ ConstraintTeacherMaxHoursDaily::ConstraintTeacherMaxHoursDaily(double wp, int ma
 
 }
 
-bool ConstraintTeacherMaxHoursDaily::computeInternalStructure(QWidget* parent, Rules& r)
+bool ConstraintTeacherMaxHoursDaily::computeInternalStructure(QWidget* parent, Rules &rules)
 {
 	Q_UNUSED(parent);
-
-	//this->teacher_ID=r.searchTeacher(this->teacherName);
-    teacher_ID=r.teachersHash.value(teacherName(), -1);
-	assert(this->teacher_ID>=0);
-	return true;
+    return fetchTeacherId(rules);
 }
 
 bool ConstraintTeacherMaxHoursDaily::hasInactiveActivities(Rules& r)
@@ -3032,7 +3024,7 @@ double ConstraintTeacherMaxHoursDaily::fitness(Solution& c, Rules& r, QList<doub
 	//without logging
 	if(conflictsString==NULL){
 		nbroken=0;
-		int i=this->teacher_ID;
+        int i=this->teacherId();
 		for(int d=0; d<r.nDaysPerWeek; d++){
 			int n_hours_daily=0;
 			for(int h=0; h<r.nHoursPerDay; h++)
@@ -3047,7 +3039,7 @@ double ConstraintTeacherMaxHoursDaily::fitness(Solution& c, Rules& r, QList<doub
 	//with logging
 	else{
 		nbroken=0;
-		int i=this->teacher_ID;
+        int i=this->teacherId();
 		for(int d=0; d<r.nDaysPerWeek; d++){
 			int n_hours_daily=0;
 			for(int h=0; h<r.nHoursPerDay; h++)
@@ -3386,11 +3378,7 @@ ConstraintTeacherMaxHoursContinuously::ConstraintTeacherMaxHoursContinuously(dou
 bool ConstraintTeacherMaxHoursContinuously::computeInternalStructure(QWidget* parent, Rules& r)
 {
 	Q_UNUSED(parent);
-
-	//this->teacher_ID=r.searchTeacher(this->teacherName);
-    teacher_ID=r.teachersHash.value(teacherName(), -1);
-	assert(this->teacher_ID>=0);
-	return true;
+    return fetchTeacherId(r);
 }
 
 bool ConstraintTeacherMaxHoursContinuously::hasInactiveActivities(Rules& r)
@@ -3468,7 +3456,7 @@ double ConstraintTeacherMaxHoursContinuously::fitness(Solution& c, Rules& r, QLi
 	int nbroken;
 
 	nbroken=0;
-	int i=this->teacher_ID;
+    int i=this->teacherId();
 	for(int d=0; d<r.nDaysPerWeek; d++){
 		int nc=0;
 		for(int h=0; h<r.nHoursPerDay; h++){
@@ -3877,16 +3865,14 @@ bool ConstraintTeacherActivityTagMaxHoursContinuously::computeInternalStructure(
 {
 	Q_UNUSED(parent);
 
-	//this->teacher_ID=r.searchTeacher(this->teacherName);
-    teacher_ID=r.teachersHash.value(teacherName(), -1);
-	assert(this->teacher_ID>=0);
+    fetchTeacherId(r);
 
 	//this->activityTagIndex=r.searchActivityTag(this->activityTagName);
 	activityTagIndex=r.activityTagsHash.value(activityTagName, -1);
 	assert(this->activityTagIndex>=0);
 
 	this->canonicalTeachersList.clear();
-	int i=this->teacher_ID;
+    int i=this->teacherId();
 	bool found=false;
 	
 	Teacher* tch=r.internalTeachersList[i];
@@ -4143,10 +4129,7 @@ bool ConstraintTeacherMaxDaysPerWeek::computeInternalStructure(QWidget* parent, 
 {
 	Q_UNUSED(parent);
 
-	//this->teacher_ID=r.searchTeacher(this->teacherName);
-    teacher_ID=r.teachersHash.value(teacherName(), -1);
-	assert(this->teacher_ID>=0);
-	return true;
+    return fetchTeacherId(r);
 }
 
 bool ConstraintTeacherMaxDaysPerWeek::hasInactiveActivities(Rules& r)
@@ -4227,7 +4210,7 @@ double ConstraintTeacherMaxDaysPerWeek::fitness(Solution& c, Rules& r, QList<dou
 	if(conflictsString==NULL){
 		nbroken=0;
 		//count sort
-		int t=this->teacher_ID;
+        int t=this->teacherId();
 		int nd[MAX_HOURS_PER_DAY + 1];
 		for(int h=0; h<=r.nHoursPerDay; h++)
 			nd[h]=0;
@@ -4256,7 +4239,7 @@ double ConstraintTeacherMaxDaysPerWeek::fitness(Solution& c, Rules& r, QList<dou
 	else{
 		nbroken=0;
 		//count sort
-		int t=this->teacher_ID;
+        int t=this->teacherId();
 		int nd[MAX_HOURS_PER_DAY + 1];
 		for(int h=0; h<=r.nHoursPerDay; h++)
 			nd[h]=0;
@@ -4822,11 +4805,7 @@ ConstraintTeacherMaxGapsPerWeek::ConstraintTeacherMaxGapsPerWeek(double wp, QStr
 bool ConstraintTeacherMaxGapsPerWeek::computeInternalStructure(QWidget* parent, Rules& r)
 {
 	Q_UNUSED(parent);
-
-	//this->teacherIndex=r.searchTeacher(this->teacherName);
-    teacherIndex=r.teachersHash.value(teacherName(), -1);
-	assert(this->teacherIndex>=0);
-	return true;
+    return fetchTeacherId(r);
 }
 
 bool ConstraintTeacherMaxGapsPerWeek::hasInactiveActivities(Rules& r)
@@ -4908,7 +4887,7 @@ double ConstraintTeacherMaxGapsPerWeek::fitness(Solution& c, Rules& r, QList<dou
 
 	totalGaps=0;
 		
-	i=this->teacherIndex;
+    i=this->teacherId();
 	
 	tg=0;
 	for(j=0; j<r.nDaysPerWeek; j++){
@@ -5229,11 +5208,7 @@ ConstraintTeacherMaxGapsPerDay::ConstraintTeacherMaxGapsPerDay(double wp, QStrin
 bool ConstraintTeacherMaxGapsPerDay::computeInternalStructure(QWidget* parent, Rules& r)
 {
 	Q_UNUSED(parent);
-
-	//this->teacherIndex=r.searchTeacher(this->teacherName);
-    teacherIndex=r.teachersHash.value(teacherName(), -1);
-	assert(this->teacherIndex>=0);
-	return true;
+    return fetchTeacherId(r);
 }
 
 bool ConstraintTeacherMaxGapsPerDay::hasInactiveActivities(Rules& r)
@@ -5315,7 +5290,7 @@ double ConstraintTeacherMaxGapsPerDay::fitness(Solution& c, Rules& r, QList<doub
 
 	totalGaps=0;
 		
-	i=this->teacherIndex;
+    i=this->teacherId();
 	
 	for(j=0; j<r.nDaysPerWeek; j++){
 		tg=0;
@@ -13829,9 +13804,7 @@ ConstraintTeacherMinHoursDaily::ConstraintTeacherMinHoursDaily(double wp, int mi
 
 bool ConstraintTeacherMinHoursDaily::computeInternalStructure(QWidget* parent, Rules& r)
 {
-	//this->teacher_ID=r.searchTeacher(this->teacherName);
-    teacher_ID=r.teachersHash.value(teacherName(), -1);
-	assert(this->teacher_ID>=0);
+    fetchTeacherId(r);
 	
 	if(allowEmptyDays==false){
 		QString s=tr("Cannot generate a timetable with a constraint teacher min hours daily with allow empty days=false. Please modify it,"
@@ -13931,7 +13904,7 @@ double ConstraintTeacherMinHoursDaily::fitness(Solution& c, Rules& r, QList<doub
 	//without logging
 	if(conflictsString==NULL){
 		nbroken=0;
-		int i=this->teacher_ID;
+        int i=this->teacherId();
 		for(int d=0; d<r.nDaysPerWeek; d++){
 			int n_hours_daily=0;
 			for(int h=0; h<r.nHoursPerDay; h++)
@@ -13946,7 +13919,7 @@ double ConstraintTeacherMinHoursDaily::fitness(Solution& c, Rules& r, QList<doub
 	//with logging
 	else{
 		nbroken=0;
-		int i=this->teacher_ID;
+        int i=this->teacherId();
 		for(int d=0; d<r.nDaysPerWeek; d++){
 			int n_hours_daily=0;
 			for(int h=0; h<r.nHoursPerDay; h++)
@@ -14065,11 +14038,7 @@ ConstraintTeacherMinDaysPerWeek::ConstraintTeacherMinDaysPerWeek(double wp, int 
 bool ConstraintTeacherMinDaysPerWeek::computeInternalStructure(QWidget* parent, Rules& r)
 {
 	Q_UNUSED(parent);
-
-	//this->teacher_ID=r.searchTeacher(this->teacherName);
-    teacher_ID=r.teachersHash.value(teacherName(), -1);
-	assert(this->teacher_ID>=0);
-	return true;
+    return fetchTeacherId(r);
 }
 
 bool ConstraintTeacherMinDaysPerWeek::hasInactiveActivities(Rules& r)
@@ -14147,7 +14116,7 @@ double ConstraintTeacherMinDaysPerWeek::fitness(Solution& c, Rules& r, QList<dou
 	int nbroken;
 
 	nbroken=0;
-	int i=this->teacher_ID;
+    int i=this->teacherId();
 	int nd=0;
 	for(int d=0; d<r.nDaysPerWeek; d++){
 		for(int h=0; h<r.nHoursPerDay; h++){
@@ -14466,9 +14435,7 @@ ConstraintTeacherIntervalMaxDaysPerWeek::ConstraintTeacherIntervalMaxDaysPerWeek
 
 bool ConstraintTeacherIntervalMaxDaysPerWeek::computeInternalStructure(QWidget* parent, Rules& r)
 {
-	//this->teacher_ID=r.searchTeacher(this->teacherName);
-    teacher_ID=r.teachersHash.value(teacherName(), -1);
-	assert(this->teacher_ID>=0);
+    fetchTeacherId(r);
 	if(this->startHour>=this->endHour){
 		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
 		 tr("Constraint teacher interval max days per week is wrong because start hour >= end hour."
@@ -14589,7 +14556,7 @@ double ConstraintTeacherIntervalMaxDaysPerWeek::fitness(Solution& c, Rules& r, Q
 
 	int nbroken;
 	
-	int t=this->teacher_ID;
+    int t=this->teacherId();
 
 	nbroken=0;
 	bool ocDay[MAX_DAYS_PER_WEEK];
@@ -16078,17 +16045,14 @@ ConstraintTeacherActivityTagMaxHoursDaily::ConstraintTeacherActivityTagMaxHoursD
 bool ConstraintTeacherActivityTagMaxHoursDaily::computeInternalStructure(QWidget* parent, Rules& r)
 {
 	Q_UNUSED(parent);
-
-	//this->teacher_ID=r.searchTeacher(this->teacherName);
-    teacher_ID=r.teachersHash.value(teacherName(), -1);
-	assert(this->teacher_ID>=0);
+    fetchTeacherId(r);
 
 	//this->activityTagIndex=r.searchActivityTag(this->activityTagName);
 	activityTagIndex=r.activityTagsHash.value(activityTagName, -1);
 	assert(this->activityTagIndex>=0);
 
 	this->canonicalTeachersList.clear();
-	int i=this->teacher_ID;
+    int i=this->teacherId();
 	bool found=false;
 	
 	Teacher* tch=r.internalTeachersList[i];
@@ -18474,10 +18438,18 @@ bool ConstraintStudentsMaxDaysPerWeek::repairWrongDayOrHour(Rules& r)
 	return true;
 }
 
+bool TeacherConstraint::fetchTeacherId(Rules const &rules)
+{
+    _teacherId = rules.teachersHash.value(_teacherName , -1);
+    assert(_teacherId >= 0);
+    return true;
+}
+
 TeacherConstraint::TeacherConstraint() { }
 
 TeacherConstraint::TeacherConstraint(const QString &teacherName)
-    : _teacherName(teacherName)
+    : _teacherName(teacherName),
+      _teacherId(-1)
 { }
 
 TeacherConstraint::~TeacherConstraint()

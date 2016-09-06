@@ -2288,7 +2288,9 @@ bool computeTeachersMaxHoursDaily(QWidget* parent)
 	
 	for(int i=0; i<gt.rules.nInternalTimeConstraints; i++){
 		if(gt.rules.internalTimeConstraintsList[i]->type==TimeConstraintType::CONSTRAINT_TEACHER_MAX_HOURS_DAILY){
-			ConstraintTeacherMaxHoursDaily* tmd=(ConstraintTeacherMaxHoursDaily*)gt.rules.internalTimeConstraintsList[i];
+
+            ConstraintTeacherMaxHoursDaily const * tmd =
+                    static_cast<ConstraintTeacherMaxHoursDaily*>(gt.rules.internalTimeConstraintsList[i]);
 
 			//////////
 			/*if(tmd->weightPercentage!=100){
@@ -2307,25 +2309,26 @@ bool computeTeachersMaxHoursDaily(QWidget* parent)
 			}*/
 			//////////
 
-			if(teachersMaxHoursDailyMaxHours1[tmd->teacher_ID]==-1 ||
-			 (teachersMaxHoursDailyMaxHours1[tmd->teacher_ID] >= tmd->maxHoursDaily &&
-			 teachersMaxHoursDailyPercentages1[tmd->teacher_ID] <= tmd->weightPercentage)){
-			 	teachersMaxHoursDailyMaxHours1[tmd->teacher_ID] = tmd->maxHoursDaily;
-				teachersMaxHoursDailyPercentages1[tmd->teacher_ID] = tmd->weightPercentage;
+            const int currentTeacherId = tmd->teacherId();
+            if(teachersMaxHoursDailyMaxHours1[currentTeacherId]==-1 ||
+             (teachersMaxHoursDailyMaxHours1[currentTeacherId] >= tmd->maxHoursDaily &&
+             teachersMaxHoursDailyPercentages1[currentTeacherId] <= tmd->weightPercentage)){
+                teachersMaxHoursDailyMaxHours1[currentTeacherId] = tmd->maxHoursDaily;
+                teachersMaxHoursDailyPercentages1[currentTeacherId] = tmd->weightPercentage;
 			}
-			else if(teachersMaxHoursDailyMaxHours1[tmd->teacher_ID] <= tmd->maxHoursDaily &&
-			 teachersMaxHoursDailyPercentages1[tmd->teacher_ID] >= tmd->weightPercentage){
+            else if(teachersMaxHoursDailyMaxHours1[currentTeacherId] <= tmd->maxHoursDaily &&
+             teachersMaxHoursDailyPercentages1[currentTeacherId] >= tmd->weightPercentage){
 			 	//nothing
 			}
 			else{
-				if(teachersMaxHoursDailyMaxHours2[tmd->teacher_ID]==-1 ||
-				 (teachersMaxHoursDailyMaxHours2[tmd->teacher_ID] >= tmd->maxHoursDaily &&
-				 teachersMaxHoursDailyPercentages2[tmd->teacher_ID] <= tmd->weightPercentage)){
-				 	teachersMaxHoursDailyMaxHours2[tmd->teacher_ID] = tmd->maxHoursDaily;
-					teachersMaxHoursDailyPercentages2[tmd->teacher_ID] = tmd->weightPercentage;
+                if(teachersMaxHoursDailyMaxHours2[currentTeacherId]==-1 ||
+                 (teachersMaxHoursDailyMaxHours2[currentTeacherId] >= tmd->maxHoursDaily &&
+                 teachersMaxHoursDailyPercentages2[currentTeacherId] <= tmd->weightPercentage)){
+                    teachersMaxHoursDailyMaxHours2[currentTeacherId] = tmd->maxHoursDaily;
+                    teachersMaxHoursDailyPercentages2[currentTeacherId] = tmd->weightPercentage;
 				}
-				else if(teachersMaxHoursDailyMaxHours2[tmd->teacher_ID] <= tmd->maxHoursDaily &&
-				 teachersMaxHoursDailyPercentages2[tmd->teacher_ID] >= tmd->weightPercentage){
+                else if(teachersMaxHoursDailyMaxHours2[currentTeacherId] <= tmd->maxHoursDaily &&
+                 teachersMaxHoursDailyPercentages2[currentTeacherId] >= tmd->weightPercentage){
 				 	//nothing
 				}
 				else{ //cannot proceed
@@ -2341,7 +2344,7 @@ bool computeTeachersMaxHoursDaily(QWidget* parent)
 					 " Example: you are allowed to use 3 constraints: 6 hours 95%, 7 hours 100% and 8 hours 100%,"
 					 " which can be compressed into 2 constraints: 6 hours 95%, 7 hours 100%\n\n"
 					 " Please modify your data accordingly and try again.")
-					 .arg(gt.rules.internalTeachersList[tmd->teacher_ID]->name),
+                     .arg(gt.rules.internalTeachersList[tmd->teacherId()]->name),
 					 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 					 1, 0 );
 				 	
@@ -2559,27 +2562,29 @@ bool computeTeachersMaxHoursContinuously(QWidget* parent)
 
 	for(int i=0; i<gt.rules.nInternalTimeConstraints; i++){
 		if(gt.rules.internalTimeConstraintsList[i]->type==TimeConstraintType::CONSTRAINT_TEACHER_MAX_HOURS_CONTINUOUSLY){
-			ConstraintTeacherMaxHoursContinuously* tmd=(ConstraintTeacherMaxHoursContinuously*)gt.rules.internalTimeConstraintsList[i];
+            ConstraintTeacherMaxHoursContinuously const *tmd =
+                    static_cast<ConstraintTeacherMaxHoursContinuously const *>(gt.rules.internalTimeConstraintsList[i]);
 
-			if(teachersMaxHoursContinuouslyMaxHours1[tmd->teacher_ID]==-1 ||
-			 (teachersMaxHoursContinuouslyMaxHours1[tmd->teacher_ID] >= tmd->maxHoursContinuously &&
-			 teachersMaxHoursContinuouslyPercentages1[tmd->teacher_ID] <= tmd->weightPercentage)){
-			 	teachersMaxHoursContinuouslyMaxHours1[tmd->teacher_ID] = tmd->maxHoursContinuously;
-				teachersMaxHoursContinuouslyPercentages1[tmd->teacher_ID] = tmd->weightPercentage;
+            const int currentTeacherId = tmd->teacherId();
+            if(teachersMaxHoursContinuouslyMaxHours1[currentTeacherId]==-1 ||
+             (teachersMaxHoursContinuouslyMaxHours1[currentTeacherId] >= tmd->maxHoursContinuously &&
+             teachersMaxHoursContinuouslyPercentages1[currentTeacherId] <= tmd->weightPercentage)){
+                teachersMaxHoursContinuouslyMaxHours1[currentTeacherId] = tmd->maxHoursContinuously;
+                teachersMaxHoursContinuouslyPercentages1[currentTeacherId] = tmd->weightPercentage;
 			}
-			else if(teachersMaxHoursContinuouslyMaxHours1[tmd->teacher_ID] <= tmd->maxHoursContinuously &&
-			 teachersMaxHoursContinuouslyPercentages1[tmd->teacher_ID] >= tmd->weightPercentage){
+            else if(teachersMaxHoursContinuouslyMaxHours1[currentTeacherId] <= tmd->maxHoursContinuously &&
+             teachersMaxHoursContinuouslyPercentages1[currentTeacherId] >= tmd->weightPercentage){
 			 	//nothing
 			}
 			else{
-				if(teachersMaxHoursContinuouslyMaxHours2[tmd->teacher_ID]==-1 ||
-				 (teachersMaxHoursContinuouslyMaxHours2[tmd->teacher_ID] >= tmd->maxHoursContinuously &&
-				 teachersMaxHoursContinuouslyPercentages2[tmd->teacher_ID] <= tmd->weightPercentage)){
-				 	teachersMaxHoursContinuouslyMaxHours2[tmd->teacher_ID] = tmd->maxHoursContinuously;
-					teachersMaxHoursContinuouslyPercentages2[tmd->teacher_ID] = tmd->weightPercentage;
+                if(teachersMaxHoursContinuouslyMaxHours2[currentTeacherId]==-1 ||
+                 (teachersMaxHoursContinuouslyMaxHours2[currentTeacherId] >= tmd->maxHoursContinuously &&
+                 teachersMaxHoursContinuouslyPercentages2[currentTeacherId] <= tmd->weightPercentage)){
+                    teachersMaxHoursContinuouslyMaxHours2[currentTeacherId] = tmd->maxHoursContinuously;
+                    teachersMaxHoursContinuouslyPercentages2[currentTeacherId] = tmd->weightPercentage;
 				}
-				else if(teachersMaxHoursContinuouslyMaxHours2[tmd->teacher_ID] <= tmd->maxHoursContinuously &&
-				 teachersMaxHoursContinuouslyPercentages2[tmd->teacher_ID] >= tmd->weightPercentage){
+                else if(teachersMaxHoursContinuouslyMaxHours2[currentTeacherId] <= tmd->maxHoursContinuously &&
+                 teachersMaxHoursContinuouslyPercentages2[currentTeacherId] >= tmd->weightPercentage){
 				 	//nothing
 				}
 				else{ //cannot proceed
@@ -2595,7 +2600,7 @@ bool computeTeachersMaxHoursContinuously(QWidget* parent)
 					 " Example: you are allowed to use 3 constraints: 6 hours 95%, 7 hours 100% and 8 hours 100%,"
 					 " which can be compressed into 2 constraints: 6 hours 95%, 7 hours 100%\n\n"
 					 " Please modify your data accordingly and try again.")
-					 .arg(gt.rules.internalTeachersList[tmd->teacher_ID]->name),
+                     .arg(gt.rules.internalTeachersList[currentTeacherId]->name),
 					 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 					 1, 0 );
 				 	
@@ -3150,9 +3155,9 @@ bool computeTeachersMinHoursDaily(QWidget* parent)
 			}
 			//////////
 
-			if(teachersMinHoursDailyMinHours[tmd->teacher_ID]==-1 || teachersMinHoursDailyMinHours[tmd->teacher_ID]<tmd->minHoursDaily){
-				teachersMinHoursDailyMinHours[tmd->teacher_ID]=tmd->minHoursDaily;
-				teachersMinHoursDailyPercentages[tmd->teacher_ID]=100;
+            if(teachersMinHoursDailyMinHours[tmd->teacherId()]==-1 || teachersMinHoursDailyMinHours[tmd->teacherId()]<tmd->minHoursDaily){
+                teachersMinHoursDailyMinHours[tmd->teacherId()]=tmd->minHoursDaily;
+                teachersMinHoursDailyPercentages[tmd->teacherId()]=100;
 			}
 		}
 		else if(gt.rules.internalTimeConstraintsList[i]->type==TimeConstraintType::CONSTRAINT_TEACHERS_MIN_HOURS_DAILY){
@@ -3289,9 +3294,9 @@ bool computeTeachersMinDaysPerWeek(QWidget* parent)
 			}
 			//////////
 
-			if(teachersMinDaysPerWeekMinDays[tmd->teacher_ID]==-1 || teachersMinDaysPerWeekMinDays[tmd->teacher_ID]<tmd->minDaysPerWeek){
-				teachersMinDaysPerWeekMinDays[tmd->teacher_ID]=tmd->minDaysPerWeek;
-				teachersMinDaysPerWeekPercentages[tmd->teacher_ID]=100;
+            if(teachersMinDaysPerWeekMinDays[tmd->teacherId()]==-1 || teachersMinDaysPerWeekMinDays[tmd->teacherId()]<tmd->minDaysPerWeek){
+                teachersMinDaysPerWeekMinDays[tmd->teacherId()]=tmd->minDaysPerWeek;
+                teachersMinDaysPerWeekPercentages[tmd->teacherId()]=100;
 			}
 		}
 		else if(gt.rules.internalTimeConstraintsList[i]->type==TimeConstraintType::CONSTRAINT_TEACHERS_MIN_DAYS_PER_WEEK){
@@ -3996,7 +4001,7 @@ bool computeTeachersMaxGapsPerWeekPercentage(QWidget* parent)
 		if(gt.rules.internalTimeConstraintsList[i]->type==TimeConstraintType::CONSTRAINT_TEACHER_MAX_GAPS_PER_WEEK){
 			ConstraintTeacherMaxGapsPerWeek* tg=(ConstraintTeacherMaxGapsPerWeek*)gt.rules.internalTimeConstraintsList[i];
 		
-			int j=tg->teacherIndex;
+            int j=tg->teacherId();
 			if(teachersMaxGapsPerWeekMaxGaps[j]==-1 
 			 ||(teachersMaxGapsPerWeekMaxGaps[j]>=0 && teachersMaxGapsPerWeekMaxGaps[j]>=tg->maxGaps && teachersMaxGapsPerWeekPercentage[j]<=tg->weightPercentage)){
 				teachersMaxGapsPerWeekMaxGaps[j]=tg->maxGaps;
@@ -4107,7 +4112,7 @@ bool computeTeachersMaxGapsPerDayPercentage(QWidget* parent)
 		if(gt.rules.internalTimeConstraintsList[i]->type==TimeConstraintType::CONSTRAINT_TEACHER_MAX_GAPS_PER_DAY){
 			ConstraintTeacherMaxGapsPerDay* tg=(ConstraintTeacherMaxGapsPerDay*)gt.rules.internalTimeConstraintsList[i];
 		
-			int j=tg->teacherIndex;
+            int j=tg->teacherId();
 			if(teachersMaxGapsPerDayMaxGaps[j]==-1 
 			 ||(teachersMaxGapsPerDayMaxGaps[j]>=0 && teachersMaxGapsPerDayMaxGaps[j]>=tg->maxGaps && teachersMaxGapsPerDayPercentage[j]<=tg->weightPercentage)){
 				teachersMaxGapsPerDayMaxGaps[j]=tg->maxGaps;
@@ -4310,10 +4315,10 @@ bool computeMaxDaysPerWeekForTeachers(QWidget* parent)
 					return false;
 			}
 
-			if(teachersMaxDaysPerWeekMaxDays[tn->teacher_ID]==-1 ||
-			 (teachersMaxDaysPerWeekMaxDays[tn->teacher_ID]>=0 && teachersMaxDaysPerWeekMaxDays[tn->teacher_ID] > tn->maxDaysPerWeek)){
-				teachersMaxDaysPerWeekMaxDays[tn->teacher_ID]=tn->maxDaysPerWeek;
-				teachersMaxDaysPerWeekWeightPercentages[tn->teacher_ID]=tn->weightPercentage;
+            if(teachersMaxDaysPerWeekMaxDays[tn->teacherId()]==-1 ||
+             (teachersMaxDaysPerWeekMaxDays[tn->teacherId()]>=0 && teachersMaxDaysPerWeekMaxDays[tn->teacherId()] > tn->maxDaysPerWeek)){
+                teachersMaxDaysPerWeekMaxDays[tn->teacherId()]=tn->maxDaysPerWeek;
+                teachersMaxDaysPerWeekWeightPercentages[tn->teacherId()]=tn->weightPercentage;
 			}
 			/*else{
 				ok=false;
@@ -4777,7 +4782,7 @@ bool computeNotAllowedTimesPercentages(QWidget* parent)
 				for(int ai=0; ai<gt.rules.nInternalActivities; ai++){
 					Activity* act=&gt.rules.internalActivitiesList[ai];
 					for(int ti=0; ti<act->iTeachersList.count(); ti++)
-						if(act->iTeachersList.at(ti)==tn->teacher_ID){
+                        if(act->iTeachersList.at(ti)==tn->teacherId()){
 							assert(tn->days.count()==tn->hours.count());
 							for(int kk=0; kk<tn->days.count(); kk++){
 								int d=tn->days.at(kk);
@@ -4809,7 +4814,7 @@ bool computeNotAllowedTimesPercentages(QWidget* parent)
 						int d=tn->days.at(kk);
 						int h=tn->hours.at(kk);
 
-						teacherNotAvailableDayHour[tn->teacher_ID][d][h]=true;
+                        teacherNotAvailableDayHour[tn->teacherId()][d][h]=true;
 					}
 				}
 			}
@@ -6107,7 +6112,8 @@ bool computeTeachersIntervalMaxDaysPerWeek(QWidget* parent)
 	bool ok=true;
 	for(int i=0; i<gt.rules.nInternalTimeConstraints; i++){
 		if(gt.rules.internalTimeConstraintsList[i]->type==TimeConstraintType::CONSTRAINT_TEACHER_INTERVAL_MAX_DAYS_PER_WEEK){
-			ConstraintTeacherIntervalMaxDaysPerWeek* tn=(ConstraintTeacherIntervalMaxDaysPerWeek*)gt.rules.internalTimeConstraintsList[i];
+            ConstraintTeacherIntervalMaxDaysPerWeek const *tn =
+                    static_cast<ConstraintTeacherIntervalMaxDaysPerWeek const *>(gt.rules.internalTimeConstraintsList[i]);
 
 			if(tn->weightPercentage!=100){
 				ok=false;
@@ -6124,23 +6130,24 @@ bool computeTeachersIntervalMaxDaysPerWeek(QWidget* parent)
 					return false;
 			}
 
-			if(teachersIntervalMaxDaysPerWeekPercentages1[tn->teacher_ID]==-1){
-				teachersIntervalMaxDaysPerWeekPercentages1[tn->teacher_ID]=tn->weightPercentage;
-				teachersIntervalMaxDaysPerWeekMaxDays1[tn->teacher_ID]=tn->maxDaysPerWeek;
-				teachersIntervalMaxDaysPerWeekIntervalStart1[tn->teacher_ID]=tn->startHour;
-				teachersIntervalMaxDaysPerWeekIntervalEnd1[tn->teacher_ID]=tn->endHour;
+            const int currentTeacherId = tn->teacherId();
+            if(teachersIntervalMaxDaysPerWeekPercentages1[currentTeacherId]==-1){
+                teachersIntervalMaxDaysPerWeekPercentages1[currentTeacherId]=tn->weightPercentage;
+                teachersIntervalMaxDaysPerWeekMaxDays1[currentTeacherId]=tn->maxDaysPerWeek;
+                teachersIntervalMaxDaysPerWeekIntervalStart1[currentTeacherId]=tn->startHour;
+                teachersIntervalMaxDaysPerWeekIntervalEnd1[currentTeacherId]=tn->endHour;
 			}
-			else if(teachersIntervalMaxDaysPerWeekPercentages2[tn->teacher_ID]==-1){
-				teachersIntervalMaxDaysPerWeekPercentages2[tn->teacher_ID]=tn->weightPercentage;
-				teachersIntervalMaxDaysPerWeekMaxDays2[tn->teacher_ID]=tn->maxDaysPerWeek;
-				teachersIntervalMaxDaysPerWeekIntervalStart2[tn->teacher_ID]=tn->startHour;
-				teachersIntervalMaxDaysPerWeekIntervalEnd2[tn->teacher_ID]=tn->endHour;
+            else if(teachersIntervalMaxDaysPerWeekPercentages2[currentTeacherId]==-1){
+                teachersIntervalMaxDaysPerWeekPercentages2[currentTeacherId]=tn->weightPercentage;
+                teachersIntervalMaxDaysPerWeekMaxDays2[currentTeacherId]=tn->maxDaysPerWeek;
+                teachersIntervalMaxDaysPerWeekIntervalStart2[currentTeacherId]=tn->startHour;
+                teachersIntervalMaxDaysPerWeekIntervalEnd2[currentTeacherId]=tn->endHour;
 			}
-			else if(teachersIntervalMaxDaysPerWeekPercentages3[tn->teacher_ID]==-1){
-				teachersIntervalMaxDaysPerWeekPercentages3[tn->teacher_ID]=tn->weightPercentage;
-				teachersIntervalMaxDaysPerWeekMaxDays3[tn->teacher_ID]=tn->maxDaysPerWeek;
-				teachersIntervalMaxDaysPerWeekIntervalStart3[tn->teacher_ID]=tn->startHour;
-				teachersIntervalMaxDaysPerWeekIntervalEnd3[tn->teacher_ID]=tn->endHour;
+            else if(teachersIntervalMaxDaysPerWeekPercentages3[currentTeacherId]==-1){
+                teachersIntervalMaxDaysPerWeekPercentages3[currentTeacherId]=tn->weightPercentage;
+                teachersIntervalMaxDaysPerWeekMaxDays3[currentTeacherId]=tn->maxDaysPerWeek;
+                teachersIntervalMaxDaysPerWeekIntervalStart3[currentTeacherId]=tn->startHour;
+                teachersIntervalMaxDaysPerWeekIntervalEnd3[currentTeacherId]=tn->endHour;
 			}
 			else{
 				ok=false;
@@ -6149,7 +6156,7 @@ bool computeTeachersIntervalMaxDaysPerWeek(QWidget* parent)
 				 GeneratePreTranslate::tr("Cannot optimize for teacher %1, because it has more than three constraints interval max days per week"
 				 ". Please modify your data correspondingly (leave maximum three constraints of type"
 				 " constraint teacher(s) interval max days per week for each teacher) and try again")
-				 .arg(gt.rules.internalTeachersList[tn->teacher_ID]->name),
+                 .arg(gt.rules.internalTeachersList[currentTeacherId]->name),
 				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 			 

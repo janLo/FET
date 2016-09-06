@@ -241,6 +241,10 @@ public:
 class TeacherConstraint {
 private:
     QString _teacherName;
+    int _teacherId;
+
+protected:
+    bool fetchTeacherId(Rules const &rules);
 
 public:
     TeacherConstraint();
@@ -252,6 +256,11 @@ public:
     QString teacherName() const {
         return _teacherName;
     }
+
+    int teacherId() const {
+        return _teacherId;
+    }
+
     void teacherName(QString const &teacherName) {
         _teacherName = teacherName;
     }
@@ -303,11 +312,6 @@ class ConstraintTeacherNotAvailableTimes: 	public TimeConstraint,
 public:
 	QList<int> days;
 	QList<int> hours;
-
-	/**
-	The teacher's id, or index in the rules
-	*/
-	int teacher_ID;
 
 	ConstraintTeacherNotAvailableTimes();
 
@@ -795,15 +799,13 @@ public:
 	*/
 	int maxHoursDaily;
 	
-	int teacher_ID;
-
 	ConstraintTeacherMaxHoursDaily();
 
 	ConstraintTeacherMaxHoursDaily(double wp, int maxhours, const QString& teacher);
 
 	QString getXmlDescription(Rules& r);
 
-	bool computeInternalStructure(QWidget* parent, Rules& r);
+    bool computeInternalStructure(QWidget* parent, Rules& r);
 
 	bool hasInactiveActivities(Rules& r);
 
@@ -882,8 +884,6 @@ public:
 	*/
 	int maxHoursContinuously;
 	
-	int teacher_ID;
-
 	ConstraintTeacherMaxHoursContinuously();
 
 	ConstraintTeacherMaxHoursContinuously(double wp, int maxhours, const QString& teacher);
@@ -973,8 +973,6 @@ public:
 	
 	QString activityTagName;
 	
-	int teacher_ID;
-
 	int activityTagIndex;
 	
 	QList<int> canonicalTeachersList;
@@ -1025,11 +1023,6 @@ public:
 	The number of maximum allowed working days per week (-1 for don't care)
 	*/
 	int maxDaysPerWeek;
-
-	/**
-	The teacher's id, or index in the rules
-	*/
-	int teacher_ID;
 
 	ConstraintTeacherMaxDaysPerWeek();
 
@@ -1108,11 +1101,6 @@ class ConstraintTeacherMinDaysPerWeek: 	public TimeConstraint,
 
 public:
 	int minDaysPerWeek;
-
-	/**
-	The teacher's id, or index in the rules
-	*/
-	int teacher_ID;
 
 	ConstraintTeacherMinDaysPerWeek();
 
@@ -1371,8 +1359,6 @@ class ConstraintTeacherMaxGapsPerWeek: 	public TimeConstraint,
 public:
 	int maxGaps;
 	
-	int teacherIndex;
-
 	ConstraintTeacherMaxGapsPerWeek();
 
 	ConstraintTeacherMaxGapsPerWeek(double wp, QString tn, int maxGaps);
@@ -1448,8 +1434,6 @@ class ConstraintTeacherMaxGapsPerDay: 	public TimeConstraint,
 public:
 	int maxGaps;
 	
-	int teacherIndex;
-
 	ConstraintTeacherMaxGapsPerDay();
 
 	ConstraintTeacherMaxGapsPerDay(double wp, QString tn, int maxGaps);
@@ -2977,8 +2961,6 @@ public:
 	*/
 	int minHoursDaily;
 	
-	int teacher_ID;
-	
 	bool allowEmptyDays;
 
 	ConstraintTeacherMinHoursDaily();
@@ -3025,11 +3007,6 @@ public:
 	int startHour;
 
 	int endHour; //might be = to gt.rules.nHoursPerDay
-
-	/**
-	The teacher's id, or index in the rules
-	*/
-	int teacher_ID;
 
 	ConstraintTeacherIntervalMaxDaysPerWeek();
 
@@ -3338,8 +3315,6 @@ public:
 	
 	QString activityTagName;
 	
-	int teacher_ID;
-
 	int activityTagIndex;
 	
 	QList<int> canonicalTeachersList;
