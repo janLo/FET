@@ -515,7 +515,7 @@ ConstraintTeacherNotAvailableTimes::ConstraintTeacherNotAvailableTimes()
 }
 
 ConstraintTeacherNotAvailableTimes::ConstraintTeacherNotAvailableTimes(double wp, const QString& tn, QList<int> d, QList<int> h)
-    : TimeConstraint(TimeConstraintType::CONSTRAINT_TEACHER_NOT_AVAILABLE_TIMES, wp), TeacherConstraint(tn)
+    : TimeConstraint(TimeConstraintType::CONSTRAINT_TEACHER_NOT_AVAILABLE_TIMES, wp), TeacherConstraintMixin(tn)
 {
 	assert(d.count()==h.count());
 	this->days=d;
@@ -2934,7 +2934,7 @@ ConstraintTeacherMaxHoursDaily::ConstraintTeacherMaxHoursDaily()
 }
 
 ConstraintTeacherMaxHoursDaily::ConstraintTeacherMaxHoursDaily(double wp, int maxhours, const QString& teacher)
- : TimeConstraint(TimeConstraintType::CONSTRAINT_TEACHER_MAX_HOURS_DAILY, wp), TeacherConstraint(teacher)
+ : TimeConstraint(TimeConstraintType::CONSTRAINT_TEACHER_MAX_HOURS_DAILY, wp), TeacherConstraintMixin(teacher)
  {
 	assert(maxhours>0);
 	this->maxHoursDaily=maxhours;
@@ -3368,7 +3368,7 @@ ConstraintTeacherMaxHoursContinuously::ConstraintTeacherMaxHoursContinuously()
 }
 
 ConstraintTeacherMaxHoursContinuously::ConstraintTeacherMaxHoursContinuously(double wp, int maxhours, const QString& teacher)
- : TimeConstraint(TimeConstraintType::CONSTRAINT_TEACHER_MAX_HOURS_CONTINUOUSLY, wp), TeacherConstraint(teacher)
+ : TimeConstraint(TimeConstraintType::CONSTRAINT_TEACHER_MAX_HOURS_CONTINUOUSLY, wp), TeacherConstraintMixin(teacher)
  {
 	assert(maxhours>0);
 	this->maxHoursContinuously=maxhours;
@@ -3853,7 +3853,7 @@ ConstraintTeacherActivityTagMaxHoursContinuously::ConstraintTeacherActivityTagMa
 }
 
 ConstraintTeacherActivityTagMaxHoursContinuously::ConstraintTeacherActivityTagMaxHoursContinuously(double wp, int maxhours, const QString& teacher, const QString& activityTag)
- : TimeConstraint(TimeConstraintType::CONSTRAINT_TEACHER_ACTIVITY_TAG_MAX_HOURS_CONTINUOUSLY, wp), TeacherConstraint(teacher)
+ : TimeConstraint(TimeConstraintType::CONSTRAINT_TEACHER_ACTIVITY_TAG_MAX_HOURS_CONTINUOUSLY, wp), TeacherConstraintMixin(teacher)
  {
 	assert(maxhours>0);
 	this->maxHoursContinuously=maxhours;
@@ -4120,7 +4120,7 @@ ConstraintTeacherMaxDaysPerWeek::ConstraintTeacherMaxDaysPerWeek()
 }
 
 ConstraintTeacherMaxDaysPerWeek::ConstraintTeacherMaxDaysPerWeek(double wp, int maxnd, QString const &tn)
-     : TimeConstraint(TimeConstraintType::CONSTRAINT_TEACHER_MAX_DAYS_PER_WEEK, wp), TeacherConstraint(tn)
+     : TimeConstraint(TimeConstraintType::CONSTRAINT_TEACHER_MAX_DAYS_PER_WEEK, wp), TeacherConstraintMixin(tn)
 {
 	this->maxDaysPerWeek=maxnd;
 }
@@ -4797,7 +4797,7 @@ ConstraintTeacherMaxGapsPerWeek::ConstraintTeacherMaxGapsPerWeek()
 }
 
 ConstraintTeacherMaxGapsPerWeek::ConstraintTeacherMaxGapsPerWeek(double wp, QString tn, int mg)
-    : TimeConstraint(TimeConstraintType::CONSTRAINT_TEACHER_MAX_GAPS_PER_WEEK, wp), TeacherConstraint(tn)
+    : TimeConstraint(TimeConstraintType::CONSTRAINT_TEACHER_MAX_GAPS_PER_WEEK, wp), TeacherConstraintMixin(tn)
 {
 	this->maxGaps=mg;
 }
@@ -5200,7 +5200,7 @@ ConstraintTeacherMaxGapsPerDay::ConstraintTeacherMaxGapsPerDay()
 }
 
 ConstraintTeacherMaxGapsPerDay::ConstraintTeacherMaxGapsPerDay(double wp, QString tn, int mg)
-    : TimeConstraint(TimeConstraintType::CONSTRAINT_TEACHER_MAX_GAPS_PER_DAY, wp), TeacherConstraint(tn)
+    : TimeConstraint(TimeConstraintType::CONSTRAINT_TEACHER_MAX_GAPS_PER_DAY, wp), TeacherConstraintMixin(tn)
 {
 	this->maxGaps=mg;
 }
@@ -9308,7 +9308,7 @@ ConstraintActivitiesPreferredTimeSlots::ConstraintActivitiesPreferredTimeSlots()
 
 ConstraintActivitiesPreferredTimeSlots::ConstraintActivitiesPreferredTimeSlots(double wp, QString const &te,
     QString const &st, QString const &su, QString const &sut, int dur, int nPT_L, QList<int> const &d_L, QList<int> const &h_L)
-    : TimeConstraint(TimeConstraintType::CONSTRAINT_ACTIVITIES_PREFERRED_TIME_SLOTS, wp), TeacherConstraint(te)
+    : TimeConstraint(TimeConstraintType::CONSTRAINT_ACTIVITIES_PREFERRED_TIME_SLOTS, wp), TeacherConstraintMixin(te)
 {
 	assert(dur==-1 || dur>=1);
 	duration=dur;
@@ -9807,7 +9807,7 @@ ConstraintSubactivitiesPreferredTimeSlots::ConstraintSubactivitiesPreferredTimeS
 
 ConstraintSubactivitiesPreferredTimeSlots::ConstraintSubactivitiesPreferredTimeSlots(double wp, int compNo, QString const &te,
     QString const &st, QString const &su, QString const &sut, int nPT_L, QList<int> const &d_L, QList<int> const &h_L)
-    : TimeConstraint(TimeConstraintType::CONSTRAINT_SUBACTIVITIES_PREFERRED_TIME_SLOTS, wp), TeacherConstraint(te)
+    : TimeConstraint(TimeConstraintType::CONSTRAINT_SUBACTIVITIES_PREFERRED_TIME_SLOTS, wp), TeacherConstraintMixin(te)
 {
 	assert(d_L.count()==nPT_L);
 	assert(h_L.count()==nPT_L);
@@ -10602,7 +10602,7 @@ ConstraintActivitiesPreferredStartingTimes::ConstraintActivitiesPreferredStartin
 
 ConstraintActivitiesPreferredStartingTimes::ConstraintActivitiesPreferredStartingTimes(double wp, QString const &te,
     QString const &st, QString const &su, QString const &sut, int dur, int nPT_L, QList<int> const &d_L, QList<int> const &h_L)
-    : TimeConstraint(TimeConstraintType::CONSTRAINT_ACTIVITIES_PREFERRED_STARTING_TIMES, wp), TeacherConstraint(te)
+    : TimeConstraint(TimeConstraintType::CONSTRAINT_ACTIVITIES_PREFERRED_STARTING_TIMES, wp), TeacherConstraintMixin(te)
 {
 	assert(dur==-1 || dur>=1);
 	duration=dur;
@@ -11088,7 +11088,7 @@ ConstraintSubactivitiesPreferredStartingTimes::ConstraintSubactivitiesPreferredS
 
 ConstraintSubactivitiesPreferredStartingTimes::ConstraintSubactivitiesPreferredStartingTimes(double wp, int compNo, QString const &te,
     QString const &st, QString const &su, QString const &sut, int nPT_L, QList<int> const &d_L, QList<int> const &h_L)
-    : TimeConstraint(TimeConstraintType::CONSTRAINT_SUBACTIVITIES_PREFERRED_STARTING_TIMES, wp), TeacherConstraint(te)
+    : TimeConstraint(TimeConstraintType::CONSTRAINT_SUBACTIVITIES_PREFERRED_STARTING_TIMES, wp), TeacherConstraintMixin(te)
 {
 	assert(d_L.count()==nPT_L);
 	assert(h_L.count()==nPT_L);
@@ -13793,7 +13793,7 @@ ConstraintTeacherMinHoursDaily::ConstraintTeacherMinHoursDaily()
 }
 
 ConstraintTeacherMinHoursDaily::ConstraintTeacherMinHoursDaily(double wp, int minhours, const QString& teacher, bool _allowEmptyDays)
- : TimeConstraint(TimeConstraintType::CONSTRAINT_TEACHER_MIN_HOURS_DAILY, wp), TeacherConstraint(teacher)
+ : TimeConstraint(TimeConstraintType::CONSTRAINT_TEACHER_MIN_HOURS_DAILY, wp), TeacherConstraintMixin(teacher)
  {
 	assert(minhours>0);
 	this->minHoursDaily=minhours;
@@ -14028,7 +14028,7 @@ ConstraintTeacherMinDaysPerWeek::ConstraintTeacherMinDaysPerWeek()
 }
 
 ConstraintTeacherMinDaysPerWeek::ConstraintTeacherMinDaysPerWeek(double wp, int mindays, const QString& teacher)
- : TimeConstraint(TimeConstraintType::CONSTRAINT_TEACHER_MIN_DAYS_PER_WEEK, wp), TeacherConstraint(teacher)
+ : TimeConstraint(TimeConstraintType::CONSTRAINT_TEACHER_MIN_DAYS_PER_WEEK, wp), TeacherConstraintMixin(teacher)
  {
 	assert(mindays>0);
 	this->minDaysPerWeek=mindays;
@@ -14424,7 +14424,7 @@ ConstraintTeacherIntervalMaxDaysPerWeek::ConstraintTeacherIntervalMaxDaysPerWeek
 }
 
 ConstraintTeacherIntervalMaxDaysPerWeek::ConstraintTeacherIntervalMaxDaysPerWeek(double wp, int maxnd, QString const &tn, int sh, int eh)
-     : TimeConstraint(TimeConstraintType::CONSTRAINT_TEACHER_INTERVAL_MAX_DAYS_PER_WEEK, wp), TeacherConstraint(tn)
+     : TimeConstraint(TimeConstraintType::CONSTRAINT_TEACHER_INTERVAL_MAX_DAYS_PER_WEEK, wp), TeacherConstraintMixin(tn)
 {
 	this->maxDaysPerWeek=maxnd;
 	this->startHour=sh;
@@ -15478,7 +15478,7 @@ ConstraintActivitiesEndStudentsDay::ConstraintActivitiesEndStudentsDay()
 
 ConstraintActivitiesEndStudentsDay::ConstraintActivitiesEndStudentsDay(double wp, QString const &te,
     QString const &st, QString const &su, QString const &sut)
-    : TimeConstraint(TimeConstraintType::CONSTRAINT_ACTIVITIES_END_STUDENTS_DAY, wp), TeacherConstraint(te)
+    : TimeConstraint(TimeConstraintType::CONSTRAINT_ACTIVITIES_END_STUDENTS_DAY, wp), TeacherConstraintMixin(te)
 {
 	this->subjectName=su;
 	this->activityTagName=sut;
@@ -16034,7 +16034,7 @@ ConstraintTeacherActivityTagMaxHoursDaily::ConstraintTeacherActivityTagMaxHoursD
 }
 
 ConstraintTeacherActivityTagMaxHoursDaily::ConstraintTeacherActivityTagMaxHoursDaily(double wp, int maxhours, const QString& teacher, const QString& activityTag)
- : TimeConstraint(TimeConstraintType::CONSTRAINT_TEACHER_ACTIVITY_TAG_MAX_HOURS_DAILY, wp), TeacherConstraint(teacher)
+ : TimeConstraint(TimeConstraintType::CONSTRAINT_TEACHER_ACTIVITY_TAG_MAX_HOURS_DAILY, wp), TeacherConstraintMixin(teacher)
  {
 	assert(maxhours>0);
 	this->maxHoursDaily=maxhours;
@@ -18438,19 +18438,3 @@ bool ConstraintStudentsMaxDaysPerWeek::repairWrongDayOrHour(Rules& r)
 	return true;
 }
 
-bool TeacherConstraint::fetchTeacherId(Rules const &rules)
-{
-    _teacherId = rules.teachersHash.value(_teacherName , -1);
-    assert(_teacherId >= 0);
-    return true;
-}
-
-TeacherConstraint::TeacherConstraint() { }
-
-TeacherConstraint::TeacherConstraint(const QString &teacherName)
-    : _teacherName(teacherName),
-      _teacherId(-1)
-{ }
-
-TeacherConstraint::~TeacherConstraint()
-{ }

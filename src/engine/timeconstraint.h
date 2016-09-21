@@ -25,6 +25,7 @@ File timeconstraint.h
 #include <QCoreApplication>
 
 #include "timetable_defs.h"
+#include "teacherconstraintmixin.h"
 
 #include <QString>
 #include <QList>
@@ -238,34 +239,6 @@ public:
 };
 
 
-class TeacherConstraint {
-private:
-    QString _teacherName;
-    int _teacherId;
-
-protected:
-    bool fetchTeacherId(Rules const &rules);
-
-public:
-    TeacherConstraint();
-
-    TeacherConstraint(QString const &teacherName);
-
-    virtual ~TeacherConstraint();
-
-    QString teacherName() const {
-        return _teacherName;
-    }
-
-    int teacherId() const {
-        return _teacherId;
-    }
-
-    void teacherName(QString const &teacherName) {
-        _teacherName = teacherName;
-    }
-};
-
 /**
 This class comprises all the basic compulsory constraints (constraints
 which must be fulfilled for any timetable) - the time allocation part
@@ -306,7 +279,7 @@ public:
 };
 
 class ConstraintTeacherNotAvailableTimes: 	public TimeConstraint,
-											public TeacherConstraint {
+                                            public TeacherConstraintMixin {
 	Q_DECLARE_TR_FUNCTIONS(ConstraintTeacherNotAvailableTimes)
 
 public:
@@ -790,7 +763,7 @@ public:
 };
 
 class ConstraintTeacherMaxHoursDaily: 	public TimeConstraint,
-                                        public TeacherConstraint {
+                                        public TeacherConstraintMixin {
 	Q_DECLARE_TR_FUNCTIONS(ConstraintTeacherMaxHoursDaily)
 
 public:
@@ -875,7 +848,7 @@ public:
 };
 
 class ConstraintTeacherMaxHoursContinuously: 	public TimeConstraint,
-                                                public TeacherConstraint {
+                                                public TeacherConstraintMixin {
 	Q_DECLARE_TR_FUNCTIONS(ConstraintTeacherMaxHoursContinuously)
 
 public:
@@ -962,7 +935,7 @@ public:
 };
 
 class ConstraintTeacherActivityTagMaxHoursContinuously: public TimeConstraint,
-                                                        public TeacherConstraint {
+                                                        public TeacherConstraintMixin {
 	Q_DECLARE_TR_FUNCTIONS(ConstraintTeacherActivityTagMaxHoursContinuously)
 
 public:
@@ -1015,7 +988,7 @@ that this teacher must not have too much working
 days per week.
 */
 class ConstraintTeacherMaxDaysPerWeek: 	public TimeConstraint,
-                                        public TeacherConstraint {
+                                        public TeacherConstraintMixin {
 	Q_DECLARE_TR_FUNCTIONS(ConstraintTeacherMaxDaysPerWeek)
 
 public:
@@ -1096,7 +1069,7 @@ public:
 };
 
 class ConstraintTeacherMinDaysPerWeek: 	public TimeConstraint,
-                                        public TeacherConstraint {
+                                        public TeacherConstraintMixin {
 	Q_DECLARE_TR_FUNCTIONS(ConstraintTeacherMinDaysPerWeek)
 
 public:
@@ -1353,7 +1326,7 @@ public:
 };
 
 class ConstraintTeacherMaxGapsPerWeek: 	public TimeConstraint,
-                                        public TeacherConstraint {
+                                        public TeacherConstraintMixin {
 	Q_DECLARE_TR_FUNCTIONS(ConstraintTeacherMaxGapsPerWeek)
 
 public:
@@ -1428,7 +1401,7 @@ public:
 };
 
 class ConstraintTeacherMaxGapsPerDay: 	public TimeConstraint,
-                                        public TeacherConstraint {
+                                        public TeacherConstraintMixin {
 	Q_DECLARE_TR_FUNCTIONS(ConstraintTeacherMaxGapsPerDay)
 
 public:
@@ -2159,7 +2132,7 @@ The set of activities is specified by a subject, teacher, students or a combinat
 of these.
 */
 class ConstraintActivitiesPreferredTimeSlots: 	public TimeConstraint,
-                                                public TeacherConstraint {
+                                                public TeacherConstraintMixin {
 	Q_DECLARE_TR_FUNCTIONS(ConstraintActivitiesPreferredTimeSlots)
 
 public:
@@ -2247,7 +2220,7 @@ public:
 };
 
 class ConstraintSubactivitiesPreferredTimeSlots: 	public TimeConstraint,
-                                                    public TeacherConstraint {
+                                                    public TeacherConstraintMixin {
 	Q_DECLARE_TR_FUNCTIONS(ConstraintSubactivitiesPreferredTimeSlots)
 
 public:
@@ -2334,7 +2307,7 @@ public:
 };
 
 class ConstraintActivitiesPreferredStartingTimes: 	public TimeConstraint,
-                                                    public TeacherConstraint {
+                                                    public TeacherConstraintMixin {
 	Q_DECLARE_TR_FUNCTIONS(ConstraintActivitiesPreferredStartingTimes)
 
 public:
@@ -2422,7 +2395,7 @@ public:
 };
 
 class ConstraintSubactivitiesPreferredStartingTimes: 	public TimeConstraint,
-                                                        public TeacherConstraint {
+                                                        public TeacherConstraintMixin {
 	Q_DECLARE_TR_FUNCTIONS(ConstraintSubactivitiesPreferredStartingTimes)
 
 public:
@@ -2952,7 +2925,7 @@ public:
 };
 
 class ConstraintTeacherMinHoursDaily: 	public TimeConstraint,
-                                        public TeacherConstraint {
+                                        public TeacherConstraintMixin {
 	Q_DECLARE_TR_FUNCTIONS(ConstraintTeacherMinHoursDaily)
 
 public:
@@ -2995,7 +2968,7 @@ public:
 };
 
 class ConstraintTeacherIntervalMaxDaysPerWeek: 	public TimeConstraint,
-                                                public TeacherConstraint {
+                                                public TeacherConstraintMixin {
 	Q_DECLARE_TR_FUNCTIONS(ConstraintTeacherIntervalMaxDaysPerWeek)
 
 public:
@@ -3191,7 +3164,7 @@ public:
 };
 
 class ConstraintActivitiesEndStudentsDay: 	public TimeConstraint,
-                                            public TeacherConstraint {
+                                            public TeacherConstraintMixin {
 	Q_DECLARE_TR_FUNCTIONS(ConstraintActivitiesEndStudentsDay)
 
 public:
@@ -3304,7 +3277,7 @@ public:
 };
 
 class ConstraintTeacherActivityTagMaxHoursDaily: 	public TimeConstraint,
-                                                    public TeacherConstraint {
+                                                    public TeacherConstraintMixin {
 	Q_DECLARE_TR_FUNCTIONS(ConstraintTeacherActivityTagMaxHoursDaily)
 
 public:

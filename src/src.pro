@@ -20,6 +20,7 @@ SOURCES += \
 	engine/statisticsexport.cpp \
 	engine/lockunlock.cpp \
 	engine/messageboxes.cpp \
+	engine/teacherconstraintmixin.cpp \
 	\
 	interface/fet.cpp \
 	interface/helpaboutform.cpp \
@@ -458,6 +459,7 @@ HEADERS += \
 	engine/lockunlock.h \
 	engine/matrix.h \
 	engine/messageboxes.h \
+	engine/teacherconstraintmixin.h \
 	\
 	interface/fet.h \
 	interface/helpaboutform.h \
