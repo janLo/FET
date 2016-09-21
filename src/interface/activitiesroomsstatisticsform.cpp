@@ -98,7 +98,7 @@ ActivitiesRoomsStatisticsForm::ActivitiesRoomsStatisticsForm(QWidget* parent): Q
 				ConstraintTeacherHomeRoom* ctr=(ConstraintTeacherHomeRoom*)genericConstraint;
 				
 				if(act->teachersNames.count()==1){
-					if(act->teachersNames.at(0)==ctr->teacherName){
+                    if(act->teachersNames.at(0)==ctr->teacherName()){
 						if(ctr->weightPercentage==100.0){
 							if(!activitiesWith100.contains(act->id)){
 								activitiesWith100.insert(act->id);
@@ -117,7 +117,7 @@ ActivitiesRoomsStatisticsForm::ActivitiesRoomsStatisticsForm(QWidget* parent): Q
 				ConstraintTeacherHomeRooms* ctr=(ConstraintTeacherHomeRooms*)genericConstraint;
 				
 				if(act->teachersNames.count()==1){
-					if(act->teachersNames.at(0)==ctr->teacherName){
+                    if(act->teachersNames.at(0)==ctr->teacherName()){
 						if(ctr->weightPercentage==100.0){
 							if(!activitiesWith100.contains(act->id)){
 								activitiesWith100.insert(act->id);

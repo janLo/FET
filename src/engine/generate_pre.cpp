@@ -6712,20 +6712,20 @@ bool computeActivitiesRoomsPreferences(QWidget* parent)
 		else if(gt.rules.internalSpaceConstraintsList[i]->type==SpaceConstraintType::CONSTRAINT_TEACHER_HOME_ROOM){
 			ConstraintTeacherHomeRoom* spr=(ConstraintTeacherHomeRoom*)gt.rules.internalSpaceConstraintsList[i];
 			
-			if(teachersHomeRoom.contains(spr->teacherName)){
+            if(teachersHomeRoom.contains(spr->teacherName())){
 				ok=false;
 				
 				int t=GeneratePreIrreconcilableMessage::mediumConfirmation(parent, GeneratePreTranslate::tr("FET warning"),
 				 GeneratePreTranslate::tr("Cannot generate timetable, because you have more than one constraint of type "
 				 "teacher home room(s) for teacher %1. Please leave only one of them")
-				 .arg(spr->teacherName),
+                 .arg(spr->teacherName()),
 				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 	
 				if(t==0)
 					break;
 			}
-			teachersHomeRoom.insert(spr->teacherName);
+            teachersHomeRoom.insert(spr->teacherName());
 		
 			foreach(int a, spr->_activities){
 			//for(int j=0; j<spr->_nActivities; j++){
@@ -6750,20 +6750,20 @@ bool computeActivitiesRoomsPreferences(QWidget* parent)
 		else if(gt.rules.internalSpaceConstraintsList[i]->type==SpaceConstraintType::CONSTRAINT_TEACHER_HOME_ROOMS){
 			ConstraintTeacherHomeRooms* spr=(ConstraintTeacherHomeRooms*)gt.rules.internalSpaceConstraintsList[i];
 		
-			if(teachersHomeRoom.contains(spr->teacherName)){
+            if(teachersHomeRoom.contains(spr->teacherName())){
 				ok=false;
 				
 				int t=GeneratePreIrreconcilableMessage::mediumConfirmation(parent, GeneratePreTranslate::tr("FET warning"),
 				 GeneratePreTranslate::tr("Cannot generate timetable, because you have more than one constraint of type "
 				 "teacher home room(s) for teacher %1. Please leave only one of them")
-				 .arg(spr->teacherName),
+                 .arg(spr->teacherName()),
 				 GeneratePreTranslate::tr("Skip rest"), GeneratePreTranslate::tr("See next"), QString(),
 				 1, 0 );
 	
 				if(t==0)
 					break;
 			}
-			teachersHomeRoom.insert(spr->teacherName);
+            teachersHomeRoom.insert(spr->teacherName());
 		
 			foreach(int a, spr->_activities){	
 		//	for(int j=0; j<spr->_nActivities; j++){
@@ -7671,11 +7671,11 @@ bool computeMaxBuildingChangesPerDayForTeachers(QWidget* parent)
 					return false;
 			}
 			
-			maxBuildingChangesPerDayForTeachersPercentages[spr->teacher_ID]=100;
-			if(maxBuildingChangesPerDayForTeachersMaxChanges[spr->teacher_ID]<0)
-				maxBuildingChangesPerDayForTeachersMaxChanges[spr->teacher_ID]=spr->maxBuildingChangesPerDay;
+            maxBuildingChangesPerDayForTeachersPercentages[spr->teacherId()]=100;
+            if(maxBuildingChangesPerDayForTeachersMaxChanges[spr->teacherId()]<0)
+                maxBuildingChangesPerDayForTeachersMaxChanges[spr->teacherId()]=spr->maxBuildingChangesPerDay;
 			else
-				maxBuildingChangesPerDayForTeachersMaxChanges[spr->teacher_ID]=min(maxBuildingChangesPerDayForTeachersMaxChanges[spr->teacher_ID], spr->maxBuildingChangesPerDay);
+                maxBuildingChangesPerDayForTeachersMaxChanges[spr->teacherId()]=min(maxBuildingChangesPerDayForTeachersMaxChanges[spr->teacherId()], spr->maxBuildingChangesPerDay);
 		}
 		else if(gt.rules.internalSpaceConstraintsList[i]->type==SpaceConstraintType::CONSTRAINT_TEACHERS_MAX_BUILDING_CHANGES_PER_DAY){
 			ConstraintTeachersMaxBuildingChangesPerDay* spr=(ConstraintTeachersMaxBuildingChangesPerDay*)gt.rules.internalSpaceConstraintsList[i];
@@ -7732,11 +7732,11 @@ bool computeMaxBuildingChangesPerWeekForTeachers(QWidget* parent)
 					return false;
 			}
 			
-			maxBuildingChangesPerWeekForTeachersPercentages[spr->teacher_ID]=100;
-			if(maxBuildingChangesPerWeekForTeachersMaxChanges[spr->teacher_ID]<0)
-				maxBuildingChangesPerWeekForTeachersMaxChanges[spr->teacher_ID]=spr->maxBuildingChangesPerWeek;
+            maxBuildingChangesPerWeekForTeachersPercentages[spr->teacherId()]=100;
+            if(maxBuildingChangesPerWeekForTeachersMaxChanges[spr->teacherId()]<0)
+                maxBuildingChangesPerWeekForTeachersMaxChanges[spr->teacherId()]=spr->maxBuildingChangesPerWeek;
 			else
-				maxBuildingChangesPerWeekForTeachersMaxChanges[spr->teacher_ID]=min(maxBuildingChangesPerWeekForTeachersMaxChanges[spr->teacher_ID], spr->maxBuildingChangesPerWeek);
+                maxBuildingChangesPerWeekForTeachersMaxChanges[spr->teacherId()]=min(maxBuildingChangesPerWeekForTeachersMaxChanges[spr->teacherId()], spr->maxBuildingChangesPerWeek);
 		}
 		else if(gt.rules.internalSpaceConstraintsList[i]->type==SpaceConstraintType::CONSTRAINT_TEACHERS_MAX_BUILDING_CHANGES_PER_WEEK){
 			ConstraintTeachersMaxBuildingChangesPerWeek* spr=(ConstraintTeachersMaxBuildingChangesPerWeek*)gt.rules.internalSpaceConstraintsList[i];
@@ -7793,11 +7793,11 @@ bool computeMinGapsBetweenBuildingChangesForTeachers(QWidget* parent)
 					return false;
 			}
 			
-			minGapsBetweenBuildingChangesForTeachersPercentages[spr->teacher_ID]=100;
-			if(minGapsBetweenBuildingChangesForTeachersMinGaps[spr->teacher_ID]<0)
-				minGapsBetweenBuildingChangesForTeachersMinGaps[spr->teacher_ID]=spr->minGapsBetweenBuildingChanges;
+            minGapsBetweenBuildingChangesForTeachersPercentages[spr->teacherId()]=100;
+            if(minGapsBetweenBuildingChangesForTeachersMinGaps[spr->teacherId()]<0)
+                minGapsBetweenBuildingChangesForTeachersMinGaps[spr->teacherId()]=spr->minGapsBetweenBuildingChanges;
 			else
-				minGapsBetweenBuildingChangesForTeachersMinGaps[spr->teacher_ID]=max(minGapsBetweenBuildingChangesForTeachersMinGaps[spr->teacher_ID], spr->minGapsBetweenBuildingChanges);
+                minGapsBetweenBuildingChangesForTeachersMinGaps[spr->teacherId()]=max(minGapsBetweenBuildingChangesForTeachersMinGaps[spr->teacherId()], spr->minGapsBetweenBuildingChanges);
 		}
 		else if(gt.rules.internalSpaceConstraintsList[i]->type==SpaceConstraintType::CONSTRAINT_TEACHERS_MIN_GAPS_BETWEEN_BUILDING_CHANGES){
 			ConstraintTeachersMinGapsBetweenBuildingChanges* spr=(ConstraintTeachersMinGapsBetweenBuildingChanges*)gt.rules.internalSpaceConstraintsList[i];

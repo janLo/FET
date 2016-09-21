@@ -25,6 +25,7 @@ File spaceconstraint.h
 #include <QCoreApplication>
 
 #include "timetable_defs.h"
+#include "teacherconstraintmixin.h"
 
 #include <QString>
 #include <QList>
@@ -498,7 +499,8 @@ public:
 	bool repairWrongDayOrHour(Rules& r);
 };
 
-class ConstraintTeacherHomeRoom: public SpaceConstraint{
+class ConstraintTeacherHomeRoom: public SpaceConstraint,
+                                 public TeacherConstraintMixin {
 	Q_DECLARE_TR_FUNCTIONS(ConstraintTeacherHomeRoom)
 
 public:
@@ -509,9 +511,6 @@ public:
 	int _room;
 	
 public:
-
-	QString teacherName;
-
 	QString roomName;
 
 	ConstraintTeacherHomeRoom();
@@ -547,7 +546,8 @@ public:
 	bool repairWrongDayOrHour(Rules& r);
 };
 
-class ConstraintTeacherHomeRooms: public SpaceConstraint{
+class ConstraintTeacherHomeRooms: public SpaceConstraint,
+                                  public TeacherConstraintMixin {
 	Q_DECLARE_TR_FUNCTIONS(ConstraintTeacherHomeRooms)
 
 public:
@@ -560,10 +560,7 @@ public:
 	QList<int> _rooms;
 	
 public:
-
-	QString teacherName;
-
-	QStringList roomsNames;
+    QStringList roomsNames;
 
 	ConstraintTeacherHomeRooms();
 
@@ -1172,18 +1169,13 @@ public:
 	bool repairWrongDayOrHour(Rules& r);
 };
 
-class ConstraintTeacherMaxBuildingChangesPerDay: public SpaceConstraint{
+class ConstraintTeacherMaxBuildingChangesPerDay: public SpaceConstraint,
+                                                 public TeacherConstraintMixin {
 	Q_DECLARE_TR_FUNCTIONS(ConstraintTeacherMaxBuildingChangesPerDay)
-
-public:
-	//internal variables
-	int teacher_ID;
 
 public:
 
 	int maxBuildingChangesPerDay;
-
-	QString teacherName;
 
 	ConstraintTeacherMaxBuildingChangesPerDay();
 
@@ -1258,18 +1250,13 @@ public:
 	bool repairWrongDayOrHour(Rules& r);
 };
 
-class ConstraintTeacherMaxBuildingChangesPerWeek: public SpaceConstraint{
+class ConstraintTeacherMaxBuildingChangesPerWeek: public SpaceConstraint,
+                                                  public TeacherConstraintMixin {
 	Q_DECLARE_TR_FUNCTIONS(ConstraintTeacherMaxBuildingChangesPerWeek)
-
-public:
-	//internal variables
-	int teacher_ID;
 
 public:
 
 	int maxBuildingChangesPerWeek;
-
-	QString teacherName;
 
 	ConstraintTeacherMaxBuildingChangesPerWeek();
 
@@ -1344,18 +1331,13 @@ public:
 	bool repairWrongDayOrHour(Rules& r);
 };
 
-class ConstraintTeacherMinGapsBetweenBuildingChanges: public SpaceConstraint{
+class ConstraintTeacherMinGapsBetweenBuildingChanges: public SpaceConstraint,
+                                                      public TeacherConstraintMixin {
 	Q_DECLARE_TR_FUNCTIONS(ConstraintTeacherMinGapsBetweenBuildingChanges)
-
-public:
-	//internal variables
-	int teacher_ID;
 
 public:
 
 	int minGapsBetweenBuildingChanges;
-
-	QString teacherName;
 
 	ConstraintTeacherMinGapsBetweenBuildingChanges();
 

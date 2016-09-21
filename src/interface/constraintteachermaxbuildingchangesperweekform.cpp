@@ -67,7 +67,7 @@ bool ConstraintTeacherMaxBuildingChangesPerWeekForm::filterOk(SpaceConstraint* c
 {
 	if(ctr->type==SpaceConstraintType::CONSTRAINT_TEACHER_MAX_BUILDING_CHANGES_PER_WEEK){
 		ConstraintTeacherMaxBuildingChangesPerWeek* c=(ConstraintTeacherMaxBuildingChangesPerWeek*) ctr;
-		return c->teacherName==teachersComboBox->currentText() || teachersComboBox->currentText()=="";
+        return c->teacherName()==teachersComboBox->currentText() || teachersComboBox->currentText()=="";
 	}
 	else
 		return false;

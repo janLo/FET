@@ -1034,38 +1034,17 @@ bool Rules::modifyTeacher(const QString& initialTeacherName, const QString& fina
 		this->activitiesList.at(i)->renameTeacher(initialTeacherName, finalTeacherName);
 		
 	foreach(TimeConstraint* ctr, timeConstraintsList){
-        TeacherConstraint * crt_constraint = dynamic_cast<TeacherConstraint* >(ctr);
+        TeacherConstraintMixin * crt_constraint = dynamic_cast<TeacherConstraintMixin* >(ctr);
         if (0 != crt_constraint && initialTeacherName == crt_constraint->teacherName()) {
             crt_constraint->teacherName(finalTeacherName);
         }
 	}
 	
 	foreach(SpaceConstraint* ctr, spaceConstraintsList){
-		if(ctr->type==SpaceConstraintType::CONSTRAINT_TEACHER_HOME_ROOM){
-			ConstraintTeacherHomeRoom* crt_constraint=(ConstraintTeacherHomeRoom*)ctr;
-			if(initialTeacherName == crt_constraint->teacherName)
-				crt_constraint->teacherName=finalTeacherName;
-		}
-		else if(ctr->type==SpaceConstraintType::CONSTRAINT_TEACHER_HOME_ROOMS){
-			ConstraintTeacherHomeRooms* crt_constraint=(ConstraintTeacherHomeRooms*)ctr;
-			if(initialTeacherName == crt_constraint->teacherName)
-				crt_constraint->teacherName=finalTeacherName;
-		}
-		else if(ctr->type==SpaceConstraintType::CONSTRAINT_TEACHER_MAX_BUILDING_CHANGES_PER_DAY){
-			ConstraintTeacherMaxBuildingChangesPerDay* crt_constraint=(ConstraintTeacherMaxBuildingChangesPerDay*)ctr;
-			if(initialTeacherName == crt_constraint->teacherName)
-				crt_constraint->teacherName=finalTeacherName;
-		}
-		else if(ctr->type==SpaceConstraintType::CONSTRAINT_TEACHER_MAX_BUILDING_CHANGES_PER_WEEK){
-			ConstraintTeacherMaxBuildingChangesPerWeek* crt_constraint=(ConstraintTeacherMaxBuildingChangesPerWeek*)ctr;
-			if(initialTeacherName == crt_constraint->teacherName)
-				crt_constraint->teacherName=finalTeacherName;
-		}
-		else if(ctr->type==SpaceConstraintType::CONSTRAINT_TEACHER_MIN_GAPS_BETWEEN_BUILDING_CHANGES){
-			ConstraintTeacherMinGapsBetweenBuildingChanges* crt_constraint=(ConstraintTeacherMinGapsBetweenBuildingChanges*)ctr;
-			if(initialTeacherName == crt_constraint->teacherName)
-				crt_constraint->teacherName=finalTeacherName;
-		}
+        TeacherConstraintMixin * crt_constraint = dynamic_cast<TeacherConstraintMixin* >(ctr);
+        if (0 != crt_constraint && initialTeacherName == crt_constraint->teacherName()) {
+            crt_constraint->teacherName(finalTeacherName);
+        }
 	}
 	
 	int t=0;
@@ -4345,14 +4324,14 @@ void Rules::updateConstraintsAfterRemoval()
         case SpaceConstraintType::CONSTRAINT_TEACHER_HOME_ROOM:
             {
                 ConstraintTeacherHomeRoom* c=(ConstraintTeacherHomeRoom*)sc;
-                if(!existingTeachersNames.contains(c->teacherName) || !existingRoomsNames.contains(c->roomName))
+                if(!existingTeachersNames.contains(c->teacherName()) || !existingRoomsNames.contains(c->roomName))
                     toBeRemovedSpace.append(sc);
             }
             break;
         case SpaceConstraintType::CONSTRAINT_TEACHER_HOME_ROOMS:
             {
                 ConstraintTeacherHomeRooms* c=(ConstraintTeacherHomeRooms*)sc;
-                if(!existingTeachersNames.contains(c->teacherName))
+                if(!existingTeachersNames.contains(c->teacherName()))
                     toBeRemovedSpace.append(sc);
                 else{
                     QStringList newRooms;
@@ -4459,21 +4438,21 @@ void Rules::updateConstraintsAfterRemoval()
         case SpaceConstraintType::CONSTRAINT_TEACHER_MAX_BUILDING_CHANGES_PER_DAY:
             {
                 ConstraintTeacherMaxBuildingChangesPerDay* c=(ConstraintTeacherMaxBuildingChangesPerDay*)sc;
-                if(!existingTeachersNames.contains(c->teacherName))
+                if(!existingTeachersNames.contains(c->teacherName()))
                     toBeRemovedSpace.append(sc);
             }
             break;
         case SpaceConstraintType::CONSTRAINT_TEACHER_MAX_BUILDING_CHANGES_PER_WEEK:
             {
                 ConstraintTeacherMaxBuildingChangesPerWeek* c=(ConstraintTeacherMaxBuildingChangesPerWeek*)sc;
-                if(!existingTeachersNames.contains(c->teacherName))
+                if(!existingTeachersNames.contains(c->teacherName()))
                     toBeRemovedSpace.append(sc);
             }
             break;
         case SpaceConstraintType::CONSTRAINT_TEACHER_MIN_GAPS_BETWEEN_BUILDING_CHANGES:
             {
                 ConstraintTeacherMinGapsBetweenBuildingChanges* c=(ConstraintTeacherMinGapsBetweenBuildingChanges*)sc;
-                if(!existingTeachersNames.contains(c->teacherName))
+                if(!existingTeachersNames.contains(c->teacherName()))
                     toBeRemovedSpace.append(sc);
             }
             break;
@@ -15284,8 +15263,8 @@ SpaceConstraint* Rules::readTeacherHomeRoom(QXmlStreamReader& xmlReader, FakeStr
 		}
 		else if(xmlReader.name()=="Teacher"){
 			QString text=xmlReader.readElementText();
-			cn->teacherName=text;
-			xmlReadingLog+="    Read teacher="+cn->teacherName+"\n";
+            cn->teacherName(text);
+            xmlReadingLog+="    Read teacher="+cn->teacherName()+"\n";
 		}
 		else if(xmlReader.name()=="Room"){
 			QString text=xmlReader.readElementText();
@@ -15323,8 +15302,8 @@ SpaceConstraint* Rules::readTeacherHomeRooms(QXmlStreamReader& xmlReader, FakeSt
 		}
 		else if(xmlReader.name()=="Teacher"){
 			QString text=xmlReader.readElementText();
-			cn->teacherName=text;
-			xmlReadingLog+="    Read teacher="+cn->teacherName+"\n";
+            cn->teacherName(text);
+            xmlReadingLog+="    Read teacher="+cn->teacherName()+"\n";
 		}
 		else if(xmlReader.name()=="Number_of_Preferred_Rooms"){
 			QString text=xmlReader.readElementText();
@@ -15374,8 +15353,8 @@ SpaceConstraint* Rules::readTeacherMaxBuildingChangesPerDay(QXmlStreamReader& xm
 		}
 		else if(xmlReader.name()=="Teacher"){
 			QString text=xmlReader.readElementText();
-			cn->teacherName=text;
-			xmlReadingLog+="    Read teacher name="+cn->teacherName+"\n";
+            cn->teacherName(text);
+            xmlReadingLog+="    Read teacher name="+cn->teacherName()+"\n";
 		}
 		else if(xmlReader.name()=="Max_Building_Changes_Per_Day"){
 			QString text=xmlReader.readElementText();
@@ -15445,8 +15424,8 @@ SpaceConstraint* Rules::readTeacherMaxBuildingChangesPerWeek(QXmlStreamReader& x
 		}
 		else if(xmlReader.name()=="Teacher"){
 			QString text=xmlReader.readElementText();
-			cn->teacherName=text;
-			xmlReadingLog+="    Read teacher name="+cn->teacherName+"\n";
+            cn->teacherName(text);
+            xmlReadingLog+="    Read teacher name="+cn->teacherName()+"\n";
 		}
 		else if(xmlReader.name()=="Max_Building_Changes_Per_Week"){
 			QString text=xmlReader.readElementText();
@@ -15516,8 +15495,8 @@ SpaceConstraint* Rules::readTeacherMinGapsBetweenBuildingChanges(QXmlStreamReade
 		}
 		else if(xmlReader.name()=="Teacher"){
 			QString text=xmlReader.readElementText();
-			cn->teacherName=text;
-			xmlReadingLog+="    Read teacher name="+cn->teacherName+"\n";
+            cn->teacherName(text);
+            xmlReadingLog+="    Read teacher name="+cn->teacherName()+"\n";
 		}
 		else if(xmlReader.name()=="Min_Gaps_Between_Building_Changes"){
 			QString text=xmlReader.readElementText();

@@ -1794,7 +1794,7 @@ ConstraintTeacherHomeRoom::ConstraintTeacherHomeRoom()
 ConstraintTeacherHomeRoom::ConstraintTeacherHomeRoom(double wp, QString tc, QString rm)
     : SpaceConstraint(SpaceConstraintType::CONSTRAINT_TEACHER_HOME_ROOM, wp)
 {
-	this->teacherName=tc;
+    this->teacherName(tc);
 	this->roomName=rm;
 }
 
@@ -1826,7 +1826,7 @@ bool ConstraintTeacherHomeRoom::computeInternalStructure(QWidget* parent, Rules&
 		//check if this activity has the corresponding students
 		bool sameTeacher=false;
 		if(act->teachersNames.count()==1)
-			if(act->teachersNames.at(0)==teacherName)
+            if(act->teachersNames.at(0)==teacherName())
 				sameTeacher=true;
 	
 		if(!sameTeacher)
@@ -1859,7 +1859,7 @@ QString ConstraintTeacherHomeRoom::getXmlDescription(Rules& r){
 
 	QString s="<ConstraintTeacherHomeRoom>\n";
 	s+="	<Weight_Percentage>"+CustomFETString::number(weightPercentage)+"</Weight_Percentage>\n";
-	s+="	<Teacher>"+protect(this->teacherName)+"</Teacher>\n";
+    s+="	<Teacher>"+protect(this->teacherName())+"</Teacher>\n";
 	s+="	<Room>"+protect(this->roomName)+"</Room>\n";
 		
 	s+="	<Active>"+trueFalse(active)+"</Active>\n";
@@ -1885,7 +1885,7 @@ QString ConstraintTeacherHomeRoom::getDescription(Rules& r)
 
 	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
 	
-	s+=tr("T:%1", "T means teacher").arg(this->teacherName);s+=", ";
+    s+=tr("T:%1", "T means teacher").arg(this->teacherName());s+=", ";
 
 	s+=tr("R:%1", "R means Room").arg(this->roomName);
 
@@ -1900,7 +1900,7 @@ QString ConstraintTeacherHomeRoom::getDetailedDescription(Rules& r)
 	s+=tr("Teacher home room"); s+="\n";
 	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
 
-	s+=tr("Teacher=%1").arg(this->teacherName);s+="\n";
+    s+=tr("Teacher=%1").arg(this->teacherName());s+="\n";
 
 	s+=tr("Room=%1").arg(this->roomName);s+="\n";
 
@@ -1998,7 +1998,7 @@ bool ConstraintTeacherHomeRoom::isRelatedToActivity(Activity* a)
 
 bool ConstraintTeacherHomeRoom::isRelatedToTeacher(Teacher* t)
 {
-	return teacherName==t->name;
+    return teacherName()==t->name;
 }
 
 bool ConstraintTeacherHomeRoom::isRelatedToSubject(Subject* s)
@@ -2062,7 +2062,7 @@ ConstraintTeacherHomeRooms::ConstraintTeacherHomeRooms(double wp, QString tc, co
     : SpaceConstraint(SpaceConstraintType::CONSTRAINT_TEACHER_HOME_ROOMS, wp)
 {
 
-	this->teacherName=tc;
+    this->teacherName(tc);
 
 	this->roomsNames=rms;
 }
@@ -2093,7 +2093,7 @@ bool ConstraintTeacherHomeRooms::computeInternalStructure(QWidget* parent, Rules
 		//check if this activity has the corresponding students
 		bool sameTeacher=false;
 		if(act->teachersNames.count()==1)
-			if(act->teachersNames.at(0)==teacherName)
+            if(act->teachersNames.at(0)==teacherName())
 				sameTeacher=true;
 	
 		if(!sameTeacher)
@@ -2134,7 +2134,7 @@ QString ConstraintTeacherHomeRooms::getXmlDescription(Rules& r){
 
 	QString s="<ConstraintTeacherHomeRooms>\n";
 	s+="	<Weight_Percentage>"+CustomFETString::number(weightPercentage)+"</Weight_Percentage>\n";
-	s+="	<Teacher>"+protect(this->teacherName)+"</Teacher>\n";
+    s+="	<Teacher>"+protect(this->teacherName())+"</Teacher>\n";
 	s+="	<Number_of_Preferred_Rooms>"+CustomFETString::number(this->roomsNames.count())+"</Number_of_Preferred_Rooms>\n";
 	for(QStringList::Iterator it=this->roomsNames.begin(); it!=this->roomsNames.end(); it++)
 		s+="	<Preferred_Room>"+protect(*it)+"</Preferred_Room>\n";
@@ -2160,7 +2160,7 @@ QString ConstraintTeacherHomeRooms::getDescription(Rules& r){
 	QString s=tr("Teacher home rooms"); s+=", ";
 	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
 
-	s+=tr("T:%1", "T means teacher").arg(this->teacherName);
+    s+=tr("T:%1", "T means teacher").arg(this->teacherName());
 
 	for(QStringList::Iterator it=this->roomsNames.begin(); it!=this->roomsNames.end(); it++){
 		s+=", ";
@@ -2177,7 +2177,7 @@ QString ConstraintTeacherHomeRooms::getDetailedDescription(Rules& r){
 	s+=tr("Teacher home rooms"); s+="\n";
 	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
 
-	s+=tr("Teacher=%1").arg(this->teacherName);s+="\n";
+    s+=tr("Teacher=%1").arg(this->teacherName());s+="\n";
 
 	for(QStringList::Iterator it=this->roomsNames.begin(); it!=this->roomsNames.end(); it++){
 		s+=tr("Room=%1").arg(*it);
@@ -2281,7 +2281,7 @@ bool ConstraintTeacherHomeRooms::isRelatedToActivity(Activity* a)
 
 bool ConstraintTeacherHomeRooms::isRelatedToTeacher(Teacher* t)
 {
-	return teacherName==t->name;
+    return teacherName()==t->name;
 }
 
 bool ConstraintTeacherHomeRooms::isRelatedToSubject(Subject* s)
@@ -5395,24 +5395,14 @@ ConstraintTeacherMaxBuildingChangesPerDay::ConstraintTeacherMaxBuildingChangesPe
 ConstraintTeacherMaxBuildingChangesPerDay::ConstraintTeacherMaxBuildingChangesPerDay(double wp, QString tc, int mc)
     : SpaceConstraint(SpaceConstraintType::CONSTRAINT_TEACHER_MAX_BUILDING_CHANGES_PER_DAY, wp)
 {
-	this->teacherName=tc;
+    this->teacherName(tc);
 	this->maxBuildingChangesPerDay=mc;
 }
 
 bool ConstraintTeacherMaxBuildingChangesPerDay::computeInternalStructure(QWidget* parent, Rules& r)
 {
-	//this->teacher_ID=r.searchTeacher(this->teacherName);
-	teacher_ID=r.teachersHash.value(teacherName, -1);
-	
-	if(this->teacher_ID<0){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
-		 tr("Constraint teacher max building changes per day is wrong because it refers to inexistent teacher."
-		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
-							 		 
-		return false;
-	}	
-
-	return true;
+    Q_UNUSED(parent);
+    return fetchTeacherId(r);
 }
 
 bool ConstraintTeacherMaxBuildingChangesPerDay::hasInactiveActivities(Rules& r)
@@ -5428,7 +5418,7 @@ QString ConstraintTeacherMaxBuildingChangesPerDay::getXmlDescription(Rules& r){
 	QString s="<ConstraintTeacherMaxBuildingChangesPerDay>\n";
 
 	s+="	<Weight_Percentage>"+CustomFETString::number(weightPercentage)+"</Weight_Percentage>\n";
-	s+="	<Teacher>"+protect(this->teacherName)+"</Teacher>\n";
+    s+="	<Teacher>"+protect(this->teacherName())+"</Teacher>\n";
 	s+="	<Max_Building_Changes_Per_Day>"+CustomFETString::number(this->maxBuildingChangesPerDay)+"</Max_Building_Changes_Per_Day>\n";
 		
 	s+="	<Active>"+trueFalse(active)+"</Active>\n";
@@ -5454,7 +5444,7 @@ QString ConstraintTeacherMaxBuildingChangesPerDay::getDescription(Rules& r)
 
 	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
 	
-	s+=tr("T:%1", "T means teacher").arg(this->teacherName);s+=", ";
+    s+=tr("T:%1", "T means teacher").arg(this->teacherName());s+=", ";
 
 	s+=tr("MC:%1", "MC means max changes").arg(this->maxBuildingChangesPerDay);
 
@@ -5471,7 +5461,7 @@ QString ConstraintTeacherMaxBuildingChangesPerDay::getDetailedDescription(Rules&
 
 	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
 
-	s+=tr("Teacher=%1").arg(this->teacherName);s+="\n";
+    s+=tr("Teacher=%1").arg(this->teacherName());s+="\n";
 
 	s+=tr("Maximum building changes per day=%1").arg(this->maxBuildingChangesPerDay);s+="\n";
 
@@ -5504,7 +5494,7 @@ double ConstraintTeacherMaxBuildingChangesPerDay::fitness(
 
 	int nbroken=0;
 	
-	int tch=this->teacher_ID;
+    int tch=this->teacherId();
 
 	//Better, less memory
 	Teacher* tchpointer=r.internalTeachersList[tch];
@@ -5547,7 +5537,7 @@ double ConstraintTeacherMaxBuildingChangesPerDay::fitness(
 	
 			if(conflictsString!=NULL){
 				QString s=tr("Space constraint teacher max building changes per day broken for teacher=%1 on day %2")
-					.arg(this->teacherName)
+                    .arg(this->teacherName())
 					.arg(r.daysOfTheWeek[d2]);
 				s += ". ";
 				s += tr("This increases the conflicts total by %1").arg(CustomFETString::number(weightPercentage/100* (-maxBuildingChangesPerDay+n_changes)));
@@ -5575,7 +5565,7 @@ bool ConstraintTeacherMaxBuildingChangesPerDay::isRelatedToActivity(Activity* a)
 
 bool ConstraintTeacherMaxBuildingChangesPerDay::isRelatedToTeacher(Teacher* t)
 {
-	return this->teacherName==t->name;
+    return this->teacherName()==t->name;
 }
 
 bool ConstraintTeacherMaxBuildingChangesPerDay::isRelatedToSubject(Subject* s)
@@ -5879,24 +5869,14 @@ ConstraintTeacherMaxBuildingChangesPerWeek::ConstraintTeacherMaxBuildingChangesP
 ConstraintTeacherMaxBuildingChangesPerWeek::ConstraintTeacherMaxBuildingChangesPerWeek(double wp, QString tc, int mc)
     : SpaceConstraint(SpaceConstraintType::CONSTRAINT_TEACHER_MAX_BUILDING_CHANGES_PER_WEEK, wp)
 {
-	this->teacherName=tc;
+    this->teacherName(tc);
 	this->maxBuildingChangesPerWeek=mc;
 }
 
 bool ConstraintTeacherMaxBuildingChangesPerWeek::computeInternalStructure(QWidget* parent, Rules& r)
 {
-	//this->teacher_ID=r.searchTeacher(this->teacherName);
-	teacher_ID=r.teachersHash.value(teacherName, -1);
-	
-	if(this->teacher_ID<0){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
-		 tr("Constraint teacher max building changes per week is wrong because it refers to inexistent teacher."
-		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
-							 		 
-		return false;
-	}	
-
-	return true;
+    Q_UNUSED(parent);
+    return fetchTeacherId(r);
 }
 
 bool ConstraintTeacherMaxBuildingChangesPerWeek::hasInactiveActivities(Rules& r)
@@ -5912,7 +5892,7 @@ QString ConstraintTeacherMaxBuildingChangesPerWeek::getXmlDescription(Rules& r){
 	QString s="<ConstraintTeacherMaxBuildingChangesPerWeek>\n";
 
 	s+="	<Weight_Percentage>"+CustomFETString::number(weightPercentage)+"</Weight_Percentage>\n";
-	s+="	<Teacher>"+protect(this->teacherName)+"</Teacher>\n";
+    s+="	<Teacher>"+protect(this->teacherName())+"</Teacher>\n";
 	s+="	<Max_Building_Changes_Per_Week>"+CustomFETString::number(this->maxBuildingChangesPerWeek)+"</Max_Building_Changes_Per_Week>\n";
 		
 	s+="	<Active>"+trueFalse(active)+"</Active>\n";
@@ -5938,7 +5918,7 @@ QString ConstraintTeacherMaxBuildingChangesPerWeek::getDescription(Rules& r)
 
 	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
 	
-	s+=tr("T:%1", "T means teacher").arg(this->teacherName);s+=", ";
+    s+=tr("T:%1", "T means teacher").arg(this->teacherName());s+=", ";
 
 	s+=tr("MC:%1", "MC means max changes").arg(this->maxBuildingChangesPerWeek);
 
@@ -5955,7 +5935,7 @@ QString ConstraintTeacherMaxBuildingChangesPerWeek::getDetailedDescription(Rules
 
 	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
 
-	s+=tr("Teacher=%1").arg(this->teacherName);s+="\n";
+    s+=tr("Teacher=%1").arg(this->teacherName());s+="\n";
 
 	s+=tr("Maximum building changes per week=%1").arg(this->maxBuildingChangesPerWeek);s+="\n";
 
@@ -5988,7 +5968,7 @@ double ConstraintTeacherMaxBuildingChangesPerWeek::fitness(
 
 	int nbroken=0;
 	
-	int tch=this->teacher_ID;
+    int tch=this->teacherId();
 
 	//Better, less memory
 	Teacher* tchpointer=r.internalTeachersList[tch];
@@ -6033,7 +6013,7 @@ double ConstraintTeacherMaxBuildingChangesPerWeek::fitness(
 	
 		if(conflictsString!=NULL){
 			QString s=tr("Space constraint teacher max building changes per week broken for teacher=%1")
-				.arg(this->teacherName);
+                .arg(this->teacherName());
 			s += ". ";
 			s += tr("This increases the conflicts total by %1").arg(CustomFETString::number(weightPercentage/100* (n_changes-maxBuildingChangesPerWeek)));
 			
@@ -6059,7 +6039,7 @@ bool ConstraintTeacherMaxBuildingChangesPerWeek::isRelatedToActivity(Activity* a
 
 bool ConstraintTeacherMaxBuildingChangesPerWeek::isRelatedToTeacher(Teacher* t)
 {
-	return this->teacherName==t->name;
+    return this->teacherName()==t->name;
 }
 
 bool ConstraintTeacherMaxBuildingChangesPerWeek::isRelatedToSubject(Subject* s)
@@ -6363,24 +6343,14 @@ ConstraintTeacherMinGapsBetweenBuildingChanges::ConstraintTeacherMinGapsBetweenB
 ConstraintTeacherMinGapsBetweenBuildingChanges::ConstraintTeacherMinGapsBetweenBuildingChanges(double wp, QString tc, int mg)
     : SpaceConstraint(SpaceConstraintType::CONSTRAINT_TEACHER_MIN_GAPS_BETWEEN_BUILDING_CHANGES, wp)
 {
-	this->teacherName=tc;
+    this->teacherName(tc);
 	this->minGapsBetweenBuildingChanges=mg;
 }
 
 bool ConstraintTeacherMinGapsBetweenBuildingChanges::computeInternalStructure(QWidget* parent, Rules& r)
 {
-	//this->teacher_ID=r.searchTeacher(this->teacherName);
-	teacher_ID=r.teachersHash.value(teacherName, -1);
-	
-	if(this->teacher_ID<0){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
-		 tr("Constraint teacher min gaps between building changes is wrong because it refers to inexistent teacher."
-		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
-							 		 
-		return false;
-	}	
-
-	return true;
+    Q_UNUSED(parent);
+    return fetchTeacherId(r);
 }
 
 bool ConstraintTeacherMinGapsBetweenBuildingChanges::hasInactiveActivities(Rules& r)
@@ -6396,7 +6366,7 @@ QString ConstraintTeacherMinGapsBetweenBuildingChanges::getXmlDescription(Rules&
 	QString s="<ConstraintTeacherMinGapsBetweenBuildingChanges>\n";
 
 	s+="	<Weight_Percentage>"+CustomFETString::number(weightPercentage)+"</Weight_Percentage>\n";
-	s+="	<Teacher>"+protect(this->teacherName)+"</Teacher>\n";
+    s+="	<Teacher>"+protect(this->teacherName())+"</Teacher>\n";
 	s+="	<Min_Gaps_Between_Building_Changes>"+CustomFETString::number(this->minGapsBetweenBuildingChanges)+"</Min_Gaps_Between_Building_Changes>\n";
 		
 	s+="	<Active>"+trueFalse(active)+"</Active>\n";
@@ -6422,7 +6392,7 @@ QString ConstraintTeacherMinGapsBetweenBuildingChanges::getDescription(Rules& r)
 
 	s+=tr("WP:%1%", "Weight percentage").arg(CustomFETString::number(this->weightPercentage));s+=", ";
 	
-	s+=tr("T:%1", "T means teacher").arg(this->teacherName);s+=", ";
+    s+=tr("T:%1", "T means teacher").arg(this->teacherName());s+=", ";
 
 	s+=tr("mG:%1", "mG means min gaps").arg(this->minGapsBetweenBuildingChanges);
 
@@ -6439,7 +6409,7 @@ QString ConstraintTeacherMinGapsBetweenBuildingChanges::getDetailedDescription(R
 
 	s+=tr("Weight (percentage)=%1%").arg(CustomFETString::number(this->weightPercentage));s+="\n";
 
-	s+=tr("Teacher=%1").arg(this->teacherName);s+="\n";
+    s+=tr("Teacher=%1").arg(this->teacherName());s+="\n";
 
 	s+=tr("Minimum gaps between building changes=%1").arg(this->minGapsBetweenBuildingChanges);s+="\n";
 
@@ -6472,7 +6442,7 @@ double ConstraintTeacherMinGapsBetweenBuildingChanges::fitness(
 
 	int nbroken=0;
 	
-	int tch=this->teacher_ID;
+    int tch=this->teacherId();
 
 	//Better, less memory
 	Teacher* tchpointer=r.internalTeachersList[tch];
@@ -6519,7 +6489,7 @@ double ConstraintTeacherMinGapsBetweenBuildingChanges::fitness(
 					
 						if(conflictsString!=NULL){
 							QString s=tr("Space constraint teacher min gaps between building changes broken for teacher=%1 on day %2")
-								.arg(this->teacherName)
+                                .arg(this->teacherName())
 								.arg(r.daysOfTheWeek[d2]);
 							s += ". ";
 							s += tr("This increases the conflicts total by %1").arg(CustomFETString::number(weightPercentage/100*1));
@@ -6555,7 +6525,7 @@ bool ConstraintTeacherMinGapsBetweenBuildingChanges::isRelatedToActivity(Activit
 
 bool ConstraintTeacherMinGapsBetweenBuildingChanges::isRelatedToTeacher(Teacher* t)
 {
-	return this->teacherName==t->name;
+    return this->teacherName()==t->name;
 }
 
 bool ConstraintTeacherMinGapsBetweenBuildingChanges::isRelatedToSubject(Subject* s)

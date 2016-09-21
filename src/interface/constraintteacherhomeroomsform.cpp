@@ -100,7 +100,7 @@ bool ConstraintTeacherHomeRoomsForm::filterOk(SpaceConstraint* ctr)
 {
 	if(ctr->type==SpaceConstraintType::CONSTRAINT_TEACHER_HOME_ROOMS){
 		ConstraintTeacherHomeRooms* c=(ConstraintTeacherHomeRooms*)ctr;
-		return (c->teacherName==teachersComboBox->currentText() || teachersComboBox->currentText()=="")
+        return (c->teacherName()==teachersComboBox->currentText() || teachersComboBox->currentText()=="")
 		  && (roomsComboBox->currentText()=="" || c->roomsNames.contains(roomsComboBox->currentText()));
 	}
 	else

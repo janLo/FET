@@ -67,7 +67,7 @@ bool ConstraintTeacherMinGapsBetweenBuildingChangesForm::filterOk(SpaceConstrain
 {
 	if(ctr->type==SpaceConstraintType::CONSTRAINT_TEACHER_MIN_GAPS_BETWEEN_BUILDING_CHANGES){
 		ConstraintTeacherMinGapsBetweenBuildingChanges* c=(ConstraintTeacherMinGapsBetweenBuildingChanges*) ctr;
-		return c->teacherName==teachersComboBox->currentText() || teachersComboBox->currentText()=="";
+        return c->teacherName()==teachersComboBox->currentText() || teachersComboBox->currentText()=="";
 	}
 	else
 		return false;
